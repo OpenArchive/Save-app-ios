@@ -18,13 +18,30 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="itemCell" id="PYi-w6-qI5">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ImageCell" rowHeight="136" id="PYi-w6-qI5" customClass="ImageCell" customModule="OpenArchive" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="136"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PYi-w6-qI5" id="Sog-YJ-DZl">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="135.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Buz-Oi-dBx">
+                                            <rect key="frame" x="8" y="8" width="359" height="120"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="120" id="7uB-E6-bPq"/>
+                                            </constraints>
+                                        </imageView>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="Buz-Oi-dBx" firstAttribute="top" secondItem="Sog-YJ-DZl" secondAttribute="top" constant="8" id="3Wo-1y-pqQ"/>
+                                        <constraint firstItem="Buz-Oi-dBx" firstAttribute="leading" secondItem="Sog-YJ-DZl" secondAttribute="leading" constant="8" id="CBy-cr-98S"/>
+                                        <constraint firstAttribute="trailing" secondItem="Buz-Oi-dBx" secondAttribute="trailing" constant="8" id="MVv-Sw-ueh"/>
+                                        <constraint firstAttribute="bottom" secondItem="Buz-Oi-dBx" secondAttribute="bottom" constant="8" id="q3M-Rj-Lt4"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="img" destination="Buz-Oi-dBx" id="TLH-Xr-G7z"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -33,7 +50,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="OpenArchive" id="qag-qj-eDJ">
-                        <barButtonItem key="rightBarButtonItem" style="plain" systemItem="add" id="MKK-1M-yTY">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="MKK-1M-yTY">
                             <connections>
                                 <action selector="add:" destination="dtV-Dk-Mg4" id="Rd4-uj-f0q"/>
                             </connections>
@@ -42,7 +59,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A5F-CC-M5n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="594" y="117"/>
+            <point key="canvasLocation" x="592.79999999999995" y="116.49175412293854"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="lB7-bA-cEV">

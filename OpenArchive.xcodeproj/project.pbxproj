@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A058628120E4EC3900EE2F14 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A058628020E4EC3900EE2F14 /* ImageCell.swift */; };
 		A0E739D820E4C85D00DB31E1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E739D720E4C85D00DB31E1 /* AppDelegate.swift */; };
 		A0E739DA20E4C85D00DB31E1 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E739D920E4C85D00DB31E1 /* MainViewController.swift */; };
 		A0E739DD20E4C85D00DB31E1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DB20E4C85D00DB31E1 /* Main.storyboard */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A058628020E4EC3900EE2F14 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 		A0E739D420E4C85D00DB31E1 /* OpenArchive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenArchive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0E739D720E4C85D00DB31E1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A0E739D920E4C85D00DB31E1 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -56,6 +58,7 @@
 			children = (
 				A0E739D720E4C85D00DB31E1 /* AppDelegate.swift */,
 				A0E739D920E4C85D00DB31E1 /* MainViewController.swift */,
+				A058628020E4EC3900EE2F14 /* ImageCell.swift */,
 				A0E739DB20E4C85D00DB31E1 /* Main.storyboard */,
 				A0E739DE20E4C85E00DB31E1 /* Assets.xcassets */,
 				A0E739E020E4C85E00DB31E1 /* LaunchScreen.storyboard */,
@@ -137,6 +140,7 @@
 			files = (
 				A0E739DA20E4C85D00DB31E1 /* MainViewController.swift in Sources */,
 				A0E739D820E4C85D00DB31E1 /* AppDelegate.swift in Sources */,
+				A058628120E4EC3900EE2F14 /* ImageCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
