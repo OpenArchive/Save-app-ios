@@ -8,6 +8,7 @@
 
 import UIKit
 import MobileCoreServices
+import Photos
 import YapDatabase
 
 class MainViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
@@ -53,7 +54,32 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
 
     @IBAction func add(_ sender: UIBarButtonItem) {
         imagePicker.popoverPresentationController?.barButtonItem = sender
-        present(imagePicker, animated: true)
+
+        switch PHPhotoLibrary.authorizationStatus() {
+        case .authorized:
+            present(imagePicker, animated: true)
+
+        case .notDetermined:
+            PHPhotoLibrary.requestAuthorization() { newStatus in
+                if newStatus == .authorized {
+                    self.present(self.imagePicker, animated: true)
+                }
+            }
+
+        case .restricted:
+            AlertUtils.presentSimple(
+                self,
+                title: NSLocalizedString("Access Restricted", comment: ""),
+                message: NSLocalizedString("Sorry, you are not allowed to view the photo library.",
+                                           comment: ""))
+
+        case .denied:
+            AlertUtils.presentSimple(
+                self,
+                title: NSLocalizedString("Access Denied", comment: ""),
+                message: NSLocalizedString("Please go to the Settings app to grant this app access to your photo library, if you want to upload photos or videos.",
+                                           comment: ""))
+        }
     }
 
     // MARK: UITableViewDataSource
@@ -95,9 +121,13 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
             writeConn?.asyncReadWrite() { transaction in
                 transaction.setObject(image, forKey: image.getKey(), inCollection: Asset.COLLECTION)
             }
-
-            dismiss(animated: true, completion: nil)
         }
+
+        dismiss(animated: true)
+    }
+
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true)
     }
 
     // MARK: Observers
