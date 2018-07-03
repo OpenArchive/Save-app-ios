@@ -21,7 +21,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
         let baseDir = paths.count > 0 ? paths[0] : NSTemporaryDirectory()
 
-        return YapDatabase(path: "\(baseDir)\(AppDelegate.DB_NAME)")
+        return YapDatabase(path: "\(baseDir)/\(AppDelegate.DB_NAME)")
     }()
 
 
