@@ -8,6 +8,7 @@
 
 import UIKit
 import MobileCoreServices
+import YapDatabase
 
 class MainViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
@@ -21,16 +22,31 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
         return imagePicker
     }()
 
-    lazy var images = [UIImage]()
+    lazy var readConn: YapDatabaseConnection? = {
+        let conn = (UIApplication.shared.delegate as? AppDelegate)?.db?.newConnection()
+        conn?.beginLongLivedReadTransaction()
+
+        return conn
+    }()
+
+    lazy var mappings: YapDatabaseViewMappings = {
+        let mappings = YapDatabaseViewMappings(groups: [Asset.COLLECTION], view: Asset.COLLECTION)
+
+        readConn?.read() { transaction in
+            mappings.update(with: transaction)
+        }
+
+        return mappings
+    }()
+
+    lazy var writeConn = (UIApplication.shared.delegate as? AppDelegate)?.db?.newConnection()
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view, typically from a nib.
-    }
 
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
+        NotificationCenter.default.addObserver(self, selector: #selector(yapDatabaseModified),
+                                               name: Notification.Name.YapDatabaseModified,
+                                               object: readConn?.database)
     }
 
     // MARK: actions
@@ -43,15 +59,29 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
     // MARK: UITableViewDataSource
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return images.count
+        return Int(mappings.numberOfItems(inSection: 0))
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: indexPath) as! ImageCell
-        
-        cell.img.image = images[indexPath.row]
+
+        readConn?.read() { transaction in
+            cell.imageObject = (transaction.ext(Asset.COLLECTION) as? YapDatabaseViewTransaction)?
+                .object(at: indexPath, with: self.mappings) as? Image
+        }
 
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle,
+                            forRowAt indexPath: IndexPath) {
+        if editingStyle == .delete,
+            let key = (tableView.cellForRow(at: indexPath) as? ImageCell)?.imageObject?.getKey() {
+
+            writeConn?.asyncReadWrite() { transaction in
+                transaction.removeObject(forKey: key, inCollection: Asset.COLLECTION)
+            }
+        }
     }
 
     // MARK: UIImagePickerControllerDelegate
@@ -60,13 +90,56 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
         if let image = info[UIImagePickerControllerEditedImage] as? UIImage ??
             info[UIImagePickerControllerOriginalImage] as? UIImage
         {
-            images.append(image)
+            let image = Image(image)
+
+            writeConn?.asyncReadWrite() { transaction in
+                transaction.setObject(image, forKey: image.getKey(), inCollection: Asset.COLLECTION)
+            }
 
             dismiss(animated: true, completion: nil)
+        }
+    }
 
-            tableView.reloadData()
-            tableView.scrollToRow(at: IndexPath(row: images.count - 1, section: 0),
-                                  at: UITableViewScrollPosition.bottom, animated: true)
+    // MARK: Observers
+
+    @objc func yapDatabaseModified(notification: Notification) {
+        if let readConn = readConn {
+            var changes = NSArray()
+
+            (readConn.ext(Asset.COLLECTION) as? YapDatabaseViewConnection)?
+                .getSectionChanges(nil,
+                                   rowChanges: &changes,
+                                   for: readConn.beginLongLivedReadTransaction(),
+                                   with: mappings)
+
+            if let changes = changes as? [YapDatabaseViewRowChange],
+                changes.count > 0 {
+
+                tableView.beginUpdates()
+
+                for change in changes {
+                    switch change.type {
+                    case .delete:
+                        if let indexPath = change.indexPath {
+                            tableView.deleteRows(at: [indexPath], with: .automatic)
+                        }
+                    case .insert:
+                        if let newIndexPath = change.newIndexPath {
+                            tableView.insertRows(at: [newIndexPath], with: .automatic)
+                        }
+                    case .move:
+                        if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
+                            tableView.moveRow(at: indexPath, to: newIndexPath)
+                        }
+                    case .update:
+                        if let indexPath = change.indexPath {
+                            tableView.reloadRows(at: [indexPath], with: .none)
+                        }
+                    }
+                }
+
+                tableView.endUpdates()
+            }
         }
     }
 }

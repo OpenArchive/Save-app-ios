@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -13,34 +14,44 @@
         <scene sceneID="lte-aq-698">
             <objects>
                 <tableViewController id="dtV-Dk-Mg4" customClass="MainViewController" customModule="OpenArchive" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="aW3-pE-ZI8">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="aW3-pE-ZI8">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ImageCell" rowHeight="136" id="PYi-w6-qI5" customClass="ImageCell" customModule="OpenArchive" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="136"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="ImageCell" rowHeight="165" id="PYi-w6-qI5" customClass="ImageCell" customModule="OpenArchive" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="165"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="PYi-w6-qI5" id="Sog-YJ-DZl">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="135.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="164.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Buz-Oi-dBx">
-                                            <rect key="frame" x="8" y="8" width="359" height="120"/>
+                                            <rect key="frame" x="16" y="8" width="343" height="120"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="120" id="7uB-E6-bPq"/>
                                             </constraints>
                                         </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="01/01/2018" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L0w-Iu-u4O">
+                                            <rect key="frame" x="16" y="136" width="343" height="18"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
                                     </subviews>
                                     <constraints>
                                         <constraint firstItem="Buz-Oi-dBx" firstAttribute="top" secondItem="Sog-YJ-DZl" secondAttribute="top" constant="8" id="3Wo-1y-pqQ"/>
-                                        <constraint firstItem="Buz-Oi-dBx" firstAttribute="leading" secondItem="Sog-YJ-DZl" secondAttribute="leading" constant="8" id="CBy-cr-98S"/>
-                                        <constraint firstAttribute="trailing" secondItem="Buz-Oi-dBx" secondAttribute="trailing" constant="8" id="MVv-Sw-ueh"/>
-                                        <constraint firstAttribute="bottom" secondItem="Buz-Oi-dBx" secondAttribute="bottom" constant="8" id="q3M-Rj-Lt4"/>
+                                        <constraint firstItem="L0w-Iu-u4O" firstAttribute="bottom" secondItem="Sog-YJ-DZl" secondAttribute="bottomMargin" id="7ep-ad-ozc"/>
+                                        <constraint firstItem="Buz-Oi-dBx" firstAttribute="leading" secondItem="Sog-YJ-DZl" secondAttribute="leading" constant="16" id="Fv1-vZ-hr4"/>
+                                        <constraint firstItem="L0w-Iu-u4O" firstAttribute="leading" secondItem="Sog-YJ-DZl" secondAttribute="leadingMargin" id="JdM-6S-xvg"/>
+                                        <constraint firstItem="L0w-Iu-u4O" firstAttribute="top" secondItem="Buz-Oi-dBx" secondAttribute="bottom" constant="8" id="TGE-Sb-dzo"/>
+                                        <constraint firstAttribute="trailing" secondItem="Buz-Oi-dBx" secondAttribute="trailing" constant="16" id="iwT-ai-shL"/>
+                                        <constraint firstItem="L0w-Iu-u4O" firstAttribute="trailing" secondItem="Sog-YJ-DZl" secondAttribute="trailingMargin" id="tKy-y2-QTH"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
-                                    <outlet property="img" destination="Buz-Oi-dBx" id="TLH-Xr-G7z"/>
+                                    <outlet property="dateLb" destination="L0w-Iu-u4O" id="mNr-pP-RP1"/>
+                                    <outlet property="imgView" destination="Buz-Oi-dBx" id="Pbt-cx-6Bi"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>

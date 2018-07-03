@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		33E6B43CCAFD4EBCA6FAA8C7 /* Pods_OpenArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B70E96222AA75803A61BDC /* Pods_OpenArchive.framework */; };
 		A058628120E4EC3900EE2F14 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A058628020E4EC3900EE2F14 /* ImageCell.swift */; };
+		A0D58DCE20E51517005A2F34 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D58DCD20E51517005A2F34 /* Asset.swift */; };
+		A0D58DD020E5160A005A2F34 /* Image.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D58DCF20E5160A005A2F34 /* Image.swift */; };
 		A0E739D820E4C85D00DB31E1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E739D720E4C85D00DB31E1 /* AppDelegate.swift */; };
 		A0E739DA20E4C85D00DB31E1 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E739D920E4C85D00DB31E1 /* MainViewController.swift */; };
 		A0E739DD20E4C85D00DB31E1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DB20E4C85D00DB31E1 /* Main.storyboard */; };
@@ -94,6 +96,7 @@
 		A0E739D620E4C85D00DB31E1 /* OpenArchive */ = {
 			isa = PBXGroup;
 			children = (
+				A0D58DCC20E514F8005A2F34 /* Models */,
 				A0E739D720E4C85D00DB31E1 /* AppDelegate.swift */,
 				A0E739D920E4C85D00DB31E1 /* MainViewController.swift */,
 				A058628020E4EC3900EE2F14 /* ImageCell.swift */,
@@ -230,7 +233,9 @@
 			files = (
 				A0E739DA20E4C85D00DB31E1 /* MainViewController.swift in Sources */,
 				A0E739D820E4C85D00DB31E1 /* AppDelegate.swift in Sources */,
+				A0D58DCE20E51517005A2F34 /* Asset.swift in Sources */,
 				A058628120E4EC3900EE2F14 /* ImageCell.swift in Sources */,
+				A0D58DD020E5160A005A2F34 /* Image.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
