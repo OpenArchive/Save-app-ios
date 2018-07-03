@@ -50,6 +50,15 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
                                                object: readConn?.database)
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let assetVC = segue.destination as? AssetViewController,
+            let selectedRow = tableView.indexPathForSelectedRow,
+            let imageCell = tableView.cellForRow(at: selectedRow) as? ImageCell {
+
+            assetVC.imageObject = imageCell.imageObject
+        }
+    }
+
     // MARK: actions
 
     @IBAction func add(_ sender: UIBarButtonItem) {

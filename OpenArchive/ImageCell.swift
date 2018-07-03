@@ -10,14 +10,6 @@ import UIKit
 
 class ImageCell: UITableViewCell {
 
-    private static let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateStyle = .full
-        formatter.timeStyle = .none
-
-        return formatter
-    }()
-
     @IBOutlet var imgView: UIImageView!
     @IBOutlet var dateLb: UILabel!
 
@@ -26,7 +18,7 @@ class ImageCell: UITableViewCell {
             imgView.image = imageObject?.image
 
             if let created = imageObject?.created {
-                dateLb.text = ImageCell.dateFormatter.string(from: created)
+                dateLb.text = Formatters.date.string(from: created)
             }
             else {
                 dateLb.text = nil

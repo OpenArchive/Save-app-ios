@@ -12,26 +12,32 @@ class Image: Asset {
 
     let image: UIImage
 
-    init(image: UIImage, created: Date?) {
+    init(image: UIImage, created: Date?, desc: String?, author: String?, location: String?,
+         tags: [String]?, license: String?) {
+
         self.image = image
 
-        super.init(created: created)
+        super.init(created: created, desc: desc, author: author, location: location, tags: tags,
+                   license: license)
     }
 
     convenience init(_ image: UIImage) {
-        self.init(image: image, created: nil)
+        self.init(image: image, created: nil, desc: nil, author: nil, location: nil, tags: nil,
+                  license: nil)
     }
 
     // MARK: NSCoding
 
-    convenience required init(coder aDecoder: NSCoder) {
-        self.init(image: aDecoder.decodeObject() as! UIImage, created: aDecoder.decodeObject() as? Date)
+    required init(coder decoder: NSCoder) {
+        self.image = decoder.decodeObject() as! UIImage
+
+        super.init(coder: decoder)
     }
 
-    override func encode(with aCoder: NSCoder) {
-        aCoder.encode(image)
+    override func encode(with coder: NSCoder) {
+        coder.encode(image)
 
-        super.encode(with: aCoder)
+        super.encode(with: coder)
     }
 
 }
