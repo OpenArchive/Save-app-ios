@@ -10,6 +10,9 @@ import UIKit
 
 class DetailsViewController: UIViewController {
 
+    static let ccDomain = "creativecommons.org"
+    static let ccUrl = "https://%@/licenses/%@/4.0/"
+
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var image: UIImageView!
     @IBOutlet var dateLb: UILabel!
@@ -18,8 +21,13 @@ class DetailsViewController: UIViewController {
     @IBOutlet var locationTf: UITextField!
     @IBOutlet var tagsTf: UITextField!
     @IBOutlet var licenseTf: UITextField!
-    
+    @IBOutlet var remixSw: UISwitch!
+    @IBOutlet var shareAlikeSw: UISwitch!
+    @IBOutlet var commercialSw: UISwitch!
+
     var imageObject: Image?
+
+    lazy var writeConn = (UIApplication.shared.delegate as? AppDelegate)?.db?.newConnection()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,6 +48,13 @@ class DetailsViewController: UIViewController {
         locationTf.text = imageObject?.location
         tagsTf.text = imageObject?.tags?.joined(separator: ", ")
         licenseTf.text = imageObject?.license
+
+        if let license = imageObject?.license,
+            RegexUtils.containsCi(license, pattern: DetailsViewController.ccDomain) {
+                remixSw.isOn = !RegexUtils.containsCi(license, pattern: "-nd")
+                shareAlikeSw.isOn = RegexUtils.containsCi(license, pattern: "-sa")
+                commercialSw.isOn = !RegexUtils.containsCi(license, pattern: "-nc")
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -96,6 +111,64 @@ class DetailsViewController: UIViewController {
      */
     @objc func dismissKeyboard(_ sender: UITapGestureRecognizer) {
         view.endEditing(true)
+    }
+
+    // MARK: Actions
+
+    @IBAction func contentChanged(_ sender: UITextField) {
+        if let i = imageObject {
+            switch sender {
+            case descriptionTf:
+                i.desc = descriptionTf.text
+            case authorTf:
+                i.author = authorTf.text
+            case locationTf:
+                i.location = locationTf.text
+            case tagsTf:
+                let t = tagsTf.text?.split(separator: ",")
+                var tags = [String]()
+
+                t?.forEach() { tag in
+                    tags.append(tag.trimmingCharacters(in: .whitespacesAndNewlines))
+                }
+
+                i.tags = tags
+
+            case licenseTf:
+                i.license = licenseTf.text
+            default:
+                assertionFailure("This should have never happened - switch should be exhaustive.")
+            }
+
+            writeConn?.asyncReadWrite() { transaction in
+                transaction.setObject(i, forKey: i.getKey(), inCollection: Asset.COLLECTION)
+            }
+        }
+    }
+
+    @IBAction func ccLicenseChanged(_ sender: UISwitch) {
+        var license = "by"
+
+        if remixSw.isOn {
+            if !commercialSw.isOn {
+                license += "-nc"
+            }
+
+            if shareAlikeSw.isOn {
+                license += "-sa"
+            }
+        } else {
+            if !commercialSw.isOn {
+                license += "-nc"
+            }
+
+            license += "-nd"
+        }
+
+        licenseTf.text = String(format: DetailsViewController.ccUrl, DetailsViewController.ccDomain,
+                                license)
+
+        contentChanged(licenseTf)
     }
 
 }

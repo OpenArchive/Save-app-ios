@@ -13,11 +13,11 @@ class Asset: NSObject, NSCoding {
     static let COLLECTION = "assets"
 
     let created: Date
-    let desc: String?
-    let author: String?
-    let location: String?
-    let tags: [String]?
-    let license: String?
+    var desc: String?
+    var author: String?
+    var location: String?
+    var tags: [String]?
+    var license: String?
 
     init(created: Date?, desc: String?, author: String?, location: String?, tags: [String]?, license: String?) {
         self.created = created ?? Date()
