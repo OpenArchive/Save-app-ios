@@ -74,10 +74,10 @@
             </objects>
             <point key="canvasLocation" x="592.79999999999995" y="116.49175412293854"/>
         </scene>
-        <!--Asset-->
+        <!--Details-->
         <scene sceneID="Fau-MA-0p5">
             <objects>
-                <viewController id="kly-Jm-2lf" customClass="AssetViewController" customModule="OpenArchive" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="kly-Jm-2lf" customClass="DetailsViewController" customModule="OpenArchive" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="fgj-so-HpQ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -177,7 +177,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="2ny-lT-gnC"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Asset" id="Qrg-CN-7nt">
+                    <navigationItem key="navigationItem" title="Details" id="Qrg-CN-7nt">
                         <barButtonItem key="rightBarButtonItem" systemItem="action" id="YNd-up-rdC"/>
                     </navigationItem>
                     <connections>
@@ -187,6 +187,7 @@
                         <outlet property="image" destination="Iw9-s4-pZS" id="Ud3-sU-k5v"/>
                         <outlet property="licenseTf" destination="c9n-mE-cMe" id="kfu-FC-tIk"/>
                         <outlet property="locationTf" destination="cz5-8E-GL3" id="dNx-br-vUt"/>
+                        <outlet property="scrollView" destination="6cf-FH-zj8" id="Pa8-Ce-ZHi"/>
                         <outlet property="tagsTf" destination="41o-qd-JpQ" id="Hzj-NF-5YB"/>
                     </connections>
                 </viewController>

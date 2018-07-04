@@ -51,7 +51,7 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let assetVC = segue.destination as? AssetViewController,
+        if let assetVC = segue.destination as? DetailsViewController,
             let selectedRow = tableView.indexPathForSelectedRow,
             let imageCell = tableView.cellForRow(at: selectedRow) as? ImageCell {
 
