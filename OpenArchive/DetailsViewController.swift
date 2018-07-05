@@ -16,6 +16,7 @@ class DetailsViewController: UIViewController {
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var image: UIImageView!
     @IBOutlet var dateLb: UILabel!
+    @IBOutlet var titleTf: UITextField!
     @IBOutlet var descriptionTf: UITextField!
     @IBOutlet var authorTf: UITextField!
     @IBOutlet var locationTf: UITextField!
@@ -43,6 +44,7 @@ class DetailsViewController: UIViewController {
             dateLb.text = Formatters.date.string(from: created)
         }
 
+        titleTf.text = imageObject?.title
         descriptionTf.text = imageObject?.desc
         authorTf.text = imageObject?.author
         locationTf.text = imageObject?.location
@@ -50,10 +52,11 @@ class DetailsViewController: UIViewController {
         licenseTf.text = imageObject?.license
 
         if let license = imageObject?.license,
-            RegexUtils.containsCi(license, pattern: DetailsViewController.ccDomain) {
-                remixSw.isOn = !RegexUtils.containsCi(license, pattern: "-nd")
-                shareAlikeSw.isOn = RegexUtils.containsCi(license, pattern: "-sa")
-                commercialSw.isOn = !RegexUtils.containsCi(license, pattern: "-nc")
+            license.localizedCaseInsensitiveContains(DetailsViewController.ccDomain) {
+
+            remixSw.isOn = !license.localizedCaseInsensitiveContains("-nd")
+            shareAlikeSw.isOn = license.localizedCaseInsensitiveContains("-sa")
+            commercialSw.isOn = !license.localizedCaseInsensitiveContains("-nc")
         }
     }
 
@@ -118,6 +121,8 @@ class DetailsViewController: UIViewController {
     @IBAction func contentChanged(_ sender: UITextField) {
         if let i = imageObject {
             switch sender {
+            case titleTf:
+                i.title = titleTf.text
             case descriptionTf:
                 i.desc = descriptionTf.text
             case authorTf:

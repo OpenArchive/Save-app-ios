@@ -12,18 +12,15 @@ class Image: Asset {
 
     let image: UIImage
 
-    init(image: UIImage, created: Date?, desc: String?, author: String?, location: String?,
-         tags: [String]?, license: String?) {
+    init(image: UIImage, created: Date?) {
 
         self.image = image
 
-        super.init(created: created, desc: desc, author: author, location: location, tags: tags,
-                   license: license)
+        super.init(created: created)
     }
 
     convenience init(_ image: UIImage) {
-        self.init(image: image, created: nil, desc: nil, author: nil, location: nil, tags: nil,
-                  license: nil)
+        self.init(image: image, created: nil)
     }
 
     // MARK: NSCoding
