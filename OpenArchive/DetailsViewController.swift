@@ -55,7 +55,8 @@ class DetailsViewController: UIViewController {
             license.localizedCaseInsensitiveContains(DetailsViewController.ccDomain) {
 
             remixSw.isOn = !license.localizedCaseInsensitiveContains("-nd")
-            shareAlikeSw.isOn = license.localizedCaseInsensitiveContains("-sa")
+            shareAlikeSw.isEnabled = remixSw.isOn
+            shareAlikeSw.isOn = shareAlikeSw.isEnabled && license.localizedCaseInsensitiveContains("-sa")
             commercialSw.isOn = !license.localizedCaseInsensitiveContains("-nc")
         }
     }
@@ -155,6 +156,8 @@ class DetailsViewController: UIViewController {
         var license = "by"
 
         if remixSw.isOn {
+            shareAlikeSw.isEnabled = true
+
             if !commercialSw.isOn {
                 license += "-nc"
             }
@@ -163,6 +166,9 @@ class DetailsViewController: UIViewController {
                 license += "-sa"
             }
         } else {
+            shareAlikeSw.isEnabled = false
+            shareAlikeSw.setOn(false, animated: true)
+
             if !commercialSw.isOn {
                 license += "-nc"
             }
