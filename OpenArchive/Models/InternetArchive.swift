@@ -124,10 +124,40 @@ class InternetArchive : Server {
                                 }
 
                                 done(self)
-                        }
+                            }
                     }
                 }
             }
+        }
+    }
+
+    override func remove(_ asset: Asset, done: @escaping DoneHandler) {
+        if let accessKey = InternetArchive.accessKey,
+            let secretKey = InternetArchive.secretKey,
+            let url = publicUrl {
+
+            let headers: HTTPHeaders = [
+                "Accept": "*/*",
+                "authorization": "LOW \(accessKey):\(secretKey)",
+                "x-archive-cascade-delete": "1",
+                "x-archive-keep-old-version": "0",
+            ]
+
+            Server.sessionManager.request(url, method: .delete, headers: headers)
+                .validate(statusCode: 200..<300)
+                .responseData() { response in
+
+                    switch response.result {
+                    case .success:
+                        self.publicUrl = nil
+                        self.isUploaded = false
+                        self.error = nil
+                    case .failure(let error):
+                        self.error = error.localizedDescription
+                    }
+
+                    done(self)
+                }
         }
     }
 }

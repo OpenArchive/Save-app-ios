@@ -258,6 +258,17 @@
                                                             <outletCollection property="gestureRecognizers" destination="PnQ-Lz-2bU" appends="YES" id="mz6-cq-fR0"/>
                                                         </connections>
                                                     </label>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jp1-Wy-X6N">
+                                                        <rect key="frame" x="328" y="0.0" width="15" height="15"/>
+                                                        <constraints>
+                                                            <constraint firstAttribute="width" constant="15" id="Yfu-fr-fRj"/>
+                                                            <constraint firstAttribute="height" constant="15" id="dzl-Fz-7wZ"/>
+                                                        </constraints>
+                                                        <state key="normal" image="Clear"/>
+                                                        <connections>
+                                                            <action selector="removeFromServer:" destination="kly-Jm-2lf" eventType="touchUpInside" id="ybw-Jb-eP5"/>
+                                                        </connections>
+                                                    </button>
                                                 </subviews>
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
@@ -270,6 +281,7 @@
                                                     <constraint firstItem="b5X-La-ltz" firstAttribute="top" secondItem="vUx-6j-tEn" secondAttribute="top" id="8Ur-Tn-mKY"/>
                                                     <constraint firstItem="5Gx-7o-cUS" firstAttribute="leading" secondItem="hra-Kh-2Db" secondAttribute="trailing" constant="8" id="BXD-if-ATa"/>
                                                     <constraint firstItem="8ZU-E3-fZN" firstAttribute="leading" secondItem="vUx-6j-tEn" secondAttribute="leading" id="Ft1-hx-tDp"/>
+                                                    <constraint firstItem="jp1-Wy-X6N" firstAttribute="top" secondItem="vUx-6j-tEn" secondAttribute="top" id="K36-3g-V4N"/>
                                                     <constraint firstItem="tlz-cn-0Oe" firstAttribute="top" secondItem="5Gx-7o-cUS" secondAttribute="bottom" constant="8" id="Psu-Hw-QVt"/>
                                                     <constraint firstAttribute="trailing" secondItem="b5X-La-ltz" secondAttribute="trailing" id="UvC-Ar-2xP"/>
                                                     <constraint firstItem="5Gx-7o-cUS" firstAttribute="top" secondItem="b5X-La-ltz" secondAttribute="bottom" constant="8" id="VRh-Ss-ajN"/>
@@ -277,6 +289,7 @@
                                                     <constraint firstItem="NQE-MJ-G6a" firstAttribute="leading" secondItem="vUx-6j-tEn" secondAttribute="leading" id="duO-e3-rkW"/>
                                                     <constraint firstItem="b5X-La-ltz" firstAttribute="leading" secondItem="8ZU-E3-fZN" secondAttribute="trailing" constant="8" id="h60-AO-by5"/>
                                                     <constraint firstItem="hra-Kh-2Db" firstAttribute="top" secondItem="8ZU-E3-fZN" secondAttribute="bottom" constant="8" id="jwC-CD-2qM"/>
+                                                    <constraint firstAttribute="trailing" secondItem="jp1-Wy-X6N" secondAttribute="trailing" id="uUD-fK-Icg"/>
                                                 </constraints>
                                             </view>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Title" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="gzU-kM-TuR">
@@ -501,6 +514,7 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Clear" width="14" height="14"/>
         <image name="CloudUpload" width="25" height="25"/>
         <image name="Settings" width="25" height="25"/>
     </resources>

@@ -60,9 +60,7 @@ class DetailsViewController: UIViewController {
 
         if let servers = imageObject?.getServers() {
             if servers.count < 1 {
-                serverBox.isHidden = true
-                serverBoxHeightCt.constant = 0
-                innerViewHeightCt.constant = innerViewHeight - DetailsViewController.serverBoxHeight
+                showServerBox(false, animated: false)
             }
 
             for s in servers {
@@ -144,6 +142,29 @@ class DetailsViewController: UIViewController {
     }
 
     // MARK: Actions
+
+    @IBAction func removeFromServer(_ button: UIButton) {
+        if let imageObject = imageObject {
+            button.isHidden = true
+
+            serverStatusLb.text = NSLocalizedString("Removing...", comment: "")
+
+            imageObject.remove(from: InternetArchive.self) { server in
+                self.setServerStatus(server)
+
+                button.isHidden = false
+
+                if server.error == nil && !server.isUploaded {
+                    imageObject.removeServer(ofType: InternetArchive.self)
+                    self.showServerBox(false)
+
+                    self.writeConn?.asyncReadWrite() { transaction in
+                        transaction.setObject(imageObject, forKey: imageObject.getKey(), inCollection: Asset.COLLECTION)
+                    }
+                }
+            }
+        }
+    }
 
     @IBAction func followServerUrl(_ sender: UITapGestureRecognizer) {
         if let url = imageObject?.getServers().first?.publicUrl {
@@ -237,7 +258,6 @@ class DetailsViewController: UIViewController {
                 self.writeConn?.asyncReadWrite() { transaction in
                     transaction.setObject(imageObject, forKey: imageObject.getKey(), inCollection: Asset.COLLECTION)
                 }
-
             }
         }
     }
@@ -247,20 +267,55 @@ class DetailsViewController: UIViewController {
     private func setServerInfo(_ server: Server) {
         serverNameLb.text = server.getPrettyName()
 
-        if server.isUploaded {
-            self.serverStatusLb.text = NSLocalizedString("Uploaded", comment: "")
-        }
-        else if let error = server.error, error.count > 0 {
+        setServerStatus(server)
+
+        serverUrlLb.text = server.publicUrl?.absoluteString
+
+        showServerBox(true)
+    }
+
+    private func setServerStatus(_ server: Server) {
+        if let error = server.error, error.count > 0 {
             self.serverStatusLb.text = error
+        }
+        else if server.isUploaded {
+            self.serverStatusLb.text = NSLocalizedString("Uploaded", comment: "")
         }
         else {
             serverStatusLb.text = NSLocalizedString("Not uploaded", comment: "")
         }
+    }
 
-        serverUrlLb.text = server.publicUrl?.absoluteString
+    private func showServerBox(_ toggle: Bool, animated: Bool = true) {
+        if toggle {
+            serverBox.isHidden = false
 
-        serverBox.isHidden = false
-        serverBoxHeightCt.constant = DetailsViewController.serverBoxHeight
-        innerViewHeightCt.constant = innerViewHeight
+            if animated {
+                UIView.animate(withDuration: 1) {
+                    self.serverBoxHeightCt.constant = DetailsViewController.serverBoxHeight
+                    self.view.layoutIfNeeded()
+                }
+            }
+            else {
+                serverBoxHeightCt.constant = DetailsViewController.serverBoxHeight
+            }
+
+            innerViewHeightCt.constant = innerViewHeight
+        }
+        else {
+            serverBox.isHidden = true
+
+            if animated {
+                UIView.animate(withDuration: 1) {
+                    self.serverBoxHeightCt.constant = 0
+                    self.view.layoutIfNeeded()
+                }
+            }
+            else {
+                serverBoxHeightCt.constant = 0
+            }
+
+            innerViewHeightCt.constant = innerViewHeight - DetailsViewController.serverBoxHeight
+        }
     }
 }

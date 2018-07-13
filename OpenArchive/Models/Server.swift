@@ -77,13 +77,22 @@ class Server: NSObject, NSCoding {
     }
 
     /**
-     Subclasses need to implement this upload method.
+     Subclasses need to implement this method to upload assets.
 
      - parameter asset: The asset to upload.
      - parameter progress: Callback to communicate upload progress.
      - parameter done: Callback to indicate end of upload. Check server object for status!
     */
     func upload(_ asset: Asset, progress: @escaping ProgressHandler, done: @escaping DoneHandler) {
+        preconditionFailure("This method must be overridden.")
+    }
+
+    /**
+     Subclasses need to implement this method to remove assets from server.
+
+     - parameter asset: The asset to upload.
+    */
+    func remove(_ asset: Asset, done: @escaping DoneHandler) {
         preconditionFailure("This method must be overridden.")
     }
 

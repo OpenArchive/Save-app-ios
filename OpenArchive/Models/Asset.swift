@@ -82,22 +82,37 @@ class Asset: NSObject, NSCoding {
     }
 
     /**
-     Add a `Server` to this asset, where we want to upload to.
+     Add a `Server` to this asset, where we want to upload to, if not added, yet.
 
      - parameter serverType: The subclass to use.
      - returns: the already existing or just created subclass as given.
     */
     func setServer(ofType serverType: Server.Type) -> Server {
-        if !servers.contains(where: { type(of: $0) == serverType }) {
-            let server = serverType.init()
-
-            servers.append(server)
-
+        if let server = getServer(ofType: serverType) {
             return server
         }
 
-        // Crash hard, if this doesn't return an object. Should be impossible because of above.
-        return servers.first(where: { type(of: $0) == serverType })!
+        let server = serverType.init()
+
+        servers.append(server)
+
+        return server
+    }
+
+    /**
+     Remove a `Server` from this asset, if found.
+
+     This makes most sense, after we removed an asset from that server.
+
+     - parameter serverType: The subclass to use.
+    */
+    func removeServer(ofType serverType: Server.Type) {
+
+        if let server = getServer(ofType: serverType),
+            let idx = servers.index(of: server) {
+
+            servers.remove(at: idx)
+        }
     }
 
     /**
@@ -112,6 +127,18 @@ class Asset: NSObject, NSCoding {
         let server = setServer(ofType: serverType)
 
         server.upload(self, progress: progress, done: done)
+    }
+
+    /**
+     Remove this asset from the given server.
+
+     - parameter serverType: The `Server` subclass to use.
+     - parameter done: Callback to indicate end of removal. Check server object for status!
+     */
+    func remove(from serverType: Server.Type, done: @escaping Server.DoneHandler) {
+        if let server = getServer(ofType: serverType) {
+            server.remove(self, done: done)
+        }
     }
 
     // MARK: Class methods
