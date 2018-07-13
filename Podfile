@@ -7,4 +7,5 @@ target 'OpenArchive' do
 
   # Pods for OpenArchive
   pod 'YapDatabase', '~> 3.1'
+  pod 'Alamofire', '~> 4.7'
 end

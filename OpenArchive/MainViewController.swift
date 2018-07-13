@@ -122,13 +122,12 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
     // MARK: UIImagePickerControllerDelegate
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let image = info[UIImagePickerControllerEditedImage] as? UIImage ??
-            info[UIImagePickerControllerOriginalImage] as? UIImage
-        {
-            let image = Image(image)
+        if let url = info[UIImagePickerControllerReferenceURL] as? URL {
 
-            writeConn?.asyncReadWrite() { transaction in
-                transaction.setObject(image, forKey: image.getKey(), inCollection: Asset.COLLECTION)
+            Image.create(fromAlAssetUrl: url) { image in
+                self.writeConn?.asyncReadWrite() { transaction in
+                    transaction.setObject(image, forKey: image.getKey(), inCollection: Asset.COLLECTION)
+                }
             }
         }
 

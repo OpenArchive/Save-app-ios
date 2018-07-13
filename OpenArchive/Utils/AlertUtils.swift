@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class AlertUtils {
+class AlertUtils {
 
     /**
      Creates and immediately presents a simple `UIAlertController`.
@@ -19,7 +19,7 @@ public class AlertUtils {
      - parameter title: The alert title.
      - parameter message: The alert message.
     */
-    public class func presentSimple(_ controller: UIViewController, title: String, message: String) {
+    class func presentSimple(_ controller: UIViewController, title: String, message: String) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
         alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))

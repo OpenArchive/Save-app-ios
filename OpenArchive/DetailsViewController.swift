@@ -13,9 +13,17 @@ class DetailsViewController: UIViewController {
     static let ccDomain = "creativecommons.org"
     static let ccUrl = "https://%@/licenses/%@/4.0/"
 
+    static let serverBoxHeight: CGFloat = 72
+
     @IBOutlet var scrollView: UIScrollView!
+    @IBOutlet var innerViewHeightCt: NSLayoutConstraint!
     @IBOutlet var image: UIImageView!
     @IBOutlet var dateLb: UILabel!
+    @IBOutlet var serverBox: UIView!
+    @IBOutlet var serverBoxHeightCt: NSLayoutConstraint!
+    @IBOutlet var serverNameLb: UILabel!
+    @IBOutlet var serverStatusLb: UILabel!
+    @IBOutlet var serverUrlLb: UILabel!
     @IBOutlet var titleTf: UITextField!
     @IBOutlet var descriptionTf: UITextField!
     @IBOutlet var authorTf: UITextField!
@@ -30,18 +38,36 @@ class DetailsViewController: UIViewController {
 
     lazy var writeConn = (UIApplication.shared.delegate as? AppDelegate)?.db?.newConnection()
 
+    var innerViewHeight: CGFloat!
+
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        innerViewHeight = innerViewHeightCt.constant
 
         // Add Gesture Recognizer so the user can hide the keyboard again by tapping somewhere else
         // than the text field.
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         self.view.addGestureRecognizer(tapGestureRecognizer)
 
-        image.image = imageObject?.image
+        imageObject?.fetchThumbnail() { image, info in
+            self.image.image = image
+        }
 
         if let created = imageObject?.created {
             dateLb.text = Formatters.date.string(from: created)
+        }
+
+        if let servers = imageObject?.getServers() {
+            if servers.count < 1 {
+                serverBox.isHidden = true
+                serverBoxHeightCt.constant = 0
+                innerViewHeightCt.constant = innerViewHeight - DetailsViewController.serverBoxHeight
+            }
+
+            for s in servers {
+                setServerInfo(s)
+            }
         }
 
         titleTf.text = imageObject?.title
@@ -119,6 +145,12 @@ class DetailsViewController: UIViewController {
 
     // MARK: Actions
 
+    @IBAction func followServerUrl(_ sender: UITapGestureRecognizer) {
+        if let url = imageObject?.getServers().first?.publicUrl {
+            UIApplication.shared.openURL(url)
+        }
+    }
+
     @IBAction func contentChanged(_ sender: UITextField) {
         if let i = imageObject {
             switch sender {
@@ -182,4 +214,53 @@ class DetailsViewController: UIViewController {
         contentChanged(licenseTf)
     }
 
+    @IBAction func upload(_ sender: UIBarButtonItem) {
+        if let imageObject = imageObject {
+
+            var firstTime = true
+
+            imageObject.upload(to: InternetArchive.self, progress: { server, progress in
+                if firstTime {
+                    self.setServerInfo(server)
+                    firstTime = false
+                }
+
+                let progressFormatted = Formatters.integer.string(for: progress.fractionCompleted * 100)
+                    ?? NSLocalizedString("Unknown", comment: "")
+
+                self.serverStatusLb.text = String(format:
+                    NSLocalizedString("Progress: %@%%", comment: "Argument is an integer as percentage"),
+                                                  progressFormatted)
+            }) { server in
+                self.setServerInfo(server)
+
+                self.writeConn?.asyncReadWrite() { transaction in
+                    transaction.setObject(imageObject, forKey: imageObject.getKey(), inCollection: Asset.COLLECTION)
+                }
+
+            }
+        }
+    }
+
+    // MARK: Method
+
+    private func setServerInfo(_ server: Server) {
+        serverNameLb.text = server.getPrettyName()
+
+        if server.isUploaded {
+            self.serverStatusLb.text = NSLocalizedString("Uploaded", comment: "")
+        }
+        else if let error = server.error, error.count > 0 {
+            self.serverStatusLb.text = error
+        }
+        else {
+            serverStatusLb.text = NSLocalizedString("Not uploaded", comment: "")
+        }
+
+        serverUrlLb.text = server.publicUrl?.absoluteString
+
+        serverBox.isHidden = false
+        serverBoxHeightCt.constant = DetailsViewController.serverBoxHeight
+        innerViewHeightCt.constant = innerViewHeight
+    }
 }

@@ -10,12 +10,14 @@ import UIKit
 
 class Formatters: NSObject {
 
-    public static let date: DateFormatter = {
+    static let date: DateFormatter = {
         let formatter = DateFormatter()
         formatter.dateStyle = .full
         formatter.timeStyle = .none
 
         return formatter
     }()
+
+    static let integer = NumberFormatter()
 
 }
