@@ -11,9 +11,9 @@ import Photos
 
 class Image: Asset {
 
-    private static var cachingImageManager = PHCachingImageManager()
-    private static var thumbnailSize = CGSize(width: 320, height: 240)
-    private static var requestOptions: PHImageRequestOptions = {
+    static var cachingImageManager = PHCachingImageManager()
+    static var thumbnailSize = CGSize(width: 320, height: 240)
+    static var requestOptions: PHImageRequestOptions = {
         let options = PHImageRequestOptions()
         options.deliveryMode = .opportunistic
         options.resizeMode = .fast
@@ -29,7 +29,7 @@ class Image: Asset {
      Create an `Image` object from a given `AIAssetUrl` as returned by
      `imagePickerController:didFinishPickingMediaWithInfo`.
 
-     It will try to fetch the according `PHAsset` immediately trigger the caching of a thumbnail
+     It will try to fetch the according `PHAsset` immediately, trigger the caching of a thumbnail
      image for that asset and fetch more info for the asset, so we can evaluate the filename,
      which is needed for later upload.
 
@@ -79,7 +79,7 @@ class Image: Asset {
         }
     }
 
-    private init(id: String, filename: String, mimeType: String, created: Date?) {
+    init(id: String, filename: String, mimeType: String, created: Date?) {
         self.id = id
         self.filename = filename
 
@@ -129,7 +129,7 @@ class Image: Asset {
      - parameter orientation: The intended display orientation for the image.
      - parameter info: A dictionary providing information about the status of the request.
     */
-    func fetchData(_ resultHandler: @escaping (_ imageData: Data?, _ dataUTI: String?, _ orientation: UIImageOrientation, _ info: [AnyHashable : Any]?) -> Void) {
+    func fetchImageData(_ resultHandler: @escaping (_ imageData: Data?, _ dataUTI: String?, _ orientation: UIImageOrientation, _ info: [AnyHashable : Any]?) -> Void) {
 
         if let asset = PHAsset.fetchAssets(withLocalIdentifiers: [id], options: nil).firstObject {
             let options = PHImageRequestOptions()

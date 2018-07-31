@@ -47,7 +47,7 @@ class InternetArchive : Server {
         if type(of: asset) != Image.self {
             publicUrl = nil
             isUploaded = false
-            error = "The Internet Archive adapter currently only supports images!"
+            error = "The Internet Archive adapter currently only supports images and movies!"
         }
 
         let image = asset as! Image
@@ -100,31 +100,71 @@ class InternetArchive : Server {
                 headers["x-archive-meta-licenseurl"] = license
             }
 
-            image.fetchData() { data, uti, orientation, info in
-                if let data = data {
-                    let tempFile = URL(fileURLWithPath: NSTemporaryDirectory() + UUID().uuidString)
+            if type(of: asset) == Movie.self {
+                let movie = asset as! Movie
 
-                    if (try? data.write(to: tempFile)) != nil {
-                        Server.sessionManager.upload(tempFile, to: url, method: .put, headers: headers)
-                            .uploadProgress() { prog in
-                                progress(self, prog)
+                movie.fetchMovieData() { exportSession, info in
+                    if let exportSession = exportSession {
+                        exportSession.outputURL = self.getTempFile()
+                        exportSession.outputFileType = .mp4
+
+                        var isExporting = true
+
+                        exportSession.exportAsynchronously {
+                            switch exportSession.status {
+                            case .completed:
+                                fallthrough
+                            case .failed:
+                                fallthrough
+                            case .cancelled:
+                                isExporting = false
+                            default:
+                                break
                             }
-                            .validate(statusCode: 200..<300)
-                            .responseData() { response in
-                                try? FileManager.default.removeItem(at: tempFile)
+                        }
 
-                                switch response.result {
-                                case .success:
-                                    self.isUploaded = true
-                                    self.error = nil
-                                case .failure(let error):
-                                    self.publicUrl = nil
-                                    self.isUploaded = false
-                                    self.error = error.localizedDescription
-                                }
+                        while isExporting {
+                            // The first half of the progress is the export.
+                            let p = Progress(totalUnitCount: 1000)
+                            p.completedUnitCount = Int64(exportSession.progress * 1000 / 2)
 
-                                done(self)
+                            DispatchQueue.main.async {
+                                progress(self, p)
                             }
+
+                            sleep(1)
+                        }
+
+                        if (exportSession.status != .completed) {
+                            self.publicUrl = nil
+                            self.isUploaded = false
+                            self.error = exportSession.error?.localizedDescription
+
+                            done(self)
+                            return
+                        }
+
+                        self.upload(exportSession.outputURL!, to: url, headers: headers,
+                                    progress: { server, prog in
+                                        // The second half of the progress is the upload.
+                                        let p = Progress(totalUnitCount: 1000)
+                                        p.completedUnitCount = 500 + Int64(prog.fractionCompleted * 1000 / 2)
+
+                                        progress(self, p)
+                                    },
+                                    done: done)
+                    }
+                }
+            }
+            else {
+                image.fetchImageData() { data, uti, orientation, info in
+                    if let data = data {
+                        let tempFile = self.getTempFile()
+
+                        if (try? data.write(to: tempFile)) != nil {
+                            self.upload(tempFile, to: url, headers: headers, progress: progress,
+                                        done: done)
+                        }
                     }
                 }
             }
@@ -159,5 +199,51 @@ class InternetArchive : Server {
                     done(self)
                 }
         }
+    }
+
+    // MARK: Private Methods
+
+    /**
+     - returns: A temporary file URL using the temporary directory and a random UUID.
+    */
+    private func getTempFile() -> URL {
+        return URL(fileURLWithPath: NSTemporaryDirectory() + UUID().uuidString)
+    }
+
+    /**
+     Upload a given file to a server using a background session.
+
+     We need to do this with a file: "Upload tasks from NSData are not supported in background sessions."
+
+     - parameter file: The file to upload.
+     - parameter url: The URL to upload to.
+     - parameter headers: The HTTP headers to use.
+     - parameter progress: The progress callback.
+     - parameter done: The done callback, which is called always when finished.
+    */
+    private func upload(_ file: URL, to url: URLConvertible, headers: HTTPHeaders,
+                        progress: @escaping ProgressHandler, done: @escaping DoneHandler) {
+
+        Server.sessionManager.upload(file, to: url, method: .put, headers: headers)
+            .uploadProgress() { prog in
+                progress(self, prog)
+            }
+            .validate(statusCode: 200..<300)
+            .responseData() { response in
+                try? FileManager.default.removeItem(at: file)
+
+                switch response.result {
+                case .success:
+                    self.isUploaded = true
+                    self.error = nil
+                case .failure(let error):
+                    self.publicUrl = nil
+                    self.isUploaded = false
+                    self.error = error.localizedDescription
+                }
+
+                done(self)
+        }
+
     }
 }

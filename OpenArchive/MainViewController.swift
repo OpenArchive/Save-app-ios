@@ -17,7 +17,7 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
         let imagePicker = UIImagePickerController()
         imagePicker.delegate = self
         imagePicker.sourceType = .photoLibrary
-        imagePicker.mediaTypes = [kUTTypeImage as String]
+        imagePicker.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
         imagePicker.modalPresentationStyle = .popover
 
         return imagePicker
@@ -122,11 +122,21 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
     // MARK: UIImagePickerControllerDelegate
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let url = info[UIImagePickerControllerReferenceURL] as? URL {
+        if let type = info[UIImagePickerControllerMediaType] as? String,
+            let url = info[UIImagePickerControllerReferenceURL] as? URL {
 
-            Image.create(fromAlAssetUrl: url) { image in
-                self.writeConn?.asyncReadWrite() { transaction in
-                    transaction.setObject(image, forKey: image.getKey(), inCollection: Asset.COLLECTION)
+            if type == (kUTTypeImage as String) {
+                Image.create(fromAlAssetUrl: url) { image in
+                    self.writeConn?.asyncReadWrite() { transaction in
+                        transaction.setObject(image, forKey: image.getKey(), inCollection: Asset.COLLECTION)
+                    }
+                }
+            }
+            else if type == (kUTTypeMovie as String) {
+                Movie.create(fromAlAssetUrl: url) { movie in
+                    self.writeConn?.asyncReadWrite() { transaction in
+                        transaction.setObject(movie, forKey: movie.getKey(), inCollection: Asset.COLLECTION)
+                    }
                 }
             }
         }
