@@ -13,8 +13,6 @@ class SettingsViewController: UITableViewController {
     @IBOutlet var accessKeyTf: UITextField!
     @IBOutlet var secretKeyTf: UITextField!
     
-    private let defaults = UserDefaults.standard
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
