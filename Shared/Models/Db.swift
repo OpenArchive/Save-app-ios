@@ -48,6 +48,9 @@ class Db {
         // depending on which part of the app wrote it.
         NSKeyedArchiver.setClassName("Image", for: Image.self)
         NSKeyedUnarchiver.setClass(Image.self, forClassName: "Image")
+
+        NSKeyedArchiver.setClassName("InternetArchive", for: InternetArchive.self)
+        NSKeyedUnarchiver.setClass(InternetArchive.self, forClassName: "InternetArchive")
     }
 
     public class func newConnection() -> YapDatabaseConnection? {

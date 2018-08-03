@@ -50,15 +50,6 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
                                                object: readConn?.database)
     }
 
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let assetVC = segue.destination as? DetailsViewController,
-            let selectedRow = tableView.indexPathForSelectedRow,
-            let imageCell = tableView.cellForRow(at: selectedRow) as? ImageCell {
-
-            assetVC.imageObject = imageCell.imageObject
-        }
-    }
-
     // MARK: actions
 
     @IBAction func add(_ sender: UIBarButtonItem) {
@@ -116,6 +107,21 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
             writeConn?.asyncReadWrite() { transaction in
                 transaction.removeObject(forKey: key, inCollection: Asset.COLLECTION)
             }
+        }
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc = DetailsViewController()
+
+        if let imageCell = tableView.cellForRow(at: indexPath) as? ImageCell {
+            vc.asset = imageCell.imageObject
+        }
+
+        if let navVC = navigationController {
+            navVC.pushViewController(vc, animated: true)
+        }
+        else {
+            present(vc, animated: true)
         }
     }
 

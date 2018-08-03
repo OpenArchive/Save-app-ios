@@ -10,22 +10,18 @@ import UIKit
 import Social
 import MobileCoreServices
 import Photos
-import YapDatabase
 
-class ShareViewController: SLComposeServiceViewController {
+class ShareViewController: BaseDetailsViewController {
 
-    lazy var writeConn: YapDatabaseConnection? = {
-        Db.setup()
+    override func viewDidLoad() {
+        super.viewDidLoad()
 
-        return Db.newConnection()
-    }()
+        // Add done button.
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .done, target: self, action: #selector(done(_:)))
 
-    override func isContentValid() -> Bool {
-        // Do validation of contentText and/or NSExtensionContext attachments here
-        return true
-    }
+        navigationItem.title = NSLocalizedString("OpenArchive", comment: "The title of the app.")
 
-    override func didSelectPost() {
         if let item = extensionContext?.inputItems.first as? NSExtensionItem,
             let provider = item.attachments?.first as? NSItemProvider {
 
@@ -35,14 +31,15 @@ class ShareViewController: SLComposeServiceViewController {
                         let (id, mimeType) = self.findPhAsset(url.lastPathComponent)
 
                         if let id = id, let mimeType = mimeType {
-                            let image = Image(id: id,
+                            self.asset = Image(id: id,
                                               filename: url.lastPathComponent,
                                               mimeType: mimeType,
                                               created: nil)
 
-                            self.writeConn?.asyncReadWrite() { transaction in
-                                transaction.setObject(image, forKey: image.getKey(), inCollection: Asset.COLLECTION)
-                            }
+                            // Trigger database store.
+                            self.contentChanged(self.titleTf)
+
+                            self.render()
                         }
                     }
                 }
@@ -53,29 +50,27 @@ class ShareViewController: SLComposeServiceViewController {
                         let (id, mimeType) = self.findPhAsset(url.lastPathComponent)
 
                         if let id = id, let mimeType = mimeType {
-                            let movie = Movie(id: id,
+                            self.asset = Movie(id: id,
                                               filename: url.lastPathComponent,
                                               mimeType: mimeType,
                                               created: nil)
 
-                            self.writeConn?.asyncReadWrite() { transaction in
-                                transaction.setObject(movie, forKey: movie.getKey(), inCollection: Asset.COLLECTION)
-                            }
+                            // Trigger database store.
+                            self.contentChanged(self.titleTf)
+
+                            self.render()
                         }
                     }
                 }
             }
         }
-
-        // This is called after the user selects Post. Do the upload of contentText and/or NSExtensionContext attachments.
-    
-        // Inform the host that we're done, so it un-blocks its UI. Note: Alternatively you could call super's -didSelectPost, which will similarly complete the extension context.
-        self.extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
     }
 
-    override func configurationItems() -> [Any]! {
-        // To add configuration options via table cells at the bottom of the sheet, return an array of SLComposeSheetConfigurationItem here.
-        return []
+    /**
+     Inform the host that we're done, so it un-blocks its UI.
+    */
+    @objc func done(_ sender: UIBarButtonItem) {
+        extensionContext!.completeRequest(returningItems: [], completionHandler: nil)
     }
 
     // MARK: Private Methods
