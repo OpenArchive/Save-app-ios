@@ -36,7 +36,7 @@ class DetailsViewController: UIViewController {
 
     var imageObject: Image?
 
-    lazy var writeConn = (UIApplication.shared.delegate as? AppDelegate)?.db?.newConnection()
+    lazy var writeConn = Db.newConnection()
 
     var innerViewHeight: CGFloat!
 

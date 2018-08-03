@@ -24,7 +24,7 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
     }()
 
     lazy var readConn: YapDatabaseConnection? = {
-        let conn = (UIApplication.shared.delegate as? AppDelegate)?.db?.newConnection()
+        let conn = Db.newConnection()
         conn?.beginLongLivedReadTransaction()
 
         return conn
@@ -40,7 +40,7 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
         return mappings
     }()
 
-    lazy var writeConn = (UIApplication.shared.delegate as? AppDelegate)?.db?.newConnection()
+    lazy var writeConn = Db.newConnection()
 
     override func viewDidLoad() {
         super.viewDidLoad()

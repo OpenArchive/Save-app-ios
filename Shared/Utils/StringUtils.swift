@@ -45,4 +45,21 @@ class StringUtils {
 
         return name
     }
+
+    /**
+     Strips the suffix from a filename.
+
+     - parameter filename: A filename, possibly containing a suffix separated by a period.
+     - returns: The given filename without the suffix, if any, as a new `String`.
+    */
+    class func stripSuffix(from filename: String) -> String {
+        var prefix = ""
+        let parts = filename.components(separatedBy: ".")
+
+        for i in 0 ..< parts.count - 1 {
+            prefix += (i == 0 ? "" : ".") + parts[i]
+        }
+
+        return prefix
+    }
 }

@@ -7,47 +7,17 @@
 //
 
 import UIKit
-import YapDatabase
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
-    static let DB_NAME = "open-archive.sqlite"
-
     var window: UIWindow?
-
-
-    lazy var db: YapDatabase? = {
-        let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true)
-        let baseDir = paths.count > 0 ? paths[0] : NSTemporaryDirectory()
-
-        return YapDatabase(path: "\(baseDir)/\(AppDelegate.DB_NAME)")
-    }()
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
 
-        let assetsGrouper = YapDatabaseViewGrouping.withKeyBlock() {
-            transaction, collection, key in
-
-            if Asset.COLLECTION.elementsEqual(collection) {
-                return Asset.COLLECTION
-            }
-
-            return nil
-        }
-
-        let assetsSorter = YapDatabaseViewSorting.withObjectBlock() {
-            transaction, group, collection1, key1, obj1, collection2, key2, obj2 in
-
-            return (obj1 as? Asset)?.created.compare((obj2 as? Asset)?.created ?? Date()) ?? ComparisonResult.orderedSame
-        }
-
-
-        let assetsView = YapDatabaseAutoView(grouping: assetsGrouper, sorting: assetsSorter)
-
-        db?.register(assetsView, withName: Asset.COLLECTION)
+        Db.setup()
 
         return true
     }
