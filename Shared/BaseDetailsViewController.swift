@@ -34,7 +34,7 @@ class BaseDetailsViewController: UIViewController {
     @IBOutlet var shareAlikeSw: UISwitch!
     @IBOutlet var commercialSw: UISwitch!
 
-    var asset: Image?
+    var asset: Asset?
 
     lazy var writeConn = Db.newConnection()
 
@@ -85,8 +85,8 @@ class BaseDetailsViewController: UIViewController {
     public func render() {
         DispatchQueue.main.async {
             if let asset = self.asset {
-                asset.fetchThumbnail() { image, info in
-                    self.image.image = image
+                if let thumb = asset.thumb, let data = try? Data(contentsOf: thumb) {
+                    self.image.image = UIImage(data: data)
                 }
 
                 self.dateLb.text = Formatters.date.string(from: asset.created)
@@ -174,22 +174,22 @@ class BaseDetailsViewController: UIViewController {
     // MARK: Actions
 
     @IBAction func removeFromServer(_ button: UIButton) {
-        if let imageObject = asset {
+        if let asset = asset {
             button.isHidden = true
 
             serverStatusLb.text = NSLocalizedString("Removing...", comment: "")
 
-            imageObject.remove(from: InternetArchive.self) { server in
+            asset.remove(from: InternetArchive.self) { server in
                 self.setServerStatus(server)
 
                 button.isHidden = false
 
                 if server.error == nil && !server.isUploaded {
-                    imageObject.removeServer(ofType: InternetArchive.self)
+                    asset.removeServer(ofType: InternetArchive.self)
                     self.showServerBox(false)
 
                     self.writeConn?.asyncReadWrite() { transaction in
-                        transaction.setObject(imageObject, forKey: imageObject.getKey(), inCollection: Asset.COLLECTION)
+                        transaction.setObject(asset, forKey: asset.id, inCollection: Asset.COLLECTION)
                     }
                 }
                 else {
@@ -200,16 +200,16 @@ class BaseDetailsViewController: UIViewController {
     }
 
     @IBAction func contentChanged(_ sender: UITextField) {
-        if let i = asset {
+        if let asset = asset {
             switch sender {
             case titleTf:
-                i.title = titleTf.text
+                asset.title = titleTf.text
             case descriptionTf:
-                i.desc = descriptionTf.text
+                asset.desc = descriptionTf.text
             case authorTf:
-                i.author = authorTf.text
+                asset.author = authorTf.text
             case locationTf:
-                i.location = locationTf.text
+                asset.location = locationTf.text
             case tagsTf:
                 let t = tagsTf.text?.split(separator: ",")
                 var tags = [String]()
@@ -218,16 +218,16 @@ class BaseDetailsViewController: UIViewController {
                     tags.append(tag.trimmingCharacters(in: .whitespacesAndNewlines))
                 }
 
-                i.tags = tags
+                asset.tags = tags
 
             case licenseTf:
-                i.license = licenseTf.text
+                asset.license = licenseTf.text
             default:
                 assertionFailure("This should have never happened - switch should be exhaustive.")
             }
 
             writeConn?.asyncReadWrite() { transaction in
-                transaction.setObject(i, forKey: i.getKey(), inCollection: Asset.COLLECTION)
+                transaction.setObject(asset, forKey: asset.id, inCollection: Asset.COLLECTION)
             }
         }
     }
@@ -263,11 +263,11 @@ class BaseDetailsViewController: UIViewController {
     }
 
     @objc func upload(_ sender: UIBarButtonItem) {
-        if let imageObject = asset {
+        if let asset = asset {
 
             var firstTime = true
 
-            imageObject.upload(to: InternetArchive.self, progress: { server, progress in
+            asset.upload(to: InternetArchive.self, progress: { server, progress in
                 if firstTime {
                     self.setServerInfo(server)
                     firstTime = false
@@ -283,7 +283,7 @@ class BaseDetailsViewController: UIViewController {
                 self.setServerInfo(server)
 
                 self.writeConn?.asyncReadWrite() { transaction in
-                    transaction.setObject(imageObject, forKey: imageObject.getKey(), inCollection: Asset.COLLECTION)
+                    transaction.setObject(asset, forKey: asset.id, inCollection: Asset.COLLECTION)
                 }
             }
         }

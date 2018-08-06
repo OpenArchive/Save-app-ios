@@ -44,27 +44,19 @@ class InternetArchive : Server {
     override func upload(_ asset: Asset, progress: @escaping ProgressHandler,
                          done: @escaping DoneHandler) {
 
-        if type(of: asset) != Image.self {
-            publicUrl = nil
-            isUploaded = false
-            error = "The Internet Archive adapter currently only supports images and movies!"
-        }
-
-        let image = asset as! Image
-
         if publicUrl == nil {
 //            let slug = (StringUtils.slug(image.title != nil ? image.title!
 //                : String(image.filename.split(separator: ".")[0]))) + "-" + StringUtils.random(4)
 
             let slug = "IMG-0003-u4z6"
 
-            publicUrl = URL(string: "\(InternetArchive.BASE_URL)/\(slug)/\(image.filename)")
+            publicUrl = URL(string: "\(InternetArchive.BASE_URL)/\(slug)/\(asset.filename)")
         }
-
 
         if let accessKey = InternetArchive.accessKey,
             let secretKey = InternetArchive.secretKey,
-            let url = publicUrl {
+            let url = publicUrl,
+            let file = asset.file {
 
             var headers: HTTPHeaders = [
                 "Accept": "*/*",
@@ -100,74 +92,7 @@ class InternetArchive : Server {
                 headers["x-archive-meta-licenseurl"] = license
             }
 
-            if type(of: asset) == Movie.self {
-                let movie = asset as! Movie
-
-                movie.fetchMovieData() { exportSession, info in
-                    if let exportSession = exportSession {
-                        exportSession.outputURL = self.getTempFile()
-                        exportSession.outputFileType = .mp4
-
-                        var isExporting = true
-
-                        exportSession.exportAsynchronously {
-                            switch exportSession.status {
-                            case .completed:
-                                fallthrough
-                            case .failed:
-                                fallthrough
-                            case .cancelled:
-                                isExporting = false
-                            default:
-                                break
-                            }
-                        }
-
-                        while isExporting {
-                            // The first half of the progress is the export.
-                            let p = Progress(totalUnitCount: 1000)
-                            p.completedUnitCount = Int64(exportSession.progress * 1000 / 2)
-
-                            DispatchQueue.main.async {
-                                progress(self, p)
-                            }
-
-                            sleep(1)
-                        }
-
-                        if (exportSession.status != .completed) {
-                            self.publicUrl = nil
-                            self.isUploaded = false
-                            self.error = exportSession.error?.localizedDescription
-
-                            done(self)
-                            return
-                        }
-
-                        self.upload(exportSession.outputURL!, to: url, headers: headers,
-                                    progress: { server, prog in
-                                        // The second half of the progress is the upload.
-                                        let p = Progress(totalUnitCount: 1000)
-                                        p.completedUnitCount = 500 + Int64(prog.fractionCompleted * 1000 / 2)
-
-                                        progress(self, p)
-                                    },
-                                    done: done)
-                    }
-                }
-            }
-            else {
-                image.fetchImageData() { data, uti, orientation, info in
-                    if let data = data {
-                        let tempFile = self.getTempFile()
-
-                        if (try? data.write(to: tempFile)) != nil {
-                            self.upload(tempFile, to: url, headers: headers, progress: progress,
-                                        done: done)
-                        }
-                    }
-                }
-            }
+            upload(file, to: url, headers: headers, progress: progress, done: done)
         }
     }
 

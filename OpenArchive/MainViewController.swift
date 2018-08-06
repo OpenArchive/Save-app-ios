@@ -92,8 +92,8 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
         let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: indexPath) as! ImageCell
 
         readConn?.read() { transaction in
-            cell.imageObject = (transaction.ext(Asset.COLLECTION) as? YapDatabaseViewTransaction)?
-                .object(at: indexPath, with: self.mappings) as? Image
+            cell.asset = (transaction.ext(Asset.COLLECTION) as? YapDatabaseViewTransaction)?
+                .object(at: indexPath, with: self.mappings) as? Asset
         }
 
         return cell
@@ -102,7 +102,7 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle,
                             forRowAt indexPath: IndexPath) {
         if editingStyle == .delete,
-            let key = (tableView.cellForRow(at: indexPath) as? ImageCell)?.imageObject?.getKey() {
+            let key = (tableView.cellForRow(at: indexPath) as? ImageCell)?.asset?.id {
 
             writeConn?.asyncReadWrite() { transaction in
                 transaction.removeObject(forKey: key, inCollection: Asset.COLLECTION)
@@ -114,7 +114,7 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
         let vc = DetailsViewController()
 
         if let imageCell = tableView.cellForRow(at: indexPath) as? ImageCell {
-            vc.asset = imageCell.imageObject
+            vc.asset = imageCell.asset
         }
 
         if let navVC = navigationController {
@@ -131,18 +131,9 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
         if let type = info[UIImagePickerControllerMediaType] as? String,
             let url = info[UIImagePickerControllerReferenceURL] as? URL {
 
-            if type == (kUTTypeImage as String) {
-                Image.create(fromAlAssetUrl: url) { image in
-                    self.writeConn?.asyncReadWrite() { transaction in
-                        transaction.setObject(image, forKey: image.getKey(), inCollection: Asset.COLLECTION)
-                    }
-                }
-            }
-            else if type == (kUTTypeMovie as String) {
-                Movie.create(fromAlAssetUrl: url) { movie in
-                    self.writeConn?.asyncReadWrite() { transaction in
-                        transaction.setObject(movie, forKey: movie.getKey(), inCollection: Asset.COLLECTION)
-                    }
+            AssetFactory.create(fromAlAssetUrl: url, mediaType: type) { asset in
+                self.writeConn?.asyncReadWrite() { transaction in
+                    transaction.setObject(asset, forKey: asset.id, inCollection: Asset.COLLECTION)
                 }
             }
         }

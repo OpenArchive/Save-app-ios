@@ -44,10 +44,15 @@ class Db {
 
         shared?.register(assetsView, withName: Asset.COLLECTION)
 
+        
+        let relationships = YapDatabaseRelationship()
+        shared?.register(relationships, withName: "relationships")
+
+
         // Fix class de-/serialization errors due to iOS prefixing classes with the app/extension
         // depending on which part of the app wrote it.
-        NSKeyedArchiver.setClassName("Image", for: Image.self)
-        NSKeyedUnarchiver.setClass(Image.self, forClassName: "Image")
+        NSKeyedArchiver.setClassName("Asset", for: Asset.self)
+        NSKeyedUnarchiver.setClass(Asset.self, forClassName: "Asset")
 
         NSKeyedArchiver.setClassName("InternetArchive", for: InternetArchive.self)
         NSKeyedUnarchiver.setClass(InternetArchive.self, forClassName: "InternetArchive")

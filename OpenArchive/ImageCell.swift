@@ -13,13 +13,13 @@ class ImageCell: UITableViewCell {
     @IBOutlet var imgView: UIImageView!
     @IBOutlet var dateLb: UILabel!
 
-    var imageObject: Image? {
+    var asset: Asset? {
         didSet {
-            imageObject?.fetchThumbnail() { image, info in
-                self.imgView.image = image
+            if let thumb = asset?.thumb, let data = try? Data(contentsOf: thumb) {
+                self.imgView.image = UIImage(data: data)
             }
 
-            if let created = imageObject?.created {
+            if let created = asset?.created {
                 dateLb.text = Formatters.date.string(from: created)
             }
             else {

@@ -25,41 +25,32 @@ class ShareViewController: BaseDetailsViewController {
         if let item = extensionContext?.inputItems.first as? NSExtensionItem,
             let provider = item.attachments?.first as? NSItemProvider {
 
+            let resultHandler: AssetFactory.ResultHandler = { asset in
+                self.asset = asset
+
+                // Trigger database store.
+                self.contentChanged(self.titleTf)
+
+                self.render()
+            }
+
             if provider.hasItemConformingToTypeIdentifier(kUTTypeImage as String) {
                 provider.loadItem(forTypeIdentifier: kUTTypeImage as String, options: nil) { item, error in
-                    if let url = item as? URL {
-                        let (id, mimeType) = self.findPhAsset(url.lastPathComponent)
+                    if let url = item as? URL,
+                        let phasset = self.findPhAsset(url.lastPathComponent) {
 
-                        if let id = id, let mimeType = mimeType {
-                            self.asset = Image(id: id,
-                                              filename: url.lastPathComponent,
-                                              mimeType: mimeType,
-                                              created: nil)
-
-                            // Trigger database store.
-                            self.contentChanged(self.titleTf)
-
-                            self.render()
-                        }
+                        AssetFactory.create(fromPhasset: phasset, mediaType: kUTTypeImage as String,
+                                            resultHandler: resultHandler)
                     }
                 }
             }
             else if provider.hasItemConformingToTypeIdentifier(kUTTypeMovie as String) {
                 provider.loadItem(forTypeIdentifier: kUTTypeMovie as String, options: nil) { item, error in
-                    if let url = item as? URL {
-                        let (id, mimeType) = self.findPhAsset(url.lastPathComponent)
+                    if let url = item as? URL,
+                        let phasset = self.findPhAsset(url.lastPathComponent) {
 
-                        if let id = id, let mimeType = mimeType {
-                            self.asset = Movie(id: id,
-                                              filename: url.lastPathComponent,
-                                              mimeType: mimeType,
-                                              created: nil)
-
-                            // Trigger database store.
-                            self.contentChanged(self.titleTf)
-
-                            self.render()
-                        }
+                        AssetFactory.create(fromPhasset: phasset, mediaType: kUTTypeMovie as String,
+                                            resultHandler: resultHandler)
                     }
                 }
             }
@@ -83,9 +74,9 @@ class ShareViewController: BaseDetailsViewController {
      collisions, since we search by filename, only.
 
      - parameter filename: The filename to search for.
-     - returns: A tupel containing the localIdentifier of the asset and the MIME type.
+     - returns: An eventually found `PHAsset`.
     */
-    private func findPhAsset(_ filename: String) -> (id: String?, mimeType: String?) {
+    private func findPhAsset(_ filename: String) -> PHAsset? {
         let fetchOptions = PHFetchOptions()
         fetchOptions.includeHiddenAssets = true
         fetchOptions.includeAllBurstAssets = true
@@ -95,17 +86,12 @@ class ShareViewController: BaseDetailsViewController {
         for i in 0 ..< assets.count {
             if let current = assets[i].value(forKey: "filename") as? String {
                 if filename == current {
-                    let resources = PHAssetResource.assetResources(for: assets[i])
-
-                    if resources.count > 0 {
-                        return (assets[i].localIdentifier,
-                                Asset.getMimeType(uti: resources[0].uniformTypeIdentifier))
-                    }
+                    return assets[i]
                 }
             }
         }
 
-        return (nil, nil)
+        return nil
     }
 
 }

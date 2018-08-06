@@ -8,14 +8,19 @@
 
 import UIKit
 import MobileCoreServices
+import YapDatabase
 
-class Asset: NSObject, NSCoding {
+/**
+ Representation of a file asset in the database.
+*/
+class Asset: NSObject, NSCoding, YapDatabaseRelationshipNode {
 
     static let COLLECTION = "assets"
     static let DEFAULT_MIME_TYPE = "application/octet-stream"
 
+    let id: String
     let created: Date
-    let mimeType: String
+    let uti: String
     var title: String?
     var desc: String?
     var author: String?
@@ -23,22 +28,82 @@ class Asset: NSObject, NSCoding {
     var tags: [String]?
     var license: String?
 
-    private var servers = [Server]()
+    /**
+     The MIME equivalent to the stored `uti` or "application/octet-stream" if the UTI has no MIME type.
 
-    init(created: Date?, mimeType: String?) {
-        self.created = created ?? Date()
-        self.mimeType = mimeType ?? Asset.DEFAULT_MIME_TYPE
+     See [Wikipedia](https://en.wikipedia.org/wiki/Uniform_Type_Identifier) about UTIs.
+     */
+    var mimeType: String {
+        get {
+            if let mimeType = UTTypeCopyPreferredTagWithClass(uti as CFString, kUTTagClassMIMEType)?
+                .takeRetainedValue() {
+
+                return mimeType as String
+            }
+
+            return Asset.DEFAULT_MIME_TYPE
+        }
     }
 
-    convenience override init() {
-        self.init(created: nil, mimeType: nil)
+    private var _filename: String?
+
+    /**
+     Returns the stored filename, if any stored, or a made up filename, which uses the `id` and
+     a typical extension for that `uti`.
+    */
+    var filename: String {
+        get {
+            if let filename = _filename {
+                return filename
+            }
+
+            if let ext = Asset.getFileExt(uti: uti) {
+                return "\(id).\(ext)"
+            }
+
+            return id
+        }
+        set {
+            _filename = newValue
+        }
+    }
+
+    var file: URL? {
+        get {
+            return FileManager.default.containerURL(
+                forSecurityApplicationGroupIdentifier: Constants.appGroup as String)?
+                .appendingPathComponent(Asset.COLLECTION)
+                .appendingPathComponent(id)
+        }
+    }
+
+    var thumb: URL? {
+        get {
+            return FileManager.default.containerURL(
+                forSecurityApplicationGroupIdentifier: Constants.appGroup as String)?
+                .appendingPathComponent(Asset.COLLECTION)
+                .appendingPathComponent("\(id).thumb")
+        }
+    }
+
+    private var servers = [Server]()
+
+    init(id: String?, created: Date?, uti: String) {
+        self.id = id ?? UUID().uuidString
+        self.created = created ?? Date()
+        self.uti = uti
+    }
+
+    convenience init(uti: String) {
+        self.init(id: nil, created: nil, uti: uti)
     }
 
     // MARK: NSCoding
 
     required init(coder decoder: NSCoder) {
+        id = decoder.decodeObject() as? String ?? UUID().uuidString
         created = decoder.decodeObject() as? Date ?? Date()
-        mimeType = decoder.decodeObject() as? String ?? Asset.DEFAULT_MIME_TYPE
+        uti = decoder.decodeObject() as! String
         title = decoder.decodeObject() as? String
         desc = decoder.decodeObject() as? String
         author = decoder.decodeObject() as? String
@@ -49,8 +114,9 @@ class Asset: NSObject, NSCoding {
     }
 
     func encode(with coder: NSCoder) {
+        coder.encode(id)
         coder.encode(created)
-        coder.encode(mimeType)
+        coder.encode(uti)
         coder.encode(title)
         coder.encode(desc)
         coder.encode(author)
@@ -60,14 +126,33 @@ class Asset: NSObject, NSCoding {
         coder.encode(servers)
     }
 
-    // MARK: Methods
+    // MARK: YapDatabaseRelationshipNode
 
     /**
-     - returns: a unique key to identify this asset. Basically the creation timestamp.
+     YapDatabase will delete file and thumbnail, when object is deleted from db.
     */
-    func getKey() -> String {
-        return created.description
+    func yapDatabaseRelationshipEdges() -> [YapDatabaseRelationshipEdge]? {
+        var edges = [YapDatabaseRelationshipEdge]()
+
+        if let file = self.file,
+            FileManager.default.fileExists(atPath: file.path) {
+            edges.append(YapDatabaseRelationshipEdge(name: "file",
+                                                     destinationFileURL: file,
+                                                     nodeDeleteRules: .deleteDestinationIfSourceDeleted))
+        }
+
+        if let thumb = self.thumb,
+            FileManager.default.fileExists(atPath: thumb.path) {
+            edges.append(YapDatabaseRelationshipEdge(name: "thumb",
+                                                     destinationFileURL: thumb,
+                                                     nodeDeleteRules: .deleteDestinationIfSourceDeleted))
+        }
+
+        return edges
     }
+
+
+    // MARK: Methods
 
     func getServers() -> [Server] {
         return servers
@@ -142,24 +227,6 @@ class Asset: NSObject, NSCoding {
     }
 
     // MARK: Class methods
-
-    /**
-     See [Wikipedia](https://en.wikipedia.org/wiki/Uniform_Type_Identifier) about UTIs.
-
-     - parameter uti: A Uniform Type Identifier
-     - returns: The equivalent MIME type or "application/octet-stream" if no UTI or nothing found.
-    */
-    class func getMimeType(uti: String?) -> String {
-        if let uti = uti {
-            if let mimeType = UTTypeCopyPreferredTagWithClass(uti as CFString, kUTTagClassMIMEType)?
-                .takeRetainedValue() {
-                
-                return mimeType as String
-            }
-        }
-
-        return Asset.DEFAULT_MIME_TYPE
-    }
 
     /**
      See [Wikipedia](https://en.wikipedia.org/wiki/Uniform_Type_Identifier) about UTIs.
