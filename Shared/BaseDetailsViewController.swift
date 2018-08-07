@@ -85,9 +85,7 @@ class BaseDetailsViewController: UIViewController {
     public func render() {
         DispatchQueue.main.async {
             if let asset = self.asset {
-                if let thumb = asset.thumb, let data = try? Data(contentsOf: thumb) {
-                    self.image.image = UIImage(data: data)
-                }
+                self.image.image = asset.getThumbnail()
 
                 self.dateLb.text = Formatters.date.string(from: asset.created)
 

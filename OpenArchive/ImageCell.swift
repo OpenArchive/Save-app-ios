@@ -15,9 +15,7 @@ class ImageCell: UITableViewCell {
 
     var asset: Asset? {
         didSet {
-            if let thumb = asset?.thumb, let data = try? Data(contentsOf: thumb) {
-                self.imgView.image = UIImage(data: data)
-            }
+            self.imgView.image = asset?.getThumbnail()
 
             if let created = asset?.created {
                 dateLb.text = Formatters.date.string(from: created)
