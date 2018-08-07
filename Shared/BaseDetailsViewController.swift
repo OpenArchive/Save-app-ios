@@ -53,6 +53,12 @@ class BaseDetailsViewController: UIViewController {
 
         innerViewHeight = innerViewHeightCt.constant
 
+        // Add upload button.
+        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "CloudUpload"),
+                                                            style: .plain,
+                                                            target: self,
+                                                            action: #selector(upload(_:)))
+
         // Add Gesture Recognizer so the user can hide the keyboard again by tapping somewhere else
         // than the text field.
         view.addGestureRecognizer(

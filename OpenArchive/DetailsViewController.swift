@@ -15,12 +15,6 @@ class DetailsViewController: BaseDetailsViewController {
 
         navigationItem.title = NSLocalizedString("Details", comment: "Title of details scene.")
 
-        // Add upload button.
-        navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "CloudUpload"),
-                                                            style: .plain,
-                                                            target: self,
-                                                            action: #selector(upload(_:)))
-
         serverUrlLb.addGestureRecognizer(
             UITapGestureRecognizer(target: self, action: #selector(followServerUrl(_:))))
     }

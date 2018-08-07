@@ -37,6 +37,7 @@ class Server: NSObject, NSCoding {
         let configuration = URLSessionConfiguration.background(withIdentifier:
             "org.open-archive.OpenArchive.background")
         configuration.httpAdditionalHeaders = SessionManager.defaultHTTPHeaders
+        configuration.sharedContainerIdentifier = Constants.appGroup as String
 
         return SessionManager(configuration: configuration)
     }()
