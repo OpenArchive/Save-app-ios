@@ -110,27 +110,10 @@ class AssetFactory {
                                 exportSession.outputURL = asset.file
                                 exportSession.outputFileType = .mp4
 
-                                var isExporting = true
-
                                 exportSession.exportAsynchronously {
-                                    switch exportSession.status {
-                                    case .completed:
-                                        fallthrough
-                                    case .failed:
-                                        fallthrough
-                                    case .cancelled:
-                                        isExporting = false
-                                    default:
-                                        break
+                                    if exportSession.status == .completed {
+                                        fetchThumb(phasset, asset, resultHandler)
                                     }
-                                }
-
-                                while isExporting {
-                                    sleep(1)
-                                }
-
-                                if exportSession.status == .completed {
-                                    fetchThumb(phasset, asset, resultHandler)
                                 }
                             }
                         }
