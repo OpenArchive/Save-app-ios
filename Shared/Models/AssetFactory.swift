@@ -51,6 +51,13 @@ class AssetFactory {
         return options
     }()
 
+    private static let thumbnailOptions = [
+        kCGImageSourceCreateThumbnailWithTransform: true,
+        kCGImageSourceCreateThumbnailFromImageAlways: true,
+        kCGImageSourceThumbnailMaxPixelSize: AssetFactory.thumbnailSize.width
+    ] as CFDictionary
+
+
 
     /**
      Create an `Asset` object from a given `PHAsset` object.
@@ -82,8 +89,7 @@ class AssetFactory {
                     }
 
                     if let file = asset.file,
-                        createParentDir(file: file),
-                        (try? data.write(to: file)) != nil {
+                        createParentDir(file: file) && (try? data.write(to: file)) != nil {
 
                         fetchThumb(phasset, asset, resultHandler)
                     }
@@ -134,7 +140,7 @@ class AssetFactory {
 
      [How to get Original Image and media type from PHAsset?](https://stackoverflow.com/questions/35264023/how-to-get-original-image-and-media-type-from-phasset)
 
-     - parameter url: The url as received in `UIImagePickerControllerReferenceURL`
+     - parameter url: The URL as received in `UIImagePickerControllerReferenceURL`
      - parameter mediaType: The media type. (e.g. `kUTTypeImage`)
      - parameter resultHandler: Callback with the created `Asset` object.
      */
@@ -145,16 +151,36 @@ class AssetFactory {
     }
 
     /**
+     Create an `Asset` object from a given file `URL`.
+
+     You will *only* receive the `resultHandler` callback, if the given file can be successfully
+     *moved* to its new location inside the app!
+
+     - parameter url: A file URL.
+     - parameter mediaType: The media type. (e.g. `kUTTypeImage`)
+     - parameter resultHandler: Callback with the created `Asset` object.
+    */
+    class func create(fromFileUrl url: URL, mediaType: String, resultHandler: @escaping ResultHandler) {
+        let asset = Asset(uti: mediaType)
+
+        if  let file = asset.file,
+            createParentDir(file: file) &&
+            (try? FileManager.default.moveItem(at: url, to: file)) != nil {
+
+            self.createThumb(asset, resultHandler)
+        }
+    }
+
+    /**
      Fetch a thumbnail image for the given `PHAsset`. Store that thumbnail at the according path
      for the given `Asset` and call the resultHandler, when done, regardless, if the thumbnail could
      be fetched or not.
 
      - parameter phasset: The `PHAsset` to fetch the thumbnail from.
      - parameter asset: The `Asset` to store the thumbnail with.
-     - parameter resultHandler: Callback with the created `Image` object.
-     - parameter asset: The created `Asset`.
+     - parameter resultHandler: Callback with the created `Asset` object.
     */
-    private class func fetchThumb(_ phasset: PHAsset, _ asset: Asset, _ resultHandler: @escaping (_ asset: Asset) -> Void) {
+    private class func fetchThumb(_ phasset: PHAsset, _ asset: Asset, _ resultHandler: @escaping ResultHandler) {
         imageManager.requestImage(for: phasset, targetSize: thumbnailSize,
                                   contentMode: .default,
                                   options: loResOptions)
@@ -163,11 +189,34 @@ class AssetFactory {
             // If we don't get one, fine. A default will be provided.
             if let image = image, let thumb = asset.thumb,
                 createParentDir(file: thumb) {
-                try! UIImageJPEGRepresentation(image, 0.5)?.write(to: thumb)
+                try? UIImageJPEGRepresentation(image, 0.5)?.write(to: thumb)
             }
 
             resultHandler(asset)
         }
+    }
+
+    /**
+     Create a thumbnail for an asset from its file. The file must be already set to its destination
+     and be readable, obviously.
+
+     Then call the resultHandler, regardless, if the thumbnail could be created or not.
+
+     - parameter asset: The `Asset` to read the file from and store the thumbnail with.
+     - parameter resultHandler: Callback with the created `Asset` object.
+    */
+    private class func createThumb(_ asset: Asset, _ resultHandler: @escaping ResultHandler) {
+        if let file = asset.file as CFURL?,
+            let thumb = asset.thumb,
+            let source = CGImageSourceCreateWithURL(file, nil),
+            let cgThumbnail = CGImageSourceCreateThumbnailAtIndex(source, 0, thumbnailOptions) {
+
+            let thumbnail = UIImage(cgImage: cgThumbnail)
+            try? UIImageJPEGRepresentation(thumbnail, 0.5)?.write(to: thumb)
+        }
+
+        resultHandler(asset)
+
     }
 
     /**
