@@ -88,6 +88,16 @@ class Asset: NSObject, NSCoding, YapDatabaseRelationshipNode {
 
     private var servers = [Server]()
 
+    override var description: String {
+        return "\(String(describing: type(of: self))): [id=\(id), created=\(created), uti=\(uti), "
+            + "title=\(title ?? "nil"), desc=\(desc ?? "nil"), "
+            + "author=\(author ?? "nil"), location=\(location ?? "nil"), "
+            + "tags=\(tags?.description ?? "nil"), license=\(license ?? "nil"), "
+            + "mimeType=\(mimeType), filename=\(filename), file=\(file?.description ?? "nil"), "
+            + "thumb=\(thumb?.description ?? "nil"), servers=\(servers)]"
+    }
+
+
     init(id: String?, created: Date?, uti: String) {
         self.id = id ?? UUID().uuidString
         self.created = created ?? Date()
