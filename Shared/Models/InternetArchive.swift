@@ -155,8 +155,6 @@ class InternetArchive : Server {
             }
             .validate(statusCode: 200..<300)
             .responseData() { response in
-                try? FileManager.default.removeItem(at: file)
-
                 switch response.result {
                 case .success:
                     self.isUploaded = true
