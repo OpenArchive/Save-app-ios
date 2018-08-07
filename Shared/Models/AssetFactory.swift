@@ -157,17 +157,18 @@ class AssetFactory {
      *moved* to its new location inside the app!
 
      - parameter url: A file URL.
-     - parameter mediaType: The media type. (e.g. `kUTTypeImage`)
      - parameter resultHandler: Callback with the created `Asset` object.
     */
-    class func create(fromFileUrl url: URL, mediaType: String, resultHandler: @escaping ResultHandler) {
-        let asset = Asset(uti: mediaType)
+    class func create(fromFileUrl url: URL, resultHandler: @escaping ResultHandler) {
+        if let uti = (try? url.resourceValues(forKeys: [.typeIdentifierKey]))?.typeIdentifier {
+            let asset = Asset(uti: uti)
 
-        if  let file = asset.file,
-            createParentDir(file: file) &&
-            (try? FileManager.default.moveItem(at: url, to: file)) != nil {
+            if  let file = asset.file,
+                createParentDir(file: file) &&
+                (try? FileManager.default.moveItem(at: url, to: file)) != nil {
 
-            self.createThumb(asset, resultHandler)
+                self.createThumb(asset, resultHandler)
+            }
         }
     }
 

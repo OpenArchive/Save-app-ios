@@ -25,30 +25,25 @@ class ShareViewController: BaseDetailsViewController {
         if let item = extensionContext?.inputItems.first as? NSExtensionItem,
             let provider = item.attachments?.first as? NSItemProvider {
 
-            let resultHandler: AssetFactory.ResultHandler = { asset in
-                self.asset = asset
+            let completionHandler: NSItemProvider.CompletionHandler = { item, error in
+                if let url = item as? URL {
+                    AssetFactory.create(fromFileUrl: url) { asset in
+                        self.asset = asset
 
-                // Trigger database store.
-                self.contentChanged(self.titleTf)
+                        // Trigger database store.
+                        self.contentChanged(self.titleTf)
 
-                self.render()
-            }
-
-            if provider.hasItemConformingToTypeIdentifier(kUTTypeImage as String) {
-                provider.loadItem(forTypeIdentifier: kUTTypeImage as String, options: nil) { item, error in
-                    if let url = item as? URL {
-                        AssetFactory.create(fromFileUrl: url, mediaType: kUTTypeImage as String,
-                                            resultHandler: resultHandler)
+                        self.render()
                     }
                 }
+            }
+            if provider.hasItemConformingToTypeIdentifier(kUTTypeImage as String) {
+                provider.loadItem(forTypeIdentifier: kUTTypeImage as String, options: nil,
+                                  completionHandler: completionHandler)
             }
             else if provider.hasItemConformingToTypeIdentifier(kUTTypeMovie as String) {
-                provider.loadItem(forTypeIdentifier: kUTTypeMovie as String, options: nil) { item, error in
-                    if let url = item as? URL {
-                        AssetFactory.create(fromFileUrl: url, mediaType: kUTTypeMovie as String,
-                                            resultHandler: resultHandler)
-                    }
-                }
+                provider.loadItem(forTypeIdentifier: kUTTypeMovie as String, options: nil,
+                                  completionHandler: completionHandler)
             }
         }
     }
