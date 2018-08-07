@@ -153,23 +153,54 @@ class AssetFactory {
     /**
      Create an `Asset` object from a given file `URL`.
 
+     Will try to generate a thumbnail from the asset's file, if `thumbnail` is `nil` or could not
+     be written to the proper location for whatever reason.
+
      You will *only* receive the `resultHandler` callback, if the given file can be successfully
      *moved* to its new location inside the app!
 
      - parameter url: A file URL.
+     - parameter thumbnail: A `UIImage` which represents a thumbnail of this asset.
      - parameter resultHandler: Callback with the created `Asset` object.
-    */
-    class func create(fromFileUrl url: URL, resultHandler: @escaping ResultHandler) {
+     */
+    class func create(fromFileUrl url: URL, thumbnail: UIImage?, resultHandler: @escaping ResultHandler) {
         if let uti = (try? url.resourceValues(forKeys: [.typeIdentifierKey]))?.typeIdentifier {
             let asset = Asset(uti: uti)
 
             if  let file = asset.file,
                 createParentDir(file: file) &&
-                (try? FileManager.default.moveItem(at: url, to: file)) != nil {
+                    (try? FileManager.default.moveItem(at: url, to: file)) != nil {
 
-                self.createThumb(asset, resultHandler)
+                if let thumb = asset.thumb,
+                    createParentDir(file: thumb) {
+
+                    if let thumbnail = thumbnail {
+                        try? UIImageJPEGRepresentation(thumbnail, 0.5)?.write(to: thumb)
+                    }
+
+                    if !FileManager.default.fileExists(atPath: thumb.path) {
+                        self.createThumb(asset)
+                    }
+                }
+
+                resultHandler(asset)
             }
         }
+    }
+
+    /**
+     Create an `Asset` object from a given file `URL`.
+
+     Will try to generate a thumbnail from the asset's file.
+
+     You will *only* receive the `resultHandler` callback, if the given file can be successfully
+     *moved* to its new location inside the app!
+
+     - parameter url: A file URL.
+     - parameter resultHandler: Callback with the created `Asset` object.
+     */
+    class func create(fromFileUrl url: URL, resultHandler: @escaping ResultHandler) {
+        create(fromFileUrl: url, thumbnail: nil, resultHandler: resultHandler)
     }
 
     /**
@@ -191,6 +222,10 @@ class AssetFactory {
             if let image = image, let thumb = asset.thumb,
                 createParentDir(file: thumb) {
                 try? UIImageJPEGRepresentation(image, 0.5)?.write(to: thumb)
+
+                if !FileManager.default.fileExists(atPath: thumb.path) {
+                    self.createThumb(asset)
+                }
             }
 
             resultHandler(asset)
@@ -201,12 +236,9 @@ class AssetFactory {
      Create a thumbnail for an asset from its file. The file must be already set to its destination
      and be readable, obviously.
 
-     Then call the resultHandler, regardless, if the thumbnail could be created or not.
-
      - parameter asset: The `Asset` to read the file from and store the thumbnail with.
-     - parameter resultHandler: Callback with the created `Asset` object.
     */
-    private class func createThumb(_ asset: Asset, _ resultHandler: @escaping ResultHandler) {
+    private class func createThumb(_ asset: Asset) {
         if let file = asset.file as CFURL?,
             let thumb = asset.thumb,
             let source = CGImageSourceCreateWithURL(file, nil),
@@ -215,9 +247,6 @@ class AssetFactory {
             let thumbnail = UIImage(cgImage: cgThumbnail)
             try? UIImageJPEGRepresentation(thumbnail, 0.5)?.write(to: thumb)
         }
-
-        resultHandler(asset)
-
     }
 
     /**
