@@ -104,6 +104,7 @@ class Asset: NSObject, NSCoding, YapDatabaseRelationshipNode {
         id = decoder.decodeObject() as? String ?? UUID().uuidString
         created = decoder.decodeObject() as? Date ?? Date()
         uti = decoder.decodeObject() as! String
+        _filename = decoder.decodeObject() as? String
         title = decoder.decodeObject() as? String
         desc = decoder.decodeObject() as? String
         author = decoder.decodeObject() as? String
@@ -117,6 +118,7 @@ class Asset: NSObject, NSCoding, YapDatabaseRelationshipNode {
         coder.encode(id)
         coder.encode(created)
         coder.encode(uti)
+        coder.encode(_filename)
         coder.encode(title)
         coder.encode(desc)
         coder.encode(author)
