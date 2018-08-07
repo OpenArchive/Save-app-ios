@@ -16,6 +16,8 @@
 		A0457E6720EF96FB00B8FBCB /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6620EF96FB00B8FBCB /* StringUtils.swift */; };
 		A0457E6920EFB57C00B8FBCB /* RegexUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */; };
 		A058628120E4EC3900EE2F14 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A058628020E4EC3900EE2F14 /* ImageCell.swift */; };
+		A070335B2119E7DF00BF1F33 /* Request+debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = A070335A2119E7DF00BF1F33 /* Request+debug.swift */; };
+		A070335C2119E7DF00BF1F33 /* Request+debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = A070335A2119E7DF00BF1F33 /* Request+debug.swift */; };
 		A07128FE2111CC90007A432A /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07128FD2111CC90007A432A /* ShareViewController.swift */; };
 		A07129052111CC90007A432A /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A07128FB2111CC90007A432A /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A071290A2111DC6A007A432A /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6620EF96FB00B8FBCB /* StringUtils.swift */; };
@@ -84,6 +86,7 @@
 		A058628020E4EC3900EE2F14 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 		A058628320E4FC5A00EE2F14 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A058628520E4FDBF00EE2F14 /* Podfile.lock */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile.lock; sourceTree = "<group>"; };
+		A070335A2119E7DF00BF1F33 /* Request+debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Request+debug.swift"; sourceTree = "<group>"; };
 		A07128FB2111CC90007A432A /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A07128FD2111CC90007A432A /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
 		A07129022111CC90007A432A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -151,6 +154,7 @@
 				A004E24B20EBCF1700A1D5F5 /* Formatters.swift */,
 				A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */,
 				A0457E6620EF96FB00B8FBCB /* StringUtils.swift */,
+				A070335A2119E7DF00BF1F33 /* Request+debug.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -442,6 +446,7 @@
 				A0C475B4211474A50012937E /* Formatters.swift in Sources */,
 				A071290D2111DE47007A432A /* Server.swift in Sources */,
 				A0C475BE21148DDE0012937E /* BaseDetailsViewController.swift in Sources */,
+				A070335C2119E7DF00BF1F33 /* Request+debug.swift in Sources */,
 				A0C475B221146EF40012937E /* InternetArchive.swift in Sources */,
 				A071290A2111DC6A007A432A /* StringUtils.swift in Sources */,
 				A029F6842118715700C4EF6D /* AssetFactory.swift in Sources */,
@@ -464,6 +469,7 @@
 				A004E24820EBC8B000A1D5F5 /* AlertUtils.swift in Sources */,
 				A0C475BD21148DDE0012937E /* BaseDetailsViewController.swift in Sources */,
 				A0D58DCE20E51517005A2F34 /* Asset.swift in Sources */,
+				A070335B2119E7DF00BF1F33 /* Request+debug.swift in Sources */,
 				A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */,
 				A058628120E4EC3900EE2F14 /* ImageCell.swift in Sources */,
 				A07129102111E4F1007A432A /* Db.swift in Sources */,

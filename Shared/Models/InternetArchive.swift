@@ -109,6 +109,7 @@ class InternetArchive : Server {
             ]
 
             Server.sessionManager.request(url, method: .delete, headers: headers)
+                .debug()
                 .validate(statusCode: 200..<300)
                 .responseData() { response in
 
@@ -143,6 +144,7 @@ class InternetArchive : Server {
                         progress: @escaping ProgressHandler, done: @escaping DoneHandler) {
 
         Server.sessionManager.upload(file, to: url, method: .put, headers: headers)
+            .debug()
             .uploadProgress() { prog in
                 progress(self, prog)
             }
