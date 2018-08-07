@@ -125,6 +125,15 @@ class InternetArchive : Server {
                     done(self)
                 }
         }
+        else {
+            // If it's just not on the server, anyway, it's ok to call the success callback.
+            if !isUploaded {
+                // Remove old errors, so the callback doesn't stumble over that.
+                self.error = nil
+
+                done(self)
+            }
+        }
     }
 
     // MARK: Private Methods
