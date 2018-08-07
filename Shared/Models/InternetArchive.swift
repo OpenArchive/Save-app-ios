@@ -129,13 +129,6 @@ class InternetArchive : Server {
     // MARK: Private Methods
 
     /**
-     - returns: A temporary file URL using the temporary directory and a random UUID.
-    */
-    private func getTempFile() -> URL {
-        return URL(fileURLWithPath: NSTemporaryDirectory() + UUID().uuidString)
-    }
-
-    /**
      Upload a given file to a server using a background session.
 
      We need to do this with a file: "Upload tasks from NSData are not supported in background sessions."
