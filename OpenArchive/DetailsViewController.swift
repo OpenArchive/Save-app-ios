@@ -13,7 +13,13 @@ class DetailsViewController: BaseDetailsViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = NSLocalizedString("Details", comment: "Title of details scene.")
+        let title = UILabel(frame: CGRect(x: 0, y: 0, width: 200, height: 28))
+        title.text = asset?.filename
+        title.allowsDefaultTighteningForTruncation = true
+        title.adjustsFontSizeToFitWidth = true
+        title.minimumScaleFactor = 0.5
+        title.textAlignment = .center
+        navigationItem.titleView = title
 
         serverUrlLb.addGestureRecognizer(
             UITapGestureRecognizer(target: self, action: #selector(followServerUrl(_:))))
