@@ -169,7 +169,8 @@ class AssetFactory {
 
             if  let file = asset.file,
                 createParentDir(file: file) &&
-                    (try? FileManager.default.moveItem(at: url, to: file)) != nil {
+                    // BEWARE: Move will only work in Simulator!
+                    (try? FileManager.default.copyItem(at: url, to: file)) != nil {
 
                 if let thumb = asset.thumb,
                     createParentDir(file: thumb) {
