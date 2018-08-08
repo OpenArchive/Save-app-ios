@@ -166,6 +166,7 @@ class AssetFactory {
     class func create(fromFileUrl url: URL, thumbnail: UIImage?, resultHandler: @escaping ResultHandler) {
         if let uti = (try? url.resourceValues(forKeys: [.typeIdentifierKey]))?.typeIdentifier {
             let asset = Asset(uti: uti)
+            asset.filename = url.lastPathComponent
 
             if  let file = asset.file,
                 createParentDir(file: file) &&
