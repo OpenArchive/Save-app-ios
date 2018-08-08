@@ -16,7 +16,10 @@ class Db {
     public static var shared: YapDatabase? = {
         if let path = FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroup as String)?.appendingPathComponent(DB_NAME) {
 
-            return YapDatabase(path: path.path)
+            let options = YapDatabaseOptions()
+            options.enableMultiProcessSupport = true
+
+            return YapDatabase(path: path.path, options: options)
         }
 
         return nil
@@ -44,9 +47,11 @@ class Db {
 
         shared?.register(assetsView, withName: Asset.COLLECTION)
 
-        
-        let relationships = YapDatabaseRelationship()
-        shared?.register(relationships, withName: "relationships")
+        // Enable relationships. (Also row -> file relationship handling!)
+        shared?.register(YapDatabaseRelationship(), withName: "relationships")
+
+        // Enable cross-process notifications.
+        shared?.register(YapDatabaseCrossProcessNotification(), withName: "xProcNotification")
 
 
         // Fix class de-/serialization errors due to iOS prefixing classes with the app/extension

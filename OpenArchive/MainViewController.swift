@@ -48,6 +48,10 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
         NotificationCenter.default.addObserver(self, selector: #selector(yapDatabaseModified),
                                                name: Notification.Name.YapDatabaseModified,
                                                object: readConn?.database)
+
+        NotificationCenter.default.addObserver(self, selector: #selector(yapDatabaseModifiedExternally),
+                                               name: Notification.Name.YapDatabaseModifiedExternally,
+                                               object: readConn?.database)
     }
 
     // MARK: actions
@@ -147,6 +151,11 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
 
     // MARK: Observers
 
+    /**
+     Callback for `YapDatabaseModified` notification.
+
+     Will be called, when something inside the process changed the database.
+    */
     @objc func yapDatabaseModified(notification: Notification) {
         if let readConn = readConn {
             var changes = NSArray()
@@ -185,6 +194,22 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
 
                 tableView.endUpdates()
             }
+        }
+    }
+
+    /**
+     Callback for `YapDatabaseModifiedExternally` notification.
+
+     Will be called, when something outside the process (e.g. in the share extension) changed
+     the database.
+     */
+    @objc func yapDatabaseModifiedExternally(notification: Notification) {
+        readConn?.beginLongLivedReadTransaction()
+
+        readConn?.read() { transaction in
+            self.mappings.update(with: transaction)
+
+            self.tableView.reloadData()
         }
     }
 }
