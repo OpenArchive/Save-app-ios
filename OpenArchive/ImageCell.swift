@@ -11,11 +11,14 @@ import UIKit
 class ImageCell: UITableViewCell {
 
     @IBOutlet var imgView: UIImageView!
+    @IBOutlet var typeLb: UILabel!
     @IBOutlet var dateLb: UILabel!
 
     var asset: Asset? {
         didSet {
             self.imgView.image = asset?.getThumbnail()
+
+            typeLb.text = asset?.mimeType
 
             if let created = asset?.created {
                 dateLb.text = Formatters.date.string(from: created)

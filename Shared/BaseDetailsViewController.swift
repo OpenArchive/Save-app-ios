@@ -18,6 +18,7 @@ class BaseDetailsViewController: UIViewController {
     @IBOutlet var scrollView: UIScrollView!
     @IBOutlet var innerViewHeightCt: NSLayoutConstraint!
     @IBOutlet var image: UIImageView!
+    @IBOutlet var typeLb: UILabel!
     @IBOutlet var dateLb: UILabel!
     @IBOutlet var serverBox: UIView!
     @IBOutlet var serverBoxHeightCt: NSLayoutConstraint!
@@ -92,6 +93,8 @@ class BaseDetailsViewController: UIViewController {
         DispatchQueue.main.async {
             if let asset = self.asset {
                 self.image.image = asset.getThumbnail()
+
+                self.typeLb.text = asset.mimeType
 
                 self.dateLb.text = Formatters.date.string(from: asset.created)
 

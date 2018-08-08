@@ -32,8 +32,14 @@
                                                 <constraint firstAttribute="height" constant="120" id="7uB-E6-bPq"/>
                                             </constraints>
                                         </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="01/01/2018" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="L0w-Iu-u4O">
-                                            <rect key="frame" x="16" y="136" width="343" height="18"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="01/01/2018" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="L0w-Iu-u4O">
+                                            <rect key="frame" x="191.5" y="136" width="167.5" height="18"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="image/jpeg" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="95x-1Y-E9X">
+                                            <rect key="frame" x="16" y="136" width="167.5" height="18"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -43,15 +49,20 @@
                                         <constraint firstItem="Buz-Oi-dBx" firstAttribute="top" secondItem="Sog-YJ-DZl" secondAttribute="top" constant="8" id="3Wo-1y-pqQ"/>
                                         <constraint firstItem="L0w-Iu-u4O" firstAttribute="bottom" secondItem="Sog-YJ-DZl" secondAttribute="bottomMargin" id="7ep-ad-ozc"/>
                                         <constraint firstItem="Buz-Oi-dBx" firstAttribute="leading" secondItem="Sog-YJ-DZl" secondAttribute="leading" constant="16" id="Fv1-vZ-hr4"/>
-                                        <constraint firstItem="L0w-Iu-u4O" firstAttribute="leading" secondItem="Sog-YJ-DZl" secondAttribute="leadingMargin" id="JdM-6S-xvg"/>
+                                        <constraint firstItem="95x-1Y-E9X" firstAttribute="bottom" secondItem="Sog-YJ-DZl" secondAttribute="bottomMargin" id="Gw8-Ca-mnU"/>
                                         <constraint firstItem="L0w-Iu-u4O" firstAttribute="top" secondItem="Buz-Oi-dBx" secondAttribute="bottom" constant="8" id="TGE-Sb-dzo"/>
+                                        <constraint firstItem="95x-1Y-E9X" firstAttribute="leading" secondItem="Sog-YJ-DZl" secondAttribute="leadingMargin" id="XGM-Jx-zov"/>
                                         <constraint firstAttribute="trailing" secondItem="Buz-Oi-dBx" secondAttribute="trailing" constant="16" id="iwT-ai-shL"/>
+                                        <constraint firstItem="L0w-Iu-u4O" firstAttribute="leading" secondItem="95x-1Y-E9X" secondAttribute="trailing" constant="8" id="m7G-0H-1wR"/>
+                                        <constraint firstItem="95x-1Y-E9X" firstAttribute="top" secondItem="Buz-Oi-dBx" secondAttribute="bottom" constant="8" id="qIs-nD-wXE"/>
                                         <constraint firstItem="L0w-Iu-u4O" firstAttribute="trailing" secondItem="Sog-YJ-DZl" secondAttribute="trailingMargin" id="tKy-y2-QTH"/>
+                                        <constraint firstItem="L0w-Iu-u4O" firstAttribute="width" secondItem="95x-1Y-E9X" secondAttribute="width" id="x7O-re-cWR"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="dateLb" destination="L0w-Iu-u4O" id="mNr-pP-RP1"/>
                                     <outlet property="imgView" destination="Buz-Oi-dBx" id="Pbt-cx-6Bi"/>
+                                    <outlet property="typeLb" destination="95x-1Y-E9X" id="lc1-VM-4nW"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
