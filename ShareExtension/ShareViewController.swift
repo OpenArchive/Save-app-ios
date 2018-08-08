@@ -29,27 +29,20 @@ class ShareViewController: BaseDetailsViewController {
         if let item = extensionContext?.inputItems.first as? NSExtensionItem,
             let provider = item.attachments?.first as? NSItemProvider {
 
-            provider.loadPreviewImage(options: providerOptions) { thumbnail, error in
-                let completionHandler: NSItemProvider.CompletionHandler = { item, error in
-                    if let url = item as? URL {
-                        AssetFactory.create(fromFileUrl: url, thumbnail: thumbnail as? UIImage) { asset in
-                            self.asset = asset
+            if provider.hasItemConformingToTypeIdentifier(kUTTypeData as String) {
+                provider.loadPreviewImage(options: providerOptions) { thumbnail, error in
+                    provider.loadItem(forTypeIdentifier: kUTTypeData as String, options: nil) { item, error in
+                        if let url = item as? URL {
+                            AssetFactory.create(fromFileUrl: url, thumbnail: thumbnail as? UIImage) { asset in
+                                self.asset = asset
 
-                            // Trigger database store.
-                            self.contentChanged(self.titleTf)
+                                // Trigger database store.
+                                self.contentChanged(self.titleTf)
 
-                            self.render()
+                                self.render()
+                            }
                         }
                     }
-                }
-
-                if provider.hasItemConformingToTypeIdentifier(kUTTypeImage as String) {
-                    provider.loadItem(forTypeIdentifier: kUTTypeImage as String, options: nil,
-                                      completionHandler: completionHandler)
-                }
-                else if provider.hasItemConformingToTypeIdentifier(kUTTypeMovie as String) {
-                    provider.loadItem(forTypeIdentifier: kUTTypeMovie as String, options: nil,
-                                      completionHandler: completionHandler)
                 }
             }
         }
