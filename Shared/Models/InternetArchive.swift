@@ -17,21 +17,27 @@ class InternetArchive : Server {
 
     private static let BASE_URL = "https://s3.us.archive.org"
 
+    /**
+     Fix for spurious warning.
+     See https://forums.developer.apple.com/thread/51348#discussion-186721
+    */
+    private static let SUITE_NAME = "\(Constants.teamId).\(Constants.appGroup)"
+
     static var accessKey: String? {
         get {
-            return UserDefaults(suiteName: Constants.appGroup as String)?.string(forKey: InternetArchive.ACCESS_KEY)
+            return UserDefaults(suiteName: SUITE_NAME)?.string(forKey: InternetArchive.ACCESS_KEY)
         }
         set {
-            UserDefaults(suiteName: Constants.appGroup as String)?.set(newValue, forKey: InternetArchive.ACCESS_KEY)
+            UserDefaults(suiteName: SUITE_NAME)?.set(newValue, forKey: InternetArchive.ACCESS_KEY)
         }
     }
 
     static var secretKey: String? {
         get {
-            return UserDefaults(suiteName: Constants.appGroup as String)?.string(forKey: InternetArchive.SECRET_KEY)
+            return UserDefaults(suiteName: SUITE_NAME)?.string(forKey: InternetArchive.SECRET_KEY)
         }
         set {
-            UserDefaults(suiteName: Constants.appGroup as String)?.set(newValue, forKey: InternetArchive.SECRET_KEY)
+            UserDefaults(suiteName: SUITE_NAME)?.set(newValue, forKey: InternetArchive.SECRET_KEY)
         }
     }
 

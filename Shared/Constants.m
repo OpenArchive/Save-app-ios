@@ -17,4 +17,8 @@
     return MACRO_STRING(OA_APP_GROUP);
 }
 
++ (NSString *) teamId {
+    return MACRO_STRING(DEVELOPMENT_TEAM);
+}
+
 @end

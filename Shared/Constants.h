@@ -12,4 +12,6 @@
 
 @property (class, nonatomic, assign, readonly) NSString *appGroup;
 
+@property (class, nonatomic, assign, readonly) NSString *teamId;
+
 @end
