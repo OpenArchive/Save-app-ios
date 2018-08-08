@@ -41,6 +41,14 @@ class InternetArchive : Server {
         }
     }
 
+    private var slug: String?
+
+    required init() {
+        super.init()
+
+        // Just here to satisfy init using a dynamic type variable.
+    }
+
     // MARK: Methods
 
     override func getPrettyName() -> String {
@@ -51,12 +59,17 @@ class InternetArchive : Server {
                          done: @escaping DoneHandler) {
 
         if publicUrl == nil {
-//            let slug = (StringUtils.slug(image.title != nil ? image.title!
-//                : String(image.filename.split(separator: ".")[0]))) + "-" + StringUtils.random(4)
+            if slug == nil {
+                slug = StringUtils.slug(asset.title != nil
+                    ? asset.title!
+                    : StringUtils.stripSuffix(from: asset.filename))
 
-            let slug = "IMG-0003-u4z6"
+                slug = slug! + "-" + StringUtils.random(4)
 
-            publicUrl = URL(string: "\(InternetArchive.BASE_URL)/\(slug)/\(asset.filename)")
+//                slug = "IMG-0003-u4z6"
+            }
+
+            publicUrl = URL(string: "\(InternetArchive.BASE_URL)/\(slug!)/\(asset.filename)")
         }
 
         if let accessKey = InternetArchive.accessKey,
@@ -140,6 +153,20 @@ class InternetArchive : Server {
                 done(self)
             }
         }
+    }
+
+    // MARK: NSCoding
+
+    required init(coder decoder: NSCoder) {
+        super.init(coder: decoder)
+
+        slug = decoder.decodeObject() as? String
+    }
+
+    override func encode(with coder: NSCoder) {
+        super.encode(with: coder)
+
+        coder.encode(slug)
     }
 
     // MARK: Private Methods
