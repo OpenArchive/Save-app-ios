@@ -92,6 +92,10 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
         return Int(mappings.numberOfItems(inSection: 0))
     }
 
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return ImageCell.HEIGHT
+    }
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: indexPath) as! ImageCell
 
