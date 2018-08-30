@@ -27,7 +27,15 @@ class DetailsViewController: BaseDetailsViewController {
 
     @objc func followServerUrl(_ sender: UITapGestureRecognizer) {
         if let url = asset?.getServers().first?.publicUrl {
-            UIApplication.shared.openURL(url)
+            let vc = UIActivityViewController(activityItems: [url],
+                                              applicationActivities: [TUSafariActivity(), ARChromeActivity()])
+            present(vc, animated: true)
+
+            // For iPad
+            if let popOver = vc.popoverPresentationController {
+                popOver.sourceView = serverUrlLb
+                popOver.sourceRect = serverUrlLb.frame
+            }
         }
     }
 }

@@ -11,6 +11,9 @@ target 'OpenArchive' do
   use_frameworks!
 
   shared_pods
+
+  pod 'TUSafariActivity', '~> 1.0'
+  pod 'ARChromeActivity', '~> 1.0'
 end
 
 target 'ShareExtension' do

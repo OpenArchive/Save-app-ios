@@ -1,11 +1,13 @@
 PODS:
   - Alamofire (4.7.3)
+  - ARChromeActivity (1.0.6)
   - CocoaLumberjack (3.4.2):
     - CocoaLumberjack/Default (= 3.4.2)
     - CocoaLumberjack/Extensions (= 3.4.2)
   - CocoaLumberjack/Default (3.4.2)
   - CocoaLumberjack/Extensions (3.4.2):
     - CocoaLumberjack/Default
+  - TUSafariActivity (1.0.4)
   - YapDatabase (3.1.1):
     - YapDatabase/Standard (= 3.1.1)
   - YapDatabase/Standard (3.1.1):
@@ -72,19 +74,25 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 4.7)
+  - ARChromeActivity (~> 1.0)
+  - TUSafariActivity (~> 1.0)
   - YapDatabase (~> 3.1)
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - ARChromeActivity
     - CocoaLumberjack
+    - TUSafariActivity
     - YapDatabase
 
 SPEC CHECKSUMS:
   Alamofire: c7287b6e5d7da964a70935e5db17046b7fde6568
+  ARChromeActivity: 5dcf9b9f09323761f992aff3525cdd777f83609d
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
+  TUSafariActivity: afc55a00965377939107ce4fdc7f951f62454546
   YapDatabase: b418a4baa6906e8028748938f9159807fd039af4
 
-PODFILE CHECKSUM: 4acfa85c2e6f010063b5b76310d5d920f59e491e
+PODFILE CHECKSUM: 925bb73efb79770dd90b6280de7910835c4395c7
 
 COCOAPODS: 1.5.3
