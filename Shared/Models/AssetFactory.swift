@@ -177,7 +177,7 @@ class AssetFactory {
                     createParentDir(file: thumb) {
 
                     if let thumbnail = thumbnail {
-                        try? UIImageJPEGRepresentation(thumbnail, 0.5)?.write(to: thumb)
+                        try? thumbnail.jpegData(compressionQuality: 0.5)?.write(to: thumb)
                     }
 
                     if !FileManager.default.fileExists(atPath: thumb.path) {
@@ -223,7 +223,7 @@ class AssetFactory {
             // If we don't get one, fine. A default will be provided.
             if let image = image, let thumb = asset.thumb,
                 createParentDir(file: thumb) {
-                try? UIImageJPEGRepresentation(image, 0.5)?.write(to: thumb)
+                try? image.jpegData(compressionQuality: 0.5)?.write(to: thumb)
 
                 if !FileManager.default.fileExists(atPath: thumb.path) {
                     self.createThumb(asset)
@@ -247,7 +247,7 @@ class AssetFactory {
             let cgThumbnail = CGImageSourceCreateThumbnailAtIndex(source, 0, thumbnailOptions) {
 
             let thumbnail = UIImage(cgImage: cgThumbnail)
-            try? UIImageJPEGRepresentation(thumbnail, 0.5)?.write(to: thumb)
+            try? thumbnail.jpegData(compressionQuality: 0.5)?.write(to: thumb)
         }
     }
 

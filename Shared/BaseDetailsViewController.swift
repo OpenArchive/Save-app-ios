@@ -72,14 +72,14 @@ class BaseDetailsViewController: UIViewController {
         super.viewWillAppear(animated)
 
         NotificationCenter.default.addObserver(self, selector: #selector(didShowKeyboard(_:)),
-                                               name: .UIKeyboardDidShow, object: nil)
+                                               name: UIResponder.keyboardDidShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(didHideKeyboard(_:)),
-                                               name: .UIKeyboardDidHide, object: nil)
+                                               name: UIResponder.keyboardDidHideNotification, object: nil)
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidShow, object: nil)
-        NotificationCenter.default.removeObserver(self, name: .UIKeyboardDidHide, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardDidHideNotification, object: nil)
 
         super.viewWillDisappear(animated)
     }
@@ -149,7 +149,7 @@ class BaseDetailsViewController: UIViewController {
      */
     @objc func didShowKeyboard(_ notification: Notification) {
         if let userInfo = notification.userInfo,
-            let keyboardFrame = userInfo[UIKeyboardFrameEndUserInfoKey] as? NSValue {
+            let keyboardFrame = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue {
 
             let bottom = keyboardFrame.cgRectValue.height
             scrollView?.contentInset.bottom = bottom

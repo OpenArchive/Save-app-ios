@@ -27,7 +27,7 @@ class ShareViewController: BaseDetailsViewController {
         navigationItem.title = NSLocalizedString("OpenArchive", comment: "The title of the app.")
 
         if let item = extensionContext?.inputItems.first as? NSExtensionItem,
-            let provider = item.attachments?.first as? NSItemProvider {
+            let provider = item.attachments?.first {
 
             if provider.hasItemConformingToTypeIdentifier(kUTTypeData as String) {
                 provider.loadPreviewImage(options: providerOptions) { thumbnail, error in

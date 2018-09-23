@@ -107,7 +107,7 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
         return cell
     }
 
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle,
+    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle,
                             forRowAt indexPath: IndexPath) {
         if editingStyle == .delete,
             let key = (tableView.cellForRow(at: indexPath) as? ImageCell)?.asset?.id {
@@ -135,9 +135,11 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
 
     // MARK: UIImagePickerControllerDelegate
 
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        if let type = info[UIImagePickerControllerMediaType] as? String,
-            let url = info[UIImagePickerControllerReferenceURL] as? URL {
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo
+        info: [UIImagePickerController.InfoKey : Any]) {
+        
+        if let type = info[.mediaType] as? String,
+            let url = info[.referenceURL] as? URL {
 
             AssetFactory.create(fromAlAssetUrl: url, mediaType: type) { asset in
                 self.writeConn?.asyncReadWrite() { transaction in
@@ -217,4 +219,3 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
         }
     }
 }
-
