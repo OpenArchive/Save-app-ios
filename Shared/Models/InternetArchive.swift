@@ -12,32 +12,26 @@ import Alamofire
 class InternetArchive : Server {
 
     private static let PRETTY_NAME = "Internet Archive"
-    private static let ACCESS_KEY = "ACCESS_KEY"
-    private static let SECRET_KEY = "SECRET_KEY"
+    private static let ACCESS_KEY = "IA_ACCESS_KEY"
+    private static let SECRET_KEY = "IA_SECRET_KEY"
 
     private static let BASE_URL = "https://s3.us.archive.org"
 
-    /**
-     Fix for spurious warning.
-     See https://forums.developer.apple.com/thread/51348#discussion-186721
-    */
-    private static let SUITE_NAME = "\(Constants.teamId).\(Constants.appGroup)"
-
     static var accessKey: String? {
         get {
-            return UserDefaults(suiteName: SUITE_NAME)?.string(forKey: InternetArchive.ACCESS_KEY)
+            return UserDefaults(suiteName: Server.SUITE_NAME)?.string(forKey: InternetArchive.ACCESS_KEY)
         }
         set {
-            UserDefaults(suiteName: SUITE_NAME)?.set(newValue, forKey: InternetArchive.ACCESS_KEY)
+            UserDefaults(suiteName: Server.SUITE_NAME)?.set(newValue, forKey: InternetArchive.ACCESS_KEY)
         }
     }
 
     static var secretKey: String? {
         get {
-            return UserDefaults(suiteName: SUITE_NAME)?.string(forKey: InternetArchive.SECRET_KEY)
+            return UserDefaults(suiteName: Server.SUITE_NAME)?.string(forKey: InternetArchive.SECRET_KEY)
         }
         set {
-            UserDefaults(suiteName: SUITE_NAME)?.set(newValue, forKey: InternetArchive.SECRET_KEY)
+            UserDefaults(suiteName: Server.SUITE_NAME)?.set(newValue, forKey: InternetArchive.SECRET_KEY)
         }
     }
 
@@ -203,7 +197,6 @@ class InternetArchive : Server {
                 }
 
                 done(self)
-        }
-
+            }
     }
 }

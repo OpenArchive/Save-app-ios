@@ -274,7 +274,8 @@ class BaseDetailsViewController: UIViewController {
 
             var firstTime = true
 
-            asset.upload(to: InternetArchive.self, progress: { server, progress in
+            // TODO: Need a way for user to select server.
+            asset.upload(to: WebDavServer.self, progress: { server, progress in
                 if firstTime {
                     self.setServerInfo(server)
                     firstTime = false

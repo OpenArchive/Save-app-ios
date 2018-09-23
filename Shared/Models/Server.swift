@@ -28,6 +28,12 @@ class Server: NSObject, NSCoding {
     public typealias DoneHandler = (_ server: Server) -> Void
 
     /**
+     Fix for spurious warning.
+     See https://forums.developer.apple.com/thread/51348#discussion-186721
+     */
+    static let SUITE_NAME = "\(Constants.teamId ?? "").\(Constants.appGroup ?? "")"
+
+    /**
      This needs to be static, otherwise the SessionManager will get destroyed during
      the request and the request will break with error -999.
 
@@ -91,7 +97,7 @@ class Server: NSObject, NSCoding {
     /**
      Subclasses need to implement this method to remove assets from server.
 
-     - parameter asset: The asset to upload.
+     - parameter asset: The asset to remove.
     */
     func remove(_ asset: Asset, done: @escaping DoneHandler) {
         preconditionFailure("This method must be overridden.")
