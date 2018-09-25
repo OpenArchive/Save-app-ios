@@ -53,6 +53,28 @@ class WebDavServer: Server {
         }
     }
 
+
+    // MARK: Private Methods
+    
+    /**
+     Create a `WebDAVFileProvider`, if credentials are available and the `baseUrl` is a valid
+     WebDAV URL.
+     
+     - returns: a `WebDAVFileProvider` with the provided `baseUrl` and stored credentials.
+     */
+    private lazy var provider: WebDAVFileProvider? = {
+        if let username = WebDavServer.username,
+            let password = WebDavServer.password,
+            let baseUrl = publicUrl?.deletingLastPathComponent() {
+            
+            let credential = URLCredential(user: username, password: password, persistence: .forSession)
+            
+            return WebDAVFileProvider(baseURL: baseUrl, credential: credential)
+        }
+        
+        return nil
+    }()
+
     /**
      Subclasses need to return a pretty name to show in the UI.
 
@@ -66,16 +88,47 @@ class WebDavServer: Server {
                          done: @escaping DoneHandler) {
         
         if publicUrl == nil,
-            let baseUrl = WebDavServer.baseUrl,
-            let subfolders = WebDavServer.subfolders {
-            publicUrl = URL(string: "\(baseUrl)/\(subfolders)/\(asset.filename)")
+            var url = WebDavServer.baseUrl {
+            
+            // Should the file be stored in a/many subfolder(s)?
+            if let subfolders = WebDavServer.subfolders {
+                if !url.hasSuffix("/") && !subfolders.hasPrefix("/") {
+                    url += "/"
+                }
+                
+                url += subfolders
+            }
+            
+            if !url.hasSuffix("/") {
+                url += "/"
+            }
+            
+            url += asset.filename
+
+            publicUrl = URL(string: url)
         }
 
-        if let url = publicUrl,
-            let provider = getProvider(baseUrl: url.deletingLastPathComponent()),
+        if let filename = publicUrl?.lastPathComponent,
+            let provider = provider,
             let file = asset.file {
 
-            let prog = provider.copyItem(localFile: file, to: url.lastPathComponent) { error in
+            // Inject our own background session, so upload can finish, when
+            // user quits app.
+            // This can only be done on upload, we would get an error on
+            // deletion.
+            let conf = Server.sessionConf
+            conf.urlCache = provider.cache
+            conf.requestCachePolicy = .returnCacheDataElseLoad
+            
+            let sessionDelegate = SessionDelegate(fileProvider: provider)
+            provider.session = URLSession(configuration: conf,
+                                          delegate: sessionDelegate as URLSessionDelegate?,
+                                          delegateQueue: provider.operation_queue)
+
+            
+            var timer: DispatchSourceTimer?
+            
+            let prog = provider.copyItem(localFile: file, to: filename) { error in
                 if let error = error {
                     self.publicUrl = nil
                     self.isUploaded = false
@@ -85,23 +138,39 @@ class WebDavServer: Server {
                     self.isUploaded = true
                     self.error = nil
                 }
-
-                done(self)
+                
+                timer?.cancel()
+                
+                DispatchQueue.main.async {
+                    done(self)
+                }
             }
-
+            
             if let prog = prog {
-                progress(self, prog)
+                timer = DispatchSource.makeTimerSource(flags: .strict, queue: DispatchQueue.main)
+                timer?.schedule(deadline: .now(), repeating: .seconds(1))
+                timer?.setEventHandler() {
+                    // For an uninvestigated reason, this progress counter runs until 200%, which looks
+                    // kind of weird to the user, so we scale it down, here.
+                    let scaledProgress = Progress(totalUnitCount: prog.totalUnitCount)
+                    scaledProgress.completedUnitCount = prog.completedUnitCount / 2
+                    
+                    progress(self, scaledProgress)
+                    
+                    if scaledProgress.isCancelled {
+                        prog.cancel()
+                    }
+                }
+                timer?.resume()
             }
         }
     }
 
     override func remove(_ asset: Asset, done: @escaping DoneHandler) {
-        if let url = publicUrl,
-            let provider = getProvider(baseUrl: url.deletingLastPathComponent()) {
-
-            let file = url.lastPathComponent
-
-            provider.removeItem(path: file) { error in
+        if let filename = publicUrl?.lastPathComponent,
+            let provider = provider {
+            
+            provider.removeItem(path: filename) { error in
                 if let error = error {
                     self.error = error.localizedDescription
                 }
@@ -111,7 +180,9 @@ class WebDavServer: Server {
                     self.error = nil
                 }
 
-                done(self)
+                DispatchQueue.main.async {
+                    done(self)
+                }
             }
         }
         else {
@@ -123,25 +194,5 @@ class WebDavServer: Server {
                 done(self)
             }
         }
-    }
-
-    // MARK: Private Methods
-
-    /**
-     Create a `WebDAVFileProvider`, if credentials are available and the `baseUrl` is a valid
-     WebDAV URL.
-
-     - returns: a `WebDAVFileProvider` with the provided `baseUrl` and stored credentials.
-    */
-    private func getProvider(baseUrl: URL) -> WebDAVFileProvider? {
-        if let username = WebDavServer.username,
-            let password = WebDavServer.password {
-
-            let credential = URLCredential(user: username, password: password, persistence: .permanent)
-
-            return WebDAVFileProvider(baseURL: baseUrl, credential: credential)
-        }
-
-        return nil
     }
 }

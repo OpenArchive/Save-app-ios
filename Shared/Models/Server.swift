@@ -32,6 +32,14 @@ class Server: NSObject, NSCoding {
      See https://forums.developer.apple.com/thread/51348#discussion-186721
      */
     static let SUITE_NAME = "\(Constants.teamId ?? "").\(Constants.appGroup ?? "")"
+    
+    static let sessionConf: URLSessionConfiguration = {
+        let conf = URLSessionConfiguration.background(withIdentifier:
+            "org.open-archive.OpenArchive.background")
+        conf.sharedContainerIdentifier = Constants.appGroup as String
+
+        return conf
+    }()
 
     /**
      This needs to be static, otherwise the SessionManager will get destroyed during
@@ -40,12 +48,10 @@ class Server: NSObject, NSCoding {
      See [Getting code=-999 using custom SessionManager](https://github.com/Alamofire/Alamofire/issues/1684)
      */
     static let sessionManager: SessionManager = {
-        let configuration = URLSessionConfiguration.background(withIdentifier:
-            "org.open-archive.OpenArchive.background")
-        configuration.httpAdditionalHeaders = SessionManager.defaultHTTPHeaders
-        configuration.sharedContainerIdentifier = Constants.appGroup as String
+        let conf = Server.sessionConf
+        conf.httpAdditionalHeaders = SessionManager.defaultHTTPHeaders
 
-        return SessionManager(configuration: configuration)
+        return SessionManager(configuration: conf)
     }()
 
     var publicUrl: URL?

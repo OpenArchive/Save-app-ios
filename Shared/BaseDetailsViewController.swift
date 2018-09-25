@@ -186,13 +186,13 @@ class BaseDetailsViewController: UIViewController {
 
             serverStatusLb.text = NSLocalizedString("Removing...", comment: "")
 
-            asset.remove(from: InternetArchive.self) { server in
+            asset.remove(from: WebDavServer.self) { server in
                 self.setServerStatus(server)
 
                 button.isHidden = false
 
                 if server.error == nil && !server.isUploaded {
-                    asset.removeServer(ofType: InternetArchive.self)
+                    asset.removeServer(ofType: WebDavServer.self)
                     self.showServerBox(false)
 
                     self.writeConn?.asyncReadWrite() { transaction in
