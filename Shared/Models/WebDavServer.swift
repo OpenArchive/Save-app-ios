@@ -11,7 +11,7 @@ import FilesProvider
 
 class WebDavServer: Server {
 
-    private static let PRETTY_NAME = "WebDAV Server"
+    static let PRETTY_NAME = "WebDAV Server"
     private static let BASE_URL = "WEBDAV_BASE_URL"
     private static let SUBFOLDERS = "WEBDAV_SUBFOLDERS"
     private static let USERNAME = "WEBDAV_USERNAME"
@@ -75,6 +75,20 @@ class WebDavServer: Server {
         return nil
     }()
 
+    /**
+     - returns: true, if this server is porperly configured.
+    */
+    static func isAvailable() -> Bool {
+        if let baseUrl = WebDavServer.baseUrl,
+            let username = WebDavServer.username,
+            let password = WebDavServer.password {
+            
+            return !baseUrl.isEmpty && !username.isEmpty && !password.isEmpty
+        }
+        
+        return false
+    }
+    
     /**
      Subclasses need to return a pretty name to show in the UI.
 

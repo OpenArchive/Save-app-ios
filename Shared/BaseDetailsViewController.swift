@@ -181,18 +181,20 @@ class BaseDetailsViewController: UIViewController {
     // MARK: Actions
 
     @IBAction func removeFromServer(_ button: UIButton) {
-        if let asset = asset {
+        if let asset = asset,
+            let server = asset.getServers().first {
+            
             button.isHidden = true
 
             serverStatusLb.text = NSLocalizedString("Removing...", comment: "")
 
-            asset.remove(from: WebDavServer.self) { server in
+            asset.remove(from: type(of: server)) { server in
                 self.setServerStatus(server)
 
                 button.isHidden = false
 
                 if server.error == nil && !server.isUploaded {
-                    asset.removeServer(ofType: WebDavServer.self)
+                    asset.removeServer(ofType: type(of: server))
                     self.showServerBox(false)
 
                     self.writeConn?.asyncReadWrite() { transaction in
@@ -270,12 +272,49 @@ class BaseDetailsViewController: UIViewController {
     }
 
     @objc func upload(_ sender: UIBarButtonItem) {
+        if InternetArchive.isAvailable() && WebDavServer.isAvailable() {
+            let sheet = UIAlertController(title: NSLocalizedString("Choose Server", comment: ""),
+                                          message: nil, preferredStyle: .actionSheet)
+            
+            sheet.addAction(UIAlertAction(title: InternetArchive.PRETTY_NAME, style: .default)
+            { action in
+                self.upload(to: InternetArchive.self)
+            })
+            
+            sheet.addAction(UIAlertAction(title: WebDavServer.PRETTY_NAME, style: .default)
+            { action in
+                self.upload(to: WebDavServer.self)
+            })
+            
+            sheet.addAction(AlertUtils.getCancelAction())
+            
+            sheet.popoverPresentationController?.barButtonItem = sender
+            sheet.popoverPresentationController?.sourceView = self.view
+            
+            self.present(sheet, animated: true)
+        }
+        else if InternetArchive.isAvailable() {
+            upload(to: InternetArchive.self)
+        }
+        else if WebDavServer.isAvailable() {
+            upload(to: WebDavServer.self)
+        }
+        else {
+            AlertUtils.presentSimple(
+                self,
+                title: NSLocalizedString("Server Configuration", comment: ""),
+                message: NSLocalizedString("No server is properly configured to be used for uploading!", comment: ""))
+        }
+    }
+    
+    // MARK: Private Methods
+    
+    private func upload(to type: Server.Type) {
         if let asset = asset {
 
             var firstTime = true
-
-            // TODO: Need a way for user to select server.
-            asset.upload(to: WebDavServer.self, progress: { server, progress in
+            
+            asset.upload(to: type, progress: { server, progress in
                 if firstTime {
                     self.setServerInfo(server)
                     firstTime = false
@@ -296,8 +335,6 @@ class BaseDetailsViewController: UIViewController {
             }
         }
     }
-
-    // MARK: Private Methods
 
     private func setServerInfo(_ server: Server) {
         serverNameLb.text = server.getPrettyName()
@@ -324,6 +361,8 @@ class BaseDetailsViewController: UIViewController {
 
     private func showServerBox(_ toggle: Bool, animated: Bool = true) {
         if toggle {
+            navigationItem.rightBarButtonItem?.isEnabled = false
+
             serverBox.isHidden = false
 
             if animated {
@@ -339,6 +378,8 @@ class BaseDetailsViewController: UIViewController {
             innerViewHeightCt.constant = innerViewHeight
         }
         else {
+            navigationItem.rightBarButtonItem?.isEnabled = true
+
             serverBox.isHidden = true
 
             if animated {

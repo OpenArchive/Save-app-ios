@@ -11,7 +11,7 @@ import Alamofire
 
 class InternetArchive : Server {
 
-    private static let PRETTY_NAME = "Internet Archive"
+    static let PRETTY_NAME = "Internet Archive"
     private static let ACCESS_KEY = "IA_ACCESS_KEY"
     private static let SECRET_KEY = "IA_SECRET_KEY"
 
@@ -59,6 +59,19 @@ class InternetArchive : Server {
 
     // MARK: Methods
 
+    /**
+     - returns: true, if this server is porperly configured.
+     */
+    static func isAvailable() -> Bool {
+        if let accessKey = InternetArchive.accessKey,
+            let secretKey = InternetArchive.secretKey {
+            
+            return !accessKey.isEmpty && !secretKey.isEmpty
+        }
+        
+        return false
+    }
+    
     override func getPrettyName() -> String {
         return InternetArchive.PRETTY_NAME
     }

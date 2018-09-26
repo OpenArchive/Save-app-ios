@@ -19,12 +19,18 @@ class AlertUtils {
      - parameter title: The alert title.
      - parameter message: The alert message.
     */
-    class func presentSimple(_ controller: UIViewController, title: String, message: String) {
+    class func presentSimple(_ controller: UIViewController, title: String, message: String?) {
         let alert = UIAlertController(title: title, message: message, preferredStyle: .alert)
         
-        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
+        alert.addAction(AlertUtils.getCancelAction())
 
         controller.present(alert, animated: true)
     }
-
+    
+    /**
+     - returns: A `UIAlertAction` which can be used to cancel an alert.
+    */
+    class func getCancelAction() -> UIAlertAction {
+        return UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel)
+    }
 }
