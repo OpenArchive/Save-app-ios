@@ -121,10 +121,13 @@ class WebDavServer: Server {
             conf.requestCachePolicy = .returnCacheDataElseLoad
             
             let sessionDelegate = SessionDelegate(fileProvider: provider)
+            
+            // Store for later re-set.
+            let oldSession = provider.session
+            
             provider.session = URLSession(configuration: conf,
                                           delegate: sessionDelegate as URLSessionDelegate?,
                                           delegateQueue: provider.operation_queue)
-
             
             var timer: DispatchSourceTimer?
             
@@ -140,6 +143,9 @@ class WebDavServer: Server {
                 }
                 
                 timer?.cancel()
+                
+                // Reset to normal session, so #remove doesn't break.
+                provider.session = oldSession
                 
                 DispatchQueue.main.async {
                     done(self)

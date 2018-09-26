@@ -35,6 +35,20 @@ class InternetArchive : Server {
         }
     }
 
+
+    /**
+     This needs to be tied to this object, otherwise the SessionManager will get
+     destroyed during the request and the request will break with error -999.
+     
+     See [Getting code=-999 using custom SessionManager](https://github.com/Alamofire/Alamofire/issues/1684)
+     */
+    private lazy var sessionManager: SessionManager = {
+        let conf = Server.sessionConf
+        conf.httpAdditionalHeaders = SessionManager.defaultHTTPHeaders
+        
+        return SessionManager(configuration: conf)
+    }()
+
     private var slug: String?
 
     required init() {
@@ -121,7 +135,7 @@ class InternetArchive : Server {
                 "x-archive-keep-old-version": "0",
             ]
 
-            Server.sessionManager.request(url, method: .delete, headers: headers)
+            sessionManager.request(url, method: .delete, headers: headers)
                 .debug()
                 .validate(statusCode: 200..<300)
                 .responseData() { response in
@@ -179,7 +193,7 @@ class InternetArchive : Server {
     private func upload(_ file: URL, to url: URLConvertible, headers: HTTPHeaders,
                         progress: @escaping ProgressHandler, done: @escaping DoneHandler) {
 
-        Server.sessionManager.upload(file, to: url, method: .put, headers: headers)
+        sessionManager.upload(file, to: url, method: .put, headers: headers)
             .debug()
             .uploadProgress() { prog in
                 progress(self, prog)

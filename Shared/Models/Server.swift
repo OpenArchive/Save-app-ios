@@ -41,19 +41,6 @@ class Server: NSObject, NSCoding {
         return conf
     }()
 
-    /**
-     This needs to be static, otherwise the SessionManager will get destroyed during
-     the request and the request will break with error -999.
-
-     See [Getting code=-999 using custom SessionManager](https://github.com/Alamofire/Alamofire/issues/1684)
-     */
-    static let sessionManager: SessionManager = {
-        let conf = Server.sessionConf
-        conf.httpAdditionalHeaders = SessionManager.defaultHTTPHeaders
-
-        return SessionManager(configuration: conf)
-    }()
-
     var publicUrl: URL?
 
     var isUploaded = false
