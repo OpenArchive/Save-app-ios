@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14313.18" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3f6-u4-WuB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3f6-u4-WuB">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14283.14"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -81,7 +81,7 @@
                     <navigationItem key="navigationItem" title="OpenArchive" id="qag-qj-eDJ">
                         <barButtonItem key="leftBarButtonItem" image="Settings" id="8kQ-9c-OMm">
                             <connections>
-                                <segue destination="5Gf-8P-w4o" kind="show" id="yMy-dj-fQK"/>
+                                <segue destination="60Y-gn-6Z7" kind="show" id="CKq-Z7-vy6"/>
                             </connections>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="MKK-1M-yTY">
@@ -94,6 +94,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="A5F-CC-M5n" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="592.79999999999995" y="116.49175412293854"/>
+        </scene>
+        <!--My Account-->
+        <scene sceneID="Sa8-ZH-k0c">
+            <objects>
+                <tableViewController id="60Y-gn-6Z7" customClass="MyAccountViewController" customModule="OpenArchive" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="Tcp-BA-PMf">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <connections>
+                            <outlet property="dataSource" destination="60Y-gn-6Z7" id="CFa-i6-Uyq"/>
+                            <outlet property="delegate" destination="60Y-gn-6Z7" id="RE6-iD-uno"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" title="My Account" id="cRy-9F-upv"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="xdm-LO-Z0h" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1612" y="116"/>
         </scene>
         <!--Settings-->
         <scene sceneID="pfx-x7-Mmk">
@@ -329,6 +348,6 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Settings" width="25" height="25"/>
+        <image name="Settings" width="40" height="40"/>
     </resources>
 </document>

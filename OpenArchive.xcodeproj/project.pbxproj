@@ -43,6 +43,13 @@
 		A0C475C021149B040012937E /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C475BF21149B040012937E /* MainViewController.swift */; };
 		A0D58DCE20E51517005A2F34 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D58DCD20E51517005A2F34 /* Asset.swift */; };
 		A0D6E88A20F3BAB800095E31 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D6E88920F3BAB800095E31 /* Server.swift */; };
+		A0E1A67C21EE7A5C00E4F6B7 /* MyAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A67B21EE7A5C00E4F6B7 /* MyAccountViewController.swift */; };
+		A0E1A68021EE7BE900E4F6B7 /* MenuItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E1A67E21EE7BE900E4F6B7 /* MenuItemCell.xib */; };
+		A0E1A68121EE7BE900E4F6B7 /* MenuItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */; };
+		A0E1A68421EE831300E4F6B7 /* AccountCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E1A68221EE831300E4F6B7 /* AccountCell.xib */; };
+		A0E1A68521EE831300E4F6B7 /* AccountCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68321EE831300E4F6B7 /* AccountCell.swift */; };
+		A0E1A68721EE834D00E4F6B7 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68621EE834D00E4F6B7 /* BaseCell.swift */; };
+		A0E1A68921EE873200E4F6B7 /* TableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68821EE873200E4F6B7 /* TableHeader.swift */; };
 		A0E739D820E4C85D00DB31E1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E739D720E4C85D00DB31E1 /* AppDelegate.swift */; };
 		A0E739DA20E4C85D00DB31E1 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E739D920E4C85D00DB31E1 /* MainViewController.swift */; };
 		A0E739DD20E4C85D00DB31E1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DB20E4C85D00DB31E1 /* Main.storyboard */; };
@@ -109,6 +116,13 @@
 		A0C475BF21149B040012937E /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		A0D58DCD20E51517005A2F34 /* Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		A0D6E88920F3BAB800095E31 /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
+		A0E1A67B21EE7A5C00E4F6B7 /* MyAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAccountViewController.swift; sourceTree = "<group>"; };
+		A0E1A67E21EE7BE900E4F6B7 /* MenuItemCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuItemCell.xib; sourceTree = "<group>"; };
+		A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemCell.swift; sourceTree = "<group>"; };
+		A0E1A68221EE831300E4F6B7 /* AccountCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AccountCell.xib; sourceTree = "<group>"; };
+		A0E1A68321EE831300E4F6B7 /* AccountCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountCell.swift; sourceTree = "<group>"; };
+		A0E1A68621EE834D00E4F6B7 /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
+		A0E1A68821EE873200E4F6B7 /* TableHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableHeader.swift; sourceTree = "<group>"; };
 		A0E739D420E4C85D00DB31E1 /* OpenArchive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenArchive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0E739D720E4C85D00DB31E1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A0E739D920E4C85D00DB31E1 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -214,6 +228,27 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		A0E0307821EF6A0700A5E97F /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				A0E1A68621EE834D00E4F6B7 /* BaseCell.swift */,
+				A0E1A68821EE873200E4F6B7 /* TableHeader.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		A0E1A67D21EE7B3200E4F6B7 /* Account */ = {
+			isa = PBXGroup;
+			children = (
+				A0E1A67B21EE7A5C00E4F6B7 /* MyAccountViewController.swift */,
+				A0E1A68221EE831300E4F6B7 /* AccountCell.xib */,
+				A0E1A68321EE831300E4F6B7 /* AccountCell.swift */,
+				A0E1A67E21EE7BE900E4F6B7 /* MenuItemCell.xib */,
+				A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */,
+			);
+			path = Account;
+			sourceTree = "<group>";
+		};
 		A0E739CB20E4C85D00DB31E1 = {
 			isa = PBXGroup;
 			children = (
@@ -239,6 +274,7 @@
 		A0E739D620E4C85D00DB31E1 /* OpenArchive */ = {
 			isa = PBXGroup;
 			children = (
+				A0E1A67D21EE7B3200E4F6B7 /* Account */,
 				A07129122111F4D5007A432A /* OpenArchive.entitlements */,
 				A08750AF21120EBF00BFAFE4 /* OpenArchive-Bridging-Header.h */,
 				A0E739D720E4C85D00DB31E1 /* AppDelegate.swift */,
@@ -249,6 +285,7 @@
 				A0E739DB20E4C85D00DB31E1 /* Main.storyboard */,
 				A0E739E020E4C85E00DB31E1 /* LaunchScreen.storyboard */,
 				A0E739E320E4C85E00DB31E1 /* Info.plist */,
+				A0E0307821EF6A0700A5E97F /* Views */,
 			);
 			path = OpenArchive;
 			sourceTree = "<group>";
@@ -373,9 +410,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				A0E739E220E4C85E00DB31E1 /* LaunchScreen.storyboard in Resources */,
+				A0E1A68021EE7BE900E4F6B7 /* MenuItemCell.xib in Resources */,
 				A0E739DF20E4C85E00DB31E1 /* Assets.xcassets in Resources */,
 				A0C475BB21148DDE0012937E /* BaseDetailsViewController.xib in Resources */,
 				A0E739DD20E4C85D00DB31E1 /* Main.storyboard in Resources */,
+				A0E1A68421EE831300E4F6B7 /* AccountCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -477,8 +516,10 @@
 			files = (
 				A0E739DA20E4C85D00DB31E1 /* MainViewController.swift in Sources */,
 				A0E739D820E4C85D00DB31E1 /* AppDelegate.swift in Sources */,
+				A0E1A67C21EE7A5C00E4F6B7 /* MyAccountViewController.swift in Sources */,
 				A004E24C20EBCF1700A1D5F5 /* Formatters.swift in Sources */,
 				A08750A92112099700BFAFE4 /* Constants.m in Sources */,
+				A0E1A68521EE831300E4F6B7 /* AccountCell.swift in Sources */,
 				A004E24820EBC8B000A1D5F5 /* AlertUtils.swift in Sources */,
 				A061950D215522970070E005 /* WebDavServer.swift in Sources */,
 				A0C475BD21148DDE0012937E /* BaseDetailsViewController.swift in Sources */,
@@ -487,9 +528,12 @@
 				A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */,
 				A058628120E4EC3900EE2F14 /* ImageCell.swift in Sources */,
 				A07129102111E4F1007A432A /* Db.swift in Sources */,
+				A0E1A68121EE7BE900E4F6B7 /* MenuItemCell.swift in Sources */,
 				A004E24A20EBCEA000A1D5F5 /* DetailsViewController.swift in Sources */,
+				A0E1A68921EE873200E4F6B7 /* TableHeader.swift in Sources */,
 				A0457E6720EF96FB00B8FBCB /* StringUtils.swift in Sources */,
 				A0C0732820EE74CB00EA48F0 /* SettingsViewController.swift in Sources */,
+				A0E1A68721EE834D00E4F6B7 /* BaseCell.swift in Sources */,
 				A0C0732A20EE779800EA48F0 /* InternetArchive.swift in Sources */,
 				A0D6E88A20F3BAB800095E31 /* Server.swift in Sources */,
 				A0457E6920EFB57C00B8FBCB /* RegexUtils.swift in Sources */,
