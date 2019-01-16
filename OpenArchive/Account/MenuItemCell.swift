@@ -10,6 +10,8 @@ import UIKit
 
 class MenuItemCell: BaseCell {
 
+    static let height: CGFloat = 44.0
+
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var addIndicator: UILabel!
 

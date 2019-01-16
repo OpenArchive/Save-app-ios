@@ -18,6 +18,12 @@ class MyAccountViewController: UITableViewController {
         tableView.register(MenuItemCell.nib, forCellReuseIdentifier: MenuItemCell.reuseId)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+
+        tableView.reloadData()
+    }
+
 
     // MARK: UITableViewDataSource
 
@@ -40,13 +46,19 @@ class MyAccountViewController: UITableViewController {
         }
     }
 
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            return ProfileCell.height
+        }
+
+        return MenuItemCell.height
+    }
+
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if indexPath.section == 0,
             let cell = tableView.dequeueReusableCell(withIdentifier: ProfileCell.reuseId, for: indexPath) as? ProfileCell {
 
-                cell.set()
-
-            return cell
+            return cell.set()
         }
 
         if let cell = tableView.dequeueReusableCell(withIdentifier: MenuItemCell.reuseId, for: indexPath) as? MenuItemCell {
