@@ -6,6 +6,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -109,10 +110,103 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="My Account" id="cRy-9F-upv"/>
+                    <connections>
+                        <segue destination="Plb-W0-cMf" kind="show" identifier="showEditProfileSegue" id="QlK-w9-KOd"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xdm-LO-Z0h" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1612" y="116"/>
+        </scene>
+        <!--Edit Profile-->
+        <scene sceneID="wKc-ct-vrE">
+            <objects>
+                <viewController id="Plb-W0-cMf" customClass="EditProfileViewController" customModule="OpenArchive" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="78G-iE-ffd">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="VPS-5X-Ay8">
+                                <rect key="frame" x="147.5" y="96" width="80" height="80"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="7Qj-B0-tE6"/>
+                                    <constraint firstAttribute="height" constant="80" id="n7K-HA-Vin"/>
+                                </constraints>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_photo" translatesAutoresizingMaskIntoConstraints="NO" id="zvt-YA-28C">
+                                <rect key="frame" x="203.5" y="152" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="Jh5-k1-dBN"/>
+                                    <constraint firstAttribute="width" constant="24" id="vcH-7O-hq9"/>
+                                </constraints>
+                            </imageView>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Your Alias" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="S0S-f7-Pw1">
+                                <rect key="frame" x="16" y="208" width="343" height="19"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="next" textContentType="name"/>
+                                <connections>
+                                    <action selector="changed:" destination="Plb-W0-cMf" eventType="editingDidEnd" id="Wt7-Oo-8zj"/>
+                                    <outlet property="delegate" destination="Plb-W0-cMf" id="IHi-JO-KL4"/>
+                                </connections>
+                            </textField>
+                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="Your Role" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="f6x-sT-Mkb">
+                                <rect key="frame" x="16" y="260" width="343" height="19"/>
+                                <nil key="textColor"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits" returnKeyType="done" textContentType="organization-title"/>
+                                <connections>
+                                    <action selector="changed:" destination="Plb-W0-cMf" eventType="editingDidEnd" id="cYA-W1-Gxu"/>
+                                    <outlet property="delegate" destination="Plb-W0-cMf" id="CIn-B2-ATQ"/>
+                                </connections>
+                            </textField>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="UuJ-1A-fNF">
+                                <rect key="frame" x="16" y="295" width="359" height="1"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="iz9-46-oMi"/>
+                                </constraints>
+                                <viewLayoutGuide key="safeArea" id="prc-Hm-87N"/>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BO6-Vg-Edk">
+                                <rect key="frame" x="16" y="243" width="359" height="1"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="xVP-H8-3gw"/>
+                                </constraints>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <constraints>
+                            <constraint firstItem="UuJ-1A-fNF" firstAttribute="top" secondItem="f6x-sT-Mkb" secondAttribute="bottom" constant="16" id="9jI-kH-sg0"/>
+                            <constraint firstItem="S0S-f7-Pw1" firstAttribute="top" secondItem="VPS-5X-Ay8" secondAttribute="bottom" constant="32" id="EDq-Gh-Fyg"/>
+                            <constraint firstItem="VPS-5X-Ay8" firstAttribute="centerX" secondItem="78G-iE-ffd" secondAttribute="centerX" id="FIm-6U-Rs9"/>
+                            <constraint firstItem="BO6-Vg-Edk" firstAttribute="leading" secondItem="kTo-Nb-iED" secondAttribute="leading" constant="16" id="GUs-b7-VcL"/>
+                            <constraint firstAttribute="trailing" secondItem="UuJ-1A-fNF" secondAttribute="trailing" id="KO3-5H-LT0"/>
+                            <constraint firstItem="zvt-YA-28C" firstAttribute="bottom" secondItem="VPS-5X-Ay8" secondAttribute="bottom" id="MJ6-Tv-1yP"/>
+                            <constraint firstItem="BO6-Vg-Edk" firstAttribute="top" secondItem="S0S-f7-Pw1" secondAttribute="bottom" constant="16" id="Xz6-ab-FOZ"/>
+                            <constraint firstItem="kTo-Nb-iED" firstAttribute="trailing" secondItem="BO6-Vg-Edk" secondAttribute="trailing" id="ZbM-b7-tin"/>
+                            <constraint firstItem="VPS-5X-Ay8" firstAttribute="top" secondItem="kTo-Nb-iED" secondAttribute="top" constant="32" id="aM4-6m-ieF"/>
+                            <constraint firstItem="S0S-f7-Pw1" firstAttribute="leading" secondItem="kTo-Nb-iED" secondAttribute="leading" constant="16" id="ckf-tA-y1T"/>
+                            <constraint firstItem="kTo-Nb-iED" firstAttribute="trailing" secondItem="S0S-f7-Pw1" secondAttribute="trailing" constant="16" id="e45-vI-W5m"/>
+                            <constraint firstItem="kTo-Nb-iED" firstAttribute="trailing" secondItem="f6x-sT-Mkb" secondAttribute="trailing" constant="16" id="gk4-BD-imd"/>
+                            <constraint firstItem="UuJ-1A-fNF" firstAttribute="leading" secondItem="78G-iE-ffd" secondAttribute="leading" constant="16" id="nth-Fm-yNZ"/>
+                            <constraint firstItem="f6x-sT-Mkb" firstAttribute="top" secondItem="BO6-Vg-Edk" secondAttribute="bottom" constant="16" id="p4A-EY-pKb"/>
+                            <constraint firstItem="f6x-sT-Mkb" firstAttribute="leading" secondItem="kTo-Nb-iED" secondAttribute="leading" constant="16" id="qTa-Wa-piE"/>
+                            <constraint firstItem="zvt-YA-28C" firstAttribute="trailing" secondItem="VPS-5X-Ay8" secondAttribute="trailing" id="tsV-cY-4V0"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="kTo-Nb-iED"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="Edit Profile" id="IXW-lT-ZWV"/>
+                    <connections>
+                        <outlet property="aliasTf" destination="S0S-f7-Pw1" id="I5U-h1-GAa"/>
+                        <outlet property="avatarImg" destination="VPS-5X-Ay8" id="9fn-s7-KAo"/>
+                        <outlet property="roleTf" destination="f6x-sT-Mkb" id="eST-LJ-jFY"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eU3-fI-zbb" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2608.8000000000002" y="115.59220389805098"/>
         </scene>
         <!--Settings-->
         <scene sceneID="pfx-x7-Mmk">
@@ -349,5 +443,6 @@
     </scenes>
     <resources>
         <image name="Settings" width="40" height="40"/>
+        <image name="ic_photo" width="15" height="14"/>
     </resources>
 </document>

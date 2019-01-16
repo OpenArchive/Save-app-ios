@@ -14,7 +14,7 @@ class MyAccountViewController: UITableViewController {
         super.viewDidLoad()
 
         tableView.register(TableHeader.self, forHeaderFooterViewReuseIdentifier: TableHeader.reuseId)
-        tableView.register(AccountCell.nib, forCellReuseIdentifier: AccountCell.reuseId)
+        tableView.register(ProfileCell.nib, forCellReuseIdentifier: ProfileCell.reuseId)
         tableView.register(MenuItemCell.nib, forCellReuseIdentifier: MenuItemCell.reuseId)
     }
 
@@ -41,8 +41,12 @@ class MyAccountViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            return tableView.dequeueReusableCell(withIdentifier: AccountCell.reuseId, for: indexPath)
+        if indexPath.section == 0,
+            let cell = tableView.dequeueReusableCell(withIdentifier: ProfileCell.reuseId, for: indexPath) as? ProfileCell {
+
+                cell.set()
+
+            return cell
         }
 
         if let cell = tableView.dequeueReusableCell(withIdentifier: MenuItemCell.reuseId, for: indexPath) as? MenuItemCell {
@@ -110,6 +114,16 @@ class MyAccountViewController: UITableViewController {
         return nil
     }
 
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        switch indexPath.section {
+        case 0:
+            performSegue(withIdentifier: "showEditProfileSegue", sender: nil)
+        default:
+            break
+        }
+
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
 
     /*
     // MARK: - Navigation
