@@ -69,7 +69,12 @@ class MyAccountViewController: UITableViewController {
                 case 0:
                     cell.set("Private Server".localize(), isPlaceholder: true)
                 case 1:
-                    cell.set("Internet Archive".localize(), isPlaceholder: true)
+                    let placeholder = InternetArchive.accessKey == nil
+                        || InternetArchive.accessKey!.isEmpty
+                        || InternetArchive.secretKey == nil
+                        || InternetArchive.secretKey!.isEmpty
+
+                    cell.set("Internet Archive".localize(), isPlaceholder: placeholder)
                 default:
                     cell.set("")
                 }
