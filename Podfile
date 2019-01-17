@@ -6,6 +6,7 @@ def shared_pods
     pod 'Alamofire', '~> 4.8'
     pod 'FilesProvider', '~> 0.25'
     pod 'Localize', '~> 2.1'
+    pod 'Eureka', '~> 4.3'
 end
 
 target 'OpenArchive' do

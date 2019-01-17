@@ -2,51 +2,40 @@
 //  EditProfileViewController.swift
 //  OpenArchive
 //
-//  Created by Benjamin Erhart on 16.01.19.
+//  Created by Benjamin Erhart on 17.01.19.
 //  Copyright © 2019 Open Archive. All rights reserved.
 //
 
 import UIKit
+import Eureka
 
-class EditProfileViewController: BaseViewController, UITextFieldDelegate {
-
-    @IBOutlet weak var avatarImg: UIImageView!
-    @IBOutlet weak var aliasTf: UITextField!
-    @IBOutlet weak var roleTf: UITextField!
+class EditProfileViewController: FormViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        hideKeyboardOnOutsideTap()
+        navigationItem.title = "Edit Profile".localize()
 
-        aliasTf.text = Profile.alias
-        roleTf.text = Profile.role
-    }
-    
+        form
+            +++ Section()
 
-    // MARK: UITextFieldDelegate
+            <<< AvatarRow()
 
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        switch textField {
+            <<< NameRow() {
+                $0.title = "Your Alias".localize()
+                $0.value = Profile.alias
+            }
+            .onChange() { row in
+                Profile.alias = row.value
+            }
 
-        case aliasTf:
-            roleTf.becomeFirstResponder()
-        default:
-            textField.resignFirstResponder()
-        }
-
-        return true
-    }
-
-
-    // MARK: Actions
-
-    @IBAction func changed(_ sender: UITextField) {
-        switch sender {
-        case aliasTf:
-            Profile.alias = sender.text
-        default:
-            Profile.role = sender.text
-        }
+            <<< NameRow() {
+                $0.cell.textField.textContentType = .jobTitle
+                $0.title = "Your Role".localize()
+                $0.value = Profile.role
+            }
+            .onChange() { row in
+                Profile.role = row.value
+            }
     }
 }

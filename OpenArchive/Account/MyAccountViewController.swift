@@ -128,24 +128,27 @@ class MyAccountViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        var vc: UIViewController?
+
         switch indexPath.section {
         case 0:
-            performSegue(withIdentifier: "showEditProfileSegue", sender: nil)
+            vc = EditProfileViewController()
+        case 1:
+
+            if indexPath.row == 1 {
+                vc = InternetArchiveViewController()
+            }
+            else {
+                vc = PrivateServerViewController()
+            }
         default:
             break
         }
 
+        if let vc = vc {
+            navigationController?.pushViewController(vc, animated: true)
+        }
+
         tableView.deselectRow(at: indexPath, animated: true)
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

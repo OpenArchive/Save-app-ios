@@ -7,6 +7,7 @@ PODS:
   - CocoaLumberjack/Default (3.4.2)
   - CocoaLumberjack/Extensions (3.4.2):
     - CocoaLumberjack/Default
+  - Eureka (4.3.1)
   - FilesProvider (0.25.1)
   - Localize (2.1.0)
   - TUSafariActivity (1.0.4)
@@ -77,6 +78,7 @@ PODS:
 DEPENDENCIES:
   - Alamofire (~> 4.8)
   - ARChromeActivity (~> 1.0)
+  - Eureka (~> 4.3)
   - FilesProvider (~> 0.25)
   - Localize (~> 2.1)
   - TUSafariActivity (~> 1.0)
@@ -87,6 +89,7 @@ SPEC REPOS:
     - Alamofire
     - ARChromeActivity
     - CocoaLumberjack
+    - Eureka
     - FilesProvider
     - Localize
     - TUSafariActivity
@@ -96,6 +99,7 @@ SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
   ARChromeActivity: 5dcf9b9f09323761f992aff3525cdd777f83609d
   CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
+  Eureka: 28ea296f06710f6745266b71f17862048941a32d
   FilesProvider: f6ab75211d2fd4814720f19b427e43668dc24585
   Localize: f360a343abfac047be5b375c45be1059f5f625f3
   TUSafariActivity: afc55a00965377939107ce4fdc7f951f62454546
