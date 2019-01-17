@@ -73,16 +73,14 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
         case .restricted:
             AlertUtils.presentSimple(
                 self,
-                title: NSLocalizedString("Access Restricted", comment: ""),
-                message: NSLocalizedString("Sorry, you are not allowed to view the photo library.",
-                                           comment: ""))
+                title: "Access Restricted".localize(),
+                message: "Sorry, you are not allowed to view the photo library.".localize())
 
         case .denied:
             AlertUtils.presentSimple(
                 self,
-                title: NSLocalizedString("Access Denied", comment: ""),
-                message: NSLocalizedString("Please go to the Settings app to grant this app access to your photo library, if you want to upload photos or videos.",
-                                           comment: ""))
+                title: "Access Denied".localize(),
+                message: "Please go to the Settings app to grant this app access to your photo library, if you want to upload photos or videos.".localize())
         }
     }
 

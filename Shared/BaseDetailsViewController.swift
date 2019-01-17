@@ -186,7 +186,7 @@ class BaseDetailsViewController: UIViewController {
             
             button.isHidden = true
 
-            serverStatusLb.text = NSLocalizedString("Removing...", comment: "")
+            serverStatusLb.text = "Removing...".localize()
 
             asset.remove(from: type(of: server)) { server in
                 self.setServerStatus(server)
@@ -273,7 +273,7 @@ class BaseDetailsViewController: UIViewController {
 
     @objc func upload(_ sender: UIBarButtonItem) {
         if InternetArchive.isAvailable() && WebDavServer.isAvailable() {
-            let sheet = UIAlertController(title: NSLocalizedString("Choose Server", comment: ""),
+            let sheet = UIAlertController(title: "Choose Server".localize(),
                                           message: nil, preferredStyle: .actionSheet)
             
             sheet.addAction(UIAlertAction(title: InternetArchive.PRETTY_NAME, style: .default)
@@ -302,8 +302,8 @@ class BaseDetailsViewController: UIViewController {
         else {
             AlertUtils.presentSimple(
                 self,
-                title: NSLocalizedString("Server Configuration", comment: ""),
-                message: NSLocalizedString("No server is properly configured to be used for uploading!", comment: ""))
+                title: "Server Configuration".localize(),
+                message: "No server is properly configured to be used for uploading!".localize())
         }
     }
     
@@ -321,11 +321,9 @@ class BaseDetailsViewController: UIViewController {
                 }
 
                 let progressFormatted = Formatters.integer.string(for: progress.fractionCompleted * 100)
-                    ?? NSLocalizedString("Unknown", comment: "")
+                    ?? "Unknown".localize()
 
-                self.serverStatusLb.text = String(format:
-                    NSLocalizedString("Progress: %@%%", comment: "Argument is an integer as percentage"),
-                                                  progressFormatted)
+                self.serverStatusLb.text = "Progress: %%".localize(values: progressFormatted, "%")
             }) { server in
                 self.setServerInfo(server)
 
@@ -352,10 +350,10 @@ class BaseDetailsViewController: UIViewController {
             print(error)
         }
         else if server.isUploaded {
-            self.serverStatusLb.text = NSLocalizedString("Uploaded", comment: "")
+            self.serverStatusLb.text = "Uploaded".localize()
         }
         else {
-            serverStatusLb.text = NSLocalizedString("Not uploaded", comment: "")
+            serverStatusLb.text = "Not uploaded".localize()
         }
     }
 

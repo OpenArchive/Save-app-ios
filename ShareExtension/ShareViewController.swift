@@ -24,7 +24,7 @@ class ShareViewController: BaseDetailsViewController {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .done, target: self, action: #selector(done(_:)))
 
-        navigationItem.title = NSLocalizedString("OpenArchive", comment: "The title of the app.")
+        navigationItem.title = "OpenArchive".localize()
 
         if let item = extensionContext?.inputItems.first as? NSExtensionItem,
             let provider = item.attachments?.first {

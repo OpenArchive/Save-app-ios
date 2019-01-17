@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Localize
 
 class AlertUtils {
 
@@ -31,6 +32,6 @@ class AlertUtils {
      - returns: A `UIAlertAction` which can be used to cancel an alert.
     */
     class func getCancelAction() -> UIAlertAction {
-        return UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel)
+        return UIAlertAction(title: "Cancel".localize(), style: .cancel)
     }
 }

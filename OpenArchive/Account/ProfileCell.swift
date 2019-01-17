@@ -18,10 +18,10 @@ class ProfileCell: BaseCell {
 
     func set() -> ProfileCell {
         aliasLb.text = Profile.alias == nil || Profile.alias!.isEmpty
-            ? NSLocalizedString("Your Alias", comment: "")
+            ? "Your Alias".localize()
             : Profile.alias
         roleLb.text = Profile.role == nil || Profile.role!.isEmpty
-            ? NSLocalizedString("Your Role", comment: "")
+            ? "Your Role".localize()
             : Profile.role
 
         return self

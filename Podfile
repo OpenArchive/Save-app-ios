@@ -3,8 +3,9 @@ platform :ios, '9.0'
 
 def shared_pods
     pod 'YapDatabase', '~> 3.1'
-    pod 'Alamofire', '~> 4.7'
-    pod 'FilesProvider', '~> 0.25.1'
+    pod 'Alamofire', '~> 4.8'
+    pod 'FilesProvider', '~> 0.25'
+    pod 'Localize', '~> 2.1'
 end
 
 target 'OpenArchive' do

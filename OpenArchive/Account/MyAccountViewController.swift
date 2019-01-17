@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Localize
 
 class MyAccountViewController: UITableViewController {
 
@@ -66,16 +67,16 @@ class MyAccountViewController: UITableViewController {
             case 1:
                 switch indexPath.row {
                 case 0:
-                    cell.set(NSLocalizedString("Private Server", comment: ""), isPlaceholder: true)
+                    cell.set("Private Server".localize(), isPlaceholder: true)
                 case 1:
-                    cell.set(NSLocalizedString("Internet Archive", comment: ""), isPlaceholder: true)
+                    cell.set("Internet Archive".localize(), isPlaceholder: true)
                 default:
                     cell.set("")
                 }
             case 2:
                 switch indexPath.row {
                 case 0:
-                    cell.set(NSLocalizedString("Create New Project", comment: ""), isPlaceholder: true)
+                    cell.set("Create New Project".localize(), isPlaceholder: true)
                 default:
                     cell.set("")
                 }
@@ -83,11 +84,11 @@ class MyAccountViewController: UITableViewController {
                 cell.addIndicator.isHidden = true
                 switch indexPath.row {
                 case 0:
-                    cell.set(NSLocalizedString("Data Use", comment: ""))
+                    cell.set("Data Use".localize())
                 case 1:
-                    cell.set(NSLocalizedString("Privacy", comment: ""))
+                    cell.set("Privacy".localize())
                 default:
-                    cell.set(NSLocalizedString("About", comment: ""))
+                    cell.set("About".localize())
                 }
             default:
                 cell.set("")
@@ -111,11 +112,11 @@ class MyAccountViewController: UITableViewController {
 
             switch section {
             case 1:
-                header.text = NSLocalizedString("Spaces", comment: "")
+                header.text = "Spaces".localize()
             case 2:
-                header.text = NSLocalizedString("Projects", comment: "")
+                header.text = "Projects".localize()
             case 3:
-                header.text = NSLocalizedString("Settings", comment: "")
+                header.text = "Settings".localize()
             default:
                 heightZero.isActive = true
             }
