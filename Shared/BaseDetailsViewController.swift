@@ -273,20 +273,16 @@ class BaseDetailsViewController: UIViewController {
 
     @objc func upload(_ sender: UIBarButtonItem) {
         if InternetArchive.isAvailable() && WebDavServer.isAvailable() {
-            let sheet = UIAlertController(title: "Choose Server".localize(),
-                                          message: nil, preferredStyle: .actionSheet)
-            
-            sheet.addAction(UIAlertAction(title: InternetArchive.PRETTY_NAME, style: .default)
-            { action in
-                self.upload(to: InternetArchive.self)
-            })
-            
-            sheet.addAction(UIAlertAction(title: WebDavServer.PRETTY_NAME, style: .default)
-            { action in
-                self.upload(to: WebDavServer.self)
-            })
-            
-            sheet.addAction(AlertUtils.getCancelAction())
+            let sheet = AlertHelper.build(
+                title: "Choose Server".localize(), style: .actionSheet, actions: [
+                    AlertHelper.defaultAction(InternetArchive.PRETTY_NAME) { action in
+                        self.upload(to: InternetArchive.self)
+                    },
+                    AlertHelper.defaultAction(WebDavServer.PRETTY_NAME) { action in
+                        self.upload(to: WebDavServer.self)
+                    },
+                    AlertHelper.cancelAction()
+                ])
             
             sheet.popoverPresentationController?.barButtonItem = sender
             sheet.popoverPresentationController?.sourceView = self.view
@@ -300,10 +296,11 @@ class BaseDetailsViewController: UIViewController {
             upload(to: WebDavServer.self)
         }
         else {
-            AlertUtils.presentSimple(
+            AlertHelper.present(
                 self,
+                message: "No server is properly configured to be used for uploading!".localize(),
                 title: "Server Configuration".localize(),
-                message: "No server is properly configured to be used for uploading!".localize())
+                actions: [AlertHelper.cancelAction()])
         }
     }
     

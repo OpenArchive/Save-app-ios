@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		33E6B43CCAFD4EBCA6FAA8C7 /* Pods_OpenArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B70E96222AA75803A61BDC /* Pods_OpenArchive.framework */; };
-		A004E24820EBC8B000A1D5F5 /* AlertUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A004E24720EBC8B000A1D5F5 /* AlertUtils.swift */; };
 		A004E24A20EBCEA000A1D5F5 /* DetailsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A004E24920EBCEA000A1D5F5 /* DetailsViewController.swift */; };
 		A004E24C20EBCF1700A1D5F5 /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A004E24B20EBCF1700A1D5F5 /* Formatters.swift */; };
 		A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029F6822118715700C4EF6D /* AssetFactory.swift */; };
@@ -42,12 +41,13 @@
 		A08C2CEB21F0B71B008ACA3E /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CEA21F0B71B008ACA3E /* EditProfileViewController.swift */; };
 		A08C2CED21F0C634008ACA3E /* AvatarRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */; };
 		A08C2CEF21F0C757008ACA3E /* AvatarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */; };
+		A0A192DA21F1EE88009A8CF0 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192D921F1EE88009A8CF0 /* AlertHelper.swift */; };
+		A0A192DB21F1EE88009A8CF0 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192D921F1EE88009A8CF0 /* AlertHelper.swift */; };
 		A0B24C6421F0CD94006C0CC6 /* AvatarRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */; };
 		A0B24C6521F0CDA6006C0CC6 /* AvatarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */; };
 		A0C0732820EE74CB00EA48F0 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C0732720EE74CB00EA48F0 /* SettingsViewController.swift */; };
 		A0C0732A20EE779800EA48F0 /* InternetArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C0732920EE779800EA48F0 /* InternetArchive.swift */; };
 		A0C475B221146EF40012937E /* InternetArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C0732920EE779800EA48F0 /* InternetArchive.swift */; };
-		A0C475B3211474A20012937E /* AlertUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A004E24720EBC8B000A1D5F5 /* AlertUtils.swift */; };
 		A0C475B4211474A50012937E /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A004E24B20EBCF1700A1D5F5 /* Formatters.swift */; };
 		A0C475B5211474A70012937E /* RegexUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */; };
 		A0C475B7211488BF0012937E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DE20E4C85E00DB31E1 /* Assets.xcassets */; };
@@ -101,7 +101,6 @@
 		2946CD89A7C904C6188D6C41 /* Pods-ShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-ShareExtension/Pods-ShareExtension.release.xcconfig"; sourceTree = "<group>"; };
 		43B70E96222AA75803A61BDC /* Pods_OpenArchive.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OpenArchive.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		5FD7A7F483ADD21139D54407 /* Pods-ShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ShareExtension/Pods-ShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
-		A004E24720EBC8B000A1D5F5 /* AlertUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertUtils.swift; sourceTree = "<group>"; };
 		A004E24920EBCEA000A1D5F5 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		A004E24B20EBCF1700A1D5F5 /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
 		A029F6822118715700C4EF6D /* AssetFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFactory.swift; sourceTree = "<group>"; };
@@ -129,6 +128,7 @@
 		A08C2CEA21F0B71B008ACA3E /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarRow.swift; sourceTree = "<group>"; };
 		A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AvatarCell.xib; sourceTree = "<group>"; };
+		A0A192D921F1EE88009A8CF0 /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
 		A0BA76E52111FA130009801D /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A0C0732720EE74CB00EA48F0 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		A0C0732920EE779800EA48F0 /* InternetArchive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchive.swift; sourceTree = "<group>"; };
@@ -191,7 +191,7 @@
 		A004E24620EBC89200A1D5F5 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				A004E24720EBC8B000A1D5F5 /* AlertUtils.swift */,
+				A0A192D921F1EE88009A8CF0 /* AlertHelper.swift */,
 				A004E24B20EBCF1700A1D5F5 /* Formatters.swift */,
 				A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */,
 				A0457E6620EF96FB00B8FBCB /* StringUtils.swift */,
@@ -541,7 +541,6 @@
 				A08C2CE921F0B617008ACA3E /* TableHeader.swift in Sources */,
 				A08C2CE721F0B5FA008ACA3E /* FormViewController.swift in Sources */,
 				A05C582E21EF96F400141633 /* Profile.swift in Sources */,
-				A0C475B3211474A20012937E /* AlertUtils.swift in Sources */,
 				A07129112111E4F1007A432A /* Db.swift in Sources */,
 				A0C475B4211474A50012937E /* Formatters.swift in Sources */,
 				A071290D2111DE47007A432A /* Server.swift in Sources */,
@@ -549,6 +548,7 @@
 				A070335C2119E7DF00BF1F33 /* Request+debug.swift in Sources */,
 				A0C475B221146EF40012937E /* InternetArchive.swift in Sources */,
 				A071290A2111DC6A007A432A /* StringUtils.swift in Sources */,
+				A0A192DA21F1EE88009A8CF0 /* AlertHelper.swift in Sources */,
 				A029F6842118715700C4EF6D /* AssetFactory.swift in Sources */,
 				A0B24C6421F0CD94006C0CC6 /* AvatarRow.swift in Sources */,
 				A0C475C021149B040012937E /* MainViewController.swift in Sources */,
@@ -574,7 +574,6 @@
 				A08C2CE621F0B46C008ACA3E /* FormViewController.swift in Sources */,
 				A08C2CED21F0C634008ACA3E /* AvatarRow.swift in Sources */,
 				A0E1A68521EE831300E4F6B7 /* ProfileCell.swift in Sources */,
-				A004E24820EBC8B000A1D5F5 /* AlertUtils.swift in Sources */,
 				A061950D215522970070E005 /* WebDavServer.swift in Sources */,
 				A0C475BD21148DDE0012937E /* BaseDetailsViewController.swift in Sources */,
 				A0D58DCE20E51517005A2F34 /* Asset.swift in Sources */,
@@ -594,6 +593,7 @@
 				A0E1A68721EE834D00E4F6B7 /* BaseCell.swift in Sources */,
 				A0C0732A20EE779800EA48F0 /* InternetArchive.swift in Sources */,
 				A0D6E88A20F3BAB800095E31 /* Server.swift in Sources */,
+				A0A192DB21F1EE88009A8CF0 /* AlertHelper.swift in Sources */,
 				A0457E6920EFB57C00B8FBCB /* RegexUtils.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
