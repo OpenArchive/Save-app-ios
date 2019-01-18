@@ -35,6 +35,13 @@ class InternetArchive : Server {
         }
     }
 
+    static var areCredentialsSet: Bool {
+        get {
+            return accessKey != nil && !accessKey!.isEmpty
+                && secretKey != nil && !secretKey!.isEmpty
+        }
+    }
+
 
     /**
      This needs to be tied to this object, otherwise the SessionManager will get

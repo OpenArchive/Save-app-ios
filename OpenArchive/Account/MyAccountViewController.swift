@@ -11,16 +11,45 @@ import Localize
 
 class MyAccountViewController: UITableViewController {
 
+    /**
+     Delete action for table list row. Deletes a space.
+     */
+    private lazy var deleteAction: UITableViewRowAction = {
+        let action = UITableViewRowAction(
+            style: .destructive,
+            title: "Delete".localize())
+        { (action, indexPath) in
+
+            AlertHelper.present(
+                self, message: "Are you sure you want to delete your Internet Archive credentials?".localize(),
+                title: "Delete Credentials".localize(), actions: [
+                    AlertHelper.cancelAction(),
+                    AlertHelper.destructiveAction("Delete".localize()) { action in
+                        InternetArchive.accessKey = nil
+                        InternetArchive.secretKey = nil
+
+                        self.tableView.reloadData()
+                    }
+                ])
+
+            self.tableView.setEditing(false, animated: true)
+        }
+
+        return action
+    }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.register(TableHeader.self, forHeaderFooterViewReuseIdentifier: TableHeader.reuseId)
         tableView.register(ProfileCell.nib, forCellReuseIdentifier: ProfileCell.reuseId)
         tableView.register(MenuItemCell.nib, forCellReuseIdentifier: MenuItemCell.reuseId)
+
+        tableView.tableFooterView = UIView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(true)
+        super.viewWillAppear(animated)
 
         tableView.reloadData()
     }
@@ -69,12 +98,7 @@ class MyAccountViewController: UITableViewController {
                 case 0:
                     cell.set("Private Server".localize(), isPlaceholder: true)
                 case 1:
-                    let placeholder = InternetArchive.accessKey == nil
-                        || InternetArchive.accessKey!.isEmpty
-                        || InternetArchive.secretKey == nil
-                        || InternetArchive.secretKey!.isEmpty
-
-                    cell.set("Internet Archive".localize(), isPlaceholder: placeholder)
+                    cell.set("Internet Archive".localize(), isPlaceholder: !InternetArchive.areCredentialsSet)
                 default:
                     cell.set("")
                 }
@@ -130,6 +154,14 @@ class MyAccountViewController: UITableViewController {
         }
 
         return nil
+    }
+
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        return indexPath.section == 1 && indexPath.row == 1 && InternetArchive.areCredentialsSet
+    }
+
+    override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        return [deleteAction]
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
