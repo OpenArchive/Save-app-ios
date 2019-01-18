@@ -19,19 +19,23 @@ class InternetArchive : Server {
 
     static var accessKey: String? {
         get {
-            return UserDefaults(suiteName: Server.SUITE_NAME)?.string(forKey: InternetArchive.ACCESS_KEY)
+            return UserDefaults(suiteName: Constants.suiteName)?
+                .string(forKey: InternetArchive.ACCESS_KEY)
         }
         set {
-            UserDefaults(suiteName: Server.SUITE_NAME)?.set(newValue, forKey: InternetArchive.ACCESS_KEY)
+            UserDefaults(suiteName: Constants.suiteName)?
+                .set(newValue, forKey: InternetArchive.ACCESS_KEY)
         }
     }
 
     static var secretKey: String? {
         get {
-            return UserDefaults(suiteName: Server.SUITE_NAME)?.string(forKey: InternetArchive.SECRET_KEY)
+            return UserDefaults(suiteName: Constants.suiteName)?
+                .string(forKey: InternetArchive.SECRET_KEY)
         }
         set {
-            UserDefaults(suiteName: Server.SUITE_NAME)?.set(newValue, forKey: InternetArchive.SECRET_KEY)
+            UserDefaults(suiteName: Constants.suiteName)?
+                .set(newValue, forKey: InternetArchive.SECRET_KEY)
         }
     }
 

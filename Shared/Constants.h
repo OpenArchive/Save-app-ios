@@ -10,8 +10,8 @@
 
 @interface Constants : NSObject
 
-@property (class, nonatomic, assign, readonly) NSString *appGroup;
+@property (class, nonatomic, assign, readonly, nonnull) NSString *appGroup NS_REFINED_FOR_SWIFT;
 
-@property (class, nonatomic, assign, readonly) NSString *teamId;
+@property (class, nonatomic, assign, readonly, nonnull) NSString *teamId NS_REFINED_FOR_SWIFT;
 
 @end

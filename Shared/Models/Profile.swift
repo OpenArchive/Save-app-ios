@@ -15,19 +15,23 @@ class Profile: NSObject {
 
     static var alias: String? {
         get {
-            return UserDefaults(suiteName: Server.SUITE_NAME)?.string(forKey: Profile.ALIAS)
+            return UserDefaults(suiteName: Constants.suiteName)?
+                .string(forKey: Profile.ALIAS)
         }
         set {
-            UserDefaults(suiteName: Server.SUITE_NAME)?.set(newValue, forKey: Profile.ALIAS)
+            UserDefaults(suiteName: Constants.suiteName)?
+                .set(newValue, forKey: Profile.ALIAS)
         }
     }
 
     static var role: String? {
         get {
-            return UserDefaults(suiteName: Server.SUITE_NAME)?.string(forKey: Profile.ROLE)
+            return UserDefaults(suiteName: Constants.suiteName)?
+                .string(forKey: Profile.ROLE)
         }
         set {
-            UserDefaults(suiteName: Server.SUITE_NAME)?.set(newValue, forKey: Profile.ROLE)
+            UserDefaults(suiteName: Constants.suiteName)?
+                .set(newValue, forKey: Profile.ROLE)
         }
     }
 }

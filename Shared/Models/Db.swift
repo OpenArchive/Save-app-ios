@@ -15,7 +15,7 @@ class Db {
 
     public static var shared: YapDatabase? = {
         if let path = FileManager.default
-            .containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroup as String)?
+            .containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroup)?
             .appendingPathComponent(DB_NAME) {
 
             let options = YapDatabaseOptions()

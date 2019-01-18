@@ -45,6 +45,8 @@
 		A0A192DB21F1EE88009A8CF0 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192D921F1EE88009A8CF0 /* AlertHelper.swift */; };
 		A0A192DD21F208DA009A8CF0 /* ServerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192DC21F208DA009A8CF0 /* ServerConfig.swift */; };
 		A0A192DE21F208DA009A8CF0 /* ServerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192DC21F208DA009A8CF0 /* ServerConfig.swift */; };
+		A0A192E021F23B61009A8CF0 /* Constants+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192DF21F23B61009A8CF0 /* Constants+Swift.swift */; };
+		A0A192E121F23B61009A8CF0 /* Constants+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192DF21F23B61009A8CF0 /* Constants+Swift.swift */; };
 		A0B24C6421F0CD94006C0CC6 /* AvatarRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */; };
 		A0B24C6521F0CDA6006C0CC6 /* AvatarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */; };
 		A0C0732820EE74CB00EA48F0 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C0732720EE74CB00EA48F0 /* SettingsViewController.swift */; };
@@ -132,6 +134,7 @@
 		A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AvatarCell.xib; sourceTree = "<group>"; };
 		A0A192D921F1EE88009A8CF0 /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
 		A0A192DC21F208DA009A8CF0 /* ServerConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConfig.swift; sourceTree = "<group>"; };
+		A0A192DF21F23B61009A8CF0 /* Constants+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Constants+Swift.swift"; sourceTree = "<group>"; };
 		A0BA76E52111FA130009801D /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A0C0732720EE74CB00EA48F0 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		A0C0732920EE779800EA48F0 /* InternetArchive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchive.swift; sourceTree = "<group>"; };
@@ -245,6 +248,7 @@
 				A0E739DE20E4C85E00DB31E1 /* Assets.xcassets */,
 				A08750A72112099700BFAFE4 /* Constants.h */,
 				A08750A82112099700BFAFE4 /* Constants.m */,
+				A0A192DF21F23B61009A8CF0 /* Constants+Swift.swift */,
 				A0BA76E52111FA130009801D /* Config.xcconfig */,
 				A0C475BA21148DDE0012937E /* BaseDetailsViewController.swift */,
 				A0C475B921148DDE0012937E /* BaseDetailsViewController.xib */,
@@ -560,6 +564,7 @@
 				A071290C2111DE3C007A432A /* Asset.swift in Sources */,
 				A08750AA2112099700BFAFE4 /* Constants.m in Sources */,
 				A07128FE2111CC90007A432A /* ShareViewController.swift in Sources */,
+				A0A192E121F23B61009A8CF0 /* Constants+Swift.swift in Sources */,
 				A05C582B21EF95A800141633 /* BaseViewController.swift in Sources */,
 				A0C475B5211474A70012937E /* RegexUtils.swift in Sources */,
 				A061950E215522970070E005 /* WebDavServer.swift in Sources */,
@@ -575,6 +580,7 @@
 				A0E1A67C21EE7A5C00E4F6B7 /* MyAccountViewController.swift in Sources */,
 				A05C582D21EF96F400141633 /* Profile.swift in Sources */,
 				A004E24C20EBCF1700A1D5F5 /* Formatters.swift in Sources */,
+				A0A192E021F23B61009A8CF0 /* Constants+Swift.swift in Sources */,
 				A08750A92112099700BFAFE4 /* Constants.m in Sources */,
 				A08C2CE621F0B46C008ACA3E /* FormViewController.swift in Sources */,
 				A08C2CED21F0C634008ACA3E /* AvatarRow.swift in Sources */,

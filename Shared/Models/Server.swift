@@ -27,16 +27,10 @@ class Server: NSObject, NSCoding {
     */
     public typealias DoneHandler = (_ server: Server) -> Void
 
-    /**
-     Fix for spurious warning.
-     See https://forums.developer.apple.com/thread/51348#discussion-186721
-     */
-    static let SUITE_NAME = "\(Constants.teamId ?? "").\(Constants.appGroup ?? "")"
-    
     static let sessionConf: URLSessionConfiguration = {
         let conf = URLSessionConfiguration.background(withIdentifier:
             "org.open-archive.OpenArchive.background")
-        conf.sharedContainerIdentifier = Constants.appGroup as String
+        conf.sharedContainerIdentifier = Constants.appGroup
 
         return conf
     }()
@@ -70,6 +64,7 @@ class Server: NSObject, NSCoding {
         coder.encode(isUploaded)
         coder.encode(error)
     }
+
 
     // MARK: Methods
 

@@ -71,7 +71,7 @@ class Asset: NSObject, NSCoding, YapDatabaseRelationshipNode {
     var file: URL? {
         get {
             return FileManager.default.containerURL(
-                forSecurityApplicationGroupIdentifier: Constants.appGroup as String)?
+                forSecurityApplicationGroupIdentifier: Constants.appGroup)?
                 .appendingPathComponent(Asset.COLLECTION)
                 .appendingPathComponent(id)
         }
@@ -80,7 +80,7 @@ class Asset: NSObject, NSCoding, YapDatabaseRelationshipNode {
     var thumb: URL? {
         get {
             return FileManager.default.containerURL(
-                forSecurityApplicationGroupIdentifier: Constants.appGroup as String)?
+                forSecurityApplicationGroupIdentifier: Constants.appGroup)?
                 .appendingPathComponent(Asset.COLLECTION)
                 .appendingPathComponent("\(id).thumb")
         }
