@@ -170,7 +170,7 @@ class Asset: NSObject, NSCoding, YapDatabaseRelationshipNode {
      Returns a thumbnail image of the asset or a default image.
 
      In case of the asset beeing an image or video, the thumbnail should be a smaller version of
-     the image, resp. a still shot of the image. In all other cases, a default image should be
+     the image, resp. a still shot of the video. In all other cases, a default image should be
      returned.
 
      - returns: A thumbnail `UIImage` of the asset or a default image.
