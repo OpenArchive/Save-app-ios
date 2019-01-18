@@ -53,7 +53,15 @@ class WebDavServer: Server {
         }
     }
 
+    static var areCredentialsSet: Bool {
+        get {
+            return baseUrl != nil && !baseUrl!.isEmpty
+                && username != nil && !username!.isEmpty
+                && password != nil && !password!.isEmpty
+        }
+    }
 
+    
     // MARK: Private Methods
     
     /**
