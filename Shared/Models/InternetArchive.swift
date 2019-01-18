@@ -35,7 +35,10 @@ class InternetArchive : Server {
         }
     }
 
-    static var areCredentialsSet: Bool {
+    /**
+     true, if this server is porperly configured.
+     */
+    static var isAvailable: Bool {
         get {
             return accessKey != nil && !accessKey!.isEmpty
                 && secretKey != nil && !secretKey!.isEmpty
@@ -66,19 +69,6 @@ class InternetArchive : Server {
 
     // MARK: Methods
 
-    /**
-     - returns: true, if this server is porperly configured.
-     */
-    static func isAvailable() -> Bool {
-        if let accessKey = InternetArchive.accessKey,
-            let secretKey = InternetArchive.secretKey {
-            
-            return !accessKey.isEmpty && !secretKey.isEmpty
-        }
-        
-        return false
-    }
-    
     override func getPrettyName() -> String {
         return InternetArchive.PRETTY_NAME
     }

@@ -272,7 +272,7 @@ class BaseDetailsViewController: UIViewController {
     }
 
     @objc func upload(_ sender: UIBarButtonItem) {
-        if InternetArchive.isAvailable() && WebDavServer.isAvailable() {
+        if InternetArchive.isAvailable && WebDavServer.isAvailable {
             let sheet = AlertHelper.build(
                 title: "Choose Server".localize(), style: .actionSheet, actions: [
                     AlertHelper.defaultAction(InternetArchive.PRETTY_NAME) { action in
@@ -289,10 +289,10 @@ class BaseDetailsViewController: UIViewController {
             
             self.present(sheet, animated: true)
         }
-        else if InternetArchive.isAvailable() {
+        else if InternetArchive.isAvailable {
             upload(to: InternetArchive.self)
         }
-        else if WebDavServer.isAvailable() {
+        else if WebDavServer.isAvailable {
             upload(to: WebDavServer.self)
         }
         else {

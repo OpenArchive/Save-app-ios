@@ -53,7 +53,10 @@ class WebDavServer: Server {
         }
     }
 
-    static var areCredentialsSet: Bool {
+    /**
+     true, if this server is porperly configured.
+     */
+    static var isAvailable: Bool {
         get {
             return baseUrl != nil && !baseUrl!.isEmpty
                 && username != nil && !username!.isEmpty
@@ -83,20 +86,6 @@ class WebDavServer: Server {
         return nil
     }()
 
-    /**
-     - returns: true, if this server is porperly configured.
-    */
-    static func isAvailable() -> Bool {
-        if let baseUrl = WebDavServer.baseUrl,
-            let username = WebDavServer.username,
-            let password = WebDavServer.password {
-            
-            return !baseUrl.isEmpty && !username.isEmpty && !password.isEmpty
-        }
-        
-        return false
-    }
-    
     /**
      Subclasses need to return a pretty name to show in the UI.
 

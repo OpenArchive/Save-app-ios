@@ -115,9 +115,9 @@ class MyAccountViewController: UITableViewController {
             case 1:
                 switch indexPath.row {
                 case 0:
-                    cell.set("Private Server".localize(), isPlaceholder: !WebDavServer.areCredentialsSet)
+                    cell.set("Private Server".localize(), isPlaceholder: !WebDavServer.isAvailable)
                 case 1:
-                    cell.set("Internet Archive".localize(), isPlaceholder: !InternetArchive.areCredentialsSet)
+                    cell.set("Internet Archive".localize(), isPlaceholder: !InternetArchive.isAvailable)
                 default:
                     cell.set("")
                 }
@@ -177,8 +177,8 @@ class MyAccountViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return indexPath.section == 1 && (
-            (indexPath.row == 0 && WebDavServer.areCredentialsSet)
-            || (indexPath.row == 1 && InternetArchive.areCredentialsSet)
+            (indexPath.row == 0 && WebDavServer.isAvailable)
+            || (indexPath.row == 1 && InternetArchive.isAvailable)
         )
     }
 
