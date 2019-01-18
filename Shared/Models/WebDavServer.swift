@@ -12,59 +12,32 @@ import FilesProvider
 class WebDavServer: Server {
 
     static let PRETTY_NAME = "WebDAV Server"
-    private static let BASE_URL = "WEBDAV_BASE_URL"
-    private static let SUBFOLDERS = "WEBDAV_SUBFOLDERS"
-    private static let USERNAME = "WEBDAV_USERNAME"
-    private static let PASSWORD = "WEBDAV_PASSWORD"
 
-    static var baseUrl: String? {
-        get {
-            return UserDefaults(suiteName: Server.SUITE_NAME)?.string(forKey: WebDavServer.BASE_URL)
+    private let config: ServerConfig?
+
+    init(_ config: ServerConfig) {
+        self.config = config
+
+        if let id = config.url?.absoluteString {
+            super.init(id)
         }
-        set {
-            UserDefaults(suiteName: Server.SUITE_NAME)?.set(newValue, forKey: WebDavServer.BASE_URL)
+        else {
+            super.init()
         }
     }
 
-    static var subfolders: String? {
-        get {
-            return UserDefaults(suiteName: Server.SUITE_NAME)?.string(forKey: WebDavServer.SUBFOLDERS)
-        }
-        set {
-            UserDefaults(suiteName: Server.SUITE_NAME)?.set(newValue, forKey: WebDavServer.SUBFOLDERS)
-        }
-    }
+    required init(coder decoder: NSCoder) {
+        config = decoder.decodeObject() as? ServerConfig
 
-    static var username: String? {
-        get {
-            return UserDefaults(suiteName: Server.SUITE_NAME)?.string(forKey: WebDavServer.USERNAME)
-        }
-        set {
-            UserDefaults(suiteName: Server.SUITE_NAME)?.set(newValue, forKey: WebDavServer.USERNAME)
-        }
+        super.init(coder: decoder)
     }
-
-    static var password: String? {
-        get {
-            return UserDefaults(suiteName: Server.SUITE_NAME)?.string(forKey: WebDavServer.PASSWORD)
-        }
-        set {
-            UserDefaults(suiteName: Server.SUITE_NAME)?.set(newValue, forKey: WebDavServer.PASSWORD)
-        }
-    }
-
-    /**
-     true, if this server is porperly configured.
-     */
-    static var isAvailable: Bool {
-        get {
-            return baseUrl != nil && !baseUrl!.isEmpty
-                && username != nil && !username!.isEmpty
-                && password != nil && !password!.isEmpty
-        }
-    }
-
     
+    override func encode(with coder: NSCoder) {
+        coder.encode(config)
+
+        super.encode(with: coder)
+    }
+
     // MARK: Private Methods
     
     /**
@@ -73,9 +46,9 @@ class WebDavServer: Server {
      
      - returns: a `WebDAVFileProvider` with the provided `baseUrl` and stored credentials.
      */
-    private lazy var provider: WebDAVFileProvider? = {
-        if let username = WebDavServer.username,
-            let password = WebDavServer.password,
+    private var provider: WebDAVFileProvider? {
+        if let username = config?.username,
+            let password = config?.password,
             let baseUrl = publicUrl?.deletingLastPathComponent() {
             
             let credential = URLCredential(user: username, password: password, persistence: .forSession)
@@ -84,7 +57,7 @@ class WebDavServer: Server {
         }
         
         return nil
-    }()
+    }
 
     /**
      Subclasses need to return a pretty name to show in the UI.
@@ -98,25 +71,8 @@ class WebDavServer: Server {
     override func upload(_ asset: Asset, progress: @escaping ProgressHandler,
                          done: @escaping DoneHandler) {
         
-        if publicUrl == nil,
-            var url = WebDavServer.baseUrl {
-            
-            // Should the file be stored in a/many subfolder(s)?
-            if let subfolders = WebDavServer.subfolders {
-                if !url.hasSuffix("/") && !subfolders.hasPrefix("/") {
-                    url += "/"
-                }
-                
-                url += subfolders
-            }
-            
-            if !url.hasSuffix("/") {
-                url += "/"
-            }
-            
-            url += asset.filename
-
-            publicUrl = URL(string: url)
+        if publicUrl == nil {
+            publicUrl = config?.url?.appendingPathComponent(asset.filename)
         }
 
         if let filename = publicUrl?.lastPathComponent,

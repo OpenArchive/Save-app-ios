@@ -188,13 +188,13 @@ class BaseDetailsViewController: UIViewController {
 
             serverStatusLb.text = "Removing...".localize()
 
-            asset.remove(from: type(of: server)) { server in
+            server.remove(asset) { server in
                 self.setServerStatus(server)
 
                 button.isHidden = false
 
                 if server.error == nil && !server.isUploaded {
-                    asset.removeServer(ofType: type(of: server))
+                    asset.removeServer(server)
                     self.showServerBox(false)
 
                     self.writeConn?.asyncReadWrite() { transaction in
@@ -272,17 +272,41 @@ class BaseDetailsViewController: UIViewController {
     }
 
     @objc func upload(_ sender: UIBarButtonItem) {
-        if InternetArchive.isAvailable && WebDavServer.isAvailable {
-            let sheet = AlertHelper.build(
-                title: "Choose Server".localize(), style: .actionSheet, actions: [
+        var configs = [ServerConfig]()
+
+        Db.newConnection()?.read() { transaction in
+            transaction.enumerateRows(inCollection: ServerConfig.COLLECTION) {
+                (key: String, config: Any, metadata: Any?, stop: UnsafeMutablePointer<ObjCBool>) in
+
+                if let config = config as? ServerConfig,
+                    config.url != nil {
+
+                    configs.append(config)
+                }
+            }
+        }
+
+        if configs.count > 1 || (configs.count > 0 && InternetArchive.isAvailable) {
+            var actions = [UIAlertAction]()
+
+            for config in configs {
+                actions.append(
+                    AlertHelper.defaultAction(config.url!.absoluteString) { action in
+                    self.upload(to: WebDavServer(config))
+                })
+            }
+
+            if InternetArchive.isAvailable {
+                actions.append(
                     AlertHelper.defaultAction(InternetArchive.PRETTY_NAME) { action in
-                        self.upload(to: InternetArchive.self)
-                    },
-                    AlertHelper.defaultAction(WebDavServer.PRETTY_NAME) { action in
-                        self.upload(to: WebDavServer.self)
-                    },
-                    AlertHelper.cancelAction()
-                ])
+                        self.upload(to: InternetArchive())
+                })
+            }
+
+            actions.append(AlertHelper.cancelAction())
+
+            let sheet = AlertHelper.build(
+                title: "Choose Server".localize(), style: .actionSheet, actions: actions)
             
             sheet.popoverPresentationController?.barButtonItem = sender
             sheet.popoverPresentationController?.sourceView = self.view
@@ -290,10 +314,10 @@ class BaseDetailsViewController: UIViewController {
             self.present(sheet, animated: true)
         }
         else if InternetArchive.isAvailable {
-            upload(to: InternetArchive.self)
+            upload(to: InternetArchive())
         }
-        else if WebDavServer.isAvailable {
-            upload(to: WebDavServer.self)
+        else if configs.count == 1 {
+            upload(to: WebDavServer(configs[0]))
         }
         else {
             AlertHelper.present(
@@ -306,12 +330,12 @@ class BaseDetailsViewController: UIViewController {
     
     // MARK: Private Methods
     
-    private func upload(to type: Server.Type) {
+    private func upload(to server: Server) {
         if let asset = asset {
 
             var firstTime = true
             
-            asset.upload(to: type, progress: { server, progress in
+            asset.upload(to: server, progress: { server, progress in
                 if firstTime {
                     self.setServerInfo(server)
                     firstTime = false

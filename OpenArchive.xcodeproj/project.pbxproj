@@ -43,6 +43,8 @@
 		A08C2CEF21F0C757008ACA3E /* AvatarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */; };
 		A0A192DA21F1EE88009A8CF0 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192D921F1EE88009A8CF0 /* AlertHelper.swift */; };
 		A0A192DB21F1EE88009A8CF0 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192D921F1EE88009A8CF0 /* AlertHelper.swift */; };
+		A0A192DD21F208DA009A8CF0 /* ServerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192DC21F208DA009A8CF0 /* ServerConfig.swift */; };
+		A0A192DE21F208DA009A8CF0 /* ServerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192DC21F208DA009A8CF0 /* ServerConfig.swift */; };
 		A0B24C6421F0CD94006C0CC6 /* AvatarRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */; };
 		A0B24C6521F0CDA6006C0CC6 /* AvatarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */; };
 		A0C0732820EE74CB00EA48F0 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C0732720EE74CB00EA48F0 /* SettingsViewController.swift */; };
@@ -129,6 +131,7 @@
 		A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarRow.swift; sourceTree = "<group>"; };
 		A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AvatarCell.xib; sourceTree = "<group>"; };
 		A0A192D921F1EE88009A8CF0 /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
+		A0A192DC21F208DA009A8CF0 /* ServerConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConfig.swift; sourceTree = "<group>"; };
 		A0BA76E52111FA130009801D /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A0C0732720EE74CB00EA48F0 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		A0C0732920EE779800EA48F0 /* InternetArchive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchive.swift; sourceTree = "<group>"; };
@@ -255,6 +258,7 @@
 				A071290F2111E4F1007A432A /* Db.swift */,
 				A0D58DCD20E51517005A2F34 /* Asset.swift */,
 				A029F6822118715700C4EF6D /* AssetFactory.swift */,
+				A0A192DC21F208DA009A8CF0 /* ServerConfig.swift */,
 				A0D6E88920F3BAB800095E31 /* Server.swift */,
 				A0C0732920EE779800EA48F0 /* InternetArchive.swift */,
 				A061950C215522970070E005 /* WebDavServer.swift */,
@@ -537,6 +541,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0A192DE21F208DA009A8CF0 /* ServerConfig.swift in Sources */,
 				A08C2CE821F0B613008ACA3E /* BaseCell.swift in Sources */,
 				A08C2CE921F0B617008ACA3E /* TableHeader.swift in Sources */,
 				A08C2CE721F0B5FA008ACA3E /* FormViewController.swift in Sources */,
@@ -585,6 +590,7 @@
 				A07129102111E4F1007A432A /* Db.swift in Sources */,
 				A0E1A68121EE7BE900E4F6B7 /* MenuItemCell.swift in Sources */,
 				A004E24A20EBCEA000A1D5F5 /* DetailsViewController.swift in Sources */,
+				A0A192DD21F208DA009A8CF0 /* ServerConfig.swift in Sources */,
 				A08C2CE221F09B3F008ACA3E /* InternetArchiveViewController.swift in Sources */,
 				A0E1A68921EE873200E4F6B7 /* TableHeader.swift in Sources */,
 				A0457E6720EF96FB00B8FBCB /* StringUtils.swift in Sources */,

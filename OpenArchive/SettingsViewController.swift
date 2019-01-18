@@ -22,10 +22,10 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
 
         iaAccessKeyTf.text = InternetArchive.accessKey
         iaSecretKeyTf.text = InternetArchive.secretKey
-        wdBaseUrlTf.text = WebDavServer.baseUrl
-        wdSubfoldersTf.text = WebDavServer.subfolders
-        wdUsernameTf.text = WebDavServer.username
-        wdPasswordTf.text = WebDavServer.password
+//        wdBaseUrlTf.text = WebDavServer.baseUrl
+//        wdSubfoldersTf.text = WebDavServer.subfolders
+//        wdUsernameTf.text = WebDavServer.username
+//        wdPasswordTf.text = WebDavServer.password
     }
 
     // MARK: UITextFieldDelegate
@@ -55,14 +55,15 @@ class SettingsViewController: UITableViewController, UITextFieldDelegate {
             InternetArchive.accessKey = sender.text
         case iaSecretKeyTf:
             InternetArchive.secretKey = sender.text
-        case wdBaseUrlTf:
-            WebDavServer.baseUrl = sender.text
-        case wdSubfoldersTf:
-            WebDavServer.subfolders = sender.text
-        case wdUsernameTf:
-            WebDavServer.username = sender.text
+//        case wdBaseUrlTf:
+//            WebDavServer.baseUrl = sender.text
+//        case wdSubfoldersTf:
+//            WebDavServer.subfolders = sender.text
+//        case wdUsernameTf:
+//            WebDavServer.username = sender.text
         default:
-            WebDavServer.password = sender.text
+//            WebDavServer.password = sender.text
+            break
         }
     }
 }

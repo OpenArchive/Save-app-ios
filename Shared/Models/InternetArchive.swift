@@ -45,7 +45,6 @@ class InternetArchive : Server {
         }
     }
 
-
     /**
      This needs to be tied to this object, otherwise the SessionManager will get
      destroyed during the request and the request will break with error -999.
@@ -61,11 +60,10 @@ class InternetArchive : Server {
 
     private var slug: String?
 
-    required init() {
-        super.init()
-
-        // Just here to satisfy init using a dynamic type variable.
+    init() {
+        super.init(InternetArchive.PRETTY_NAME)
     }
+
 
     // MARK: Methods
 

@@ -41,25 +41,31 @@ class Server: NSObject, NSCoding {
         return conf
     }()
 
+    let id: String
+
     var publicUrl: URL?
 
     var isUploaded = false
 
     var error: String?
 
-    required override init() {
-        // Just here to satisfy init using a dynamic type variable.
+    init(_ id: String = "___invalid_id___") {
+        self.id = id
+
+        super.init()
     }
 
     // MARK: NSCoding
 
     required init(coder decoder: NSCoder) {
+        id = decoder.decodeObject() as! String
         publicUrl = decoder.decodeObject() as? URL
         isUploaded = decoder.decodeObject() as? Bool ?? false
         error = decoder.decodeObject() as? String
     }
 
     func encode(with coder: NSCoder) {
+        coder.encode(id)
         coder.encode(publicUrl)
         coder.encode(isUploaded)
         coder.encode(error)

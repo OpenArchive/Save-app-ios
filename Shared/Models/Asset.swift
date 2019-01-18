@@ -190,25 +190,23 @@ class Asset: NSObject, NSCoding, YapDatabaseRelationshipNode {
     }
 
     /**
-     - parameter serverType: The subclass to search.
-     - returns: the `Server` of subclass `serverType`, if any configured.
+     - parameter id: The server ID to search.
+     - returns: the `Server` with the searched ID, if any configured.
     */
-    func getServer(ofType serverType: Server.Type) -> Server? {
-        return servers.first(where: { type(of: $0) == serverType })
+    func getServer(_ id: String) -> Server? {
+        return servers.first(where: { $0.id == id })
     }
 
     /**
      Add a `Server` to this asset, where we want to upload to, if not added, yet.
 
-     - parameter serverType: The subclass to use.
+     - parameter server: The server to use.
      - returns: the already existing or just created subclass as given.
     */
-    func setServer(ofType serverType: Server.Type) -> Server {
-        if let server = getServer(ofType: serverType) {
+    func setServer(_ server: Server) -> Server {
+        if let server = getServer(server.id) {
             return server
         }
-
-        let server = serverType.init()
 
         servers.append(server)
 
@@ -220,13 +218,10 @@ class Asset: NSObject, NSCoding, YapDatabaseRelationshipNode {
 
      This makes most sense, after we removed an asset from that server.
 
-     - parameter serverType: The subclass to use.
+     - parameter server: The server to remove.
     */
-    func removeServer(ofType serverType: Server.Type) {
-
-        if let server = getServer(ofType: serverType),
-            let idx = servers.index(of: server) {
-
+    func removeServer(_ server: Server) {
+        if let idx = servers.index(of: server) {
             servers.remove(at: idx)
         }
     }
@@ -234,27 +229,15 @@ class Asset: NSObject, NSCoding, YapDatabaseRelationshipNode {
     /**
      Upload this asset to the given server.
 
-     - parameter serverType: The `Server` subclass to use.
+     - parameter server: The server to use.
      - parameter progress: Callback to communicate upload progress.
      - parameter done: Callback to indicate end of upload. Check server object for status!
     */
-    func upload(to serverType: Server.Type, progress: @escaping Server.ProgressHandler,
+    func upload(to server: Server, progress: @escaping Server.ProgressHandler,
                 done: @escaping Server.DoneHandler) {
-        let server = setServer(ofType: serverType)
+        let server = setServer(server)
 
         server.upload(self, progress: progress, done: done)
-    }
-
-    /**
-     Remove this asset from the given server.
-
-     - parameter serverType: The `Server` subclass to use.
-     - parameter done: Callback to indicate end of removal. Check server object for status!
-     */
-    func remove(from serverType: Server.Type, done: @escaping Server.DoneHandler) {
-        if let server = getServer(ofType: serverType) {
-            server.remove(self, done: done)
-        }
     }
 
     // MARK: Class methods
