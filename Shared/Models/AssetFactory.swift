@@ -163,7 +163,7 @@ class AssetFactory {
      - parameter thumbnail: A `UIImage` which represents a thumbnail of this asset.
      - parameter resultHandler: Callback with the created `Asset` object.
      */
-    class func create(fromFileUrl url: URL, thumbnail: UIImage?, resultHandler: @escaping ResultHandler) {
+    class func create(fromFileUrl url: URL, thumbnail: UIImage? = nil, resultHandler: @escaping ResultHandler) {
         if let uti = (try? url.resourceValues(forKeys: [.typeIdentifierKey]))?.typeIdentifier {
             let asset = Asset(uti: uti)
             asset.filename = url.lastPathComponent
@@ -188,21 +188,6 @@ class AssetFactory {
                 resultHandler(asset)
             }
         }
-    }
-
-    /**
-     Create an `Asset` object from a given file `URL`.
-
-     Will try to generate a thumbnail from the asset's file.
-
-     You will *only* receive the `resultHandler` callback, if the given file can be successfully
-     *moved* to its new location inside the app!
-
-     - parameter url: A file URL.
-     - parameter resultHandler: Callback with the created `Asset` object.
-     */
-    class func create(fromFileUrl url: URL, resultHandler: @escaping ResultHandler) {
-        create(fromFileUrl: url, thumbnail: nil, resultHandler: resultHandler)
     }
 
     /**
