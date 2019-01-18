@@ -46,11 +46,11 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
         super.viewDidLoad()
 
         NotificationCenter.default.addObserver(self, selector: #selector(yapDatabaseModified),
-                                               name: Notification.Name.YapDatabaseModified,
+                                               name: .YapDatabaseModified,
                                                object: readConn?.database)
 
         NotificationCenter.default.addObserver(self, selector: #selector(yapDatabaseModifiedExternally),
-                                               name: Notification.Name.YapDatabaseModifiedExternally,
+                                               name: .YapDatabaseModifiedExternally,
                                                object: readConn?.database)
     }
 
@@ -153,6 +153,7 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         dismiss(animated: true)
     }
+
 
     // MARK: Observers
 
