@@ -48,9 +48,10 @@ class MyAccountViewController: UITableViewController {
             let handler: ((UIAlertAction) -> Void)
 
             if indexPath.row < self.serverConfigCount {
-                server = WebDavServer.PRETTY_NAME
+                let conf = self.getServerConfig(indexPath)
+                server = conf?.prettyName ?? WebDavServer.PRETTY_NAME
+
                 handler = { _ in
-                    let conf = self.getServerConfig(indexPath)
 
                     if let key = conf?.url?.absoluteString {
                         self.writeConn?.asyncReadWrite() { transaction in
@@ -143,7 +144,7 @@ class MyAccountViewController: UITableViewController {
             switch indexPath.section {
             case 1:
                 if indexPath.row < serverConfigCount {
-                    cell.set(getServerConfig(indexPath)?.url?.absoluteString ?? "")
+                    cell.set(getServerConfig(indexPath)?.prettyName ?? WebDavServer.PRETTY_NAME)
                 }
                 else if indexPath.row == serverConfigCount {
                     cell.set("Private Server".localize(), isPlaceholder: true)

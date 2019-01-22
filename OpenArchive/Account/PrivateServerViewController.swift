@@ -14,6 +14,10 @@ class PrivateServerViewController: FormViewController {
 
     var conf: ServerConfig?
 
+    private let nameRow = TextRow() {
+        $0.title = "Name".localize()
+    }
+
     private let urlRow = URLRow() {
         $0.title = "Server URL".localize()
         $0.add(rule: RuleRequired())
@@ -37,12 +41,15 @@ class PrivateServerViewController: FormViewController {
             title: "Connect".localize(), style: .done, target: self,
             action: #selector(connect))
 
+        nameRow.value = conf?.name
         urlRow.value = conf?.url
         userNameRow.value = conf?.username
         passwordRow.value = conf?.password
 
         form
             +++ Section()
+
+            <<< nameRow
 
             <<< urlRow.cellUpdate() { _, _ in
                 self.enableConnect()
@@ -66,6 +73,7 @@ class PrivateServerViewController: FormViewController {
     @objc func connect() {
         let conf = self.conf ?? ServerConfig()
 
+        conf.name = nameRow.value
         conf.url = urlRow.value
         conf.username = userNameRow.value
         conf.password = passwordRow.value
