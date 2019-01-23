@@ -104,7 +104,7 @@ class BaseDetailsViewController: UIViewController {
                 }
 
                 for s in servers {
-                    self.setServerInfo(s)
+                    self.setServerInfo(s.value)
                 }
 
                 self.titleTf.text = asset.title
@@ -182,7 +182,7 @@ class BaseDetailsViewController: UIViewController {
 
     @IBAction func removeFromServer(_ button: UIButton) {
         if let asset = asset,
-            let server = asset.getServers().first {
+            let server = asset.getServers().first?.value {
             
             button.isHidden = true
 

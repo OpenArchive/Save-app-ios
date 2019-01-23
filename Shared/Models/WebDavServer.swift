@@ -18,12 +18,7 @@ class WebDavServer: Server {
     init(_ space: Space) {
         self.space = space
 
-        if let id = space.url?.absoluteString {
-            super.init(id)
-        }
-        else {
-            super.init()
-        }
+        super.init("webdav_with_space_\(space.id)")
     }
 
     required init(coder decoder: NSCoder) {

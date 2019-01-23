@@ -96,7 +96,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode {
         }
     }
 
-    private var servers = [Server]()
+    private var servers = [String : Server]()
 
     override var description: String {
         return "\(String(describing: type(of: self))): [id=\(id), created=\(created), uti=\(uti), "
@@ -131,7 +131,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode {
         location = decoder.decodeObject() as? String
         tags = decoder.decodeObject() as? [String]
         license = decoder.decodeObject() as? String
-        servers = decoder.decodeObject() as? [Server] ?? [Server]()
+        servers = decoder.decodeObject() as? [String : Server] ?? [String : Server]()
     }
 
     func encode(with coder: NSCoder) {
@@ -195,16 +195,8 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode {
         return UIImage(named: "NoImage")
     }
 
-    func getServers() -> [Server] {
+    func getServers() -> [String : Server] {
         return servers
-    }
-
-    /**
-     - parameter id: The server ID to search.
-     - returns: the `Server` with the searched ID, if any configured.
-    */
-    func getServer(_ id: String) -> Server? {
-        return servers.first(where: { $0.id == id })
     }
 
     /**
@@ -214,11 +206,11 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode {
      - returns: the already existing or just created subclass as given.
     */
     func setServer(_ server: Server) -> Server {
-        if let server = getServer(server.id) {
+        if let server = servers[server.id] {
             return server
         }
 
-        servers.append(server)
+        servers[server.id] = server
 
         return server
     }
@@ -231,9 +223,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode {
      - parameter server: The server to remove.
     */
     func removeServer(_ server: Server) {
-        if let idx = servers.index(of: server) {
-            servers.remove(at: idx)
-        }
+        servers.removeValue(forKey: server.id)
     }
 
     /**
