@@ -198,7 +198,7 @@ class BaseDetailsViewController: UIViewController {
                     self.showServerBox(false)
 
                     self.writeConn?.asyncReadWrite() { transaction in
-                        transaction.setObject(asset, forKey: asset.id, inCollection: Asset.COLLECTION)
+                        transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
                     }
                 }
                 else {
@@ -236,7 +236,7 @@ class BaseDetailsViewController: UIViewController {
             }
 
             writeConn?.asyncReadWrite() { transaction in
-                transaction.setObject(asset, forKey: asset.id, inCollection: Asset.COLLECTION)
+                transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
             }
         }
     }
@@ -272,27 +272,27 @@ class BaseDetailsViewController: UIViewController {
     }
 
     @objc func upload(_ sender: UIBarButtonItem) {
-        var configs = [ServerConfig]()
+        var spaces = [Space]()
 
         Db.newConnection()?.read() { transaction in
-            transaction.enumerateRows(inCollection: ServerConfig.COLLECTION) {
-                (key: String, config: Any, metadata: Any?, stop: UnsafeMutablePointer<ObjCBool>) in
+            transaction.enumerateRows(inCollection: Space.collection) {
+                (key: String, space: Any, metadata: Any?, stop: UnsafeMutablePointer<ObjCBool>) in
 
-                if let config = config as? ServerConfig,
-                    config.url != nil {
+                if let space = space as? Space,
+                    space.url != nil {
 
-                    configs.append(config)
+                    spaces.append(space)
                 }
             }
         }
 
-        if configs.count > 1 || (configs.count > 0 && InternetArchive.isAvailable) {
+        if spaces.count > 1 || (spaces.count > 0 && InternetArchive.isAvailable) {
             var actions = [UIAlertAction]()
 
-            for config in configs {
+            for space in spaces {
                 actions.append(
-                    AlertHelper.defaultAction(config.url!.absoluteString) { action in
-                    self.upload(to: WebDavServer(config))
+                    AlertHelper.defaultAction(space.prettyName) { action in
+                    self.upload(to: WebDavServer(space))
                 })
             }
 
@@ -316,8 +316,8 @@ class BaseDetailsViewController: UIViewController {
         else if InternetArchive.isAvailable {
             upload(to: InternetArchive())
         }
-        else if configs.count == 1 {
-            upload(to: WebDavServer(configs[0]))
+        else if spaces.count == 1 {
+            upload(to: WebDavServer(spaces[0]))
         }
         else {
             AlertHelper.present(
@@ -349,7 +349,7 @@ class BaseDetailsViewController: UIViewController {
                 self.setServerInfo(server)
 
                 self.writeConn?.asyncReadWrite() { transaction in
-                    transaction.setObject(asset, forKey: asset.id, inCollection: Asset.COLLECTION)
+                    transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
                 }
             }
         }

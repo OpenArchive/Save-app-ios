@@ -12,7 +12,7 @@ import YapDatabase
 
 class PrivateServerViewController: FormViewController {
 
-    var conf: ServerConfig?
+    var space: Space?
 
     private let nameRow = TextRow() {
         $0.title = "Name".localize()
@@ -41,10 +41,10 @@ class PrivateServerViewController: FormViewController {
             title: "Connect".localize(), style: .done, target: self,
             action: #selector(connect))
 
-        nameRow.value = conf?.name
-        urlRow.value = conf?.url
-        userNameRow.value = conf?.username
-        passwordRow.value = conf?.password
+        nameRow.value = space?.name
+        urlRow.value = space?.url
+        userNameRow.value = space?.username
+        passwordRow.value = space?.password
 
         form
             +++ Section()
@@ -71,16 +71,16 @@ class PrivateServerViewController: FormViewController {
     // MARK: Actions
 
     @objc func connect() {
-        let conf = self.conf ?? ServerConfig()
+        let space = self.space ?? Space()
 
-        conf.name = nameRow.value
-        conf.url = urlRow.value
-        conf.username = userNameRow.value
-        conf.password = passwordRow.value
+        space.name = nameRow.value
+        space.url = urlRow.value
+        space.username = userNameRow.value
+        space.password = passwordRow.value
 
         Db.newConnection()?.asyncReadWrite() { transaction in
-            transaction.setObject(conf, forKey: (conf.url?.absoluteString)!,
-                                  inCollection: ServerConfig.COLLECTION)
+            transaction.setObject(space, forKey: space.id,
+                                  inCollection: Space.collection)
         }
 
         navigationController?.popViewController(animated: true)

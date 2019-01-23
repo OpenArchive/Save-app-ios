@@ -13,10 +13,20 @@ import YapDatabase
 /**
  Representation of a file asset in the database.
 */
-class Asset: NSObject, NSCoding, YapDatabaseRelationshipNode {
+class Asset: NSObject, Item, YapDatabaseRelationshipNode {
 
-    static let COLLECTION = "assets"
+    static let collection = "assets"
     static let DEFAULT_MIME_TYPE = "application/octet-stream"
+
+    static func fixArchiverName() {
+        NSKeyedArchiver.setClassName("Asset", for: self)
+        NSKeyedUnarchiver.setClass(self, forClassName: "Asset")
+    }
+
+    func compare(_ rhs: Asset) -> ComparisonResult {
+        return created.compare(rhs.created)
+    }
+
 
     let id: String
     let created: Date
@@ -72,7 +82,7 @@ class Asset: NSObject, NSCoding, YapDatabaseRelationshipNode {
         get {
             return FileManager.default.containerURL(
                 forSecurityApplicationGroupIdentifier: Constants.appGroup)?
-                .appendingPathComponent(Asset.COLLECTION)
+                .appendingPathComponent(Asset.collection)
                 .appendingPathComponent(id)
         }
     }
@@ -81,7 +91,7 @@ class Asset: NSObject, NSCoding, YapDatabaseRelationshipNode {
         get {
             return FileManager.default.containerURL(
                 forSecurityApplicationGroupIdentifier: Constants.appGroup)?
-                .appendingPathComponent(Asset.COLLECTION)
+                .appendingPathComponent(Asset.collection)
                 .appendingPathComponent("\(id).thumb")
         }
     }

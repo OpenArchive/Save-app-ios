@@ -43,8 +43,8 @@
 		A08C2CEF21F0C757008ACA3E /* AvatarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */; };
 		A0A192DA21F1EE88009A8CF0 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192D921F1EE88009A8CF0 /* AlertHelper.swift */; };
 		A0A192DB21F1EE88009A8CF0 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192D921F1EE88009A8CF0 /* AlertHelper.swift */; };
-		A0A192DD21F208DA009A8CF0 /* ServerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192DC21F208DA009A8CF0 /* ServerConfig.swift */; };
-		A0A192DE21F208DA009A8CF0 /* ServerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192DC21F208DA009A8CF0 /* ServerConfig.swift */; };
+		A0A192DD21F208DA009A8CF0 /* Space.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192DC21F208DA009A8CF0 /* Space.swift */; };
+		A0A192DE21F208DA009A8CF0 /* Space.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192DC21F208DA009A8CF0 /* Space.swift */; };
 		A0A192E021F23B61009A8CF0 /* Constants+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192DF21F23B61009A8CF0 /* Constants+Swift.swift */; };
 		A0A192E121F23B61009A8CF0 /* Constants+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192DF21F23B61009A8CF0 /* Constants+Swift.swift */; };
 		A0B24C6421F0CD94006C0CC6 /* AvatarRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */; };
@@ -62,6 +62,9 @@
 		A0C475C021149B040012937E /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C475BF21149B040012937E /* MainViewController.swift */; };
 		A0D58DCE20E51517005A2F34 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D58DCD20E51517005A2F34 /* Asset.swift */; };
 		A0D6E88A20F3BAB800095E31 /* Server.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D6E88920F3BAB800095E31 /* Server.swift */; };
+		A0DE78AF21F76D2200B6B68B /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78AE21F76D2200B6B68B /* Project.swift */; };
+		A0DE78B021F76D2200B6B68B /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78AE21F76D2200B6B68B /* Project.swift */; };
+		A0DE78B221F771A700B6B68B /* ProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78B121F771A700B6B68B /* ProjectViewController.swift */; };
 		A0E1A67C21EE7A5C00E4F6B7 /* MyAccountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A67B21EE7A5C00E4F6B7 /* MyAccountViewController.swift */; };
 		A0E1A68021EE7BE900E4F6B7 /* MenuItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E1A67E21EE7BE900E4F6B7 /* MenuItemCell.xib */; };
 		A0E1A68121EE7BE900E4F6B7 /* MenuItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */; };
@@ -74,6 +77,10 @@
 		A0E739DD20E4C85D00DB31E1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DB20E4C85D00DB31E1 /* Main.storyboard */; };
 		A0E739DF20E4C85E00DB31E1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DE20E4C85E00DB31E1 /* Assets.xcassets */; };
 		A0E739E220E4C85E00DB31E1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0E739E020E4C85E00DB31E1 /* LaunchScreen.storyboard */; };
+		A0FB4DB221F8799100B46099 /* SpacesProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DB121F8799100B46099 /* SpacesProjectsView.swift */; };
+		A0FB4DB321F8799100B46099 /* SpacesProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DB121F8799100B46099 /* SpacesProjectsView.swift */; };
+		A0FB4DB521F89FD500B46099 /* AssetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DB421F89FD500B46099 /* AssetsView.swift */; };
+		A0FB4DB621F89FD500B46099 /* AssetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DB421F89FD500B46099 /* AssetsView.swift */; };
 		E3237719CED5D0E5FB3A9540 /* Pods_ShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA57E87D37FC97CE551149A6 /* Pods_ShareExtension.framework */; };
 /* End PBXBuildFile section */
 
@@ -133,7 +140,7 @@
 		A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarRow.swift; sourceTree = "<group>"; };
 		A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AvatarCell.xib; sourceTree = "<group>"; };
 		A0A192D921F1EE88009A8CF0 /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
-		A0A192DC21F208DA009A8CF0 /* ServerConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServerConfig.swift; sourceTree = "<group>"; };
+		A0A192DC21F208DA009A8CF0 /* Space.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Space.swift; sourceTree = "<group>"; };
 		A0A192DF21F23B61009A8CF0 /* Constants+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Constants+Swift.swift"; sourceTree = "<group>"; };
 		A0BA76E52111FA130009801D /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A0C0732720EE74CB00EA48F0 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -145,6 +152,8 @@
 		A0C475BF21149B040012937E /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		A0D58DCD20E51517005A2F34 /* Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		A0D6E88920F3BAB800095E31 /* Server.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Server.swift; sourceTree = "<group>"; };
+		A0DE78AE21F76D2200B6B68B /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		A0DE78B121F771A700B6B68B /* ProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectViewController.swift; sourceTree = "<group>"; };
 		A0E1A67B21EE7A5C00E4F6B7 /* MyAccountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyAccountViewController.swift; sourceTree = "<group>"; };
 		A0E1A67E21EE7BE900E4F6B7 /* MenuItemCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MenuItemCell.xib; sourceTree = "<group>"; };
 		A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemCell.swift; sourceTree = "<group>"; };
@@ -160,6 +169,8 @@
 		A0E739E120E4C85E00DB31E1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A0E739E320E4C85E00DB31E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0F5BD612136E4B500691E34 /* OpenArchive-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenArchive-Bridging-Header.h"; sourceTree = "<group>"; };
+		A0FB4DB121F8799100B46099 /* SpacesProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacesProjectsView.swift; sourceTree = "<group>"; };
+		A0FB4DB421F89FD500B46099 /* AssetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsView.swift; sourceTree = "<group>"; };
 		CC67BE20A50BF4C22AE484F1 /* Pods-OpenArchive.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenArchive.release.xcconfig"; path = "Pods/Target Support Files/Pods-OpenArchive/Pods-OpenArchive.release.xcconfig"; sourceTree = "<group>"; };
 		DA57E87D37FC97CE551149A6 /* Pods_ShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9D40196C7AFBE8474EA6241 /* Pods-OpenArchive.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenArchive.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OpenArchive/Pods-OpenArchive.debug.xcconfig"; sourceTree = "<group>"; };
@@ -262,11 +273,14 @@
 				A071290F2111E4F1007A432A /* Db.swift */,
 				A0D58DCD20E51517005A2F34 /* Asset.swift */,
 				A029F6822118715700C4EF6D /* AssetFactory.swift */,
-				A0A192DC21F208DA009A8CF0 /* ServerConfig.swift */,
+				A0A192DC21F208DA009A8CF0 /* Space.swift */,
+				A0DE78AE21F76D2200B6B68B /* Project.swift */,
 				A0D6E88920F3BAB800095E31 /* Server.swift */,
 				A0C0732920EE779800EA48F0 /* InternetArchive.swift */,
 				A061950C215522970070E005 /* WebDavServer.swift */,
 				A05C582C21EF96F400141633 /* Profile.swift */,
+				A0FB4DB421F89FD500B46099 /* AssetsView.swift */,
+				A0FB4DB121F8799100B46099 /* SpacesProjectsView.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -293,6 +307,7 @@
 				A08C2CEA21F0B71B008ACA3E /* EditProfileViewController.swift */,
 				A08C2CE321F0A98C008ACA3E /* PrivateServerViewController.swift */,
 				A08C2CE121F09B3F008ACA3E /* InternetArchiveViewController.swift */,
+				A0DE78B121F771A700B6B68B /* ProjectViewController.swift */,
 			);
 			path = Account;
 			sourceTree = "<group>";
@@ -545,7 +560,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0A192DE21F208DA009A8CF0 /* ServerConfig.swift in Sources */,
+				A0A192DE21F208DA009A8CF0 /* Space.swift in Sources */,
 				A08C2CE821F0B613008ACA3E /* BaseCell.swift in Sources */,
 				A08C2CE921F0B617008ACA3E /* TableHeader.swift in Sources */,
 				A08C2CE721F0B5FA008ACA3E /* FormViewController.swift in Sources */,
@@ -561,6 +576,7 @@
 				A029F6842118715700C4EF6D /* AssetFactory.swift in Sources */,
 				A0B24C6421F0CD94006C0CC6 /* AvatarRow.swift in Sources */,
 				A0C475C021149B040012937E /* MainViewController.swift in Sources */,
+				A0FB4DB321F8799100B46099 /* SpacesProjectsView.swift in Sources */,
 				A071290C2111DE3C007A432A /* Asset.swift in Sources */,
 				A08750AA2112099700BFAFE4 /* Constants.m in Sources */,
 				A07128FE2111CC90007A432A /* ShareViewController.swift in Sources */,
@@ -568,6 +584,8 @@
 				A05C582B21EF95A800141633 /* BaseViewController.swift in Sources */,
 				A0C475B5211474A70012937E /* RegexUtils.swift in Sources */,
 				A061950E215522970070E005 /* WebDavServer.swift in Sources */,
+				A0DE78B021F76D2200B6B68B /* Project.swift in Sources */,
+				A0FB4DB621F89FD500B46099 /* AssetsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -580,9 +598,12 @@
 				A0E1A67C21EE7A5C00E4F6B7 /* MyAccountViewController.swift in Sources */,
 				A05C582D21EF96F400141633 /* Profile.swift in Sources */,
 				A004E24C20EBCF1700A1D5F5 /* Formatters.swift in Sources */,
+				A0FB4DB521F89FD500B46099 /* AssetsView.swift in Sources */,
 				A0A192E021F23B61009A8CF0 /* Constants+Swift.swift in Sources */,
+				A0FB4DB221F8799100B46099 /* SpacesProjectsView.swift in Sources */,
 				A08750A92112099700BFAFE4 /* Constants.m in Sources */,
 				A08C2CE621F0B46C008ACA3E /* FormViewController.swift in Sources */,
+				A0DE78B221F771A700B6B68B /* ProjectViewController.swift in Sources */,
 				A08C2CED21F0C634008ACA3E /* AvatarRow.swift in Sources */,
 				A0E1A68521EE831300E4F6B7 /* ProfileCell.swift in Sources */,
 				A061950D215522970070E005 /* WebDavServer.swift in Sources */,
@@ -596,7 +617,7 @@
 				A07129102111E4F1007A432A /* Db.swift in Sources */,
 				A0E1A68121EE7BE900E4F6B7 /* MenuItemCell.swift in Sources */,
 				A004E24A20EBCEA000A1D5F5 /* DetailsViewController.swift in Sources */,
-				A0A192DD21F208DA009A8CF0 /* ServerConfig.swift in Sources */,
+				A0A192DD21F208DA009A8CF0 /* Space.swift in Sources */,
 				A08C2CE221F09B3F008ACA3E /* InternetArchiveViewController.swift in Sources */,
 				A0E1A68921EE873200E4F6B7 /* TableHeader.swift in Sources */,
 				A0457E6720EF96FB00B8FBCB /* StringUtils.swift in Sources */,
@@ -604,6 +625,7 @@
 				A05C582A21EF94FC00141633 /* BaseViewController.swift in Sources */,
 				A0E1A68721EE834D00E4F6B7 /* BaseCell.swift in Sources */,
 				A0C0732A20EE779800EA48F0 /* InternetArchive.swift in Sources */,
+				A0DE78AF21F76D2200B6B68B /* Project.swift in Sources */,
 				A0D6E88A20F3BAB800095E31 /* Server.swift in Sources */,
 				A0A192DB21F1EE88009A8CF0 /* AlertHelper.swift in Sources */,
 				A0457E6920EFB57C00B8FBCB /* RegexUtils.swift in Sources */,

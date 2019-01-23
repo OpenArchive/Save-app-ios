@@ -13,12 +13,12 @@ class WebDavServer: Server {
 
     static let PRETTY_NAME = "WebDAV Server"
 
-    private let config: ServerConfig?
+    private let space: Space?
 
-    init(_ config: ServerConfig) {
-        self.config = config
+    init(_ space: Space) {
+        self.space = space
 
-        if let id = config.url?.absoluteString {
+        if let id = space.url?.absoluteString {
             super.init(id)
         }
         else {
@@ -27,13 +27,13 @@ class WebDavServer: Server {
     }
 
     required init(coder decoder: NSCoder) {
-        config = decoder.decodeObject() as? ServerConfig
+        space = decoder.decodeObject() as? Space
 
         super.init(coder: decoder)
     }
     
     override func encode(with coder: NSCoder) {
-        coder.encode(config)
+        coder.encode(space)
 
         super.encode(with: coder)
     }
@@ -47,8 +47,8 @@ class WebDavServer: Server {
      - returns: a `WebDAVFileProvider` with the provided `baseUrl` and stored credentials.
      */
     private var provider: WebDAVFileProvider? {
-        if let username = config?.username,
-            let password = config?.password,
+        if let username = space?.username,
+            let password = space?.password,
             let baseUrl = publicUrl?.deletingLastPathComponent() {
             
             let credential = URLCredential(user: username, password: password, persistence: .forSession)
@@ -72,7 +72,7 @@ class WebDavServer: Server {
                          done: @escaping DoneHandler) {
         
         if publicUrl == nil {
-            publicUrl = config?.url?.appendingPathComponent(asset.filename)
+            publicUrl = space?.url?.appendingPathComponent(asset.filename)
         }
 
         if let filename = publicUrl?.lastPathComponent,

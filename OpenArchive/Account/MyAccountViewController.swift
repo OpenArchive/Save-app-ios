@@ -19,8 +19,12 @@ class MyAccountViewController: UITableViewController {
         return conn
     }()
 
+    private lazy var writeConn = Db.newConnection()
+
     private lazy var mappings: YapDatabaseViewMappings = {
-        let mappings = YapDatabaseViewMappings(groups: [ServerConfig.COLLECTION], view: ServerConfig.COLLECTION)
+        let mappings = YapDatabaseViewMappings(
+            groups: SpacesProjectsView.groups,
+            view: SpacesProjectsView.name)
 
         readConn?.read() { transaction in
             mappings.update(with: transaction)
@@ -29,11 +33,13 @@ class MyAccountViewController: UITableViewController {
         return mappings
     }()
 
-    private var serverConfigCount: Int {
+    private var spacesCount: Int {
         return Int(mappings.numberOfItems(inSection: 0))
     }
 
-    private lazy var writeConn = Db.newConnection()
+    private var projectsCount: Int {
+        return Int(mappings.numberOfItems(inSection: 1))
+    }
 
     /**
      Delete action for table list row. Deletes a space.
@@ -44,35 +50,54 @@ class MyAccountViewController: UITableViewController {
             title: "Delete".localize())
         { (action, indexPath) in
 
-            let server: String
-            let handler: ((UIAlertAction) -> Void)
+            let message: String
+            let title: String
+            let handler: AlertHelper.ActionHandler
 
-            if indexPath.row < self.serverConfigCount {
-                let conf = self.getServerConfig(indexPath)
-                server = conf?.prettyName ?? WebDavServer.PRETTY_NAME
+            if indexPath.section == 1 {
+                let server: String
 
+                if indexPath.row < self.spacesCount {
+                    let space = self.getSpace(indexPath)
+                    server = space?.prettyName ?? WebDavServer.PRETTY_NAME
+
+                    handler = { _ in
+                        if let key = space?.id {
+                            self.writeConn?.asyncReadWrite() { transaction in
+                                transaction.removeObject(forKey: key, inCollection: Space.collection)
+                            }
+                        }
+                    }
+                }
+                else {
+                    server = InternetArchive.PRETTY_NAME
+                    handler = { _ in
+                        InternetArchive.accessKey = nil
+                        InternetArchive.secretKey = nil
+
+                        self.tableView.reloadData()
+                    }
+                }
+
+                title = "Delete Space".localize()
+                message = "Are you sure you want to delete your space \"%\"?".localize(value: server)
+            }
+            else {
+                title = "Delete Project".localize()
+                let project = self.getProject(indexPath)
+                message = "Are you sure you want to delete your project \"%\"?".localize(value: project?.name ?? "")
                 handler = { _ in
-
-                    if let key = conf?.url?.absoluteString {
+                    if let key = project?.id {
                         self.writeConn?.asyncReadWrite() { transaction in
-                            transaction.removeObject(forKey: key, inCollection: ServerConfig.COLLECTION)
+                            transaction.removeObject(forKey: key, inCollection: Project.collection)
                         }
                     }
                 }
             }
-            else {
-                server = InternetArchive.PRETTY_NAME
-                handler = { _ in
-                    InternetArchive.accessKey = nil
-                    InternetArchive.secretKey = nil
-
-                    self.tableView.reloadData()
-                }
-            }
 
             AlertHelper.present(
-                self, message: "Are you sure you want to delete your % credentials?".localize(value: server),
-                title: "Delete Credentials".localize(), actions: [
+                self, message: message,
+                title: title, actions: [
                     AlertHelper.cancelAction(),
                     AlertHelper.destructiveAction("Delete".localize(), handler: handler)
                 ])
@@ -115,9 +140,9 @@ class MyAccountViewController: UITableViewController {
         case 0:
             return 1
         case 1:
-            return serverConfigCount + 2
+            return spacesCount + 2
         case 2:
-            return 1
+            return projectsCount + 1
         case 3:
             return 3
         default:
@@ -143,21 +168,21 @@ class MyAccountViewController: UITableViewController {
         if let cell = tableView.dequeueReusableCell(withIdentifier: MenuItemCell.reuseId, for: indexPath) as? MenuItemCell {
             switch indexPath.section {
             case 1:
-                if indexPath.row < serverConfigCount {
-                    cell.set(getServerConfig(indexPath)?.prettyName ?? WebDavServer.PRETTY_NAME)
+                if indexPath.row < spacesCount {
+                    cell.set(getSpace(indexPath)?.prettyName ?? WebDavServer.PRETTY_NAME)
                 }
-                else if indexPath.row == serverConfigCount {
+                else if indexPath.row == spacesCount {
                     cell.set("Private Server".localize(), isPlaceholder: true)
                 }
                 else {
                     cell.set("Internet Archive".localize(), isPlaceholder: !InternetArchive.isAvailable)
                 }
             case 2:
-                switch indexPath.row {
-                case 0:
+                if indexPath.row < projectsCount {
+                    cell.set(getProject(indexPath)?.name ?? "Unnamed Project".localize())
+                }
+                else {
                     cell.set("Create New Project".localize(), isPlaceholder: true)
-                default:
-                    cell.set("")
                 }
             case 3:
                 cell.addIndicator.isHidden = true
@@ -203,10 +228,14 @@ class MyAccountViewController: UITableViewController {
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return indexPath.section == 1 && (
-            indexPath.row < serverConfigCount
-            || (indexPath.row > serverConfigCount && InternetArchive.isAvailable)
+        return (
+            indexPath.section == 1
+            && (
+                indexPath.row < spacesCount
+                || (indexPath.row > spacesCount && InternetArchive.isAvailable)
+            )
         )
+        || (indexPath.section == 2 && indexPath.row < projectsCount)
     }
 
     override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
@@ -220,16 +249,25 @@ class MyAccountViewController: UITableViewController {
         case 0:
             vc = EditProfileViewController()
         case 1:
-            if indexPath.row < serverConfigCount {
+            if indexPath.row < spacesCount {
                 let psvc = PrivateServerViewController()
-                psvc.conf = getServerConfig(indexPath)
+                psvc.space = getSpace(indexPath)
                 vc = psvc
             }
-            else if indexPath.row == serverConfigCount {
+            else if indexPath.row == spacesCount {
                 vc = PrivateServerViewController()
             }
             else {
                 vc = InternetArchiveViewController()
+            }
+        case 2:
+            if indexPath.row < projectsCount {
+                let pvc = ProjectViewController()
+                pvc.project = getProject(indexPath)
+                vc = pvc
+            }
+            else {
+                vc = ProjectViewController()
             }
         default:
             break
@@ -254,7 +292,7 @@ class MyAccountViewController: UITableViewController {
         if let readConn = readConn {
             var changes = NSArray()
 
-            (readConn.ext(ServerConfig.COLLECTION) as? YapDatabaseViewConnection)?
+            (readConn.ext(SpacesProjectsView.name) as? YapDatabaseViewConnection)?
                 .getSectionChanges(nil,
                                    rowChanges: &changes,
                                    for: readConn.beginLongLivedReadTransaction(),
@@ -294,20 +332,28 @@ class MyAccountViewController: UITableViewController {
 
     // MARK: Private Methods
 
-    private func getServerConfig(_ indexPath: IndexPath) -> ServerConfig? {
-        let ip = IndexPath(row: indexPath.row, section: 0)
+    private func getItem(_ indexPath: IndexPath) -> Any? {
+        let ip = IndexPath(row: indexPath.row, section: indexPath.section - 1)
 
-        var conf: ServerConfig?
+        var item: Any?
 
         readConn?.read() { transaction in
-            conf = (transaction.ext(ServerConfig.COLLECTION) as? YapDatabaseViewTransaction)?
-                .object(at: ip, with: self.mappings) as? ServerConfig
+            item = (transaction.ext(SpacesProjectsView.name) as? YapDatabaseViewTransaction)?
+                .object(at: ip, with: self.mappings)
         }
 
-        return conf
+        return item
+    }
+
+    private func getSpace(_ indexPath: IndexPath) -> Space? {
+        return getItem(indexPath) as? Space
+    }
+
+    private func getProject(_ indexPath: IndexPath) -> Project? {
+        return getItem(indexPath) as? Project
     }
 
     private func transform(_ indexPath: IndexPath) -> IndexPath {
-        return IndexPath(row: indexPath.row, section: 1)
+        return IndexPath(row: indexPath.row, section: indexPath.section + 1)
     }
 }

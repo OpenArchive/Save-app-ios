@@ -31,7 +31,7 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
     }()
 
     lazy var mappings: YapDatabaseViewMappings = {
-        let mappings = YapDatabaseViewMappings(groups: [Asset.COLLECTION], view: Asset.COLLECTION)
+        let mappings = YapDatabaseViewMappings(groups: AssetsView.groups, view: AssetsView.name)
 
         readConn?.read() { transaction in
             mappings.update(with: transaction)
@@ -99,7 +99,7 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
         let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: indexPath) as! ImageCell
 
         readConn?.read() { transaction in
-            cell.asset = (transaction.ext(Asset.COLLECTION) as? YapDatabaseViewTransaction)?
+            cell.asset = (transaction.ext(AssetsView.name) as? YapDatabaseViewTransaction)?
                 .object(at: indexPath, with: self.mappings) as? Asset
         }
 
@@ -112,7 +112,7 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
             let key = (tableView.cellForRow(at: indexPath) as? ImageCell)?.asset?.id {
 
             writeConn?.asyncReadWrite() { transaction in
-                transaction.removeObject(forKey: key, inCollection: Asset.COLLECTION)
+                transaction.removeObject(forKey: key, inCollection: Asset.collection)
             }
         }
     }
@@ -142,7 +142,7 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
 
             AssetFactory.create(fromAlAssetUrl: url, mediaType: type) { asset in
                 self.writeConn?.asyncReadWrite() { transaction in
-                    transaction.setObject(asset, forKey: asset.id, inCollection: Asset.COLLECTION)
+                    transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
                 }
             }
         }
@@ -166,7 +166,7 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
         if let readConn = readConn {
             var changes = NSArray()
 
-            (readConn.ext(Asset.COLLECTION) as? YapDatabaseViewConnection)?
+            (readConn.ext(AssetsView.name) as? YapDatabaseViewConnection)?
                 .getSectionChanges(nil,
                                    rowChanges: &changes,
                                    for: readConn.beginLongLivedReadTransaction(),

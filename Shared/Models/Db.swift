@@ -18,6 +18,8 @@ class Db {
             .containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroup)?
             .appendingPathComponent(DB_NAME) {
 
+//            print("[\(String(describing: Db.self))] path=\(path)")
+
             let options = YapDatabaseOptions()
             options.enableMultiProcessSupport = true
 
@@ -28,8 +30,8 @@ class Db {
     }()
 
     public class func setup() {
-        registerAsset()
-        registerServerConfig()
+        shared?.register(AssetsView(), withName: AssetsView.name)
+        shared?.register(SpacesProjectsView(), withName: SpacesProjectsView.name)
 
         // Enable relationships. (Also row -> file relationship handling!)
         shared?.register(YapDatabaseRelationship(), withName: "relationships")
@@ -38,68 +40,45 @@ class Db {
         shared?.register(YapDatabaseCrossProcessNotification(), withName: "xProcNotification")
 
 
-        // Fix class de-/serialization errors due to iOS prefixing classes with the app/extension
-        // depending on which part of the app wrote it.
-        NSKeyedArchiver.setClassName("Asset", for: Asset.self)
-        NSKeyedUnarchiver.setClass(Asset.self, forClassName: "Asset")
+        Asset.fixArchiverName()
+        Space.fixArchiverName()
+        Project.fixArchiverName()
 
         NSKeyedArchiver.setClassName("InternetArchive", for: InternetArchive.self)
         NSKeyedUnarchiver.setClass(InternetArchive.self, forClassName: "InternetArchive")
 
         NSKeyedArchiver.setClassName("WebDavServer", for: WebDavServer.self)
         NSKeyedUnarchiver.setClass(WebDavServer.self, forClassName: "WebDavServer")
-
-        NSKeyedArchiver.setClassName("ServerConfig", for: ServerConfig.self)
-        NSKeyedUnarchiver.setClass(ServerConfig.self, forClassName: "ServerConfig")
     }
 
     public class func newConnection() -> YapDatabaseConnection? {
         return shared?.newConnection()
     }
+}
 
-    private class func registerAsset() {
-        let grouper = YapDatabaseViewGrouping.withKeyBlock() {
-            transaction, collection, key in
+protocol Item: NSCoding {
 
-            if Asset.COLLECTION.elementsEqual(collection) {
-                return Asset.COLLECTION
-            }
+    static var collection: String { get }
 
-            return nil
-        }
+    /**
+     Fix class de-/serialization errors due to iOS prefixing classes with the
+     app/extension depending on which part of the app wrote it.
 
-        let sorter = YapDatabaseViewSorting.withObjectBlock() {
-            transaction, group, collection1, key1, obj1, collection2, key2, obj2 in
+     Should look something like this:
 
-            return (obj1 as? Asset)?.created
-                .compare((obj2 as? Asset)?.created ?? Date())
-                ?? ComparisonResult.orderedSame
-        }
+     ```Swift
+     NSKeyedArchiver.setClassName("MyItem", for: self)
+     NSKeyedUnarchiver.setClass(self, forClassName: "MyItem")
+     ```
+     */
+    static func fixArchiverName()
 
-        shared?.register(YapDatabaseAutoView(grouping: grouper, sorting: sorter),
-                         withName: Asset.COLLECTION)
-    }
+    /**
+     The key to file this object under.
+    */
+    var id: String { get }
 
-    private class func registerServerConfig() {
-        let grouper = YapDatabaseViewGrouping.withKeyBlock() {
-            transaction, collection, key in
+    associatedtype Item2: Item
 
-            if ServerConfig.COLLECTION.elementsEqual(collection) {
-                return ServerConfig.COLLECTION
-            }
-
-            return nil
-        }
-
-        let sorter = YapDatabaseViewSorting.withObjectBlock() {
-            transaction, group, collection1, key1, obj1, collection2, key2, obj2 in
-
-            return (obj1 as? ServerConfig)?.url?.absoluteString
-                .compare((obj2 as? ServerConfig)?.url?.absoluteString ?? "")
-                ?? ComparisonResult.orderedSame
-        }
-
-        shared?.register(YapDatabaseAutoView(grouping: grouper, sorting: sorter),
-                         withName: ServerConfig.COLLECTION)
-    }
+    func compare(_ rhs: Item2) -> ComparisonResult
 }
