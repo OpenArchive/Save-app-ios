@@ -7,6 +7,8 @@ def shared_pods
     pod 'FilesProvider', '~> 0.25'
     pod 'Localize', '~> 2.1'
     pod 'Eureka', '~> 4.3'
+    pod 'MaterialComponents/Buttons', '~> 74.0'
+    pod 'MaterialComponents/Tabs', '~> 74.0'
 end
 
 target 'OpenArchive' do

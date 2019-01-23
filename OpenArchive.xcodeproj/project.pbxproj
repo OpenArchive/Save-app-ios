@@ -80,6 +80,9 @@
 		A0FB4DB321F8799100B46099 /* SpacesProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DB121F8799100B46099 /* SpacesProjectsView.swift */; };
 		A0FB4DB521F89FD500B46099 /* AssetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DB421F89FD500B46099 /* AssetsView.swift */; };
 		A0FB4DB621F89FD500B46099 /* AssetsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DB421F89FD500B46099 /* AssetsView.swift */; };
+		A0FB4DBB21F8C9B600B46099 /* RoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DBA21F8C9B600B46099 /* RoundedImageView.swift */; };
+		A0FB4DBC21F8C9B600B46099 /* RoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DBA21F8C9B600B46099 /* RoundedImageView.swift */; };
+		A0FB4DBE21F8CC2300B46099 /* Main2ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DBD21F8CC2300B46099 /* Main2ViewController.swift */; };
 		E3237719CED5D0E5FB3A9540 /* Pods_ShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA57E87D37FC97CE551149A6 /* Pods_ShareExtension.framework */; };
 /* End PBXBuildFile section */
 
@@ -169,6 +172,8 @@
 		A0F5BD612136E4B500691E34 /* OpenArchive-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenArchive-Bridging-Header.h"; sourceTree = "<group>"; };
 		A0FB4DB121F8799100B46099 /* SpacesProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacesProjectsView.swift; sourceTree = "<group>"; };
 		A0FB4DB421F89FD500B46099 /* AssetsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsView.swift; sourceTree = "<group>"; };
+		A0FB4DBA21F8C9B600B46099 /* RoundedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImageView.swift; sourceTree = "<group>"; };
+		A0FB4DBD21F8CC2300B46099 /* Main2ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Main2ViewController.swift; sourceTree = "<group>"; };
 		CC67BE20A50BF4C22AE484F1 /* Pods-OpenArchive.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenArchive.release.xcconfig"; path = "Pods/Target Support Files/Pods-OpenArchive/Pods-OpenArchive.release.xcconfig"; sourceTree = "<group>"; };
 		DA57E87D37FC97CE551149A6 /* Pods_ShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9D40196C7AFBE8474EA6241 /* Pods-OpenArchive.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenArchive.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OpenArchive/Pods-OpenArchive.debug.xcconfig"; sourceTree = "<group>"; };
@@ -290,6 +295,7 @@
 				A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */,
 				A0E1A68621EE834D00E4F6B7 /* BaseCell.swift */,
 				A0E1A68821EE873200E4F6B7 /* TableHeader.swift */,
+				A0FB4DBA21F8C9B600B46099 /* RoundedImageView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -340,6 +346,7 @@
 				A08750AF21120EBF00BFAFE4 /* OpenArchive-Bridging-Header.h */,
 				A0E739D720E4C85D00DB31E1 /* AppDelegate.swift */,
 				A0E739D920E4C85D00DB31E1 /* MainViewController.swift */,
+				A0FB4DBD21F8CC2300B46099 /* Main2ViewController.swift */,
 				A058628020E4EC3900EE2F14 /* ImageCell.swift */,
 				A004E24920EBCEA000A1D5F5 /* DetailsViewController.swift */,
 				A0E739DB20E4C85D00DB31E1 /* Main.storyboard */,
@@ -513,6 +520,9 @@
 				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
 				"${BUILT_PRODUCTS_DIR}/FilesProvider/FilesProvider.framework",
 				"${BUILT_PRODUCTS_DIR}/Localize/Localize.framework",
+				"${BUILT_PRODUCTS_DIR}/MDFInternationalization/MDFInternationalization.framework",
+				"${BUILT_PRODUCTS_DIR}/MDFTextAccessibility/MDFTextAccessibility.framework",
+				"${BUILT_PRODUCTS_DIR}/MaterialComponents/MaterialComponents.framework",
 				"${BUILT_PRODUCTS_DIR}/TUSafariActivity/TUSafariActivity.framework",
 				"${BUILT_PRODUCTS_DIR}/YapDatabase/YapDatabase.framework",
 			);
@@ -524,6 +534,9 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FilesProvider.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Localize.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MDFInternationalization.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MDFTextAccessibility.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MaterialComponents.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TUSafariActivity.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YapDatabase.framework",
 			);
@@ -583,6 +596,7 @@
 				A061950E215522970070E005 /* WebDavServer.swift in Sources */,
 				A0DE78B021F76D2200B6B68B /* Project.swift in Sources */,
 				A0FB4DB621F89FD500B46099 /* AssetsView.swift in Sources */,
+				A0FB4DBC21F8C9B600B46099 /* RoundedImageView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -598,6 +612,7 @@
 				A0FB4DB521F89FD500B46099 /* AssetsView.swift in Sources */,
 				A0A192E021F23B61009A8CF0 /* Constants+Swift.swift in Sources */,
 				A0FB4DB221F8799100B46099 /* SpacesProjectsView.swift in Sources */,
+				A0FB4DBB21F8C9B600B46099 /* RoundedImageView.swift in Sources */,
 				A08750A92112099700BFAFE4 /* Constants.m in Sources */,
 				A08C2CE621F0B46C008ACA3E /* FormViewController.swift in Sources */,
 				A0DE78B221F771A700B6B68B /* ProjectViewController.swift in Sources */,
@@ -621,6 +636,7 @@
 				A05C582A21EF94FC00141633 /* BaseViewController.swift in Sources */,
 				A0E1A68721EE834D00E4F6B7 /* BaseCell.swift in Sources */,
 				A0C0732A20EE779800EA48F0 /* InternetArchive.swift in Sources */,
+				A0FB4DBE21F8CC2300B46099 /* Main2ViewController.swift in Sources */,
 				A0DE78AF21F76D2200B6B68B /* Project.swift in Sources */,
 				A0D6E88A20F3BAB800095E31 /* Server.swift in Sources */,
 				A0A192DB21F1EE88009A8CF0 /* AlertHelper.swift in Sources */,
