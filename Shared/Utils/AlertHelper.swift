@@ -11,6 +11,8 @@ import Localize
 
 public class AlertHelper {
 
+    public typealias ActionHandler = (UIAlertAction) -> Void
+
     /**
      Creates and immediately presents a `UIAlertController`.
      Alert style is `.alert`, presentation will be animated.
@@ -65,7 +67,7 @@ public class AlertHelper {
      - returns: A default `UIAlertAction`.
      */
     public class func defaultAction(_ title: String? = "OK".localize(),
-                             handler: ((UIAlertAction) -> Void)? = nil) -> UIAlertAction {
+                             handler: ActionHandler? = nil) -> UIAlertAction {
         return UIAlertAction(title: title, style: .default, handler: handler)
     }
 
@@ -75,7 +77,7 @@ public class AlertHelper {
      - returns: A cancel `UIAlertAction`.
      */
     public class func cancelAction(_ title: String? = "Cancel".localize(),
-                            handler: ((UIAlertAction) -> Void)? = nil) -> UIAlertAction {
+                            handler: ActionHandler? = nil) -> UIAlertAction {
         return UIAlertAction(title: title, style: .cancel, handler: handler)
     }
 
@@ -84,7 +86,7 @@ public class AlertHelper {
      - parameter handler: The callback when the user tapped the action.
      - returns: A destructive `UIAlertAction`.
      */
-    public class func destructiveAction(_ title: String?, handler: ((UIAlertAction) -> Void)? = nil) -> UIAlertAction {
+    public class func destructiveAction(_ title: String?, handler: ActionHandler? = nil) -> UIAlertAction {
         return UIAlertAction(title: title, style: .destructive, handler: handler)
     }
 
