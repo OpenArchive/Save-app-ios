@@ -2,26 +2,27 @@
 //  MainViewController.swift
 //  OpenArchive
 //
-//  Created by Benjamin Erhart on 28.06.18.
-//  Copyright © 2018 Open Archive. All rights reserved.
+//  Created by Benjamin Erhart on 23.01.19.
+//  Copyright © 2019 Open Archive. All rights reserved.
 //
 
 import UIKit
 import MobileCoreServices
 import Photos
 import YapDatabase
+import MaterialComponents.MaterialTabs
 
-class MainViewController: UITableViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class MainViewController: UIViewController, UICollectionViewDelegate,
+UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
+MDCTabBarDelegate {
 
-    lazy var imagePicker: UIImagePickerController = {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .photoLibrary
-        imagePicker.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
-        imagePicker.modalPresentationStyle = .popover
+    @IBOutlet weak var tabBarContainer: UIView!
+    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var addBt: MDCFloatingButton!
 
-        return imagePicker
-    }()
+    private static let addTabItemTag = 666
+    
+    lazy var writeConn = Db.newConnection()
 
     lazy var readConn: YapDatabaseConnection? = {
         let conn = Db.newConnection()
@@ -40,10 +41,56 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
         return mappings
     }()
 
-    lazy var writeConn = Db.newConnection()
+
+    private lazy var tabBar: MDCTabBar = {
+        let tabBar = MDCTabBar(frame: tabBarContainer.bounds)
+
+        tabBar.items = [UITabBarItem(title: "All".localize(), image: nil, tag: 0)]
+
+        var counter = 1
+
+        readConn?.read() { transaction in
+            transaction.enumerateKeysAndObjects(inCollection: Project.collection) {
+                key, object, stop in
+
+                if let project = object as? Project {
+                    tabBar.items.append(UITabBarItem(title: project.name, image: nil, tag: counter))
+                    counter += 1
+                }
+            }
+        }
+
+        tabBar.items.append(UITabBarItem(title: "+".localize(), image: nil, tag: MainViewController.addTabItemTag))
+
+
+        tabBar.itemAppearance = .titles
+
+        tabBar.setTitleColor(view.tintColor, for: .normal)
+        tabBar.setTitleColor(UIColor.black, for: .selected)
+        tabBar.bottomDividerColor = UIColor.lightGray
+
+        tabBar.sizeToFit()
+
+        tabBar.delegate = self
+
+        return tabBar
+    }()
+
+    lazy var imagePicker: UIImagePickerController = {
+        let imagePicker = UIImagePickerController()
+        imagePicker.delegate = self
+        imagePicker.sourceType = .photoLibrary
+        imagePicker.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
+        imagePicker.modalPresentationStyle = .popover
+
+        return imagePicker
+    }()
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        tabBarContainer.addSubview(tabBar)
 
         NotificationCenter.default.addObserver(self, selector: #selector(yapDatabaseModified),
                                                name: .YapDatabaseModified,
@@ -53,11 +100,47 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
                                                name: .YapDatabaseModifiedExternally,
                                                object: readConn?.database)
     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
 
-    // MARK: actions
+        navigationController?.setNavigationBarHidden(true, animated: animated)
+    }
 
-    @IBAction func add(_ sender: UIBarButtonItem) {
-        imagePicker.popoverPresentationController?.barButtonItem = sender
+
+    // MARK: UICollectionViewDataSource
+
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return Int(mappings.numberOfItems(inSection: 0))
+    }
+
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.reuseId, for: indexPath) as! ImageCell
+
+        readConn?.read() { transaction in
+            cell.asset = (transaction.ext(AssetsView.name) as? YapDatabaseViewTransaction)?
+                .object(at: indexPath, with: self.mappings) as? Asset
+        }
+
+        return cell
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let vc = DetailsViewController()
+
+        if let imageCell = collectionView.cellForItem(at: indexPath) as? ImageCell {
+            vc.asset = imageCell.asset
+        }
+
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
+
+    // MARK: Actions
+
+    @IBAction func add() {
+        imagePicker.popoverPresentationController?.sourceView = addBt
+        imagePicker.popoverPresentationController?.sourceRect = addBt.bounds
 
         switch PHPhotoLibrary.authorizationStatus() {
         case .authorized:
@@ -84,59 +167,13 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
                 actions: [AlertHelper.cancelAction()])
         }
     }
-
-    // MARK: UITableViewDataSource
-
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Int(mappings.numberOfItems(inSection: 0))
-    }
-
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return ImageCell.HEIGHT
-    }
-
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ImageCell", for: indexPath) as! ImageCell
-
-        readConn?.read() { transaction in
-            cell.asset = (transaction.ext(AssetsView.name) as? YapDatabaseViewTransaction)?
-                .object(at: indexPath, with: self.mappings) as? Asset
-        }
-
-        return cell
-    }
-
-    override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle,
-                            forRowAt indexPath: IndexPath) {
-        if editingStyle == .delete,
-            let key = (tableView.cellForRow(at: indexPath) as? ImageCell)?.asset?.id {
-
-            writeConn?.asyncReadWrite() { transaction in
-                transaction.removeObject(forKey: key, inCollection: Asset.collection)
-            }
-        }
-    }
-
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc = DetailsViewController()
-
-        if let imageCell = tableView.cellForRow(at: indexPath) as? ImageCell {
-            vc.asset = imageCell.asset
-        }
-
-        if let navVC = navigationController {
-            navVC.pushViewController(vc, animated: true)
-        }
-        else {
-            present(vc, animated: true)
-        }
-    }
+    
 
     // MARK: UIImagePickerControllerDelegate
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo
         info: [UIImagePickerController.InfoKey : Any]) {
-        
+
         if let type = info[.mediaType] as? String,
             let url = info[.referenceURL] as? URL {
 
@@ -155,13 +192,27 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
     }
 
 
+    // MARK: MDCTabBarDelegate
+
+    func tabBar(_ tabBar: MDCTabBar, shouldSelect item: UITabBarItem) -> Bool {
+        if item.tag == MainViewController.addTabItemTag {
+            navigationController?.pushViewController(ProjectViewController(),
+                                                     animated: true)
+
+            return false
+        }
+
+        return true
+    }
+
+
     // MARK: Observers
 
     /**
      Callback for `YapDatabaseModified` notification.
 
      Will be called, when something inside the process changed the database.
-    */
+     */
     @objc func yapDatabaseModified(notification: Notification) {
         if let readConn = readConn {
             var changes = NSArray()
@@ -175,30 +226,28 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
             if let changes = changes as? [YapDatabaseViewRowChange],
                 changes.count > 0 {
 
-                tableView.beginUpdates()
-
-                for change in changes {
-                    switch change.type {
-                    case .delete:
-                        if let indexPath = change.indexPath {
-                            tableView.deleteRows(at: [indexPath], with: .automatic)
-                        }
-                    case .insert:
-                        if let newIndexPath = change.newIndexPath {
-                            tableView.insertRows(at: [newIndexPath], with: .automatic)
-                        }
-                    case .move:
-                        if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
-                            tableView.moveRow(at: indexPath, to: newIndexPath)
-                        }
-                    case .update:
-                        if let indexPath = change.indexPath {
-                            tableView.reloadRows(at: [indexPath], with: .none)
+                collectionView.performBatchUpdates({
+                    for change in changes {
+                        switch change.type {
+                        case .delete:
+                            if let indexPath = change.indexPath {
+                                collectionView.deleteItems(at: [indexPath])
+                            }
+                        case .insert:
+                            if let newIndexPath = change.newIndexPath {
+                                collectionView.insertItems(at: [newIndexPath])
+                            }
+                        case .move:
+                            if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
+                                collectionView.moveItem(at: indexPath, to: newIndexPath)
+                            }
+                        case .update:
+                            if let indexPath = change.indexPath {
+                                collectionView.reloadItems(at: [indexPath])
+                            }
                         }
                     }
-                }
-
-                tableView.endUpdates()
+                })
             }
         }
     }
@@ -215,7 +264,7 @@ class MainViewController: UITableViewController, UIImagePickerControllerDelegate
         readConn?.read() { transaction in
             self.mappings.update(with: transaction)
 
-            self.tableView.reloadData()
+            self.collectionView.reloadData()
         }
     }
 }

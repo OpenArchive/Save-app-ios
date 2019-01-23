@@ -25,6 +25,12 @@ class DetailsViewController: BaseDetailsViewController {
             UITapGestureRecognizer(target: self, action: #selector(followServerUrl(_:))))
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+
     @objc func followServerUrl(_ sender: UITapGestureRecognizer) {
         if let url = asset?.getServers().first?.value.publicUrl {
             let vc = UIActivityViewController(activityItems: [url],
