@@ -1,0 +1,85 @@
+//
+//  OnboardingViewController.swift
+//  OpenArchive
+//
+//  Created by Benjamin Erhart on 24.01.19.
+//  Copyright © 2019 Open Archive. All rights reserved.
+//
+
+import UIKit
+import YapDatabase
+
+class OnboardingViewController: UITableViewController {
+
+    private static let alreadyRun = "already_run"
+
+    class var firstRunDone: Bool {
+        get {
+            return UserDefaults(suiteName: Constants.suiteName)?.bool(forKey: alreadyRun)
+                ?? false
+        }
+        set {
+            UserDefaults(suiteName: Constants.suiteName)?.set(newValue, forKey: alreadyRun)
+        }
+    }
+
+    private lazy var readConn: YapDatabaseConnection? = {
+        let conn = Db.newConnection()
+        conn?.beginLongLivedReadTransaction()
+
+        return conn
+    }()
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        tableView.tableFooterView = UIView()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if InternetArchive.isAvailable {
+            done()
+            return
+        }
+
+        var spacesCount: UInt = 0
+
+        readConn?.read() { transaction in
+            spacesCount = transaction.numberOfKeys(inCollection: Space.collection)
+        }
+
+        if spacesCount > 0 {
+            done()
+            return
+        }
+
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+
+    // MARK: - Table view data source
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc: UIViewController?
+
+        switch indexPath.row {
+        case 1:
+            vc = PrivateServerViewController()
+        case 2:
+            vc = InternetArchiveViewController()
+        default:
+            vc = nil
+        }
+
+        if let vc = vc {
+            navigationController?.pushViewController(vc, animated: true)
+        }
+    }
+
+    @IBAction func done() {
+        OnboardingViewController.firstRunDone = true
+
+        (navigationController as? MainNavigationController)?.setRoot()
+    }
+}

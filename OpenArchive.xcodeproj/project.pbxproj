@@ -20,6 +20,8 @@
 		A05C582E21EF96F400141633 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05C582C21EF96F400141633 /* Profile.swift */; };
 		A061950D215522970070E005 /* WebDavServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A061950C215522970070E005 /* WebDavServer.swift */; };
 		A061950E215522970070E005 /* WebDavServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A061950C215522970070E005 /* WebDavServer.swift */; };
+		A0656AB821F9BC8500070C4B /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0656AB721F9BC8500070C4B /* OnboardingViewController.swift */; };
+		A0656ABA21F9BFB800070C4B /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0656AB921F9BFB800070C4B /* MainNavigationController.swift */; };
 		A070335B2119E7DF00BF1F33 /* Request+debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = A070335A2119E7DF00BF1F33 /* Request+debug.swift */; };
 		A070335C2119E7DF00BF1F33 /* Request+debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = A070335A2119E7DF00BF1F33 /* Request+debug.swift */; };
 		A07128FE2111CC90007A432A /* ShareViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07128FD2111CC90007A432A /* ShareViewController.swift */; };
@@ -123,6 +125,8 @@
 		A05C582921EF94FC00141633 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		A05C582C21EF96F400141633 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		A061950C215522970070E005 /* WebDavServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDavServer.swift; sourceTree = "<group>"; };
+		A0656AB721F9BC8500070C4B /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
+		A0656AB921F9BFB800070C4B /* MainNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
 		A070335A2119E7DF00BF1F33 /* Request+debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Request+debug.swift"; sourceTree = "<group>"; };
 		A07128FB2111CC90007A432A /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A07128FD2111CC90007A432A /* ShareViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShareViewController.swift; sourceTree = "<group>"; };
@@ -301,6 +305,7 @@
 		A0E1A67D21EE7B3200E4F6B7 /* Account */ = {
 			isa = PBXGroup;
 			children = (
+				A0656AB721F9BC8500070C4B /* OnboardingViewController.swift */,
 				A0E1A67B21EE7A5C00E4F6B7 /* MyAccountViewController.swift */,
 				A0E1A68221EE831300E4F6B7 /* ProfileCell.xib */,
 				A0E1A68321EE831300E4F6B7 /* ProfileCell.swift */,
@@ -343,6 +348,7 @@
 				A07129122111F4D5007A432A /* OpenArchive.entitlements */,
 				A08750AF21120EBF00BFAFE4 /* OpenArchive-Bridging-Header.h */,
 				A0E739D720E4C85D00DB31E1 /* AppDelegate.swift */,
+				A0656AB921F9BFB800070C4B /* MainNavigationController.swift */,
 				A0FB4DBD21F8CC2300B46099 /* MainViewController.swift */,
 				A0FB4DBF21F8EBDD00B46099 /* ImageCell.swift */,
 				A004E24920EBCEA000A1D5F5 /* DetailsViewController.swift */,
@@ -629,9 +635,11 @@
 				A0E1A68921EE873200E4F6B7 /* TableHeader.swift in Sources */,
 				A0457E6720EF96FB00B8FBCB /* StringUtils.swift in Sources */,
 				A05C582A21EF94FC00141633 /* BaseViewController.swift in Sources */,
+				A0656ABA21F9BFB800070C4B /* MainNavigationController.swift in Sources */,
 				A0FB4DC021F8EBDD00B46099 /* ImageCell.swift in Sources */,
 				A0E1A68721EE834D00E4F6B7 /* BaseCell.swift in Sources */,
 				A0C0732A20EE779800EA48F0 /* InternetArchive.swift in Sources */,
+				A0656AB821F9BC8500070C4B /* OnboardingViewController.swift in Sources */,
 				A0FB4DBE21F8CC2300B46099 /* MainViewController.swift in Sources */,
 				A0DE78AF21F76D2200B6B68B /* Project.swift in Sources */,
 				A0D6E88A20F3BAB800095E31 /* Server.swift in Sources */,
