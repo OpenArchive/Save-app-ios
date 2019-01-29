@@ -81,7 +81,9 @@ class TabBar: MDCTabBar {
     private func setup() {
         itemAppearance = .titles
 
-        setTitleColor(tintColor, for: .normal)
+        displaysUppercaseTitles = false
+
+        setTitleColor(UIColor.gray, for: .normal)
         setTitleColor(UIColor.black, for: .selected)
         bottomDividerColor = UIColor.lightGray
 
