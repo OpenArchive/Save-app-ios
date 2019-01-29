@@ -84,6 +84,12 @@ class PrivateServerViewController: FormViewController {
         }
 
         navigationController?.popViewController(animated: true)
+
+        // If OnboardingViewController called us, let it know, that the
+        // user created a space successfully.
+        if let onboardingVc = navigationController?.topViewController as? OnboardingViewController {
+            onboardingVc.spaceCreated = true
+        }
     }
 
 

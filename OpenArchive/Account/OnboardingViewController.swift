@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import YapDatabase
 
 class OnboardingViewController: UITableViewController {
 
@@ -23,12 +22,7 @@ class OnboardingViewController: UITableViewController {
         }
     }
 
-    private lazy var readConn: YapDatabaseConnection? = {
-        let conn = Db.newConnection()
-        conn?.beginLongLivedReadTransaction()
-
-        return conn
-    }()
+    var spaceCreated = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,18 +33,7 @@ class OnboardingViewController: UITableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if InternetArchive.isAvailable {
-            done()
-            return
-        }
-
-        var spacesCount: UInt = 0
-
-        readConn?.read() { transaction in
-            spacesCount = transaction.numberOfKeys(inCollection: Space.collection)
-        }
-
-        if spacesCount > 0 {
+        if InternetArchive.isAvailable || spaceCreated {
             done()
             return
         }
