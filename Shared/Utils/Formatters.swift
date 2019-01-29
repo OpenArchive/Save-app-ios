@@ -20,4 +20,16 @@ class Formatters: NSObject {
 
     static let integer = NumberFormatter()
 
+    /**
+     Formatter for "uploaded" friendly timestamp.
+     */
+    static let uploaded: DateComponentsFormatter = {
+        let formatter = DateComponentsFormatter()
+
+        formatter.unitsStyle = .full
+        formatter.allowedUnits = [.year, .month, .day, .hour, .minute, .second]
+        formatter.maximumUnitCount = 1
+
+        return formatter
+    }()
 }

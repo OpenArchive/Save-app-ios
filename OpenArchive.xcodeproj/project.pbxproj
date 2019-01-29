@@ -12,6 +12,7 @@
 		A004E24C20EBCF1700A1D5F5 /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A004E24B20EBCF1700A1D5F5 /* Formatters.swift */; };
 		A01A7B6F2200A05C00E18DE0 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01A7B6E2200A05C00E18DE0 /* TabBar.swift */; };
 		A01A7B702200A05C00E18DE0 /* TabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01A7B6E2200A05C00E18DE0 /* TabBar.swift */; };
+		A01A7B722200F2D700E18DE0 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01A7B712200F2D700E18DE0 /* HeaderView.swift */; };
 		A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029F6822118715700C4EF6D /* AssetFactory.swift */; };
 		A029F6842118715700C4EF6D /* AssetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029F6822118715700C4EF6D /* AssetFactory.swift */; };
 		A0457E6720EF96FB00B8FBCB /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6620EF96FB00B8FBCB /* StringUtils.swift */; };
@@ -120,6 +121,7 @@
 		A004E24920EBCEA000A1D5F5 /* DetailsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailsViewController.swift; sourceTree = "<group>"; };
 		A004E24B20EBCF1700A1D5F5 /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
 		A01A7B6E2200A05C00E18DE0 /* TabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBar.swift; sourceTree = "<group>"; };
+		A01A7B712200F2D700E18DE0 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		A029F6822118715700C4EF6D /* AssetFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFactory.swift; sourceTree = "<group>"; };
 		A0457E6620EF96FB00B8FBCB /* StringUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
 		A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegexUtils.swift; sourceTree = "<group>"; };
@@ -225,6 +227,16 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		A01A7B732200FF2500E18DE0 /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				A0FB4DBD21F8CC2300B46099 /* MainViewController.swift */,
+				A0FB4DBF21F8EBDD00B46099 /* ImageCell.swift */,
+				A01A7B712200F2D700E18DE0 /* HeaderView.swift */,
+			);
+			path = Main;
+			sourceTree = "<group>";
+		};
 		A058628220E4FC4700EE2F14 /* Build */ = {
 			isa = PBXGroup;
 			children = (
@@ -239,6 +251,8 @@
 		A05C582821EF94FC00141633 /* BaseClasses */ = {
 			isa = PBXGroup;
 			children = (
+				A0C475BA21148DDE0012937E /* BaseDetailsViewController.swift */,
+				A0C475B921148DDE0012937E /* BaseDetailsViewController.xib */,
 				A05C582921EF94FC00141633 /* BaseViewController.swift */,
 				A08C2CE521F0B46C008ACA3E /* FormViewController.swift */,
 			);
@@ -269,8 +283,6 @@
 				A08750A82112099700BFAFE4 /* Constants.m */,
 				A0A192DF21F23B61009A8CF0 /* Constants+Swift.swift */,
 				A0BA76E52111FA130009801D /* Config.xcconfig */,
-				A0C475BA21148DDE0012937E /* BaseDetailsViewController.swift */,
-				A0C475B921148DDE0012937E /* BaseDetailsViewController.xib */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -348,13 +360,12 @@
 		A0E739D620E4C85D00DB31E1 /* OpenArchive */ = {
 			isa = PBXGroup;
 			children = (
+				A01A7B732200FF2500E18DE0 /* Main */,
 				A0E1A67D21EE7B3200E4F6B7 /* Account */,
 				A07129122111F4D5007A432A /* OpenArchive.entitlements */,
 				A08750AF21120EBF00BFAFE4 /* OpenArchive-Bridging-Header.h */,
 				A0E739D720E4C85D00DB31E1 /* AppDelegate.swift */,
 				A0656AB921F9BFB800070C4B /* MainNavigationController.swift */,
-				A0FB4DBD21F8CC2300B46099 /* MainViewController.swift */,
-				A0FB4DBF21F8EBDD00B46099 /* ImageCell.swift */,
 				A004E24920EBCEA000A1D5F5 /* DetailsViewController.swift */,
 				A0E739DB20E4C85D00DB31E1 /* Main.storyboard */,
 				A0E739E020E4C85E00DB31E1 /* LaunchScreen.storyboard */,
@@ -627,6 +638,7 @@
 				A08C2CED21F0C634008ACA3E /* AvatarRow.swift in Sources */,
 				A0E1A68521EE831300E4F6B7 /* ProfileCell.swift in Sources */,
 				A061950D215522970070E005 /* WebDavServer.swift in Sources */,
+				A01A7B722200F2D700E18DE0 /* HeaderView.swift in Sources */,
 				A0C475BD21148DDE0012937E /* BaseDetailsViewController.swift in Sources */,
 				A0D58DCE20E51517005A2F34 /* Asset.swift in Sources */,
 				A08C2CE421F0A98C008ACA3E /* PrivateServerViewController.swift in Sources */,

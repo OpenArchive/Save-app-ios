@@ -86,6 +86,21 @@ MDCTabBarDelegate {
         return Int(mappings.numberOfItems(inSection: 0))
     }
 
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1
+    }
+
+    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind
+        kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
+
+        let view = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind, withReuseIdentifier: HeaderView.reuseId, for: indexPath) as! HeaderView
+
+        view.apply(Project("foobar"), uploadedTs: 1548796776)
+
+        return view
+    }
+
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.reuseId, for: indexPath) as! ImageCell
 
