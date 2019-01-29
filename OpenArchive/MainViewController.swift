@@ -20,8 +20,6 @@ MDCTabBarDelegate {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var addBt: MDCFloatingButton!
 
-    private static let addTabItemTag = 666
-    
     lazy var writeConn = Db.newConnection()
 
     lazy var readConn: YapDatabaseConnection? = {
@@ -32,7 +30,7 @@ MDCTabBarDelegate {
     }()
 
     lazy var mappings: YapDatabaseViewMappings = {
-        let mappings = YapDatabaseViewMappings(groups: AssetsView.groups, view: AssetsView.name)
+        let mappings = YapDatabaseViewMappings(groups: AssetsProjectsView.groups, view: AssetsProjectsView.name)
 
         readConn?.read() { transaction in
             mappings.update(with: transaction)
@@ -42,34 +40,8 @@ MDCTabBarDelegate {
     }()
 
 
-    private lazy var tabBar: MDCTabBar = {
-        let tabBar = MDCTabBar(frame: tabBarContainer.bounds)
-
-        tabBar.items = [UITabBarItem(title: "All".localize(), image: nil, tag: 0)]
-
-        var counter = 1
-
-        readConn?.read() { transaction in
-            transaction.enumerateKeysAndObjects(inCollection: Project.collection) {
-                key, object, stop in
-
-                if let project = object as? Project {
-                    tabBar.items.append(UITabBarItem(title: project.name, image: nil, tag: counter))
-                    counter += 1
-                }
-            }
-        }
-
-        tabBar.items.append(UITabBarItem(title: "+".localize(), image: nil, tag: MainViewController.addTabItemTag))
-
-
-        tabBar.itemAppearance = .titles
-
-        tabBar.setTitleColor(view.tintColor, for: .normal)
-        tabBar.setTitleColor(UIColor.black, for: .selected)
-        tabBar.bottomDividerColor = UIColor.lightGray
-
-        tabBar.sizeToFit()
+    private lazy var tabBar: TabBar = {
+        let tabBar = TabBar(frame: tabBarContainer.bounds, connection: readConn)
 
         tabBar.delegate = self
 
@@ -90,7 +62,7 @@ MDCTabBarDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tabBarContainer.addSubview(tabBar)
+        tabBar.addToSubview(tabBarContainer)
 
         NotificationCenter.default.addObserver(self, selector: #selector(yapDatabaseModified),
                                                name: .YapDatabaseModified,
@@ -118,7 +90,7 @@ MDCTabBarDelegate {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.reuseId, for: indexPath) as! ImageCell
 
         readConn?.read() { transaction in
-            cell.asset = (transaction.ext(AssetsView.name) as? YapDatabaseViewTransaction)?
+            cell.asset = (transaction.ext(AssetsProjectsView.name) as? YapDatabaseViewTransaction)?
                 .object(at: indexPath, with: self.mappings) as? Asset
         }
 
@@ -195,7 +167,7 @@ MDCTabBarDelegate {
     // MARK: MDCTabBarDelegate
 
     func tabBar(_ tabBar: MDCTabBar, shouldSelect item: UITabBarItem) -> Bool {
-        if item.tag == MainViewController.addTabItemTag {
+        if item.tag == TabBar.addTabItemTag {
             navigationController?.pushViewController(ProjectViewController(),
                                                      animated: true)
 
@@ -217,7 +189,7 @@ MDCTabBarDelegate {
         if let readConn = readConn {
             var changes = NSArray()
 
-            (readConn.ext(AssetsView.name) as? YapDatabaseViewConnection)?
+            (readConn.ext(AssetsProjectsView.name) as? YapDatabaseViewConnection)?
                 .getSectionChanges(nil,
                                    rowChanges: &changes,
                                    for: readConn.beginLongLivedReadTransaction(),
@@ -228,23 +200,28 @@ MDCTabBarDelegate {
 
                 collectionView.performBatchUpdates({
                     for change in changes {
-                        switch change.type {
-                        case .delete:
-                            if let indexPath = change.indexPath {
-                                collectionView.deleteItems(at: [indexPath])
+                        if Asset.collection == change.collectionKey.collection {
+                            switch change.type {
+                            case .delete:
+                                if let indexPath = change.indexPath {
+                                    collectionView.deleteItems(at: [indexPath])
+                                }
+                            case .insert:
+                                if let newIndexPath = change.newIndexPath {
+                                    collectionView.insertItems(at: [newIndexPath])
+                                }
+                            case .move:
+                                if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
+                                    collectionView.moveItem(at: indexPath, to: newIndexPath)
+                                }
+                            case .update:
+                                if let indexPath = change.indexPath {
+                                    collectionView.reloadItems(at: [indexPath])
+                                }
                             }
-                        case .insert:
-                            if let newIndexPath = change.newIndexPath {
-                                collectionView.insertItems(at: [newIndexPath])
-                            }
-                        case .move:
-                            if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
-                                collectionView.moveItem(at: indexPath, to: newIndexPath)
-                            }
-                        case .update:
-                            if let indexPath = change.indexPath {
-                                collectionView.reloadItems(at: [indexPath])
-                            }
+                        }
+                        else {
+                            tabBar.handle(change, with: mappings)
                         }
                     }
                 })

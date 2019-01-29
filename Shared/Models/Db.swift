@@ -30,7 +30,7 @@ class Db {
     }()
 
     public class func setup() {
-        shared?.register(AssetsView(), withName: AssetsView.name)
+        shared?.register(AssetsProjectsView(), withName: AssetsProjectsView.name)
         shared?.register(SpacesProjectsView(), withName: SpacesProjectsView.name)
 
         // Enable relationships. (Also row -> file relationship handling!)
