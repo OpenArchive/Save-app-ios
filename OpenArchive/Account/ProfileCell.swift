@@ -10,7 +10,13 @@ import UIKit
 
 class ProfileCell: BaseCell {
 
-    static let height: CGFloat = 163
+    override class var reuseId: String {
+        return  "profileCell"
+    }
+
+    override class var height: CGFloat {
+        return 163
+    }
 
     @IBOutlet weak var avatarImg: UIImageView!
     @IBOutlet weak var aliasLb: UILabel!

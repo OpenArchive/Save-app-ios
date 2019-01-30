@@ -43,7 +43,7 @@
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
             <connections>
                 <outlet property="addIndicator" destination="4pg-bA-Mzc" id="LvF-na-0bI"/>
-                <outlet property="label" destination="mLV-x9-Uhr" id="kUP-Ht-9m7"/>
+                <outlet property="label" destination="mLV-x9-Uhr" id="Fng-pC-uh0"/>
             </connections>
         </tableViewCell>
     </objects>

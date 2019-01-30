@@ -11,10 +11,14 @@ import UIKit
 class BaseCell: UITableViewCell {
 
     class var nib: UINib {
-        return UINib(nibName: reuseId, bundle: Bundle(for: self))
+        return UINib(nibName: String(describing: self), bundle: Bundle(for: self))
     }
 
     class var reuseId: String {
         return String(describing: self)
+    }
+
+    class var height: CGFloat {
+        return 44
     }
 }

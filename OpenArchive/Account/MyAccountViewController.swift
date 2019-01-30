@@ -116,7 +116,6 @@ class MyAccountViewController: UITableViewController {
                                                object: readConn?.database)
 
         tableView.register(TableHeader.self, forHeaderFooterViewReuseIdentifier: TableHeader.reuseId)
-        tableView.register(ProfileCell.nib, forCellReuseIdentifier: ProfileCell.reuseId)
         tableView.register(MenuItemCell.nib, forCellReuseIdentifier: MenuItemCell.reuseId)
 
         tableView.tableFooterView = UIView()
@@ -144,7 +143,7 @@ class MyAccountViewController: UITableViewController {
         case 1:
             return spacesCount + 2
         case 2:
-            return projectsCount + 1
+            return projectsCount + 2
         case 3:
             return 3
         default:
@@ -167,44 +166,40 @@ class MyAccountViewController: UITableViewController {
             return cell.set()
         }
 
-        if let cell = tableView.dequeueReusableCell(withIdentifier: MenuItemCell.reuseId, for: indexPath) as? MenuItemCell {
-            switch indexPath.section {
-            case 1:
-                if indexPath.row < spacesCount {
-                    cell.set(getSpace(indexPath)?.prettyName ?? WebDavServer.PRETTY_NAME)
-                }
-                else if indexPath.row == spacesCount {
-                    cell.set("Private Server".localize(), isPlaceholder: true)
-                }
-                else {
-                    cell.set("Internet Archive".localize(), isPlaceholder: !InternetArchive.isAvailable)
-                }
-            case 2:
-                if indexPath.row < projectsCount {
-                    cell.set(getProject(indexPath)?.name ?? "Unnamed Project".localize())
-                }
-                else {
-                    cell.set("Create New Project".localize(), isPlaceholder: true)
-                }
-            case 3:
-                cell.addIndicator.isHidden = true
-                switch indexPath.row {
-                case 0:
-                    cell.set("Data Use".localize())
-                case 1:
-                    cell.set("Privacy".localize())
-                default:
-                    cell.set("About".localize())
-                }
-            default:
-                cell.set("")
+        let cell = tableView.dequeueReusableCell(withIdentifier: MenuItemCell.reuseId, for: indexPath) as! MenuItemCell
+        
+        switch indexPath.section {
+        case 1:
+            if indexPath.row < spacesCount {
+                return cell.set(getSpace(indexPath)?.prettyName ?? WebDavServer.PRETTY_NAME)
+            }
+            else if indexPath.row == spacesCount {
+                return cell.set("Private Server".localize(), isPlaceholder: true)
             }
 
-            return cell
+            return cell.set("Internet Archive".localize(), isPlaceholder: !InternetArchive.isAvailable)
+        case 2:
+            if indexPath.row < projectsCount {
+                return cell.set(getProject(indexPath)?.name ?? "Unnamed Project".localize())
+            }
+            else if indexPath.row == projectsCount {
+                return cell.set("Create New Project".localize(), isPlaceholder: true)
+            }
+
+            return cell.set("Browse".localize(), tableView.tintColor, true)
+        case 3:
+            cell.addIndicator.isHidden = true
+            switch indexPath.row {
+            case 0:
+                return cell.set("Data Use".localize())
+            case 1:
+                return cell.set("Privacy".localize())
+            default:
+                return cell.set("About".localize())
+            }
+        default:
+            return cell.set("")
         }
-
-
-        return UITableViewCell()
     }
 
 
@@ -268,8 +263,11 @@ class MyAccountViewController: UITableViewController {
                 pvc.project = getProject(indexPath)
                 vc = pvc
             }
-            else {
+            else if indexPath.row == projectsCount {
                 vc = ProjectViewController()
+            }
+            else {
+                performSegue(withIdentifier: "browseSegue", sender: self)
             }
         default:
             break
@@ -283,6 +281,13 @@ class MyAccountViewController: UITableViewController {
     }
 
 
+    // MARK:
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let browseVc = segue.destination as? BrowseViewController {
+            browseVc.space = getSpace(IndexPath(row: 0, section: 1))
+        }
+    }
     // MARK: Observers
 
     /**
@@ -335,13 +340,11 @@ class MyAccountViewController: UITableViewController {
     // MARK: Private Methods
 
     private func getItem(_ indexPath: IndexPath) -> Any? {
-        let ip = IndexPath(row: indexPath.row, section: indexPath.section - 1)
-
         var item: Any?
 
         readConn?.read() { transaction in
             item = (transaction.ext(SpacesProjectsView.name) as? YapDatabaseViewTransaction)?
-                .object(at: ip, with: self.mappings)
+                .object(atRow: UInt(indexPath.row), inSection: UInt(indexPath.section - 1), with: self.mappings)
         }
 
         return item

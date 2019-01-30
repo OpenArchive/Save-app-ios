@@ -8,6 +8,7 @@
 
 import UIKit
 import YapDatabase
+import FilesProvider
 
 class Space: NSObject, Item {
 
@@ -36,6 +37,25 @@ class Space: NSObject, Item {
 
     var prettyName: String {
         return name ?? url?.host ?? url?.absoluteString ?? WebDavServer.PRETTY_NAME
+    }
+
+    /**
+     Create a `WebDAVFileProvider`, if credentials are available and the `url` is a valid
+     WebDAV URL.
+
+     - returns: a `WebDAVFileProvider` for this space.
+     */
+    var provider: WebDAVFileProvider? {
+        if let username = username,
+            let password = password,
+            let baseUrl = url {
+
+            let credential = URLCredential(user: username, password: password, persistence: .forSession)
+
+            return WebDAVFileProvider(baseURL: baseUrl, credential: credential)
+        }
+
+        return nil
     }
 
 

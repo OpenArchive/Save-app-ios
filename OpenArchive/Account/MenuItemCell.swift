@@ -10,15 +10,25 @@ import UIKit
 
 class MenuItemCell: BaseCell {
 
-    static let height: CGFloat = 44.0
-
     @IBOutlet weak var label: UILabel!
     @IBOutlet weak var addIndicator: UILabel!
 
-    func set(_ label: String, isPlaceholder: Bool = false) {
-        self.label.text = label
-        self.label.textColor = isPlaceholder ? UIColor.lightGray : UIColor.darkText
+    func set(_ text: String = "", _ textColor: UIColor = UIColor.darkText,
+             _ indicatorHidden: Bool = true) -> MenuItemCell {
 
-        addIndicator.isHidden = !isPlaceholder
+        self.label.text = text
+        self.label.textColor = textColor
+
+        addIndicator.isHidden = indicatorHidden
+
+        return self
+    }
+
+    func set(_ text: String, isPlaceholder: Bool = false) -> MenuItemCell {
+        return set(text, isPlaceholder ? UIColor.lightGray : UIColor.darkText, !isPlaceholder)
+    }
+
+    func set(_ error: Error) -> MenuItemCell {
+        return set(error.localizedDescription, UIColor.red)
     }
 }
