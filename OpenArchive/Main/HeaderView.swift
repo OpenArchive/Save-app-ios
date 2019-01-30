@@ -15,7 +15,7 @@ class HeaderView: UICollectionReusableView {
     @IBOutlet weak var timestampLb: UILabel!
     @IBOutlet weak var projectLb: UILabel!
 
-    func apply(_ project: Project, uploadedTs: TimeInterval) {
+    func set(_ project: Project, uploadedTs: TimeInterval) {
         projectLb.text = "Uploaded to %".localize(value: project.name ?? "unnamed".localize())
 
         let fiveMinAgo = Date(timeIntervalSinceNow: -5 * 60)

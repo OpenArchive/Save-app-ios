@@ -96,7 +96,7 @@ MDCTabBarDelegate {
         let view = collectionView.dequeueReusableSupplementaryView(
             ofKind: kind, withReuseIdentifier: HeaderView.reuseId, for: indexPath) as! HeaderView
 
-        view.apply(Project("foobar"), uploadedTs: 1548796776)
+        view.set(Project("foobar"), uploadedTs: 1548796776)
 
         return view
     }
