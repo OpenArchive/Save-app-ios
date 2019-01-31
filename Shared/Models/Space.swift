@@ -52,7 +52,22 @@ class Space: NSObject, Item {
 
             let credential = URLCredential(user: username, password: password, persistence: .forSession)
 
-            return WebDAVFileProvider(baseURL: baseUrl, credential: credential)
+            let provider = WebDAVFileProvider(baseURL: baseUrl, credential: credential)
+
+            let conf = provider?.session.configuration ?? URLSessionConfiguration.default
+
+            conf.sharedContainerIdentifier = Constants.appGroup
+            conf.urlCache = provider?.cache
+            conf.requestCachePolicy = .returnCacheDataElseLoad
+
+            // Fix error "CredStore - performQuery - Error copying matching creds."
+            conf.urlCredentialStorage = nil
+
+            provider?.session = URLSession(configuration: conf,
+                                           delegate: provider?.session.delegate,
+                                           delegateQueue: provider?.session.delegateQueue)
+
+            return provider
         }
 
         return nil
