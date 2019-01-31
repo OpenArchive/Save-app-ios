@@ -9,6 +9,17 @@
 import UIKit
 import YapDatabase
 
+/**
+ A `Project` is the aggregation of none, one or more `Collections`.
+
+ On WebDAV servers, it also represents a folder with the same `name`.
+
+ A `Project` belongs to none or one `Space`. If it becomes disconnected,
+ the `url`s of it`s containing `Assets` shall become invalid.
+
+ If the user wants to add `Assets` to the app, there needs to be at least one
+ `Project`. If there are more than one, the user needs to choose one.
+ */
 class Project: NSObject, Item, YapDatabaseRelationshipNode {
 
     // MARK: Item
@@ -24,10 +35,10 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
         return (name ?? "").compare(rhs.name ?? "")
     }
 
+    var id: String
+
 
     // MARK: Project
-
-    var id: String
 
     var name: String?
 
@@ -37,9 +48,9 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
         get {
             var space: Space?
 
-            if let spaceId = spaceId {
+            if let id = spaceId {
                 Db.newConnection()?.read { transaction in
-                    space = transaction.object(forKey: spaceId, inCollection: Space.collection) as? Space
+                    space = transaction.object(forKey: id, inCollection: Space.collection) as? Space
                 }
             }
 
@@ -49,7 +60,6 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
             spaceId = newValue?.id
         }
     }
-
 
     init(name: String? = nil, space: Space? = nil) {
         id = UUID().uuidString
@@ -76,16 +86,17 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
     // MARK: NSObject
 
     override var description: String {
-        return "\(String(describing: type(of: self))): [id=\(id), name=\(name ?? "nil"), spaceId=\(spaceId ?? "nil")]"
+        return "\(String(describing: type(of: self))): [id=\(id), "
+            + "name=\(name ?? "nil"), spaceId=\(spaceId ?? "nil")]"
     }
 
 
     // MARK: YapDatabaseRelationshipNode
 
     func yapDatabaseRelationshipEdges() -> [YapDatabaseRelationshipEdge]? {
-        if let spaceId = spaceId {
+        if let id = spaceId {
             return [YapDatabaseRelationshipEdge(
-                name: "space", destinationKey: spaceId, collection: Space.collection,
+                name: "space", destinationKey: id, collection: Space.collection,
                 nodeDeleteRules: .notifyIfSourceDeleted)]
         }
 

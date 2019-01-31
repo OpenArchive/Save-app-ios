@@ -40,9 +40,10 @@ class Db {
         shared?.register(YapDatabaseCrossProcessNotification(), withName: "xProcNotification")
 
 
-        Asset.fixArchiverName()
         Space.fixArchiverName()
         Project.fixArchiverName()
+        Collection.fixArchiverName()
+        Asset.fixArchiverName()
 
         NSKeyedArchiver.setClassName("InternetArchive", for: InternetArchive.self)
         NSKeyedUnarchiver.setClass(InternetArchive.self, forClassName: "InternetArchive")

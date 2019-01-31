@@ -27,6 +27,8 @@
 		A0631B562203022100B3E90D /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0631B542203022100B3E90D /* BaseTableViewController.swift */; };
 		A0631B572203068900B3E90D /* MenuItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */; };
 		A0631B582203069200B3E90D /* MenuItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0AC06B32201E94000BD5FBA /* MenuItemCell.xib */; };
+		A0631B5B22034F0700B3E90D /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0631B5A22034F0700B3E90D /* Collection.swift */; };
+		A0631B5C22034F0E00B3E90D /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0631B5A22034F0700B3E90D /* Collection.swift */; };
 		A0656AB821F9BC8500070C4B /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0656AB721F9BC8500070C4B /* OnboardingViewController.swift */; };
 		A0656ABA21F9BFB800070C4B /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0656AB921F9BFB800070C4B /* MainNavigationController.swift */; };
 		A070335B2119E7DF00BF1F33 /* Request+debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = A070335A2119E7DF00BF1F33 /* Request+debug.swift */; };
@@ -138,6 +140,7 @@
 		A05C582C21EF96F400141633 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		A061950C215522970070E005 /* WebDavServer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDavServer.swift; sourceTree = "<group>"; };
 		A0631B542203022100B3E90D /* BaseTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewController.swift; sourceTree = "<group>"; };
+		A0631B5A22034F0700B3E90D /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		A0656AB721F9BC8500070C4B /* OnboardingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewController.swift; sourceTree = "<group>"; };
 		A0656AB921F9BFB800070C4B /* MainNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
 		A070335A2119E7DF00BF1F33 /* Request+debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Request+debug.swift"; sourceTree = "<group>"; };
@@ -315,10 +318,11 @@
 			isa = PBXGroup;
 			children = (
 				A071290F2111E4F1007A432A /* Db.swift */,
-				A0D58DCD20E51517005A2F34 /* Asset.swift */,
-				A029F6822118715700C4EF6D /* AssetFactory.swift */,
 				A0A192DC21F208DA009A8CF0 /* Space.swift */,
 				A0DE78AE21F76D2200B6B68B /* Project.swift */,
+				A0631B5A22034F0700B3E90D /* Collection.swift */,
+				A0D58DCD20E51517005A2F34 /* Asset.swift */,
+				A029F6822118715700C4EF6D /* AssetFactory.swift */,
 				A0D6E88920F3BAB800095E31 /* Server.swift */,
 				A0C0732920EE779800EA48F0 /* InternetArchive.swift */,
 				A061950C215522970070E005 /* WebDavServer.swift */,
@@ -640,6 +644,7 @@
 				A08750AA2112099700BFAFE4 /* Constants.m in Sources */,
 				A07128FE2111CC90007A432A /* ShareViewController.swift in Sources */,
 				A0A192E121F23B61009A8CF0 /* Constants+Swift.swift in Sources */,
+				A0631B5C22034F0E00B3E90D /* Collection.swift in Sources */,
 				A05C582B21EF95A800141633 /* BaseViewController.swift in Sources */,
 				A0C475B5211474A70012937E /* RegexUtils.swift in Sources */,
 				A061950E215522970070E005 /* WebDavServer.swift in Sources */,
@@ -691,6 +696,7 @@
 				A0656ABA21F9BFB800070C4B /* MainNavigationController.swift in Sources */,
 				A0FB4DC021F8EBDD00B46099 /* ImageCell.swift in Sources */,
 				A0E1A68721EE834D00E4F6B7 /* BaseCell.swift in Sources */,
+				A0631B5B22034F0700B3E90D /* Collection.swift in Sources */,
 				A0C0732A20EE779800EA48F0 /* InternetArchive.swift in Sources */,
 				A0656AB821F9BC8500070C4B /* OnboardingViewController.swift in Sources */,
 				A0FB4DBE21F8CC2300B46099 /* MainViewController.swift in Sources */,

@@ -10,6 +10,13 @@ import UIKit
 import YapDatabase
 import FilesProvider
 
+/**
+ A `Space` represents the root folder of an upload destination on a WebDAV server.
+
+ It needs to have a `url`, a `username` and a `password`.
+
+ A `name` is optional and is only for a user's informational purposes.
+ */
 class Space: NSObject, Item {
 
     // MARK: Item
@@ -72,7 +79,6 @@ class Space: NSObject, Item {
 
         return nil
     }
-
 
     init(_ name: String? = nil, _ url: URL? = nil, _ username: String? = nil, _ password: String? = nil) {
         id = UUID().uuidString
