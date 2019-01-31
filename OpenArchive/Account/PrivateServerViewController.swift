@@ -71,6 +71,8 @@ class PrivateServerViewController: FormViewController {
     // MARK: Actions
 
     @objc func connect() {
+        workingOverlay.isHidden = false
+
         let space = self.space ?? Space()
 
         space.name = nameRow.value
@@ -78,17 +80,29 @@ class PrivateServerViewController: FormViewController {
         space.username = userNameRow.value
         space.password = passwordRow.value
 
-        Db.newConnection()?.asyncReadWrite() { transaction in
-            transaction.setObject(space, forKey: space.id,
-                                  inCollection: Space.collection)
-        }
+        // Do a test request to check validity of space configuration.
+        space.provider?.attributesOfItem(path: "") { file, error in
+            DispatchQueue.main.async {
+                self.workingOverlay.isHidden = true
 
-        navigationController?.popViewController(animated: true)
+                if let error = error {
+                    AlertHelper.present(self, message: error.localizedDescription)
+                }
+                else {
+                    Db.newConnection()?.asyncReadWrite() { transaction in
+                        transaction.setObject(space, forKey: space.id,
+                                              inCollection: Space.collection)
+                    }
 
-        // If OnboardingViewController called us, let it know, that the
-        // user created a space successfully.
-        if let onboardingVc = navigationController?.topViewController as? OnboardingViewController {
-            onboardingVc.spaceCreated = true
+                    self.navigationController?.popViewController(animated: true)
+
+                    // If OnboardingViewController called us, let it know, that the
+                    // user created a space successfully.
+                    if let onboardingVc = self.navigationController?.topViewController as? OnboardingViewController {
+                        onboardingVc.spaceCreated = true
+                    }
+                }
+            }
         }
     }
 

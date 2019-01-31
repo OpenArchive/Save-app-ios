@@ -19,6 +19,10 @@ import Eureka
  */
 class FormViewController: Eureka.FormViewController {
 
+    lazy var workingOverlay: WorkingOverlay = {
+        return WorkingOverlay().addToSuperview(navigationController?.view ?? view)
+    }()
+
     init() {
         super.init(style: .plain)
     }
