@@ -114,9 +114,6 @@ class MyAccountViewController: BaseTableViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(yapDatabaseModified),
                                                name: .YapDatabaseModified,
                                                object: readConn?.database)
-
-        tableView.register(TableHeader.self, forHeaderFooterViewReuseIdentifier: TableHeader.reuseId)
-        tableView.register(MenuItemCell.nib, forCellReuseIdentifier: MenuItemCell.reuseId)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -203,23 +200,21 @@ class MyAccountViewController: BaseTableViewController {
 
     // MARK: UITableViewDelegate
 
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        if let header = tableView.dequeueReusableHeaderFooterView(withIdentifier: TableHeader.reuseId) as? TableHeader {
-            switch section {
-            case 1:
-                header.text = "Spaces".localize()
-            case 2:
-                header.text = "Projects".localize()
-            case 3:
-                header.text = "Settings".localize()
-            default:
-                break
-            }
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> TableHeader {
+        let header = super.tableView(tableView, viewForHeaderInSection: section)
 
-            return header
+        switch section {
+        case 1:
+            header.text = "Spaces".localize()
+        case 2:
+            header.text = "Projects".localize()
+        case 3:
+            header.text = "Settings".localize()
+        default:
+            break
         }
 
-        return nil
+        return header
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

@@ -25,6 +25,8 @@
 		A061950E215522970070E005 /* WebDavServer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A061950C215522970070E005 /* WebDavServer.swift */; };
 		A0631B552203022100B3E90D /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0631B542203022100B3E90D /* BaseTableViewController.swift */; };
 		A0631B562203022100B3E90D /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0631B542203022100B3E90D /* BaseTableViewController.swift */; };
+		A0631B572203068900B3E90D /* MenuItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */; };
+		A0631B582203069200B3E90D /* MenuItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0AC06B32201E94000BD5FBA /* MenuItemCell.xib */; };
 		A0656AB821F9BC8500070C4B /* OnboardingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0656AB721F9BC8500070C4B /* OnboardingViewController.swift */; };
 		A0656ABA21F9BFB800070C4B /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0656AB921F9BFB800070C4B /* MainNavigationController.swift */; };
 		A070335B2119E7DF00BF1F33 /* Request+debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = A070335A2119E7DF00BF1F33 /* Request+debug.swift */; };
@@ -332,6 +334,8 @@
 			children = (
 				A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */,
 				A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */,
+				A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */,
+				A0AC06B32201E94000BD5FBA /* MenuItemCell.xib */,
 				A0FB4DBA21F8C9B600B46099 /* RoundedImageView.swift */,
 				A01A7B6E2200A05C00E18DE0 /* TabBar.swift */,
 				A0E1A68821EE873200E4F6B7 /* TableHeader.swift */,
@@ -346,8 +350,6 @@
 				A0656AB721F9BC8500070C4B /* OnboardingViewController.swift */,
 				A0E1A67B21EE7A5C00E4F6B7 /* MyAccountViewController.swift */,
 				A0E1A68321EE831300E4F6B7 /* ProfileCell.swift */,
-				A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */,
-				A0AC06B32201E94000BD5FBA /* MenuItemCell.xib */,
 				A08C2CEA21F0B71B008ACA3E /* EditProfileViewController.swift */,
 				A08C2CE321F0A98C008ACA3E /* PrivateServerViewController.swift */,
 				A08C2CE121F09B3F008ACA3E /* InternetArchiveViewController.swift */,
@@ -508,6 +510,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A0C475BC21148DDE0012937E /* BaseDetailsViewController.xib in Resources */,
+				A0631B582203069200B3E90D /* MenuItemCell.xib in Resources */,
 				A0B24C6521F0CDA6006C0CC6 /* AvatarCell.xib in Resources */,
 				A0C475B7211488BF0012937E /* Assets.xcassets in Resources */,
 			);
@@ -636,6 +639,7 @@
 				A05C582B21EF95A800141633 /* BaseViewController.swift in Sources */,
 				A0C475B5211474A70012937E /* RegexUtils.swift in Sources */,
 				A061950E215522970070E005 /* WebDavServer.swift in Sources */,
+				A0631B572203068900B3E90D /* MenuItemCell.swift in Sources */,
 				A0DE78B021F76D2200B6B68B /* Project.swift in Sources */,
 				A0FB4DB621F89FD500B46099 /* AssetsProjectsView.swift in Sources */,
 				A0FB4DBC21F8C9B600B46099 /* RoundedImageView.swift in Sources */,

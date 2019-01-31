@@ -24,8 +24,6 @@ class BrowseViewController: BaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.register(MenuItemCell.nib, forCellReuseIdentifier: MenuItemCell.reuseId)
-
         enableDone(false)
 
         loadFolders()
