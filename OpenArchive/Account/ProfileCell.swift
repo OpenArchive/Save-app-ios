@@ -23,9 +23,12 @@ class ProfileCell: BaseCell {
     @IBOutlet weak var roleLb: UILabel!
 
     func set() -> ProfileCell {
+        avatarImg.image = Profile.avatar ?? Profile.defaultAvatar
+
         aliasLb.text = Profile.alias == nil || Profile.alias!.isEmpty
             ? "Your Alias".localize()
             : Profile.alias
+
         roleLb.text = Profile.role == nil || Profile.role!.isEmpty
             ? "Your Role".localize()
             : Profile.role

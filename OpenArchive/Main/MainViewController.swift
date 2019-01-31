@@ -16,6 +16,7 @@ class MainViewController: UIViewController, UICollectionViewDelegate,
 UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
 MDCTabBarDelegate {
 
+    @IBOutlet weak var avatar: UIImageView!
     @IBOutlet weak var tabBarContainer: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var addBt: MDCFloatingButton!
@@ -75,6 +76,8 @@ MDCTabBarDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        avatar.image = Profile.avatar ?? Profile.defaultAvatar
 
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }

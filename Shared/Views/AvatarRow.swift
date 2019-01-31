@@ -8,16 +8,23 @@
 
 import UIKit
 import Eureka
+import ImageRow
 
-class AvatarCell: Cell<UIImage>, CellType {
+public final class AvatarCell: PushSelectorCell<UIImage> {
+
     @IBOutlet weak var avatar: UIImageView!
 
-    @IBAction func select() {
-        print("[\(String(describing: type(of: self)))]#select")
+    public override func update() {
+        super.update()
+
+        accessoryType = .none
+        editingAccessoryView = .none
+
+        avatar.image = row.value ?? (row as? ImageRowProtocol)?.placeholderImage
     }
 }
 
-final class AvatarRow: Row<AvatarCell>, RowType {
+final class AvatarRow: _ImageRow<AvatarCell>, RowType {
 
     required init(tag: String?) {
         super.init(tag: tag)

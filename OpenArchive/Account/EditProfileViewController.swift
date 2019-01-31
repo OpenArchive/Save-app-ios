@@ -19,7 +19,16 @@ class EditProfileViewController: FormViewController {
         form
             +++ Section()
 
-            <<< AvatarRow()
+            <<< AvatarRow() {
+                $0.allowEditor = true
+                $0.placeholderImage = Profile.defaultAvatar
+                $0.sourceTypes = [.Camera, .PhotoLibrary]
+                $0.useEditedImage = true
+                $0.value = Profile.avatar
+            }
+            .onChange() { row in
+                Profile.avatar = row.value
+            }
 
             <<< NameRow() {
                 $0.title = "Your Alias".localize()

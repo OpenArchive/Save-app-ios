@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -15,15 +14,17 @@
             <rect key="frame" x="0.0" y="0.0" width="375" height="144"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatar-empty" translatesAutoresizingMaskIntoConstraints="NO" id="88v-Wl-Ybm">
+                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatar-empty" translatesAutoresizingMaskIntoConstraints="NO" id="88v-Wl-Ybm">
                     <rect key="frame" x="147.5" y="32" width="80" height="80"/>
                     <constraints>
                         <constraint firstAttribute="width" constant="80" id="5ba-UE-4lv"/>
                         <constraint firstAttribute="height" constant="80" id="ibj-zK-v9U"/>
                     </constraints>
-                    <connections>
-                        <outletCollection property="gestureRecognizers" destination="DWc-vS-okC" appends="YES" id="8pN-MN-0VS"/>
-                    </connections>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                            <integer key="value" value="40"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
                 </imageView>
                 <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_photo" translatesAutoresizingMaskIntoConstraints="NO" id="jSk-Hy-zsJ">
                     <rect key="frame" x="203.5" y="88" width="24" height="24"/>
@@ -44,14 +45,9 @@
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
-                <outlet property="avatar" destination="88v-Wl-Ybm" id="6D8-Lr-i9Q"/>
+                <outlet property="avatar" destination="88v-Wl-Ybm" id="Cbf-Aw-lZd"/>
             </connections>
         </view>
-        <tapGestureRecognizer id="DWc-vS-okC">
-            <connections>
-                <action selector="select" destination="-1" id="yWV-8T-hqr"/>
-            </connections>
-        </tapGestureRecognizer>
     </objects>
     <resources>
         <image name="avatar-empty" width="26" height="26"/>

@@ -164,12 +164,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatar-empty" translatesAutoresizingMaskIntoConstraints="NO" id="hpS-2l-dcc">
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatar-empty" translatesAutoresizingMaskIntoConstraints="NO" id="hpS-2l-dcc">
                                 <rect key="frame" x="16" y="36" width="40" height="40"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="40" id="WCF-GJ-S02"/>
                                     <constraint firstAttribute="height" constant="40" id="YMA-T2-Ey1"/>
                                 </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="20"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="WyM-Oj-yBY" appends="YES" id="cPI-iW-H8p"/>
                                 </connections>
@@ -312,6 +317,7 @@
                     <navigationItem key="navigationItem" id="Wdc-5N-9pa"/>
                     <connections>
                         <outlet property="addBt" destination="kiu-eR-U6M" id="fVa-Q1-bhe"/>
+                        <outlet property="avatar" destination="hpS-2l-dcc" id="f3r-5D-oXV"/>
                         <outlet property="collectionView" destination="cdB-Ih-Rhb" id="nAx-Db-2Xa"/>
                         <outlet property="tabBarContainer" destination="Sv8-ax-o88" id="Mk4-Mv-SE6"/>
                     </connections>
@@ -341,12 +347,17 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="162.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatar-empty" translatesAutoresizingMaskIntoConstraints="NO" id="Szh-2w-Xoq">
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="avatar-empty" translatesAutoresizingMaskIntoConstraints="NO" id="Szh-2w-Xoq">
                                             <rect key="frame" x="147.5" y="11" width="80" height="80"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="80" id="4vb-xt-FbY"/>
                                                 <constraint firstAttribute="height" constant="80" id="UdB-2r-R28"/>
                                             </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                                    <integer key="value" value="40"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
                                         </imageView>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_photo" translatesAutoresizingMaskIntoConstraints="NO" id="pUH-dx-1l9">
                                             <rect key="frame" x="203.5" y="67" width="24" height="24"/>

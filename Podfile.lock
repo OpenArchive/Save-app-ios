@@ -1,14 +1,13 @@
 PODS:
   - Alamofire (4.8.1)
   - ARChromeActivity (1.0.6)
-  - CocoaLumberjack (3.4.2):
-    - CocoaLumberjack/Default (= 3.4.2)
-    - CocoaLumberjack/Extensions (= 3.4.2)
-  - CocoaLumberjack/Default (3.4.2)
-  - CocoaLumberjack/Extensions (3.4.2):
-    - CocoaLumberjack/Default
+  - CocoaLumberjack (3.5.0):
+    - CocoaLumberjack/Core (= 3.5.0)
+  - CocoaLumberjack/Core (3.5.0)
   - Eureka (4.3.1)
   - FilesProvider (0.25.1)
+  - ImageRow (3.2.0):
+    - Eureka (~> 4.3)
   - Localize (2.1.0)
   - MaterialComponents/AnimationTiming (74.0.0)
   - MaterialComponents/Buttons (74.0.0):
@@ -44,6 +43,7 @@ PODS:
   - MDFInternationalization (2.0.0)
   - MDFTextAccessibility (2.0.0)
   - TUSafariActivity (1.0.4)
+  - UIImage-Resize (1.0.1)
   - YapDatabase (3.1.2):
     - YapDatabase/Standard (= 3.1.2)
   - YapDatabase/Standard (3.1.2):
@@ -113,10 +113,12 @@ DEPENDENCIES:
   - ARChromeActivity (~> 1.0)
   - Eureka (~> 4.3)
   - FilesProvider (~> 0.25)
+  - ImageRow (from `https://github.com/tladesignz/ImageRow.git`)
   - Localize (~> 2.1)
   - MaterialComponents/Buttons (~> 74.0)
   - MaterialComponents/Tabs (~> 74.0)
   - TUSafariActivity (~> 1.0)
+  - UIImage-Resize (~> 1.0)
   - YapDatabase (~> 3.1)
 
 SPEC REPOS:
@@ -131,21 +133,33 @@ SPEC REPOS:
     - MDFInternationalization
     - MDFTextAccessibility
     - TUSafariActivity
+    - UIImage-Resize
     - YapDatabase
+
+EXTERNAL SOURCES:
+  ImageRow:
+    :git: https://github.com/tladesignz/ImageRow.git
+
+CHECKOUT OPTIONS:
+  ImageRow:
+    :commit: 6b63d24436ad2a2ae39c763bad025a1a6c24a0a7
+    :git: https://github.com/tladesignz/ImageRow.git
 
 SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
   ARChromeActivity: 5dcf9b9f09323761f992aff3525cdd777f83609d
-  CocoaLumberjack: db7cc9e464771f12054c22ff6947c5a58d43a0fd
+  CocoaLumberjack: cffaa70a9336515228178e3669b71bd49d343850
   Eureka: 28ea296f06710f6745266b71f17862048941a32d
   FilesProvider: f6ab75211d2fd4814720f19b427e43668dc24585
+  ImageRow: 03681b3ef8034b5a649440325f5d5ba7b22c1b0a
   Localize: f360a343abfac047be5b375c45be1059f5f625f3
   MaterialComponents: c382f7a1881832ff88a05bb1536c47714cf1295f
   MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
   MDFTextAccessibility: 85c09a1bd9c321f494348e632a25063bcda35a53
   TUSafariActivity: afc55a00965377939107ce4fdc7f951f62454546
+  UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   YapDatabase: d8cd02058e36bc0902e405d8f3326eb8d7dbf36c
 
-PODFILE CHECKSUM: 5cb4e4ddc6042680ac57d015aabec20307fafcb4
+PODFILE CHECKSUM: 09dbccf4e3dda5c757474ada7cdf4b4f09e5d795
 
 COCOAPODS: 1.5.3
