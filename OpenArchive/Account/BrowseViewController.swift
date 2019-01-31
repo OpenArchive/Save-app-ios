@@ -11,7 +11,7 @@ import FilesProvider
 
 class BrowseViewController: BaseTableViewController {
 
-    var space: Space?
+    var space: Space!
 
     private var loading = true
 
@@ -20,6 +20,7 @@ class BrowseViewController: BaseTableViewController {
     private var folders = [FileObject]()
 
     private var selectedFolder: FileObject?
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -87,7 +88,7 @@ class BrowseViewController: BaseTableViewController {
                     !newName.isEmpty {
 
                     self.beginWork {
-                        self.space?.provider?.create(folder: newName, at: "") { error in
+                        self.space.provider?.create(folder: newName, at: "") { error in
                             if error != nil {
                                 self.endWork(error)
                             }
@@ -113,11 +114,17 @@ class BrowseViewController: BaseTableViewController {
     }
 
 
+    // MARK: UITableViewDelegate
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 0
+    }
+
     // MARK: Actions
     
     @IBAction func connect() {
         if let selectedFolder = selectedFolder {
-            let project = Project(selectedFolder.name)
+            let project = Project(name: selectedFolder.name, space: space)
 
             Db.newConnection()?.asyncReadWrite() { transaction in
                 transaction.setObject(project, forKey: project.id,
@@ -160,7 +167,7 @@ class BrowseViewController: BaseTableViewController {
         beginWork {
             folders.removeAll()
 
-            space?.provider?.contentsOfDirectory(path: "") { files, error in
+            space.provider?.contentsOfDirectory(path: "") { files, error in
                 for file in files {
                     if file.isDirectory {
                         self.folders.append(file)

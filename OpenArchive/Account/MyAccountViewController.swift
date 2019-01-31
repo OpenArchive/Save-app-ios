@@ -252,9 +252,7 @@ class MyAccountViewController: BaseTableViewController {
             }
         case 2:
             if indexPath.row < projectsCount {
-                let pvc = ProjectViewController()
-                pvc.project = getProject(indexPath)
-                vc = pvc
+                vc = ProjectViewController(getProject(indexPath)!)
             }
             else if indexPath.row == projectsCount {
                 vc = ProjectViewController()

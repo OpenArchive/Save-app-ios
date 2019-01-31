@@ -11,11 +11,27 @@ import Eureka
 
 class ProjectViewController: FormViewController {
 
-    var project: Project?
+    private var project: Project
 
     private let nameRow = TextRow() {
         $0.title = "Name".localize()
         $0.add(rule: RuleRequired())
+    }
+
+    init(_ project: Project? = nil) {
+        self.project = project ?? Project()
+
+        super.init()
+    }
+
+    convenience init(_ space: Space) {
+        self.init(Project(space: space))
+    }
+
+    required init?(coder aDecoder: NSCoder) {
+        project = aDecoder.decodeObject() as! Project
+
+        super.init(coder: aDecoder)
     }
 
     override func viewDidLoad() {
@@ -25,7 +41,7 @@ class ProjectViewController: FormViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .done, target: self, action: #selector(connect))
 
-        nameRow.value = project?.name
+        nameRow.value = project.name
 
         form
             +++ Section()
@@ -54,12 +70,10 @@ class ProjectViewController: FormViewController {
     // MARK: Actions
 
     @objc func connect() {
-        let project = self.project ?? Project()
-
         project.name = nameRow.value
 
         Db.newConnection()?.asyncReadWrite() { transaction in
-            transaction.setObject(project, forKey: project.id,
+            transaction.setObject(self.project, forKey: self.project.id,
                                   inCollection: Project.collection)
         }
 
