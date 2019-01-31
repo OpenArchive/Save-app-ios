@@ -8,7 +8,7 @@
 
 import UIKit
 
-class OnboardingViewController: UITableViewController {
+class OnboardingViewController: BaseTableViewController {
 
     private static let alreadyRun = "already_run"
 
@@ -26,8 +26,6 @@ class OnboardingViewController: UITableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        tableView.tableFooterView = UIView()
     }
 
     override func viewWillAppear(_ animated: Bool) {

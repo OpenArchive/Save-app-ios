@@ -9,7 +9,7 @@
 import UIKit
 import FilesProvider
 
-class BrowseViewController: UITableViewController {
+class BrowseViewController: BaseTableViewController {
 
     var space: Space?
 
@@ -21,16 +21,10 @@ class BrowseViewController: UITableViewController {
 
     private var selectedFolder: FileObject?
 
-    private lazy var workingOverlay: WorkingOverlay = {
-        return WorkingOverlay().addToSuperview(navigationController!.view)
-    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
         tableView.register(MenuItemCell.nib, forCellReuseIdentifier: MenuItemCell.reuseId)
-
-        tableView.tableFooterView = UIView()
 
         enableDone(false)
 
@@ -177,7 +171,6 @@ class BrowseViewController: UITableViewController {
 
                 self.endWork(error)
             }
-
         }
     }
 }

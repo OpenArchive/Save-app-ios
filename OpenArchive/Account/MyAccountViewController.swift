@@ -10,7 +10,7 @@ import UIKit
 import Localize
 import YapDatabase
 
-class MyAccountViewController: UITableViewController {
+class MyAccountViewController: BaseTableViewController {
 
     private lazy var readConn: YapDatabaseConnection? = {
         let conn = Db.newConnection()
@@ -117,8 +117,6 @@ class MyAccountViewController: UITableViewController {
 
         tableView.register(TableHeader.self, forHeaderFooterViewReuseIdentifier: TableHeader.reuseId)
         tableView.register(MenuItemCell.nib, forCellReuseIdentifier: MenuItemCell.reuseId)
-
-        tableView.tableFooterView = UIView()
     }
 
     override func viewWillAppear(_ animated: Bool) {
