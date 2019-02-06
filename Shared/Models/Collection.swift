@@ -86,6 +86,7 @@ class Collection: NSObject, Item, YapDatabaseRelationshipNode {
 
     func encode(with coder: NSCoder) {
         coder.encode(id)
+        coder.encode(projectId)
         coder.encode(created)
         coder.encode(closed)
         coder.encode(uploaded)

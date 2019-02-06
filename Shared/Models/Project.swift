@@ -15,7 +15,7 @@ import YapDatabase
  On WebDAV servers, it also represents a folder with the same `name`.
 
  A `Project` belongs to none or one `Space`. If it becomes disconnected,
- the `url`s of it`s containing `Assets` shall become invalid.
+ the `url`s of its containing `Assets` shall become invalid.
 
  If the user wants to add `Assets` to the app, there needs to be at least one
  `Project`. If there are more than one, the user needs to choose one.
