@@ -97,4 +97,12 @@ class Server: NSObject, NSCoding {
         preconditionFailure("This method must be overridden.")
     }
 
+
+    // MARK: NSObject
+
+    override var description: String {
+        return "\(String(describing: type(of: self))): [id=\(id), "
+            + "publicUrl=\(publicUrl?.absoluteString ?? "nil"), "
+            + "isUploaded=\(isUploaded), error=\(error ?? "nil")]"
+    }
 }

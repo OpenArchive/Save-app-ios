@@ -96,7 +96,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode {
         }
     }
 
-    private var servers = [String : Server]()
+    var server: Server?
 
     override var description: String {
         return "\(String(describing: type(of: self))): [id=\(id), created=\(created), uti=\(uti), "
@@ -104,7 +104,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode {
             + "author=\(author ?? "nil"), location=\(location ?? "nil"), "
             + "tags=\(tags?.description ?? "nil"), license=\(license ?? "nil"), "
             + "mimeType=\(mimeType), filename=\(filename), file=\(file?.description ?? "nil"), "
-            + "thumb=\(thumb?.description ?? "nil"), servers=\(servers)]"
+            + "thumb=\(thumb?.description ?? "nil"), server=\(server?.description ?? "nil")]"
     }
 
 
@@ -131,7 +131,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode {
         location = decoder.decodeObject() as? String
         tags = decoder.decodeObject() as? [String]
         license = decoder.decodeObject() as? String
-        servers = decoder.decodeObject() as? [String : Server] ?? [String : Server]()
+        server = decoder.decodeObject() as? Server
     }
 
     func encode(with coder: NSCoder) {
@@ -145,7 +145,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode {
         coder.encode(location)
         coder.encode(tags)
         coder.encode(license)
-        coder.encode(servers)
+        coder.encode(server)
     }
 
     // MARK: YapDatabaseRelationshipNode
@@ -195,37 +195,6 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode {
         return UIImage(named: "NoImage")
     }
 
-    func getServers() -> [String : Server] {
-        return servers
-    }
-
-    /**
-     Add a `Server` to this asset, where we want to upload to, if not added, yet.
-
-     - parameter server: The server to use.
-     - returns: the already existing or just created subclass as given.
-    */
-    func setServer(_ server: Server) -> Server {
-        if let server = servers[server.id] {
-            return server
-        }
-
-        servers[server.id] = server
-
-        return server
-    }
-
-    /**
-     Remove a `Server` from this asset, if found.
-
-     This makes most sense, after we removed an asset from that server.
-
-     - parameter server: The server to remove.
-    */
-    func removeServer(_ server: Server) {
-        servers.removeValue(forKey: server.id)
-    }
-
     /**
      Upload this asset to the given server.
 
@@ -235,7 +204,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode {
     */
     func upload(to server: Server, progress: @escaping Server.ProgressHandler,
                 done: @escaping Server.DoneHandler) {
-        let server = setServer(server)
+        self.server = server
 
         server.upload(self, progress: progress, done: done)
     }

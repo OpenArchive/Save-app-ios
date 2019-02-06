@@ -32,7 +32,7 @@ class DetailsViewController: BaseDetailsViewController {
     }
 
     @objc func followServerUrl(_ sender: UITapGestureRecognizer) {
-        if let url = asset?.getServers().first?.value.publicUrl {
+        if let url = asset?.server?.publicUrl {
             let vc = UIActivityViewController(activityItems: [url],
                                               applicationActivities: [TUSafariActivity(), ARChromeActivity()])
             present(vc, animated: true)

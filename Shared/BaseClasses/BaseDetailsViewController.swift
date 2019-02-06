@@ -98,13 +98,11 @@ class BaseDetailsViewController: UIViewController {
 
                 self.dateLb.text = Formatters.date.string(from: asset.created)
 
-                let servers = asset.getServers()
-                if servers.count < 1 {
-                    self.showServerBox(false, animated: false)
+                if let server = asset.server {
+                    self.setServerInfo(server)
                 }
-
-                for s in servers {
-                    self.setServerInfo(s.value)
+                else {
+                    self.showServerBox(false, animated: false)
                 }
 
                 self.titleTf.text = asset.title
@@ -182,7 +180,7 @@ class BaseDetailsViewController: UIViewController {
 
     @IBAction func removeFromServer(_ button: UIButton) {
         if let asset = asset,
-            let server = asset.getServers().first?.value {
+            let server = asset.server {
             
             button.isHidden = true
 
@@ -194,7 +192,7 @@ class BaseDetailsViewController: UIViewController {
                 button.isHidden = false
 
                 if server.error == nil && !server.isUploaded {
-                    asset.removeServer(server)
+                    asset.server = nil
                     self.showServerBox(false)
 
                     self.writeConn?.asyncReadWrite() { transaction in
