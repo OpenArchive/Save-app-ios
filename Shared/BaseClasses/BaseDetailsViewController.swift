@@ -191,7 +191,7 @@ class BaseDetailsViewController: UIViewController {
 
                 button.isHidden = false
 
-                if server.error == nil && !server.isUploaded {
+                if asset.error == nil && !asset.isUploaded {
                     asset.server = nil
                     self.showServerBox(false)
 
@@ -358,17 +358,17 @@ class BaseDetailsViewController: UIViewController {
 
         setServerStatus(server)
 
-        serverUrlLb.text = server.publicUrl?.absoluteString
+        serverUrlLb.text = asset?.publicUrl?.absoluteString
 
         showServerBox(true)
     }
 
     private func setServerStatus(_ server: Server) {
-        if let error = server.error, error.count > 0 {
+        if let error = asset?.error, error.count > 0 {
             self.serverStatusLb.text = error
             print(error)
         }
-        else if server.isUploaded {
+        else if asset?.isUploaded ?? false {
             self.serverStatusLb.text = "Uploaded".localize()
         }
         else {

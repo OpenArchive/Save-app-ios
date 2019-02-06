@@ -78,7 +78,7 @@ class InternetArchive : Server {
     override func upload(_ asset: Asset, progress: @escaping ProgressHandler,
                          done: @escaping DoneHandler) {
 
-        if publicUrl == nil {
+        if asset.publicUrl == nil {
             if slug == nil {
                 slug = StringUtils.slug(asset.title != nil
                     ? asset.title!
@@ -89,13 +89,12 @@ class InternetArchive : Server {
 //                slug = "IMG-0003-u4z6"
             }
 
-            publicUrl = URL(string: "\(InternetArchive.BASE_URL)/\(slug!)/\(asset.filename)")
+            asset.publicUrl = URL(string: "\(InternetArchive.BASE_URL)/\(slug!)/\(asset.filename)")
         }
 
         if let accessKey = InternetArchive.accessKey,
             let secretKey = InternetArchive.secretKey,
-            let url = publicUrl,
-            let file = asset.file {
+            let url = asset.publicUrl {
 
             var headers: HTTPHeaders = [
                 "Accept": "*/*",
@@ -131,14 +130,14 @@ class InternetArchive : Server {
                 headers["x-archive-meta-licenseurl"] = license
             }
 
-            upload(file, to: url, headers: headers, progress: progress, done: done)
+            upload(asset, to: url, headers: headers, progress: progress, done: done)
         }
     }
 
     override func remove(_ asset: Asset, done: @escaping DoneHandler) {
         if let accessKey = InternetArchive.accessKey,
             let secretKey = InternetArchive.secretKey,
-            let url = publicUrl {
+            let url = asset.publicUrl {
 
             let headers: HTTPHeaders = [
                 "Accept": "*/*",
@@ -154,11 +153,11 @@ class InternetArchive : Server {
 
                     switch response.result {
                     case .success:
-                        self.publicUrl = nil
-                        self.isUploaded = false
-                        self.error = nil
+                        asset.publicUrl = nil
+                        asset.isUploaded = false
+                        asset.error = nil
                     case .failure(let error):
-                        self.error = error.localizedDescription
+                        asset.error = error.localizedDescription
                     }
 
                     done(self)
@@ -166,9 +165,9 @@ class InternetArchive : Server {
         }
         else {
             // If it's just not on the server, anyway, it's ok to call the success callback.
-            if !isUploaded {
+            if !asset.isUploaded {
                 // Remove old errors, so the callback doesn't stumble over that.
-                self.error = nil
+                asset.error = nil
 
                 done(self)
             }
@@ -192,37 +191,39 @@ class InternetArchive : Server {
     // MARK: Private Methods
 
     /**
-     Upload a given file to a server using a background session.
+     Upload a given asset to a server using a background session.
 
      We need to do this with a file: "Upload tasks from NSData are not supported in background sessions."
 
-     - parameter file: The file to upload.
+     - parameter asset: The asset to upload.
      - parameter url: The URL to upload to.
      - parameter headers: The HTTP headers to use.
      - parameter progress: The progress callback.
      - parameter done: The done callback, which is called always when finished.
     */
-    private func upload(_ file: URL, to url: URLConvertible, headers: HTTPHeaders,
+    private func upload(_ asset: Asset, to url: URLConvertible, headers: HTTPHeaders,
                         progress: @escaping ProgressHandler, done: @escaping DoneHandler) {
 
-        sessionManager.upload(file, to: url, method: .put, headers: headers)
-            .debug()
-            .uploadProgress() { prog in
-                progress(self, prog)
-            }
-            .validate(statusCode: 200..<300)
-            .responseData() { response in
-                switch response.result {
-                case .success:
-                    self.isUploaded = true
-                    self.error = nil
-                case .failure(let error):
-                    self.publicUrl = nil
-                    self.isUploaded = false
-                    self.error = error.localizedDescription
+        if let file = asset.file {
+            sessionManager.upload(file, to: url, method: .put, headers: headers)
+                .debug()
+                .uploadProgress() { prog in
+                    progress(self, prog)
                 }
+                .validate(statusCode: 200..<300)
+                .responseData() { response in
+                    switch response.result {
+                    case .success:
+                        asset.isUploaded = true
+                        asset.error = nil
+                    case .failure(let error):
+                        asset.publicUrl = nil
+                        asset.isUploaded = false
+                        asset.error = error.localizedDescription
+                    }
 
-                done(self)
-            }
+                    done(self)
+                }
+        }
     }
 }

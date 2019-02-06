@@ -36,25 +36,6 @@ class WebDavServer: Server {
     // MARK: Private Methods
     
     /**
-     Create a `WebDAVFileProvider`, if credentials are available and the `baseUrl` is a valid
-     WebDAV URL.
-     
-     - returns: a `WebDAVFileProvider` with the provided `baseUrl` and stored credentials.
-     */
-    private var provider: WebDAVFileProvider? {
-        if let username = space?.username,
-            let password = space?.password,
-            let baseUrl = publicUrl?.deletingLastPathComponent() {
-            
-            let credential = URLCredential(user: username, password: password, persistence: .forSession)
-            
-            return WebDAVFileProvider(baseURL: baseUrl, credential: credential)
-        }
-        
-        return nil
-    }
-
-    /**
      Subclasses need to return a pretty name to show in the UI.
 
      - returns: A pretty name of this server.
@@ -66,12 +47,12 @@ class WebDavServer: Server {
     override func upload(_ asset: Asset, progress: @escaping ProgressHandler,
                          done: @escaping DoneHandler) {
         
-        if publicUrl == nil {
-            publicUrl = space?.url?.appendingPathComponent(asset.filename)
+        if asset.publicUrl == nil {
+            asset.publicUrl = space?.url?.appendingPathComponent(asset.filename)
         }
 
-        if let filename = publicUrl?.lastPathComponent,
-            let provider = provider,
+        if let filename = asset.publicUrl?.lastPathComponent,
+            let provider = space?.provider,
             let file = asset.file {
 
             // Inject our own background session, so upload can finish, when
@@ -95,13 +76,13 @@ class WebDavServer: Server {
             
             let prog = provider.copyItem(localFile: file, to: filename) { error in
                 if let error = error {
-                    self.publicUrl = nil
-                    self.isUploaded = false
-                    self.error = error.localizedDescription
+                    asset.publicUrl = nil
+                    asset.isUploaded = false
+                    asset.error = error.localizedDescription
                 }
                 else {
-                    self.isUploaded = true
-                    self.error = nil
+                    asset.isUploaded = true
+                    asset.error = nil
                 }
                 
                 timer?.cancel()
@@ -135,17 +116,17 @@ class WebDavServer: Server {
     }
 
     override func remove(_ asset: Asset, done: @escaping DoneHandler) {
-        if let filename = publicUrl?.lastPathComponent,
-            let provider = provider {
+        if let filename = asset.publicUrl?.lastPathComponent,
+            let provider = space?.provider {
             
             provider.removeItem(path: filename) { error in
                 if let error = error {
-                    self.error = error.localizedDescription
+                    asset.error = error.localizedDescription
                 }
                 else {
-                    self.publicUrl = nil
-                    self.isUploaded = false
-                    self.error = nil
+                    asset.publicUrl = nil
+                    asset.isUploaded = false
+                    asset.error = nil
                 }
 
                 DispatchQueue.main.async {
@@ -155,9 +136,9 @@ class WebDavServer: Server {
         }
         else {
             // If it's just not on the server, anyway, it's ok to call the success callback.
-            if !isUploaded {
+            if !asset.isUploaded {
                 // Remove old errors, so the callback doesn't stumble over that.
-                self.error = nil
+                asset.error = nil
 
                 done(self)
             }

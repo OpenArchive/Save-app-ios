@@ -37,12 +37,6 @@ class Server: NSObject, NSCoding {
 
     let id: String
 
-    var publicUrl: URL?
-
-    var isUploaded = false
-
-    var error: String?
-
     init(_ id: String = "___invalid_id___") {
         self.id = id
 
@@ -53,16 +47,10 @@ class Server: NSObject, NSCoding {
 
     required init(coder decoder: NSCoder) {
         id = decoder.decodeObject() as! String
-        publicUrl = decoder.decodeObject() as? URL
-        isUploaded = decoder.decodeObject() as? Bool ?? false
-        error = decoder.decodeObject() as? String
     }
 
     func encode(with coder: NSCoder) {
         coder.encode(id)
-        coder.encode(publicUrl)
-        coder.encode(isUploaded)
-        coder.encode(error)
     }
 
 
@@ -101,8 +89,6 @@ class Server: NSObject, NSCoding {
     // MARK: NSObject
 
     override var description: String {
-        return "\(String(describing: type(of: self))): [id=\(id), "
-            + "publicUrl=\(publicUrl?.absoluteString ?? "nil"), "
-            + "isUploaded=\(isUploaded), error=\(error ?? "nil")]"
+        return "\(String(describing: type(of: self))): [id=\(id)]"
     }
 }

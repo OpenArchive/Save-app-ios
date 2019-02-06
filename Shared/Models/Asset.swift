@@ -37,6 +37,10 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode {
     var location: String?
     var tags: [String]?
     var license: String?
+    var publicUrl: URL?
+    var isUploaded = false
+    var error: String?
+
 
     /**
      The MIME equivalent to the stored `uti` or "application/octet-stream" if the UTI has no MIME type.
@@ -104,7 +108,9 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode {
             + "author=\(author ?? "nil"), location=\(location ?? "nil"), "
             + "tags=\(tags?.description ?? "nil"), license=\(license ?? "nil"), "
             + "mimeType=\(mimeType), filename=\(filename), file=\(file?.description ?? "nil"), "
-            + "thumb=\(thumb?.description ?? "nil"), server=\(server?.description ?? "nil")]"
+            + "thumb=\(thumb?.description ?? "nil"), server=\(server?.description ?? "nil"), "
+            + "publicUrl=\(publicUrl?.absoluteString ?? "nil"), "
+            + "isUploaded=\(isUploaded), error=\(error ?? "nil")]"
     }
 
 
@@ -132,6 +138,9 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode {
         tags = decoder.decodeObject() as? [String]
         license = decoder.decodeObject() as? String
         server = decoder.decodeObject() as? Server
+        publicUrl = decoder.decodeObject() as? URL
+        isUploaded = decoder.decodeObject() as? Bool ?? false
+        error = decoder.decodeObject() as? String
     }
 
     func encode(with coder: NSCoder) {
@@ -146,6 +155,9 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode {
         coder.encode(tags)
         coder.encode(license)
         coder.encode(server)
+        coder.encode(publicUrl)
+        coder.encode(isUploaded)
+        coder.encode(error)
     }
 
     // MARK: YapDatabaseRelationshipNode
