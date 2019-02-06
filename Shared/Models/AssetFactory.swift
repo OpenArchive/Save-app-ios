@@ -71,9 +71,10 @@ class AssetFactory {
 
      - parameter phasset: The `PHAsset`.
      - parameter mediaType: The media type. (e.g. `kUTTypeImage`)
+     - parameter collection: The collection the asset will belong to.
      - parameter resultHandler: Callback with the created `Asset` object.
      */
-    class func create(fromPhasset phasset: PHAsset, mediaType: String, resultHandler: @escaping ResultHandler) {
+    class func create(fromPhasset phasset: PHAsset, mediaType: String, collection: Collection, resultHandler: @escaping ResultHandler) {
         if mediaType == kUTTypeImage as String {
             // Fetch non-resized version first. We need the UTI, the filename and the original
             // image data.
@@ -82,7 +83,7 @@ class AssetFactory {
                 data, uti, orientation, info in
 
                 if let data = data, let uti = uti {
-                    let asset = Asset(uti: uti)
+                    let asset = Asset(uti, collection)
 
                     if let info = info, let fileUrl = info["PHImageFileURLKey"] as? URL {
                         asset.filename = fileUrl.lastPathComponent
@@ -108,7 +109,7 @@ class AssetFactory {
                                                           options: videoOptions,
                                                           exportPreset: presets[0])
                         { exportSession, info in
-                            let asset = Asset(uti: kUTTypeMPEG4 as String)
+                            let asset = Asset(kUTTypeMPEG4 as String, collection)
 
                             if let exportSession = exportSession,
                                 createParentDir(file: asset.file) {
@@ -142,11 +143,12 @@ class AssetFactory {
 
      - parameter url: The URL as received in `UIImagePickerControllerReferenceURL`
      - parameter mediaType: The media type. (e.g. `kUTTypeImage`)
+     - parameter collection: The collection the asset will belong to.
      - parameter resultHandler: Callback with the created `Asset` object.
      */
-    class func create(fromAlAssetUrl url: URL, mediaType: String, resultHandler: @escaping ResultHandler) {
+    class func create(fromAlAssetUrl url: URL, mediaType: String, collection: Collection, resultHandler: @escaping ResultHandler) {
         if let phasset = PHAsset.fetchAssets(withALAssetURLs: [url], options: nil).firstObject {
-            create(fromPhasset: phasset, mediaType: mediaType, resultHandler: resultHandler)
+            create(fromPhasset: phasset, mediaType: mediaType, collection: collection, resultHandler: resultHandler)
         }
     }
 
@@ -161,11 +163,12 @@ class AssetFactory {
 
      - parameter url: A file URL.
      - parameter thumbnail: A `UIImage` which represents a thumbnail of this asset.
+     - parameter collection: The collection the asset will belong to.
      - parameter resultHandler: Callback with the created `Asset` object.
      */
-    class func create(fromFileUrl url: URL, thumbnail: UIImage? = nil, resultHandler: @escaping ResultHandler) {
+    class func create(fromFileUrl url: URL, thumbnail: UIImage? = nil, collection: Collection, resultHandler: @escaping ResultHandler) {
         if let uti = (try? url.resourceValues(forKeys: [.typeIdentifierKey]))?.typeIdentifier {
-            let asset = Asset(uti: uti)
+            let asset = Asset(uti, collection)
             asset.filename = url.lastPathComponent
 
             if  let file = asset.file,

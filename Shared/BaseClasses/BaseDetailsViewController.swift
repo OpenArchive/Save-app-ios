@@ -98,8 +98,8 @@ class BaseDetailsViewController: UIViewController {
 
                 self.dateLb.text = Formatters.date.string(from: asset.created)
 
-                if let server = asset.server {
-                    self.setServerInfo(server)
+                if asset.isUploaded {
+                    self.setServerInfo()
                 }
                 else {
                     self.showServerBox(false, animated: false)
@@ -180,19 +180,20 @@ class BaseDetailsViewController: UIViewController {
 
     @IBAction func removeFromServer(_ button: UIButton) {
         if let asset = asset,
-            let server = asset.server {
+            let space = asset.space {
+
+            let server = WebDavServer(space)
             
             button.isHidden = true
 
             serverStatusLb.text = "Removing...".localize()
 
             server.remove(asset) { server in
-                self.setServerStatus(server)
+                self.setServerStatus()
 
                 button.isHidden = false
 
                 if asset.error == nil && !asset.isUploaded {
-                    asset.server = nil
                     self.showServerBox(false)
 
                     self.writeConn?.asyncReadWrite() { transaction in
@@ -200,7 +201,7 @@ class BaseDetailsViewController: UIViewController {
                     }
                 }
                 else {
-                    self.setServerStatus(server)
+                    self.setServerStatus()
                 }
             }
         }
@@ -333,9 +334,9 @@ class BaseDetailsViewController: UIViewController {
 
             var firstTime = true
             
-            asset.upload(to: server, progress: { server, progress in
+            server.upload(asset, progress: { server, progress in
                 if firstTime {
-                    self.setServerInfo(server)
+                    self.setServerInfo()
                     firstTime = false
                 }
 
@@ -344,7 +345,7 @@ class BaseDetailsViewController: UIViewController {
 
                 self.serverStatusLb.text = "Progress: %%".localize(values: progressFormatted, "%")
             }) { server in
-                self.setServerInfo(server)
+                self.setServerInfo()
 
                 self.writeConn?.asyncReadWrite() { transaction in
                     transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
@@ -353,17 +354,17 @@ class BaseDetailsViewController: UIViewController {
         }
     }
 
-    private func setServerInfo(_ server: Server) {
-        serverNameLb.text = server.getPrettyName()
+    private func setServerInfo() {
+        serverNameLb.text = asset?.space?.prettyName
 
-        setServerStatus(server)
+        setServerStatus()
 
         serverUrlLb.text = asset?.publicUrl?.absoluteString
 
         showServerBox(true)
     }
 
-    private func setServerStatus(_ server: Server) {
+    private func setServerStatus() {
         if let error = asset?.error, error.count > 0 {
             self.serverStatusLb.text = error
             print(error)

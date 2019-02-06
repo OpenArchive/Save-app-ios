@@ -167,11 +167,13 @@ MDCTabBarDelegate {
         if let type = info[.mediaType] as? String,
             let url = info[.referenceURL] as? URL {
 
-            AssetFactory.create(fromAlAssetUrl: url, mediaType: type) { asset in
-                self.writeConn?.asyncReadWrite() { transaction in
-                    transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
-                }
-            }
+            // TODO: Get selected project.
+
+//            AssetFactory.create(fromAlAssetUrl: url, mediaType: type, Collection.getOrCreate(for: project)) { asset in
+//                self.writeConn?.asyncReadWrite() { transaction in
+//                    transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
+//                }
+//            }
         }
 
         dismiss(animated: true)

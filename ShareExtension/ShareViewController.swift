@@ -33,14 +33,16 @@ class ShareViewController: BaseDetailsViewController {
                 provider.loadPreviewImage(options: providerOptions) { thumbnail, error in
                     provider.loadItem(forTypeIdentifier: kUTTypeData as String, options: nil) { item, error in
                         if let url = item as? URL {
-                            AssetFactory.create(fromFileUrl: url, thumbnail: thumbnail as? UIImage) { asset in
-                                self.asset = asset
+                            // TODO: Check current/create new collection. Let user select project/create default one.
 
-                                // Trigger database store.
-                                self.contentChanged(self.titleTf)
-
-                                self.render()
-                            }
+//                            AssetFactory.create(fromFileUrl: url, thumbnail: thumbnail as? UIImage) { asset in
+//                                self.asset = asset
+//
+//                                // Trigger database store.
+//                                self.contentChanged(self.titleTf)
+//
+//                                self.render()
+//                            }
                         }
                     }
                 }
