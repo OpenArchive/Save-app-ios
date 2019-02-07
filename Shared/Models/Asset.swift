@@ -65,10 +65,17 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode {
     }
 
     /**
-     Shortcut for `.collection.project?.space`.
+     Shortcut for `.collection.project`.
+    */
+    var project: Project {
+        return collection.project
+    }
+
+    /**
+     Shortcut for `.project.space`.
      */
     var space: Space? {
-        return collection.project?.space
+        return project.space
     }
 
     /**

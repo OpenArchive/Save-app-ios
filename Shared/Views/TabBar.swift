@@ -17,29 +17,27 @@ class TabBar: MDCTabBar {
 
     weak var connection: YapDatabaseConnection?
 
+    var viewName: String?
+
     weak var mappings: YapDatabaseViewMappings?
 
-    var section = 0
+    var projects = [Project]()
 
     var selectedProject: Project? {
-        var project: Project?
-
         if let index = selectedItem?.tag,
-            let mappings = mappings {
-
-            read { transaction in
-                project = transaction.object(
-                    atRow: UInt(index), inSection: UInt(self.section), with: mappings) as? Project
-            }
+            index < projects.count {
+            return projects[index]
         }
 
-        return project
+        return nil
     }
 
-    init(frame: CGRect, _ connection: YapDatabaseConnection?, _ mappings: YapDatabaseViewMappings, section: Int = 0) {
+    init(frame: CGRect, _ connection: YapDatabaseConnection?, viewName: String,
+         _ mappings: YapDatabaseViewMappings) {
+        
         self.connection = connection
+        self.viewName = viewName
         self.mappings = mappings
-        self.section = section
 
         super.init(frame: frame)
 
@@ -75,23 +73,27 @@ class TabBar: MDCTabBar {
         switch change.type {
         case .delete:
             if let indexPath = change.indexPath {
+                projects.remove(at: indexPath.row)
                 items.remove(at: indexPath.row)
             }
         case .insert:
             if let newIndexPath = change.newIndexPath,
-                let item = getItem(at: newIndexPath) {
+                let project = getProject(at: newIndexPath) {
 
-                items.insert(item, at: newIndexPath.row)
+                projects.insert(project, at: newIndexPath.row)
+                items.insert(getItem(project.name, newIndexPath.row), at: newIndexPath.row)
             }
         case .move:
             if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
-                items.insert(items.remove(at: indexPath.row), at: newIndexPath.row + 1)
+                projects.insert(projects.remove(at: indexPath.row), at: newIndexPath.row)
+                items.insert(items.remove(at: indexPath.row), at: newIndexPath.row)
             }
         case .update:
             if let indexPath = change.indexPath,
-                let item = getItem(at: indexPath) {
+                let project = getProject(at: indexPath) {
 
-                items[indexPath.row] = item
+                projects[indexPath.row] = project
+                items[indexPath.row] = getItem(project.name, indexPath.row)
             }
         }
     }
@@ -108,12 +110,13 @@ class TabBar: MDCTabBar {
         setTitleColor(UIColor.black, for: .selected)
         bottomDividerColor = UIColor.lightGray
 
-        read() { transaction in
+        read { transaction in
             transaction.enumerateKeysAndObjects(inGroup: Project.collection) {
                 collection, key, object, index, stop in
 
-                if let item = self.getItem(object: object, Int(index)) {
-                    self.items.append(item)
+                if let project = object as? Project {
+                    self.projects.append(project)
+                    self.items.append(self.getItem(project.name, Int(index)))
                 }
             }
         }
@@ -123,7 +126,8 @@ class TabBar: MDCTabBar {
 
     private func read(_ callback: @escaping (_ transaction: YapDatabaseViewTransaction) -> Void) {
         connection?.read() { transaction in
-            if let viewTransaction = transaction.ext(AssetsProjectsView.name) as? YapDatabaseViewTransaction {
+            if let viewName = self.viewName,
+                let viewTransaction = transaction.ext(viewName) as? YapDatabaseViewTransaction {
                 callback(viewTransaction)
             }
         }
@@ -133,25 +137,15 @@ class TabBar: MDCTabBar {
         return UITabBarItem(title: title, image: nil, tag: tag)
     }
 
-    private func getItem(object: Any?, _ index: Int) -> UITabBarItem? {
-        if let project = object as? Project {
-            return getItem(project.name, index)
-        }
-
-        return nil
-    }
-
-    private func getItem(at indexPath: IndexPath) -> UITabBarItem? {
-        var item: UITabBarItem? = nil
+    private func getProject(at indexPath: IndexPath) -> Project? {
+        var project: Project?
 
         if let mappings = mappings {
-            read() { transaction in
-                item = self.getItem(
-                    object: transaction.object(at: indexPath, with: mappings),
-                    indexPath.row)
+            read { transaction in
+                project = transaction.object(at: indexPath, with: mappings) as? Project
             }
         }
 
-        return item
+        return project
     }
 }

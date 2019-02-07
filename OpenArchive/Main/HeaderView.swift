@@ -15,17 +15,20 @@ class HeaderView: UICollectionReusableView {
     @IBOutlet weak var timestampLb: UILabel!
     @IBOutlet weak var projectLb: UILabel!
 
-    func set(_ project: Project, uploadedTs: TimeInterval) {
-        projectLb.text = "Uploaded to %".localize(value: project.name ?? "unnamed".localize())
+    func set(_ collection: Collection? = nil) {
+        projectLb.text = "Uploaded to %".localize(value: collection?.project.name ?? "unnamed".localize())
 
-        let fiveMinAgo = Date(timeIntervalSinceNow: -5 * 60)
-        let uploaded = Date(timeIntervalSince1970: uploadedTs)
+        if let uploaded = collection?.uploaded {
+            let fiveMinAgo = Date(timeIntervalSinceNow: -5 * 60)
 
-        timestampLb.text = fiveMinAgo < uploaded
-            ? "Just now".localize()
-            : "% ago".localize(value:
-                Formatters.uploaded.string(from: Date().timeIntervalSince(uploaded))
-                    ?? "\(uploadedTs / 60) min")
+            timestampLb.text = fiveMinAgo < uploaded
+                ? "Just now".localize()
+                : "% ago".localize(value:
+                    Formatters.uploaded.string(from: Date().timeIntervalSince(uploaded))!)
+        }
+        else {
+            timestampLb.text = "Not yet".localize()
+        }
     }
     
     @IBAction func addInfo(_ sender: Any) {

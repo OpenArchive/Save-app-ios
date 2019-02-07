@@ -33,16 +33,6 @@ class Db {
     }()
 
     public class func setup() {
-        shared?.register(AssetsProjectsView(), withName: AssetsProjectsView.name)
-        shared?.register(SpacesProjectsView(), withName: SpacesProjectsView.name)
-
-        // Enable relationships. (Also row -> file relationship handling!)
-        shared?.register(YapDatabaseRelationship(), withName: "relationships")
-
-        // Enable cross-process notifications.
-        shared?.register(YapDatabaseCrossProcessNotification(), withName: "xProcNotification")
-
-
         Space.fixArchiverName()
         Project.fixArchiverName()
         Collection.fixArchiverName()
@@ -53,6 +43,17 @@ class Db {
 
         NSKeyedArchiver.setClassName("WebDavServer", for: WebDavServer.self)
         NSKeyedUnarchiver.setClass(WebDavServer.self, forClassName: "WebDavServer")
+
+        shared?.register(AssetsByCollectionView(), withName: AssetsByCollectionView.name)
+        shared?.register(AssetsByCollectionFilteredView(), withName: AssetsByCollectionFilteredView.name)
+        shared?.register(ProjectsView(), withName: ProjectsView.name)
+        shared?.register(SpacesProjectsView(), withName: SpacesProjectsView.name)
+
+        // Enable relationships. (Also row -> file relationship handling!)
+        shared?.register(YapDatabaseRelationship(), withName: "relationships")
+
+        // Enable cross-process notifications.
+        shared?.register(YapDatabaseCrossProcessNotification(), withName: "xProcNotification")
     }
 
     /**

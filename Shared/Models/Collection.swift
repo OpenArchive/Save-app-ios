@@ -42,7 +42,7 @@ class Collection: NSObject, Item, YapDatabaseRelationshipNode {
 
     private(set) var projectId: String
 
-    var project: Project? {
+    var project: Project {
         get {
             var project: Project?
 
@@ -50,12 +50,10 @@ class Collection: NSObject, Item, YapDatabaseRelationshipNode {
                 project = transaction.object(forKey: self.projectId, inCollection: Project.collection) as? Project
             }
 
-            return project
+            return project!
         }
         set {
-            if let id = newValue?.id {
-                projectId = id
-            }
+            projectId = newValue.id
         }
     }
 
@@ -65,6 +63,19 @@ class Collection: NSObject, Item, YapDatabaseRelationshipNode {
 
     var isOpen: Bool {
         return closed == nil && uploaded == nil
+    }
+
+    class func get(byId id: String?, conn: YapDatabaseConnection? = Db.bgRwConn) -> Collection? {
+        var collection: Collection?
+
+        if let id = id {
+            conn?.read { transaction in
+                collection = transaction.object(forKey: id,
+                    inCollection: Collection.collection) as? Collection
+            }
+        }
+
+        return collection
     }
 
     init(_ project: Project) {

@@ -21,12 +21,31 @@ MDCTabBarDelegate {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var addBt: MDCFloatingButton!
 
-    private lazy var readConn = Db.newLongLivedReadConn()
+    private lazy var projectsReadConn = Db.newLongLivedReadConn()
 
-    private lazy var mappings: YapDatabaseViewMappings = {
-        let mappings = YapDatabaseViewMappings(groups: AssetsProjectsView.groups, view: AssetsProjectsView.name)
+    private lazy var projectsMappings: YapDatabaseViewMappings = {
+        let mappings = YapDatabaseViewMappings(groups: ProjectsView.groups, view: ProjectsView.name)
 
-        readConn?.read() { transaction in
+        projectsReadConn?.read { transaction in
+            mappings.update(with: transaction)
+        }
+
+        return mappings
+    }()
+
+    private lazy var assetsReadConn = Db.newLongLivedReadConn()
+
+    private lazy var assetsMappings: YapDatabaseViewMappings = {
+        let mappings = YapDatabaseViewMappings(
+            groupFilterBlock: { group, transaction in
+                return true
+            },
+            sortBlock: { group1, group2, transaction in
+                return group1.compare(group2)
+            },
+            view: AssetsByCollectionFilteredView.name)
+
+        assetsReadConn?.read() { transaction in
             mappings.update(with: transaction)
         }
 
@@ -35,7 +54,8 @@ MDCTabBarDelegate {
 
 
     private lazy var tabBar: TabBar = {
-        let tabBar = TabBar(frame: tabBarContainer.bounds, readConn, mappings, section: 1)
+        let tabBar = TabBar(frame: tabBarContainer.bounds, projectsReadConn,
+                            viewName: ProjectsView.name, projectsMappings)
 
         tabBar.delegate = self
 
@@ -58,13 +78,13 @@ MDCTabBarDelegate {
 
         tabBar.addToSubview(tabBarContainer)
 
-        NotificationCenter.default.addObserver(self, selector: #selector(yapDatabaseModified),
-                                               name: .YapDatabaseModified,
-                                               object: readConn?.database)
+        let nc = NotificationCenter.default
 
-        NotificationCenter.default.addObserver(self, selector: #selector(yapDatabaseModifiedExternally),
-                                               name: .YapDatabaseModifiedExternally,
-                                               object: readConn?.database)
+        nc.addObserver(self, selector: #selector(yapDatabaseModified),
+                       name: .YapDatabaseModified, object: nil)
+
+        nc.addObserver(self, selector: #selector(yapDatabaseModifiedExternally),
+                       name: .YapDatabaseModifiedExternally, object: nil)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -79,11 +99,11 @@ MDCTabBarDelegate {
     // MARK: UICollectionViewDataSource
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Int(mappings.numberOfItems(inSection: 0))
+        return Int(assetsMappings.numberOfItems(inSection: UInt(section)))
     }
 
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1
+        return Int(assetsMappings.numberOfSections())
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind
@@ -92,7 +112,7 @@ MDCTabBarDelegate {
         let view = collectionView.dequeueReusableSupplementaryView(
             ofKind: kind, withReuseIdentifier: HeaderView.reuseId, for: indexPath) as! HeaderView
 
-        view.set(Project(name: "foobar"), uploadedTs: 1548796776)
+        view.set(Collection.get(byId: assetsMappings.group(forSection: UInt(indexPath.section))))
 
         return view
     }
@@ -100,9 +120,9 @@ MDCTabBarDelegate {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.reuseId, for: indexPath) as! ImageCell
 
-        readConn?.read() { transaction in
-            cell.asset = (transaction.ext(AssetsProjectsView.name) as? YapDatabaseViewTransaction)?
-                .object(at: indexPath, with: self.mappings) as? Asset
+        assetsReadConn?.read() { transaction in
+            cell.asset = (transaction.ext(AssetsByCollectionFilteredView.name) as? YapDatabaseViewTransaction)?
+                .object(at: indexPath, with: self.assetsMappings) as? Asset
         }
 
         return cell
@@ -186,6 +206,8 @@ MDCTabBarDelegate {
             return false
         }
 
+        AssetsByCollectionFilteredView.updateFilter(self.tabBar.selectedProject?.id)
+
         return true
     }
 
@@ -198,46 +220,66 @@ MDCTabBarDelegate {
      Will be called, when something inside the process changed the database.
      */
     @objc func yapDatabaseModified(notification: Notification) {
-        if let readConn = readConn {
-            var changes = NSArray()
+        var rowChanges = NSArray()
 
-            (readConn.ext(AssetsProjectsView.name) as? YapDatabaseViewConnection)?
-                .getSectionChanges(nil,
-                                   rowChanges: &changes,
-                                   for: readConn.beginLongLivedReadTransaction(),
-                                   with: mappings)
+        (projectsReadConn?.ext(ProjectsView.name) as? YapDatabaseViewConnection)?
+            .getSectionChanges(nil,
+                               rowChanges: &rowChanges,
+                               for: projectsReadConn?.beginLongLivedReadTransaction() ?? [],
+                               with: projectsMappings)
 
-            if let changes = changes as? [YapDatabaseViewRowChange],
-                changes.count > 0 {
+        if let changes = rowChanges as? [YapDatabaseViewRowChange] {
+            for change in changes {
+                tabBar.handle(change)
+            }
+        }
 
-                collectionView.performBatchUpdates({
-                    for change in changes {
-                        if Asset.collection == change.collectionKey.collection {
-                            switch change.type {
-                            case .delete:
-                                if let indexPath = change.indexPath {
-                                    collectionView.deleteItems(at: [indexPath])
-                                }
-                            case .insert:
-                                if let newIndexPath = change.newIndexPath {
-                                    collectionView.insertItems(at: [newIndexPath])
-                                }
-                            case .move:
-                                if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
-                                    collectionView.moveItem(at: indexPath, to: newIndexPath)
-                                }
-                            case .update:
-                                if let indexPath = change.indexPath {
-                                    collectionView.reloadItems(at: [indexPath])
-                                }
-                            }
+        rowChanges = NSArray()
+        var sectionChanges = NSArray()
+
+        (assetsReadConn?.ext(AssetsByCollectionFilteredView.name) as? YapDatabaseViewConnection)?
+            .getSectionChanges(&sectionChanges,
+                               rowChanges: &rowChanges,
+                               for: assetsReadConn?.beginLongLivedReadTransaction() ?? [],
+                               with: assetsMappings)
+
+        if let rowChanges = rowChanges as? [YapDatabaseViewRowChange],
+            let sectionChanges = sectionChanges as? [YapDatabaseViewSectionChange],
+            rowChanges.count > 0 || sectionChanges.count > 0 {
+
+            collectionView.performBatchUpdates({
+                for change in sectionChanges {
+                    switch change.type {
+                    case .delete:
+                        collectionView.deleteSections([IndexSet.Element(change.index)])
+                    case .insert:
+                        collectionView.insertSections([IndexSet.Element(change.index)])
+                    default:
+                        break
+                    }
+                }
+
+                for change in rowChanges {
+                    switch change.type {
+                    case .delete:
+                        if let indexPath = change.indexPath {
+                            collectionView.deleteItems(at: [indexPath])
                         }
-                        else {
-                            tabBar.handle(change)
+                    case .insert:
+                        if let newIndexPath = change.newIndexPath {
+                            collectionView.insertItems(at: [newIndexPath])
+                        }
+                    case .move:
+                        if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
+                            collectionView.moveItem(at: indexPath, to: newIndexPath)
+                        }
+                    case .update:
+                        if let indexPath = change.indexPath {
+                            collectionView.reloadItems(at: [indexPath])
                         }
                     }
-                })
-            }
+                }
+            })
         }
     }
 
@@ -248,11 +290,17 @@ MDCTabBarDelegate {
      the database.
      */
     @objc func yapDatabaseModifiedExternally(notification: Notification) {
-        readConn?.beginLongLivedReadTransaction()
+        projectsReadConn?.beginLongLivedReadTransaction()
 
-        readConn?.read() { transaction in
-            self.mappings.update(with: transaction)
+        projectsReadConn?.read() { transaction in
+            self.projectsMappings.update(with: transaction)
+            self.tabBar.reloadInputViews()
+        }
 
+        assetsReadConn?.beginLongLivedReadTransaction()
+
+        assetsReadConn?.read() { transaction in
+            self.assetsMappings.update(with: transaction)
             self.collectionView.reloadData()
         }
     }
