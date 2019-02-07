@@ -35,7 +35,7 @@ MDCTabBarDelegate {
 
 
     private lazy var tabBar: TabBar = {
-        let tabBar = TabBar(frame: tabBarContainer.bounds, connection: readConn)
+        let tabBar = TabBar(frame: tabBarContainer.bounds, readConn, mappings, section: 1)
 
         tabBar.delegate = self
 
@@ -158,15 +158,14 @@ MDCTabBarDelegate {
         info: [UIImagePickerController.InfoKey : Any]) {
 
         if let type = info[.mediaType] as? String,
-            let url = info[.referenceURL] as? URL {
+            let url = info[.referenceURL] as? URL,
+            let collection = tabBar.selectedProject?.currentCollection {
 
-            // TODO: Get selected project.
-
-//            AssetFactory.create(fromAlAssetUrl: url, mediaType: type, Collection.getOrCreate(for: project)) { asset in
-//                Db.writeConn?.asyncReadWrite() { transaction in
-//                    transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
-//                }
-//            }
+            AssetFactory.create(fromAlAssetUrl: url, type, collection) { asset in
+                Db.writeConn?.asyncReadWrite() { transaction in
+                    transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
+                }
+            }
         }
 
         dismiss(animated: true)
@@ -234,7 +233,7 @@ MDCTabBarDelegate {
                             }
                         }
                         else {
-                            tabBar.handle(change, with: mappings)
+                            tabBar.handle(change)
                         }
                     }
                 })

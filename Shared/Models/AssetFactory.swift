@@ -74,7 +74,8 @@ class AssetFactory {
      - parameter collection: The collection the asset will belong to.
      - parameter resultHandler: Callback with the created `Asset` object.
      */
-    class func create(fromPhasset phasset: PHAsset, mediaType: String, collection: Collection, resultHandler: @escaping ResultHandler) {
+    class func create(fromPhasset phasset: PHAsset, _ mediaType: String,
+                      _ collection: Collection, _ resultHandler: @escaping ResultHandler) {
         if mediaType == kUTTypeImage as String {
             // Fetch non-resized version first. We need the UTI, the filename and the original
             // image data.
@@ -146,9 +147,10 @@ class AssetFactory {
      - parameter collection: The collection the asset will belong to.
      - parameter resultHandler: Callback with the created `Asset` object.
      */
-    class func create(fromAlAssetUrl url: URL, mediaType: String, collection: Collection, resultHandler: @escaping ResultHandler) {
+    class func create(fromAlAssetUrl url: URL, _ mediaType: String,
+                      _ collection: Collection, _ resultHandler: @escaping ResultHandler) {
         if let phasset = PHAsset.fetchAssets(withALAssetURLs: [url], options: nil).firstObject {
-            create(fromPhasset: phasset, mediaType: mediaType, collection: collection, resultHandler: resultHandler)
+            create(fromPhasset: phasset, mediaType, collection, resultHandler)
         }
     }
 
@@ -166,7 +168,8 @@ class AssetFactory {
      - parameter collection: The collection the asset will belong to.
      - parameter resultHandler: Callback with the created `Asset` object.
      */
-    class func create(fromFileUrl url: URL, thumbnail: UIImage? = nil, collection: Collection, resultHandler: @escaping ResultHandler) {
+    class func create(fromFileUrl url: URL, thumbnail: UIImage? = nil,
+                      _ collection: Collection, _ resultHandler: @escaping ResultHandler) {
         if let uti = (try? url.resourceValues(forKeys: [.typeIdentifierKey]))?.typeIdentifier {
             let asset = Asset(uti, collection)
             asset.filename = url.lastPathComponent

@@ -40,28 +40,6 @@ class Collection: NSObject, Item, YapDatabaseRelationshipNode {
 
     // MARK: Collection
 
-    /**
-     Get an open collection for the given project.
-
-     Creates one, if necessary.
-     */
-    class func getOrCreate(for project: Project) -> Collection {
-        var c: Collection?
-
-        Db.bgRwConn?.read { transaction in
-            transaction.enumerateKeysAndObjects(inCollection: collection) { key, object, stop in
-                if let collection = object as? Collection,
-                    collection.isOpen && collection.projectId == project.id {
-
-                    c = collection
-                    stop.pointee = true
-                }
-            }
-        }
-
-        return c ?? Collection(project)
-    }
-
     private(set) var projectId: String
 
     var project: Project? {
