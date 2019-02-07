@@ -48,7 +48,7 @@ class Collection: NSObject, Item, YapDatabaseRelationshipNode {
     class func getOrCreate(for project: Project) -> Collection {
         var c: Collection?
 
-        Db.newConnection()?.read { transaction in
+        Db.bgRwConn?.read { transaction in
             transaction.enumerateKeysAndObjects(inCollection: collection) { key, object, stop in
                 if let collection = object as? Collection,
                     collection.isOpen && collection.projectId == project.id {
@@ -68,7 +68,7 @@ class Collection: NSObject, Item, YapDatabaseRelationshipNode {
         get {
             var project: Project?
 
-            Db.newConnection()?.read { transaction in
+            Db.bgRwConn?.read { transaction in
                 project = transaction.object(forKey: self.projectId, inCollection: Project.collection) as? Project
             }
 

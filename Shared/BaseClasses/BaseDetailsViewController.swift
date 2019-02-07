@@ -37,8 +37,6 @@ class BaseDetailsViewController: UIViewController {
 
     var asset: Asset?
 
-    lazy var writeConn = Db.newConnection()
-
     var innerViewHeight: CGFloat!
 
     init() {
@@ -196,7 +194,7 @@ class BaseDetailsViewController: UIViewController {
                 if asset.error == nil && !asset.isUploaded {
                     self.showServerBox(false)
 
-                    self.writeConn?.asyncReadWrite() { transaction in
+                    Db.writeConn?.asyncReadWrite() { transaction in
                         transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
                     }
                 }
@@ -234,7 +232,7 @@ class BaseDetailsViewController: UIViewController {
                 assertionFailure("This should have never happened - switch should be exhaustive.")
             }
 
-            writeConn?.asyncReadWrite() { transaction in
+            Db.writeConn?.asyncReadWrite() { transaction in
                 transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
             }
         }
@@ -273,7 +271,7 @@ class BaseDetailsViewController: UIViewController {
     @objc func upload(_ sender: UIBarButtonItem) {
         var spaces = [Space]()
 
-        Db.newConnection()?.read() { transaction in
+        Db.bgRwConn?.read() { transaction in
             transaction.enumerateRows(inCollection: Space.collection) {
                 (key: String, space: Any, metadata: Any?, stop: UnsafeMutablePointer<ObjCBool>) in
 
@@ -347,7 +345,7 @@ class BaseDetailsViewController: UIViewController {
             }) { server in
                 self.setServerInfo()
 
-                self.writeConn?.asyncReadWrite() { transaction in
+                Db.writeConn?.asyncReadWrite() { transaction in
                     transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
                 }
             }

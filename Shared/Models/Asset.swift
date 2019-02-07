@@ -53,7 +53,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode {
         get {
             var collection: Collection?
 
-            Db.newConnection()?.read { transaction in
+            Db.bgRwConn?.read { transaction in
                 collection = transaction.object(forKey: self.collectionId, inCollection: Collection.collection) as? Collection
             }
 

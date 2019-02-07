@@ -12,14 +12,7 @@ import YapDatabase
 
 class MyAccountViewController: BaseTableViewController {
 
-    private lazy var readConn: YapDatabaseConnection? = {
-        let conn = Db.newConnection()
-        conn?.beginLongLivedReadTransaction()
-
-        return conn
-    }()
-
-    private lazy var writeConn = Db.newConnection()
+    private lazy var readConn = Db.newLongLivedReadConn()
 
     private lazy var mappings: YapDatabaseViewMappings = {
         let mappings = YapDatabaseViewMappings(
@@ -63,7 +56,7 @@ class MyAccountViewController: BaseTableViewController {
 
                     handler = { _ in
                         if let key = space?.id {
-                            self.writeConn?.asyncReadWrite() { transaction in
+                            Db.writeConn?.asyncReadWrite() { transaction in
                                 transaction.removeObject(forKey: key, inCollection: Space.collection)
                             }
                         }
@@ -88,7 +81,7 @@ class MyAccountViewController: BaseTableViewController {
                 message = "Are you sure you want to delete your project \"%\"?".localize(value: project?.name ?? "")
                 handler = { _ in
                     if let key = project?.id {
-                        self.writeConn?.asyncReadWrite() { transaction in
+                        Db.writeConn?.asyncReadWrite() { transaction in
                             transaction.removeObject(forKey: key, inCollection: Project.collection)
                         }
                     }

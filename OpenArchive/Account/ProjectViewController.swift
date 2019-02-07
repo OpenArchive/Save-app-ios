@@ -72,7 +72,7 @@ class ProjectViewController: FormViewController {
     @objc func connect() {
         project.name = nameRow.value
 
-        Db.newConnection()?.asyncReadWrite() { transaction in
+        Db.writeConn?.asyncReadWrite() { transaction in
             transaction.setObject(self.project, forKey: self.project.id,
                                   inCollection: Project.collection)
         }

@@ -21,16 +21,9 @@ MDCTabBarDelegate {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var addBt: MDCFloatingButton!
 
-    lazy var writeConn = Db.newConnection()
+    private lazy var readConn = Db.newLongLivedReadConn()
 
-    lazy var readConn: YapDatabaseConnection? = {
-        let conn = Db.newConnection()
-        conn?.beginLongLivedReadTransaction()
-
-        return conn
-    }()
-
-    lazy var mappings: YapDatabaseViewMappings = {
+    private lazy var mappings: YapDatabaseViewMappings = {
         let mappings = YapDatabaseViewMappings(groups: AssetsProjectsView.groups, view: AssetsProjectsView.name)
 
         readConn?.read() { transaction in
@@ -170,7 +163,7 @@ MDCTabBarDelegate {
             // TODO: Get selected project.
 
 //            AssetFactory.create(fromAlAssetUrl: url, mediaType: type, Collection.getOrCreate(for: project)) { asset in
-//                self.writeConn?.asyncReadWrite() { transaction in
+//                Db.writeConn?.asyncReadWrite() { transaction in
 //                    transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
 //                }
 //            }

@@ -89,7 +89,7 @@ class PrivateServerViewController: FormViewController {
                     AlertHelper.present(self, message: error.localizedDescription)
                 }
                 else {
-                    Db.newConnection()?.asyncReadWrite() { transaction in
+                    Db.writeConn?.asyncReadWrite() { transaction in
                         transaction.setObject(space, forKey: space.id,
                                               inCollection: Space.collection)
                     }

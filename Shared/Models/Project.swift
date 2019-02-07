@@ -49,7 +49,7 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
             var space: Space?
 
             if let id = spaceId {
-                Db.newConnection()?.read { transaction in
+                Db.bgRwConn?.read { transaction in
                     space = transaction.object(forKey: id, inCollection: Space.collection) as? Space
                 }
             }

@@ -126,7 +126,7 @@ class BrowseViewController: BaseTableViewController {
         if let selectedFolder = selectedFolder {
             let project = Project(name: selectedFolder.name, space: space)
 
-            Db.newConnection()?.asyncReadWrite() { transaction in
+            Db.writeConn?.asyncReadWrite() { transaction in
                 transaction.setObject(project, forKey: project.id,
                                       inCollection: Project.collection)
             }
