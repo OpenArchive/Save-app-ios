@@ -7,7 +7,7 @@ def shared_pods
     pod 'FilesProvider', '~> 0.25'
     pod 'Localize', '~> 2.1'
     pod 'Eureka', '~> 4.3'
-    pod 'ImageRow', git: 'https://github.com/tladesignz/ImageRow.git'
+    pod 'ImageRow', git: 'https://github.com/EurekaCommunity/ImageRow.git'
     pod 'MaterialComponents/Buttons', '~> 74.0'
     pod 'MaterialComponents/Tabs', '~> 74.0'
     pod 'UIImage-Resize', '~> 1.0'

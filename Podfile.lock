@@ -1,9 +1,9 @@
 PODS:
   - Alamofire (4.8.1)
   - ARChromeActivity (1.0.6)
-  - CocoaLumberjack (3.5.0):
-    - CocoaLumberjack/Core (= 3.5.0)
-  - CocoaLumberjack/Core (3.5.0)
+  - CocoaLumberjack (3.5.1):
+    - CocoaLumberjack/Core (= 3.5.1)
+  - CocoaLumberjack/Core (3.5.1)
   - Eureka (4.3.1)
   - FilesProvider (0.25.1)
   - ImageRow (3.2.0):
@@ -113,7 +113,7 @@ DEPENDENCIES:
   - ARChromeActivity (~> 1.0)
   - Eureka (~> 4.3)
   - FilesProvider (~> 0.25)
-  - ImageRow (from `https://github.com/tladesignz/ImageRow.git`)
+  - ImageRow (from `https://github.com/EurekaCommunity/ImageRow.git`)
   - Localize (~> 2.1)
   - MaterialComponents/Buttons (~> 74.0)
   - MaterialComponents/Tabs (~> 74.0)
@@ -138,17 +138,17 @@ SPEC REPOS:
 
 EXTERNAL SOURCES:
   ImageRow:
-    :git: https://github.com/tladesignz/ImageRow.git
+    :git: https://github.com/EurekaCommunity/ImageRow.git
 
 CHECKOUT OPTIONS:
   ImageRow:
-    :commit: 6b63d24436ad2a2ae39c763bad025a1a6c24a0a7
-    :git: https://github.com/tladesignz/ImageRow.git
+    :commit: 6ae9c0890dcf0040a4a2804ceeeaf5449a0f62b3
+    :git: https://github.com/EurekaCommunity/ImageRow.git
 
 SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
   ARChromeActivity: 5dcf9b9f09323761f992aff3525cdd777f83609d
-  CocoaLumberjack: cffaa70a9336515228178e3669b71bd49d343850
+  CocoaLumberjack: 2101f8a5508197a305e737d16c5c2e9e2157628c
   Eureka: 28ea296f06710f6745266b71f17862048941a32d
   FilesProvider: f6ab75211d2fd4814720f19b427e43668dc24585
   ImageRow: 03681b3ef8034b5a649440325f5d5ba7b22c1b0a
@@ -160,6 +160,6 @@ SPEC CHECKSUMS:
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   YapDatabase: d8cd02058e36bc0902e405d8f3326eb8d7dbf36c
 
-PODFILE CHECKSUM: 09dbccf4e3dda5c757474ada7cdf4b4f09e5d795
+PODFILE CHECKSUM: 5fce7b1112184b12e40ebbe28ff3a29fea74d88f
 
 COCOAPODS: 1.5.3
