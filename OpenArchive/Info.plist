@@ -17,13 +17,13 @@
 	<key>CFBundleShortVersionString</key>
 	<string>0.2.0</string>
 	<key>CFBundleVersion</key>
-	<string>3</string>
+	<string>4</string>
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Please grant this app access to your photo library, if you want to upload photos or videos.</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Please grant this app access to your camera, if you want to create your avatar image with it.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Please grant this app access to your photo library, if you want to upload photos or videos.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
