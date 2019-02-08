@@ -85,6 +85,8 @@ MDCTabBarDelegate {
 
         avatar.image = Profile.avatar ?? Profile.defaultAvatar
 
+        AssetsByCollectionFilteredView.updateFilter(self.tabBar.selectedProject?.id)
+
         navigationController?.setNavigationBarHidden(true, animated: animated)
     }
 
