@@ -31,7 +31,7 @@ class OnboardingViewController: BaseTableViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if InternetArchive.isAvailable || spaceCreated {
+        if spaceCreated {
             done()
             return
         }

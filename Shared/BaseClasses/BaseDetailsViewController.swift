@@ -180,13 +180,11 @@ class BaseDetailsViewController: UIViewController {
         if let asset = asset,
             let space = asset.space {
 
-            let server = WebDavServer(space)
-            
             button.isHidden = true
 
             serverStatusLb.text = "Removing...".localize()
 
-            server.remove(asset) { server in
+            space.remove(asset) { asset in
                 self.setServerStatus()
 
                 button.isHidden = false
@@ -269,70 +267,12 @@ class BaseDetailsViewController: UIViewController {
     }
 
     @objc func upload(_ sender: UIBarButtonItem) {
-        var spaces = [Space]()
-
-        Db.bgRwConn?.read() { transaction in
-            transaction.enumerateRows(inCollection: Space.collection) {
-                (key: String, space: Any, metadata: Any?, stop: UnsafeMutablePointer<ObjCBool>) in
-
-                if let space = space as? Space,
-                    space.url != nil {
-
-                    spaces.append(space)
-                }
-            }
-        }
-
-        if spaces.count > 1 || (spaces.count > 0 && InternetArchive.isAvailable) {
-            var actions = [UIAlertAction]()
-
-            for space in spaces {
-                actions.append(
-                    AlertHelper.defaultAction(space.prettyName) { action in
-                    self.upload(to: WebDavServer(space))
-                })
-            }
-
-            if InternetArchive.isAvailable {
-                actions.append(
-                    AlertHelper.defaultAction(InternetArchive.PRETTY_NAME) { action in
-                        self.upload(to: InternetArchive())
-                })
-            }
-
-            actions.append(AlertHelper.cancelAction())
-
-            let sheet = AlertHelper.build(
-                title: "Choose Server".localize(), style: .actionSheet, actions: actions)
-            
-            sheet.popoverPresentationController?.barButtonItem = sender
-            sheet.popoverPresentationController?.sourceView = self.view
-            
-            self.present(sheet, animated: true)
-        }
-        else if InternetArchive.isAvailable {
-            upload(to: InternetArchive())
-        }
-        else if spaces.count == 1 {
-            upload(to: WebDavServer(spaces[0]))
-        }
-        else {
-            AlertHelper.present(
-                self,
-                message: "No server is properly configured to be used for uploading!".localize(),
-                title: "Server Configuration".localize(),
-                actions: [AlertHelper.cancelAction()])
-        }
-    }
-    
-    // MARK: Private Methods
-    
-    private func upload(to server: Server) {
-        if let asset = asset {
+        if let asset = asset,
+            let space = asset.space {
 
             var firstTime = true
-            
-            server.upload(asset, progress: { server, progress in
+
+            space.upload(asset, progress: { asset, progress in
                 if firstTime {
                     self.setServerInfo()
                     firstTime = false
@@ -349,6 +289,13 @@ class BaseDetailsViewController: UIViewController {
                     transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
                 }
             }
+        }
+        else {
+            AlertHelper.present(
+                self,
+                message: "This asset doesn't belong to a space, yet!\n\nPlease configure the asset's project accordingly.".localize(),
+                title: "Project Configuration".localize(),
+                actions: [AlertHelper.cancelAction()])
         }
     }
 

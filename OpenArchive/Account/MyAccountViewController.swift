@@ -28,6 +28,32 @@ class MyAccountViewController: BaseTableViewController {
         return Int(mappings.numberOfItems(inSection: 0))
     }
 
+
+    private var _hasOneInternetArchive: Bool?
+    var hasOneInternetArchive: Bool {
+        get {
+            if _hasOneInternetArchive == nil {
+                readConn?.read { transaction in
+                    transaction.enumerateKeysAndObjects(inCollection: Space.collection, using: { key, object, stop in
+                        if object is IaSpace {
+                            self._hasOneInternetArchive = true
+                            stop.pointee = true
+                        }
+                    })
+                }
+
+                if _hasOneInternetArchive == nil {
+                    _hasOneInternetArchive = false
+                }
+            }
+
+            return _hasOneInternetArchive!
+        }
+        set {
+            _hasOneInternetArchive = newValue
+        }
+    }
+
     private var projectsCount: Int {
         return Int(mappings.numberOfItems(inSection: 1))
     }
@@ -46,32 +72,19 @@ class MyAccountViewController: BaseTableViewController {
             let handler: AlertHelper.ActionHandler
 
             if indexPath.section == 1 {
-                let server: String
+                let space = self.getSpace(indexPath)
+                let name = space?.prettyName ?? Space.defaultPrettyName
 
-                if indexPath.row < self.spacesCount {
-                    let space = self.getSpace(indexPath)
-                    server = space?.prettyName ?? WebDavServer.PRETTY_NAME
-
-                    handler = { _ in
-                        if let key = space?.id {
-                            Db.writeConn?.asyncReadWrite() { transaction in
-                                transaction.removeObject(forKey: key, inCollection: Space.collection)
-                            }
+                handler = { _ in
+                    if let key = space?.id {
+                        Db.writeConn?.asyncReadWrite() { transaction in
+                            transaction.removeObject(forKey: key, inCollection: Space.collection)
                         }
-                    }
-                }
-                else {
-                    server = InternetArchive.PRETTY_NAME
-                    handler = { _ in
-                        InternetArchive.accessKey = nil
-                        InternetArchive.secretKey = nil
-
-                        self.tableView.reloadData()
                     }
                 }
 
                 title = "Delete Space".localize()
-                message = "Are you sure you want to delete your space \"%\"?".localize(value: server)
+                message = "Are you sure you want to delete your space \"%\"?".localize(value: name)
             }
             else {
                 title = "Delete Project".localize()
@@ -127,7 +140,7 @@ class MyAccountViewController: BaseTableViewController {
         case 0:
             return 1
         case 1:
-            return spacesCount + 2
+            return spacesCount + (hasOneInternetArchive ? 1 : 2)
         case 2:
             return projectsCount + 2
         case 3:
@@ -157,13 +170,13 @@ class MyAccountViewController: BaseTableViewController {
         switch indexPath.section {
         case 1:
             if indexPath.row < spacesCount {
-                return cell.set(getSpace(indexPath)?.prettyName ?? WebDavServer.PRETTY_NAME)
+                return cell.set(getSpace(indexPath)?.prettyName ?? Space.defaultPrettyName)
             }
             else if indexPath.row == spacesCount {
                 return cell.set("Private Server".localize(), isPlaceholder: true)
             }
 
-            return cell.set("Internet Archive".localize(), isPlaceholder: !InternetArchive.isAvailable)
+            return cell.set("Internet Archive".localize(), isPlaceholder: true)
         case 2:
             if indexPath.row < projectsCount {
                 return cell.set(getProject(indexPath)?.name ?? "Unnamed Project".localize())
@@ -209,14 +222,8 @@ class MyAccountViewController: BaseTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return (
-            indexPath.section == 1
-            && (
-                indexPath.row < spacesCount
-                || (indexPath.row > spacesCount && InternetArchive.isAvailable)
-            )
-        )
-        || (indexPath.section == 2 && indexPath.row < projectsCount)
+        return (indexPath.section == 1 && indexPath.row < spacesCount)
+            || (indexPath.section == 2 && indexPath.row < projectsCount)
     }
 
     override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
@@ -231,9 +238,16 @@ class MyAccountViewController: BaseTableViewController {
             vc = EditProfileViewController()
         case 1:
             if indexPath.row < spacesCount {
-                let psvc = PrivateServerViewController()
-                psvc.space = getSpace(indexPath)
-                vc = psvc
+                if let space = getSpace(indexPath) as? WebDavSpace {
+                    let psvc = PrivateServerViewController()
+                    psvc.space = space
+                    vc = psvc
+                }
+                else if let space = getSpace(indexPath) as? IaSpace {
+                    let iavc = InternetArchiveViewController()
+                    iavc.space = space
+                    vc = iavc
+                }
             }
             else if indexPath.row == spacesCount {
                 vc = PrivateServerViewController()
@@ -266,8 +280,9 @@ class MyAccountViewController: BaseTableViewController {
     // MARK:
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let browseVc = segue.destination as? BrowseViewController {
-            browseVc.space = getSpace(IndexPath(row: 0, section: 1))
+        if let browseVc = segue.destination as? BrowseViewController,
+            let space = getSpace(IndexPath(row: 0, section: 1)) as? WebDavSpace {
+            browseVc.space = space
         }
     }
     // MARK: Observers
@@ -310,6 +325,23 @@ class MyAccountViewController: BaseTableViewController {
                         if let indexPath = change.indexPath {
                             tableView.reloadRows(at: [transform(indexPath)], with: .none)
                         }
+                    }
+                }
+
+                let old = hasOneInternetArchive
+                _hasOneInternetArchive = nil // Trigger reevaluation
+
+                if old != hasOneInternetArchive {
+                    // An InternetArchive space was created or deleted.
+                    // Hide or show the "Add InternetArchive button row".
+                    // Crazy math is due to mismatch of before/after row count.
+                    if hasOneInternetArchive {
+                        tableView.deleteRows(at: [IndexPath(row: spacesCount - 2 + 2, section: 1)],
+                                             with: .automatic)
+                    }
+                    else {
+                        tableView.insertRows(at: [IndexPath(row: spacesCount - 1 + 2, section: 1)],
+                                             with: .automatic)
                     }
                 }
 

@@ -11,7 +11,7 @@ import FilesProvider
 
 class BrowseViewController: BaseTableViewController {
 
-    var space: Space!
+    var space: WebDavSpace!
 
     private var loading = true
 

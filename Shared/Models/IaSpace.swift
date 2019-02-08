@@ -1,99 +1,81 @@
 //
-//  InternetArchive.swift
+//  IaSpace.swift
 //  OpenArchive
 //
-//  Created by Benjamin Erhart on 05.07.18.
-//  Copyright © 2018 Open Archive. All rights reserved.
+//  Created by Benjamin Erhart on 08.02.19.
+//  Copyright © 2019 Open Archive. All rights reserved.
 //
 
 import UIKit
 import Alamofire
 
-class InternetArchive : Server {
+/**
+ A special space supporting the Internet Archive.
+ */
+class IaSpace: Space, Item {
 
-    static let PRETTY_NAME = "Internet Archive"
-    private static let ACCESS_KEY = "IA_ACCESS_KEY"
-    private static let SECRET_KEY = "IA_SECRET_KEY"
+    // MARK: Item
+
+    static func fixArchiverName() {
+        NSKeyedArchiver.setClassName("IaSpace", for: self)
+        NSKeyedUnarchiver.setClass(self, forClassName: "IaSpace")
+    }
+
+    func compare(_ rhs: IaSpace) -> ComparisonResult {
+        return super.compare(rhs)
+    }
+
+
+    // MARK: IaSpace
 
     private static let BASE_URL = "https://s3.us.archive.org"
 
-    static var accessKey: String? {
-        get {
-            return UserDefaults(suiteName: Constants.suiteName)?
-                .string(forKey: InternetArchive.ACCESS_KEY)
-        }
-        set {
-            UserDefaults(suiteName: Constants.suiteName)?
-                .set(newValue, forKey: InternetArchive.ACCESS_KEY)
-        }
-    }
-
-    static var secretKey: String? {
-        get {
-            return UserDefaults(suiteName: Constants.suiteName)?
-                .string(forKey: InternetArchive.SECRET_KEY)
-        }
-        set {
-            UserDefaults(suiteName: Constants.suiteName)?
-                .set(newValue, forKey: InternetArchive.SECRET_KEY)
-        }
-    }
-
-    /**
-     true, if this server is porperly configured.
-     */
-    static var isAvailable: Bool {
-        get {
-            return accessKey != nil && !accessKey!.isEmpty
-                && secretKey != nil && !secretKey!.isEmpty
-        }
+    override class var defaultPrettyName: String {
+        return "Internet Archive"
     }
 
     /**
      This needs to be tied to this object, otherwise the SessionManager will get
      destroyed during the request and the request will break with error -999.
-     
+
      See [Getting code=-999 using custom SessionManager](https://github.com/Alamofire/Alamofire/issues/1684)
      */
     private lazy var sessionManager: SessionManager = {
-        let conf = Server.sessionConf
+        let conf = Space.sessionConf
         conf.httpAdditionalHeaders = SessionManager.defaultHTTPHeaders
-        
+
         return SessionManager(configuration: conf)
     }()
 
-    private var slug: String?
 
-    init() {
-        super.init(InternetArchive.PRETTY_NAME)
+    init(accessKey: String? = nil, _ secretKey: String? = nil) {
+        super.init(IaSpace.defaultPrettyName, URL(string: IaSpace.BASE_URL), accessKey, secretKey)
+    }
+
+    required init?(coder decoder: NSCoder) {
+        super.init(coder: decoder)
     }
 
 
-    // MARK: Methods
-
-    override func getPrettyName() -> String {
-        return InternetArchive.PRETTY_NAME
-    }
+    // MARK: Space
 
     override func upload(_ asset: Asset, progress: @escaping ProgressHandler,
                          done: @escaping DoneHandler) {
 
         if asset.publicUrl == nil {
-            if slug == nil {
-                slug = StringUtils.slug(asset.title != nil
-                    ? asset.title!
-                    : StringUtils.stripSuffix(from: asset.filename))
+            var slug = StringUtils.slug(asset.title != nil
+                ? asset.title!
+                : StringUtils.stripSuffix(from: asset.filename))
 
-                slug = slug! + "-" + StringUtils.random(4)
+            slug = slug + "-" + StringUtils.random(4)
 
-//                slug = "IMG-0003-u4z6"
-            }
+//            slug = "IMG-0003-u4z6"
 
-            asset.publicUrl = URL(string: "\(InternetArchive.BASE_URL)/\(slug!)/\(asset.filename)")
+            asset.publicUrl = URL(string: "\(IaSpace.BASE_URL)/\(slug)/\(asset.filename)")
         }
 
-        if let accessKey = InternetArchive.accessKey,
-            let secretKey = InternetArchive.secretKey,
+        if let accessKey = username,
+            let secretKey = password,
             let url = asset.publicUrl {
 
             var headers: HTTPHeaders = [
@@ -104,7 +86,7 @@ class InternetArchive : Server {
                 "x-archive-interactive-priority": "1",
                 "x-archive-meta-mediatype": asset.mimeType,
                 "x-archive-meta-collection": "opensource_media",
-            ]
+                ]
 
             if let title = asset.title, !title.isEmpty {
                 headers["x-archive-meta-title"] = title
@@ -135,8 +117,8 @@ class InternetArchive : Server {
     }
 
     override func remove(_ asset: Asset, done: @escaping DoneHandler) {
-        if let accessKey = InternetArchive.accessKey,
-            let secretKey = InternetArchive.secretKey,
+        if let accessKey = username,
+            let secretKey = password,
             let url = asset.publicUrl {
 
             let headers: HTTPHeaders = [
@@ -144,7 +126,7 @@ class InternetArchive : Server {
                 "authorization": "LOW \(accessKey):\(secretKey)",
                 "x-archive-cascade-delete": "1",
                 "x-archive-keep-old-version": "0",
-            ]
+                ]
 
             sessionManager.request(url, method: .delete, headers: headers)
                 .debug()
@@ -160,8 +142,8 @@ class InternetArchive : Server {
                         asset.error = error.localizedDescription
                     }
 
-                    done(self)
-                }
+                    done(asset)
+            }
         }
         else {
             // If it's just not on the server, anyway, it's ok to call the success callback.
@@ -169,24 +151,11 @@ class InternetArchive : Server {
                 // Remove old errors, so the callback doesn't stumble over that.
                 asset.error = nil
 
-                done(self)
+                done(asset)
             }
         }
     }
 
-    // MARK: NSCoding
-
-    required init(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-
-        slug = decoder.decodeObject() as? String
-    }
-
-    override func encode(with coder: NSCoder) {
-        super.encode(with: coder)
-
-        coder.encode(slug)
-    }
 
     // MARK: Private Methods
 
@@ -200,7 +169,7 @@ class InternetArchive : Server {
      - parameter headers: The HTTP headers to use.
      - parameter progress: The progress callback.
      - parameter done: The done callback, which is called always when finished.
-    */
+     */
     private func upload(_ asset: Asset, to url: URLConvertible, headers: HTTPHeaders,
                         progress: @escaping ProgressHandler, done: @escaping DoneHandler) {
 
@@ -208,7 +177,7 @@ class InternetArchive : Server {
             sessionManager.upload(file, to: url, method: .put, headers: headers)
                 .debug()
                 .uploadProgress() { prog in
-                    progress(self, prog)
+                    progress(asset, prog)
                 }
                 .validate(statusCode: 200..<300)
                 .responseData() { response in
@@ -222,8 +191,8 @@ class InternetArchive : Server {
                         asset.error = error.localizedDescription
                     }
 
-                    done(self)
-                }
+                    done(asset)
+            }
         }
     }
 }

@@ -1,79 +1,108 @@
 //
-//  WebDavServer.swift
+//  WebDavSpace.swift
 //  OpenArchive
 //
-//  Created by Benjamin Erhart on 21.09.18.
-//  Copyright © 2018 Open Archive. All rights reserved.
+//  Created by Benjamin Erhart on 08.02.19.
+//  Copyright © 2019 Open Archive. All rights reserved.
 //
 
 import UIKit
 import FilesProvider
 
-class WebDavServer: Server {
+/**
+ A space supporting WebDAV servers such as Nextcloud/Owncloud.
+ */
+class WebDavSpace: Space, Item {
 
-    static let PRETTY_NAME = "WebDAV Server"
+    // MARK: Item
 
-    private let space: Space?
-
-    init(_ space: Space) {
-        self.space = space
-
-        super.init("webdav_with_space_\(space.id)")
+    static func fixArchiverName() {
+        NSKeyedArchiver.setClassName("WebDavSpace", for: self)
+        NSKeyedUnarchiver.setClass(self, forClassName: "WebDavSpace")
     }
 
-    required init(coder decoder: NSCoder) {
-        space = decoder.decodeObject() as? Space
+    func compare(_ rhs: WebDavSpace) -> ComparisonResult {
+        return super.compare(rhs)
+    }
 
+
+    // MARK: WebDavSpace
+
+    /**
+     Create a `WebDAVFileProvider`, if credentials are available and the `url` is a valid
+     WebDAV URL.
+
+     - returns: a `WebDAVFileProvider` for this space.
+     */
+    var provider: WebDAVFileProvider? {
+        if let username = username,
+            let password = password,
+            let baseUrl = url {
+
+            let credential = URLCredential(user: username, password: password, persistence: .forSession)
+
+            let provider = WebDAVFileProvider(baseURL: baseUrl, credential: credential)
+
+            let conf = provider?.session.configuration ?? URLSessionConfiguration.default
+
+            conf.sharedContainerIdentifier = Constants.appGroup
+            conf.urlCache = provider?.cache
+            conf.requestCachePolicy = .returnCacheDataElseLoad
+
+            // Fix error "CredStore - performQuery - Error copying matching creds."
+            conf.urlCredentialStorage = nil
+
+            provider?.session = URLSession(configuration: conf,
+                                           delegate: provider?.session.delegate,
+                                           delegateQueue: provider?.session.delegateQueue)
+
+            return provider
+        }
+
+        return nil
+    }
+
+    override init(_ name: String? = nil, _ url: URL? = nil, _ username: String? = nil, _ password: String? = nil) {
+        super.init(name, url, username, password)
+    }
+
+    required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
     }
-    
-    override func encode(with coder: NSCoder) {
-        coder.encode(space)
 
-        super.encode(with: coder)
-    }
 
-    // MARK: Private Methods
-    
-    /**
-     Subclasses need to return a pretty name to show in the UI.
-
-     - returns: A pretty name of this server.
-     */
-    override func getPrettyName() -> String {
-        return WebDavServer.PRETTY_NAME
-    }
+    // MARK: Space
 
     override func upload(_ asset: Asset, progress: @escaping ProgressHandler,
                          done: @escaping DoneHandler) {
-        
+
         if asset.publicUrl == nil {
-            asset.publicUrl = space?.url?.appendingPathComponent(asset.filename)
+            asset.publicUrl = url?.appendingPathComponent(asset.filename)
         }
 
         if let filename = asset.publicUrl?.lastPathComponent,
-            let provider = space?.provider,
+            let provider = provider,
             let file = asset.file {
 
             // Inject our own background session, so upload can finish, when
             // user quits app.
             // This can only be done on upload, we would get an error on
             // deletion.
-            let conf = Server.sessionConf
+            let conf = Space.sessionConf
             conf.urlCache = provider.cache
             conf.requestCachePolicy = .returnCacheDataElseLoad
-            
+
             let sessionDelegate = SessionDelegate(fileProvider: provider)
-            
+
             // Store for later re-set.
             let oldSession = provider.session
-            
+
             provider.session = URLSession(configuration: conf,
                                           delegate: sessionDelegate as URLSessionDelegate?,
                                           delegateQueue: provider.operation_queue)
-            
+
             var timer: DispatchSourceTimer?
-            
+
             let prog = provider.copyItem(localFile: file, to: filename) { error in
                 if let error = error {
                     asset.publicUrl = nil
@@ -84,17 +113,17 @@ class WebDavServer: Server {
                     asset.isUploaded = true
                     asset.error = nil
                 }
-                
+
                 timer?.cancel()
-                
+
                 // Reset to normal session, so #remove doesn't break.
                 provider.session = oldSession
-                
+
                 DispatchQueue.main.async {
-                    done(self)
+                    done(asset)
                 }
             }
-            
+
             if let prog = prog {
                 timer = DispatchSource.makeTimerSource(flags: .strict, queue: DispatchQueue.main)
                 timer?.schedule(deadline: .now(), repeating: .seconds(1))
@@ -103,9 +132,9 @@ class WebDavServer: Server {
                     // kind of weird to the user, so we scale it down, here.
                     let scaledProgress = Progress(totalUnitCount: prog.totalUnitCount)
                     scaledProgress.completedUnitCount = prog.completedUnitCount / 2
-                    
-                    progress(self, scaledProgress)
-                    
+
+                    progress(asset, scaledProgress)
+
                     if scaledProgress.isCancelled {
                         prog.cancel()
                     }
@@ -117,8 +146,8 @@ class WebDavServer: Server {
 
     override func remove(_ asset: Asset, done: @escaping DoneHandler) {
         if let filename = asset.publicUrl?.lastPathComponent,
-            let provider = space?.provider {
-            
+            let provider = provider {
+
             provider.removeItem(path: filename) { error in
                 if let error = error {
                     asset.error = error.localizedDescription
@@ -130,7 +159,7 @@ class WebDavServer: Server {
                 }
 
                 DispatchQueue.main.async {
-                    done(self)
+                    done(asset)
                 }
             }
         }
@@ -140,7 +169,7 @@ class WebDavServer: Server {
                 // Remove old errors, so the callback doesn't stumble over that.
                 asset.error = nil
 
-                done(self)
+                done(asset)
             }
         }
     }

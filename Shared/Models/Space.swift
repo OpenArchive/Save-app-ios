@@ -8,7 +8,6 @@
 
 import UIKit
 import YapDatabase
-import FilesProvider
 
 /**
  A `Space` represents the root folder of an upload destination on a WebDAV server.
@@ -17,15 +16,12 @@ import FilesProvider
 
  A `name` is optional and is only for a user's informational purposes.
  */
-class Space: NSObject, Item {
+class Space: NSObject {
 
-    // MARK: Item
+    // MARK: Item - implemented by sublcasses
 
-    static let collection = "spaces"
-
-    static func fixArchiverName() {
-        NSKeyedArchiver.setClassName("Space", for: self)
-        NSKeyedUnarchiver.setClass(self, forClassName: "Space")
+    static var collection: String {
+        return "spaces"
     }
 
     func compare(_ rhs: Space) -> ComparisonResult {
@@ -36,48 +32,43 @@ class Space: NSObject, Item {
 
 
     // MARK: Space
-    
+
+    /**
+     Callback executed when monitoring upload progress.
+
+     - parameter asset: The asset which is being uploaded.
+     - parameter progress: Progress information.
+     */
+    public typealias ProgressHandler = (_ asset: Asset, _ progress: Progress) -> Void
+
+    /**
+     Callback executed when upload/remove is done. Check `isUploaded` and `error`
+     of the `Asset` object to evaluate the success.
+
+     - parameter asset: The asset which was uploaded/removed.
+     */
+    public typealias DoneHandler = (_ asset: Asset) -> Void
+
+    class var defaultPrettyName: String {
+        return "Unnamed".localize()
+    }
+
+    static let sessionConf: URLSessionConfiguration = {
+        let conf = URLSessionConfiguration.background(withIdentifier:
+            "\(Bundle.main.bundleIdentifier ?? "").background")
+        conf.sharedContainerIdentifier = Constants.appGroup
+
+        return conf
+    }()
+
+
     var name: String?
     var url: URL?
     var username: String?
     var password: String?
 
     var prettyName: String {
-        return name ?? url?.host ?? url?.absoluteString ?? WebDavServer.PRETTY_NAME
-    }
-
-    /**
-     Create a `WebDAVFileProvider`, if credentials are available and the `url` is a valid
-     WebDAV URL.
-
-     - returns: a `WebDAVFileProvider` for this space.
-     */
-    var provider: WebDAVFileProvider? {
-        if let username = username,
-            let password = password,
-            let baseUrl = url {
-
-            let credential = URLCredential(user: username, password: password, persistence: .forSession)
-
-            let provider = WebDAVFileProvider(baseURL: baseUrl, credential: credential)
-
-            let conf = provider?.session.configuration ?? URLSessionConfiguration.default
-
-            conf.sharedContainerIdentifier = Constants.appGroup
-            conf.urlCache = provider?.cache
-            conf.requestCachePolicy = .returnCacheDataElseLoad
-
-            // Fix error "CredStore - performQuery - Error copying matching creds."
-            conf.urlCredentialStorage = nil
-
-            provider?.session = URLSession(configuration: conf,
-                                           delegate: provider?.session.delegate,
-                                           delegateQueue: provider?.session.delegateQueue)
-
-            return provider
-        }
-
-        return nil
+        return name ?? url?.host ?? url?.absoluteString ?? Space.defaultPrettyName
     }
 
     init(_ name: String? = nil, _ url: URL? = nil, _ username: String? = nil, _ password: String? = nil) {
@@ -99,7 +90,7 @@ class Space: NSObject, Item {
         password = decoder.decodeObject() as? String
     }
 
-    func encode(with coder: NSCoder) {
+    @objc(encodeWithCoder:) func encode(with coder: NSCoder) {
         coder.encode(id)
         coder.encode(name)
         coder.encode(url)
@@ -114,5 +105,28 @@ class Space: NSObject, Item {
         return "\(String(describing: type(of: self))): [id=\(id), "
             + "name=\(name ?? "nil"), url=\(url?.description ?? "nil"), "
             + "username=\(username ?? "nil"), password=\(password ?? "nil")]"
+    }
+
+
+    // MARK: "Abstract" Methods
+
+    /**
+     Subclasses need to implement this method to upload assets.
+
+     - parameter asset: The asset to upload.
+     - parameter progress: Callback to communicate upload progress.
+     - parameter done: Callback to indicate end of upload. Check server object for status!
+     */
+    func upload(_ asset: Asset, progress: @escaping ProgressHandler, done: @escaping DoneHandler) {
+        preconditionFailure("This method must be overridden.")
+    }
+
+    /**
+     Subclasses need to implement this method to remove assets from server.
+
+     - parameter asset: The asset to remove.
+     */
+    func remove(_ asset: Asset, done: @escaping DoneHandler) {
+        preconditionFailure("This method must be overridden.")
     }
 }

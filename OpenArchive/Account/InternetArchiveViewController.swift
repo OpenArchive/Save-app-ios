@@ -11,17 +11,17 @@ import Eureka
 
 class InternetArchiveViewController: FormViewController {
 
+    var space: IaSpace?
+
     private static let keysUrl = URL(string: "http://archive.org/account/s3.php")!
 
     private let accessKeyRow = AccountRow() {
         $0.title = "Access Key".localize()
-        $0.value = InternetArchive.accessKey
         $0.add(rule: RuleRequired())
     }
 
     private let secretKeyRow = AccountRow() {
         $0.title = "Secret Key".localize()
-        $0.value = InternetArchive.secretKey
         $0.add(rule: RuleRequired())
     }
 
@@ -32,6 +32,9 @@ class InternetArchiveViewController: FormViewController {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: "Connect".localize(), style: .done, target: self,
             action: #selector(connect))
+
+        accessKeyRow.value = space?.username
+        secretKeyRow.value = space?.password
 
         form
             +++ Section()
@@ -55,10 +58,23 @@ class InternetArchiveViewController: FormViewController {
     // MARK: Actions
 
     @objc func connect() {
-        InternetArchive.accessKey = accessKeyRow.value
-        InternetArchive.secretKey = secretKeyRow.value
+        let space = self.space ?? IaSpace()
+
+        space.username = accessKeyRow.value
+        space.password = secretKeyRow.value
+
+        Db.writeConn?.asyncReadWrite() { transaction in
+            transaction.setObject(space, forKey: space.id,
+                                  inCollection: Space.collection)
+        }
 
         navigationController?.popViewController(animated: true)
+
+        // If OnboardingViewController called us, let it know, that the
+        // user created a space successfully.
+        if let onboardingVc = self.navigationController?.topViewController as? OnboardingViewController {
+            onboardingVc.spaceCreated = true
+        }
     }
 
 

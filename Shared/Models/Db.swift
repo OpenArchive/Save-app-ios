@@ -33,7 +33,8 @@ class Db {
     }()
 
     public class func setup() {
-        Space.fixArchiverName()
+        WebDavSpace.fixArchiverName()
+        IaSpace.fixArchiverName()
         Project.fixArchiverName()
         Collection.fixArchiverName()
         Asset.fixArchiverName()

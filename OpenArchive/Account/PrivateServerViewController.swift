@@ -12,7 +12,7 @@ import YapDatabase
 
 class PrivateServerViewController: FormViewController {
 
-    var space: Space?
+    var space: WebDavSpace?
 
     private let nameRow = TextRow() {
         $0.title = "Name".localize()
@@ -73,7 +73,7 @@ class PrivateServerViewController: FormViewController {
     @objc func connect() {
         workingOverlay.isHidden = false
 
-        let space = self.space ?? Space()
+        let space = self.space ?? WebDavSpace()
 
         space.name = nameRow.value
         space.url = urlRow.value
