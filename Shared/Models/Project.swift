@@ -32,7 +32,7 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
     }
 
     func compare(_ rhs: Project) -> ComparisonResult {
-        return (name ?? "").compare(rhs.name ?? "")
+        return created.compare(rhs.created)
     }
 
     var id: String
@@ -41,6 +41,7 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
     // MARK: Project
 
     var name: String?
+    var created: Date
 
     private(set) var spaceId: String?
 
@@ -87,6 +88,7 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
 
     init(name: String? = nil, space: Space? = nil) {
         id = UUID().uuidString
+        created = Date()
         self.name = name
         self.spaceId = space?.id
     }
@@ -96,6 +98,7 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
 
     required init?(coder decoder: NSCoder) {
         id = decoder.decodeObject() as? String ?? UUID().uuidString
+        created = decoder.decodeObject() as? Date ?? Date()
         name = decoder.decodeObject() as? String
         spaceId = decoder.decodeObject() as? String
         collectionId = decoder.decodeObject() as? String
@@ -103,6 +106,7 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
 
     func encode(with coder: NSCoder) {
         coder.encode(id)
+        coder.encode(created)
         coder.encode(name)
         coder.encode(spaceId)
         coder.encode(collectionId)
@@ -113,8 +117,8 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
 
     override var description: String {
         return "\(String(describing: type(of: self))): [id=\(id), "
-            + "name=\(name ?? "nil"), spaceId=\(spaceId ?? "nil"), "
-            + "collectionId=\(collectionId ?? "nil")]"
+            + "created=\(created), name=\(name ?? "nil"), "
+            + "spaceId=\(spaceId ?? "nil"), collectionId=\(collectionId ?? "nil")]"
     }
 
 
