@@ -79,17 +79,12 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
     func addToSubview(_ view: UIView) {
         view.addSubview(self)
 
-        if #available(iOS 11.0, *) {
-            translatesAutoresizingMaskIntoConstraints = false
+        translatesAutoresizingMaskIntoConstraints = false
 
-            topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-            bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-            leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-            trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        }
-        else {
-            sizeToFit()
-        }
+        topAnchor.constraint(equalTo: view.topAnchor).isActive = true
+        bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
     }
 
     func handle(_ change: YapDatabaseViewRowChange) {
