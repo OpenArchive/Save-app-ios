@@ -15,9 +15,7 @@ class MyAccountViewController: BaseTableViewController {
     private lazy var readConn = Db.newLongLivedReadConn()
 
     private lazy var mappings: YapDatabaseViewMappings = {
-        let mappings = YapDatabaseViewMappings(
-            groups: SpacesProjectsView.groups,
-            view: SpacesProjectsView.name)
+        let mappings = SpacesProjectsView.mappings
 
         readConn?.read() { transaction in
             mappings.update(with: transaction)
