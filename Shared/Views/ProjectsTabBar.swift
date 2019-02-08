@@ -1,5 +1,5 @@
 //
-//  TabBar.swift
+//  ProjectsTabBar.swift
 //  OpenArchive
 //
 //  Created by Benjamin Erhart on 29.01.19.
@@ -11,7 +11,14 @@ import MaterialComponents.MaterialTabs
 import YapDatabase
 import Localize
 
-class TabBar: MDCTabBar {
+protocol ProjectsTabBarDelegate {
+
+    func didSelectAdd(_ tabBar: ProjectsTabBar)
+
+    func didSelect(_ tabBar: ProjectsTabBar, project: Project)
+}
+
+class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
 
     static let addTabItemTag = 666
 
@@ -30,6 +37,22 @@ class TabBar: MDCTabBar {
         }
 
         return nil
+    }
+
+    var projectsDelegate: ProjectsTabBarDelegate?
+
+    /**
+     Don't use this. This is effectively neutered and used for internal purposes!
+
+     You just see this, because Swift doesn't allow us to reduce visibility of properties.
+    */
+    internal override var delegate: MDCTabBarDelegate? {
+        get {
+            return self
+        }
+        set {
+            // Do nothing, this is effectively private.
+        }
     }
 
     init(frame: CGRect, _ connection: YapDatabaseConnection?, viewName: String,
@@ -99,6 +122,25 @@ class TabBar: MDCTabBar {
     }
 
 
+    // MARK: MDCTabBarDelegate
+
+    func tabBar(_ tabBar: MDCTabBar, shouldSelect item: UITabBarItem) -> Bool {
+        if item.tag == ProjectsTabBar.addTabItemTag {
+            projectsDelegate?.didSelectAdd(self)
+
+            return false
+        }
+
+        return true
+    }
+
+    func tabBar(_ tabBar: MDCTabBar, didSelect item: UITabBarItem) {
+        if item.tag < projects.count {
+            projectsDelegate?.didSelect(self, project: projects[item.tag])
+        }
+    }
+
+
     // MARK: Private Methods
 
     private func setup() {
@@ -121,7 +163,7 @@ class TabBar: MDCTabBar {
             }
         }
 
-        items.append(getItem("+".localize(), TabBar.addTabItemTag))
+        items.append(getItem("+".localize(), ProjectsTabBar.addTabItemTag))
     }
 
     private func read(_ callback: @escaping (_ transaction: YapDatabaseViewTransaction) -> Void) {

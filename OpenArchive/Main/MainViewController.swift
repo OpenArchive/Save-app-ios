@@ -14,7 +14,7 @@ import MaterialComponents.MaterialTabs
 
 class MainViewController: UIViewController, UICollectionViewDelegate,
 UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
-MDCTabBarDelegate {
+ProjectsTabBarDelegate {
 
     @IBOutlet weak var avatar: UIImageView!
     @IBOutlet weak var tabBarContainer: UIView!
@@ -46,11 +46,11 @@ MDCTabBarDelegate {
     }()
 
 
-    private lazy var tabBar: TabBar = {
-        let tabBar = TabBar(frame: tabBarContainer.bounds, projectsReadConn,
-                            viewName: ProjectsView.name, projectsMappings)
+    private lazy var tabBar: ProjectsTabBar = {
+        let tabBar = ProjectsTabBar(frame: tabBarContainer.bounds, projectsReadConn,
+                                    viewName: ProjectsView.name, projectsMappings)
 
-        tabBar.delegate = self
+        tabBar.projectsDelegate = self
 
         return tabBar
     }()
@@ -191,19 +191,15 @@ MDCTabBarDelegate {
     }
 
 
-    // MARK: MDCTabBarDelegate
+    // MARK: ProjectsTabBarDelegate
 
-    func tabBar(_ tabBar: MDCTabBar, shouldSelect item: UITabBarItem) -> Bool {
-        if item.tag == TabBar.addTabItemTag {
+    func didSelectAdd(_ tabBar: ProjectsTabBar) {
             navigationController?.pushViewController(ProjectViewController(),
                                                      animated: true)
+    }
 
-            return false
-        }
-
-        AssetsByCollectionFilteredView.updateFilter(self.tabBar.selectedProject?.id)
-
-        return true
+    func didSelect(_ tabBar: ProjectsTabBar, project: Project) {
+        AssetsByCollectionFilteredView.updateFilter(project.id)
     }
 
 
