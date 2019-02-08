@@ -58,8 +58,12 @@ class Collection: NSObject, Item, YapDatabaseRelationshipNode {
     }
 
     var created: Date
-    var closed: Date?
-    var uploaded: Date?
+    private(set) var closed: Date?
+    private(set) var uploaded: Date?
+
+    var name: String? {
+        return Formatters.timestamp.string(from: created)
+    }
 
     var isOpen: Bool {
         return closed == nil && uploaded == nil
@@ -126,6 +130,20 @@ class Collection: NSObject, Item, YapDatabaseRelationshipNode {
     // MARK: Public Methods
 
     func close() {
-        closed = Date()
+        if closed == nil {
+            closed = Date()
+
+            Db.writeConn?.asyncReadWrite { transaction in
+                transaction.setObject(self, forKey: self.id, inCollection: Collection.collection)
+            }
+        }
+    }
+
+    func setUploadedNow() {
+        uploaded = Date()
+
+        Db.writeConn?.asyncReadWrite { transaction in
+            transaction.setObject(self, forKey: self.id, inCollection: Collection.collection)
+        }
     }
 }

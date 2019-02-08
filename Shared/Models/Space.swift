@@ -129,4 +129,59 @@ class Space: NSObject {
     func remove(_ asset: Asset, done: @escaping DoneHandler) {
         preconditionFailure("This method must be overridden.")
     }
+
+
+    // MARK: Helper Methods
+
+
+    /**
+     Construct a correct URL from given path components.
+
+     If you don't provide any components, returns an empty file URL.
+
+     - parameter url: The base `URL` to start from. Optional.
+     - parameter components: 0 or more path components.
+     - returns: a new `URL` object constructed from the parameters.
+     */
+    func construct(url: URL?, _ components: String...) -> URL {
+        if let first = components.first {
+
+            var url = url?.appendingPathComponent(first) ?? URL(fileURLWithPath: first)
+
+            var components = components
+            components.remove(at: 0)
+
+            for component in components {
+                url.appendPathComponent(component)
+            }
+
+            return url
+        }
+
+        return URL(fileURLWithPath: "")
+    }
+
+    /**
+     Boilerplate reducer. Sets an error on the `Asset` and calls the done handler
+     on the main thread.
+
+     You can even call it like this to reduce LOCs:
+
+     ```Swift
+        return self.done(asset, nil, done)
+     ```
+
+     - parameter asset: The `Asset` to return.
+     - parameter error: An optional error `String`.
+     - parameter done: The `DoneHandler` callback.
+    */
+    func done(_ asset: Asset, _ error: String?, _ done: @escaping DoneHandler) {
+        asset.error = error
+
+        DispatchQueue.main.async {
+            done(asset)
+        }
+
+        return
+    }
 }

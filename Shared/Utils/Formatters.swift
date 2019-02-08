@@ -18,6 +18,14 @@ class Formatters: NSObject {
         return formatter
     }()
 
+    static let timestamp: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZZZZ"
+
+        return formatter
+    }()
+
     static let integer = NumberFormatter()
 
     /**

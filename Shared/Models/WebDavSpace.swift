@@ -76,100 +76,132 @@ class WebDavSpace: Space, Item {
     override func upload(_ asset: Asset, progress: @escaping ProgressHandler,
                          done: @escaping DoneHandler) {
 
-        if asset.publicUrl == nil {
-            asset.publicUrl = url?.appendingPathComponent(asset.filename)
+        let collection = asset.collection
+
+        guard let projectName = collection.project.name,
+            let provider = provider,
+            let file = asset.file
+        else {
+            return self.done(asset, "Optionals could not be unpacked.", done)
         }
 
-        if let filename = asset.publicUrl?.lastPathComponent,
-            let provider = provider,
-            let file = asset.file {
+        collection.close()
 
-            // Inject our own background session, so upload can finish, when
-            // user quits app.
-            // This can only be done on upload, we would get an error on
-            // deletion.
-            let conf = Space.sessionConf
-            conf.urlCache = provider.cache
-            conf.requestCachePolicy = .returnCacheDataElseLoad
+        guard let collectionName = collection.name else {
+            return self.done(asset, "Collection name could not be created.", done)
+        }
 
-            let sessionDelegate = SessionDelegate(fileProvider: provider)
-
-            // Store for later re-set.
-            let oldSession = provider.session
-
-            provider.session = URLSession(configuration: conf,
-                                          delegate: sessionDelegate as URLSessionDelegate?,
-                                          delegateQueue: provider.operation_queue)
-
-            var timer: DispatchSourceTimer?
-
-            let prog = provider.copyItem(localFile: file, to: filename) { error in
-                if let error = error {
-                    asset.publicUrl = nil
-                    asset.isUploaded = false
-                    asset.error = error.localizedDescription
-                }
-                else {
-                    asset.isUploaded = true
-                    asset.error = nil
-                }
-
-                timer?.cancel()
-
-                // Reset to normal session, so #remove doesn't break.
-                provider.session = oldSession
-
-                DispatchQueue.main.async {
-                    done(asset)
-                }
+        create(folder: projectName, at: "") { error in
+            if let error = error {
+                return self.done(asset, error.localizedDescription, done)
             }
 
-            if let prog = prog {
-                timer = DispatchSource.makeTimerSource(flags: .strict, queue: DispatchQueue.main)
-                timer?.schedule(deadline: .now(), repeating: .seconds(1))
-                timer?.setEventHandler() {
-                    // For an uninvestigated reason, this progress counter runs until 200%, which looks
-                    // kind of weird to the user, so we scale it down, here.
-                    let scaledProgress = Progress(totalUnitCount: prog.totalUnitCount)
-                    scaledProgress.completedUnitCount = prog.completedUnitCount / 2
+            self.create(folder: collectionName, at: projectName) { error in
 
-                    progress(asset, scaledProgress)
-
-                    if scaledProgress.isCancelled {
-                        prog.cancel()
-                    }
+                if let error = error {
+                    return self.done(asset, error.localizedDescription, done)
                 }
-                timer?.resume()
+
+                // Inject our own background session, so upload can finish, when
+                // user quits app.
+                // This can only be done on upload, we would get an error on
+                // deletion.
+                let conf = Space.sessionConf
+                conf.urlCache = provider.cache
+                conf.requestCachePolicy = .returnCacheDataElseLoad
+
+                let sessionDelegate = SessionDelegate(fileProvider: provider)
+
+                // Store for later re-set.
+                let oldSession = provider.session
+
+                provider.session = URLSession(configuration: conf,
+                                              delegate: sessionDelegate as URLSessionDelegate?,
+                                              delegateQueue: provider.operation_queue)
+
+                var timer: DispatchSourceTimer?
+
+                let filepath = self.construct(url: nil, projectName, collectionName, asset.filename).path
+
+                let prog = provider.copyItem(localFile: file, to: filepath) { error in
+                    if error == nil {
+                        asset.publicUrl = self.construct(url: self.url, projectName, collectionName, asset.filename)
+                        asset.isUploaded = true
+                        collection.setUploadedNow()
+                    }
+
+                    timer?.cancel()
+
+                    // Reset to normal session, so #remove doesn't break.
+                    provider.session = oldSession
+
+                    self.done(asset, error?.localizedDescription, done)
+                }
+
+                if let prog = prog {
+                    timer = DispatchSource.makeTimerSource(flags: .strict, queue: DispatchQueue.main)
+                    timer?.schedule(deadline: .now(), repeating: .seconds(1))
+                    timer?.setEventHandler() {
+                        // For an uninvestigated reason, this progress counter runs until 200%, which looks
+                        // kind of weird to the user, so we scale it down, here.
+                        let scaledProgress = Progress(totalUnitCount: prog.totalUnitCount)
+                        scaledProgress.completedUnitCount = prog.completedUnitCount / 2
+
+                        progress(asset, scaledProgress)
+
+                        if scaledProgress.isCancelled {
+                            prog.cancel()
+                        }
+                    }
+                    timer?.resume()
+                }
             }
         }
     }
 
     override func remove(_ asset: Asset, done: @escaping DoneHandler) {
-        if let filename = asset.publicUrl?.lastPathComponent,
-            let provider = provider {
+        if let provider = provider,
+            let basePath = url?.path,
+            let filepath = asset.publicUrl?.path.replacingOccurrences(of: basePath, with: "") {
 
-            provider.removeItem(path: filename) { error in
-                if let error = error {
-                    asset.error = error.localizedDescription
-                }
-                else {
+            provider.removeItem(path: filepath) { error in
+                if error == nil {
                     asset.publicUrl = nil
                     asset.isUploaded = false
-                    asset.error = nil
                 }
 
-                DispatchQueue.main.async {
-                    done(asset)
-                }
+                self.done(asset, error?.localizedDescription, done)
             }
         }
         else {
             // If it's just not on the server, anyway, it's ok to call the success callback.
             if !asset.isUploaded {
                 // Remove old errors, so the callback doesn't stumble over that.
-                asset.error = nil
+                self.done(asset, nil, done)
+            }
+        }
+    }
 
-                done(asset)
+    /**
+     Asynchronously tests, if a folder exists and if not, creates it.
+
+     - parameter folder: Folder name to create.
+     - parameter at: Parent path of new folder.
+     - parameter completionHandler: Callback, when done.
+        If an error was returned, it is from the creation attempt.
+    */
+    private func create(folder: String, at: String, _ completionHandler: SimpleCompletionHandler) {
+        let folderpath = URL(fileURLWithPath: at).appendingPathComponent(folder).path
+
+        provider?.attributesOfItem(path: folderpath) { attributes, error in
+
+            if attributes == nil {
+                // Does not exist - create.
+                self.provider?.create(folder: folder, at: at, completionHandler: completionHandler)
+            }
+            else {
+                // Does exist: continue.
+                completionHandler?(nil)
             }
         }
     }
