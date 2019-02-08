@@ -38,12 +38,6 @@ class Db {
         Collection.fixArchiverName()
         Asset.fixArchiverName()
 
-        NSKeyedArchiver.setClassName("InternetArchive", for: InternetArchive.self)
-        NSKeyedUnarchiver.setClass(InternetArchive.self, forClassName: "InternetArchive")
-
-        NSKeyedArchiver.setClassName("WebDavServer", for: WebDavServer.self)
-        NSKeyedUnarchiver.setClass(WebDavServer.self, forClassName: "WebDavServer")
-
         shared?.register(AssetsByCollectionView(), withName: AssetsByCollectionView.name)
         shared?.register(AssetsByCollectionFilteredView(), withName: AssetsByCollectionFilteredView.name)
         shared?.register(ProjectsView(), withName: ProjectsView.name)
