@@ -27,10 +27,9 @@ class TableHeader: UITableViewHeaderFooterView {
         super.layoutSubviews()
 
         // Of course it would be way better to do that in #init or even in #text,
-        // but iOS has other ideas about font sizes and background color. (At
-        // least when the background color should be `.clear`...)
+        // but iOS has other ideas about font sizes and background color.
         textLabel?.textColor = tintColor
         textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
-        backgroundView?.backgroundColor = UIColor.clear
+        backgroundView?.backgroundColor = UIColor.white
     }
 }
