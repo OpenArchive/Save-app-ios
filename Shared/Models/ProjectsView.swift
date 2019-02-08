@@ -15,6 +15,8 @@ class ProjectsView: YapDatabaseAutoView {
 
     static let groups = [Project.collection]
 
+    static var mappings = YapDatabaseViewMappings(groups: groups, view: name)
+
     override init() {
         let grouping = YapDatabaseViewGrouping.withKeyBlock() {
             transaction, collection, key in

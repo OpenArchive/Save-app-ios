@@ -24,7 +24,7 @@ MDCTabBarDelegate {
     private lazy var projectsReadConn = Db.newLongLivedReadConn()
 
     private lazy var projectsMappings: YapDatabaseViewMappings = {
-        let mappings = YapDatabaseViewMappings(groups: ProjectsView.groups, view: ProjectsView.name)
+        let mappings = ProjectsView.mappings
 
         projectsReadConn?.read { transaction in
             mappings.update(with: transaction)
@@ -36,14 +36,7 @@ MDCTabBarDelegate {
     private lazy var assetsReadConn = Db.newLongLivedReadConn()
 
     private lazy var assetsMappings: YapDatabaseViewMappings = {
-        let mappings = YapDatabaseViewMappings(
-            groupFilterBlock: { group, transaction in
-                return true
-            },
-            sortBlock: { group1, group2, transaction in
-                return group1.compare(group2)
-            },
-            view: AssetsByCollectionFilteredView.name)
+        let mappings = AssetsByCollectionFilteredView.mappings
 
         assetsReadConn?.read() { transaction in
             mappings.update(with: transaction)
