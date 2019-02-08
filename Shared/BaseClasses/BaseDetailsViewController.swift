@@ -281,7 +281,7 @@ class BaseDetailsViewController: UIViewController {
                 let progressFormatted = Formatters.integer.string(for: progress.fractionCompleted * 100)
                     ?? "Unknown".localize()
 
-                self.serverStatusLb.text = "Progress: %%".localize(values: progressFormatted, "%")
+                self.serverStatusLb.text = "Progress: %".localize(value: "\(progressFormatted)%")
             }) { server in
                 self.setServerInfo()
 
