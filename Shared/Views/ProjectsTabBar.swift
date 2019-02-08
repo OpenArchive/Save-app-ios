@@ -114,6 +114,13 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
                 items[indexPath.row] = getItem(project.name, indexPath.row)
             }
         }
+
+        // Fix situation when tab bar was populated with first project and the "+"
+        // tab is selected, which really shouldn't.
+        if selectedItem?.tag == ProjectsTabBar.addTabItemTag && projects.count > 0 {
+            selectedItem = items[0]
+            projectsDelegate?.didSelect(self, project: projects[0])
+        }
     }
 
 
