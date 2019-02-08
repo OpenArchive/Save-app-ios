@@ -107,7 +107,9 @@ ProjectsTabBarDelegate {
         let view = collectionView.dequeueReusableSupplementaryView(
             ofKind: kind, withReuseIdentifier: HeaderView.reuseId, for: indexPath) as! HeaderView
 
-        view.set(Collection.get(byId: assetsMappings.group(forSection: UInt(indexPath.section))))
+        view.set(Collection.get(byId:
+            AssetsByCollectionView.collectionId(from:
+                assetsMappings.group(forSection: UInt(indexPath.section)))))
 
         return view
     }
