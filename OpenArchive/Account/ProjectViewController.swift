@@ -72,6 +72,19 @@ class ProjectViewController: FormViewController {
     @objc func connect() {
         project.name = nameRow.value
 
+        // TODO: This is a mock. Rework to have the user do the connection.
+        var firstSpace: Space?
+
+        Db.bgRwConn?.read{ transaction in
+            transaction.enumerateKeysAndObjects(inCollection: Space.collection) { key, object, stop in
+                firstSpace = object as? Space
+                stop.pointee = true
+            }
+        }
+
+        project.space = firstSpace
+
+
         Db.writeConn?.asyncReadWrite() { transaction in
             transaction.setObject(self.project, forKey: self.project.id,
                                   inCollection: Project.collection)
