@@ -28,7 +28,7 @@ class AssetsByCollectionFilteredView: YapDatabaseFilteredView {
     }
 
     class func updateFilter(_ projectId: String? = nil) {
-        Db.writeConn?.readWrite { transaction in
+        Db.writeConn?.asyncReadWrite { transaction in
             (transaction.ext(name) as? YapDatabaseFilteredViewTransaction)?
                 .setFiltering(getFilter(projectId), versionTag: UUID().uuidString)
         }

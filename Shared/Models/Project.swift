@@ -76,7 +76,7 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
             collection = Collection(self)
             collectionId = collection?.id
 
-            Db.writeConn?.readWrite { transaction in
+            Db.writeConn?.asyncReadWrite { transaction in
                 transaction.setObject(collection, forKey: collection!.id, inCollection: Collection.collection)
                 transaction.setObject(self, forKey: self.id, inCollection: Project.collection)
             }
