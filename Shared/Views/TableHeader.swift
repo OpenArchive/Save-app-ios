@@ -28,7 +28,7 @@ class TableHeader: UITableViewHeaderFooterView {
 
         // Of course it would be way better to do that in #init or even in #text,
         // but iOS has other ideas about font sizes and background color.
-        textLabel?.textColor = tintColor
+        textLabel?.textColor = UIColor.accent
         textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
         backgroundView?.backgroundColor = UIColor.white
     }

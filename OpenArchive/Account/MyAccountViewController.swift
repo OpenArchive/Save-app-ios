@@ -174,7 +174,7 @@ class MyAccountViewController: BaseTableViewController {
                 return cell.set("Create New Project".localize(), isPlaceholder: true)
             }
 
-            return cell.set("Browse".localize(), tableView.tintColor, true)
+            return cell.set("Browse".localize(), UIColor.accent, true)
         case 3:
             cell.addIndicator.isHidden = true
             switch indexPath.row {
