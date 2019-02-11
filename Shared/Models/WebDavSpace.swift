@@ -91,6 +91,10 @@ class WebDavSpace: Space, Item {
             return self.done(asset, "Collection name could not be created.", done)
         }
 
+        // Send an initial empty progress, to trigger some UI feedback.
+        // Folder creation can take a while.
+        progress(asset, Progress.discreteProgress(totalUnitCount: 100))
+
         create(folder: projectName, at: "") { error in
             if let error = error {
                 return self.done(asset, error.localizedDescription, done)
