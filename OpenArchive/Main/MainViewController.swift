@@ -33,6 +33,18 @@ ProjectsTabBarDelegate {
         return mappings
     }()
 
+    private lazy var collectionsReadConn = Db.newLongLivedReadConn()
+
+    private lazy var collectionsMappings: YapDatabaseViewMappings = {
+        let mappings = CollectionsView.mappings
+
+        collectionsReadConn?.read { transaction in
+            mappings.update(with: transaction)
+        }
+
+        return mappings
+    }()
+
     private lazy var assetsReadConn = Db.newLongLivedReadConn()
 
     private lazy var assetsMappings: YapDatabaseViewMappings = {
@@ -227,6 +239,14 @@ ProjectsTabBarDelegate {
             }
         }
 
+        var collectionChanges = NSArray()
+
+        (collectionsReadConn?.ext(CollectionsView.name) as? YapDatabaseViewConnection)?
+            .getSectionChanges(nil,
+                               rowChanges: &collectionChanges,
+                               for: collectionsReadConn?.beginLongLivedReadTransaction() ?? [],
+                               with: collectionsMappings)
+
         rowChanges = NSArray()
         var sectionChanges = NSArray()
 
@@ -238,7 +258,8 @@ ProjectsTabBarDelegate {
 
         if let rowChanges = rowChanges as? [YapDatabaseViewRowChange],
             let sectionChanges = sectionChanges as? [YapDatabaseViewSectionChange],
-            rowChanges.count > 0 || sectionChanges.count > 0 {
+            let collectionChanges = collectionChanges as? [YapDatabaseViewRowChange],
+            rowChanges.count > 0 || sectionChanges.count > 0 || collectionChanges.count > 0 {
 
             collectionView.performBatchUpdates({
                 for change in sectionChanges {
@@ -247,6 +268,21 @@ ProjectsTabBarDelegate {
                         collectionView.deleteSections([IndexSet.Element(change.index)])
                     case .insert:
                         collectionView.insertSections([IndexSet.Element(change.index)])
+                    default:
+                        break
+                    }
+                }
+
+                // We need to recognize changes in `Collection` objects used in the
+                // section headers.
+                for change in collectionChanges {
+                    switch change.type {
+                    case .update:
+                        if let indexPath = change.indexPath,
+                            change.finalGroup == tabBar.selectedProject?.id {
+
+                            collectionView.reloadSections([IndexSet.Element(indexPath.row)])
+                        }
                     default:
                         break
                     }
@@ -285,14 +321,20 @@ ProjectsTabBarDelegate {
     @objc func yapDatabaseModifiedExternally(notification: Notification) {
         projectsReadConn?.beginLongLivedReadTransaction()
 
-        projectsReadConn?.read() { transaction in
+        projectsReadConn?.read { transaction in
             self.projectsMappings.update(with: transaction)
             self.tabBar.reloadInputViews()
         }
 
+        collectionsReadConn?.beginLongLivedReadTransaction()
+
+        collectionsReadConn?.read { transaction in
+            self.collectionsMappings.update(with: transaction)
+        }
+
         assetsReadConn?.beginLongLivedReadTransaction()
 
-        assetsReadConn?.read() { transaction in
+        assetsReadConn?.read { transaction in
             self.assetsMappings.update(with: transaction)
             self.collectionView.reloadData()
         }

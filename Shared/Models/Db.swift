@@ -42,6 +42,7 @@ class Db {
         shared?.register(AssetsByCollectionView(), withName: AssetsByCollectionView.name)
         shared?.register(AssetsByCollectionFilteredView(), withName: AssetsByCollectionFilteredView.name)
         shared?.register(ProjectsView(), withName: ProjectsView.name)
+        shared?.register(CollectionsView(), withName: CollectionsView.name)
         shared?.register(SpacesProjectsView(), withName: SpacesProjectsView.name)
 
         // Enable relationships. (Also row -> file relationship handling!)
