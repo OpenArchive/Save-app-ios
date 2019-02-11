@@ -170,7 +170,10 @@ class WebDavSpace: Space, Item {
                     asset.isUploaded = false
                 }
 
-                self.done(asset, error?.localizedDescription, done)
+                // Try to delete containing folders until root.
+                self.delete(folder: URL(fileURLWithPath: filepath).deletingLastPathComponent().path) { error in
+                    self.done(asset, error?.localizedDescription, done)
+                }
             }
         }
         else {
@@ -204,5 +207,46 @@ class WebDavSpace: Space, Item {
                 completionHandler?(nil)
             }
         }
+    }
+
+    /**
+     Tries to delete parent folders recursively, as long as they are empty.
+
+     - parameter folder: The folder to delete, if empty.
+     - parameter completionHandler: Callback, when done.
+        If an error was returned, it is from the deletion attempt.
+    */
+    private func delete(folder: String, _ completionHandler: SimpleCompletionHandler) {
+        provider?.contentsOfDirectory(path: folder) { files, error in
+            if files.count < 1 {
+
+                // Folder is empty - remove it.
+                self.provider?.removeItem(path: folder) { error in
+
+                    // We got an error, stop recursing, return the error.
+                    if error != nil {
+                        completionHandler?(error)
+                    }
+                    else {
+
+                        // Go up one higher, try to delete that, too.
+                        let parent = URL(fileURLWithPath: folder).deletingLastPathComponent().path
+
+                        if parent != "" && parent != "/" {
+                            self.delete(folder: parent, completionHandler)
+                        }
+                        else {
+                            // Stop here, we're can't delete the root.
+                            completionHandler?(nil)
+                        }
+                    }
+                }
+            }
+            else {
+                // Folder is not empty - continue.
+                completionHandler?(nil)
+            }
+        }
+
     }
 }
