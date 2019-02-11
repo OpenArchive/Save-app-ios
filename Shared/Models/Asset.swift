@@ -9,11 +9,12 @@
 import UIKit
 import MobileCoreServices
 import YapDatabase
+import CommonCrypto
 
 /**
  Representation of a file asset in the database.
 */
-class Asset: NSObject, Item, YapDatabaseRelationshipNode {
+class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
 
     // MARK: Item
 
@@ -96,7 +97,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode {
     }
 
     /**
-     Returns the stored filename, if any stored, or a made up filename, which uses the `id` and
+     The stored filename, if any stored, or a made up filename, which uses the `id` and
      a typical extension for that `uti`.
     */
     var filename: String {
@@ -123,6 +124,55 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode {
                 .appendingPathComponent(Asset.collection)
                 .appendingPathComponent(id)
         }
+    }
+
+    /**
+     The size of the attached file in bytes, if file exists and attributes can
+     be read.
+    */
+    var filesize: UInt64? {
+        if let filepath = file?.path,
+            let attr = try? FileManager.default.attributesOfItem(atPath: filepath) {
+
+            return attr[.size] as? UInt64
+        }
+
+        return nil
+    }
+
+    /**
+     A SHA256 hash of the file content, if file can be read.
+
+     Uses a 1 MByte buffer to keep RAM usage low.
+    */
+    var digest: Data? {
+        if let url = file,
+            let fh = try? FileHandle(forReadingFrom: url) {
+
+            defer {
+                fh.closeFile()
+            }
+
+            var context = CC_SHA256_CTX()
+            CC_SHA256_Init(&context)
+
+            let data = fh.readData(ofLength: 1024 * 1024)
+
+            if data.count > 0 {
+                data.withUnsafeBytes {
+                    _ = CC_SHA256_Update(&context, $0, UInt32(data.count))
+                }
+            }
+
+            var digest = Data(count: Int(CC_SHA256_DIGEST_LENGTH))
+            digest.withUnsafeMutableBytes {
+                _ = CC_SHA256_Final($0, &context)
+            }
+
+            return digest
+        }
+
+        return nil
     }
 
     var thumb: URL? {
@@ -176,6 +226,69 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode {
         coder.encode(isUploaded)
         coder.encode(error)
         coder.encode(collectionId)
+    }
+
+
+    // MARK: Encodable
+
+    enum CodingKeys: String, CodingKey {
+        case author
+        case title
+        case desc = "description"
+        case created = "dateCreated"
+        case license = "usage"
+        case location
+        case tags
+        case mimeType = "contentType"
+        case filesize = "contentLength"
+        case filename = "originalFileName"
+        case digest = "hash"
+    }
+
+    /**
+     This will create the metadata which should be exported using a
+     `JSONEncoder`.
+    */
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+
+        if author != nil {
+            try container.encode(author, forKey: .author)
+        }
+
+        if title != nil {
+            try container.encode(title, forKey: .title)
+        }
+
+        if desc != nil {
+            try container.encode(desc, forKey: .desc)
+        }
+
+        try container.encode(created, forKey: .created)
+
+        if license != nil {
+            try container.encode(license, forKey: .license)
+        }
+
+        if location != nil {
+            try container.encode(location, forKey: .location)
+        }
+
+        if tags != nil {
+            try container.encode(tags, forKey: .tags)
+        }
+
+        try container.encode(mimeType, forKey: .mimeType)
+
+        if let filesize = filesize {
+            try container.encode(filesize, forKey: .filesize)
+        }
+
+        try container.encode(filename, forKey: .filename)
+
+        if let filehash = digest {
+            try container.encode(filehash, forKey: .digest)
+        }
     }
 
 

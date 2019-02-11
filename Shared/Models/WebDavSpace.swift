@@ -106,6 +106,14 @@ class WebDavSpace: Space, Item {
                     return self.done(asset, error.localizedDescription, done)
                 }
 
+                let filepath = self.construct(url: nil, projectName, collectionName, asset.filename).path
+
+                // Write metadata JSON encoded.
+                provider.writeContents(path: "\(filepath).meta.json",
+                    contents: try? Space.jsonEncoder.encode(asset),
+                    overwrite: true, completionHandler: nil)
+
+
                 // Inject our own background session, so upload can finish, when
                 // user quits app.
                 // This can only be done on upload, we would get an error on
@@ -124,8 +132,6 @@ class WebDavSpace: Space, Item {
                                               delegateQueue: provider.operation_queue)
 
                 var timer: DispatchSourceTimer?
-
-                let filepath = self.construct(url: nil, projectName, collectionName, asset.filename).path
 
                 let prog = provider.copyItem(localFile: file, to: filepath) { error in
                     if error == nil {

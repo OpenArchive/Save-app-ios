@@ -61,6 +61,17 @@ class Space: NSObject {
         return conf
     }()
 
+    /**
+     A pretty-printing JSON encoder using ISO8601 date formats.
+    */
+    static let jsonEncoder: JSONEncoder = {
+        let encoder = JSONEncoder()
+        encoder.outputFormatting = .prettyPrinted
+        encoder.dateEncodingStrategy = .iso8601
+
+        return encoder
+    }()
+
 
     var name: String?
     var url: URL?
