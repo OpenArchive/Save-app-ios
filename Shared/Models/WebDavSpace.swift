@@ -28,6 +28,8 @@ class WebDavSpace: Space, Item {
 
     // MARK: WebDavSpace
 
+    private static let metaFileExt = "meta.json"
+
     /**
      Create a `WebDAVFileProvider`, if credentials are available and the `url` is a valid
      WebDAV URL.
@@ -109,7 +111,7 @@ class WebDavSpace: Space, Item {
                 let filepath = self.construct(url: nil, projectName, collectionName, asset.filename).path
 
                 // Write metadata JSON encoded.
-                provider.writeContents(path: "\(filepath).meta.json",
+                provider.writeContents(path: "\(filepath).\(WebDavSpace.metaFileExt)",
                     contents: try? Space.jsonEncoder.encode(asset),
                     overwrite: true, completionHandler: nil)
 
@@ -180,9 +182,12 @@ class WebDavSpace: Space, Item {
                     asset.isUploaded = false
                 }
 
-                // Try to delete containing folders until root.
-                self.delete(folder: URL(fileURLWithPath: filepath).deletingLastPathComponent().path) { error in
-                    self.done(asset, error?.localizedDescription, done)
+                provider.removeItem(path: "\(filepath).\(WebDavSpace.metaFileExt)") { error in
+
+                    // Try to delete containing folders until root.
+                    self.delete(folder: URL(fileURLWithPath: filepath).deletingLastPathComponent().path) { error in
+                        self.done(asset, error?.localizedDescription, done)
+                    }
                 }
             }
         }
