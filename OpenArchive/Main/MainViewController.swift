@@ -97,9 +97,11 @@ ProjectsTabBarDelegate {
 
         avatar.image = Profile.avatar ?? Profile.defaultAvatar
 
-        AssetsByCollectionFilteredView.updateFilter(self.tabBar.selectedProject?.id)
+        AssetsByCollectionFilteredView.updateFilter(tabBar.selectedProject?.id)
 
         navigationController?.setNavigationBarHidden(true, animated: animated)
+
+        collectionView.toggle(numberOfSections(in: collectionView) != 0, animated: animated)
     }
 
 
@@ -233,10 +235,8 @@ ProjectsTabBarDelegate {
                                for: projectsReadConn?.beginLongLivedReadTransaction() ?? [],
                                with: projectsMappings)
 
-        if let changes = rowChanges as? [YapDatabaseViewRowChange] {
-            for change in changes {
-                tabBar.handle(change)
-            }
+        for change in rowChanges as? [YapDatabaseViewRowChange] ?? [] {
+            tabBar.handle(change)
         }
 
         var collectionChanges = NSArray()
@@ -309,6 +309,8 @@ ProjectsTabBarDelegate {
                     }
                 }
             })
+
+            collectionView.toggle(numberOfSections(in: collectionView) != 0, animated: true)
         }
     }
 
