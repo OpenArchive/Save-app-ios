@@ -297,7 +297,7 @@
                                     <constraint firstAttribute="width" constant="48" id="IOE-kX-TMe"/>
                                     <constraint firstAttribute="height" constant="48" id="gy9-0e-USl"/>
                                 </constraints>
-                                <state key="normal" image="ic_upload"/>
+                                <state key="normal" image="ic_plus"/>
                                 <connections>
                                     <action selector="add" destination="wAB-WM-ZQl" eventType="touchUpInside" id="6xh-dv-Vgs"/>
                                 </connections>
@@ -517,6 +517,6 @@
         <image name="browse-folder" width="25" height="23"/>
         <image name="ic_edit" width="6" height="6"/>
         <image name="ic_photo" width="15" height="14"/>
-        <image name="ic_upload" width="9" height="12"/>
+        <image name="ic_plus" width="11" height="11"/>
     </resources>
 </document>
