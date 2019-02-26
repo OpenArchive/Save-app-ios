@@ -15,6 +15,11 @@ class InternetArchiveViewController: FormViewController {
 
     private static let keysUrl = URL(string: "http://archive.org/account/s3.php")!
 
+    private let favIconRow = AvatarRow() {
+        $0.disabled = true
+        $0.value = IaSpace.favIcon
+    }
+
     private let accessKeyRow = AccountRow() {
         $0.title = "Access Key".localize()
         $0.add(rule: RuleRequired())
@@ -38,6 +43,9 @@ class InternetArchiveViewController: FormViewController {
 
         form
             +++ Section()
+
+            <<< favIconRow
+
             <<< LabelRow() {
                 $0.cell.textLabel?.numberOfLines = 0
                 $0.title = "Please go to % and copy the displayed access and secret keys into the provided fields!".localize(value: InternetArchiveViewController.keysUrl.absoluteString)

@@ -5,6 +5,7 @@ PODS:
     - CocoaLumberjack/Core (= 3.5.1)
   - CocoaLumberjack/Core (3.5.1)
   - Eureka (4.3.1)
+  - FavIcon (3.0.6)
   - FilesProvider (0.25.1)
   - ImageRow (3.2.0):
     - Eureka (~> 4.3)
@@ -112,6 +113,7 @@ DEPENDENCIES:
   - Alamofire (~> 4.8)
   - ARChromeActivity (~> 1.0)
   - Eureka (~> 4.3)
+  - FavIcon (~> 3.0)
   - FilesProvider (~> 0.25)
   - ImageRow (from `https://github.com/EurekaCommunity/ImageRow.git`)
   - Localize (~> 2.1)
@@ -127,6 +129,7 @@ SPEC REPOS:
     - ARChromeActivity
     - CocoaLumberjack
     - Eureka
+    - FavIcon
     - FilesProvider
     - Localize
     - MaterialComponents
@@ -150,6 +153,7 @@ SPEC CHECKSUMS:
   ARChromeActivity: 5dcf9b9f09323761f992aff3525cdd777f83609d
   CocoaLumberjack: 2101f8a5508197a305e737d16c5c2e9e2157628c
   Eureka: 28ea296f06710f6745266b71f17862048941a32d
+  FavIcon: e07ba9dd3cac1f76b81ccaa08fc2b41baa000b07
   FilesProvider: f6ab75211d2fd4814720f19b427e43668dc24585
   ImageRow: 03681b3ef8034b5a649440325f5d5ba7b22c1b0a
   Localize: f360a343abfac047be5b375c45be1059f5f625f3
@@ -160,6 +164,6 @@ SPEC CHECKSUMS:
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   YapDatabase: d8cd02058e36bc0902e405d8f3326eb8d7dbf36c
 
-PODFILE CHECKSUM: 5fce7b1112184b12e40ebbe28ff3a29fea74d88f
+PODFILE CHECKSUM: 186a162cd1333e11b279751ac9feb1136c669579
 
-COCOAPODS: 1.5.3
+COCOAPODS: 1.6.1

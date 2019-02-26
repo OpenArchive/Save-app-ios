@@ -46,6 +46,7 @@
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="avatar" destination="88v-Wl-Ybm" id="Cbf-Aw-lZd"/>
+                <outlet property="editableIndicator" destination="jSk-Hy-zsJ" id="PK9-ID-3TM"/>
             </connections>
         </view>
     </objects>

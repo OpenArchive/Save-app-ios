@@ -75,6 +75,7 @@ class Space: NSObject {
 
     var name: String?
     var url: URL?
+    var favIcon: UIImage?
     var username: String?
     var password: String?
 
@@ -82,10 +83,11 @@ class Space: NSObject {
         return name ?? url?.host ?? url?.absoluteString ?? Space.defaultPrettyName
     }
 
-    init(_ name: String? = nil, _ url: URL? = nil, _ username: String? = nil, _ password: String? = nil) {
+    init(_ name: String? = nil, _ url: URL? = nil, _ favIcon: UIImage? = nil, _ username: String? = nil, _ password: String? = nil) {
         id = UUID().uuidString
         self.name = name
         self.url = url
+        self.favIcon = favIcon
         self.username = username
         self.password = password
     }
@@ -97,6 +99,7 @@ class Space: NSObject {
         id = decoder.decodeObject() as? String ?? UUID().uuidString
         name = decoder.decodeObject() as? String
         url = decoder.decodeObject() as? URL
+        favIcon = decoder.decodeObject() as? UIImage
         username = decoder.decodeObject() as? String
         password = decoder.decodeObject() as? String
     }
@@ -105,6 +108,7 @@ class Space: NSObject {
         coder.encode(id)
         coder.encode(name)
         coder.encode(url)
+        coder.encode(favIcon)
         coder.encode(username)
         coder.encode(password)
     }
@@ -115,6 +119,7 @@ class Space: NSObject {
     override var description: String {
         return "\(String(describing: type(of: self))): [id=\(id), "
             + "name=\(name ?? "nil"), url=\(url?.description ?? "nil"), "
+            + "favIcon=\(favIcon?.description ?? "nil"), "
             + "username=\(username ?? "nil"), password=\(password ?? "nil")]"
     }
 

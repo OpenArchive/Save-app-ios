@@ -576,11 +576,12 @@
 			files = (
 			);
 			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-OpenArchive/Pods-OpenArchive-frameworks.sh",
+				"${PODS_ROOT}/Target Support Files/Pods-OpenArchive/Pods-OpenArchive-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/ARChromeActivity/ARChromeActivity.framework",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
 				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
 				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
+				"${BUILT_PRODUCTS_DIR}/FavIcon/FavIcon.framework",
 				"${BUILT_PRODUCTS_DIR}/FilesProvider/FilesProvider.framework",
 				"${BUILT_PRODUCTS_DIR}/ImageRow/ImageRow.framework",
 				"${BUILT_PRODUCTS_DIR}/Localize/Localize.framework",
@@ -597,6 +598,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FavIcon.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FilesProvider.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImageRow.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Localize.framework",
@@ -609,7 +611,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-OpenArchive/Pods-OpenArchive-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OpenArchive/Pods-OpenArchive-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FF11D95E5AC7DA852AB008A3 /* [CP] Check Pods Manifest.lock */ = {

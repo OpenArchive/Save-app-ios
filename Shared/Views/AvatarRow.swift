@@ -13,6 +13,7 @@ import ImageRow
 public final class AvatarCell: PushSelectorCell<UIImage> {
 
     @IBOutlet weak var avatar: UIImageView!
+    @IBOutlet weak var editableIndicator: UIImageView!
 
     public override func update() {
         super.update()
@@ -21,6 +22,7 @@ public final class AvatarCell: PushSelectorCell<UIImage> {
         editingAccessoryView = .none
 
         avatar.image = row.value ?? (row as? ImageRowProtocol)?.placeholderImage
+        editableIndicator.isHidden = row.isDisabled
     }
 }
 

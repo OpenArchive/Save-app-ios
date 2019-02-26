@@ -30,9 +30,7 @@ class IaSpace: Space, Item {
 
     private static let BASE_URL = "https://s3.us.archive.org"
 
-    override class var defaultPrettyName: String {
-        return "Internet Archive"
-    }
+    static let favIcon = UIImage(named: "InternetArchiveLogo")
 
     /**
      This needs to be tied to this object, otherwise the SessionManager will get
@@ -49,7 +47,7 @@ class IaSpace: Space, Item {
 
 
     init(accessKey: String? = nil, _ secretKey: String? = nil) {
-        super.init(IaSpace.defaultPrettyName, URL(string: IaSpace.BASE_URL), accessKey, secretKey)
+        super.init(IaSpace.defaultPrettyName, URL(string: IaSpace.BASE_URL), nil, accessKey, secretKey)
     }
 
     required init?(coder decoder: NSCoder) {
@@ -58,6 +56,32 @@ class IaSpace: Space, Item {
 
 
     // MARK: Space
+
+    override class var defaultPrettyName: String {
+        return "Internet Archive"
+    }
+
+    override var favIcon: UIImage? {
+        get {
+            return IaSpace.favIcon
+        }
+        set {
+            // This is effectively read-only.
+        }
+    }
+
+    /**
+     Don't store the favIcon in the database. It's bundled with the app anyway.
+     */
+    @objc(encodeWithCoder:) override func encode(with coder: NSCoder) {
+        coder.encode(id)
+        coder.encode(name)
+        coder.encode(url)
+        coder.encode(nil)
+        coder.encode(username)
+        coder.encode(password)
+    }
+
 
     override func upload(_ asset: Asset, progress: @escaping ProgressHandler,
                          done: @escaping DoneHandler) {

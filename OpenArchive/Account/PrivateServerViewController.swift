@@ -9,10 +9,16 @@
 import UIKit
 import Eureka
 import YapDatabase
+import FavIcon
 
 class PrivateServerViewController: FormViewController {
 
     var space: WebDavSpace?
+
+    private let favIconRow = AvatarRow() {
+        $0.disabled = true
+        $0.placeholderImage = Profile.defaultAvatar
+    }
 
     private let nameRow = TextRow() {
         $0.title = "Name".localize()
@@ -41,6 +47,7 @@ class PrivateServerViewController: FormViewController {
             title: "Connect".localize(), style: .done, target: self,
             action: #selector(connect))
 
+        favIconRow.value = space?.favIcon
         nameRow.value = space?.name
         urlRow.value = space?.url
         userNameRow.value = space?.username
@@ -49,9 +56,12 @@ class PrivateServerViewController: FormViewController {
         form
             +++ Section()
 
+            <<< favIconRow
+
             <<< nameRow
 
             <<< urlRow.cellUpdate() { _, _ in
+                self.acquireFavIcon()
                 self.enableConnect()
             }
 
@@ -77,6 +87,7 @@ class PrivateServerViewController: FormViewController {
 
         space.name = nameRow.value
         space.url = urlRow.value
+        space.favIcon = favIconRow.value
         space.username = userNameRow.value
         space.password = passwordRow.value
 
@@ -109,8 +120,44 @@ class PrivateServerViewController: FormViewController {
 
     // MARK: Private Methods
 
+    private func acquireFavIcon() {
+        if favIconRow.value == nil,
+            let url = urlRow.value,
+            let host = url.host,
+            let baseUrl = URL(string: "\(url.scheme ?? "https")://\(host)\(url.port == nil ? "" : ":\(url.port!)")/") {
+
+            try! FavIcon.downloadPreferred(baseUrl) { result in
+                if case let .success(image) = result {
+                    self.favIconRow.value = image
+                    self.favIconRow.reload()
+                }
+            }
+        }
+    }
+
     private func enableConnect() {
         navigationItem.rightBarButtonItem?.isEnabled = urlRow.isValid
             && userNameRow.isValid && passwordRow.isValid
+    }
+
+    private func onConnected() {
+        DispatchQueue.main.async {
+            self.workingOverlay.isHidden = true
+
+            if let space = self.space {
+                Db.writeConn?.asyncReadWrite() { transaction in
+                    transaction.setObject(space, forKey: space.id,
+                                          inCollection: Space.collection)
+                }
+
+                self.navigationController?.popViewController(animated: true)
+
+                // If OnboardingViewController called us, let it know, that the
+                // user created a space successfully.
+                if let onboardingVc = self.navigationController?.topViewController as? OnboardingViewController {
+                    onboardingVc.spaceCreated = true
+                }
+            }
+        }
     }
 }
