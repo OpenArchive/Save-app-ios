@@ -67,8 +67,8 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
         setup()
     }
 
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
 
         setup()
     }
@@ -92,33 +92,32 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
         case .delete:
             if let indexPath = change.indexPath {
                 projects.remove(at: indexPath.row)
-                items.remove(at: indexPath.row)
+                items.remove(at: indexPath.row + 1)
             }
         case .insert:
             if let newIndexPath = change.newIndexPath,
                 let project = getProject(at: newIndexPath) {
 
                 projects.insert(project, at: newIndexPath.row)
-                items.insert(getItem(project.name, newIndexPath.row), at: newIndexPath.row)
+                items.insert(getItem(project.name, newIndexPath.row), at: newIndexPath.row + 1)
             }
         case .move:
             if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
                 projects.insert(projects.remove(at: indexPath.row), at: newIndexPath.row)
-                items.insert(items.remove(at: indexPath.row), at: newIndexPath.row)
+                items.insert(items.remove(at: indexPath.row + 1), at: newIndexPath.row + 1)
             }
         case .update:
             if let indexPath = change.indexPath,
                 let project = getProject(at: indexPath) {
 
                 projects[indexPath.row] = project
-                items[indexPath.row] = getItem(project.name, indexPath.row)
+                items[indexPath.row + 1] = getItem(project.name, indexPath.row)
             }
         }
 
         // Fix situation when tab bar was populated with first project and the "+"
         // tab is selected, which really shouldn't.
-        if selectedItem?.tag == ProjectsTabBar.addTabItemTag && projects.count > 0 {
-            selectedItem = items[0]
+        if selectFirst() {
             projectsDelegate?.didSelect(self, project: projects[0])
         }
     }
@@ -154,6 +153,8 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
         setTitleColor(UIColor.black, for: .selected)
         bottomDividerColor = UIColor.lightGray
 
+        items.append(getItem("+".localize(), ProjectsTabBar.addTabItemTag))
+
         read { transaction in
             transaction.enumerateKeysAndObjects(inGroup: Project.collection) {
                 collection, key, object, index, stop in
@@ -165,7 +166,7 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
             }
         }
 
-        items.append(getItem("+".localize(), ProjectsTabBar.addTabItemTag))
+        _ = selectFirst()
     }
 
     private func read(_ callback: @escaping (_ transaction: YapDatabaseViewTransaction) -> Void) {
@@ -191,5 +192,15 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
         }
 
         return project
+    }
+
+    private func selectFirst() -> Bool {
+        if selectedItem?.tag == ProjectsTabBar.addTabItemTag && projects.count > 0 {
+            selectedItem = items[1] // Add is on 0, first project on 1.
+
+            return true
+        }
+
+        return false
     }
 }
