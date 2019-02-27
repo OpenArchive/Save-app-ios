@@ -15,21 +15,34 @@ class ProjectsView: YapDatabaseAutoView {
 
     static let groups = [Project.collection]
 
-    static var mappings = YapDatabaseViewMappings(groups: groups, view: name)
+    private static let grouping = YapDatabaseViewGrouping.withObjectBlock {
+        transaction, collection, key, object in
+        
+        if (object as? Project)?.spaceId == SelectedSpace.id {
+            return Project.collection
+        }
+
+        return nil
+    }
+
+    private static let sorting = YapDatabaseViewSorting.withObjectBlock {
+        transaction, group, collection1, key1, object1, collection2, key2, object2 in
+
+        return (object1 as! Project).compare(object2 as! Project)
+    }
 
     override init() {
-        let grouping = YapDatabaseViewGrouping.withKeyBlock() {
-            transaction, collection, key in
+        super.init(grouping: ProjectsView.grouping,
+                   sorting: ProjectsView.sorting,
+                   versionTag: UUID().uuidString, options: nil)
+    }
 
-            return Project.collection == collection ? collection : nil
+    class func updateGrouping() {
+        Db.writeConn?.readWrite { transaction in
+            (transaction.ext(name) as? YapDatabaseAutoViewTransaction)?
+                .setGrouping(grouping,
+                             sorting: sorting,
+                             versionTag: UUID().uuidString)
         }
-
-        let sorting = YapDatabaseViewSorting.withObjectBlock() {
-            transaction, group, collection1, key1, object1, collection2, key2, object2 in
-
-            return (object1 as! Project).compare(object2 as! Project)
-        }
-
-        super.init(grouping: grouping, sorting: sorting, versionTag: nil, options: nil)
     }
 }

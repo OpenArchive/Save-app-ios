@@ -43,7 +43,7 @@ class Db {
         shared?.register(AssetsByCollectionFilteredView(), withName: AssetsByCollectionFilteredView.name)
         shared?.register(ProjectsView(), withName: ProjectsView.name)
         shared?.register(CollectionsView(), withName: CollectionsView.name)
-        shared?.register(SpacesProjectsView(), withName: SpacesProjectsView.name)
+        shared?.register(SpacesView(), withName: SpacesView.name)
 
         // Enable relationships. (Also row -> file relationship handling!)
         shared?.register(YapDatabaseRelationship(), withName: "relationships")

@@ -18,7 +18,7 @@ class MainNavigationController: UINavigationController {
 
     func setRoot() {
         performSegue(
-            withIdentifier: OnboardingViewController.firstRunDone
+            withIdentifier: ConnectSpaceViewController.firstRunDone
                 ? "mainSegue" : "onboardingSegue",
             sender: self)
     }

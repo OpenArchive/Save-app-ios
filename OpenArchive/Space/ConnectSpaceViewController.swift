@@ -1,5 +1,5 @@
 //
-//  OnboardingViewController.swift
+//  ConnectSpaceViewController.swift
 //  OpenArchive
 //
 //  Created by Benjamin Erhart on 24.01.19.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class OnboardingViewController: BaseTableViewController {
+class ConnectSpaceViewController: BaseTableViewController {
 
     private static let alreadyRun = "already_run"
 
@@ -26,6 +26,16 @@ class OnboardingViewController: BaseTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        // Onboarding phase, directly after first start. Allow skip, so
+        // users can see the main scene. Where they can't do anything, but
+        // at least they can have a glimpse.
+        // All other times they can back out with a navigation back button.
+        if !ConnectSpaceViewController.firstRunDone {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                title: "Skip".localize(), style: .plain, target: self,
+                action: #selector(done))
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -59,8 +69,19 @@ class OnboardingViewController: BaseTableViewController {
     }
 
     @IBAction func done() {
-        OnboardingViewController.firstRunDone = true
+        if !ConnectSpaceViewController.firstRunDone {
+            // We're still in the onboarding phase. Need to change root view
+            // controller to main scene.
 
-        (navigationController as? MainNavigationController)?.setRoot()
+            ConnectSpaceViewController.firstRunDone = true
+
+            (navigationController as? MainNavigationController)?.setRoot()
+        }
+        else {
+            // All other times: We're not the root view controller, so just
+            // back out.
+
+            navigationController?.popViewController(animated: true)
+        }
     }
 }

@@ -103,13 +103,14 @@ class PrivateServerViewController: FormViewController {
                     Db.writeConn?.asyncReadWrite() { transaction in
                         transaction.setObject(space, forKey: space.id,
                                               inCollection: Space.collection)
+                        SelectedSpace.space = space
                     }
 
                     self.navigationController?.popViewController(animated: true)
 
-                    // If OnboardingViewController called us, let it know, that the
+                    // If ConnectSpaceViewController called us, let it know, that the
                     // user created a space successfully.
-                    if let onboardingVc = self.navigationController?.topViewController as? OnboardingViewController {
+                    if let onboardingVc = self.navigationController?.topViewController as? ConnectSpaceViewController {
                         onboardingVc.spaceCreated = true
                     }
                 }
@@ -121,8 +122,7 @@ class PrivateServerViewController: FormViewController {
     // MARK: Private Methods
 
     private func acquireFavIcon() {
-        if favIconRow.value == nil,
-            let url = urlRow.value,
+        if let url = urlRow.value,
             let host = url.host,
             let baseUrl = URL(string: "\(url.scheme ?? "https")://\(host)\(url.port == nil ? "" : ":\(url.port!)")/") {
 
@@ -138,26 +138,5 @@ class PrivateServerViewController: FormViewController {
     private func enableConnect() {
         navigationItem.rightBarButtonItem?.isEnabled = urlRow.isValid
             && userNameRow.isValid && passwordRow.isValid
-    }
-
-    private func onConnected() {
-        DispatchQueue.main.async {
-            self.workingOverlay.isHidden = true
-
-            if let space = self.space {
-                Db.writeConn?.asyncReadWrite() { transaction in
-                    transaction.setObject(space, forKey: space.id,
-                                          inCollection: Space.collection)
-                }
-
-                self.navigationController?.popViewController(animated: true)
-
-                // If OnboardingViewController called us, let it know, that the
-                // user created a space successfully.
-                if let onboardingVc = self.navigationController?.topViewController as? OnboardingViewController {
-                    onboardingVc.spaceCreated = true
-                }
-            }
-        }
     }
 }

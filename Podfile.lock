@@ -1,5 +1,6 @@
 PODS:
   - Alamofire (4.8.1)
+  - AlignedCollectionViewFlowLayout (1.1.2)
   - ARChromeActivity (1.0.6)
   - CocoaLumberjack (3.5.1):
     - CocoaLumberjack/Core (= 3.5.1)
@@ -111,10 +112,11 @@ PODS:
 
 DEPENDENCIES:
   - Alamofire (~> 4.8)
+  - AlignedCollectionViewFlowLayout (~> 1.1)
   - ARChromeActivity (~> 1.0)
   - Eureka (~> 4.3)
   - FavIcon (~> 3.0)
-  - FilesProvider (~> 0.25)
+  - FilesProvider (from `https://github.com/amosavian/FileProvider.git`)
   - ImageRow (from `https://github.com/EurekaCommunity/ImageRow.git`)
   - Localize (~> 2.1)
   - MaterialComponents/Buttons (~> 74.0)
@@ -126,11 +128,11 @@ DEPENDENCIES:
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
     - Alamofire
+    - AlignedCollectionViewFlowLayout
     - ARChromeActivity
     - CocoaLumberjack
     - Eureka
     - FavIcon
-    - FilesProvider
     - Localize
     - MaterialComponents
     - MDFInternationalization
@@ -140,21 +142,27 @@ SPEC REPOS:
     - YapDatabase
 
 EXTERNAL SOURCES:
+  FilesProvider:
+    :git: https://github.com/amosavian/FileProvider.git
   ImageRow:
     :git: https://github.com/EurekaCommunity/ImageRow.git
 
 CHECKOUT OPTIONS:
+  FilesProvider:
+    :commit: 9384264d29bc865697560cc45bd919ee8857a4e6
+    :git: https://github.com/amosavian/FileProvider.git
   ImageRow:
     :commit: 6ae9c0890dcf0040a4a2804ceeeaf5449a0f62b3
     :git: https://github.com/EurekaCommunity/ImageRow.git
 
 SPEC CHECKSUMS:
   Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
+  AlignedCollectionViewFlowLayout: ee2ef451e741ec08f8e0967d828001e2f051c20a
   ARChromeActivity: 5dcf9b9f09323761f992aff3525cdd777f83609d
   CocoaLumberjack: 2101f8a5508197a305e737d16c5c2e9e2157628c
   Eureka: 28ea296f06710f6745266b71f17862048941a32d
   FavIcon: e07ba9dd3cac1f76b81ccaa08fc2b41baa000b07
-  FilesProvider: f6ab75211d2fd4814720f19b427e43668dc24585
+  FilesProvider: dfe4ab4cc057023ba5ebe742e466d23f7a2323e6
   ImageRow: 03681b3ef8034b5a649440325f5d5ba7b22c1b0a
   Localize: f360a343abfac047be5b375c45be1059f5f625f3
   MaterialComponents: c382f7a1881832ff88a05bb1536c47714cf1295f
@@ -164,6 +172,6 @@ SPEC CHECKSUMS:
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   YapDatabase: d8cd02058e36bc0902e405d8f3326eb8d7dbf36c
 
-PODFILE CHECKSUM: 186a162cd1333e11b279751ac9feb1136c669579
+PODFILE CHECKSUM: dcce0de7807ffc8d252f88c90c1175e75f1832c3
 
 COCOAPODS: 1.6.1

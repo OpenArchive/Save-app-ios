@@ -11,7 +11,9 @@ import FilesProvider
 
 class BrowseViewController: BaseTableViewController {
 
-    var space: WebDavSpace!
+    private var provider: WebDAVFileProvider? {
+        return (SelectedSpace.space as? WebDavSpace)?.provider
+    }
 
     private var loading = true
 
@@ -88,7 +90,7 @@ class BrowseViewController: BaseTableViewController {
                     !newName.isEmpty {
 
                     self.beginWork {
-                        self.space.provider?.create(folder: newName, at: "") { error in
+                        self.provider?.create(folder: newName, at: "") { error in
                             if error != nil {
                                 self.endWork(error)
                             }
@@ -124,7 +126,7 @@ class BrowseViewController: BaseTableViewController {
     
     @IBAction func connect() {
         if let selectedFolder = selectedFolder {
-            let project = Project(name: selectedFolder.name, space: space)
+            let project = Project(name: selectedFolder.name, space: SelectedSpace.space)
 
             Db.writeConn?.asyncReadWrite() { transaction in
                 transaction.setObject(project, forKey: project.id,
@@ -167,7 +169,7 @@ class BrowseViewController: BaseTableViewController {
         beginWork {
             folders.removeAll()
 
-            space.provider?.contentsOfDirectory(path: "") { files, error in
+            provider?.contentsOfDirectory(path: "") { files, error in
                 for file in files {
                     if file.isDirectory {
                         self.folders.append(file)

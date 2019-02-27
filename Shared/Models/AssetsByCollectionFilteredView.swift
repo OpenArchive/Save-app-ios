@@ -24,7 +24,7 @@ class AssetsByCollectionFilteredView: YapDatabaseFilteredView {
 
       See `AssetsByCollectionView#groupKey(for:)` for reference.
     */
-    static var mappings: YapDatabaseViewMappings = {
+    static var mappings: YapDatabaseViewMappings {
         return YapDatabaseViewMappings(
             groupFilterBlock: { group, transaction in
                 return true
@@ -33,7 +33,7 @@ class AssetsByCollectionFilteredView: YapDatabaseFilteredView {
                 return group2.compare(group1)
         },
             view: name)
-    }()
+    }
 
     override init() {
         super.init(parentViewName: AssetsByCollectionView.name,

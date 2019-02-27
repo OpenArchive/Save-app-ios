@@ -19,7 +19,7 @@ class CollectionsView: YapDatabaseAutoView {
 
     static let name = Collection.collection
 
-    static var mappings: YapDatabaseViewMappings = {
+    static var mappings: YapDatabaseViewMappings {
         return YapDatabaseViewMappings(
             groupFilterBlock: { group, transaction in
                 return true
@@ -28,7 +28,7 @@ class CollectionsView: YapDatabaseAutoView {
                 return group1.compare(group2)
         },
             view: name)
-    }()
+    }
 
     override init() {
         let grouping = YapDatabaseViewGrouping.withObjectBlock() {

@@ -16,7 +16,10 @@ class MainViewController: UIViewController, UICollectionViewDelegate,
 UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
 ProjectsTabBarDelegate {
 
-    @IBOutlet weak var avatar: UIImageView!
+    private static let segueConnectSpace = "connectSpaceSegue"
+    private static let segueShowSpace = "showSpaceSegue"
+
+    @IBOutlet weak var favIcon: UIImageView!
     @IBOutlet weak var tabBarContainer: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var addBt: MDCFloatingButton!
@@ -24,7 +27,8 @@ ProjectsTabBarDelegate {
     private lazy var projectsReadConn = Db.newLongLivedReadConn()
 
     private lazy var projectsMappings: YapDatabaseViewMappings = {
-        let mappings = ProjectsView.mappings
+        let mappings = YapDatabaseViewMappings(groups: ProjectsView.groups,
+                                               view: ProjectsView.name)
 
         projectsReadConn?.read { transaction in
             mappings.update(with: transaction)
@@ -95,11 +99,11 @@ ProjectsTabBarDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        avatar.image = Profile.avatar ?? Profile.defaultAvatar
-
-        AssetsByCollectionFilteredView.updateFilter(tabBar.selectedProject?.id)
+        favIcon.image = SelectedSpace.space?.favIcon ?? SelectedSpace.defaultFavIcon
 
         navigationController?.setNavigationBarHidden(true, animated: animated)
+
+        AssetsByCollectionFilteredView.updateFilter(tabBar.selectedProject?.id)
 
         collectionView.toggle(numberOfSections(in: collectionView) != 0, animated: animated)
     }
@@ -152,7 +156,17 @@ ProjectsTabBarDelegate {
 
     // MARK: Actions
 
+    @IBAction func connectShowSpace() {
+        performSegue(withIdentifier: SelectedSpace.available
+            ? MainViewController.segueShowSpace
+            : MainViewController.segueConnectSpace, sender: self)
+    }
+
     @IBAction func add() {
+        if !SelectedSpace.available {
+            return performSegue(withIdentifier: MainViewController.segueConnectSpace, sender: self)
+        }
+
         imagePicker.popoverPresentationController?.sourceView = addBt
         imagePicker.popoverPresentationController?.sourceRect = addBt.bounds
 
@@ -210,8 +224,13 @@ ProjectsTabBarDelegate {
     // MARK: ProjectsTabBarDelegate
 
     func didSelectAdd(_ tabBar: ProjectsTabBar) {
+        if SelectedSpace.available {
             navigationController?.pushViewController(ProjectViewController(),
                                                      animated: true)
+        }
+        else {
+            performSegue(withIdentifier: MainViewController.segueConnectSpace, sender: self)
+        }
     }
 
     func didSelect(_ tabBar: ProjectsTabBar, project: Project) {

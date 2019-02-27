@@ -74,13 +74,14 @@ class InternetArchiveViewController: FormViewController {
         Db.writeConn?.asyncReadWrite() { transaction in
             transaction.setObject(space, forKey: space.id,
                                   inCollection: Space.collection)
+            SelectedSpace.space = space
         }
 
         navigationController?.popViewController(animated: true)
 
-        // If OnboardingViewController called us, let it know, that the
+        // If ConnectSpaceViewController called us, let it know, that the
         // user created a space successfully.
-        if let onboardingVc = self.navigationController?.topViewController as? OnboardingViewController {
+        if let onboardingVc = self.navigationController?.topViewController as? ConnectSpaceViewController {
             onboardingVc.spaceCreated = true
         }
     }
