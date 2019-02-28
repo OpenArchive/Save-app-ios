@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14113" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14088"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14460.20"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -163,7 +163,7 @@
                                         <action selector="contentChanged:" destination="-1" eventType="editingDidEnd" id="7Oi-ad-4sL"/>
                                     </connections>
                                 </textField>
-                                <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Author" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="aaN-WM-DYZ">
+                                <textField opaque="NO" contentMode="scaleToFill" enabled="NO" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="Author" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="aaN-WM-DYZ">
                                     <rect key="frame" x="16" y="436" width="343" height="30"/>
                                     <nil key="textColor"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -200,7 +200,7 @@
                                     </connections>
                                 </textField>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Allow anyone to remix and share?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="2Vx-hg-5G3">
-                                    <rect key="frame" x="16" y="596" width="286" height="16"/>
+                                    <rect key="frame" x="16" y="595.5" width="286" height="16"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -215,7 +215,7 @@
                                     </connections>
                                 </switch>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Require them to share like you have?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fP1-PM-M9r">
-                                    <rect key="frame" x="16" y="635" width="286" height="16"/>
+                                    <rect key="frame" x="16" y="634.5" width="286" height="16"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
@@ -230,7 +230,7 @@
                                     </connections>
                                 </switch>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Allow commercial use?" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="kPo-xg-cra">
-                                    <rect key="frame" x="16" y="674" width="286" height="16"/>
+                                    <rect key="frame" x="16" y="673.5" width="286" height="16"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>

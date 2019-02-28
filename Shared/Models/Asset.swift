@@ -40,7 +40,6 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     private var _filename: String?
     var title: String?
     var desc: String?
-    var author: String?
     var location: String?
     var tags: [String]?
     var license: String?
@@ -49,6 +48,29 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     var error: String?
     private(set) var collectionId: String
 
+    var author: String? {
+        if let space = collection.project.space {
+            var author = [String]()
+
+            if let name = space.authorName {
+                author.append(name)
+            }
+
+            if let role = space.authorRole {
+                author.append(role)
+            }
+
+            if let other = space.authorOther {
+                author.append(other)
+            }
+
+            if author.count > 0 {
+                return author.joined(separator: ", ")
+            }
+        }
+
+        return nil
+    }
 
     var collection: Collection {
         get {
@@ -201,7 +223,6 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         _filename = decoder.decodeObject() as? String
         title = decoder.decodeObject() as? String
         desc = decoder.decodeObject() as? String
-        author = decoder.decodeObject() as? String
         location = decoder.decodeObject() as? String
         tags = decoder.decodeObject() as? [String]
         license = decoder.decodeObject() as? String
@@ -218,7 +239,6 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         coder.encode(_filename)
         coder.encode(title)
         coder.encode(desc)
-        coder.encode(author)
         coder.encode(location)
         coder.encode(tags)
         coder.encode(license)
@@ -252,7 +272,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     func encode(to encoder: Encoder) throws {
         var container = encoder.container(keyedBy: CodingKeys.self)
 
-        if author != nil {
+        if let author = author {
             try container.encode(author, forKey: .author)
         }
 
@@ -296,8 +316,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
 
     override var description: String {
         return "\(String(describing: type(of: self))): [id=\(id), created=\(created), uti=\(uti), "
-            + "title=\(title ?? "nil"), desc=\(desc ?? "nil"), "
-            + "author=\(author ?? "nil"), location=\(location ?? "nil"), "
+            + "title=\(title ?? "nil"), desc=\(desc ?? "nil"), location=\(location ?? "nil"), "
             + "tags=\(tags?.description ?? "nil"), license=\(license ?? "nil"), "
             + "mimeType=\(mimeType), filename=\(filename), file=\(file?.description ?? "nil"), "
             + "thumb=\(thumb?.description ?? "nil"), "

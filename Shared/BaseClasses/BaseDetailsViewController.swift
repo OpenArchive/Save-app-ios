@@ -210,8 +210,6 @@ class BaseDetailsViewController: UIViewController {
                 asset.title = titleTf.text
             case descriptionTf:
                 asset.desc = descriptionTf.text
-            case authorTf:
-                asset.author = authorTf.text
             case locationTf:
                 asset.location = locationTf.text
             case tagsTf:
