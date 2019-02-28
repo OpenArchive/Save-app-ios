@@ -27,6 +27,7 @@
 		A0362199220DB384003C21DC /* WebDavSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362197220DB384003C21DC /* WebDavSpace.swift */; };
 		A0457E6720EF96FB00B8FBCB /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6620EF96FB00B8FBCB /* StringUtils.swift */; };
 		A0457E6920EFB57C00B8FBCB /* RegexUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */; };
+		A050147F2228209E0056ED95 /* BaseServerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050147E2228209E0056ED95 /* BaseServerViewController.swift */; };
 		A050AA492225DF4000AE5D15 /* SpacesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050AA482225DF4000AE5D15 /* SpacesListCell.swift */; };
 		A05275142211A91300BDB14B /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05275132211A91300BDB14B /* CollectionsView.swift */; };
 		A05275152211A91300BDB14B /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05275132211A91300BDB14B /* CollectionsView.swift */; };
@@ -149,6 +150,7 @@
 		A0362197220DB384003C21DC /* WebDavSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDavSpace.swift; sourceTree = "<group>"; };
 		A0457E6620EF96FB00B8FBCB /* StringUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
 		A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegexUtils.swift; sourceTree = "<group>"; };
+		A050147E2228209E0056ED95 /* BaseServerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseServerViewController.swift; sourceTree = "<group>"; };
 		A050AA482225DF4000AE5D15 /* SpacesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacesListCell.swift; sourceTree = "<group>"; };
 		A05275132211A91300BDB14B /* CollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsView.swift; sourceTree = "<group>"; };
 		A055204F222566CE00B9645F /* UIView+animateHideShow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+animateHideShow.swift"; sourceTree = "<group>"; };
@@ -377,6 +379,7 @@
 				A0A3D9C62226D8DB00BB5A19 /* SpaceCell.swift */,
 				A0E1A68321EE831300E4F6B7 /* SelectedSpaceCell.swift */,
 				A08C2CEA21F0B71B008ACA3E /* EditProfileViewController.swift */,
+				A050147E2228209E0056ED95 /* BaseServerViewController.swift */,
 				A08C2CE321F0A98C008ACA3E /* PrivateServerViewController.swift */,
 				A08C2CE121F09B3F008ACA3E /* InternetArchiveViewController.swift */,
 				A0DE78B121F771A700B6B68B /* ProjectViewController.swift */,
@@ -708,6 +711,7 @@
 				A08C2CED21F0C634008ACA3E /* AvatarRow.swift in Sources */,
 				A0E1A68521EE831300E4F6B7 /* SelectedSpaceCell.swift in Sources */,
 				A01A7B722200F2D700E18DE0 /* HeaderView.swift in Sources */,
+				A050147F2228209E0056ED95 /* BaseServerViewController.swift in Sources */,
 				A0C475BD21148DDE0012937E /* BaseDetailsViewController.swift in Sources */,
 				A0AC06AA2201CFD800BD5FBA /* BrowseViewController.swift in Sources */,
 				A0D58DCE20E51517005A2F34 /* Asset.swift in Sources */,

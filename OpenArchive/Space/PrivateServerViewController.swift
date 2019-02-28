@@ -8,17 +8,9 @@
 
 import UIKit
 import Eureka
-import YapDatabase
 import FavIcon
 
-class PrivateServerViewController: FormViewController {
-
-    var space: WebDavSpace?
-
-    private let favIconRow = AvatarRow() {
-        $0.disabled = true
-        $0.placeholderImage = SelectedSpace.defaultFavIcon
-    }
+class PrivateServerViewController: BaseServerViewController {
 
     private let nameRow = TextRow() {
         $0.title = "Name".localize()
@@ -26,11 +18,6 @@ class PrivateServerViewController: FormViewController {
 
     private let urlRow = URLRow() {
         $0.title = "Server URL".localize()
-        $0.add(rule: RuleRequired())
-    }
-
-    private let userNameRow = AccountRow() {
-        $0.title = "User Name".localize()
         $0.add(rule: RuleRequired())
     }
 
@@ -80,19 +67,25 @@ class PrivateServerViewController: FormViewController {
 
     // MARK: Actions
 
-    @objc func connect() {
+    @objc override func connect() {
         workingOverlay.isHidden = false
 
-        let space = self.space ?? WebDavSpace()
+        if space == nil {
+            space = WebDavSpace()
+            isEdit = false
+        }
+        else if isEdit == nil {
+            isEdit = true
+        }
 
-        space.name = nameRow.value
-        space.url = urlRow.value
-        space.favIcon = favIconRow.value
-        space.username = userNameRow.value
-        space.password = passwordRow.value
+        space?.name = nameRow.value
+        space?.url = urlRow.value
+        space?.favIcon = favIconRow.value
+        space?.username = userNameRow.value
+        space?.password = passwordRow.value
 
         // Do a test request to check validity of space configuration.
-        space.provider?.attributesOfItem(path: "") { file, error in
+        (space as? WebDavSpace)?.provider?.attributesOfItem(path: "") { file, error in
             DispatchQueue.main.async {
                 self.workingOverlay.isHidden = true
 
@@ -100,19 +93,7 @@ class PrivateServerViewController: FormViewController {
                     AlertHelper.present(self, message: error.localizedDescription)
                 }
                 else {
-                    Db.writeConn?.asyncReadWrite() { transaction in
-                        transaction.setObject(space, forKey: space.id,
-                                              inCollection: Space.collection)
-                        SelectedSpace.space = space
-                    }
-
-                    self.navigationController?.popViewController(animated: true)
-
-                    // If ConnectSpaceViewController called us, let it know, that the
-                    // user created a space successfully.
-                    if let onboardingVc = self.navigationController?.topViewController as? ConnectSpaceViewController {
-                        onboardingVc.spaceCreated = true
-                    }
+                    super.connect()
                 }
             }
         }

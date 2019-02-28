@@ -9,6 +9,12 @@
 import UIKit
 import Eureka
 
+
+protocol DoneDelegate {
+
+    func done()
+}
+
 /**
  Own base class of Eureka's FormViewController which adds our own base style:
 
@@ -18,6 +24,8 @@ import Eureka
  - Own special header
  */
 class FormViewController: Eureka.FormViewController {
+
+    var delegate: DoneDelegate?
 
     lazy var workingOverlay: WorkingOverlay = {
         return WorkingOverlay().addToSuperview(navigationController?.view ?? view)

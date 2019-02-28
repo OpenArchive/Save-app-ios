@@ -73,7 +73,15 @@ class ProjectViewController: FormViewController {
                                   inCollection: Project.collection)
         }
 
-        navigationController?.popViewController(animated: true)
+        // Only animate, if we don't have a delegate: Too much pop animations
+        // will end in the last view controller not being popped and it's also
+        // too much going on in the UI.
+        navigationController?.popViewController(animated: delegate == nil)
+
+        // Could be PrivateServerViewController or InternetArchiveViewController
+        // in the onboarding flow / create space flow to ensure a space and
+        // project exits.
+        delegate?.done()
     }
 
 

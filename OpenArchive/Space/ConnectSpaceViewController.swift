@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ConnectSpaceViewController: BaseTableViewController {
+class ConnectSpaceViewController: BaseTableViewController, DoneDelegate {
 
     private static let alreadyRun = "already_run"
 
@@ -22,7 +22,7 @@ class ConnectSpaceViewController: BaseTableViewController {
         }
     }
 
-    var spaceCreated = false
+    var hasOneInternetArchive = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,23 +36,36 @@ class ConnectSpaceViewController: BaseTableViewController {
                 title: "Skip".localize(), style: .plain, target: self,
                 action: #selector(done))
         }
+
+        Db.bgRwConn?.asyncRead { transaction in
+            transaction.enumerateKeysAndObjects(inCollection: Space.collection, using: { key, object, stop in
+                if object is IaSpace {
+                    self.hasOneInternetArchive = true
+
+                    DispatchQueue.main.async {
+                        self.tableView.reloadData()
+                    }
+
+                    stop.pointee = true
+                }
+            })
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if spaceCreated {
-            done()
-            return
-        }
-
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
 
-    // MARK: - Table view data source
+    // MARK: UITableViewDataSource
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 2 + (hasOneInternetArchive ? 0 : 1)
+    }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let vc: UIViewController?
+        let vc: FormViewController?
 
         switch indexPath.row {
         case 1:
@@ -64,11 +77,16 @@ class ConnectSpaceViewController: BaseTableViewController {
         }
 
         if let vc = vc {
+            vc.delegate = self
+
             navigationController?.pushViewController(vc, animated: true)
         }
     }
 
-    @IBAction func done() {
+
+    // MARK: ConnectSpaceDelegate
+
+    @objc func done() {
         if !ConnectSpaceViewController.firstRunDone {
             // We're still in the onboarding phase. Need to change root view
             // controller to main scene.
