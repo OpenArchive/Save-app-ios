@@ -19,7 +19,8 @@ ProjectsTabBarDelegate {
     private static let segueConnectSpace = "connectSpaceSegue"
     private static let segueShowSpace = "showSpaceSegue"
 
-    @IBOutlet weak var favIcon: UIImageView!
+    @IBOutlet weak var spaceFavIcon: UIImageView!
+    @IBOutlet weak var spaceName: UILabel!
     @IBOutlet weak var tabBarContainer: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var addBt: MDCFloatingButton!
@@ -99,7 +100,14 @@ ProjectsTabBarDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        favIcon.image = SelectedSpace.space?.favIcon ?? SelectedSpace.defaultFavIcon
+        if let space = SelectedSpace.space {
+            spaceFavIcon.image = space.favIcon
+            spaceName.text = space.prettyName
+        }
+        else {
+            spaceFavIcon.image = SelectedSpace.defaultFavIcon
+            spaceName.text = "SAVE".localize()
+        }
 
         navigationController?.setNavigationBarHidden(true, animated: animated)
 

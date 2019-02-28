@@ -173,7 +173,7 @@
                                     <outletCollection property="gestureRecognizers" destination="WyM-Oj-yBY" appends="YES" id="cPI-iW-H8p"/>
                                 </connections>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="OA" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IgM-tk-GPC">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SAVE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IgM-tk-GPC">
                                 <rect key="frame" x="64" y="40" width="295" height="32"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
                                 <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -314,7 +314,8 @@
                     <connections>
                         <outlet property="addBt" destination="kiu-eR-U6M" id="fVa-Q1-bhe"/>
                         <outlet property="collectionView" destination="cdB-Ih-Rhb" id="nAx-Db-2Xa"/>
-                        <outlet property="favIcon" destination="hpS-2l-dcc" id="f3r-5D-oXV"/>
+                        <outlet property="spaceFavIcon" destination="hpS-2l-dcc" id="f3r-5D-oXV"/>
+                        <outlet property="spaceName" destination="IgM-tk-GPC" id="3jS-qS-wAR"/>
                         <outlet property="tabBarContainer" destination="Sv8-ax-o88" id="Mk4-Mv-SE6"/>
                         <segue destination="60Y-gn-6Z7" kind="show" identifier="showSpaceSegue" id="rqB-hq-ZIX"/>
                         <segue destination="6Ji-DQ-0NT" kind="show" identifier="connectSpaceSegue" id="Po4-0Y-GwW"/>
@@ -556,6 +557,6 @@
         <image name="ic_plus" width="11" height="11"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Rwx-7w-lhD"/>
+        <segue reference="Po4-0Y-GwW"/>
     </inferredMetricsTieBreakers>
 </document>
