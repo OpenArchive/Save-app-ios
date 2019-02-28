@@ -61,8 +61,8 @@ class SelectedSpace {
             return _space
         }
         set {
-            _space = newValue
             id = newValue?.id
+            _space = newValue
         }
     }
 }
