@@ -163,8 +163,9 @@ ProjectsTabBarDelegate {
     }
 
     @IBAction func add() {
-        if !SelectedSpace.available {
-            return performSegue(withIdentifier: MainViewController.segueConnectSpace, sender: self)
+        // Don't allow to add assets without a space or a project.
+        if tabBar.selectedProject == nil {
+            return didSelectAdd(tabBar)
         }
 
         imagePicker.popoverPresentationController?.sourceView = addBt
