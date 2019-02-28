@@ -17,7 +17,7 @@ class PrivateServerViewController: FormViewController {
 
     private let favIconRow = AvatarRow() {
         $0.disabled = true
-        $0.placeholderImage = Profile.defaultAvatar
+        $0.placeholderImage = SelectedSpace.defaultFavIcon
     }
 
     private let nameRow = TextRow() {

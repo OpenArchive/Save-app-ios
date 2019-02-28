@@ -34,8 +34,6 @@
 		A0552051222566CE00B9645F /* UIView+animateHideShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A055204F222566CE00B9645F /* UIView+animateHideShow.swift */; };
 		A05C582A21EF94FC00141633 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05C582921EF94FC00141633 /* BaseViewController.swift */; };
 		A05C582B21EF95A800141633 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05C582921EF94FC00141633 /* BaseViewController.swift */; };
-		A05C582D21EF96F400141633 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05C582C21EF96F400141633 /* Profile.swift */; };
-		A05C582E21EF96F400141633 /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05C582C21EF96F400141633 /* Profile.swift */; };
 		A0631B552203022100B3E90D /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0631B542203022100B3E90D /* BaseTableViewController.swift */; };
 		A0631B562203022100B3E90D /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0631B542203022100B3E90D /* BaseTableViewController.swift */; };
 		A0631B572203068900B3E90D /* MenuItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */; };
@@ -157,7 +155,6 @@
 		A058628320E4FC5A00EE2F14 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A058628520E4FDBF00EE2F14 /* Podfile.lock */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile.lock; sourceTree = "<group>"; };
 		A05C582921EF94FC00141633 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
-		A05C582C21EF96F400141633 /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
 		A0631B542203022100B3E90D /* BaseTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewController.swift; sourceTree = "<group>"; };
 		A0631B5A22034F0700B3E90D /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		A0656AB721F9BC8500070C4B /* ConnectSpaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectSpaceViewController.swift; sourceTree = "<group>"; };
@@ -347,7 +344,6 @@
 				A0631B5A22034F0700B3E90D /* Collection.swift */,
 				A0D58DCD20E51517005A2F34 /* Asset.swift */,
 				A029F6822118715700C4EF6D /* AssetFactory.swift */,
-				A05C582C21EF96F400141633 /* Profile.swift */,
 				A0FB4DB421F89FD500B46099 /* AssetsByCollectionView.swift */,
 				A00A8D46220C7EDD0083F0CB /* AssetsByCollectionFilteredView.swift */,
 				A00A8D43220C63B20083F0CB /* ProjectsView.swift */,
@@ -658,7 +654,6 @@
 				A00A8D48220C7EDD0083F0CB /* AssetsByCollectionFilteredView.swift in Sources */,
 				A08C2CE721F0B5FA008ACA3E /* FormViewController.swift in Sources */,
 				A0362199220DB384003C21DC /* WebDavSpace.swift in Sources */,
-				A05C582E21EF96F400141633 /* Profile.swift in Sources */,
 				A07129112111E4F1007A432A /* Db.swift in Sources */,
 				A0552051222566CE00B9645F /* UIView+animateHideShow.swift in Sources */,
 				A0C475B4211474A50012937E /* Formatters.swift in Sources */,
@@ -698,7 +693,6 @@
 				A0E739D820E4C85D00DB31E1 /* AppDelegate.swift in Sources */,
 				A0362195220DB2CA003C21DC /* IaSpace.swift in Sources */,
 				A0E1A67C21EE7A5C00E4F6B7 /* SpaceViewController.swift in Sources */,
-				A05C582D21EF96F400141633 /* Profile.swift in Sources */,
 				A004E24C20EBCF1700A1D5F5 /* Formatters.swift in Sources */,
 				A0FB4DB521F89FD500B46099 /* AssetsByCollectionView.swift in Sources */,
 				A0A192E021F23B61009A8CF0 /* Constants+Swift.swift in Sources */,

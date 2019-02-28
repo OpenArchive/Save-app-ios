@@ -46,8 +46,8 @@ class IaSpace: Space, Item {
     }()
 
 
-    init(accessKey: String? = nil, _ secretKey: String? = nil) {
-        super.init(IaSpace.defaultPrettyName, URL(string: IaSpace.BASE_URL), nil, accessKey, secretKey)
+    init(accessKey: String? = nil, secretKey: String? = nil) {
+        super.init(name: IaSpace.defaultPrettyName, url: URL(string: IaSpace.BASE_URL), username: accessKey, password: secretKey)
     }
 
     required init?(coder decoder: NSCoder) {

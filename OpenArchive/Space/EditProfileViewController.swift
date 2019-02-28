@@ -11,40 +11,51 @@ import Eureka
 
 class EditProfileViewController: FormViewController {
 
+    var space: Space?
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = "Edit Profile".localize()
+        navigationItem.title = "Profile".localize()
+
+        space = SelectedSpace.space
 
         form
             +++ Section()
 
-            <<< AvatarRow() {
-                $0.allowEditor = true
-                $0.placeholderImage = Profile.defaultAvatar
-                $0.sourceTypes = [.Camera, .PhotoLibrary]
-                $0.useEditedImage = true
-                $0.value = Profile.avatar
-            }
-            .onChange() { row in
-                Profile.avatar = row.value
-            }
-
             <<< NameRow() {
-                $0.title = "Your Alias".localize()
-                $0.value = Profile.alias
+                $0.title = "Name".localize()
+                $0.value = space?.authorName
             }
             .onChange() { row in
-                Profile.alias = row.value
+                self.space?.authorName = row.value
             }
 
             <<< NameRow() {
                 $0.cell.textField.textContentType = .jobTitle
-                $0.title = "Your Role".localize()
-                $0.value = Profile.role
+                $0.title = "Role".localize()
+                $0.value = space?.authorRole
             }
             .onChange() { row in
-                Profile.role = row.value
+                self.space?.authorRole = row.value
             }
+
+            <<< TextRow() {
+                $0.title = "Other Info".localize()
+                $0.value = space?.authorOther
+            }
+            .onChange() { row in
+                self.space?.authorOther = row.value
+            }
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        Db.writeConn?.asyncReadWrite { transaction in
+            if let space = self.space {
+                transaction.setObject(space, forKey: space.id, inCollection: Space.collection)
+            }
+        }
+
+        super.viewWillDisappear(animated)
     }
 }

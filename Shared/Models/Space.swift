@@ -78,18 +78,28 @@ class Space: NSObject {
     var favIcon: UIImage?
     var username: String?
     var password: String?
+    var authorName: String?
+    var authorRole: String?
+    var authorOther: String?
 
     var prettyName: String {
         return name ?? url?.host ?? url?.absoluteString ?? Space.defaultPrettyName
     }
 
-    init(_ name: String? = nil, _ url: URL? = nil, _ favIcon: UIImage? = nil, _ username: String? = nil, _ password: String? = nil) {
+    init(name: String? = nil, url: URL? = nil, favIcon: UIImage? = nil,
+         username: String? = nil, password: String? = nil,
+         authorName: String? = nil, authorRole: String? = nil,
+         authorOther: String? = nil) {
+
         id = UUID().uuidString
         self.name = name
         self.url = url
         self.favIcon = favIcon
         self.username = username
         self.password = password
+        self.authorName = authorName
+        self.authorRole = authorRole
+        self.authorOther = authorOther
     }
 
 
@@ -102,6 +112,9 @@ class Space: NSObject {
         favIcon = decoder.decodeObject() as? UIImage
         username = decoder.decodeObject() as? String
         password = decoder.decodeObject() as? String
+        authorName = decoder.decodeObject() as? String
+        authorRole = decoder.decodeObject() as? String
+        authorOther = decoder.decodeObject() as? String
     }
 
     @objc(encodeWithCoder:) func encode(with coder: NSCoder) {
@@ -111,6 +124,9 @@ class Space: NSObject {
         coder.encode(favIcon)
         coder.encode(username)
         coder.encode(password)
+        coder.encode(authorName)
+        coder.encode(authorRole)
+        coder.encode(authorOther)
     }
 
 
@@ -120,7 +136,9 @@ class Space: NSObject {
         return "\(String(describing: type(of: self))): [id=\(id), "
             + "name=\(name ?? "nil"), url=\(url?.description ?? "nil"), "
             + "favIcon=\(favIcon?.description ?? "nil"), "
-            + "username=\(username ?? "nil"), password=\(password ?? "nil")]"
+            + "username=\(username ?? "nil"), password=\(password ?? "nil"), "
+            + "authorName=\(authorName ?? "nil"), authorRole=\(authorRole ?? "nil"), "
+            + "authorOther=\(authorOther ?? "nil")]"
     }
 
 

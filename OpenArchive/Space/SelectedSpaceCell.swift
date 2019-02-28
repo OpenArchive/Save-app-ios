@@ -26,7 +26,7 @@ class SelectedSpaceCell: BaseCell {
         didSet {
             favIcon.image = space?.favIcon
             serverNameLb.text = space?.prettyName
-            userNameLb.text = space?.username
+            userNameLb.text = space?.authorName ?? space?.username
         }
     }
 }

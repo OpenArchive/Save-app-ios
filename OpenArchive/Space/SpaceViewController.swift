@@ -157,7 +157,7 @@ class SpaceViewController: BaseTableViewController, UICollectionViewDelegate, UI
         
         switch indexPath.section {
         case 0:
-            return cell.set("Author Metadata".localize())
+            return cell.set("Profile".localize())
 
         case 1:
             if indexPath.row < projectsCount {
