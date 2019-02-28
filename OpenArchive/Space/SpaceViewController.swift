@@ -113,7 +113,7 @@ class SpaceViewController: BaseTableViewController, UICollectionViewDelegate, UI
         case 0:
             return 3
         case 1:
-            return projectsCount + (SelectedSpace.space is IaSpace ? 1 : 2)
+            return projectsCount
         case 2:
             return 3
         default:
@@ -160,14 +160,7 @@ class SpaceViewController: BaseTableViewController, UICollectionViewDelegate, UI
             return cell.set("Profile".localize())
 
         case 1:
-            if indexPath.row < projectsCount {
-                return cell.set(getProject(indexPath)?.name ?? "Unnamed Project".localize())
-            }
-            else if indexPath.row == projectsCount {
-                return cell.set("Create New Project".localize(), isPlaceholder: true)
-            }
-
-            return cell.set("Browse".localize(), UIColor.accent, true)
+            return cell.set(getProject(indexPath)?.name ?? "Unnamed Project".localize())
 
         case 2:
             cell.addIndicator.isHidden = true
@@ -233,15 +226,7 @@ class SpaceViewController: BaseTableViewController, UICollectionViewDelegate, UI
             }
 
         case 1:
-            if indexPath.row < projectsCount {
-                vc = ProjectViewController(getProject(indexPath)!)
-            }
-            else if indexPath.row == projectsCount {
-                vc = ProjectViewController()
-            }
-            else {
-                performSegue(withIdentifier: "browseSegue", sender: self)
-            }
+            vc = ProjectViewController(getProject(indexPath)!)
 
         default:
             break
