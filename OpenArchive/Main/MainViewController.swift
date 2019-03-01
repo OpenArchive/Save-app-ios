@@ -133,9 +133,28 @@ ProjectsTabBarDelegate {
         let view = collectionView.dequeueReusableSupplementaryView(
             ofKind: kind, withReuseIdentifier: HeaderView.reuseId, for: indexPath) as! HeaderView
 
-        view.set(Collection.get(byId:
-            AssetsByCollectionView.collectionId(from:
-                assetsMappings.group(forSection: UInt(indexPath.section)))))
+        let group = assetsMappings.group(forSection: UInt(indexPath.section))
+
+        var waiting = 0
+        var uploaded = 0
+
+        assetsReadConn?.read { transaction in
+            (transaction.ext(AssetsByCollectionFilteredView.name) as? YapDatabaseViewTransaction)?
+                .enumerateKeysAndObjects(inGroup: group!) { collection, key, object, index, stop in
+                    if let asset = object as? Asset {
+                        if asset.isUploaded {
+                            uploaded += 1
+                        }
+                        else {
+                            waiting += 1
+                        }
+                    }
+            }
+        }
+
+        view.set(Collection.get(byId: AssetsByCollectionView.collectionId(from: group),
+                                conn: collectionsReadConn),
+                 waiting: waiting, uploaded: uploaded)
 
         return view
     }

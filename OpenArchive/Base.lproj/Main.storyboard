@@ -233,13 +233,13 @@
                                     <rect key="frame" x="0.0" y="0.0" width="343" height="50"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" text="5 hours ago" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PNO-3V-865">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" text="Uploading" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PNO-3V-865">
                                             <rect key="frame" x="8" y="8" width="259" height="18"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" text="Uploaded to &lt;Project&gt;" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LqD-hD-tvG">
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" text="0 of 2 items uploaded" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LqD-hD-tvG">
                                             <rect key="frame" x="8" y="26" width="259" height="16"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                             <nil key="textColor"/>
@@ -250,9 +250,9 @@
                                             <constraints>
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="Arb-3M-mod"/>
                                             </constraints>
-                                            <state key="normal" title="Add Info"/>
+                                            <state key="normal" title="Manage"/>
                                             <connections>
-                                                <action selector="addInfo:" destination="Ugg-64-EGN" eventType="touchUpInside" id="BrL-rO-v1U"/>
+                                                <action selector="manage" destination="Ugg-64-EGN" eventType="touchUpInside" id="rEC-gQ-1fJ"/>
                                             </connections>
                                         </button>
                                     </subviews>
@@ -267,8 +267,9 @@
                                         <constraint firstItem="gDn-sm-fFy" firstAttribute="leading" secondItem="PNO-3V-865" secondAttribute="trailing" constant="8" id="zNg-KC-wF3"/>
                                     </constraints>
                                     <connections>
-                                        <outlet property="projectLb" destination="LqD-hD-tvG" id="tjd-VD-gsa"/>
-                                        <outlet property="timestampLb" destination="PNO-3V-865" id="PCH-9p-e3n"/>
+                                        <outlet property="infoLb" destination="PNO-3V-865" id="PCH-9p-e3n"/>
+                                        <outlet property="manageBt" destination="gDn-sm-fFy" id="1fG-Nj-qg3"/>
+                                        <outlet property="subInfoLb" destination="LqD-hD-tvG" id="tjd-VD-gsa"/>
                                     </connections>
                                 </collectionReusableView>
                                 <connections>

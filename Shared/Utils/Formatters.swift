@@ -26,18 +26,29 @@ class Formatters: NSObject {
         return formatter
     }()
 
-    static let integer = NumberFormatter()
-
-    /**
-     Formatter for "uploaded" friendly timestamp.
-     */
-    static let uploaded: DateComponentsFormatter = {
-        let formatter = DateComponentsFormatter()
-
-        formatter.unitsStyle = .full
-        formatter.allowedUnits = [.year, .month, .day, .hour, .minute, .second]
-        formatter.maximumUnitCount = 1
+    static let friendlyTimestamp: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.doesRelativeDateFormatting = true
+        formatter.dateStyle = .medium
+        formatter.timeStyle = .short
 
         return formatter
     }()
+
+    static let integer = NumberFormatter()
+
+    /**
+     Formats an integer properly localized.
+    */
+    static func format(_ value: Int) -> String {
+        return integer.string(from: NSNumber(value: value)) ?? "-1"
+    }
+
+    /**
+     Formats a timestamp in a friendly format like
+     `Today at 1:07 PM' or 'Jan 1, 2019 10:00 AM'.
+    */
+    static func format(_ value: Date) -> String {
+        return friendlyTimestamp.string(from: value)
+    }
 }
