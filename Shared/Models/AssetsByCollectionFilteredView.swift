@@ -60,10 +60,14 @@ class AssetsByCollectionFilteredView: YapDatabaseFilteredView {
      - returns: a filter block using the given projectId as criteria.
      */
     private class func getFilter(_ projectId: String? = nil) -> YapDatabaseViewFiltering {
-        return YapDatabaseViewFiltering.withKeyBlock { transaction, group, collection, key in
-            let groupProjectId = AssetsByCollectionView.projectId(from: group)
+        if projectId == nil {
+            return YapDatabaseViewFiltering.withKeyBlock { _, _, _, _ in
+                return true
+            }
+        }
 
-            return projectId == nil || groupProjectId == projectId
+        return YapDatabaseViewFiltering.withKeyBlock { _, group, _, _ in
+            return AssetsByCollectionView.projectId(from: group) == projectId
         }
     }
 }
