@@ -69,6 +69,43 @@ class Collection: NSObject, Item, YapDatabaseRelationshipNode {
         return closed == nil && uploaded == nil
     }
 
+    /**
+     List of assets, which belong to this collection.
+
+     This is temporary and can only be used for buffering.
+
+     The responsibility is on you to keep this in sync!
+    */
+    var assets = [Asset]()
+
+    var uploadedAssetsCount: Int {
+        get {
+            var uploaded = 0
+
+            for asset in assets {
+                if asset.isUploaded {
+                    uploaded += 1
+                }
+            }
+
+            return uploaded
+        }
+    }
+
+    var waitingAssetsCount: Int {
+        get {
+            var waiting = 0
+
+            for asset in assets {
+                if !asset.isUploaded {
+                    waiting += 1
+                }
+            }
+
+            return waiting
+        }
+    }
+
     class func get(byId id: String?, conn: YapDatabaseConnection? = Db.bgRwConn) -> Collection? {
         var collection: Collection?
 

@@ -1,5 +1,5 @@
 //
-//  DetailsViewController.swift
+//  OldDetailsViewController.swift
 //  OpenArchive
 //
 //  Created by Benjamin Erhart on 03.07.18.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class DetailsViewController: BaseDetailsViewController {
+class OldDetailsViewController: BaseDetailsViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()

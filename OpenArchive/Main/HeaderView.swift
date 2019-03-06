@@ -8,6 +8,12 @@
 
 import UIKit
 
+protocol HeaderViewDelegate: class {
+    func showUploadManager()
+
+    func showDetails(_ collection: Collection)
+}
+
 class HeaderView: UICollectionReusableView {
 
     static let reuseId = "headerView"
@@ -16,58 +22,67 @@ class HeaderView: UICollectionReusableView {
     @IBOutlet weak var subInfoLb: UILabel!
     @IBOutlet weak var manageBt: UIButton!
 
-    private var collection: Collection?
+    weak var delegate: HeaderViewDelegate?
 
-    func set(_ collection: Collection? = nil, waiting: Int = 0, uploaded: Int = 0) {
-        self.collection = collection
+    var collection: Collection? {
+        didSet {
+            if let uploadedTs = collection?.uploaded {
+                let uploaded = collection?.uploadedAssetsCount ?? 0
 
-        if let uploadedTs = collection?.uploaded {
+                // I know this is really wrong, but using stringsdict is just a fucking
+                // hastle and at least this works well for English, German and many more
+                // languages.
+                infoLb.text = uploaded == 1
+                    ? "% Item Uploaded".localize(value: Formatters.format(uploaded))
+                    : "% Items Uploaded".localize(value: Formatters.format(uploaded))
 
-            // I know this is really wrong, but using stringsdict is just a fucking
-            // hastle and at least this works well for English, German and many more
-            // languages.
-            infoLb.text = uploaded == 1
-                ? "% Item Uploaded".localize(value: Formatters.format(uploaded))
-                : "% Items Uploaded".localize(value: Formatters.format(uploaded))
+                let fiveMinAgo = Date(timeIntervalSinceNow: -5 * 60)
 
-            let fiveMinAgo = Date(timeIntervalSinceNow: -5 * 60)
+                subInfoLb.text = fiveMinAgo < uploadedTs
+                    ? "Just now".localize()
+                    : Formatters.format(uploadedTs)
 
-            subInfoLb.text = fiveMinAgo < uploadedTs
-                ? "Just now".localize()
-                : Formatters.format(uploadedTs)
+                manageBt.isHidden = true
+            }
+            else if collection?.closed != nil {
+                infoLb.text = "Uploading".localize().localizedUppercase
 
-            manageBt.isHidden = true
-        }
-        else if collection?.closed != nil {
-            infoLb.text = "Uploading".localize().localizedUppercase
+                let total = collection?.assets.count ?? 0
+                let uploaded = collection?.uploadedAssetsCount ?? 0
 
-            subInfoLb.text = uploaded + waiting == 1
-                ? "% of % item uploaded".localize(values: Formatters.format(uploaded), Formatters.format(uploaded + waiting))
-                : "% of % items uploaded".localize(values: Formatters.format(uploaded), Formatters.format(uploaded + waiting))
+                subInfoLb.text = total == 1
+                    ? "% of % item uploaded".localize(values: Formatters.format(uploaded), Formatters.format(total))
+                    : "% of % items uploaded".localize(values: Formatters.format(uploaded), Formatters.format(total))
 
-            manageBt.setImage(nil, for: .normal)
-            manageBt.setTitle("Manage".localize(), for: .normal)
-            manageBt.isHidden = false
-        }
-        else {
-            infoLb.text = "Waiting".localize().localizedUppercase
+                manageBt.setImage(nil, for: .normal)
+                manageBt.setTitle("Manage".localize(), for: .normal)
+                manageBt.isHidden = false
+            }
+            else {
+                infoLb.text = "Waiting".localize().localizedUppercase
 
-            subInfoLb.text = waiting == 1
-                ? "% item ready to upload".localize(value: Formatters.format(waiting))
-                : "% items ready to upload".localize(value: Formatters.format(waiting))
+                let waiting = collection?.waitingAssetsCount ?? 0
 
-            manageBt.setImage(UIImage(named: "ic_up"), for: .normal)
-            manageBt.setTitle(nil, for: .normal)
-            manageBt.isHidden = false
+                subInfoLb.text = waiting == 1
+                    ? "% item ready to upload".localize(value: Formatters.format(waiting))
+                    : "% items ready to upload".localize(value: Formatters.format(waiting))
+
+                manageBt.setImage(UIImage(named: "ic_up"), for: .normal)
+                manageBt.setTitle(nil, for: .normal)
+                manageBt.isHidden = false
+            }
         }
     }
     
     @IBAction func manage() {
         if collection?.closed != nil {
-            print("[\(String(describing: type(of: self)))]#manage - state \"uploading\" - TODO: Go to upload manager")
+            delegate?.showUploadManager()
+        }
+        else if let collection = collection {
+            delegate?.showDetails(collection)
         }
         else {
-            print("[\(String(describing: type(of: self)))]#manage - state \"waiting\" - TODO: Go to assets-of-collection details scene")
+            print("[\(String(describing: type(of: self)))]#manage - no collection! That should not happen!")
         }
     }
 }

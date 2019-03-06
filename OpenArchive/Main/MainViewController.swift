@@ -14,10 +14,11 @@ import MaterialComponents.MaterialTabs
 
 class MainViewController: UIViewController, UICollectionViewDelegate,
 UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
-ProjectsTabBarDelegate {
+ProjectsTabBarDelegate, HeaderViewDelegate {
 
     private static let segueConnectSpace = "connectSpaceSegue"
     private static let segueShowSpace = "showSpaceSegue"
+    private static let segueShowDetails = "showDetailsSegue"
 
     @IBOutlet weak var spaceFavIcon: UIImageView!
     @IBOutlet weak var spaceName: UILabel!
@@ -135,26 +136,20 @@ ProjectsTabBarDelegate {
 
         let group = assetsMappings.group(forSection: UInt(indexPath.section))
 
-        var waiting = 0
-        var uploaded = 0
+        let collection = Collection.get(byId: AssetsByCollectionView.collectionId(from: group),
+                                        conn: collectionsReadConn)
 
         assetsReadConn?.read { transaction in
             (transaction.ext(AssetsByCollectionFilteredView.name) as? YapDatabaseViewTransaction)?
-                .enumerateKeysAndObjects(inGroup: group!) { collection, key, object, index, stop in
+                .enumerateKeysAndObjects(inGroup: group!) { collName, key, object, index, stop in
                     if let asset = object as? Asset {
-                        if asset.isUploaded {
-                            uploaded += 1
-                        }
-                        else {
-                            waiting += 1
-                        }
+                        collection?.assets.append(asset)
                     }
             }
         }
 
-        view.set(Collection.get(byId: AssetsByCollectionView.collectionId(from: group),
-                                conn: collectionsReadConn),
-                 waiting: waiting, uploaded: uploaded)
+        view.collection = collection
+        view.delegate = self
 
         return view
     }
@@ -171,7 +166,7 @@ ProjectsTabBarDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = DetailsViewController()
+        let vc = OldDetailsViewController()
 
         if let imageCell = collectionView.cellForItem(at: indexPath) as? ImageCell {
             vc.asset = imageCell.asset
@@ -265,6 +260,25 @@ ProjectsTabBarDelegate {
         AssetsByCollectionFilteredView.updateFilter(project.id)
     }
 
+
+    // MARK: HeaderViewDelegate
+
+    func showUploadManager() {
+        print("[\(String(describing: type(of: self)))]#showUploadManager TODO: Go to upload manager")
+    }
+
+    func showDetails(_ collection: Collection) {
+        performSegue(withIdentifier: MainViewController.segueShowDetails, sender: collection)
+    }
+
+    // MARK: Navigation
+
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let detailsVc = segue.destination as? DetailsViewController,
+            let collection = sender as? Collection {
+            detailsVc.collection = collection
+        }
+    }
 
     // MARK: Observers
 
