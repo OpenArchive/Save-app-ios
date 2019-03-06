@@ -10,6 +10,12 @@ import UIKit
 
 class DetailsViewController: UITableViewController, PreviewCellDelegate {
 
+    // TODO: This needs to move into the new EditViewController.
+    enum DirectEdit {
+        case description
+        case location
+    }
+
     var collection: Collection!
 
     override func viewDidLoad() {
@@ -57,19 +63,18 @@ class DetailsViewController: UITableViewController, PreviewCellDelegate {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-//        let asset = collection.assets[indexPath.row]
-
         print("[\(String(describing: type(of: self)))]#didSelectRowAt")
+
+        edit(collection.assets[indexPath.row])
     }
 
 
     // MARK: PreviewCellDelegate
 
-    func editPeople(_ asset: Asset) {
-        print("[\(String(describing: type(of: self)))]#editPeople")
-    }
+    func edit(_ asset: Asset, _ directEdit: DirectEdit? = nil) {
+        let vc = OldDetailsViewController()
+        vc.asset = asset
 
-    func editLocation(_ asset: Asset) {
-        print("[\(String(describing: type(of: self)))]#editLocation")
+        navigationController?.pushViewController(vc, animated: true)
     }
 }

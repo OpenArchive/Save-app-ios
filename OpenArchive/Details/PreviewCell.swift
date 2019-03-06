@@ -9,9 +9,7 @@
 import UIKit
 
 protocol PreviewCellDelegate: class {
-    func editPeople(_ asset: Asset)
-
-    func editLocation(_ asset: Asset)
+    func edit(_ asset: Asset, _ directEdit: DetailsViewController.DirectEdit?)
 }
 
 class PreviewCell: BaseCell {
@@ -46,10 +44,10 @@ class PreviewCell: BaseCell {
     @IBAction func edit(_ sender: UIButton) {
         if let asset = asset {
             if sender == tagBt {
-                delegate?.editPeople(asset)
+                delegate?.edit(asset, .description)
             }
             else {
-                delegate?.editLocation(asset)
+                delegate?.edit(asset, .location)
             }
         }
     }
