@@ -34,7 +34,7 @@ class PreviewCell: BaseCell {
             previewImg.image = asset?.getThumbnail()
             tagBt.isSelected = !(asset?.desc?.isEmpty ?? true)
             locationBt.isSelected = !(asset?.location?.isEmpty ?? true)
-            flagBt.isSelected = false
+            flagBt.isSelected = asset?.flagged ?? false
         }
     }
 
@@ -55,6 +55,13 @@ class PreviewCell: BaseCell {
     }
 
     @IBAction func flag() {
-        // TODO
+        if let asset = asset {
+            asset.flagged = !asset.flagged
+            flagBt.isSelected = asset.flagged
+
+            Db.writeConn?.asyncReadWrite { transaction in
+                transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
+            }
+        }
     }
 }

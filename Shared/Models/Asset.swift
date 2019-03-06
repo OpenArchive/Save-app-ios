@@ -32,7 +32,12 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
 
     // MARK: Asset
 
-    static let DEFAULT_MIME_TYPE = "application/octet-stream"
+    static let defaultMimeType = "application/octet-stream"
+
+    /*
+     A tag which is used as a generic flag.
+    */
+    static let flag = "NSFW"
 
     let id: String
     let created: Date
@@ -114,7 +119,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
                 return mimeType as String
             }
 
-            return Asset.DEFAULT_MIME_TYPE
+            return Asset.defaultMimeType
         }
     }
 
@@ -203,6 +208,29 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
                 forSecurityApplicationGroupIdentifier: Constants.appGroup)?
                 .appendingPathComponent(Asset.collection)
                 .appendingPathComponent("\(id).thumb")
+        }
+    }
+
+    var flagged: Bool {
+        get {
+            return tags?.contains(Asset.flag) ?? false
+        }
+        set {
+            if newValue {
+                if tags == nil {
+                    tags = [Asset.flag]
+                }
+                else if !tags!.contains(Asset.flag) {
+                    tags?.append(Asset.flag)
+                }
+            }
+            else if tags?.contains(Asset.flag) ?? false {
+                tags?.removeAll { $0 == Asset.flag }
+
+                if tags?.count ?? 0 < 1 {
+                    tags = nil
+                }
+            }
         }
     }
 
