@@ -336,18 +336,81 @@
         <scene sceneID="IuO-Sr-c1i">
             <objects>
                 <tableViewController id="O4c-xl-krb" customClass="DetailsViewController" customModule="OpenArchive" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="b6H-C5-rh9">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="b6H-C5-rh9">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" id="FlE-CG-61G">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="previewCell" rowHeight="240" id="FlE-CG-61G" customClass="PreviewCell" customModule="OpenArchive" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="240"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="FlE-CG-61G" id="iAa-LJ-BEc">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="240"/>
                                     <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="aKK-eq-X05">
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="236"/>
+                                            <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                                        </imageView>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IBx-ma-j2l">
+                                            <rect key="frame" x="271" y="11" width="24" height="24"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="24" id="69t-x5-k5n"/>
+                                                <constraint firstAttribute="height" constant="24" id="RA5-Wv-jJj"/>
+                                            </constraints>
+                                            <state key="normal" image="ic_tag"/>
+                                            <state key="selected" image="ic_tag_selected"/>
+                                            <state key="highlighted" image="ic_tag_selected"/>
+                                            <connections>
+                                                <action selector="edit:" destination="FlE-CG-61G" eventType="touchUpInside" id="Jpi-bR-Kz9"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3h8-Ks-8yj">
+                                            <rect key="frame" x="303" y="11" width="24" height="24"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" constant="24" id="d9C-46-dxA"/>
+                                                <constraint firstAttribute="height" constant="24" id="pt8-XT-hxe"/>
+                                            </constraints>
+                                            <state key="normal" image="ic_location"/>
+                                            <state key="selected" image="ic_location_selected"/>
+                                            <state key="highlighted" image="ic_location_selected"/>
+                                            <connections>
+                                                <action selector="edit:" destination="FlE-CG-61G" eventType="touchUpInside" id="WHK-iL-e1t"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TB5-kq-O1A">
+                                            <rect key="frame" x="335" y="11" width="24" height="24"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="24" id="78V-WF-Yyb"/>
+                                                <constraint firstAttribute="width" constant="24" id="edu-MB-5lZ"/>
+                                            </constraints>
+                                            <state key="normal" image="ic_flag"/>
+                                            <state key="selected" image="ic_flag_selected"/>
+                                            <state key="highlighted" image="ic_flag_selected"/>
+                                            <connections>
+                                                <action selector="flag" destination="FlE-CG-61G" eventType="touchUpInside" id="OSX-5n-iBK"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="IBx-ma-j2l" firstAttribute="top" secondItem="iAa-LJ-BEc" secondAttribute="topMargin" id="H9Y-GS-ITl"/>
+                                        <constraint firstItem="TB5-kq-O1A" firstAttribute="trailing" secondItem="iAa-LJ-BEc" secondAttribute="trailingMargin" id="P1J-VO-X8Q"/>
+                                        <constraint firstAttribute="bottom" secondItem="aKK-eq-X05" secondAttribute="bottom" constant="4" id="eOu-ri-rjI"/>
+                                        <constraint firstAttribute="trailing" secondItem="aKK-eq-X05" secondAttribute="trailing" id="fW7-3l-egK"/>
+                                        <constraint firstItem="aKK-eq-X05" firstAttribute="top" secondItem="iAa-LJ-BEc" secondAttribute="top" id="gcT-m0-3R5"/>
+                                        <constraint firstItem="aKK-eq-X05" firstAttribute="leading" secondItem="iAa-LJ-BEc" secondAttribute="leading" id="iBX-ip-2Si"/>
+                                        <constraint firstItem="3h8-Ks-8yj" firstAttribute="leading" secondItem="IBx-ma-j2l" secondAttribute="trailing" constant="8" id="iSS-11-xOB"/>
+                                        <constraint firstItem="TB5-kq-O1A" firstAttribute="leading" secondItem="3h8-Ks-8yj" secondAttribute="trailing" constant="8" id="k3r-fg-L7N"/>
+                                        <constraint firstItem="TB5-kq-O1A" firstAttribute="top" secondItem="iAa-LJ-BEc" secondAttribute="topMargin" id="k5C-6p-q74"/>
+                                        <constraint firstItem="3h8-Ks-8yj" firstAttribute="top" secondItem="iAa-LJ-BEc" secondAttribute="topMargin" id="lGE-uS-5pr"/>
+                                    </constraints>
                                 </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="flagBt" destination="TB5-kq-O1A" id="WPm-2G-it8"/>
+                                    <outlet property="locationBt" destination="3h8-Ks-8yj" id="RUY-ah-bGC"/>
+                                    <outlet property="previewImg" destination="aKK-eq-X05" id="1gk-xe-RoL"/>
+                                    <outlet property="tagBt" destination="IBx-ma-j2l" id="jCK-7g-5ga"/>
+                                </connections>
                             </tableViewCell>
                         </prototypes>
                         <connections>
@@ -585,10 +648,16 @@
     <resources>
         <image name="avatar-empty" width="26" height="26"/>
         <image name="browse-folder" width="25" height="23"/>
-        <image name="ic_edit" width="6" height="6"/>
+        <image name="ic_edit" width="13" height="13"/>
+        <image name="ic_flag" width="12" height="13"/>
+        <image name="ic_flag_selected" width="12" height="13"/>
+        <image name="ic_location" width="12" height="16"/>
+        <image name="ic_location_selected" width="12" height="16"/>
         <image name="ic_plus" width="11" height="11"/>
+        <image name="ic_tag" width="18" height="17"/>
+        <image name="ic_tag_selected" width="18" height="17"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="Rwx-7w-lhD"/>
+        <segue reference="Po4-0Y-GwW"/>
     </inferredMetricsTieBreakers>
 </document>
