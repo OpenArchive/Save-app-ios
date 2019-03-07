@@ -8,7 +8,8 @@
 
 import UIKit
 
-class EditViewController: BaseViewController, UITextViewDelegate, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+class EditViewController: BaseViewController, UITextViewDelegate, UITextFieldDelegate,
+    UIPageViewControllerDataSource, UIPageViewControllerDelegate {
 
     class func initFromStoryboard() -> EditViewController? {
         return UIStoryboard(name: "Main", bundle: nil)
@@ -117,6 +118,35 @@ class EditViewController: BaseViewController, UITextViewDelegate, UIPageViewCont
         tagBt.isSelected = !(asset?.desc?.isEmpty ?? true)
 
         store()
+    }
+
+    /**
+     Callback for `descTv`.
+
+     Go to next field, if user hits [enter].
+     */
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            locationTf.becomeFirstResponder()
+
+            return false
+        }
+
+        return true
+    }
+
+
+    // MARK: UITextFieldDelegate
+
+    /**
+     Callback for `locationBt`.
+
+     Hide keyboard, when user hits [enter].
+    */
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        dismissKeyboard()
+
+        return true
     }
 
 
