@@ -208,13 +208,27 @@ class EditViewController: BaseViewController, UITextViewDelegate, UIPageViewCont
     // MARK: Private Methods
 
     private func refresh() {
+        let asset = self.asset // Don't repeat asset#get all the time.
+
+        let allowEdit = !(asset?.isUploaded ?? true)
+
+        if !allowEdit {
+            dismissKeyboard()
+        }
+
         tagBt.isSelected = !(asset?.desc?.isEmpty ?? true)
+
         locationBt.isSelected = !(asset?.location?.isEmpty ?? true)
+
+        flagBt.isUserInteractionEnabled = allowEdit
         flagBt.isSelected = asset?.flagged ?? false
 
+        descTv.isSelectable = allowEdit
+        descTv.isEditable = allowEdit
         descTv.text = !descTv.isFirstResponder && (asset?.desc?.isEmpty ?? true)
             ? descPlaceholder : asset?.desc
 
+        locationTf.isEnabled = allowEdit
         locationTf.text = !locationTf.isEditing && (asset?.location?.isEmpty ?? true)
             ? locPlaceholder : asset?.location
     }

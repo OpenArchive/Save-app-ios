@@ -18,7 +18,8 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
 
     private static let segueConnectSpace = "connectSpaceSegue"
     private static let segueShowSpace = "showSpaceSegue"
-    private static let segueShowDetails = "showDetailsSegue"
+    private static let segueShowPreview = "showPreviewSegue"
+    private static let segueShowEdit = "showEditSegue"
 
     @IBOutlet weak var spaceFavIcon: UIImageView!
     @IBOutlet weak var spaceName: UILabel!
@@ -166,13 +167,14 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let vc = OldDetailsViewController()
 
-        if let imageCell = collectionView.cellForItem(at: indexPath) as? ImageCell {
-            vc.asset = imageCell.asset
-        }
+        let group = assetsMappings.group(forSection: UInt(indexPath.section))
 
-        navigationController?.pushViewController(vc, animated: true)
+        let collection = Collection.get(byId: AssetsByCollectionView.collectionId(from: group),
+                                        conn: collectionsReadConn)
+
+
+        performSegue(withIdentifier: MainViewController.segueShowEdit, sender: (collection, indexPath.row))
     }
 
 
@@ -268,15 +270,22 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
     }
 
     func showDetails(_ collection: Collection) {
-        performSegue(withIdentifier: MainViewController.segueShowDetails, sender: collection)
+        performSegue(withIdentifier: MainViewController.segueShowPreview, sender: collection)
     }
 
     // MARK: Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let detailsVc = segue.destination as? PreviewViewController,
+        if let previewVc = segue.destination as? PreviewViewController,
             let collection = sender as? Collection {
-            detailsVc.collection = collection
+            
+            previewVc.collection = collection
+        }
+        else if let editVc = segue.destination as? EditViewController,
+            let (collection, index) = sender as? (Collection, Int) {
+
+            editVc.collection = collection
+            editVc.selected = index
         }
     }
 

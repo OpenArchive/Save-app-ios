@@ -320,7 +320,8 @@
                         <outlet property="tabBarContainer" destination="Sv8-ax-o88" id="Mk4-Mv-SE6"/>
                         <segue destination="60Y-gn-6Z7" kind="show" identifier="showSpaceSegue" id="rqB-hq-ZIX"/>
                         <segue destination="6Ji-DQ-0NT" kind="show" identifier="connectSpaceSegue" id="Po4-0Y-GwW"/>
-                        <segue destination="O4c-xl-krb" kind="show" identifier="showDetailsSegue" id="CKO-ZC-74a"/>
+                        <segue destination="O4c-xl-krb" kind="show" identifier="showPreviewSegue" id="CKO-ZC-74a"/>
+                        <segue destination="WUt-u5-nda" kind="presentation" identifier="showEditSegue" id="ePG-WN-AhZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xHq-hp-h3I" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -815,6 +816,7 @@
         <image name="ic_tag_selected" width="18" height="17"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="ePG-WN-AhZ"/>
         <segue reference="Po4-0Y-GwW"/>
     </inferredMetricsTieBreakers>
 </document>
