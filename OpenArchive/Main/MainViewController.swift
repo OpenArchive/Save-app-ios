@@ -274,7 +274,7 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
     // MARK: Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let detailsVc = segue.destination as? DetailsViewController,
+        if let detailsVc = segue.destination as? PreviewViewController,
             let collection = sender as? Collection {
             detailsVc.collection = collection
         }

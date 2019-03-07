@@ -9,7 +9,7 @@
 import UIKit
 
 protocol PreviewCellDelegate: class {
-    func edit(_ asset: Asset, _ directEdit: DetailsViewController.DirectEdit?)
+    func edit(_ asset: Asset, _ directEdit: EditViewController.DirectEdit?)
 }
 
 class PreviewCell: BaseCell {

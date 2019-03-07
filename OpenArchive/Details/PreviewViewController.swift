@@ -1,5 +1,5 @@
 //
-//  DetailsViewController.swift
+//  PreviewViewController.swift
 //  OpenArchive
 //
 //  Created by Benjamin Erhart on 06.03.19.
@@ -8,13 +8,7 @@
 
 import UIKit
 
-class DetailsViewController: UITableViewController, PreviewCellDelegate {
-
-    // TODO: This needs to move into the new EditViewController.
-    enum DirectEdit {
-        case description
-        case location
-    }
+class PreviewViewController: UITableViewController, PreviewCellDelegate {
 
     var collection: Collection!
 
@@ -37,6 +31,8 @@ class DetailsViewController: UITableViewController, PreviewCellDelegate {
         super.viewWillAppear(animated)
 
         navigationController?.setNavigationBarHidden(false, animated: animated)
+
+        tableView.reloadData()
     }
 
     // MARK: - Table view data source
@@ -63,18 +59,36 @@ class DetailsViewController: UITableViewController, PreviewCellDelegate {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("[\(String(describing: type(of: self)))]#didSelectRowAt")
-
         edit(collection.assets[indexPath.row])
     }
 
 
     // MARK: PreviewCellDelegate
 
-    func edit(_ asset: Asset, _ directEdit: DirectEdit? = nil) {
-        let vc = OldDetailsViewController()
-        vc.asset = asset
+    func edit(_ asset: Asset, _ directEdit: EditViewController.DirectEdit? = nil) {
+        let index = collection.assets.firstIndex(of: asset)
 
-        navigationController?.pushViewController(vc, animated: true)
+        performSegue(withIdentifier: "showEditSegue", sender: (index, directEdit))
+    }
+
+
+    // MARK: Navigation
+
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let editVc = segue.destination as? EditViewController {
+            editVc.collection = collection
+
+            if let (index, directEdit) = sender as? (Int, EditViewController.DirectEdit?) {
+                editVc.selected = index
+                editVc.directEdit = directEdit
+            }
+        }
+     }
+
+
+    // MARK: Actions
+
+    @IBAction func upload() {
+        print("[\(String(describing: type(of: self)))]#upload - TODO")
     }
 }
