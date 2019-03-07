@@ -8,6 +8,9 @@
 
 import UIKit
 
+/**
+ TODO: This needs scrolling/moving of form fields on iPhone 5!
+ */
 class EditViewController: BaseViewController, UITextViewDelegate, UITextFieldDelegate,
     UIPageViewControllerDataSource, UIPageViewControllerDelegate {
 
@@ -81,6 +84,10 @@ class EditViewController: BaseViewController, UITextViewDelegate, UITextFieldDel
         else if directEdit == .location {
             locationTf.becomeFirstResponder()
         }
+    }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return  .lightContent
     }
 
 
