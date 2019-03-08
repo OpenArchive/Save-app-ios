@@ -449,7 +449,7 @@
                                     <constraint firstAttribute="width" constant="24" id="XiI-Ul-7pz"/>
                                     <constraint firstAttribute="height" constant="24" id="byT-Y0-nHX"/>
                                 </constraints>
-                                <state key="normal" image="Clear"/>
+                                <state key="normal" image="ic_cancel"/>
                                 <connections>
                                     <action selector="dismiss" destination="WUt-u5-nda" eventType="touchUpInside" id="Tt2-od-neU"/>
                                 </connections>
@@ -804,9 +804,9 @@
         </scene>
     </scenes>
     <resources>
-        <image name="Clear" width="14" height="14"/>
         <image name="avatar-empty" width="26" height="26"/>
         <image name="browse-folder" width="25" height="23"/>
+        <image name="ic_cancel" width="12" height="12"/>
         <image name="ic_edit" width="13" height="13"/>
         <image name="ic_flag" width="12" height="13"/>
         <image name="ic_flag_selected" width="12" height="13"/>
