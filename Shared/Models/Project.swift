@@ -32,7 +32,7 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
     }
 
     func compare(_ rhs: Project) -> ComparisonResult {
-        return created.compare(rhs.created)
+        return rhs.created.compare(created)
     }
 
     var id: String
