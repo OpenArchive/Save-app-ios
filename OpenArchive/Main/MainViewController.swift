@@ -140,6 +140,10 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
         let collection = Collection.get(byId: AssetsByCollectionView.collectionId(from: group),
                                         conn: collectionsReadConn)
 
+        // Fixed bug: YapDatabase caches these objects, therefore we need to clear
+        // before we repopulate.
+        collection?.assets.removeAll()
+
         assetsReadConn?.read { transaction in
             (transaction.ext(AssetsByCollectionFilteredView.name) as? YapDatabaseViewTransaction)?
                 .enumerateKeysAndObjects(inGroup: group!) { collName, key, object, index, stop in
