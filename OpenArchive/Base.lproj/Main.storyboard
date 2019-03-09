@@ -493,10 +493,11 @@
                                     <constraint firstAttribute="height" constant="240" id="OL9-I9-qtU"/>
                                 </constraints>
                             </view>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Who or what can be seen here?" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Lxf-bv-e0W">
-                                <rect key="frame" x="16" y="300" width="343" height="30"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" text="Who or what can be seen here?" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Lxf-bv-e0W">
+                                <rect key="frame" x="16" y="300" width="343" height="50"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="30" id="ByF-a0-gaZ"/>
+                                    <constraint firstAttribute="height" constant="50" id="ByF-a0-gaZ"/>
                                 </constraints>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="italicSystem" pointSize="14"/>
@@ -505,37 +506,40 @@
                                     <outlet property="delegate" destination="WUt-u5-nda" id="inC-QV-J5X"/>
                                 </connections>
                             </textView>
-                            <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="No location" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="vDS-Xz-MwZ">
-                                <rect key="frame" x="16" y="338" width="343" height="17"/>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" text="No location" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="dpg-W6-Zjp">
+                                <rect key="frame" x="16" y="358" width="343" height="50"/>
+                                <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="50" id="ybC-Fl-SaJ"/>
+                                </constraints>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits" returnKeyType="done" enablesReturnKeyAutomatically="YES"/>
                                 <connections>
-                                    <action selector="locationEditingDidBegin" destination="WUt-u5-nda" eventType="editingDidBegin" id="gif-U3-5YJ"/>
-                                    <action selector="locationEditingDidEnd" destination="WUt-u5-nda" eventType="editingDidEnd" id="0oD-Lg-LYn"/>
-                                    <outlet property="delegate" destination="WUt-u5-nda" id="ynU-nC-hJY"/>
+                                    <outlet property="delegate" destination="WUt-u5-nda" id="wvu-Zv-TE5"/>
                                 </connections>
-                            </textField>
+                            </textView>
                         </subviews>
                         <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="Y3B-88-FGI" firstAttribute="top" secondItem="XDi-4n-FXA" secondAttribute="top" id="7td-eo-crt"/>
+                            <constraint firstItem="dpg-W6-Zjp" firstAttribute="top" secondItem="Lxf-bv-e0W" secondAttribute="bottom" constant="8" id="7uv-kb-NFg"/>
+                            <constraint firstItem="XDi-4n-FXA" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="dpg-W6-Zjp" secondAttribute="bottom" constant="20" id="9Iu-pu-7hS"/>
                             <constraint firstItem="XDi-4n-FXA" firstAttribute="trailing" secondItem="hDR-sa-zhP" secondAttribute="trailing" constant="16" id="9fa-zZ-oeH"/>
-                            <constraint firstItem="vDS-Xz-MwZ" firstAttribute="top" secondItem="Lxf-bv-e0W" secondAttribute="bottom" constant="8" id="A78-Ln-VAU"/>
                             <constraint firstItem="DbP-CJ-0Zf" firstAttribute="leading" secondItem="XDi-4n-FXA" secondAttribute="leading" constant="16" id="CIc-b2-rs7"/>
-                            <constraint firstItem="Lxf-bv-e0W" firstAttribute="top" secondItem="VtO-pQ-hh5" secondAttribute="bottom" constant="8" id="Gi0-56-plO"/>
                             <constraint firstItem="XDi-4n-FXA" firstAttribute="trailing" secondItem="Lxf-bv-e0W" secondAttribute="trailing" constant="16" id="Nrc-KN-1iD"/>
                             <constraint firstItem="DzD-tW-eDu" firstAttribute="top" secondItem="XDi-4n-FXA" secondAttribute="top" id="PSB-Cf-MnA"/>
                             <constraint firstItem="VtO-pQ-hh5" firstAttribute="top" secondItem="Y3B-88-FGI" secondAttribute="bottom" constant="8" id="R9F-JL-uBe"/>
                             <constraint firstItem="hDR-sa-zhP" firstAttribute="leading" secondItem="DzD-tW-eDu" secondAttribute="trailing" constant="8" id="b9l-Se-KgI"/>
                             <constraint firstItem="hDR-sa-zhP" firstAttribute="top" secondItem="XDi-4n-FXA" secondAttribute="top" id="cFy-M4-DLY"/>
+                            <constraint firstItem="Lxf-bv-e0W" firstAttribute="top" relation="lessThanOrEqual" secondItem="VtO-pQ-hh5" secondAttribute="bottom" constant="8" id="cab-Tk-I2m"/>
                             <constraint firstItem="DbP-CJ-0Zf" firstAttribute="top" secondItem="XDi-4n-FXA" secondAttribute="top" id="jmu-Hd-JiB"/>
                             <constraint firstItem="Lxf-bv-e0W" firstAttribute="leading" secondItem="XDi-4n-FXA" secondAttribute="leading" constant="16" id="kWk-Ih-G2C"/>
+                            <constraint firstItem="XDi-4n-FXA" firstAttribute="trailing" secondItem="dpg-W6-Zjp" secondAttribute="trailing" constant="16" id="mkm-Rj-wA3"/>
                             <constraint firstItem="VtO-pQ-hh5" firstAttribute="trailing" secondItem="XDi-4n-FXA" secondAttribute="trailing" id="nWr-iU-SzC"/>
                             <constraint firstItem="DzD-tW-eDu" firstAttribute="leading" secondItem="Y3B-88-FGI" secondAttribute="trailing" constant="8" id="pZo-Xr-efH"/>
-                            <constraint firstItem="vDS-Xz-MwZ" firstAttribute="leading" secondItem="XDi-4n-FXA" secondAttribute="leading" constant="16" id="rc1-xe-DFw"/>
+                            <constraint firstItem="dpg-W6-Zjp" firstAttribute="leading" secondItem="XDi-4n-FXA" secondAttribute="leading" constant="16" id="skO-Vw-UCt"/>
                             <constraint firstItem="VtO-pQ-hh5" firstAttribute="leading" secondItem="XDi-4n-FXA" secondAttribute="leading" id="xLt-Rx-BZx"/>
-                            <constraint firstItem="XDi-4n-FXA" firstAttribute="trailing" secondItem="vDS-Xz-MwZ" secondAttribute="trailing" constant="16" id="yFG-5c-ah6"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="XDi-4n-FXA"/>
                     </view>
@@ -545,7 +549,7 @@
                         <outlet property="descTv" destination="Lxf-bv-e0W" id="MDt-72-U2p"/>
                         <outlet property="flagBt" destination="hDR-sa-zhP" id="qUJ-6r-5z0"/>
                         <outlet property="locationBt" destination="DzD-tW-eDu" id="gAW-h5-Mqa"/>
-                        <outlet property="locationTf" destination="vDS-Xz-MwZ" id="OhS-2V-YHM"/>
+                        <outlet property="locationTv" destination="dpg-W6-Zjp" id="L12-gX-GNl"/>
                         <outlet property="tagBt" destination="Y3B-88-FGI" id="ROr-Gf-jhU"/>
                     </connections>
                 </viewController>

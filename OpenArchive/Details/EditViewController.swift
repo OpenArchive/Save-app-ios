@@ -11,7 +11,7 @@ import UIKit
 /**
  TODO: This needs scrolling/moving of form fields on iPhone 5!
  */
-class EditViewController: BaseViewController, UITextViewDelegate, UITextFieldDelegate,
+class EditViewController: BaseViewController, UITextViewDelegate,
     UIPageViewControllerDataSource, UIPageViewControllerDelegate {
 
     class func initFromStoryboard() -> EditViewController? {
@@ -30,7 +30,7 @@ class EditViewController: BaseViewController, UITextViewDelegate, UITextFieldDel
     @IBOutlet weak var flagBt: UIButton!
     @IBOutlet weak var container: UIView!
     @IBOutlet weak var descTv: UITextView!
-    @IBOutlet weak var locationTf: UITextField!
+    @IBOutlet weak var locationTv: UITextView!
 
     var collection: Collection?
 
@@ -46,6 +46,8 @@ class EditViewController: BaseViewController, UITextViewDelegate, UITextFieldDel
 
     private var descPlaceholder = "Who or what can be seen here?".localize()
     private var locPlaceholder = "No location".localize()
+
+    private var originalFrame: CGRect?
 
 
     override func viewDidLoad() {
@@ -82,7 +84,7 @@ class EditViewController: BaseViewController, UITextViewDelegate, UITextFieldDel
             descTv.becomeFirstResponder()
         }
         else if directEdit == .location {
-            locationTf.becomeFirstResponder()
+            locationTv.becomeFirstResponder()
         }
     }
 
@@ -90,25 +92,66 @@ class EditViewController: BaseViewController, UITextViewDelegate, UITextFieldDel
         return  .lightContent
     }
 
+    /**
+     Callback for `UIResponder.keyboardWillShowNotification`.
+
+     - parameter notification: The calling notification.
+     */
+    @objc open override func keyboardWillShow(notification: Notification) {
+        if let kbSize = getKeyboardSize(notification) {
+
+            if originalFrame == nil {
+                originalFrame = view.frame
+            }
+
+            let f = originalFrame!
+
+            view.frame = CGRect(x: f.minX, y: f.minY, width: f.width,
+                                height: f.height - kbSize.height)
+
+            animateDuringKeyboardMovement(notification)
+        }
+    }
+
+    /**
+     Callback for `UIResponder.keyboardWillHideNotification`.
+
+     - parameter notification: A `keyboardWillHideNotification`. Ignored.
+     */
+    @objc open override func keyboardWillBeHidden(notification: Notification) {
+        if let originalFrame = originalFrame {
+            view.frame = originalFrame
+        }
+
+        animateDuringKeyboardMovement(notification)
+    }
+
 
     // MARK: UITextViewDelegate
 
     /**
-     Callback for `descTv`.
+     Callback for `descTv` and `locationBt`.
 
      `UITextViews` cannot have placeholders like `UITextField`.
      Therefore, manually remove placeholder, if any.
      */
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        if textView.text == descPlaceholder {
-            textView.text = nil
+        if textView == descTv {
+            if textView.text == descPlaceholder {
+                textView.text = nil
+            }
+        }
+        else {
+            if textView.text == locPlaceholder {
+                textView.text = nil
+            }
         }
 
         return true
     }
 
     /**
-     Callback for `descTv`.
+     Callback for `descTv` and `locationBt`.
 
      `UITextViews` cannot have placeholders like `UITextField`.
      Therefore, restore placeholder, if nothing entered.
@@ -116,42 +159,45 @@ class EditViewController: BaseViewController, UITextViewDelegate, UITextFieldDel
      Update indicator button and store changes.
      */
     func textViewDidEndEditing(_ textView: UITextView) {
-        asset?.desc = textView.text
+        if textView == descTv {
+            asset?.desc = textView.text
 
-        if textView.text.isEmpty {
-            textView.text = descPlaceholder
+            if textView.text.isEmpty {
+                textView.text = descPlaceholder
+            }
+
+            tagBt.isSelected = !(asset?.desc?.isEmpty ?? true)
         }
+        else {
+            asset?.location = textView.text
 
-        tagBt.isSelected = !(asset?.desc?.isEmpty ?? true)
+            if textView.text.isEmpty {
+                textView.text = locPlaceholder
+            }
+
+            locationBt.isSelected = !(asset?.location?.isEmpty ?? true)
+        }
 
         store()
     }
 
     /**
-     Callback for `descTv`.
+     Callback for `descTv` and `locationBt`.
 
      Go to next field, if user hits [enter].
+     Hide keyboard, when user hits [enter].
      */
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
-            locationTf.becomeFirstResponder()
+            if textView == descTv {
+                locationTv.becomeFirstResponder()
+            }
+            else {
+                dismissKeyboard()
+            }
 
             return false
         }
-
-        return true
-    }
-
-
-    // MARK: UITextFieldDelegate
-
-    /**
-     Callback for `locationBt`.
-
-     Hide keyboard, when user hits [enter].
-    */
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        dismissKeyboard()
 
         return true
     }
@@ -209,38 +255,6 @@ class EditViewController: BaseViewController, UITextViewDelegate, UITextFieldDel
         store()
     }
 
-    /**
-     Callback for `locationBt`.
-
-     `UITextField` placeholders are dark grey. Not great on almost black background.
-     Therefore, manually remove placeholder, if any.
-     */
-    @IBAction func locationEditingDidBegin() {
-        if locationTf.text == locPlaceholder {
-            locationTf.text = nil
-        }
-    }
-    
-    /**
-     Callback for `locationBt`.
-
-     `UITextField` placeholders are dark grey. Not great on almost black background.
-     Therefore, restore placeholder, if nothing entered.
-
-     Update indicator button and store changes.
-     */
-    @IBAction func locationEditingDidEnd() {
-        asset?.location = locationTf.text
-
-        if locationTf.text?.isEmpty ?? true {
-            locationTf.text = locPlaceholder
-        }
-
-        locationBt.isSelected = !(asset?.location?.isEmpty ?? true)
-
-        store()
-    }
-
 
     // MARK: Private Methods
 
@@ -265,8 +279,9 @@ class EditViewController: BaseViewController, UITextViewDelegate, UITextFieldDel
         descTv.text = !descTv.isFirstResponder && (asset?.desc?.isEmpty ?? true)
             ? descPlaceholder : asset?.desc
 
-        locationTf.isEnabled = allowEdit
-        locationTf.text = !locationTf.isEditing && (asset?.location?.isEmpty ?? true)
+        locationTv.isSelectable = allowEdit
+        locationTv.isEditable = allowEdit
+        locationTv.text = !locationTv.isFirstResponder && (asset?.location?.isEmpty ?? true)
             ? locPlaceholder : asset?.location
     }
 

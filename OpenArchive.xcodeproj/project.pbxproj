@@ -437,8 +437,8 @@
 		A0E739D620E4C85D00DB31E1 /* OpenArchive */ = {
 			isa = PBXGroup;
 			children = (
-				A0AFCF0B223001AE005E57FD /* Details */,
 				A01A7B732200FF2500E18DE0 /* Main */,
+				A0AFCF0B223001AE005E57FD /* Details */,
 				A0E1A67D21EE7B3200E4F6B7 /* Space */,
 				A07129122111F4D5007A432A /* OpenArchive.entitlements */,
 				A08750AF21120EBF00BFAFE4 /* OpenArchive-Bridging-Header.h */,
