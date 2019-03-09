@@ -15,7 +15,7 @@ class SelectedSpace {
      The default favIcon to show, when there's no space, yet or the we couldn't
      acquire a favIcon for that space.
      */
-    static var defaultFavIcon = UIImage(named: "avatar-empty")
+    static var defaultFavIcon = UIImage(named: "server")
 
 
     private static let ID = "selected_space_id"
