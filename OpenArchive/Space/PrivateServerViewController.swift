@@ -19,6 +19,7 @@ class PrivateServerViewController: BaseServerViewController {
     private let urlRow = URLRow() {
         $0.title = "Server URL".localize()
         $0.add(rule: RuleRequired())
+        $0.formatter = Formatters.URLFormatter()
     }
 
     private let passwordRow = PasswordRow() {
@@ -47,7 +48,7 @@ class PrivateServerViewController: BaseServerViewController {
 
             <<< nameRow
 
-            <<< urlRow.cellUpdate() { _, _ in
+            <<< urlRow.cellUpdate() { _, row in
                 self.acquireFavIcon()
                 self.enableConnect()
             }
@@ -79,7 +80,7 @@ class PrivateServerViewController: BaseServerViewController {
         }
 
         space?.name = nameRow.value
-        space?.url = urlRow.value
+        space?.url = Formatters.URLFormatter.fix(url: urlRow.value)
         space?.favIcon = favIconRow.value
         space?.username = userNameRow.value
         space?.password = passwordRow.value
@@ -103,9 +104,7 @@ class PrivateServerViewController: BaseServerViewController {
     // MARK: Private Methods
 
     private func acquireFavIcon() {
-        if let url = urlRow.value,
-            let host = url.host,
-            let baseUrl = URL(string: "\(url.scheme ?? "https")://\(host)\(url.port == nil ? "" : ":\(url.port!)")/") {
+        if let baseUrl = Formatters.URLFormatter.fix(url: urlRow.value, baseOnly: true) {
 
             try! FavIcon.downloadPreferred(baseUrl) { result in
                 if case let .success(image) = result {

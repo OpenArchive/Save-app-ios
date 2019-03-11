@@ -51,4 +51,72 @@ class Formatters: NSObject {
     static func format(_ value: Date) -> String {
         return friendlyTimestamp.string(from: value)
     }
+
+    /**
+     A formatter for URLs usable in Eureka forms.
+
+     Makes it easy to connect Nextcloud servers without having to know all the
+     details. Users just needs to provide the host name.
+    */
+    class URLFormatter: Formatter {
+
+        override func string(for obj: Any?) -> String? {
+            return Formatters.URLFormatter.fix(url: obj as? URL)?.absoluteString
+        }
+
+        override func getObjectValue(
+            _ obj: AutoreleasingUnsafeMutablePointer<AnyObject?>?, for string: String,
+            errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>?) -> Bool {
+            
+            if let url = URL(string: string) {
+                obj?.pointee = url as AnyObject
+
+                return true
+            }
+
+            return false
+        }
+
+        /**
+         Fixes a given URL, if any given:
+
+         - Set scheme to "https", if none set, yet.
+         - Set path as host, if no host; set path empty, if done so.
+         - Set path to "/remote.php/webdav/" (Nextcloud default WebDAV endpoint), if path empty.
+
+         - parameter url: The URL to fix.
+         - parameter baseOnly: if true, removes user, password, query and fragment components and sets path to "/".
+         - returns: A fixed copy of the input URL.
+        */
+        class func fix(url: URL?, baseOnly: Bool = false) -> URL? {
+            if let url = url,
+                var urlc = URLComponents(url: url, resolvingAgainstBaseURL: true) {
+
+                if urlc.scheme?.isEmpty ?? true {
+                    urlc.scheme = "https"
+                }
+
+                if urlc.host?.isEmpty ?? true {
+                    urlc.host = urlc.path
+                    urlc.path = ""
+                }
+
+                if urlc.path.isEmpty {
+                    urlc.path = "/remote.php/webdav/"
+                }
+
+                if baseOnly {
+                    urlc.user = nil
+                    urlc.password = nil
+                    urlc.path = "/"
+                    urlc.query = nil
+                    urlc.fragment = nil
+                }
+
+                return urlc.url
+            }
+
+            return nil
+        }
+    }
 }
