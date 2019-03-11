@@ -88,6 +88,8 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
     }
 
     func handle(_ change: YapDatabaseViewRowChange) {
+        var insertedNew = false
+
         switch change.type {
         case .delete:
             if let indexPath = change.indexPath {
@@ -100,6 +102,10 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
 
                 projects.insert(project, at: newIndexPath.row)
                 items.insert(getItem(project.name, newIndexPath.row), at: newIndexPath.row + 1)
+
+                // When a new project is created, it will be selected immediately.
+                selectedItem = items[newIndexPath.row + 1]
+                insertedNew = true
             }
         case .move:
             if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
@@ -115,10 +121,12 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
             }
         }
 
-        // Fix situation when tab bar was populated with first project and the "+"
-        // tab is selected, which really shouldn't.
-        if selectFirst() {
-            projectsDelegate?.didSelect(self, project: projects[0])
+        // Always select a newly inserted project or fix situation when tab bar
+        // was properly populated while the "+" tab is selected, which really
+        // shouldn't.
+        if insertedNew || selectFirst(),
+            let selectedProject = selectedProject {
+            projectsDelegate?.didSelect(self, project: selectedProject)
         }
     }
 
