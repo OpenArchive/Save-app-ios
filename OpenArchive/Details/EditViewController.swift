@@ -8,9 +8,6 @@
 
 import UIKit
 
-/**
- TODO: This needs scrolling/moving of form fields on iPhone 5!
- */
 class EditViewController: BaseViewController, UITextViewDelegate,
     UIPageViewControllerDataSource, UIPageViewControllerDelegate {
 

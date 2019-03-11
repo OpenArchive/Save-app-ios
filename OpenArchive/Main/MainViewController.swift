@@ -20,6 +20,7 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
     private static let segueShowSpace = "showSpaceSegue"
     private static let segueShowPreview = "showPreviewSegue"
     private static let segueShowEdit = "showEditSegue"
+    private static let segueShowManagement = "showManagmentSegue"
 
     @IBOutlet weak var spaceFavIcon: UIImageView!
     @IBOutlet weak var spaceName: UILabel!
@@ -270,7 +271,7 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
     // MARK: HeaderViewDelegate
 
     func showUploadManager() {
-        print("[\(String(describing: type(of: self)))]#showUploadManager TODO: Go to upload manager")
+        performSegue(withIdentifier: MainViewController.segueShowManagement, sender: nil)
     }
 
     func showDetails(_ collection: Collection) {

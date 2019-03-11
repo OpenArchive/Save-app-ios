@@ -15,6 +15,7 @@ def shared_pods
     pod 'MaterialComponents/Tabs', '~> 74.0'
     pod 'UIImage-Resize', '~> 1.0'
     pod 'AlignedCollectionViewFlowLayout', '~> 1.1'
+    pod 'DownloadButton', '~> 0.1'
 end
 
 target 'OpenArchive' do

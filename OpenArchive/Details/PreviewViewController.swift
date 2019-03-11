@@ -89,6 +89,6 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate {
     // MARK: Actions
 
     @IBAction func upload() {
-        print("[\(String(describing: type(of: self)))]#upload - TODO")
+        performSegue(withIdentifier: "showManagmentSegue", sender: nil)
     }
 }
