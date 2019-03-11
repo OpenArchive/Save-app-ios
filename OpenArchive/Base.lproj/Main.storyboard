@@ -493,7 +493,7 @@
                                     <constraint firstAttribute="height" constant="240" id="OL9-I9-qtU"/>
                                 </constraints>
                             </view>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" text="Who or what can be seen here?" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Lxf-bv-e0W">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.8" contentMode="scaleToFill" ambiguous="YES" text="Who or what can be seen here?" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="Lxf-bv-e0W">
                                 <rect key="frame" x="16" y="300" width="343" height="50"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                 <constraints>
@@ -506,7 +506,7 @@
                                     <outlet property="delegate" destination="WUt-u5-nda" id="inC-QV-J5X"/>
                                 </connections>
                             </textView>
-                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" text="No location" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="dpg-W6-Zjp">
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" alpha="0.8" contentMode="scaleToFill" ambiguous="YES" text="No location" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="dpg-W6-Zjp">
                                 <rect key="frame" x="16" y="358" width="343" height="50"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                 <constraints>
