@@ -1,5 +1,5 @@
 //
-//  AssetCell.swift
+//  UploadCell.swift
 //  OpenArchive
 //
 //  Created by Benjamin Erhart on 11.03.19.
@@ -9,7 +9,7 @@
 import UIKit
 import DownloadButton
 
-class AssetCell: BaseCell, PKDownloadButtonDelegate {
+class UploadCell: BaseCell, PKDownloadButtonDelegate {
 
     override class var reuseId: String {
         return "assetCell"
@@ -23,11 +23,14 @@ class AssetCell: BaseCell, PKDownloadButtonDelegate {
     @IBOutlet weak var thumbnail: UIImageView!
     @IBOutlet weak var nameLb: UILabel!
 
-    var asset: Asset? {
+    var upload: Upload? {
         didSet {
-            progress.state = asset?.isUploaded ?? false ? .downloaded : .downloading
-            thumbnail.image = asset?.getThumbnail()
-            nameLb.text = asset?.filename
+            progress.state = upload?.paused ?? true
+                ? .pending
+                : upload?.isUploaded ?? false ? .downloaded : .downloading
+            progress.stopDownloadButton.progress = CGFloat(upload?.progress ?? 0)
+            thumbnail.image = upload?.thumbnail
+            nameLb.text = upload?.filename
         }
     }
 

@@ -89,6 +89,29 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate {
     // MARK: Actions
 
     @IBAction func upload() {
+        collection.close()
+
+        var uploads = [Upload]()
+
+        for asset in collection.assets {
+            uploads.append(Upload(asset: asset))
+        }
+
+        Db.writeConn?.asyncReadWrite { transaction in
+            var i = 0
+
+            transaction.enumerateKeys(inCollection: Upload.collection) { key, stop in
+                if let k = Int(key), k > i {
+                    i = k
+                }
+            }
+
+            for upload in uploads {
+                transaction.setObject(upload, forKey: String(i), inCollection: Upload.collection)
+                i += 1
+            }
+        }
+
         performSegue(withIdentifier: "showManagmentSegue", sender: nil)
     }
 }

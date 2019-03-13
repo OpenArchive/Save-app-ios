@@ -38,10 +38,11 @@ class Db {
         Project.fixArchiverName()
         Collection.fixArchiverName()
         Asset.fixArchiverName()
+        Upload.fixArchiverName()
 
         shared?.register(AssetsByCollectionView(), withName: AssetsByCollectionView.name)
         shared?.register(AssetsByCollectionFilteredView(), withName: AssetsByCollectionFilteredView.name)
-        shared?.register(AssetsView(), withName: AssetsView.name)
+        shared?.register(UploadsView(), withName: UploadsView.name)
         shared?.register(ProjectsView(), withName: ProjectsView.name)
         shared?.register(CollectionsView(), withName: CollectionsView.name)
         shared?.register(SpacesView(), withName: SpacesView.name)
@@ -97,6 +98,8 @@ class Db {
 
     private class func newConnection() -> YapDatabaseConnection? {
         let conn = shared?.newConnection()
+
+        conn?.objectPolicy = .copy
 
         // 250 is default, currently just here for reference. Increase, if need be.
         conn?.objectCacheLimit = 250

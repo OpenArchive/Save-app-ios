@@ -14,8 +14,8 @@ class ManagementViewController: BaseTableViewController {
     private lazy var readConn = Db.newLongLivedReadConn()
 
     private lazy var mappings: YapDatabaseViewMappings = {
-        let mappings = YapDatabaseViewMappings(groups: AssetsView.groups,
-                                               view: AssetsView.name)
+        let mappings = YapDatabaseViewMappings(groups: UploadsView.groups,
+                                               view: UploadsView.name)
 
         readConn?.read { transaction in
             mappings.update(with: transaction)
@@ -25,7 +25,7 @@ class ManagementViewController: BaseTableViewController {
     }()
 
     /**
-     Delete action for table list row. Deletes an asset.
+     Delete action for table list row. Deletes an upload.
      */
     private lazy var deleteAction: UITableViewRowAction = {
         let action = UITableViewRowAction(
@@ -33,13 +33,34 @@ class ManagementViewController: BaseTableViewController {
             title: "Delete".localize())
         { (action, indexPath) in
 
-            let title = "Delete Asset".localize()
-            let asset = self.getAsset(indexPath)
-            let message = "Are you sure you want to delete \"%\"?".localize(value: asset?.filename ?? "")
+            let title = "Delete Upload".localize()
+            let upload = self.getUpload(indexPath)
+            let message = "Are you sure you want to delete \"%\"?".localize(value: upload.upload?.filename ?? "")
             let handler: AlertHelper.ActionHandler = { _ in
-                if let key = asset?.id {
+                if var k = Int(upload.key ?? "") {
                     Db.writeConn?.asyncReadWrite() { transaction in
-                        transaction.removeObject(forKey: key, inCollection: Asset.collection)
+                        var uploads = [Upload]()
+
+                        // Load all uploads.
+                        transaction.enumerateKeysAndObjects(inCollection: Upload.collection) { key, object, stop in
+                            if let upload = object as? Upload {
+                                uploads.append(upload)
+                            }
+                        }
+
+                        uploads.remove(at: k)
+
+                        // Rewrite new list of uploads.
+                        var i = 0
+                        for upload in uploads {
+                            if i >= k {
+                                transaction.setObject(upload, forKey: String(i), inCollection: Upload.collection)
+                            }
+                            i += 1
+                        }
+
+                        // Delete the last one.
+                        transaction.removeObject(forKey: String(i), inCollection: Upload.collection)
                     }
                 }
             }
@@ -51,7 +72,7 @@ class ManagementViewController: BaseTableViewController {
                     AlertHelper.destructiveAction("Delete".localize(), handler: handler)
                 ])
 
-            self.tableView.setEditing(false, animated: true)
+            self.toggleEdit()
         }
 
         return action
@@ -67,6 +88,8 @@ class ManagementViewController: BaseTableViewController {
 
         navigationItem.titleView = title
 
+        navigationItem.rightBarButtonItem = getButton()
+
         let nc = NotificationCenter.default
 
         nc.addObserver(self, selector: #selector(yapDatabaseModified),
@@ -76,11 +99,17 @@ class ManagementViewController: BaseTableViewController {
                        name: .YapDatabaseModifiedExternally, object: nil)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+
 
     // MARK: UITableViewDelegate
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return AssetCell.height
+        return UploadCell.height
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
@@ -95,37 +124,43 @@ class ManagementViewController: BaseTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        // #warning Incomplete implementation, return the number of rows
         return Int(mappings.numberOfItems(inSection: 0))
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: AssetCell.reuseId, for: indexPath) as! AssetCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: UploadCell.reuseId, for: indexPath) as! UploadCell
 
-        cell.asset = getAsset(indexPath)
+        cell.upload = getUpload(indexPath).upload
 
         return cell
-    }
-
-    // Override to support conditional editing of the table view.
-    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the specified item to be editable.
-        return true
     }
 
     override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         return [deleteAction]
     }
 
-    // Override to support rearranging the table view.
+    /**
+     Reading all objects and rewriting them seems expensive, but is the best solution
+     I could come up with when using YapDatabase.
+    */
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
+        Db.writeConn?.asyncReadWrite { transaction in
+            var uploads = [Upload]()
 
-    }
+            transaction.enumerateKeysAndObjects(inCollection: Upload.collection) { key, object, stop in
+                if let upload = object as? Upload {
+                    uploads.append(upload)
+                }
+            }
 
-    // Override to support conditional rearranging of the table view.
-    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        // Return false if you do not want the item to be re-orderable.
-        return true
+            uploads.insert(uploads.remove(at: fromIndexPath.row), at: to.row)
+
+            var i = 0
+            for upload in uploads {
+                transaction.setObject(upload, forKey: String(i), inCollection: Upload.collection)
+                i += 1
+            }
+        }
     }
 
 
@@ -139,7 +174,7 @@ class ManagementViewController: BaseTableViewController {
     @objc func yapDatabaseModified(notification: Notification) {
         var changes = NSArray()
 
-        (readConn?.ext(AssetsView.name) as? YapDatabaseViewConnection)?
+        (readConn?.ext(UploadsView.name) as? YapDatabaseViewConnection)?
             .getSectionChanges(nil,
                                rowChanges: &changes,
                                for: readConn?.beginLongLivedReadTransaction() ?? [],
@@ -193,15 +228,40 @@ class ManagementViewController: BaseTableViewController {
 
     // MARK: Private Methods
 
-    private func getAsset(_ indexPath: IndexPath) -> Asset? {
-        var asset: Asset?
+    // MARK: Actions
 
-        readConn?.read() { transaction in
-            asset = (transaction.ext(AssetsView.name) as? YapDatabaseViewTransaction)?
-                .object(atRow: UInt(indexPath.row), inSection: 0, with: self.mappings) as? Asset
+    @objc private func toggleEdit() {
+        if tableView.isEditing {
+            tableView.setEditing(false, animated: true)
+
+            navigationItem.rightBarButtonItem = getButton()
         }
+        else {
+            tableView.setEditing(true, animated: true)
 
-        return asset
+            navigationItem.rightBarButtonItem = getButton(type: .done)
+        }
     }
 
+    private func getButton(type: UIBarButtonItem.SystemItem = .edit) -> UIBarButtonItem {
+        return UIBarButtonItem(barButtonSystemItem: type, target: self, action: #selector(toggleEdit))
+    }
+
+    private func getUpload(_ indexPath: IndexPath) -> (key: String?, upload: Upload?) {
+        var key = NSString()
+        var upload: Upload?
+
+        readConn?.read() { transaction in
+            if let vt = transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction {
+                let pointer: AutoreleasingUnsafeMutablePointer<NSString?>
+                    = AutoreleasingUnsafeMutablePointer<NSString?>.init(&key)
+
+                vt.getKey(pointer, collection: nil, at: indexPath, with: self.mappings)
+
+                upload = vt.object(at: indexPath, with: self.mappings) as? Upload
+            }
+        }
+
+        return (key as String, upload)
+    }
 }
