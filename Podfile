@@ -8,7 +8,7 @@ def shared_pods
     pod 'YapDatabase', '~> 3.1'
     pod 'Alamofire', '~> 4.8'
     pod 'FilesProvider', git: 'https://github.com/amosavian/FileProvider.git'
-    pod 'Localize', '~> 2.1'
+    pod 'Localize', :git => 'https://github.com/andresilvagomez/Localize.git'
     pod 'Eureka', '~> 4.3'
     pod 'ImageRow', git: 'https://github.com/EurekaCommunity/ImageRow.git'
     pod 'MaterialComponents/Buttons', '~> 74.0'
