@@ -356,30 +356,33 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
                         if let indexPath = change.indexPath,
                             change.finalGroup == tabBar.selectedProject?.id {
 
-                            collectionView.reloadSections([IndexSet.Element(indexPath.row)])
+                            collectionView.reloadSections(IndexSet(integer: indexPath.row))
                         }
                     default:
                         break
                     }
                 }
 
+                // We need to reload the complete section, so the section header
+                // gets updated, too, and the `Collection.assets` array along with it.
                 for change in rowChanges {
                     switch change.type {
                     case .delete:
                         if let indexPath = change.indexPath {
-                            collectionView.deleteItems(at: [indexPath])
+                            collectionView.reloadSections(IndexSet(integer: indexPath.section))
                         }
                     case .insert:
                         if let newIndexPath = change.newIndexPath {
-                            collectionView.insertItems(at: [newIndexPath])
+                            collectionView.reloadSections(IndexSet(integer: newIndexPath.section))
                         }
                     case .move:
                         if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
-                            collectionView.moveItem(at: indexPath, to: newIndexPath)
+                            collectionView.reloadSections([IndexSet.Element(indexPath.section),
+                                                           IndexSet.Element(newIndexPath.section)])
                         }
                     case .update:
                         if let indexPath = change.indexPath {
-                            collectionView.reloadItems(at: [indexPath])
+                            collectionView.reloadSections(IndexSet(integer: indexPath.section))
                         }
                     }
                 }
