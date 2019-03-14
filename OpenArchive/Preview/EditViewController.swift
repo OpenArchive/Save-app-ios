@@ -245,6 +245,15 @@ class EditViewController: BaseViewController, UITextViewDelegate,
 
     // MARK: Actions
 
+    @IBAction func edit(_ sender: UIButton) {
+        if sender == tagBt {
+            descTv.becomeFirstResponder()
+        }
+        else {
+            locationTv.becomeFirstResponder()
+        }
+    }
+
     @IBAction func flag() {
         asset?.flagged = !(asset?.flagged ?? true)
         flagBt.isSelected = asset?.flagged ?? false
