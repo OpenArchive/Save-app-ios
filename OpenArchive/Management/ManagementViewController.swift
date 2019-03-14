@@ -11,6 +11,8 @@ import YapDatabase
 
 class ManagementViewController: BaseTableViewController {
 
+    var delegate: DoneDelegate?
+
     private lazy var readConn = Db.newLongLivedReadConn()
 
     private lazy var mappings: YapDatabaseViewMappings = {
@@ -103,6 +105,12 @@ class ManagementViewController: BaseTableViewController {
         super.viewWillAppear(animated)
 
         navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+
+        delegate?.done()
     }
 
 
@@ -227,8 +235,6 @@ class ManagementViewController: BaseTableViewController {
 
 
     // MARK: Private Methods
-
-    // MARK: Actions
 
     @objc private func toggleEdit() {
         if tableView.isEditing {

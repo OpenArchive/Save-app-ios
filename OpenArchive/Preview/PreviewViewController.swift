@@ -8,7 +8,7 @@
 
 import UIKit
 
-class PreviewViewController: UITableViewController, PreviewCellDelegate {
+class PreviewViewController: UITableViewController, PreviewCellDelegate, DoneDelegate {
 
     var collection: Collection!
 
@@ -121,6 +121,13 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate {
     }
 
 
+    // MARK: DoneDelegate
+
+    func done() {
+        navigationController?.popViewController(animated: true)
+    }
+
+
     // MARK: Navigation
 
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -131,6 +138,9 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate {
                 editVc.selected = index
                 editVc.directEdit = directEdit
             }
+        }
+        else if let mvc = segue.destination as? ManagementViewController {
+            mvc.delegate = self
         }
      }
 

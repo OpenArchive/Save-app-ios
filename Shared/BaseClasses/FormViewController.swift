@@ -9,12 +9,6 @@
 import UIKit
 import Eureka
 
-
-protocol DoneDelegate {
-
-    func done()
-}
-
 /**
  Own base class of Eureka's FormViewController which adds our own base style:
 
