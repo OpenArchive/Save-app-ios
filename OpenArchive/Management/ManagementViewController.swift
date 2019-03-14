@@ -63,6 +63,10 @@ class ManagementViewController: BaseTableViewController {
 
                         // Delete the last one.
                         transaction.removeObject(forKey: String(i), inCollection: Upload.collection)
+
+                        if let assetId = upload.upload?.asset?.id {
+                            transaction.removeObject(forKey: assetId, inCollection: Asset.collection)
+                        }
                     }
                 }
             }
