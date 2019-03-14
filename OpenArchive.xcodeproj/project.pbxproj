@@ -364,7 +364,7 @@
 			path = docs;
 			sourceTree = "<group>";
 		};
-		A0AFCF0B223001AE005E57FD /* Details */ = {
+		A0AFCF0B223001AE005E57FD /* Preview */ = {
 			isa = PBXGroup;
 			children = (
 				A0AFCF0C22300279005E57FD /* PreviewViewController.swift */,
@@ -372,7 +372,7 @@
 				A04526072231309D007A6F53 /* EditViewController.swift */,
 				A00DC98922315D4F004F07E0 /* ImageViewController.swift */,
 			);
-			path = Details;
+			path = Preview;
 			sourceTree = "<group>";
 		};
 		A0D58DCC20E514F8005A2F34 /* Models */ = {
@@ -459,7 +459,7 @@
 			isa = PBXGroup;
 			children = (
 				A01A7B732200FF2500E18DE0 /* Main */,
-				A0AFCF0B223001AE005E57FD /* Details */,
+				A0AFCF0B223001AE005E57FD /* Preview */,
 				A0E1A67D21EE7B3200E4F6B7 /* Space */,
 				A098980422369F5700022851 /* Management */,
 				A07129122111F4D5007A432A /* OpenArchive.entitlements */,
