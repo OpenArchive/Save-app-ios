@@ -12,6 +12,49 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate {
 
     var collection: Collection!
 
+    /**
+     Delete action for table list row. Deletes an asset.
+     */
+    private lazy var deleteAction: UITableViewRowAction = {
+        let action = UITableViewRowAction(
+            style: .destructive,
+            title: "Delete".localize())
+        { (action, indexPath) in
+
+            let title = "Delete Asset".localize()
+            let asset = self.collection.assets[indexPath.row]
+            let message = "Are you sure you want to delete \"%\"?".localize(value: asset.filename)
+            let handler: AlertHelper.ActionHandler = { _ in
+                Db.writeConn?.asyncReadWrite() { transaction in
+                    transaction.removeObject(forKey: asset.id, inCollection: Asset.collection)
+                }
+
+                self.collection.assets.remove(at: indexPath.row)
+
+                self.tableView.beginUpdates()
+                self.tableView.deleteRows(at: [indexPath], with: .automatic)
+                self.tableView.endUpdates()
+
+                // Leave, if no assets anymore.
+                if self.collection.assets.count < 1 {
+                    self.navigationController?.popViewController(animated: true)
+                }
+            }
+
+            AlertHelper.present(
+                self, message: message,
+                title: title, actions: [
+                    AlertHelper.cancelAction(),
+                    AlertHelper.destructiveAction("Delete".localize(), handler: handler)
+                ])
+
+            self.tableView.setEditing(false, animated: true)
+        }
+
+        return action
+    }()
+
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -35,7 +78,7 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate {
         tableView.reloadData()
     }
 
-    // MARK: - Table view data source
+    // MARK: UITableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -54,6 +97,9 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate {
         return cell
     }
 
+
+    // MARK: UITableViewDelegate
+
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return PreviewCell.height
     }
@@ -62,6 +108,9 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate {
         edit(collection.assets[indexPath.row])
     }
 
+    override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        return [deleteAction]
+    }
 
     // MARK: PreviewCellDelegate
 

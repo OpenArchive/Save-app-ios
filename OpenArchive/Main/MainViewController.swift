@@ -336,12 +336,17 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
             let collectionChanges = collectionChanges as? [YapDatabaseViewRowChange],
             rowChanges.count > 0 || sectionChanges.count > 0 || collectionChanges.count > 0 {
 
+            var deletedSections: Set<Int> = []
+            var insertedSections: Set<Int> = []
+
             collectionView.performBatchUpdates({
                 for change in sectionChanges {
                     switch change.type {
                     case .delete:
+                        deletedSections.insert(Int(change.index))
                         collectionView.deleteSections([IndexSet.Element(change.index)])
                     case .insert:
+                        insertedSections.insert(Int(change.index))
                         collectionView.insertSections([IndexSet.Element(change.index)])
                     default:
                         break
@@ -369,11 +374,19 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
                     switch change.type {
                     case .delete:
                         if let indexPath = change.indexPath {
-                            collectionView.reloadSections(IndexSet(integer: indexPath.section))
+                            // Ignore if section gets deleted anyway. If we would
+                            // reload the section which also gets deleted, the app would crash.
+                            if !deletedSections.contains(indexPath.section) {
+                                collectionView.reloadSections(IndexSet(integer: indexPath.section))
+                            }
                         }
                     case .insert:
                         if let newIndexPath = change.newIndexPath {
-                            collectionView.reloadSections(IndexSet(integer: newIndexPath.section))
+                            // Ignore if section gets freshly inserted anyway. If we would
+                            // reload the section which also gets inserted, the app would crash.
+                            if !insertedSections.contains(newIndexPath.section) {
+                                collectionView.reloadSections(IndexSet(integer: newIndexPath.section))
+                            }
                         }
                     case .move:
                         if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
