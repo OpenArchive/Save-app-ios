@@ -160,8 +160,8 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate, DoneDel
             var i = 0
 
             transaction.enumerateKeys(inCollection: Upload.collection) { key, stop in
-                if let k = Int(key), k > i {
-                    i = k
+                if let k = Int(key), k >= i {
+                    i = k + 1
                 }
             }
 
