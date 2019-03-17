@@ -8,8 +8,9 @@
 
 import UIKit
 import YapDatabase
+import DownloadButton
 
-class ManagementViewController: BaseTableViewController {
+class ManagementViewController: BaseTableViewController, UploadCellDelegate {
 
     var delegate: DoneDelegate?
 
@@ -37,37 +38,10 @@ class ManagementViewController: BaseTableViewController {
 
             let title = "Delete Upload".localize()
             let upload = self.getUpload(indexPath)
-            let message = "Are you sure you want to delete \"%\"?".localize(value: upload.upload?.filename ?? "")
+            let message = "Are you sure you want to delete \"%\"?".localize(value: upload?.filename ?? "")
             let handler: AlertHelper.ActionHandler = { _ in
-                if var k = Int(upload.key ?? "") {
-                    Db.writeConn?.asyncReadWrite() { transaction in
-                        var uploads = [Upload]()
-
-                        // Load all uploads.
-                        transaction.enumerateKeysAndObjects(inCollection: Upload.collection) { key, object, stop in
-                            if let upload = object as? Upload {
-                                uploads.append(upload)
-                            }
-                        }
-
-                        uploads.remove(at: k)
-
-                        // Rewrite new list of uploads.
-                        var i = 0
-                        for upload in uploads {
-                            if i >= k {
-                                transaction.setObject(upload, forKey: String(i), inCollection: Upload.collection)
-                            }
-                            i += 1
-                        }
-
-                        // Delete the last one.
-                        transaction.removeObject(forKey: String(i), inCollection: Upload.collection)
-
-                        if let assetId = upload.upload?.asset?.id {
-                            transaction.removeObject(forKey: assetId, inCollection: Asset.collection)
-                        }
-                    }
+                if let id = upload?.id {
+                    Upload.remove(id: id)
                 }
             }
 
@@ -142,13 +116,22 @@ class ManagementViewController: BaseTableViewController {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: UploadCell.reuseId, for: indexPath) as! UploadCell
 
-        cell.upload = getUpload(indexPath).upload
+        cell.upload = getUpload(indexPath)
+        cell.delegate = self
 
         return cell
     }
 
     override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         return [deleteAction]
+    }
+
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        if let upload = getUpload(indexPath) {
+            return upload.state == .pending || upload.state == .startDownload
+        }
+
+        return false
     }
 
     /**
@@ -159,19 +142,45 @@ class ManagementViewController: BaseTableViewController {
         Db.writeConn?.asyncReadWrite { transaction in
             var uploads = [Upload]()
 
-            transaction.enumerateKeysAndObjects(inCollection: Upload.collection) { key, object, stop in
-                if let upload = object as? Upload {
-                    uploads.append(upload)
-                }
+            (transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction)?
+                .enumerateKeysAndObjects(inGroup: UploadsView.groups[0])
+                { collection, key, object, index, stop in
+                    if let upload = object as? Upload {
+                        uploads.append(upload)
+                    }
             }
 
             uploads.insert(uploads.remove(at: fromIndexPath.row), at: to.row)
 
             var i = 0
             for upload in uploads {
-                transaction.setObject(upload, forKey: String(i), inCollection: Upload.collection)
+                if upload.order != i {
+                    upload.order = i
+                    transaction.setObject(upload, forKey: upload.id, inCollection: Upload.collection)
+                }
+
                 i += 1
             }
+        }
+    }
+
+
+    // MARK: UploadCellDelegate
+
+    func progressTapped(_ upload: Upload, _ button: PKDownloadButton) {
+        switch button.state {
+        case .startDownload:
+            upload.start()
+        case .pending, .downloading:
+            upload.pause()
+        case .downloaded:
+            break
+        }
+
+        button.state = upload.state
+
+        Db.writeConn?.asyncReadWrite { transaction in
+            transaction.setObject(upload, forKey: upload.id, inCollection: Upload.collection)
         }
     }
 
@@ -209,7 +218,7 @@ class ManagementViewController: BaseTableViewController {
                     }
                 case .move:
                     if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
-                        tableView.moveRow(at: indexPath, to: newIndexPath)
+                        tableView.reloadRows(at: [indexPath, newIndexPath], with: .none)
                     }
                 case .update:
                     if let indexPath = change.indexPath {
@@ -258,21 +267,14 @@ class ManagementViewController: BaseTableViewController {
         return UIBarButtonItem(barButtonSystemItem: type, target: self, action: #selector(toggleEdit))
     }
 
-    private func getUpload(_ indexPath: IndexPath) -> (key: String?, upload: Upload?) {
-        var key = NSString()
+    private func getUpload(_ indexPath: IndexPath) -> Upload? {
         var upload: Upload?
 
         readConn?.read() { transaction in
-            if let vt = transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction {
-                let pointer: AutoreleasingUnsafeMutablePointer<NSString?>
-                    = AutoreleasingUnsafeMutablePointer<NSString?>.init(&key)
-
-                vt.getKey(pointer, collection: nil, at: indexPath, with: self.mappings)
-
-                upload = vt.object(at: indexPath, with: self.mappings) as? Upload
-            }
+            upload = (transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction)?
+                .object(at: indexPath, with: self.mappings) as? Upload
         }
 
-        return (key as String, upload)
+        return upload
     }
 }

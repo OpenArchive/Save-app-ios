@@ -150,24 +150,19 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate, DoneDel
     @IBAction func upload() {
         collection.close()
 
-        var uploads = [Upload]()
-
-        for asset in collection.assets {
-            uploads.append(Upload(asset: asset))
-        }
-
         Db.writeConn?.asyncReadWrite { transaction in
-            var i = 0
+            var order = 0
 
-            transaction.enumerateKeys(inCollection: Upload.collection) { key, stop in
-                if let k = Int(key), k >= i {
-                    i = k + 1
+            transaction.enumerateKeysAndObjects(inCollection: Upload.collection) { key, object, stop in
+                if let upload = object as? Upload, upload.order >= order {
+                    order = upload.order + 1
                 }
             }
 
-            for upload in uploads {
-                transaction.setObject(upload, forKey: String(i), inCollection: Upload.collection)
-                i += 1
+            for asset in self.collection.assets {
+                let upload = Upload(order: order, asset: asset)
+                transaction.setObject(upload, forKey: upload.id, inCollection: Upload.collection)
+                order += 1
             }
         }
 

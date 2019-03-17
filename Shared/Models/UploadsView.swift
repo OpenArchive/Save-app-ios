@@ -22,10 +22,24 @@ class UploadsView: YapDatabaseAutoView {
             return Upload.collection == collection ? collection : nil
         }
 
-        let sorting = YapDatabaseViewSorting.withKeyBlock {
-            transaction, group, collection1, key1, collection2, key2 in
+        let sorting = YapDatabaseViewSorting.withObjectBlock { transaction, group, collection1, key1, object1, collection2, key2, object2 in
+            let upload1 = object1 as? Upload
+            let upload2 = object2 as? Upload
 
-            return key1.compare(key2)
+            if upload1 == nil {
+                if upload2 != nil {
+                    return .orderedDescending
+                }
+
+                return .orderedSame
+            }
+            else {
+                if upload2 == nil {
+                    return .orderedAscending
+                }
+            }
+
+            return upload1!.compare(upload2!)
         }
 
         super.init(grouping: grouping, sorting: sorting, versionTag: nil, options: nil)
