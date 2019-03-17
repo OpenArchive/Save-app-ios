@@ -416,8 +416,9 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
 
         projectsReadConn?.read { transaction in
             self.projectsMappings.update(with: transaction)
-            self.tabBar.reloadInputViews()
         }
+
+        tabBar.reloadInputViews()
 
         collectionsReadConn?.beginLongLivedReadTransaction()
 
@@ -429,7 +430,8 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
 
         assetsReadConn?.read { transaction in
             self.assetsMappings.update(with: transaction)
-            self.collectionView.reloadData()
         }
+
+        collectionView.reloadData()
     }
 }

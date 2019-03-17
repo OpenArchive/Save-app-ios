@@ -233,8 +233,9 @@ class ManagementViewController: BaseTableViewController {
 
         readConn?.read { transaction in
             self.mappings.update(with: transaction)
-            self.tableView.reloadData()
         }
+
+        tableView.reloadData()
     }
 
 

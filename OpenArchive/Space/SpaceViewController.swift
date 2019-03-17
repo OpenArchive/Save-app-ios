@@ -366,15 +366,17 @@ class SpaceViewController: BaseTableViewController, UICollectionViewDelegate, UI
 
         spacesReadConn?.read { transaction in
             self.spacesMappings.update(with: transaction)
-            self.collectionView?.reloadData()
         }
+
+        collectionView?.reloadData()
 
         projectsReadConn?.beginLongLivedReadTransaction()
 
         projectsReadConn?.read { transaction in
             self.projectsMappings.update(with: transaction)
-            self.tableView.reloadData()
         }
+
+        tableView.reloadData()
     }
 
 
