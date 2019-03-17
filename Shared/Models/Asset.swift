@@ -245,35 +245,35 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     // MARK: NSCoding
 
     required init(coder decoder: NSCoder) {
-        id = decoder.decodeObject() as? String ?? UUID().uuidString
-        created = decoder.decodeObject() as? Date ?? Date()
-        uti = decoder.decodeObject() as! String
-        _filename = decoder.decodeObject() as? String
-        title = decoder.decodeObject() as? String
-        desc = decoder.decodeObject() as? String
-        location = decoder.decodeObject() as? String
-        tags = decoder.decodeObject() as? [String]
-        license = decoder.decodeObject() as? String
-        publicUrl = decoder.decodeObject() as? URL
-        isUploaded = decoder.decodeObject() as? Bool ?? false
-        error = decoder.decodeObject() as? String
-        collectionId = decoder.decodeObject() as! String
+        id = decoder.decodeObject(forKey: "id") as? String ?? UUID().uuidString
+        created = decoder.decodeObject(forKey: "created") as? Date ?? Date()
+        uti = decoder.decodeObject(forKey: "uti") as! String
+        _filename = decoder.decodeObject(forKey: "filename") as? String
+        title = decoder.decodeObject(forKey: "title") as? String
+        desc = decoder.decodeObject(forKey: "desc") as? String
+        location = decoder.decodeObject(forKey: "location") as? String
+        tags = decoder.decodeObject(forKey: "tags") as? [String]
+        license = decoder.decodeObject(forKey: "license") as? String
+        publicUrl = decoder.decodeObject(forKey: "publicUrl") as? URL
+        isUploaded = decoder.decodeBool(forKey: "isUploaded")
+        error = decoder.decodeObject(forKey: "error") as? String
+        collectionId = decoder.decodeObject(forKey: "collectionId") as! String
     }
 
     func encode(with coder: NSCoder) {
-        coder.encode(id)
-        coder.encode(created)
-        coder.encode(uti)
-        coder.encode(_filename)
-        coder.encode(title)
-        coder.encode(desc)
-        coder.encode(location)
-        coder.encode(tags)
-        coder.encode(license)
-        coder.encode(publicUrl)
-        coder.encode(isUploaded)
-        coder.encode(error)
-        coder.encode(collectionId)
+        coder.encode(id, forKey: "id")
+        coder.encode(created, forKey: "created")
+        coder.encode(uti, forKey: "uti")
+        coder.encode(_filename, forKey: "filename")
+        coder.encode(title, forKey: "title")
+        coder.encode(desc, forKey: "desc")
+        coder.encode(location, forKey: "location")
+        coder.encode(tags, forKey: "tags")
+        coder.encode(license, forKey: "license")
+        coder.encode(publicUrl, forKey: "publicUrl")
+        coder.encode(isUploaded, forKey: "isUploaded")
+        coder.encode(error, forKey: "error")
+        coder.encode(collectionId, forKey: "collectionId")
     }
 
 
