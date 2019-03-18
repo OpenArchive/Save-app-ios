@@ -169,18 +169,10 @@ class Collection: NSObject, Item, YapDatabaseRelationshipNode {
     func close() {
         if closed == nil {
             closed = Date()
-
-            Db.writeConn?.asyncReadWrite { transaction in
-                transaction.setObject(self, forKey: self.id, inCollection: Collection.collection)
-            }
         }
     }
 
     func setUploadedNow() {
         uploaded = Date()
-
-        Db.writeConn?.asyncReadWrite { transaction in
-            transaction.setObject(self, forKey: self.id, inCollection: Collection.collection)
-        }
     }
 }

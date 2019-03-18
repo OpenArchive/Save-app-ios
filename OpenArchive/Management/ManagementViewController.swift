@@ -170,18 +170,14 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
     func progressTapped(_ upload: Upload, _ button: PKDownloadButton) {
         switch button.state {
         case .startDownload:
-            upload.start()
+            NotificationCenter.default.post(name: .uploadManagerUnpause, object: upload.id)
         case .pending, .downloading:
-            upload.pause()
+            NotificationCenter.default.post(name: .uploadManagerPause, object: upload.id)
         case .downloaded:
             break
         }
 
         button.state = upload.state
-
-        Db.writeConn?.asyncReadWrite { transaction in
-            transaction.setObject(upload, forKey: upload.id, inCollection: Upload.collection)
-        }
     }
 
 

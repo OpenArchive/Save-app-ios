@@ -35,6 +35,8 @@
 		A05275152211A91300BDB14B /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05275132211A91300BDB14B /* CollectionsView.swift */; };
 		A0552050222566CE00B9645F /* UIView+animateHideShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A055204F222566CE00B9645F /* UIView+animateHideShow.swift */; };
 		A0552051222566CE00B9645F /* UIView+animateHideShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A055204F222566CE00B9645F /* UIView+animateHideShow.swift */; };
+		A059E647223AE9FB00ABC621 /* UploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A059E646223AE9FB00ABC621 /* UploadManager.swift */; };
+		A059E648223AE9FB00ABC621 /* UploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A059E646223AE9FB00ABC621 /* UploadManager.swift */; };
 		A05C582A21EF94FC00141633 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05C582921EF94FC00141633 /* BaseViewController.swift */; };
 		A05C582B21EF95A800141633 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05C582921EF94FC00141633 /* BaseViewController.swift */; };
 		A0631B552203022100B3E90D /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0631B542203022100B3E90D /* BaseTableViewController.swift */; };
@@ -172,6 +174,7 @@
 		A055204F222566CE00B9645F /* UIView+animateHideShow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+animateHideShow.swift"; sourceTree = "<group>"; };
 		A058628320E4FC5A00EE2F14 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A058628520E4FDBF00EE2F14 /* Podfile.lock */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile.lock; sourceTree = "<group>"; };
+		A059E646223AE9FB00ABC621 /* UploadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadManager.swift; sourceTree = "<group>"; };
 		A05C582921EF94FC00141633 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		A0631B542203022100B3E90D /* BaseTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewController.swift; sourceTree = "<group>"; };
 		A0631B5A22034F0700B3E90D /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
@@ -398,6 +401,7 @@
 				A00A8D43220C63B20083F0CB /* ProjectsView.swift */,
 				A05275132211A91300BDB14B /* CollectionsView.swift */,
 				A0FB4DB121F8799100B46099 /* SpacesView.swift */,
+				A059E646223AE9FB00ABC621 /* UploadManager.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -703,6 +707,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A0A192DE21F208DA009A8CF0 /* Space.swift in Sources */,
+				A059E648223AE9FB00ABC621 /* UploadManager.swift in Sources */,
 				A08C2CE821F0B613008ACA3E /* BaseCell.swift in Sources */,
 				A08C2CE921F0B617008ACA3E /* TableHeader.swift in Sources */,
 				A0AC06B22201E5B900BD5FBA /* WorkingOverlay.swift in Sources */,
@@ -781,6 +786,7 @@
 				A0552050222566CE00B9645F /* UIView+animateHideShow.swift in Sources */,
 				A05275142211A91300BDB14B /* CollectionsView.swift in Sources */,
 				A07129102111E4F1007A432A /* Db.swift in Sources */,
+				A059E647223AE9FB00ABC621 /* UploadManager.swift in Sources */,
 				A0E1A68121EE7BE900E4F6B7 /* MenuItemCell.swift in Sources */,
 				A004E24A20EBCEA000A1D5F5 /* OldDetailsViewController.swift in Sources */,
 				A00A8D45220C63B20083F0CB /* ProjectsView.swift in Sources */,

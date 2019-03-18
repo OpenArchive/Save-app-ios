@@ -26,7 +26,7 @@ class HeaderView: UICollectionReusableView {
 
     var collection: Collection? {
         didSet {
-            if let uploadedTs = collection?.uploaded {
+            if let uploadedTs = collection?.uploaded, collection?.waitingAssetsCount ?? 0 == 0 {
                 let uploaded = collection?.uploadedAssetsCount ?? 0
 
                 // I know this is really wrong, but using stringsdict is just a fucking

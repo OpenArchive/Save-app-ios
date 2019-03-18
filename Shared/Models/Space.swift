@@ -34,14 +34,6 @@ class Space: NSObject {
     // MARK: Space
 
     /**
-     Callback executed when monitoring upload progress.
-
-     - parameter asset: The asset which is being uploaded.
-     - parameter progress: Progress information.
-     */
-    public typealias ProgressHandler = (_ asset: Asset, _ progress: Progress) -> Void
-
-    /**
      Callback executed when upload/remove is done. Check `isUploaded` and `error`
      of the `Asset` object to evaluate the success.
 
@@ -147,11 +139,14 @@ class Space: NSObject {
     /**
      Subclasses need to implement this method to upload assets.
 
+     When done, subclasses need to post a `uploadManagerDone` notification with
+     the `Upload.id` as the object.
+
      - parameter asset: The asset to upload.
-     - parameter progress: Callback to communicate upload progress.
-     - parameter done: Callback to indicate end of upload. Check server object for status!
+     - parameter uploadId: The ID of the upload object which identifies this upload.
+     - returns: Progress to track upload progress
      */
-    func upload(_ asset: Asset, progress: @escaping ProgressHandler, done: @escaping DoneHandler) {
+    func upload(_ asset: Asset, uploadId: String) -> Progress {
         preconditionFailure("This method must be overridden.")
     }
 
@@ -177,7 +172,7 @@ class Space: NSObject {
      - parameter components: 0 or more path components.
      - returns: a new `URL` object constructed from the parameters.
      */
-    func construct(url: URL?, _ components: String...) -> URL {
+    class func construct(url: URL?, _ components: String...) -> URL {
         if let first = components.first {
 
             var url = url?.appendingPathComponent(first) ?? URL(fileURLWithPath: first)
@@ -196,26 +191,48 @@ class Space: NSObject {
     }
 
     /**
-     Boilerplate reducer. Sets an error on the `Asset` and calls the done handler
-     on the main thread.
+     Boilerplate reducer. Sets an error on the `userInfo` notification object,
+     if any provided, sets the URL, if any provided and posts the
+     `.uploadManagerDone` notification.
 
      You can even call it like this to reduce LOCs:
 
      ```Swift
-        return self.done(asset, nil, done)
+        return self.done(uploadId)
      ```
 
-     - parameter asset: The `Asset` to return.
-     - parameter error: An optional error `String`.
-     - parameter done: The `DoneHandler` callback.
+     - parameter uploadId: The `ID` of the tracked upload.
+     - parameter error: An optional error `String`, defaults to `nil`.
+     - parameter url: The URL the asset was uploaded to, if any. Defaults to `nil`.
     */
-    func done(_ asset: Asset, _ error: String?, _ done: @escaping DoneHandler) {
-        asset.error = error
+    func done(_ uploadId: String, _ error: String? = nil, _ url: URL? = nil) {
+        var userInfo = [AnyHashable: Any]()
 
-        DispatchQueue.main.async {
-            done(asset)
+        if let error = error {
+            userInfo[.error] = error
+        }
+        else {
+            userInfo[.url] = url
         }
 
-        return
+        NotificationCenter.default.post(name: .uploadManagerDone, object: uploadId,
+                                        userInfo: userInfo)
+    }
+
+    /**
+     Boilerplate reducer. Sets an error on the `userInfo` notification object,
+     if any provided and posts the `.uploadManagerDone` notification.
+
+     You can even call it like this to reduce LOCs:
+
+     ```Swift
+     return self.done(uploadId)
+     ```
+
+     - parameter uploadId: The `ID` of the tracked upload.
+     - parameter error: An optional Error object.
+     */
+    func done(_ uploadId: String, _ error: Error?) {
+        done(uploadId, error?.localizedDescription)
     }
 }

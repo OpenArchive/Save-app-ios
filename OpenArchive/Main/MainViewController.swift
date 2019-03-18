@@ -339,6 +339,9 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
             var deletedSections: Set<Int> = []
             var insertedSections: Set<Int> = []
 
+            // TODO: We're crashing here, when an upload is finished for a still
+            // unknown reason.
+
             collectionView.performBatchUpdates({
                 for change in sectionChanges {
                     switch change.type {

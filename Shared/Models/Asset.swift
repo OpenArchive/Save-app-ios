@@ -50,7 +50,6 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     var license: String?
     var publicUrl: URL?
     var isUploaded = false
-    var error: String?
     private(set) var collectionId: String
 
     var author: String? {
@@ -256,7 +255,6 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         license = decoder.decodeObject(forKey: "license") as? String
         publicUrl = decoder.decodeObject(forKey: "publicUrl") as? URL
         isUploaded = decoder.decodeBool(forKey: "isUploaded")
-        error = decoder.decodeObject(forKey: "error") as? String
         collectionId = decoder.decodeObject(forKey: "collectionId") as! String
     }
 
@@ -272,7 +270,6 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         coder.encode(license, forKey: "license")
         coder.encode(publicUrl, forKey: "publicUrl")
         coder.encode(isUploaded, forKey: "isUploaded")
-        coder.encode(error, forKey: "error")
         coder.encode(collectionId, forKey: "collectionId")
     }
 
@@ -349,7 +346,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
             + "mimeType=\(mimeType), filename=\(filename), file=\(file?.description ?? "nil"), "
             + "thumb=\(thumb?.description ?? "nil"), "
             + "publicUrl=\(publicUrl?.absoluteString ?? "nil"), "
-            + "isUploaded=\(isUploaded), error=\(error ?? "nil")]"
+            + "isUploaded=\(isUploaded)]"
     }
 
 

@@ -74,13 +74,22 @@ class Upload: NSObject, Item {
     }
 
     var order: Int
+    var paused = false
+    var error: String?
+
+    var liveProgress: Progress?
+
+    private var _progress: Double = 0
+    var progress: Double {
+        get {
+            return liveProgress?.fractionCompleted ?? _progress
+        }
+        set {
+            _progress = newValue
+        }
+    }
 
     private(set) var assetId: String?
-
-    private(set) var progress: Double = 0
-
-    private(set) var paused = false
-
     private var _asset: Asset?
 
     var asset: Asset? {
@@ -112,7 +121,7 @@ class Upload: NSObject, Item {
     }
 
     var state: PKDownloadButtonState {
-        if isUploaded {
+        if isUploaded || progress >= 1 {
             return .downloaded
         }
 
@@ -147,47 +156,42 @@ class Upload: NSObject, Item {
     required init?(coder decoder: NSCoder) {
         id = decoder.decodeObject(forKey: "id") as? String ?? UUID().uuidString
         order = decoder.decodeInteger(forKey: "order")
-        assetId = decoder.decodeObject(forKey: "assetId") as? String
+        _progress = decoder.decodeDouble(forKey: "progress")
         paused = decoder.decodeBool(forKey: "paused")
-        progress = decoder.decodeDouble(forKey: "progress")
+        error = decoder.decodeObject(forKey: "error") as? String
+        assetId = decoder.decodeObject(forKey: "assetId") as? String
     }
 
     func encode(with coder: NSCoder) {
         coder.encode(id, forKey: "id")
         coder.encode(order, forKey: "order")
-        coder.encode(assetId, forKey: "assetId")
-        coder.encode(paused, forKey: "paused")
         coder.encode(progress, forKey: "progress")
+        coder.encode(paused, forKey: "paused")
+        coder.encode(error, forKey: "error")
+        coder.encode(assetId, forKey: "assetId")
     }
 
 
-    // TODO: This needs to move in a background upload manager object.
-    func start() {
+    // MARK: NSObject
 
-        if let asset = asset {
-            paused = false
+    override var description: String {
+        return "\(String(describing: type(of: self))): [id=\(id), order=\(order), "
+            + "progress=\(progress), paused=\(paused), error=\(error ?? "nil"), "
+            + "assetId=\(assetId ?? "nil")]"
+    }
 
-            asset.space?.upload(asset, progress: { asset, progress in
 
-                self.progress = progress.fractionCompleted
+    // MARK: Public Methods
 
-                Db.bgRwConn?.asyncReadWrite { transaction in
-                    transaction.setObject(self, forKey: self.id, inCollection: Upload.collection)
-                }
-            }, done: { asset in
-                self.progress = 1
-                self.isUploaded = true
-
-                Db.bgRwConn?.asyncReadWrite { transaction in
-                    transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
-                    transaction.setObject(self, forKey: self.id, inCollection: Upload.collection)
-                }
-            })
+    func cancel() {
+        if let liveProgress = liveProgress {
+            liveProgress.cancel()
+            self.liveProgress = nil
+            progress = 0
         }
     }
 
-    // TODO: This needs to move in a background upload manager object.
-    func pause() {
-        paused = true
+    func hasProgressChanged() -> Bool {
+        return _progress != liveProgress?.fractionCompleted ?? 0
     }
 }

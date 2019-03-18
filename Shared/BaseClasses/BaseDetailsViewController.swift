@@ -189,7 +189,7 @@ class BaseDetailsViewController: UIViewController {
 
                 button.isHidden = false
 
-                if asset.error == nil && !asset.isUploaded {
+                if !asset.isUploaded {
                     self.showServerBox(false)
 
                     Db.writeConn?.asyncReadWrite() { transaction in
@@ -266,26 +266,12 @@ class BaseDetailsViewController: UIViewController {
 
     @objc func upload(_ sender: UIBarButtonItem) {
         if let asset = asset,
-            let space = asset.space {
+            asset.space != nil {
 
-            var firstTime = true
+            let upload = Upload(order: Int.max, asset: asset)
 
-            space.upload(asset, progress: { asset, progress in
-                if firstTime {
-                    self.setServerInfo()
-                    firstTime = false
-                }
-
-                let progressFormatted = Formatters.integer.string(for: progress.fractionCompleted * 100)
-                    ?? "Unknown".localize()
-
-                self.serverStatusLb.text = "Progress: %".localize(value: "\(progressFormatted)%")
-            }) { server in
-                self.setServerInfo()
-
-                Db.writeConn?.asyncReadWrite() { transaction in
-                    transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
-                }
+            Db.writeConn?.asyncReadWrite { transaction in
+                transaction.setObject(upload, forKey: upload.id, inCollection: Upload.collection)
             }
         }
         else {
@@ -308,11 +294,7 @@ class BaseDetailsViewController: UIViewController {
     }
 
     private func setServerStatus() {
-        if let error = asset?.error, error.count > 0 {
-            self.serverStatusLb.text = error
-            print(error)
-        }
-        else if asset?.isUploaded ?? false {
+        if asset?.isUploaded ?? false {
             self.serverStatusLb.text = "Uploaded".localize()
         }
         else {

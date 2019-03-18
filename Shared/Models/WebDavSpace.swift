@@ -81,100 +81,84 @@ class WebDavSpace: Space, Item {
 
     // MARK: Space
 
-    override func upload(_ asset: Asset, progress: @escaping ProgressHandler,
-                         done: @escaping DoneHandler) {
+    override func upload(_ asset: Asset, uploadId: String) -> Progress {
 
-        let collection = asset.collection
+        let progress = Progress.discreteProgress(totalUnitCount: 3)
 
-        guard let projectName = collection.project.name,
-            let provider = provider,
+        guard let provider = provider,
+            let projectName = asset.collection.project.name,
+            let collectionName = asset.collection.name,
             let file = asset.file
         else {
-            return self.done(asset, "Optionals could not be unpacked.", done)
+            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
+                self.done(uploadId, "Configuration invalid.".localize())
+            }
+
+            return progress
         }
-
-        collection.close()
-
-        guard let collectionName = collection.name else {
-            return self.done(asset, "Collection name could not be created.", done)
-        }
-
-        // Send an initial empty progress, to trigger some UI feedback.
-        // Folder creation can take a while.
-        progress(asset, Progress.discreteProgress(totalUnitCount: 100))
 
         create(folder: projectName, at: "") { error in
-            if let error = error {
-                return self.done(asset, error.localizedDescription, done)
+            if error != nil || progress.isCancelled {
+                return self.done(uploadId, error)
             }
+
+            progress.completedUnitCount += 1
 
             self.create(folder: collectionName, at: projectName) { error in
-
-                if let error = error {
-                    return self.done(asset, error.localizedDescription, done)
+                if error != nil || progress.isCancelled {
+                    return self.done(uploadId, error)
                 }
 
-                let filepath = self.construct(url: nil, projectName, collectionName, asset.filename).path
+                progress.completedUnitCount += 1
 
-                // Write metadata JSON encoded.
-                provider.writeContents(path: "\(filepath).\(WebDavSpace.metaFileExt)",
-                    contents: try? Space.jsonEncoder.encode(asset),
-                    overwrite: true, completionHandler: nil)
+                let filepath = Space.construct(url: nil, projectName, collectionName, asset.filename).path
 
+// TODO: Our Nextcloud server currently rejects this. Why?
+//
+//                let p = provider.writeContents(path: "\(filepath).\(WebDavSpace.metaFileExt)",
+//                    contents: try? Space.jsonEncoder.encode(asset)) { error in
+//                        if error != nil || progress.isCancelled {
+//                            return self.done(uploadId, error)
+//                        }
 
-                // Inject our own background session, so upload can finish, when
-                // user quits app.
-                // This can only be done on upload, we would get an error on
-                // deletion.
-                let conf = Space.sessionConf
-                conf.urlCache = provider.cache
-                conf.requestCachePolicy = .returnCacheDataElseLoad
+                        // Inject our own background session, so upload can finish, when
+                        // user quits app.
+                        // This can only be done on upload, we would get an error on
+                        // deletion.
+                        let conf = Space.sessionConf
+                        conf.urlCache = provider.cache
+                        conf.requestCachePolicy = .returnCacheDataElseLoad
 
-                let sessionDelegate = SessionDelegate(fileProvider: provider)
+                        let sessionDelegate = SessionDelegate(fileProvider: provider)
 
-                // Store for later re-set.
-                let oldSession = provider.session
+                        // Store for later re-set.
+                        let oldSession = provider.session
 
-                provider.session = URLSession(configuration: conf,
-                                              delegate: sessionDelegate as URLSessionDelegate?,
-                                              delegateQueue: provider.operation_queue)
+                        provider.session = URLSession(configuration: conf,
+                                                      delegate: sessionDelegate as URLSessionDelegate?,
+                                                      delegateQueue: provider.operation_queue)
 
-                var timer: DispatchSourceTimer?
+                        let p = provider.copyItem(localFile: file, to: filepath) { error in
+                            // Reset to normal session, so #remove doesn't break.
+                            provider.session = oldSession
 
-                let prog = provider.copyItem(localFile: file, to: filepath) { error in
-                    if error == nil {
-                        asset.publicUrl = self.construct(url: self.url, projectName, collectionName, asset.filename)
-                        asset.isUploaded = true
-                        collection.setUploadedNow()
-                    }
-
-                    timer?.cancel()
-
-                    // Reset to normal session, so #remove doesn't break.
-                    provider.session = oldSession
-
-                    self.done(asset, error?.localizedDescription, done)
-                }
-
-                if let prog = prog {
-                    timer = DispatchSource.makeTimerSource(flags: .strict, queue: DispatchQueue.main)
-                    timer?.schedule(deadline: .now(), repeating: .seconds(1))
-                    timer?.setEventHandler() {
-                        // For an uninvestigated reason, this progress counter runs until 200%, which looks
-                        // kind of weird to the user, so we scale it down, here.
-                        let scaledProgress = Progress(totalUnitCount: prog.totalUnitCount)
-                        scaledProgress.completedUnitCount = prog.completedUnitCount / 2
-
-                        progress(asset, scaledProgress)
-
-                        if scaledProgress.isCancelled {
-                            prog.cancel()
+                            self.done(uploadId, error?.localizedDescription,
+                                      Space.construct(url: self.url, projectName,
+                                                      collectionName, asset.filename))
                         }
-                    }
-                    timer?.resume()
-                }
+
+                        if let p = p {
+                            progress.addChild(p, withPendingUnitCount: 1)
+                        }
+//                }
+//
+//                if let p = p {
+//                    progress.addChild(p, withPendingUnitCount: 1)
+//                }
             }
         }
+
+        return progress
     }
 
     override func remove(_ asset: Asset, done: @escaping DoneHandler) {
@@ -192,7 +176,9 @@ class WebDavSpace: Space, Item {
 
                     // Try to delete containing folders until root.
                     self.delete(folder: URL(fileURLWithPath: filepath).deletingLastPathComponent().path) { error in
-                        self.done(asset, error?.localizedDescription, done)
+                        DispatchQueue.main.async {
+                            done(asset)
+                        }
                     }
                 }
             }
@@ -200,8 +186,9 @@ class WebDavSpace: Space, Item {
         else {
             // If it's just not on the server, anyway, it's ok to call the success callback.
             if !asset.isUploaded {
-                // Remove old errors, so the callback doesn't stumble over that.
-                self.done(asset, nil, done)
+                DispatchQueue.main.async {
+                    done(asset)
+                }
             }
         }
     }
