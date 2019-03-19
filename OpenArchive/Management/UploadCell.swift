@@ -19,7 +19,19 @@ class UploadCell: BaseCell, PKDownloadButtonDelegate {
         return "uploadCell"
     }
 
-    @IBOutlet weak var progress: PKDownloadButton!
+    @IBOutlet weak var progress: PKDownloadButton! {
+        didSet {
+            let icon = UIImage(named: "ic_up")
+
+            progress.startDownloadButton.setTitle(nil, for: .normal)
+            progress.startDownloadButton.setAttributedTitle(nil, for: .normal)
+            progress.startDownloadButton.setImage(icon?.withRenderingMode(.alwaysTemplate), for: .normal)
+            progress.startDownloadButton.setTitle(nil, for: .highlighted)
+            progress.startDownloadButton.setAttributedTitle(nil, for: .highlighted)
+            progress.startDownloadButton.setImage(icon, for: .highlighted)
+        }
+    }
+    
     @IBOutlet weak var thumbnail: UIImageView!
     @IBOutlet weak var nameLb: UILabel!
 

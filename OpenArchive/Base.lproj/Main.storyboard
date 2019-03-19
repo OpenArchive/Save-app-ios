@@ -453,44 +453,44 @@
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="tR3-uT-RuL" customClass="PKDownloadButton">
+                                        <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FlS-G5-rgz" customClass="PKDownloadButton">
                                             <rect key="frame" x="16" y="11" width="22" height="22"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" secondItem="tR3-uT-RuL" secondAttribute="height" multiplier="1:1" id="kwQ-UD-CaD"/>
+                                                <constraint firstAttribute="width" secondItem="FlS-G5-rgz" secondAttribute="height" multiplier="1:1" id="IuZ-8w-54V"/>
                                             </constraints>
                                             <connections>
-                                                <outlet property="delegate" destination="pBx-SL-j5G" id="rRx-lv-umk"/>
+                                                <outlet property="delegate" destination="pBx-SL-j5G" id="7yV-Mg-WhL"/>
                                             </connections>
                                         </view>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Xe9-1V-dIV">
-                                            <rect key="frame" x="46" y="11" width="25" height="22"/>
+                                            <rect key="frame" x="46" y="11" width="22" height="22"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" secondItem="Xe9-1V-dIV" secondAttribute="height" multiplier="25:22" id="jM7-NX-pIl"/>
+                                                <constraint firstAttribute="width" secondItem="Xe9-1V-dIV" secondAttribute="height" multiplier="1:1" id="jM7-NX-pIl"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ax2-xI-c8g">
-                                            <rect key="frame" x="79" y="13" width="280" height="18"/>
+                                            <rect key="frame" x="76" y="13" width="283" height="18"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="Xe9-1V-dIV" firstAttribute="leading" secondItem="FlS-G5-rgz" secondAttribute="trailing" constant="8" id="K41-T4-1sn"/>
                                         <constraint firstItem="ax2-xI-c8g" firstAttribute="leading" secondItem="Xe9-1V-dIV" secondAttribute="trailing" constant="8" id="K5q-QB-jn9"/>
                                         <constraint firstItem="ax2-xI-c8g" firstAttribute="trailing" secondItem="iMX-Oo-sxn" secondAttribute="trailingMargin" id="KfT-i8-J6V"/>
-                                        <constraint firstItem="Xe9-1V-dIV" firstAttribute="leading" secondItem="tR3-uT-RuL" secondAttribute="trailing" constant="8" id="Ks6-4b-mOQ"/>
                                         <constraint firstItem="Xe9-1V-dIV" firstAttribute="bottom" secondItem="iMX-Oo-sxn" secondAttribute="bottomMargin" id="Mqm-GT-s4Y"/>
-                                        <constraint firstItem="tR3-uT-RuL" firstAttribute="bottom" secondItem="iMX-Oo-sxn" secondAttribute="bottomMargin" id="S75-H9-QCf"/>
-                                        <constraint firstItem="tR3-uT-RuL" firstAttribute="leading" secondItem="iMX-Oo-sxn" secondAttribute="leadingMargin" id="VR3-8G-oo5"/>
+                                        <constraint firstItem="FlS-G5-rgz" firstAttribute="top" secondItem="iMX-Oo-sxn" secondAttribute="topMargin" id="S4k-OC-Cgs"/>
                                         <constraint firstItem="ax2-xI-c8g" firstAttribute="centerY" secondItem="iMX-Oo-sxn" secondAttribute="centerY" id="h0Y-0D-eFK"/>
-                                        <constraint firstItem="tR3-uT-RuL" firstAttribute="top" secondItem="iMX-Oo-sxn" secondAttribute="topMargin" id="qzH-6l-6vG"/>
+                                        <constraint firstItem="FlS-G5-rgz" firstAttribute="leading" secondItem="iMX-Oo-sxn" secondAttribute="leadingMargin" id="lvm-L6-NPg"/>
+                                        <constraint firstItem="FlS-G5-rgz" firstAttribute="bottom" secondItem="iMX-Oo-sxn" secondAttribute="bottomMargin" id="nIU-vD-E6l"/>
                                         <constraint firstItem="Xe9-1V-dIV" firstAttribute="top" secondItem="iMX-Oo-sxn" secondAttribute="topMargin" id="xtg-JC-v9b"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="nameLb" destination="ax2-xI-c8g" id="smh-K3-P2T"/>
-                                    <outlet property="progress" destination="tR3-uT-RuL" id="cz5-qN-BND"/>
+                                    <outlet property="progress" destination="FlS-G5-rgz" id="CnM-xr-TeV"/>
                                     <outlet property="thumbnail" destination="Xe9-1V-dIV" id="dGW-h2-NEI"/>
                                 </connections>
                             </tableViewCell>
