@@ -331,77 +331,68 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
                                for: assetsReadConn?.beginLongLivedReadTransaction() ?? [],
                                with: assetsMappings)
 
-        if let rowChanges = rowChanges as? [YapDatabaseViewRowChange],
-            let sectionChanges = sectionChanges as? [YapDatabaseViewSectionChange],
-            let collectionChanges = collectionChanges as? [YapDatabaseViewRowChange],
-            rowChanges.count > 0 || sectionChanges.count > 0 || collectionChanges.count > 0 {
+        var toDelete: IndexSet = []
+        var toInsert: IndexSet = []
+        var toReload: IndexSet = []
 
-            var deletedSections: Set<Int> = []
-            var insertedSections: Set<Int> = []
+        for change in sectionChanges as? [YapDatabaseViewSectionChange] ?? [] {
+            switch change.type {
+            case .delete:
+                toDelete.insert(Int(change.index))
+            case .insert:
+                toInsert.insert(Int(change.index))
+            default:
+                break
+            }
+        }
 
-            // TODO: We're crashing here, when an upload is finished for a still
-            // unknown reason.
+        // We need to recognize changes in `Collection` objects used in the
+        // section headers.
+        for change in collectionChanges as? [YapDatabaseViewRowChange] ?? [] {
+            switch change.type {
+            case .update:
+                if let indexPath = change.indexPath,
+                    change.finalGroup == tabBar.selectedProject?.id {
 
+                    toReload.insert(indexPath.row)
+                }
+            default:
+                break
+            }
+        }
+
+        // We need to reload the complete section, so the section header
+        // gets updated, too, and the `Collection.assets` array along with it.
+        for change in rowChanges as? [YapDatabaseViewRowChange] ?? [] {
+            switch change.type {
+            case .delete:
+                if let indexPath = change.indexPath {
+                    toReload.insert(indexPath.section)
+                }
+            case .insert:
+                if let newIndexPath = change.newIndexPath {
+                    toReload.insert(newIndexPath.section)
+                }
+            case .move:
+                if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
+                    toReload.insert(indexPath.section)
+                    toReload.insert(newIndexPath.section)
+                }
+            case .update:
+                if let indexPath = change.indexPath {
+                    toReload.insert(indexPath.section)
+                }
+            }
+        }
+
+        // Don't reload sections, which are about to be deleted.
+        toReload.subtract(toDelete)
+
+        if toDelete.count > 0 || toInsert.count > 0 || toReload.count > 0 {
             collectionView.performBatchUpdates({
-                for change in sectionChanges {
-                    switch change.type {
-                    case .delete:
-                        deletedSections.insert(Int(change.index))
-                        collectionView.deleteSections([IndexSet.Element(change.index)])
-                    case .insert:
-                        insertedSections.insert(Int(change.index))
-                        collectionView.insertSections([IndexSet.Element(change.index)])
-                    default:
-                        break
-                    }
-                }
-
-                // We need to recognize changes in `Collection` objects used in the
-                // section headers.
-                for change in collectionChanges {
-                    switch change.type {
-                    case .update:
-                        if let indexPath = change.indexPath,
-                            change.finalGroup == tabBar.selectedProject?.id {
-
-                            collectionView.reloadSections(IndexSet(integer: indexPath.row))
-                        }
-                    default:
-                        break
-                    }
-                }
-
-                // We need to reload the complete section, so the section header
-                // gets updated, too, and the `Collection.assets` array along with it.
-                for change in rowChanges {
-                    switch change.type {
-                    case .delete:
-                        if let indexPath = change.indexPath {
-                            // Ignore if section gets deleted anyway. If we would
-                            // reload the section which also gets deleted, the app would crash.
-                            if !deletedSections.contains(indexPath.section) {
-                                collectionView.reloadSections(IndexSet(integer: indexPath.section))
-                            }
-                        }
-                    case .insert:
-                        if let newIndexPath = change.newIndexPath {
-                            // Ignore if section gets freshly inserted anyway. If we would
-                            // reload the section which also gets inserted, the app would crash.
-                            if !insertedSections.contains(newIndexPath.section) {
-                                collectionView.reloadSections(IndexSet(integer: newIndexPath.section))
-                            }
-                        }
-                    case .move:
-                        if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
-                            collectionView.reloadSections([IndexSet.Element(indexPath.section),
-                                                           IndexSet.Element(newIndexPath.section)])
-                        }
-                    case .update:
-                        if let indexPath = change.indexPath {
-                            collectionView.reloadSections(IndexSet(integer: indexPath.section))
-                        }
-                    }
-                }
+                collectionView.deleteSections(toDelete)
+                collectionView.insertSections(toInsert)
+                collectionView.reloadSections(toReload)
             })
 
             collectionView.toggle(numberOfSections(in: collectionView) != 0, animated: true)
