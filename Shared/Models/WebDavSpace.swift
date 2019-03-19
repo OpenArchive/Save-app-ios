@@ -83,7 +83,7 @@ class WebDavSpace: Space, Item {
 
     override func upload(_ asset: Asset, uploadId: String) -> Progress {
 
-        let progress = Progress.discreteProgress(totalUnitCount: 3)
+        let progress = Progress.discreteProgress(totalUnitCount: 100)
 
         guard let provider = provider,
             let projectName = asset.collection.project.name,
@@ -102,24 +102,22 @@ class WebDavSpace: Space, Item {
                 return self.done(uploadId, error)
             }
 
-            progress.completedUnitCount += 1
+            progress.completedUnitCount += 5
 
             self.create(folder: collectionName, at: projectName) { error in
                 if error != nil || progress.isCancelled {
                     return self.done(uploadId, error)
                 }
 
-                progress.completedUnitCount += 1
+                progress.completedUnitCount += 5
 
                 let filepath = Space.construct(url: nil, projectName, collectionName, asset.filename).path
 
-// TODO: Our Nextcloud server currently rejects this. Why?
-//
-//                let p = provider.writeContents(path: "\(filepath).\(WebDavSpace.metaFileExt)",
-//                    contents: try? Space.jsonEncoder.encode(asset)) { error in
-//                        if error != nil || progress.isCancelled {
-//                            return self.done(uploadId, error)
-//                        }
+                let p = provider.writeContents(path: "\(filepath).\(WebDavSpace.metaFileExt)",
+                    contents: try? Space.jsonEncoder.encode(asset)) { error in
+                        if error != nil || progress.isCancelled {
+                            return self.done(uploadId, error)
+                        }
 
                         // Inject our own background session, so upload can finish, when
                         // user quits app.
@@ -148,13 +146,13 @@ class WebDavSpace: Space, Item {
                         }
 
                         if let p = p {
-                            progress.addChild(p, withPendingUnitCount: 1)
+                            progress.addChild(p, withPendingUnitCount: 75)
                         }
-//                }
-//
-//                if let p = p {
-//                    progress.addChild(p, withPendingUnitCount: 1)
-//                }
+                }
+
+                if let p = p {
+                    progress.addChild(p, withPendingUnitCount: 15)
+                }
             }
         }
 
