@@ -157,6 +157,9 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
 
         displaysUppercaseTitles = false
 
+        selectedItemTitleFont = UIFont.systemFont(ofSize: 13, weight: .medium)
+        unselectedItemTitleFont = UIFont.systemFont(ofSize: 13, weight: .medium)
+
         setTitleColor(UIColor.gray, for: .normal)
         setTitleColor(UIColor.black, for: .selected)
         bottomDividerColor = UIColor.lightGray

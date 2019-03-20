@@ -159,10 +159,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="server" translatesAutoresizingMaskIntoConstraints="NO" id="hpS-2l-dcc">
-                                <rect key="frame" x="16" y="36" width="40" height="40"/>
+                                <rect key="frame" x="16" y="36" width="36" height="36"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="40" id="WCF-GJ-S02"/>
-                                    <constraint firstAttribute="height" constant="40" id="YMA-T2-Ey1"/>
+                                    <constraint firstAttribute="width" constant="36" id="WCF-GJ-S02"/>
+                                    <constraint firstAttribute="height" constant="36" id="YMA-T2-Ey1"/>
                                 </constraints>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
@@ -173,14 +173,14 @@
                                     <outletCollection property="gestureRecognizers" destination="WyM-Oj-yBY" appends="YES" id="cPI-iW-H8p"/>
                                 </connections>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SAVE" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IgM-tk-GPC">
-                                <rect key="frame" x="64" y="40" width="295" height="32"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SAVE" textAlignment="natural" lineBreakMode="tailTruncation" minimumFontSize="7" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IgM-tk-GPC">
+                                <rect key="frame" x="60" y="35" width="299" height="38.5"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
                                 <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sv8-ax-o88">
-                                <rect key="frame" x="16" y="84" width="343" height="48"/>
+                                <rect key="frame" x="16" y="80" width="343" height="48"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="1ot-z2-tx9"/>
@@ -197,7 +197,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="cdB-Ih-Rhb">
-                                <rect key="frame" x="16" y="140" width="343" height="519"/>
+                                <rect key="frame" x="16" y="136" width="343" height="523"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="3" minimumInteritemSpacing="3" id="21E-IJ-odh">
                                     <size key="itemSize" width="80" height="80"/>
@@ -234,14 +234,14 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" text="Uploading" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PNO-3V-865">
-                                            <rect key="frame" x="8" y="8" width="259" height="18"/>
-                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                            <rect key="frame" x="8" y="8" width="259" height="17"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" text="0 of 2 items uploaded" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LqD-hD-tvG">
-                                            <rect key="frame" x="8" y="26" width="259" height="16"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                            <rect key="frame" x="8" y="27.5" width="259" height="14.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
@@ -278,11 +278,11 @@
                                 </connections>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kiu-eR-U6M" customClass="MDCFloatingButton">
-                                <rect key="frame" x="311" y="611" width="48" height="48"/>
+                                <rect key="frame" x="303" y="595" width="56" height="56"/>
                                 <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="48" id="IOE-kX-TMe"/>
-                                    <constraint firstAttribute="height" constant="48" id="gy9-0e-USl"/>
+                                    <constraint firstAttribute="width" constant="56" id="IOE-kX-TMe"/>
+                                    <constraint firstAttribute="height" constant="56" id="gy9-0e-USl"/>
                                 </constraints>
                                 <state key="normal" image="ic_plus"/>
                                 <connections>
@@ -292,7 +292,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="vgM-P6-FLk" firstAttribute="bottom" secondItem="kiu-eR-U6M" secondAttribute="bottom" constant="8" id="00k-gS-vG2"/>
+                            <constraint firstItem="vgM-P6-FLk" firstAttribute="bottom" secondItem="kiu-eR-U6M" secondAttribute="bottom" constant="16" id="00k-gS-vG2"/>
                             <constraint firstItem="dIV-uA-I3m" firstAttribute="centerY" secondItem="VEn-ta-I3v" secondAttribute="centerY" id="9Dt-AG-kUt"/>
                             <constraint firstItem="vgM-P6-FLk" firstAttribute="trailing" secondItem="IgM-tk-GPC" secondAttribute="trailing" constant="16" id="Eju-0A-giV"/>
                             <constraint firstItem="cdB-Ih-Rhb" firstAttribute="leading" secondItem="vgM-P6-FLk" secondAttribute="leading" constant="16" id="SCf-xT-Um4"/>
@@ -967,8 +967,8 @@
         <image name="server" width="27" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="aBM-nf-RSW"/>
-        <segue reference="oOr-Wp-7YS"/>
-        <segue reference="VpP-JM-61j"/>
+        <segue reference="ePG-WN-AhZ"/>
+        <segue reference="FnB-Jb-td1"/>
+        <segue reference="Po4-0Y-GwW"/>
     </inferredMetricsTieBreakers>
 </document>
