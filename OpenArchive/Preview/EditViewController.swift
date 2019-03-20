@@ -186,12 +186,7 @@ class EditViewController: BaseViewController, UITextViewDelegate,
      */
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
-            if textView == descTv {
-                locationTv.becomeFirstResponder()
-            }
-            else {
-                dismissKeyboard()
-            }
+            dismissKeyboard()
 
             return false
         }
