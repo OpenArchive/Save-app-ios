@@ -17,7 +17,7 @@ class BaseTableViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.register(TableHeader.self, forHeaderFooterViewReuseIdentifier: TableHeader.reuseId)
+        tableView.register(TableHeader.nib, forHeaderFooterViewReuseIdentifier: TableHeader.reuseId)
         tableView.register(MenuItemCell.nib, forCellReuseIdentifier: MenuItemCell.reuseId)
 
         tableView.tableFooterView = UIView()
@@ -28,5 +28,9 @@ class BaseTableViewController: UITableViewController {
 
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> TableHeader {
         return tableView.dequeueReusableHeaderFooterView(withIdentifier: TableHeader.reuseId) as! TableHeader
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return TableHeader.height
     }
 }

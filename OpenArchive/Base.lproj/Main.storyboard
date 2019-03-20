@@ -741,27 +741,27 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="spacesListCell" rowHeight="46" id="zxK-pN-lZm" customClass="SpacesListCell" customModule="OpenArchive" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="46"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="spacesListCell" rowHeight="54" id="zxK-pN-lZm" customClass="SpacesListCell" customModule="OpenArchive" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="375" height="54"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="zxK-pN-lZm" id="StF-8b-dc7">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="45.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="53.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <collectionView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" showsVerticalScrollIndicator="NO" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="ADl-LX-p5S">
-                                            <rect key="frame" x="16" y="0.0" width="343" height="45.5"/>
+                                            <rect key="frame" x="16" y="0.0" width="343" height="53.5"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <collectionViewLayout key="collectionViewLayout" id="3Tv-Zm-ZbP" customClass="AlignedCollectionViewFlowLayout" customModule="AlignedCollectionViewFlowLayout"/>
                                             <cells>
                                                 <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="spaceCell" id="puQ-S5-Bf2" customClass="SpaceCell" customModule="OpenArchive" customModuleProvider="target">
-                                                    <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                                    <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
-                                                        <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                                        <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
                                                         <autoresizingMask key="autoresizingMask"/>
                                                         <subviews>
                                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Szh-2w-Xoq">
-                                                                <rect key="frame" x="0.0" y="0.0" width="24" height="24"/>
+                                                                <rect key="frame" x="0.0" y="0.0" width="32" height="32"/>
                                                             </imageView>
                                                         </subviews>
                                                     </view>
@@ -771,7 +771,7 @@
                                                         <constraint firstAttribute="bottom" secondItem="Szh-2w-Xoq" secondAttribute="bottom" id="HYH-Zk-SEd"/>
                                                         <constraint firstItem="Szh-2w-Xoq" firstAttribute="top" secondItem="puQ-S5-Bf2" secondAttribute="top" id="aPY-5p-FfJ"/>
                                                     </constraints>
-                                                    <size key="customSize" width="24" height="24"/>
+                                                    <size key="customSize" width="32" height="32"/>
                                                     <connections>
                                                         <outlet property="favIcon" destination="Szh-2w-Xoq" id="U5S-Np-b1Z"/>
                                                     </connections>
@@ -791,7 +791,7 @@
                                 </connections>
                             </tableViewCell>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="selectedSpaceCell" rowHeight="163" id="05P-XC-V3U" customClass="SelectedSpaceCell" customModule="OpenArchive" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="74" width="375" height="163"/>
+                                <rect key="frame" x="0.0" y="82" width="375" height="163"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="05P-XC-V3U" id="Mkx-bo-aGt">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="162.5"/>

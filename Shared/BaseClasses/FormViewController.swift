@@ -36,7 +36,7 @@ class FormViewController: Eureka.FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        tableView.register(TableHeader.self, forHeaderFooterViewReuseIdentifier: TableHeader.reuseId)
+        tableView.register(TableHeader.nib, forHeaderFooterViewReuseIdentifier: TableHeader.reuseId)
 
         tableView?.backgroundColor = UIColor.white
         tableView.tableFooterView = UIView()
@@ -45,7 +45,11 @@ class FormViewController: Eureka.FormViewController {
 
     // MARK: UITableViewDelegate
 
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
-        return tableView.dequeueReusableHeaderFooterView(withIdentifier: TableHeader.reuseId)
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> TableHeader? {
+        return tableView.dequeueReusableHeaderFooterView(withIdentifier: TableHeader.reuseId) as? TableHeader
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return TableHeader.height
     }
 }

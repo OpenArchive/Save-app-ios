@@ -16,14 +16,15 @@ class SpacesListCell: BaseCell {
     }
 
     override class var height: CGFloat {
-        return 46
+        return 54
     }
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
             let alignedFlowLayout = collectionView?.collectionViewLayout as? AlignedCollectionViewFlowLayout
             alignedFlowLayout?.horizontalAlignment = .right
-            alignedFlowLayout?.itemSize = CGSize(width: 24, height: 24)
+            alignedFlowLayout?.itemSize = CGSize(width: 32, height: 32)
+            alignedFlowLayout?.minimumInteritemSpacing = 24
         }
     }
 }

@@ -186,9 +186,9 @@ class SpaceViewController: BaseTableViewController, UICollectionViewDelegate, UI
 
         switch section {
         case 1:
-            header.text = "Projects".localize()
+            header.label.text = "Projects".localize().localizedUppercase
         case 2:
-            header.text = "Info".localize()
+            header.label.text = "Info".localize().localizedUppercase
         default:
             break
         }

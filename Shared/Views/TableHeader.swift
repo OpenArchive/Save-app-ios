@@ -10,26 +10,18 @@ import UIKit
 
 class TableHeader: UITableViewHeaderFooterView {
 
+    class var nib: UINib {
+        return UINib(nibName: String(describing: self), bundle: Bundle(for: self))
+    }
+
     class var reuseId: String {
         return String(describing: self)
     }
 
-    var text: String? {
-        get {
-            return textLabel?.text
-        }
-        set {
-            textLabel?.text = newValue?.localizedUppercase
-        }
+    class var height: CGFloat {
+        return 54
     }
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
 
-        // Of course it would be way better to do that in #init or even in #text,
-        // but iOS has other ideas about font sizes and background color.
-        textLabel?.textColor = UIColor.accent
-        textLabel?.font = UIFont.systemFont(ofSize: 15, weight: .bold)
-        backgroundView?.backgroundColor = UIColor.white
-    }
+    @IBOutlet weak var label: UILabel!
 }
