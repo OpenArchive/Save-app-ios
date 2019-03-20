@@ -385,8 +385,9 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
             }
         }
 
-        // Don't reload sections, which are about to be deleted.
+        // Don't reload sections, which are about to be deleted or inserted.
         toReload.subtract(toDelete)
+        toReload.subtract(toInsert)
 
         if toDelete.count > 0 || toInsert.count > 0 || toReload.count > 0 {
             collectionView.performBatchUpdates({
