@@ -27,6 +27,10 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
         return mappings
     }()
 
+    private var count: Int {
+        return Int(mappings.numberOfItems(inSection: 0))
+    }
+
     /**
      Delete action for table list row. Deletes an upload.
      */
@@ -62,11 +66,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let title = MultilineTitle()
-        title.title.text = "Waiting…".localize()
-        title.subtitle.text = "No Connection".localize()
-
-        navigationItem.titleView = title
+        updateTitle()
 
         navigationItem.rightBarButtonItem = getButton()
 
@@ -110,7 +110,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Int(mappings.numberOfItems(inSection: 0))
+        return count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -176,8 +176,6 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
         case .downloaded:
             break
         }
-
-        button.state = upload.state
     }
 
 
@@ -224,6 +222,8 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
             }
 
             tableView.endUpdates()
+
+            updateTitle()
         }
     }
 
@@ -245,6 +245,27 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
 
 
     // MARK: Private Methods
+
+    private func updateTitle() {
+        let titleView = navigationItem.titleView as? MultilineTitle ?? MultilineTitle()
+        let count = self.count
+        var uploading = false
+
+        for row in 0 ... count {
+            if let cell = tableView.cellForRow(at: IndexPath(row: row, section: 0)) as? UploadCell,
+                let state = cell.upload?.state,
+                state == .pending || state == .downloading {
+
+                uploading = true
+                break
+            }
+        }
+
+        titleView.title.text = count == 0 ? "Done".localize() : (uploading ? "Uploading…".localize() : "Waiting…".localize())
+        titleView.subtitle.text = "% left".localize(value: Formatters.format(count))
+
+        navigationItem.titleView = titleView
+    }
 
     @objc private func toggleEdit() {
         if tableView.isEditing {

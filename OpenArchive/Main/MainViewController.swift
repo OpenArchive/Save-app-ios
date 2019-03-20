@@ -331,9 +331,9 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
                                for: assetsReadConn?.beginLongLivedReadTransaction() ?? [],
                                with: assetsMappings)
 
-        var toDelete: IndexSet = []
-        var toInsert: IndexSet = []
-        var toReload: IndexSet = []
+        var toDelete = IndexSet()
+        var toInsert = IndexSet()
+        var toReload = IndexSet()
 
         for change in sectionChanges as? [YapDatabaseViewSectionChange] ?? [] {
             switch change.type {
