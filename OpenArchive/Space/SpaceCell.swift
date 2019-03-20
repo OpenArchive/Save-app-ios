@@ -24,10 +24,10 @@ class SpaceCell: UICollectionViewCell {
 
     func setAdd() {
         space = nil
-        favIcon.image = UIImage(named: "ic_add")
         favIcon.contentMode = .center
         favIcon.layer.borderWidth = 1
         favIcon.layer.borderColor = UIColor.accent.cgColor
         favIcon.layer.cornerRadius = favIcon.frame.width / 2
+        favIcon.image = UIImage(named: "ic_add")
     }
 }
