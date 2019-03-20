@@ -19,16 +19,19 @@ class EditViewController: BaseViewController, UITextViewDelegate,
     enum DirectEdit {
         case description
         case location
+        case notes
     }
 
     @IBOutlet weak var closeBt: UIButton!
     @IBOutlet weak var tagBt: UIButton!
     @IBOutlet weak var locationBt: UIButton!
+    @IBOutlet weak var notesBt: UIButton!
     @IBOutlet weak var flagBt: UIButton!
     @IBOutlet weak var container: UIView!
     @IBOutlet weak var descTv: UITextView!
     @IBOutlet weak var locationTv: UITextView!
-
+    @IBOutlet weak var notesTv: UITextView!
+    
     var collection: Collection?
 
     var selected: Int?
@@ -41,8 +44,9 @@ class EditViewController: BaseViewController, UITextViewDelegate,
             : collection?.assets[selected!]
     }
 
-    private var descPlaceholder = "Who or what can be seen here?".localize()
-    private var locPlaceholder = "No location".localize()
+    private let descPlaceholder = "Who is here? Separate names with commas.".localize()
+    private let locPlaceholder = "No location".localize()
+    private let notesPlaceholder = "Notes".localize()
 
     private var originalFrame: CGRect?
 
@@ -82,6 +86,9 @@ class EditViewController: BaseViewController, UITextViewDelegate,
         }
         else if directEdit == .location {
             locationTv.becomeFirstResponder()
+        }
+        else if directEdit == .notes {
+            notesTv.becomeFirstResponder()
         }
     }
 
@@ -127,19 +134,23 @@ class EditViewController: BaseViewController, UITextViewDelegate,
     // MARK: UITextViewDelegate
 
     /**
-     Callback for `descTv` and `locationBt`.
+     Callback for `descTv`, `locationBt` and `notesBt`.
 
      `UITextViews` cannot have placeholders like `UITextField`.
      Therefore, manually remove placeholder, if any.
      */
     func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
-        if textView == descTv {
+        switch textView {
+        case descTv:
             if textView.text == descPlaceholder {
                 textView.text = nil
             }
-        }
-        else {
+        case locationTv:
             if textView.text == locPlaceholder {
+                textView.text = nil
+            }
+        default:
+            if textView.text == notesPlaceholder {
                 textView.text = nil
             }
         }
@@ -148,7 +159,7 @@ class EditViewController: BaseViewController, UITextViewDelegate,
     }
 
     /**
-     Callback for `descTv` and `locationBt`.
+     Callback for `descTv`, `locationBt` and `notesBt`.
 
      `UITextViews` cannot have placeholders like `UITextField`.
      Therefore, restore placeholder, if nothing entered.
@@ -156,7 +167,8 @@ class EditViewController: BaseViewController, UITextViewDelegate,
      Update indicator button and store changes.
      */
     func textViewDidEndEditing(_ textView: UITextView) {
-        if textView == descTv {
+        switch textView {
+        case descTv:
             asset?.desc = textView.text
 
             if textView.text.isEmpty {
@@ -164,8 +176,8 @@ class EditViewController: BaseViewController, UITextViewDelegate,
             }
 
             tagBt.isSelected = !(asset?.desc?.isEmpty ?? true)
-        }
-        else {
+
+        case locationTv:
             asset?.location = textView.text
 
             if textView.text.isEmpty {
@@ -173,15 +185,23 @@ class EditViewController: BaseViewController, UITextViewDelegate,
             }
 
             locationBt.isSelected = !(asset?.location?.isEmpty ?? true)
+
+        default:
+            asset?.notes = textView.text
+
+            if textView.text.isEmpty {
+                textView.text = notesPlaceholder
+            }
+
+            notesBt.isSelected = !(asset?.notes?.isEmpty ?? true)
         }
 
         store()
     }
 
     /**
-     Callback for `descTv` and `locationBt`.
+     Callback for `descTv`, `locationBt` and `notesBt`.
 
-     Go to next field, if user hits [enter].
      Hide keyboard, when user hits [enter].
      */
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
@@ -241,11 +261,15 @@ class EditViewController: BaseViewController, UITextViewDelegate,
     // MARK: Actions
 
     @IBAction func edit(_ sender: UIButton) {
-        if sender == tagBt {
+        switch sender {
+        case tagBt:
             descTv.becomeFirstResponder()
-        }
-        else {
+
+        case locationBt:
             locationTv.becomeFirstResponder()
+
+        default:
+            notesTv.becomeFirstResponder()
         }
     }
 
@@ -272,6 +296,8 @@ class EditViewController: BaseViewController, UITextViewDelegate,
 
         locationBt.isSelected = !(asset?.location?.isEmpty ?? true)
 
+        notesBt.isSelected = !(asset?.notes?.isEmpty ?? true)
+
         flagBt.isUserInteractionEnabled = allowEdit
         flagBt.isSelected = asset?.flagged ?? false
 
@@ -284,6 +310,11 @@ class EditViewController: BaseViewController, UITextViewDelegate,
         locationTv.isEditable = allowEdit
         locationTv.text = !locationTv.isFirstResponder && (asset?.location?.isEmpty ?? true)
             ? locPlaceholder : asset?.location
+
+        notesTv.isSelectable = allowEdit
+        notesTv.isEditable = allowEdit
+        notesTv.text = !notesTv.isFirstResponder && (asset?.notes?.isEmpty ?? true)
+            ? notesPlaceholder : asset?.notes
     }
 
     private func store() {

@@ -48,6 +48,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     var location: String?
     var tags: [String]?
     var license: String?
+    var notes: String?
     var publicUrl: URL?
     var isUploaded = false
     private(set) var collectionId: String
@@ -251,6 +252,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         title = decoder.decodeObject(forKey: "title") as? String
         desc = decoder.decodeObject(forKey: "desc") as? String
         location = decoder.decodeObject(forKey: "location") as? String
+        notes = decoder.decodeObject(forKey: "notes") as? String
         tags = decoder.decodeObject(forKey: "tags") as? [String]
         license = decoder.decodeObject(forKey: "license") as? String
         publicUrl = decoder.decodeObject(forKey: "publicUrl") as? URL
@@ -266,6 +268,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         coder.encode(title, forKey: "title")
         coder.encode(desc, forKey: "desc")
         coder.encode(location, forKey: "location")
+        coder.encode(notes, forKey: "notes")
         coder.encode(tags, forKey: "tags")
         coder.encode(license, forKey: "license")
         coder.encode(publicUrl, forKey: "publicUrl")
@@ -283,6 +286,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         case created = "dateCreated"
         case license = "usage"
         case location
+        case notes
         case tags
         case mimeType = "contentType"
         case filesize = "contentLength"
@@ -319,6 +323,10 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
             try container.encode(location, forKey: .location)
         }
 
+        if notes != nil {
+            try container.encode(notes, forKey: .notes)
+        }
+
         if tags != nil {
             try container.encode(tags, forKey: .tags)
         }
@@ -340,11 +348,12 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     // MARK: NSObject
 
     override var description: String {
-        return "\(String(describing: type(of: self))): [id=\(id), created=\(created), uti=\(uti), "
-            + "title=\(title ?? "nil"), desc=\(desc ?? "nil"), location=\(location ?? "nil"), "
+        return "\(String(describing: type(of: self))): [id=\(id), created=\(created), "
+            + "uti=\(uti), title=\(title ?? "nil"), desc=\(desc ?? "nil"), "
+            + "location=\(location ?? "nil"), notes=\(notes ?? "nil"), "
             + "tags=\(tags?.description ?? "nil"), license=\(license ?? "nil"), "
-            + "mimeType=\(mimeType), filename=\(filename), file=\(file?.description ?? "nil"), "
-            + "thumb=\(thumb?.description ?? "nil"), "
+            + "mimeType=\(mimeType), filename=\(filename), "
+            + "file=\(file?.description ?? "nil"), thumb=\(thumb?.description ?? "nil"), "
             + "publicUrl=\(publicUrl?.absoluteString ?? "nil"), "
             + "isUploaded=\(isUploaded)]"
     }

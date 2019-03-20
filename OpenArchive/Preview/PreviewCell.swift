@@ -25,6 +25,7 @@ class PreviewCell: BaseCell {
     @IBOutlet weak var previewImg: UIImageView!
     @IBOutlet weak var tagBt: UIButton!
     @IBOutlet weak var locationBt: UIButton!
+    @IBOutlet weak var notesBt: UIButton!
     @IBOutlet weak var flagBt: UIButton!
 
     var asset: Asset? {
@@ -32,6 +33,7 @@ class PreviewCell: BaseCell {
             previewImg.image = asset?.getThumbnail()
             tagBt.isSelected = !(asset?.desc?.isEmpty ?? true)
             locationBt.isSelected = !(asset?.location?.isEmpty ?? true)
+            notesBt.isSelected = !(asset?.notes?.isEmpty ?? true)
             flagBt.isSelected = asset?.flagged ?? false
         }
     }
@@ -46,8 +48,11 @@ class PreviewCell: BaseCell {
             if sender == tagBt {
                 delegate?.edit(asset, .description)
             }
-            else {
+            else if sender == locationBt {
                 delegate?.edit(asset, .location)
+            }
+            else {
+                delegate?.edit(asset, .notes)
             }
         }
     }
