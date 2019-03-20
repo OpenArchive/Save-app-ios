@@ -173,11 +173,14 @@
                                     <outletCollection property="gestureRecognizers" destination="WyM-Oj-yBY" appends="YES" id="cPI-iW-H8p"/>
                                 </connections>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SAVE" textAlignment="natural" lineBreakMode="tailTruncation" minimumFontSize="7" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IgM-tk-GPC">
+                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SAVE" textAlignment="natural" lineBreakMode="tailTruncation" minimumFontSize="7" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IgM-tk-GPC">
                                 <rect key="frame" x="60" y="35" width="299" height="38.5"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
                                 <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
+                                <connections>
+                                    <outletCollection property="gestureRecognizers" destination="pKZ-zU-I6a" appends="YES" id="uZv-Jj-4q2"/>
+                                </connections>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sv8-ax-o88">
                                 <rect key="frame" x="16" y="80" width="343" height="48"/>
@@ -329,6 +332,11 @@
                 <tapGestureRecognizer id="WyM-Oj-yBY">
                     <connections>
                         <action selector="connectShowSpace" destination="wAB-WM-ZQl" id="uq2-Y2-NaN"/>
+                    </connections>
+                </tapGestureRecognizer>
+                <tapGestureRecognizer id="pKZ-zU-I6a">
+                    <connections>
+                        <action selector="connectShowSpace" destination="wAB-WM-ZQl" id="M4l-Su-Dxe"/>
                     </connections>
                 </tapGestureRecognizer>
             </objects>
