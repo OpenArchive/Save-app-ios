@@ -223,7 +223,7 @@ class BaseDetailsViewController: UIViewController {
                 asset.tags = tags
 
             case licenseTf:
-                asset.license = licenseTf.text
+                break
             default:
                 assertionFailure("This should have never happened - switch should be exhaustive.")
             }

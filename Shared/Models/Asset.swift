@@ -47,7 +47,6 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     var desc: String?
     var location: String?
     var tags: [String]?
-    var license: String?
     var notes: String?
     var publicUrl: URL?
     var isUploaded = false
@@ -75,6 +74,10 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         }
 
         return nil
+    }
+
+    var license: String? {
+        return collection.project.license
     }
 
     var collection: Collection {
@@ -254,7 +257,6 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         location = decoder.decodeObject(forKey: "location") as? String
         notes = decoder.decodeObject(forKey: "notes") as? String
         tags = decoder.decodeObject(forKey: "tags") as? [String]
-        license = decoder.decodeObject(forKey: "license") as? String
         publicUrl = decoder.decodeObject(forKey: "publicUrl") as? URL
         isUploaded = decoder.decodeBool(forKey: "isUploaded")
         collectionId = decoder.decodeObject(forKey: "collectionId") as! String
@@ -270,7 +272,6 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         coder.encode(location, forKey: "location")
         coder.encode(notes, forKey: "notes")
         coder.encode(tags, forKey: "tags")
-        coder.encode(license, forKey: "license")
         coder.encode(publicUrl, forKey: "publicUrl")
         coder.encode(isUploaded, forKey: "isUploaded")
         coder.encode(collectionId, forKey: "collectionId")
@@ -351,7 +352,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         return "\(String(describing: type(of: self))): [id=\(id), created=\(created), "
             + "uti=\(uti), title=\(title ?? "nil"), desc=\(desc ?? "nil"), "
             + "location=\(location ?? "nil"), notes=\(notes ?? "nil"), "
-            + "tags=\(tags?.description ?? "nil"), license=\(license ?? "nil"), "
+            + "tags=\(tags?.description ?? "nil"), "
             + "mimeType=\(mimeType), filename=\(filename), "
             + "file=\(file?.description ?? "nil"), thumb=\(thumb?.description ?? "nil"), "
             + "publicUrl=\(publicUrl?.absoluteString ?? "nil"), "

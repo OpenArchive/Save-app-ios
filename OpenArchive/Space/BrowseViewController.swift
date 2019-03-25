@@ -9,7 +9,18 @@
 import UIKit
 import FilesProvider
 
+protocol BrowseDelegate {
+    func didSelect(name: String)
+}
+
 class BrowseViewController: BaseTableViewController {
+
+    class func instantiate() -> BrowseViewController? {
+        return UIStoryboard(name: "Main", bundle: Bundle(for: self))
+            .instantiateViewController(withIdentifier: String(describing: self)) as? BrowseViewController
+    }
+
+    var delegate: BrowseDelegate?
 
     private var provider: WebDAVFileProvider? {
         return (SelectedSpace.space as? WebDavSpace)?.provider
@@ -126,12 +137,7 @@ class BrowseViewController: BaseTableViewController {
     
     @IBAction func connect() {
         if let selectedFolder = selectedFolder {
-            let project = Project(name: selectedFolder.name, space: SelectedSpace.space)
-
-            Db.writeConn?.asyncReadWrite() { transaction in
-                transaction.setObject(project, forKey: project.id,
-                                      inCollection: Project.collection)
-            }
+            delegate?.didSelect(name: selectedFolder.name)
         }
 
         navigationController?.popViewController(animated: true)

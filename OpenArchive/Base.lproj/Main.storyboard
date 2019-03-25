@@ -850,7 +850,6 @@
                     <navigationItem key="navigationItem" title="Settings" id="cRy-9F-upv"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
-                        <segue destination="kKs-Cd-7ab" kind="show" identifier="browseSegue" id="ySL-72-6X6"/>
                         <segue destination="6Ji-DQ-0NT" kind="show" identifier="connectSpaceSegue" id="Rwx-7w-lhD"/>
                     </connections>
                 </tableViewController>
@@ -861,7 +860,7 @@
         <!--Browse Projects-->
         <scene sceneID="YWo-Ut-gWn">
             <objects>
-                <tableViewController id="kKs-Cd-7ab" customClass="BrowseViewController" customModule="OpenArchive" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="BrowseViewController" id="kKs-Cd-7ab" customClass="BrowseViewController" customModule="OpenArchive" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="eKj-iX-4IY">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -42,6 +42,7 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
 
     var name: String?
     var created: Date
+    var license: String?
 
     private(set) var spaceId: String?
 
@@ -97,19 +98,21 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
     // MARK: NSCoding
 
     required init?(coder decoder: NSCoder) {
-        id = decoder.decodeObject() as? String ?? UUID().uuidString
-        created = decoder.decodeObject() as? Date ?? Date()
-        name = decoder.decodeObject() as? String
-        spaceId = decoder.decodeObject() as? String
-        collectionId = decoder.decodeObject() as? String
+        id = decoder.decodeObject(forKey: "id") as? String ?? UUID().uuidString
+        created = decoder.decodeObject(forKey: "created") as? Date ?? Date()
+        name = decoder.decodeObject(forKey: "name") as? String
+        license = decoder.decodeObject(forKey: "license") as? String
+        spaceId = decoder.decodeObject(forKey: "spaceId") as? String
+        collectionId = decoder.decodeObject(forKey: "colectionId") as? String
     }
 
     func encode(with coder: NSCoder) {
-        coder.encode(id)
-        coder.encode(created)
-        coder.encode(name)
-        coder.encode(spaceId)
-        coder.encode(collectionId)
+        coder.encode(id, forKey: "id")
+        coder.encode(created, forKey: "created")
+        coder.encode(name, forKey: "name")
+        coder.encode(license, forKey: "license")
+        coder.encode(spaceId, forKey: "spaceId")
+        coder.encode(collectionId, forKey: "collectionId")
     }
 
 
@@ -117,7 +120,7 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
 
     override var description: String {
         return "\(String(describing: type(of: self))): [id=\(id), "
-            + "created=\(created), name=\(name ?? "nil"), "
+            + "created=\(created), name=\(name ?? "nil"), license=\(license ?? "nil")"
             + "spaceId=\(spaceId ?? "nil"), collectionId=\(collectionId ?? "nil")]"
     }
 
