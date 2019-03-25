@@ -31,7 +31,7 @@
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Connect Your Space" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="MTU-cW-O5v">
                                                     <rect key="frame" x="16" y="11" width="343" height="24"/>
                                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="20"/>
-                                                    <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                                    <color key="textColor" red="0.0" green="0.70398116440000003" blue="0.64921339899999997" alpha="1" colorSpace="calibratedRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Set up where you want your media to be stored." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Bsz-ZQ-t5E">
@@ -176,7 +176,7 @@
                             <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="SAVE" textAlignment="natural" lineBreakMode="tailTruncation" minimumFontSize="7" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="IgM-tk-GPC">
                                 <rect key="frame" x="60" y="35" width="299" height="38.5"/>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
-                                <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" red="0.0" green="0.70398116440000003" blue="0.64921339899999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                                 <connections>
                                     <outletCollection property="gestureRecognizers" destination="pKZ-zU-I6a" appends="YES" id="uZv-Jj-4q2"/>
@@ -196,7 +196,7 @@
                                     <constraint firstAttribute="width" constant="200" id="dXC-NF-KJw"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
-                                <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="textColor" red="0.0" green="0.70398116440000003" blue="0.64921339899999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="cdB-Ih-Rhb">
@@ -282,7 +282,7 @@
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kiu-eR-U6M" customClass="MDCFloatingButton">
                                 <rect key="frame" x="303" y="595" width="56" height="56"/>
-                                <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <color key="backgroundColor" red="0.0" green="0.70398116440000003" blue="0.64921339899999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="56" id="IOE-kX-TMe"/>
                                     <constraint firstAttribute="height" constant="56" id="gy9-0e-USl"/>
@@ -369,54 +369,46 @@
                                                 <constraint firstAttribute="height" constant="43" id="6rG-dP-ncF"/>
                                             </constraints>
                                         </view>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v0Z-rQ-xHC">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="v0Z-rQ-xHC" customClass="TintedButton" customModule="OpenArchive" customModuleProvider="target">
                                             <rect key="frame" x="215" y="11" width="24" height="24"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="24" id="Pav-Jx-cRE"/>
                                                 <constraint firstAttribute="width" constant="24" id="ich-pg-kRM"/>
                                             </constraints>
                                             <state key="normal" image="ic_tag"/>
-                                            <state key="selected" image="ic_tag_selected"/>
-                                            <state key="highlighted" image="ic_tag_selected"/>
                                             <connections>
                                                 <action selector="edit:" destination="FlE-CG-61G" eventType="touchUpInside" id="ecK-yK-hqE"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U97-oY-W60">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="U97-oY-W60" customClass="TintedButton" customModule="OpenArchive" customModuleProvider="target">
                                             <rect key="frame" x="255" y="11" width="24" height="24"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="24" id="IWJ-28-Csl"/>
                                                 <constraint firstAttribute="width" constant="24" id="Y3o-IP-u0r"/>
                                             </constraints>
                                             <state key="normal" image="ic_location"/>
-                                            <state key="selected" image="ic_location_selected"/>
-                                            <state key="highlighted" image="ic_location_selected"/>
                                             <connections>
                                                 <action selector="edit:" destination="FlE-CG-61G" eventType="touchUpInside" id="o07-B6-wqC"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PuM-ra-lEq">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PuM-ra-lEq" customClass="TintedButton" customModule="OpenArchive" customModuleProvider="target">
                                             <rect key="frame" x="295" y="11" width="24" height="24"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="24" id="Jt4-X6-cQV"/>
                                                 <constraint firstAttribute="height" constant="24" id="ffY-Kr-5Lo"/>
                                             </constraints>
                                             <state key="normal" image="ic_edit"/>
-                                            <state key="selected" image="ic_edit_selected"/>
-                                            <state key="highlighted" image="ic_edit_selected"/>
                                             <connections>
                                                 <action selector="edit:" destination="FlE-CG-61G" eventType="touchUpInside" id="OxA-mW-fLb"/>
                                             </connections>
                                         </button>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yJy-WY-MvH">
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yJy-WY-MvH" customClass="TintedButton" customModule="OpenArchive" customModuleProvider="target">
                                             <rect key="frame" x="335" y="11" width="24" height="24"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="24" id="JCM-fh-Sa9"/>
                                                 <constraint firstAttribute="width" constant="24" id="PZm-eh-BxS"/>
                                             </constraints>
                                             <state key="normal" image="ic_flag"/>
-                                            <state key="selected" image="ic_flag_selected"/>
-                                            <state key="highlighted" image="ic_flag_selected"/>
                                             <connections>
                                                 <action selector="flag" destination="FlE-CG-61G" eventType="touchUpInside" id="5Tm-2O-Q6K"/>
                                             </connections>
@@ -571,54 +563,46 @@
                                     <action selector="dismiss" destination="WUt-u5-nda" eventType="touchUpInside" id="Tt2-od-neU"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y3B-88-FGI">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y3B-88-FGI" customClass="TintedButton" customModule="OpenArchive" customModuleProvider="target">
                                 <rect key="frame" x="215" y="36" width="24" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="24" id="0hP-hZ-k1O"/>
                                     <constraint firstAttribute="height" constant="24" id="8yU-SJ-tPF"/>
                                 </constraints>
                                 <state key="normal" image="ic_tag"/>
-                                <state key="selected" image="ic_tag_selected"/>
-                                <state key="highlighted" image="ic_tag_selected"/>
                                 <connections>
                                     <action selector="edit:" destination="WUt-u5-nda" eventType="touchUpInside" id="fAa-Lt-cdN"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DzD-tW-eDu">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DzD-tW-eDu" customClass="TintedButton" customModule="OpenArchive" customModuleProvider="target">
                                 <rect key="frame" x="255" y="36" width="24" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="3jC-gi-fmh"/>
                                     <constraint firstAttribute="width" constant="24" id="rrB-81-CbC"/>
                                 </constraints>
                                 <state key="normal" image="ic_location"/>
-                                <state key="selected" image="ic_location_selected"/>
-                                <state key="highlighted" image="ic_location_selected"/>
                                 <connections>
                                     <action selector="edit:" destination="WUt-u5-nda" eventType="touchUpInside" id="jgX-Hq-YCP"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OhU-Sr-Gc1">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OhU-Sr-Gc1" customClass="TintedButton" customModule="OpenArchive" customModuleProvider="target">
                                 <rect key="frame" x="295" y="36" width="24" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="1hb-Jv-Ho6"/>
                                     <constraint firstAttribute="width" constant="24" id="wCd-7u-9Ea"/>
                                 </constraints>
                                 <state key="normal" image="ic_edit"/>
-                                <state key="selected" image="ic_edit_selected"/>
-                                <state key="highlighted" image="ic_edit_selected"/>
                                 <connections>
                                     <action selector="edit:" destination="WUt-u5-nda" eventType="touchUpInside" id="5fj-pc-woB"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hDR-sa-zhP">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hDR-sa-zhP" customClass="TintedButton" customModule="OpenArchive" customModuleProvider="target">
                                 <rect key="frame" x="335" y="36" width="24" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="Lxc-EF-NXa"/>
                                     <constraint firstAttribute="width" constant="24" id="gLl-Je-qFV"/>
                                 </constraints>
                                 <state key="normal" image="ic_flag"/>
-                                <state key="selected" image="ic_flag_selected"/>
-                                <state key="highlighted" image="ic_flag_selected"/>
                                 <connections>
                                     <action selector="flag" destination="WUt-u5-nda" eventType="touchUpInside" id="ufq-nw-ztt"/>
                                 </connections>
@@ -819,7 +803,7 @@
                                         </imageView>
                                         <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_edit" translatesAutoresizingMaskIntoConstraints="NO" id="0bC-tJ-3tt" customClass="RoundedImageView" customModule="OpenArchive" customModuleProvider="target">
                                             <rect key="frame" x="72" y="67" width="24" height="24"/>
-                                            <color key="backgroundColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                            <color key="backgroundColor" red="0.0" green="0.70398116440000003" blue="0.64921339899999997" alpha="1" colorSpace="calibratedRGB"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="24" id="CtE-CL-Baw"/>
                                                 <constraint firstAttribute="width" constant="24" id="ftp-3g-8KK"/>
@@ -964,19 +948,16 @@
         <image name="browse-folder" width="25" height="23"/>
         <image name="ic_cancel" width="12" height="12"/>
         <image name="ic_edit" width="13" height="13"/>
-        <image name="ic_edit_selected" width="13" height="13"/>
         <image name="ic_flag" width="12" height="13"/>
-        <image name="ic_flag_selected" width="12" height="13"/>
         <image name="ic_location" width="12" height="16"/>
-        <image name="ic_location_selected" width="12" height="16"/>
         <image name="ic_plus" width="11" height="11"/>
         <image name="ic_tag" width="18" height="17"/>
-        <image name="ic_tag_selected" width="18" height="17"/>
         <image name="server" width="27" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ePG-WN-AhZ"/>
-        <segue reference="FnB-Jb-td1"/>
-        <segue reference="Po4-0Y-GwW"/>
+        <segue reference="aBM-nf-RSW"/>
+        <segue reference="oOr-Wp-7YS"/>
+        <segue reference="Rwx-7w-lhD"/>
     </inferredMetricsTieBreakers>
+    <color key="tintColor" red="0.0" green="0.70398116438356162" blue="0.64921339897260277" alpha="1" colorSpace="calibratedRGB"/>
 </document>

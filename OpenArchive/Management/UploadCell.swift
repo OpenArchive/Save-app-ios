@@ -26,9 +26,20 @@ class UploadCell: BaseCell, PKDownloadButtonDelegate {
             progress.startDownloadButton.setTitle(nil, for: .normal)
             progress.startDownloadButton.setAttributedTitle(nil, for: .normal)
             progress.startDownloadButton.setImage(icon?.withRenderingMode(.alwaysTemplate), for: .normal)
+            progress.startDownloadButton.setBackgroundImage(
+                UIImage.buttonBackground(with: UIColor.accent)?
+                    .resizableImage(withCapInsets: UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)),
+                for: .normal)
             progress.startDownloadButton.setTitle(nil, for: .highlighted)
             progress.startDownloadButton.setAttributedTitle(nil, for: .highlighted)
             progress.startDownloadButton.setImage(icon, for: .highlighted)
+            progress.startDownloadButton.setBackgroundImage(
+                UIImage.highlitedButtonBackground(with: UIColor.accent),
+                for: .highlighted)
+
+            progress.stopDownloadButton.stopButton.setImage(
+                UIImage.stop(ofSize: progress.stopDownloadButton.stopButtonWidth, color: UIColor.accent),
+                for: .normal)
         }
     }
     

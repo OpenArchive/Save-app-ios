@@ -10,5 +10,8 @@ import UIKit
 
 extension UIColor {
 
-    static let accent = UIColor(red: 0, green: 122.0/255.0, blue: 1, alpha: 1)
+    /**
+     Teal, #00B4A6
+    */
+    static let accent = UIColor(red: 0, green: 180.0/255.0, blue: 166.0/255.0, alpha: 1)
 }

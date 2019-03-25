@@ -28,6 +28,6 @@ class SpaceCell: UICollectionViewCell {
         favIcon.layer.borderWidth = 1
         favIcon.layer.borderColor = UIColor.accent.cgColor
         favIcon.layer.cornerRadius = favIcon.frame.width / 2
-        favIcon.image = UIImage(named: "ic_add")
+        favIcon.image = UIImage(named: "ic_add")?.withRenderingMode(.alwaysTemplate)
     }
 }

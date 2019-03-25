@@ -21,7 +21,7 @@
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hHe-8b-neL">
                             <rect key="frame" x="16" y="32" width="351" height="14"/>
                             <fontDescription key="fontDescription" type="boldSystem" pointSize="11"/>
-                            <color key="textColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            <color key="textColor" red="0.0" green="0.70398116440000003" blue="0.64921339899999997" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
@@ -35,6 +35,7 @@
                     <viewLayoutGuide key="safeArea" id="KIn-p9-fs7"/>
                 </view>
             </subviews>
+            <color key="tintColor" red="0.0" green="0.70398116440000003" blue="0.64921339899999997" alpha="1" colorSpace="calibratedRGB"/>
             <constraints>
                 <constraint firstItem="lTL-yd-SyY" firstAttribute="bottom" secondItem="vUN-kp-3ea" secondAttribute="bottom" id="8RN-Uc-c5V"/>
                 <constraint firstItem="lTL-yd-SyY" firstAttribute="trailing" secondItem="vUN-kp-3ea" secondAttribute="trailing" id="AVG-f6-FlM"/>
