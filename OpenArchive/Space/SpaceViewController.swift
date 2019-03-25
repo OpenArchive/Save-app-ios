@@ -57,23 +57,9 @@ class SpaceViewController: BaseTableViewController, UICollectionViewDelegate, UI
             title: "Delete".localize())
         { (action, indexPath) in
 
-            let title = "Delete Project".localize()
-            let project = self.getProject(indexPath)
-            let message = "Are you sure you want to delete your project \"%\"?".localize(value: project?.name ?? "")
-            let handler: AlertHelper.ActionHandler = { _ in
-                if let key = project?.id {
-                    Db.writeConn?.asyncReadWrite() { transaction in
-                        transaction.removeObject(forKey: key, inCollection: Project.collection)
-                    }
-                }
+            if let project = self.getProject(indexPath) {
+                self.present(DeleteProjectAlert(project), animated: true)
             }
-
-            AlertHelper.present(
-                self, message: message,
-                title: title, actions: [
-                    AlertHelper.cancelAction(),
-                    AlertHelper.destructiveAction("Delete".localize(), handler: handler)
-                ])
 
             self.tableView.setEditing(false, animated: true)
         }
