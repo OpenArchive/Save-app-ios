@@ -40,6 +40,8 @@ class FormViewController: Eureka.FormViewController {
 
         tableView?.backgroundColor = UIColor.white
         tableView.tableFooterView = UIView()
+
+        view.tintColor = UIColor.accent
     }
 
 

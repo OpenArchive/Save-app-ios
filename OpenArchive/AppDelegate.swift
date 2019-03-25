@@ -16,8 +16,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var uploadManager: UploadManager?
 
 
-    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        // Override point for customization after application launch.
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions
+        launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+        window?.tintColor = UIColor.accent
 
         Db.setup()
 
