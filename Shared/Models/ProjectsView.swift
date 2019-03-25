@@ -17,8 +17,12 @@ class ProjectsView: YapDatabaseAutoView {
 
     private static let grouping = YapDatabaseViewGrouping.withObjectBlock {
         transaction, collection, key, object in
-        
-        if (object as? Project)?.spaceId == SelectedSpace.id {
+
+        // When nothing is selected (ShareExtension!), everything would match nil,
+        // when using optional casting, so ensure cast before compare!
+        if let project = object as? Project,
+            project.spaceId == SelectedSpace.id {
+
             return Project.collection
         }
 
