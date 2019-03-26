@@ -1,5 +1,5 @@
 //
-//  DeleteProjectAlert.swift
+//  RemoveProjectAlert.swift
 //  OpenArchive
 //
 //  Created by Benjamin Erhart on 25.03.19.
@@ -8,15 +8,15 @@
 
 import UIKit
 
-class DeleteProjectAlert: UIAlertController {
+class RemoveProjectAlert: UIAlertController {
 
     convenience init(_ project: Project, _ onSuccess: (() -> ())? = nil) {
-        self.init(title: "Delete Project".localize(),
-                   message: "Are you sure you want to delete your project \"%\"?".localize(value: project.name ?? ""),
+        self.init(title: "Remove from App".localize(),
+                   message: "Are you sure you want to remove your project \"%\"?".localize(value: project.name ?? ""),
                    preferredStyle: .alert)
 
         addAction(AlertHelper.cancelAction())
-        addAction(AlertHelper.destructiveAction("Delete".localize(), handler: { _ in
+        addAction(AlertHelper.destructiveAction("Remove".localize(), handler: { _ in
             Db.writeConn?.asyncReadWrite() { transaction in
                 transaction.removeObject(forKey: project.id, inCollection: Project.collection)
 

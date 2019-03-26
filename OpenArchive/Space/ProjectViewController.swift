@@ -20,26 +20,30 @@ class ProjectViewController: FormViewController, BrowseDelegate {
     }
 
     private let ccSw = SwitchRow("cc") {
-        $0.title = "Creative Commons License".localize()
+        $0.title = "Allow Creative Commons use for all media in this project".localize()
         $0.cell.textLabel?.numberOfLines = 0
+        $0.cell.switchControl.onTintColor = UIColor.accent
     }
 
     private let remixSw = SwitchRow("remixSw") {
-        $0.title = "Allow anyone to remix and share media in this project?".localize()
+        $0.title = "Allow anyone to remix and share".localize()
         $0.cell.textLabel?.numberOfLines = 0
+        $0.cell.switchControl.onTintColor = UIColor.accent
         $0.hidden = "$cc != true"
     }
 
     private let shareAlikeSw = SwitchRow() {
-        $0.title = "Require them to share like you have?".localize()
+        $0.title = "Require them to share like you have".localize()
         $0.cell.textLabel?.numberOfLines = 0
+        $0.cell.switchControl.onTintColor = UIColor.accent
         $0.disabled = "$remixSw != true"
         $0.hidden = "$cc != true"
     }
 
     private let commercialSw = SwitchRow() {
-        $0.title = "Allow commercial use?".localize()
+        $0.title = "Allow commercial use".localize()
         $0.cell.textLabel?.numberOfLines = 0
+        $0.cell.switchControl.onTintColor = UIColor.accent
         $0.hidden = "$cc != true"
     }
 
@@ -119,7 +123,9 @@ class ProjectViewController: FormViewController, BrowseDelegate {
         if !isNew {
             form
 
-            +++ ccSw.onChange(ccLicenseChanged)
+            +++ Section("Creative Commons".localize().localizedUppercase)
+
+            <<< ccSw.onChange(ccLicenseChanged)
 
             <<< remixSw.onChange(ccLicenseChanged)
 
@@ -153,11 +159,11 @@ class ProjectViewController: FormViewController, BrowseDelegate {
             form
 
             +++ ButtonRow() {
-                $0.title = "Delete Project".localize()
+                $0.title = "Remove from App".localize()
                 $0.cell.tintColor = UIColor.red
             }
             .onCellSelection { cell, row in
-                self.present(DeleteProjectAlert(self.project,
+                self.present(RemoveProjectAlert(self.project,
                                                 { self.navigationController?.popViewController(animated: true) }),
                              animated: true)
             }
@@ -199,6 +205,11 @@ class ProjectViewController: FormViewController, BrowseDelegate {
 
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        // This one has a title.
+        if !isNew && section == 1 {
+            return TableHeader.height
+        }
+
         return 24
     }
 

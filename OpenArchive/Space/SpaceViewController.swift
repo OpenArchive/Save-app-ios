@@ -54,11 +54,11 @@ class SpaceViewController: BaseTableViewController, UICollectionViewDelegate, UI
     private lazy var deleteAction: UITableViewRowAction = {
         let action = UITableViewRowAction(
             style: .destructive,
-            title: "Delete".localize())
+            title: "Remove".localize())
         { (action, indexPath) in
 
             if let project = self.getProject(indexPath) {
-                self.present(DeleteProjectAlert(project), animated: true)
+                self.present(RemoveProjectAlert(project), animated: true)
             }
 
             self.tableView.setEditing(false, animated: true)
@@ -297,6 +297,8 @@ class SpaceViewController: BaseTableViewController, UICollectionViewDelegate, UI
                         if let indexPath = change.indexPath {
                             collectionView?.reloadItems(at: [indexPath])
                         }
+                    @unknown default:
+                        break
                     }
                 }
             })
@@ -334,6 +336,8 @@ class SpaceViewController: BaseTableViewController, UICollectionViewDelegate, UI
                     if let indexPath = change.indexPath {
                         tableView.reloadRows(at: [transform(indexPath)], with: .none)
                     }
+                @unknown default:
+                    break
                 }
             }
 

@@ -123,8 +123,8 @@
 		A0F7FDDD22491C6C006610F0 /* TintedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDB22491C6C006610F0 /* TintedButton.swift */; };
 		A0F7FDDF224936C8006610F0 /* TintedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDE224936C8006610F0 /* TintedImageView.swift */; };
 		A0F7FDE0224936C8006610F0 /* TintedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDE224936C8006610F0 /* TintedImageView.swift */; };
-		A0F7FDE722494E2F006610F0 /* DeleteProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDE622494E2C006610F0 /* DeleteProjectAlert.swift */; };
-		A0F7FDE822494E3E006610F0 /* DeleteProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDE622494E2C006610F0 /* DeleteProjectAlert.swift */; };
+		A0F7FDE722494E2F006610F0 /* RemoveProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */; };
+		A0F7FDE822494E3E006610F0 /* RemoveProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */; };
 		A0FB4DB221F8799100B46099 /* SpacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DB121F8799100B46099 /* SpacesView.swift */; };
 		A0FB4DB321F8799100B46099 /* SpacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DB121F8799100B46099 /* SpacesView.swift */; };
 		A0FB4DB521F89FD500B46099 /* AssetsByCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DB421F89FD500B46099 /* AssetsByCollectionView.swift */; };
@@ -250,7 +250,7 @@
 		A0F5BD612136E4B500691E34 /* OpenArchive-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenArchive-Bridging-Header.h"; sourceTree = "<group>"; };
 		A0F7FDDB22491C6C006610F0 /* TintedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintedButton.swift; sourceTree = "<group>"; };
 		A0F7FDDE224936C8006610F0 /* TintedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintedImageView.swift; sourceTree = "<group>"; };
-		A0F7FDE622494E2C006610F0 /* DeleteProjectAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DeleteProjectAlert.swift; sourceTree = "<group>"; };
+		A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveProjectAlert.swift; sourceTree = "<group>"; };
 		A0FB4DB121F8799100B46099 /* SpacesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacesView.swift; sourceTree = "<group>"; };
 		A0FB4DB421F89FD500B46099 /* AssetsByCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsByCollectionView.swift; sourceTree = "<group>"; };
 		A0FB4DBA21F8C9B600B46099 /* RoundedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImageView.swift; sourceTree = "<group>"; };
@@ -427,12 +427,12 @@
 			children = (
 				A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */,
 				A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */,
-				A0F7FDE622494E2C006610F0 /* DeleteProjectAlert.swift */,
 				A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */,
 				A0AC06B32201E94000BD5FBA /* MenuItemCell.xib */,
 				A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */,
-				A0FB4DBA21F8C9B600B46099 /* RoundedImageView.swift */,
 				A01A7B6E2200A05C00E18DE0 /* ProjectsTabBar.swift */,
+				A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */,
+				A0FB4DBA21F8C9B600B46099 /* RoundedImageView.swift */,
 				A0E1A68821EE873200E4F6B7 /* TableHeader.swift */,
 				A0A98AEB22428A9300596B74 /* TableHeader.xib */,
 				A0F7FDDB22491C6C006610F0 /* TintedButton.swift */,
@@ -762,7 +762,7 @@
 				A07128FE2111CC90007A432A /* ShareViewController.swift in Sources */,
 				A0A192E121F23B61009A8CF0 /* Constants+Swift.swift in Sources */,
 				A0631B5C22034F0E00B3E90D /* Collection.swift in Sources */,
-				A0F7FDE822494E3E006610F0 /* DeleteProjectAlert.swift in Sources */,
+				A0F7FDE822494E3E006610F0 /* RemoveProjectAlert.swift in Sources */,
 				A00A8D44220C63B20083F0CB /* ProjectsView.swift in Sources */,
 				A05C582B21EF95A800141633 /* BaseViewController.swift in Sources */,
 				A0C475B5211474A70012937E /* RegexUtils.swift in Sources */,
@@ -795,7 +795,7 @@
 				A0362198220DB384003C21DC /* WebDavSpace.swift in Sources */,
 				A01A7B6F2200A05C00E18DE0 /* ProjectsTabBar.swift in Sources */,
 				A08C2CE621F0B46C008ACA3E /* FormViewController.swift in Sources */,
-				A0F7FDE722494E2F006610F0 /* DeleteProjectAlert.swift in Sources */,
+				A0F7FDE722494E2F006610F0 /* RemoveProjectAlert.swift in Sources */,
 				A0DE78B221F771A700B6B68B /* ProjectViewController.swift in Sources */,
 				A08C2CED21F0C634008ACA3E /* AvatarRow.swift in Sources */,
 				A00DC98A22315D4F004F07E0 /* ImageViewController.swift in Sources */,

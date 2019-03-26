@@ -24,4 +24,13 @@ class TableHeader: UITableViewHeaderFooterView {
 
 
     @IBOutlet weak var label: UILabel!
+
+    override var textLabel: UILabel? {
+        get {
+            return label
+        }
+        set {
+            label = newValue
+        }
+    }
 }
