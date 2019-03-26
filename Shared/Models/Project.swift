@@ -43,6 +43,7 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
     var name: String?
     var created: Date
     var license: String?
+    var active = true
 
     private(set) var spaceId: String?
 
@@ -102,6 +103,7 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
         created = decoder.decodeObject(forKey: "created") as? Date ?? Date()
         name = decoder.decodeObject(forKey: "name") as? String
         license = decoder.decodeObject(forKey: "license") as? String
+        active = decoder.decodeBool(forKey: "active")
         spaceId = decoder.decodeObject(forKey: "spaceId") as? String
         collectionId = decoder.decodeObject(forKey: "colectionId") as? String
     }
@@ -111,6 +113,7 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
         coder.encode(created, forKey: "created")
         coder.encode(name, forKey: "name")
         coder.encode(license, forKey: "license")
+        coder.encode(active, forKey: "active")
         coder.encode(spaceId, forKey: "spaceId")
         coder.encode(collectionId, forKey: "collectionId")
     }
@@ -121,7 +124,8 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
     override var description: String {
         return "\(String(describing: type(of: self))): [id=\(id), "
             + "created=\(created), name=\(name ?? "nil"), license=\(license ?? "nil")"
-            + "spaceId=\(spaceId ?? "nil"), collectionId=\(collectionId ?? "nil")]"
+            + "active=\(active), spaceId=\(spaceId ?? "nil"), "
+            + "collectionId=\(collectionId ?? "nil")]"
     }
 
 

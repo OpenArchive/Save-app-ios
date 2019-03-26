@@ -56,13 +56,13 @@ class AssetsByCollectionFilteredView: YapDatabaseFilteredView {
 
     /**
      - parameter projectId: The project ID to filter by.
-     `nil` will disable the filter and show all entries.
+     `nil` will disable the filter and show no entries.
      - returns: a filter block using the given projectId as criteria.
      */
     private class func getFilter(_ projectId: String? = nil) -> YapDatabaseViewFiltering {
         if projectId == nil {
             return YapDatabaseViewFiltering.withKeyBlock { _, _, _, _ in
-                return true
+                return false
             }
         }
 

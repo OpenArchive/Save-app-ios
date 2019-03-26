@@ -48,6 +48,11 @@ class ProjectViewController: FormViewController, BrowseDelegate {
         $0.hidden = "$cc != true"
     }
 
+
+    private var archiveLabel: String {
+        return project.active ? "Archive Project".localize() : "Unarchive Project".localize()
+    }
+
     init(_ project: Project? = nil) {
         if project != nil {
             self.project = project!
@@ -163,6 +168,17 @@ class ProjectViewController: FormViewController, BrowseDelegate {
                 self.present(DeleteProjectAlert(self.project,
                                                 { self.navigationController?.popViewController(animated: true) }),
                              animated: true)
+            }
+
+            <<< ButtonRow() {
+                $0.title = self.archiveLabel
+            }
+            .onCellSelection { cell, row in
+                self.project.active = !self.project.active
+
+                self.store()
+
+                cell.textLabel?.text = self.archiveLabel
             }
         }
 

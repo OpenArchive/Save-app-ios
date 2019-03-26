@@ -44,6 +44,7 @@ class Db {
         shared?.register(AssetsByCollectionFilteredView(), withName: AssetsByCollectionFilteredView.name)
         shared?.register(UploadsView(), withName: UploadsView.name)
         shared?.register(ProjectsView(), withName: ProjectsView.name)
+        shared?.register(ActiveProjectsView(), withName: ActiveProjectsView.name)
         shared?.register(CollectionsView(), withName: CollectionsView.name)
         shared?.register(SpacesView(), withName: SpacesView.name)
 

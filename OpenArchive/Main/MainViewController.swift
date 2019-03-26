@@ -31,8 +31,8 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
     private lazy var projectsReadConn = Db.newLongLivedReadConn()
 
     private lazy var projectsMappings: YapDatabaseViewMappings = {
-        let mappings = YapDatabaseViewMappings(groups: ProjectsView.groups,
-                                               view: ProjectsView.name)
+        let mappings = YapDatabaseViewMappings(groups: ActiveProjectsView.groups,
+                                               view: ActiveProjectsView.name)
 
         projectsReadConn?.read { transaction in
             mappings.update(with: transaction)
@@ -68,7 +68,7 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
 
     private lazy var tabBar: ProjectsTabBar = {
         let tabBar = ProjectsTabBar(frame: tabBarContainer.bounds, projectsReadConn,
-                                    viewName: ProjectsView.name, projectsMappings)
+                                    viewName: ActiveProjectsView.name, projectsMappings)
 
         tabBar.projectsDelegate = self
 
@@ -304,7 +304,7 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
     @objc func yapDatabaseModified(notification: Notification) {
         var rowChanges = NSArray()
 
-        (projectsReadConn?.ext(ProjectsView.name) as? YapDatabaseViewConnection)?
+        (projectsReadConn?.ext(ActiveProjectsView.name) as? YapDatabaseViewConnection)?
             .getSectionChanges(nil,
                                rowChanges: &rowChanges,
                                for: projectsReadConn?.beginLongLivedReadTransaction() ?? [],
