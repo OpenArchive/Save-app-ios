@@ -7,7 +7,7 @@ use_frameworks!
 def shared_pods
     pod 'YapDatabase', '~> 3.1'
     pod 'Alamofire', '~> 4.8'
-    pod 'FilesProvider', '~> 0.25' #, git: 'https://github.com/amosavian/FileProvider.git'
+    pod 'FilesProvider', git: 'https://github.com/victorykim/FileProvider.git' # , '~> 0.25'
     pod 'Localize', :git => 'https://github.com/andresilvagomez/Localize.git'
     pod 'Eureka', '~> 4.3'
     pod 'ImageRow', git: 'https://github.com/EurekaCommunity/ImageRow.git'

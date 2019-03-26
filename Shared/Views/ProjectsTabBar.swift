@@ -119,6 +119,8 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
                 projects[indexPath.row] = project
                 items[indexPath.row + 1] = getItem(project.name, indexPath.row)
             }
+        @unknown default:
+            break
         }
 
         // Always select a newly inserted project or fix situation when tab bar

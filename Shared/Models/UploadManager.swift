@@ -135,6 +135,8 @@ class UploadManager {
                             upload.liveProgress = self.uploads[indexPath.row].liveProgress
                             self.uploads[indexPath.row] = upload
                     }
+                @unknown default:
+                    break
                 }
             }
 
