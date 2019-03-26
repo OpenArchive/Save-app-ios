@@ -32,13 +32,9 @@ class BrowseViewController: BaseTableViewController {
 
     private var folders = [FileObject]()
 
-    private var selectedFolder: FileObject?
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        enableDone(false)
 
         loadFolders()
     }
@@ -86,8 +82,6 @@ class BrowseViewController: BaseTableViewController {
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section > 0 {
-            selectedFolder = nil
-            enableDone(false)
             tableView.deselectRow(at: indexPath, animated: true)
 
             let alert = AlertHelper.build(
@@ -121,8 +115,9 @@ class BrowseViewController: BaseTableViewController {
             present(alert, animated: true)
         }
         else {
-            selectedFolder = folders[indexPath.row]
-            enableDone()
+            delegate?.didSelect(name: folders[indexPath.row].name)
+
+            navigationController?.popViewController(animated: true)
         }
     }
 
@@ -133,22 +128,8 @@ class BrowseViewController: BaseTableViewController {
         return 0
     }
 
-    // MARK: Actions
-    
-    @IBAction func connect() {
-        if let selectedFolder = selectedFolder {
-            delegate?.didSelect(name: selectedFolder.name)
-        }
-
-        navigationController?.popViewController(animated: true)
-    }
-
 
     // MARK: Private Methods
-
-    private func enableDone(_ toggle: Bool = true) {
-        navigationItem.rightBarButtonItem?.isEnabled = toggle
-    }
 
     private func beginWork(_ block: () -> Void) {
         loading = true

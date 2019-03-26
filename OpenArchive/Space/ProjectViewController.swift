@@ -76,7 +76,7 @@ class ProjectViewController: FormViewController, BrowseDelegate {
 
         if isNew {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
-                barButtonSystemItem: .done, target: self, action: #selector(connect))
+                barButtonSystemItem: .save, target: self, action: #selector(connect))
         }
         else {
             navigationItem.title = project.name
