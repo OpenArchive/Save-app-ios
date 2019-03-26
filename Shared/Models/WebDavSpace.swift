@@ -113,46 +113,48 @@ class WebDavSpace: Space, Item {
 
                 let filepath = Space.construct(url: nil, projectName, collectionName, asset.filename).path
 
-                let p = provider.writeContents(path: "\(filepath).\(WebDavSpace.metaFileExt)",
-                    contents: try? Space.jsonEncoder.encode(asset)) { error in
-                        if error != nil || progress.isCancelled {
-                            return self.done(uploadId, error)
-                        }
+                // Inject our own background session, so upload can finish, when
+                // user quits app.
+                // This can only be done on upload, we would get an error on
+                // deletion.
+                let conf = Space.sessionConf
+                conf.urlCache = provider.cache
+                conf.requestCachePolicy = .returnCacheDataElseLoad
 
-                        // Inject our own background session, so upload can finish, when
-                        // user quits app.
-                        // This can only be done on upload, we would get an error on
-                        // deletion.
-                        let conf = Space.sessionConf
-                        conf.urlCache = provider.cache
-                        conf.requestCachePolicy = .returnCacheDataElseLoad
+                let sessionDelegate = SessionDelegate(fileProvider: provider)
 
-                        let sessionDelegate = SessionDelegate(fileProvider: provider)
+                // Store for later re-set.
+                let oldSession = provider.session
 
-                        // Store for later re-set.
-                        let oldSession = provider.session
+                provider.session = URLSession(configuration: conf,
+                                              delegate: sessionDelegate as URLSessionDelegate?,
+                                              delegateQueue: provider.operation_queue)
 
-                        provider.session = URLSession(configuration: conf,
-                                                      delegate: sessionDelegate as URLSessionDelegate?,
-                                                      delegateQueue: provider.operation_queue)
+//                let p = self.copyMetadata(asset, to: "\(filepath).\(WebDavSpace.metaFileExt)") { error in
+//                    if error != nil || progress.isCancelled {
+//                        // Reset to normal session, so #remove doesn't break.
+//                        provider.session = oldSession
+//
+//                        return self.done(uploadId, error)
+//                    }
 
-                        let p = provider.copyItem(localFile: file, to: filepath) { error in
-                            // Reset to normal session, so #remove doesn't break.
-                            provider.session = oldSession
+                    let p = provider.copyItem(localFile: file, to: filepath) { error in
+                        // Reset to normal session, so #remove doesn't break.
+                        provider.session = oldSession
 
-                            self.done(uploadId, error?.localizedDescription,
-                                      Space.construct(url: self.url, projectName,
-                                                      collectionName, asset.filename))
-                        }
+                        self.done(uploadId, error?.localizedDescription,
+                                  Space.construct(url: self.url, projectName,
+                                                  collectionName, asset.filename))
+                    }
 
-                        if let p = p {
-                            progress.addChild(p, withPendingUnitCount: 75)
-                        }
-                }
-
-                if let p = p {
-                    progress.addChild(p, withPendingUnitCount: 15)
-                }
+                    if let p = p {
+                        progress.addChild(p, withPendingUnitCount: 75)
+                    }
+//                }
+//
+//                if let p = p {
+//                    progress.addChild(p, withPendingUnitCount: 15)
+//                }
             }
         }
 
@@ -212,6 +214,62 @@ class WebDavSpace: Space, Item {
                 // Does exist: continue.
                 completionHandler?(nil)
             }
+        }
+    }
+
+    /**
+     Writes an `Asset`'s metadata to a temporary file and copies that to the
+     destination on the WebDAV server.
+
+     - parameter asset: The `Asset` to extract metadata from.
+     - parameter to: The target file on the WebDAV server.
+     - parameter completionHandler: The callback to call when the copy is done,
+       or when an error happened.
+     - returns: the progress of the `#copyItem` call or nil, if an error happened.
+    */
+    private func copyMetadata(_ asset: Asset, to: String, _ completionHandler: SimpleCompletionHandler) -> Progress? {
+        let fm = FileManager.default
+
+        guard let provider = provider else {
+            completionHandler?(nil)
+            return nil
+        }
+
+        let tempDir: URL
+
+        do {
+            tempDir = try fm.url(for: .itemReplacementDirectory,
+                                     in: .userDomainMask,
+                                     appropriateFor: asset.file, create: true)
+        } catch {
+            completionHandler?(error)
+            return nil
+        }
+
+        let metaFile = tempDir.appendingPathComponent("\(asset.filename).\(WebDavSpace.metaFileExt)")
+
+        let json: Data
+
+        do {
+            try json = Space.jsonEncoder.encode(asset)
+        }
+        catch {
+            completionHandler?(error)
+            return nil
+        }
+
+        do {
+            try json.write(to: metaFile, options: .atomicWrite)
+        }
+        catch {
+            completionHandler?(error)
+            return nil
+        }
+
+        return provider.copyItem(localFile: metaFile, to: to) { error in
+            try? fm.removeItem(at: metaFile)
+
+            completionHandler?(error)
         }
     }
 
