@@ -89,20 +89,12 @@ class ProjectViewController: FormViewController, BrowseDelegate {
 
             +++ LabelRow() {
                 $0.title = "New Project".localize()
+                $0.cellStyle = .default
             }
             .cellUpdate { cell, row in
-
-                // TODO: This is not centered, yet, despite trying so hard.
                 cell.textLabel?.textAlignment = .center
-                cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 30)
+                cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 28)
                 cell.textLabel?.textColor = UIColor.accent
-
-                if let superview = cell.superview {
-                    cell.leadingAnchor.constraint(equalTo: superview.leadingAnchor).isActive = true
-                    cell.topAnchor.constraint(equalTo: superview.topAnchor).isActive = true
-                    cell.trailingAnchor.constraint(equalTo: superview.trailingAnchor).isActive = true
-                    cell.bottomAnchor.constraint(equalTo: superview.bottomAnchor).isActive = true
-                }
             }
 
             <<< LabelRow() {
