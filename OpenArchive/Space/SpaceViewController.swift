@@ -176,10 +176,14 @@ class SpaceViewController: BaseTableViewController, UICollectionViewDelegate, UI
         case 2:
             header.label.text = "Info".localize().localizedUppercase
         default:
-            break
+            header.label.text = nil
         }
 
         return header
+    }
+
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return section == 0 ? TableHeader.reducedHeight : TableHeader.height
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {

@@ -205,12 +205,8 @@ class ProjectViewController: FormViewController, BrowseDelegate {
 
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        // This one has a title.
-        if !isNew && section == 1 {
-            return TableHeader.height
-        }
-
-        return 24
+        // The second one has a title.
+        return !isNew && section == 1 ? TableHeader.height : TableHeader.reducedHeight
     }
 
 

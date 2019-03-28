@@ -22,6 +22,7 @@ class TableHeader: UITableViewHeaderFooterView {
         return 54
     }
 
+    static let reducedHeight: CGFloat = 24
 
     @IBOutlet weak var label: UILabel!
 
