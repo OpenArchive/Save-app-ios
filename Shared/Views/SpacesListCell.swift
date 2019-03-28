@@ -11,10 +11,6 @@ import AlignedCollectionViewFlowLayout
 
 class SpacesListCell: BaseCell {
 
-    override class var reuseId: String {
-        return  "spacesListCell"
-    }
-
     override class var height: CGFloat {
         return 54
     }

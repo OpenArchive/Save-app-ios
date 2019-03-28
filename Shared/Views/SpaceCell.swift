@@ -10,6 +10,14 @@ import UIKit
 
 class SpaceCell: UICollectionViewCell {
 
+    class var nib: UINib {
+        return UINib(nibName: String(describing: self), bundle: Bundle(for: self))
+    }
+
+    class var reuseId: String {
+        return String(describing: self)
+    }
+
     @IBOutlet var favIcon: UIImageView!
 
     var space: Space? {
