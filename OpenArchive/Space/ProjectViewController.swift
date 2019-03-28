@@ -11,6 +11,9 @@ import Eureka
 
 class ProjectViewController: FormViewController, BrowseDelegate {
 
+    static let ccDomain = "creativecommons.org"
+    static let ccUrl = "https://%@/licenses/%@/4.0/"
+
     private var project: Project
     private var isNew = false
 
@@ -181,7 +184,7 @@ class ProjectViewController: FormViewController, BrowseDelegate {
         }
 
         if let license = project.license,
-            license.localizedCaseInsensitiveContains(BaseDetailsViewController.ccDomain) {
+            license.localizedCaseInsensitiveContains(ProjectViewController.ccDomain) {
 
             ccSw.value = true
             remixSw.value = !license.localizedCaseInsensitiveContains("-nd")
@@ -266,8 +269,8 @@ class ProjectViewController: FormViewController, BrowseDelegate {
                 license += "-nd"
             }
 
-            project.license = String(format: BaseDetailsViewController.ccUrl,
-                                     BaseDetailsViewController.ccDomain,
+            project.license = String(format: ProjectViewController.ccUrl,
+                                     ProjectViewController.ccDomain,
                                      license)
         } else {
             project.license = nil
