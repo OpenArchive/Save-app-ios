@@ -16,6 +16,7 @@ def shared_pods
     pod 'UIImage-Resize', '~> 1.0'
     pod 'AlignedCollectionViewFlowLayout', '~> 1.1'
     pod 'DownloadButton', '~> 0.1'
+    pod 'MBProgressHUD', '~> 1.1'
 end
 
 target 'OpenArchive' do

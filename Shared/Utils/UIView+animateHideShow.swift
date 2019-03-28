@@ -44,10 +44,12 @@ extension UIView {
     /**
      Sets `isHidden` to `false`, and if `#hide` was called before, also sets
      a height constraint to the original (stored) height.
+
+     TODO: The name is a quick hack, as it collides with MBProgressHUD.
      
      - parameter animated: If the change (if any) shall be animated or not.
     */
-    func show(animated: Bool = false) {
+    func show2(animated: Bool = false) {
         if animated {
             animateHideShow(hide: false)
         }
@@ -64,7 +66,7 @@ extension UIView {
     */
     func toggle(_ toggle: Bool, animated: Bool = false) {
         if toggle {
-            show(animated: animated)
+            show2(animated: animated)
         }
         else {
             hide(animated: animated)

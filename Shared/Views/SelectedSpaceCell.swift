@@ -25,4 +25,19 @@ class SelectedSpaceCell: BaseCell {
             userNameLb.text = space?.authorName ?? space?.username
         }
     }
+
+    func centered() {
+        if let superview = favIcon.superview {
+            favIcon.constraints.forEach {
+                if $0.firstAttribute == .leading {
+                    $0.isActive = false
+                }
+            }
+
+            favIcon.centerXAnchor.constraint(equalTo: superview.centerXAnchor).isActive = true
+        }
+
+        serverNameLb.textAlignment = .center
+        userNameLb.textAlignment = .center
+    }
 }

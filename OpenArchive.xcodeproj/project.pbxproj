@@ -37,6 +37,10 @@
 		A045D1F4224CFFAE008FF8C1 /* SelectedSpaceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A045D1EF224CFB96008FF8C1 /* SelectedSpaceCell.xib */; };
 		A045D1F5224CFFB4008FF8C1 /* SelectedSpaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68321EE831300E4F6B7 /* SelectedSpaceCell.swift */; };
 		A045D1F6224CFFB4008FF8C1 /* SelectedSpaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68321EE831300E4F6B7 /* SelectedSpaceCell.swift */; };
+		A045D1FB224D02AA008FF8C1 /* TitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A045D1F8224D02AA008FF8C1 /* TitleCell.swift */; };
+		A045D1FC224D02AA008FF8C1 /* TitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A045D1F8224D02AA008FF8C1 /* TitleCell.swift */; };
+		A045D201224D07C3008FF8C1 /* ButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A045D200224D07C3008FF8C1 /* ButtonCell.swift */; };
+		A045D202224D07C3008FF8C1 /* ButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A045D200224D07C3008FF8C1 /* ButtonCell.swift */; };
 		A050147F2228209E0056ED95 /* BaseServerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050147E2228209E0056ED95 /* BaseServerViewController.swift */; };
 		A050AA492225DF4000AE5D15 /* SpacesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050AA482225DF4000AE5D15 /* SpacesListCell.swift */; };
 		A05275142211A91300BDB14B /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05275132211A91300BDB14B /* CollectionsView.swift */; };
@@ -192,6 +196,8 @@
 		A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegexUtils.swift; sourceTree = "<group>"; };
 		A045D1E2224CF034008FF8C1 /* SpaceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpaceCell.xib; sourceTree = "<group>"; };
 		A045D1EF224CFB96008FF8C1 /* SelectedSpaceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectedSpaceCell.xib; sourceTree = "<group>"; };
+		A045D1F8224D02AA008FF8C1 /* TitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleCell.swift; sourceTree = "<group>"; };
+		A045D200224D07C3008FF8C1 /* ButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCell.swift; sourceTree = "<group>"; };
 		A050147E2228209E0056ED95 /* BaseServerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseServerViewController.swift; sourceTree = "<group>"; };
 		A050AA482225DF4000AE5D15 /* SpacesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacesListCell.swift; sourceTree = "<group>"; };
 		A05275132211A91300BDB14B /* CollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsView.swift; sourceTree = "<group>"; };
@@ -463,6 +469,7 @@
 			children = (
 				A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */,
 				A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */,
+				A045D200224D07C3008FF8C1 /* ButtonCell.swift */,
 				A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */,
 				A0AC06B32201E94000BD5FBA /* MenuItemCell.xib */,
 				A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */,
@@ -479,6 +486,7 @@
 				A0A98AEB22428A9300596B74 /* TableHeader.xib */,
 				A0F7FDDB22491C6C006610F0 /* TintedButton.swift */,
 				A0F7FDDE224936C8006610F0 /* TintedImageView.swift */,
+				A045D1F8224D02AA008FF8C1 /* TitleCell.swift */,
 				A0AC06AF2201E30E00BD5FBA /* WorkingOverlay.swift */,
 			);
 			path = Views;
@@ -717,6 +725,7 @@
 				"${BUILT_PRODUCTS_DIR}/FilesProvider/FilesProvider.framework",
 				"${BUILT_PRODUCTS_DIR}/ImageRow/ImageRow.framework",
 				"${BUILT_PRODUCTS_DIR}/Localize/Localize.framework",
+				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
 				"${BUILT_PRODUCTS_DIR}/MDFInternationalization/MDFInternationalization.framework",
 				"${BUILT_PRODUCTS_DIR}/MDFTextAccessibility/MDFTextAccessibility.framework",
 				"${BUILT_PRODUCTS_DIR}/MaterialComponents/MaterialComponents.framework",
@@ -736,6 +745,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FilesProvider.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImageRow.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Localize.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MDFInternationalization.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MDFTextAccessibility.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MaterialComponents.framework",
@@ -805,6 +815,7 @@
 				A0C475C021149B040012937E /* MainViewController.swift in Sources */,
 				A0FB4DB321F8799100B46099 /* SpacesView.swift in Sources */,
 				A071290C2111DE3C007A432A /* Asset.swift in Sources */,
+				A045D1FC224D02AA008FF8C1 /* TitleCell.swift in Sources */,
 				A08750AA2112099700BFAFE4 /* Constants.m in Sources */,
 				A05275152211A91300BDB14B /* CollectionsView.swift in Sources */,
 				A0AFCF1022300E41005E57FD /* MultilineTitle.swift in Sources */,
@@ -819,6 +830,7 @@
 				A0362193220DA390003C21DC /* UIColor+accent.swift in Sources */,
 				A0DE78B021F76D2200B6B68B /* Project.swift in Sources */,
 				A0FB4DB621F89FD500B46099 /* AssetsByCollectionView.swift in Sources */,
+				A045D202224D07C3008FF8C1 /* ButtonCell.swift in Sources */,
 				A0FB4DBC21F8C9B600B46099 /* RoundedImageView.swift in Sources */,
 				A092C0F1223A8D4B003EB0AA /* DoneDelegate.swift in Sources */,
 				A01A7B702200A05C00E18DE0 /* ProjectsTabBar.swift in Sources */,
@@ -842,6 +854,7 @@
 				A0A3D9C72226D8DB00BB5A19 /* SpaceCell.swift in Sources */,
 				A08750A92112099700BFAFE4 /* Constants.m in Sources */,
 				A0362198220DB384003C21DC /* WebDavSpace.swift in Sources */,
+				A045D201224D07C3008FF8C1 /* ButtonCell.swift in Sources */,
 				A01A7B6F2200A05C00E18DE0 /* ProjectsTabBar.swift in Sources */,
 				A08C2CE621F0B46C008ACA3E /* FormViewController.swift in Sources */,
 				A0F7FDE722494E2F006610F0 /* RemoveProjectAlert.swift in Sources */,
@@ -868,6 +881,7 @@
 				A004E24A20EBCEA000A1D5F5 /* OldDetailsViewController.swift in Sources */,
 				A00A8D45220C63B20083F0CB /* ProjectsView.swift in Sources */,
 				A098980622369F8100022851 /* ManagementViewController.swift in Sources */,
+				A045D1FB224D02AA008FF8C1 /* TitleCell.swift in Sources */,
 				A092C0F0223A8D4B003EB0AA /* DoneDelegate.swift in Sources */,
 				A0A192DD21F208DA009A8CF0 /* Space.swift in Sources */,
 				A08C2CE221F09B3F008ACA3E /* InternetArchiveViewController.swift in Sources */,

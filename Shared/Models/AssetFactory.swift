@@ -161,7 +161,7 @@ class AssetFactory {
      be written to the proper location for whatever reason.
 
      You will *only* receive the `resultHandler` callback, if the given file can be successfully
-     *moved* to its new location inside the app!
+     copied to its new location inside the app!
 
      - parameter url: A file URL.
      - parameter thumbnail: A `UIImage` which represents a thumbnail of this asset.
