@@ -105,7 +105,7 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
         license = decoder.decodeObject(forKey: "license") as? String
         active = decoder.decodeBool(forKey: "active")
         spaceId = decoder.decodeObject(forKey: "spaceId") as? String
-        collectionId = decoder.decodeObject(forKey: "colectionId") as? String
+        collectionId = decoder.decodeObject(forKey: "collectionId") as? String
     }
 
     func encode(with coder: NSCoder) {
