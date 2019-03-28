@@ -732,67 +732,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                        <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="selectedSpaceCell" rowHeight="163" id="05P-XC-V3U" customClass="SelectedSpaceCell" customModule="OpenArchive" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="163"/>
-                                <autoresizingMask key="autoresizingMask"/>
-                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="05P-XC-V3U" id="Mkx-bo-aGt">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="162.5"/>
-                                    <autoresizingMask key="autoresizingMask"/>
-                                    <subviews>
-                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="server" translatesAutoresizingMaskIntoConstraints="NO" id="IaU-Xc-TZq">
-                                            <rect key="frame" x="16" y="11" width="80" height="80"/>
-                                            <constraints>
-                                                <constraint firstAttribute="width" constant="80" id="8Rj-zC-vgm"/>
-                                                <constraint firstAttribute="height" constant="80" id="vsV-Ig-NA4"/>
-                                            </constraints>
-                                            <userDefinedRuntimeAttributes>
-                                                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                                                    <integer key="value" value="40"/>
-                                                </userDefinedRuntimeAttribute>
-                                            </userDefinedRuntimeAttributes>
-                                        </imageView>
-                                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_edit" translatesAutoresizingMaskIntoConstraints="NO" id="0bC-tJ-3tt" customClass="RoundedImageView" customModule="OpenArchive" customModuleProvider="target">
-                                            <rect key="frame" x="72" y="67" width="24" height="24"/>
-                                            <color key="backgroundColor" red="0.0" green="0.70398116440000003" blue="0.64921339899999997" alpha="1" colorSpace="calibratedRGB"/>
-                                            <constraints>
-                                                <constraint firstAttribute="height" constant="24" id="CtE-CL-Baw"/>
-                                                <constraint firstAttribute="width" constant="24" id="ftp-3g-8KK"/>
-                                            </constraints>
-                                        </imageView>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Server Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ZXv-3B-wLZ">
-                                            <rect key="frame" x="16" y="99" width="343" height="26.5"/>
-                                            <fontDescription key="fontDescription" type="system" weight="black" pointSize="22"/>
-                                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="User Name" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Wvg-UB-eZK">
-                                            <rect key="frame" x="16" y="133.5" width="343" height="21"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                            <color key="textColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                            <nil key="highlightedColor"/>
-                                        </label>
-                                    </subviews>
-                                    <constraints>
-                                        <constraint firstItem="0bC-tJ-3tt" firstAttribute="bottom" secondItem="IaU-Xc-TZq" secondAttribute="bottom" id="0JS-FX-dVe"/>
-                                        <constraint firstItem="IaU-Xc-TZq" firstAttribute="leading" secondItem="Mkx-bo-aGt" secondAttribute="leadingMargin" id="9PF-K6-vLF"/>
-                                        <constraint firstItem="Wvg-UB-eZK" firstAttribute="leading" secondItem="Mkx-bo-aGt" secondAttribute="leadingMargin" id="Avg-Xp-gQ9"/>
-                                        <constraint firstItem="0bC-tJ-3tt" firstAttribute="trailing" secondItem="IaU-Xc-TZq" secondAttribute="trailing" id="HvI-o5-Odd"/>
-                                        <constraint firstItem="Wvg-UB-eZK" firstAttribute="top" secondItem="ZXv-3B-wLZ" secondAttribute="bottom" constant="8" id="KfY-IQ-PGq"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="Wvg-UB-eZK" secondAttribute="trailing" id="Lyv-hP-vfu"/>
-                                        <constraint firstItem="ZXv-3B-wLZ" firstAttribute="leading" secondItem="Mkx-bo-aGt" secondAttribute="leadingMargin" id="YNN-6p-wFd"/>
-                                        <constraint firstAttribute="trailingMargin" secondItem="ZXv-3B-wLZ" secondAttribute="trailing" id="Zmk-eU-uNs"/>
-                                        <constraint firstItem="IaU-Xc-TZq" firstAttribute="top" secondItem="Mkx-bo-aGt" secondAttribute="topMargin" id="iH2-Ik-7Gt"/>
-                                        <constraint firstItem="ZXv-3B-wLZ" firstAttribute="top" secondItem="IaU-Xc-TZq" secondAttribute="bottom" constant="8" id="lY9-YY-jsz"/>
-                                    </constraints>
-                                </tableViewCellContentView>
-                                <connections>
-                                    <outlet property="favIcon" destination="IaU-Xc-TZq" id="Qza-x3-EiP"/>
-                                    <outlet property="serverNameLb" destination="ZXv-3B-wLZ" id="nOJ-AD-bEX"/>
-                                    <outlet property="userNameLb" destination="Wvg-UB-eZK" id="FqR-KX-utl"/>
-                                </connections>
-                            </tableViewCell>
-                        </prototypes>
                         <connections>
                             <outlet property="dataSource" destination="60Y-gn-6Z7" id="CFa-i6-Uyq"/>
                             <outlet property="delegate" destination="60Y-gn-6Z7" id="RE6-iD-uno"/>

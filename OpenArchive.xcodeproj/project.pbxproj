@@ -33,6 +33,10 @@
 		A045D1E5224CF034008FF8C1 /* SpaceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A045D1E2224CF034008FF8C1 /* SpaceCell.xib */; };
 		A045D1E8224CF24E008FF8C1 /* SpacesListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A03EE8DA224CEE63008A0281 /* SpacesListCell.xib */; };
 		A045D1E9224CF24F008FF8C1 /* SpacesListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A03EE8DA224CEE63008A0281 /* SpacesListCell.xib */; };
+		A045D1F3224CFFAD008FF8C1 /* SelectedSpaceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A045D1EF224CFB96008FF8C1 /* SelectedSpaceCell.xib */; };
+		A045D1F4224CFFAE008FF8C1 /* SelectedSpaceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A045D1EF224CFB96008FF8C1 /* SelectedSpaceCell.xib */; };
+		A045D1F5224CFFB4008FF8C1 /* SelectedSpaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68321EE831300E4F6B7 /* SelectedSpaceCell.swift */; };
+		A045D1F6224CFFB4008FF8C1 /* SelectedSpaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68321EE831300E4F6B7 /* SelectedSpaceCell.swift */; };
 		A050147F2228209E0056ED95 /* BaseServerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050147E2228209E0056ED95 /* BaseServerViewController.swift */; };
 		A050AA492225DF4000AE5D15 /* SpacesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050AA482225DF4000AE5D15 /* SpacesListCell.swift */; };
 		A05275142211A91300BDB14B /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05275132211A91300BDB14B /* CollectionsView.swift */; };
@@ -118,7 +122,6 @@
 		A0DE78B221F771A700B6B68B /* ProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78B121F771A700B6B68B /* ProjectViewController.swift */; };
 		A0E1A67C21EE7A5C00E4F6B7 /* SpaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A67B21EE7A5C00E4F6B7 /* SpaceViewController.swift */; };
 		A0E1A68121EE7BE900E4F6B7 /* MenuItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */; };
-		A0E1A68521EE831300E4F6B7 /* SelectedSpaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68321EE831300E4F6B7 /* SelectedSpaceCell.swift */; };
 		A0E1A68721EE834D00E4F6B7 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68621EE834D00E4F6B7 /* BaseCell.swift */; };
 		A0E1A68921EE873200E4F6B7 /* TableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68821EE873200E4F6B7 /* TableHeader.swift */; };
 		A0E2BC722226AA10006D33E3 /* SelectedSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2BC712226AA10006D33E3 /* SelectedSpace.swift */; };
@@ -188,6 +191,7 @@
 		A0457E6620EF96FB00B8FBCB /* StringUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
 		A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegexUtils.swift; sourceTree = "<group>"; };
 		A045D1E2224CF034008FF8C1 /* SpaceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpaceCell.xib; sourceTree = "<group>"; };
+		A045D1EF224CFB96008FF8C1 /* SelectedSpaceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectedSpaceCell.xib; sourceTree = "<group>"; };
 		A050147E2228209E0056ED95 /* BaseServerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseServerViewController.swift; sourceTree = "<group>"; };
 		A050AA482225DF4000AE5D15 /* SpacesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacesListCell.swift; sourceTree = "<group>"; };
 		A05275132211A91300BDB14B /* CollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsView.swift; sourceTree = "<group>"; };
@@ -465,6 +469,8 @@
 				A01A7B6E2200A05C00E18DE0 /* ProjectsTabBar.swift */,
 				A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */,
 				A0FB4DBA21F8C9B600B46099 /* RoundedImageView.swift */,
+				A045D1EF224CFB96008FF8C1 /* SelectedSpaceCell.xib */,
+				A0E1A68321EE831300E4F6B7 /* SelectedSpaceCell.swift */,
 				A0A3D9C62226D8DB00BB5A19 /* SpaceCell.swift */,
 				A045D1E2224CF034008FF8C1 /* SpaceCell.xib */,
 				A050AA482225DF4000AE5D15 /* SpacesListCell.swift */,
@@ -483,7 +489,6 @@
 			children = (
 				A0656AB721F9BC8500070C4B /* ConnectSpaceViewController.swift */,
 				A0E1A67B21EE7A5C00E4F6B7 /* SpaceViewController.swift */,
-				A0E1A68321EE831300E4F6B7 /* SelectedSpaceCell.swift */,
 				A08C2CEA21F0B71B008ACA3E /* EditProfileViewController.swift */,
 				A050147E2228209E0056ED95 /* BaseServerViewController.swift */,
 				A08C2CE321F0A98C008ACA3E /* PrivateServerViewController.swift */,
@@ -649,6 +654,7 @@
 				A0C475BC21148DDE0012937E /* BaseDetailsViewController.xib in Resources */,
 				A0631B582203069200B3E90D /* MenuItemCell.xib in Resources */,
 				A045D1E5224CF034008FF8C1 /* SpaceCell.xib in Resources */,
+				A045D1F3224CFFAD008FF8C1 /* SelectedSpaceCell.xib in Resources */,
 				A0B24C6521F0CDA6006C0CC6 /* AvatarCell.xib in Resources */,
 				A0A98AED22428A9300596B74 /* TableHeader.xib in Resources */,
 				A0C475B7211488BF0012937E /* Assets.xcassets in Resources */,
@@ -669,6 +675,7 @@
 				A0E739DF20E4C85E00DB31E1 /* Assets.xcassets in Resources */,
 				A0C475BB21148DDE0012937E /* BaseDetailsViewController.xib in Resources */,
 				A0E739DD20E4C85D00DB31E1 /* Main.storyboard in Resources */,
+				A045D1F4224CFFAE008FF8C1 /* SelectedSpaceCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -785,6 +792,7 @@
 				A0552051222566CE00B9645F /* UIView+animateHideShow.swift in Sources */,
 				A0C475B4211474A50012937E /* Formatters.swift in Sources */,
 				A0362196220DB2CA003C21DC /* IaSpace.swift in Sources */,
+				A045D1F5224CFFB4008FF8C1 /* SelectedSpaceCell.swift in Sources */,
 				A0C475BE21148DDE0012937E /* BaseDetailsViewController.swift in Sources */,
 				A0E2BC732226AA10006D33E3 /* SelectedSpace.swift in Sources */,
 				A070335C2119E7DF00BF1F33 /* Request+debug.swift in Sources */,
@@ -840,7 +848,6 @@
 				A0DE78B221F771A700B6B68B /* ProjectViewController.swift in Sources */,
 				A08C2CED21F0C634008ACA3E /* AvatarRow.swift in Sources */,
 				A00DC98A22315D4F004F07E0 /* ImageViewController.swift in Sources */,
-				A0E1A68521EE831300E4F6B7 /* SelectedSpaceCell.swift in Sources */,
 				A01A7B722200F2D700E18DE0 /* HeaderView.swift in Sources */,
 				A050147F2228209E0056ED95 /* BaseServerViewController.swift in Sources */,
 				A0C475BD21148DDE0012937E /* BaseDetailsViewController.swift in Sources */,
@@ -849,6 +856,7 @@
 				A08C2CE421F0A98C008ACA3E /* PrivateServerViewController.swift in Sources */,
 				A04526082231309D007A6F53 /* EditViewController.swift in Sources */,
 				A070335B2119E7DF00BF1F33 /* Request+debug.swift in Sources */,
+				A045D1F6224CFFB4008FF8C1 /* SelectedSpaceCell.swift in Sources */,
 				A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */,
 				A0AC06B02201E30E00BD5FBA /* WorkingOverlay.swift in Sources */,
 				A08C2CEB21F0B71B008ACA3E /* EditProfileViewController.swift in Sources */,

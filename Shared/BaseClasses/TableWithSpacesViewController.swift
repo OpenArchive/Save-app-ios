@@ -36,22 +36,27 @@ class TableWithSpacesViewController: BaseTableViewController, UICollectionViewDe
         super.viewDidLoad()
 
         tableView.register(SpacesListCell.nib, forCellReuseIdentifier: SpacesListCell.reuseId)
+        tableView.register(SelectedSpaceCell.nib, forCellReuseIdentifier: SelectedSpaceCell.reuseId)
     }
 
     // MARK: Public Methods
 
     func getSpacesListCell() -> SpacesListCell? {
-        if let cell = tableView.dequeueReusableCell(withIdentifier: SpacesListCell.reuseId) as? SpacesListCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: SpacesListCell.reuseId) as? SpacesListCell
 
-            collectionView = cell.collectionView
-            collectionView?.register(SpaceCell.nib, forCellWithReuseIdentifier: SpaceCell.reuseId)
-            collectionView?.delegate = self
-            collectionView?.dataSource = self
+        collectionView = cell?.collectionView
+        collectionView?.register(SpaceCell.nib, forCellWithReuseIdentifier: SpaceCell.reuseId)
+        collectionView?.delegate = self
+        collectionView?.dataSource = self
 
-            return cell
-        }
+        return cell
+    }
 
-        return nil
+    func getSelectedSpaceCell() -> SelectedSpaceCell? {
+        let cell = tableView.dequeueReusableCell(withIdentifier: SelectedSpaceCell.reuseId) as? SelectedSpaceCell
+        cell?.space = SelectedSpace.space
+
+        return cell
     }
 
 

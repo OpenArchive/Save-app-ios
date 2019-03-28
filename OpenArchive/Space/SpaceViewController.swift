@@ -111,9 +111,8 @@ class SpaceViewController: TableWithSpacesViewController {
                 return cell
             }
             else if indexPath.row == 1,
-                let cell = tableView.dequeueReusableCell(withIdentifier: SelectedSpaceCell.reuseId) as? SelectedSpaceCell {
+                let cell = getSelectedSpaceCell() {
 
-                cell.space = SelectedSpace.space
                 return cell
             }
         }

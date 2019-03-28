@@ -10,10 +10,6 @@ import UIKit
 
 class SelectedSpaceCell: BaseCell {
 
-    override class var reuseId: String {
-        return  "selectedSpaceCell"
-    }
-
     override class var height: CGFloat {
         return 163
     }
