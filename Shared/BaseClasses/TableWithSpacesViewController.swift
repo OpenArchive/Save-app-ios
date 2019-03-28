@@ -30,6 +30,8 @@ class TableWithSpacesViewController: BaseTableViewController, UICollectionViewDe
         return Int(spacesMappings.numberOfItems(inSection: 0))
     }
 
+    var allowAdd = false
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -56,7 +58,7 @@ class TableWithSpacesViewController: BaseTableViewController, UICollectionViewDe
     // MARK: UICollectionViewDataSource
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return spacesCount + 1
+        return spacesCount + (allowAdd ? 1 : 0)
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

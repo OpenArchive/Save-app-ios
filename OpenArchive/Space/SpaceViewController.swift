@@ -51,6 +51,8 @@ class SpaceViewController: TableWithSpacesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        allowAdd = true
+
         let nc = NotificationCenter.default
 
         nc.addObserver(self, selector: #selector(yapDatabaseModified),
