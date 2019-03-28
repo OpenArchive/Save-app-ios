@@ -216,12 +216,18 @@
 		A0A192DF21F23B61009A8CF0 /* Constants+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Constants+Swift.swift"; sourceTree = "<group>"; };
 		A0A3D9C62226D8DB00BB5A19 /* SpaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceCell.swift; sourceTree = "<group>"; };
 		A0A98AEB22428A9300596B74 /* TableHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableHeader.xib; sourceTree = "<group>"; };
+		A0AC0569224CD8D5008B9249 /* Fastfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Fastfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A0AC0579224CDE9C008B9249 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		A0AC057C224CDF4F008B9249 /* Gemfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Gemfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A0AC057D224CE00E008B9249 /* Gemfile.lock */ = {isa = PBXFileReference; lastKnownFileType = text; path = Gemfile.lock; sourceTree = SOURCE_ROOT; };
 		A0AC06A52201B94500BD5FBA /* ERM.dia */ = {isa = PBXFileReference; lastKnownFileType = file; path = ERM.dia; sourceTree = "<group>"; };
 		A0AC06A72201B98400BD5FBA /* ERM.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ERM.png; sourceTree = "<group>"; };
 		A0AC06A92201CFD800BD5FBA /* BrowseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewController.swift; sourceTree = "<group>"; };
 		A0AC06AB2201D00100BD5FBA /* FolderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCell.swift; sourceTree = "<group>"; };
 		A0AC06AF2201E30E00BD5FBA /* WorkingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkingOverlay.swift; sourceTree = "<group>"; };
 		A0AC06B32201E94000BD5FBA /* MenuItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuItemCell.xib; sourceTree = "<group>"; };
+		A0ACF215224CD8D1008B9249 /* Appfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Appfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A0ACF216224CD8D1008B9249 /* Pluginfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Pluginfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A0AFCF0C22300279005E57FD /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineTitle.swift; sourceTree = "<group>"; };
 		A0AFCF1122302054005E57FD /* PreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewCell.swift; sourceTree = "<group>"; };
@@ -323,6 +329,7 @@
 				A058628320E4FC5A00EE2F14 /* Podfile */,
 				A058628520E4FDBF00EE2F14 /* Podfile.lock */,
 				A0C0732B20EE7AB600EA48F0 /* README.md */,
+				A0ACF214224CD8D1008B9249 /* fastlane */,
 			);
 			name = Build;
 			sourceTree = "<group>";
@@ -384,6 +391,19 @@
 				A0AC06A52201B94500BD5FBA /* ERM.dia */,
 			);
 			path = docs;
+			sourceTree = "<group>";
+		};
+		A0ACF214224CD8D1008B9249 /* fastlane */ = {
+			isa = PBXGroup;
+			children = (
+				A0AC057C224CDF4F008B9249 /* Gemfile */,
+				A0AC057D224CE00E008B9249 /* Gemfile.lock */,
+				A0ACF215224CD8D1008B9249 /* Appfile */,
+				A0AC0569224CD8D5008B9249 /* Fastfile */,
+				A0ACF216224CD8D1008B9249 /* Pluginfile */,
+				A0AC0579224CDE9C008B9249 /* README.md */,
+			);
+			path = fastlane;
 			sourceTree = "<group>";
 		};
 		A0AFCF0B223001AE005E57FD /* Preview */ = {
