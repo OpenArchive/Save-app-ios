@@ -82,7 +82,8 @@ class Formatters: NSObject {
 
          - Set scheme to "https", if none set, yet.
          - Set path as host, if no host; set path empty, if done so.
-         - Set path to "/remote.php/webdav/" (Nextcloud default WebDAV endpoint), if path empty.
+         - Set path to "/remote.php/webdav/" (Nextcloud default WebDAV endpoint),
+           if path is empty or root "/".
 
          - parameter url: The URL to fix.
          - parameter baseOnly: if true, removes user, password, query and fragment components and sets path to "/".
@@ -101,7 +102,7 @@ class Formatters: NSObject {
                     urlc.path = ""
                 }
 
-                if urlc.path.isEmpty {
+                if urlc.path.isEmpty || urlc.path == "/" {
                     urlc.path = "/remote.php/webdav/"
                 }
 
