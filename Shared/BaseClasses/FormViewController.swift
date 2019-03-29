@@ -52,6 +52,6 @@ class FormViewController: Eureka.FormViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return TableHeader.height
+        return TableHeader.reducedHeight
     }
 }
