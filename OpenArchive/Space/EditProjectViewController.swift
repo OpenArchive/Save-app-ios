@@ -1,26 +1,18 @@
 //
-//  ProjectViewController.swift
+//  EditProjectViewController.swift
 //  OpenArchive
 //
-//  Created by Benjamin Erhart on 22.01.19.
+//  Created by Benjamin Erhart on 29.03.19.
 //  Copyright © 2019 Open Archive. All rights reserved.
 //
 
 import UIKit
 import Eureka
 
-class ProjectViewController: FormViewController, BrowseDelegate {
+class EditProjectViewController: BaseProjectViewController {
 
     static let ccDomain = "creativecommons.org"
     static let ccUrl = "https://%@/licenses/%@/4.0/"
-
-    private var project: Project
-    private var isNew = false
-
-    private let nameRow = TextRow() {
-        $0.title = "Name".localize()
-        $0.add(rule: RuleRequired())
-    }
 
     private let ccSw = SwitchRow("cc") {
         $0.title = "Allow Creative Commons use for all media in this project".localize()
@@ -60,71 +52,17 @@ class ProjectViewController: FormViewController, BrowseDelegate {
         return project.active ? "Archive Project".localize() : "Unarchive Project".localize()
     }
 
-    init(_ project: Project? = nil) {
-        if project != nil {
-            self.project = project!
-        }
-        else {
-            self.project = Project(space: SelectedSpace.space)
-            isNew = true
-        }
-
-        super.init()
-    }
-
-    required init?(coder decoder: NSCoder) {
-        project = decoder.decodeObject() as! Project
-
-        super.init(coder: decoder)
-    }
-
     override func viewDidLoad() {
-        super.viewDidLoad()
-
-        if isNew {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(
-                barButtonSystemItem: .save, target: self, action: #selector(connect))
-        }
-        else {
-            navigationItem.title = project.name
-        }
+        navigationItem.title = project.name
 
         nameRow.value = project.name
 
-        if isNew {
-            form
-
-            +++ LabelRow() {
-                $0.title = "New Project".localize()
-                $0.cellStyle = .default
-            }
-            .cellUpdate { cell, row in
-                cell.textLabel?.textAlignment = .center
-                cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 28)
-                cell.textLabel?.textColor = UIColor.accent
-            }
-
-            <<< LabelRow() {
-                $0.cell.textLabel?.numberOfLines = 0
-                $0.cell.textLabel?.textAlignment = .center
-                $0.title = "Curate your own project or browse for an existing one.".localize()
-            }
-        }
-
         form
             +++ nameRow.cellUpdate() { _, row in
-                if self.isNew {
-                    self.enableDone()
-                }
-                else {
-                    self.project.name = row.value
-                    self.navigationItem.title = self.project.name
-                    self.store()
-                }
+                self.project.name = row.value
+                self.navigationItem.title = self.project.name
+                self.store()
             }
-
-        if !isNew {
-            form
 
             +++ Section("Creative Commons".localize().localizedUppercase)
 
@@ -142,24 +80,6 @@ class ProjectViewController: FormViewController, BrowseDelegate {
                     UIApplication.shared.open(url)
                 }
             }
-        }
-
-        if isNew {
-            form
-
-            +++ ButtonRow() {
-                $0.title = "Browse Projects".localize()
-            }
-            .onCellSelection { cell, row in
-                if let browseVc = BrowseViewController.instantiate() {
-                    browseVc.delegate = self
-
-                    self.navigationController?.pushViewController(browseVc, animated: true)
-                }
-            }
-        }
-        else {
-            form
 
             +++ ButtonRow() {
                 $0.title = "Remove from App".localize()
@@ -181,10 +101,9 @@ class ProjectViewController: FormViewController, BrowseDelegate {
 
                 cell.textLabel?.text = self.archiveLabel
             }
-        }
 
         if let license = project.license,
-            license.localizedCaseInsensitiveContains(ProjectViewController.ccDomain) {
+            license.localizedCaseInsensitiveContains(EditProjectViewController.ccDomain) {
 
             ccSw.value = true
             remixSw.value = !license.localizedCaseInsensitiveContains("-nd")
@@ -196,56 +115,19 @@ class ProjectViewController: FormViewController, BrowseDelegate {
             ccSw.value = false
         }
 
-        form.validate()
-        enableDone()
+        super.viewDidLoad()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
 
-        navigationController?.setNavigationBarHidden(false, animated: animated)
-    }
-
+    // MARK: UITableViewDelegate
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         // The second one has a title.
-        return !isNew && section == 1 ? TableHeader.height : TableHeader.reducedHeight
-    }
-
-
-    // MARK: BrowseDelegate
-
-    func didSelect(name: String) {
-        nameRow.value = name
-        nameRow.disabled = true
-        nameRow.evaluateDisabled()
-    }
-
-
-    // MARK: Actions
-
-    @objc func connect() {
-        project.name = nameRow.value
-
-        store()
-
-        // Only animate, if we don't have a delegate: Too much pop animations
-        // will end in the last view controller not being popped and it's also
-        // too much going on in the UI.
-        navigationController?.popViewController(animated: delegate == nil)
-
-        // Could be PrivateServerViewController or InternetArchiveViewController
-        // in the onboarding flow / create space flow to ensure a space and
-        // project exits.
-        delegate?.done()
+        return section == 1 ? TableHeader.height : TableHeader.reducedHeight
     }
 
 
     // MARK: Private Methods
-
-    private func enableDone() {
-        navigationItem.rightBarButtonItem?.isEnabled = nameRow.isValid
-    }
 
     private func ccLicenseChanged(_ row: SwitchRow) {
         if ccSw.value ?? false {
@@ -269,8 +151,8 @@ class ProjectViewController: FormViewController, BrowseDelegate {
                 license += "-nd"
             }
 
-            project.license = String(format: ProjectViewController.ccUrl,
-                                     ProjectViewController.ccDomain,
+            project.license = String(format: EditProjectViewController.ccUrl,
+                                     EditProjectViewController.ccDomain,
                                      license)
         } else {
             project.license = nil
@@ -280,12 +162,5 @@ class ProjectViewController: FormViewController, BrowseDelegate {
         licenseRow.updateCell()
 
         store()
-    }
-
-    private func store() {
-        Db.writeConn?.asyncReadWrite() { transaction in
-            transaction.setObject(self.project, forKey: self.project.id,
-                                  inCollection: Project.collection)
-        }
     }
 }

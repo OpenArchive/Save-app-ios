@@ -14,6 +14,8 @@ import MBProgressHUD
 @objc(MainViewController)
 class MainViewController: TableWithSpacesViewController {
 
+    private static let projectSection = 3
+
     private lazy var projectsReadConn = Db.newLongLivedReadConn()
 
     private lazy var projectsMappings: YapDatabaseViewMappings = {
@@ -91,7 +93,7 @@ class MainViewController: TableWithSpacesViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == 3 ? projectsCount : 1
+        return section == MainViewController.projectSection ? projectsCount + 1 : 1
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -140,10 +142,17 @@ class MainViewController: TableWithSpacesViewController {
 
         let cell = tableView.dequeueReusableCell(withIdentifier: MenuItemCell.reuseId, for: indexPath) as! MenuItemCell
 
-        if indexPath.section == 3 {
-            cell.accessoryType = selectedRow == indexPath.row ? .checkmark : .none
+        if indexPath.section == MainViewController.projectSection {
+            if indexPath.row < projectsCount {
+                cell.accessoryType = selectedRow == indexPath.row ? .checkmark : .none
 
-            return cell.set(getProject(indexPath)?.name ?? "Unnamed Project".localize())
+                return cell.set(getProject(indexPath)?.name ?? "Unnamed Project".localize())
+            }
+            else {
+                cell.accessoryType = .none
+
+                return cell.set("New Project".localize(), isPlaceholder: true)
+            }
         }
 
         return cell.set("")
@@ -161,7 +170,7 @@ class MainViewController: TableWithSpacesViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
-        return 1
+        return section == 4 ? 24 : 1
     }
 
 
@@ -170,7 +179,20 @@ class MainViewController: TableWithSpacesViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section == 3 {
+        if indexPath.section == MainViewController.projectSection {
+            if indexPath.row >= projectsCount {
+                let navVc = UINavigationController(rootViewController:
+                    NewProjectViewController(isModal: true))
+                navVc.view.tintColor = UIColor.accent
+
+                present(navVc, animated: true)
+
+                tableView.deselectRow(at: indexPath, animated: false)
+
+                return
+            }
+
+
             selectedRow = indexPath.row
 
             var allProjects = [IndexPath]()
@@ -270,9 +292,14 @@ class MainViewController: TableWithSpacesViewController {
                     }
                 case .insert:
                     if let newIndexPath = change.newIndexPath {
-                        if selectedRow == newIndexPath.row {
-                            selectedRow = -1
+                        if selectedRow > -1 && selectedRow != newIndexPath.row {
+                            tableView.reloadRows(
+                                at: [IndexPath(row: selectedRow, section: MainViewController.projectSection)],
+                                with: .automatic)
                         }
+
+                        // Always select the newly created project.
+                        selectedRow = newIndexPath.row
 
                         tableView.insertRows(at: [transform(newIndexPath)], with: .automatic)
                     }
@@ -348,7 +375,7 @@ class MainViewController: TableWithSpacesViewController {
     }
 
     private func transform(_ indexPath: IndexPath) -> IndexPath {
-        return IndexPath(row: indexPath.row, section: 3)
+        return IndexPath(row: indexPath.row, section: MainViewController.projectSection)
     }
 
     /**

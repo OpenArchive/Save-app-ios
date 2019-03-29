@@ -11,10 +11,6 @@ import FilesProvider
 
 class FolderCell: BaseCell {
 
-    override class var reuseId: String {
-        return  "folderCell"
-    }
-
     @IBOutlet weak var nameLb: UILabel!
     @IBOutlet weak var modifiedLb: UILabel!
 

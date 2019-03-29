@@ -37,7 +37,7 @@ class BaseServerViewController: FormViewController, DoneDelegate {
             self.done()
         }
         else {
-            let vc = ProjectViewController()
+            let vc = NewProjectViewController()
             vc.delegate = self
 
             self.navigationController?.pushViewController(vc, animated: true)

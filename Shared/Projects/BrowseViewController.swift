@@ -15,11 +15,6 @@ protocol BrowseDelegate {
 
 class BrowseViewController: BaseTableViewController {
 
-    class func instantiate() -> BrowseViewController? {
-        return UIStoryboard(name: "Main", bundle: Bundle(for: self))
-            .instantiateViewController(withIdentifier: String(describing: self)) as? BrowseViewController
-    }
-
     var delegate: BrowseDelegate?
 
     private var provider: WebDAVFileProvider? {
@@ -35,6 +30,10 @@ class BrowseViewController: BaseTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        navigationItem.title = "Browse Projects".localize()
+
+        tableView.register(FolderCell.nib, forCellReuseIdentifier: FolderCell.reuseId)
 
         loadFolders()
     }

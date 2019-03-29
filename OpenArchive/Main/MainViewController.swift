@@ -255,7 +255,7 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
 
     func didSelectAdd(_ tabBar: ProjectsTabBar) {
         if SelectedSpace.available {
-            navigationController?.pushViewController(ProjectViewController(),
+            navigationController?.pushViewController(NewProjectViewController(),
                                                      animated: true)
         }
         else {

@@ -194,7 +194,7 @@ class SpaceViewController: TableWithSpacesViewController {
             }
 
         case 1:
-            vc = ProjectViewController(getProject(indexPath)!)
+            vc = EditProjectViewController(getProject(indexPath)!)
 
         default:
             break
