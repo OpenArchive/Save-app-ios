@@ -67,8 +67,8 @@ class HeaderView: UICollectionReusableView {
                     ? "% item ready to upload".localize(value: Formatters.format(waiting))
                     : "% items ready to upload".localize(value: Formatters.format(waiting))
 
-                manageBt.setImage(UIImage(named: "ic_up"), for: .normal)
-                manageBt.setTitle(nil, for: .normal)
+                manageBt.setImage(nil, for: .normal)
+                manageBt.setTitle("Upload".localize(), for: .normal)
                 manageBt.isHidden = false
             }
         }
