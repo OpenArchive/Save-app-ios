@@ -123,7 +123,7 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
 
     override var description: String {
         return "\(String(describing: type(of: self))): [id=\(id), "
-            + "created=\(created), name=\(name ?? "nil"), license=\(license ?? "nil")"
+            + "created=\(created), name=\(name ?? "nil"), license=\(license ?? "nil"), "
             + "active=\(active), spaceId=\(spaceId ?? "nil"), "
             + "collectionId=\(collectionId ?? "nil")]"
     }

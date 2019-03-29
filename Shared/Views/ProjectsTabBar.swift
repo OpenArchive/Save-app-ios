@@ -123,6 +123,15 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
             break
         }
 
+        // Fix tags. Unfortunately, there's no way to get the tab index, so we
+        // need to make sure, that the tag is the same as the index in the
+        // projects array.
+        for i in 0 ... projects.count - 1 {
+            if i + 1 < items.count {
+                items[ i + 1 ].tag = i
+            }
+        }
+
         // Always select a newly inserted project or fix situation when tab bar
         // was properly populated while the "+" tab is selected, which really
         // shouldn't.
