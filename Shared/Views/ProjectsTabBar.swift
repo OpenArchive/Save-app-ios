@@ -126,9 +126,11 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
         // Fix tags. Unfortunately, there's no way to get the tab index, so we
         // need to make sure, that the tag is the same as the index in the
         // projects array.
-        for i in 0 ... projects.count - 1 {
-            if i + 1 < items.count {
-                items[ i + 1 ].tag = i
+        if projects.count > 0 {
+            for i in 0 ... projects.count - 1 {
+                if i + 1 < items.count {
+                    items[ i + 1 ].tag = i
+                }
             }
         }
 
