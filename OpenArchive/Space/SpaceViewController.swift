@@ -124,7 +124,7 @@ class SpaceViewController: TableWithSpacesViewController {
             return cell.set("Profile".localize())
 
         case 1:
-            return cell.set(getProject(indexPath)?.name ?? "Unnamed Project".localize())
+            return cell.set(Project.getName(getProject(indexPath)))
 
         case 2:
             cell.addIndicator.isHidden = true

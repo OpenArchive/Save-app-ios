@@ -40,6 +40,16 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
 
     // MARK: Project
 
+    /**
+     Helper method to ensure a proper project name in case of non-optionality.
+
+     - parameter project: A `Project` object or `nil`.
+     - returns: The given project's name or a default one.
+    */
+    class func getName(_ project: Project?) -> String {
+        return project?.name ?? "Unnamed Project".localize()
+    }
+
     var name: String?
     var created: Date
     var license: String?

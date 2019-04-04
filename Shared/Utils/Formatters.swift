@@ -41,6 +41,13 @@ class Formatters: NSObject {
      Formats an integer properly localized.
     */
     static func format(_ value: Int) -> String {
+        return format(Int64(value))
+    }
+
+    /**
+     Formats an integer properly localized.
+     */
+    static func format(_ value: Int64) -> String {
         return integer.string(from: NSNumber(value: value)) ?? "-1"
     }
 

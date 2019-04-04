@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UserNotifications
 import YapDatabase
 import MobileCoreServices
 import MBProgressHUD
@@ -50,6 +51,9 @@ class MainViewController: TableWithSpacesViewController {
     }()
 
     private var selectedRow = -1
+    private var project: Project?
+
+    private var notificationsAllowed = false
 
 
     override func viewDidLoad() {
@@ -83,6 +87,10 @@ class MainViewController: TableWithSpacesViewController {
 
         closeBt.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor).isActive = true
         closeBt.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor, constant: 32).isActive = true
+
+        UNUserNotificationCenter.current().requestAuthorization(options: .alert) { granted, error in
+            self.notificationsAllowed = granted
+        }
     }
 
 
@@ -146,7 +154,7 @@ class MainViewController: TableWithSpacesViewController {
             if indexPath.row < projectsCount {
                 cell.accessoryType = selectedRow == indexPath.row ? .checkmark : .none
 
-                return cell.set(getProject(indexPath)?.name ?? "Unnamed Project".localize())
+                return cell.set(Project.getName(getProject(indexPath)))
             }
             else {
                 cell.accessoryType = .none
@@ -206,7 +214,7 @@ class MainViewController: TableWithSpacesViewController {
             return
         }
 
-        let project = getProject(selectedRow)
+        project = getProject(selectedRow)
 
         guard let items = extensionContext?.inputItems as? [NSExtensionItem],
             let collection = project?.currentCollection else {
@@ -362,9 +370,11 @@ class MainViewController: TableWithSpacesViewController {
     private func getProject(_ row: Int) -> Project? {
         var project: Project?
 
-        projectsReadConn?.read() { transaction in
-            project = (transaction.ext(ActiveProjectsView.name) as? YapDatabaseViewTransaction)?
-                .object(atRow: UInt(row), inSection: 0, with: self.projectsMappings) as? Project
+        if row > -1 {
+            projectsReadConn?.read() { transaction in
+                project = (transaction.ext(ActiveProjectsView.name) as? YapDatabaseViewTransaction)?
+                    .object(atRow: UInt(row), inSection: 0, with: self.projectsMappings) as? Project
+            }
         }
 
         return project
@@ -412,12 +422,31 @@ class MainViewController: TableWithSpacesViewController {
         progress.completedUnitCount += 1
 
         if progress.completedUnitCount == progress.totalUnitCount {
+            showNotification()
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + (self.hud.label.text?.isEmpty ?? true ? 0 : 5)) {
+                self.done()
+            }
+        }
+    }
+
+    private func showNotification() {
+        if notificationsAllowed {
+            let content = UNMutableNotificationContent()
+            content.body = "You have % items ready to upload to '%'."
+                .localize(values: Formatters.format(progress.totalUnitCount),
+                          Project.getName(project))
+
+            let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
+
+            let request = UNNotificationRequest(identifier: "OpenArchive_notification_id",
+                                                content: content, trigger: trigger)
+
+            UNUserNotificationCenter.current().add(request)
+        }
+        else {
             DispatchQueue.main.async {
                 self.hud.label.text = "Go to the app to upload!".localize()
-            }
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-                self.done()
             }
         }
     }
