@@ -6,33 +6,33 @@ PODS:
     - CocoaLumberjack/Core (= 3.5.2)
   - CocoaLumberjack/Core (3.5.2)
   - DownloadButton (0.1.0)
-  - Eureka (4.3.1)
+  - Eureka (5.0.0)
   - FavIcon (3.0.6)
-  - FilesProvider (0.25.1)
-  - ImageRow (3.2.0):
-    - Eureka (~> 4.3)
-  - Localize (2.1.0)
-  - MaterialComponents/AnimationTiming (74.0.0)
-  - MaterialComponents/Buttons (74.0.0):
+  - FilesProvider (0.26.0)
+  - ImageRow (4.0.0):
+    - Eureka (~> 5.0)
+  - Localize (2.2.0)
+  - MaterialComponents/AnimationTiming (81.0.0)
+  - MaterialComponents/Buttons (81.0.0):
     - MaterialComponents/Ink
     - MaterialComponents/private/Math
-    - MaterialComponents/private/Shapes
     - MaterialComponents/ShadowElevations
     - MaterialComponents/ShadowLayer
+    - MaterialComponents/Shapes
     - MaterialComponents/Typography
     - MDFInternationalization
     - MDFTextAccessibility
-  - MaterialComponents/Ink (74.0.0):
+  - MaterialComponents/Ink (81.0.0):
     - MaterialComponents/private/Math
-  - MaterialComponents/private/Application (74.0.0)
-  - MaterialComponents/private/Math (74.0.0)
-  - MaterialComponents/private/Shapes (74.0.0):
+  - MaterialComponents/private/Application (81.0.0)
+  - MaterialComponents/private/Math (81.0.0)
+  - MaterialComponents/ShadowElevations (81.0.0)
+  - MaterialComponents/ShadowLayer (81.0.0):
+    - MaterialComponents/ShadowElevations
+  - MaterialComponents/Shapes (81.0.0):
     - MaterialComponents/private/Math
     - MaterialComponents/ShadowLayer
-  - MaterialComponents/ShadowElevations (74.0.0)
-  - MaterialComponents/ShadowLayer (74.0.0):
-    - MaterialComponents/ShadowElevations
-  - MaterialComponents/Tabs (74.0.0):
+  - MaterialComponents/Tabs (81.0.0):
     - MaterialComponents/AnimationTiming
     - MaterialComponents/Ink
     - MaterialComponents/private/Math
@@ -40,7 +40,7 @@ PODS:
     - MaterialComponents/ShadowLayer
     - MaterialComponents/Typography
     - MDFInternationalization
-  - MaterialComponents/Typography (74.0.0):
+  - MaterialComponents/Typography (81.0.0):
     - MaterialComponents/private/Application
     - MaterialComponents/private/Math
   - MBProgressHUD (1.1.0)
@@ -117,13 +117,13 @@ DEPENDENCIES:
   - AlignedCollectionViewFlowLayout (~> 1.1)
   - ARChromeActivity (~> 1.0)
   - DownloadButton (~> 0.1)
-  - Eureka (~> 4.3)
+  - Eureka (~> 5.0)
   - FavIcon (~> 3.0)
-  - FilesProvider (from `https://github.com/victorykim/FileProvider.git`)
+  - FilesProvider (~> 0.26)
   - ImageRow (from `https://github.com/EurekaCommunity/ImageRow.git`)
-  - Localize (from `https://github.com/andresilvagomez/Localize.git`)
-  - MaterialComponents/Buttons (~> 74.0)
-  - MaterialComponents/Tabs (~> 74.0)
+  - Localize (~> 2.2)
+  - MaterialComponents/Buttons (~> 81)
+  - MaterialComponents/Tabs (~> 81)
   - MBProgressHUD (~> 1.1)
   - TUSafariActivity (~> 1.0)
   - UIImage-Resize (~> 1.0)
@@ -138,6 +138,8 @@ SPEC REPOS:
     - DownloadButton
     - Eureka
     - FavIcon
+    - FilesProvider
+    - Localize
     - MaterialComponents
     - MBProgressHUD
     - MDFInternationalization
@@ -147,23 +149,13 @@ SPEC REPOS:
     - YapDatabase
 
 EXTERNAL SOURCES:
-  FilesProvider:
-    :git: https://github.com/victorykim/FileProvider.git
   ImageRow:
     :git: https://github.com/EurekaCommunity/ImageRow.git
-  Localize:
-    :git: https://github.com/andresilvagomez/Localize.git
 
 CHECKOUT OPTIONS:
-  FilesProvider:
-    :commit: 91e797c2ac0ecbefcb5db00be87c673c8090d83a
-    :git: https://github.com/victorykim/FileProvider.git
   ImageRow:
-    :commit: 6ae9c0890dcf0040a4a2804ceeeaf5449a0f62b3
+    :commit: 296d79be864d4e946151832abf6ad907810b316c
     :git: https://github.com/EurekaCommunity/ImageRow.git
-  Localize:
-    :commit: 3b7b5a6ee1e12faf7a39ffa11b8cca03d69b3704
-    :git: https://github.com/andresilvagomez/Localize.git
 
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
@@ -171,12 +163,12 @@ SPEC CHECKSUMS:
   ARChromeActivity: 5dcf9b9f09323761f992aff3525cdd777f83609d
   CocoaLumberjack: 118bf4a820efc641f79fa487b75ed928dccfae23
   DownloadButton: 49a21a89e0d7d1b42d9134f79aaa40e727cd57c3
-  Eureka: 28ea296f06710f6745266b71f17862048941a32d
+  Eureka: 0f64f477ec8ef6201c6fec143d60ff5c201cf654
   FavIcon: e07ba9dd3cac1f76b81ccaa08fc2b41baa000b07
-  FilesProvider: dfe4ab4cc057023ba5ebe742e466d23f7a2323e6
-  ImageRow: 03681b3ef8034b5a649440325f5d5ba7b22c1b0a
-  Localize: f360a343abfac047be5b375c45be1059f5f625f3
-  MaterialComponents: c382f7a1881832ff88a05bb1536c47714cf1295f
+  FilesProvider: 2a8ae17d8b9c23a6feadb1308ee638fa31d21065
+  ImageRow: e65b2e1a33f89062bf2a553a2aad61d975eb7428
+  Localize: db1c46fb0f275cee2ec63bcdf194c567d8fda6c0
+  MaterialComponents: 9ef60e1abd89463ac018ca6d354be41fd5df059a
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
   MDFTextAccessibility: 85c09a1bd9c321f494348e632a25063bcda35a53
@@ -184,6 +176,6 @@ SPEC CHECKSUMS:
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   YapDatabase: d8cd02058e36bc0902e405d8f3326eb8d7dbf36c
 
-PODFILE CHECKSUM: 185e7b29942c2b2bc2abc9fccca998336efbd6a8
+PODFILE CHECKSUM: 300eaa46d72164f1d9eb4406c10a7237ba3c39a6
 
 COCOAPODS: 1.6.1
