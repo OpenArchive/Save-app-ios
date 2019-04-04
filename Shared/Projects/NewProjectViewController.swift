@@ -53,6 +53,8 @@ class NewProjectViewController: BaseProjectViewController, BrowseDelegate {
                 self.enableDone()
             }
 
+        if !(project.space is IaSpace) {
+            form
             +++ ButtonRow() {
                 $0.title = "Browse Projects".localize()
             }
@@ -62,6 +64,7 @@ class NewProjectViewController: BaseProjectViewController, BrowseDelegate {
 
                 self.navigationController?.pushViewController(browseVc, animated: true)
             }
+        }
 
         super.viewDidLoad()
     }
