@@ -67,8 +67,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
         super.viewDidLoad()
 
         updateTitle()
-
-        navigationItem.rightBarButtonItem = getButton()
+        setButton()
 
         let nc = NotificationCenter.default
 
@@ -175,6 +174,8 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
             NotificationCenter.default.post(name: .uploadManagerPause, object: upload.id)
         case .downloaded:
             break
+        @unknown default:
+            break
         }
     }
 
@@ -218,12 +219,15 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
                     if let indexPath = change.indexPath {
                         tableView.reloadRows(at: [indexPath], with: .none)
                     }
+                @unknown default:
+                    break
                 }
             }
 
             tableView.endUpdates()
 
             updateTitle()
+            setButton()
         }
     }
 
@@ -268,20 +272,21 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
     }
 
     @objc private func toggleEdit() {
-        if tableView.isEditing {
-            tableView.setEditing(false, animated: true)
+        tableView.setEditing(!tableView.isEditing, animated: true)
 
-            navigationItem.rightBarButtonItem = getButton()
-        }
-        else {
-            tableView.setEditing(true, animated: true)
-
-            navigationItem.rightBarButtonItem = getButton(type: .done)
-        }
+        setButton()
     }
 
-    private func getButton(type: UIBarButtonItem.SystemItem = .edit) -> UIBarButtonItem {
-        return UIBarButtonItem(barButtonSystemItem: type, target: self, action: #selector(toggleEdit))
+    private func setButton() {
+        if count > 0 {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: tableView.isEditing ? .done : .edit,
+                target: self, action: #selector(toggleEdit))
+        }
+        else {
+            navigationItem.rightBarButtonItem = nil
+            tableView.setEditing(false, animated: true)
+        }
     }
 
     private func getUpload(_ indexPath: IndexPath) -> Upload? {
