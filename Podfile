@@ -17,6 +17,7 @@ def shared_pods
     pod 'AlignedCollectionViewFlowLayout', '~> 1.1'
     pod 'DownloadButton', '~> 0.1'
     pod 'MBProgressHUD', '~> 1.1'
+    pod 'ReachabilitySwift', '~> 4.3'
 end
 
 target 'OpenArchive' do

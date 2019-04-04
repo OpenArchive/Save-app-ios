@@ -8,6 +8,7 @@
 
 import Foundation
 import YapDatabase
+import Reachability
 
 extension Notification.Name {
     static let uploadManagerPause = Notification.Name("uploadManagerPause")
@@ -33,6 +34,8 @@ class UploadManager {
 
     private var uploads = [Upload]()
 
+    private var reachability = Reachability()
+
     /**
      Polls tracked Progress objects and updates `Update` objects every second.
     */
@@ -47,7 +50,7 @@ class UploadManager {
             Db.writeConn?.asyncReadWrite { transaction in
                 for upload in self.uploads {
                     if upload.hasProgressChanged() {
-                        print("[\(String(describing: type(of: self)))]#progress tracker changed for \(upload))")
+                        self.debug("#progress tracker changed for \(upload))")
 
                         transaction.setObject(upload, forKey: upload.id, inCollection: Upload.collection)
                     }
@@ -86,6 +89,11 @@ class UploadManager {
 
         nc.addObserver(self, selector: #selector(done),
                        name: .uploadManagerDone, object: nil)
+
+        nc.addObserver(self, selector: #selector(reachabilityChanged),
+                       name: .reachabilityChanged, object: reachability)
+
+        try? reachability?.startNotifier()
     }
 
     // MARK: Observers
@@ -94,7 +102,7 @@ class UploadManager {
      Callback for `YapDatabaseModified` and `YapDatabaseModifiedExternally` notifications.
      */
     @objc func yapDatabaseModified(notification: Notification) {
-        print("[\(String(describing: type(of: self)))]#yapDatabaseModified")
+        debug("#yapDatabaseModified")
 
         var rowChanges = NSArray()
 
@@ -145,13 +153,13 @@ class UploadManager {
     }
 
     @objc func pause(notification: Notification) {
-        print("[\(String(describing: type(of: self)))]#pause")
+        debug("#pause")
 
         guard let id = notification.object as? String else {
             return
         }
 
-        print("[\(String(describing: type(of: self)))]#pause id=\(id)")
+        debug("#pause id=\(id)")
 
         queue.async {
             guard let upload = self.get(id) else {
@@ -168,13 +176,13 @@ class UploadManager {
     }
 
     @objc func unpause(notification: Notification) {
-        print("[\(String(describing: type(of: self)))]#unpause")
+        debug("#unpause")
 
         guard let id = notification.object as? String else {
             return
         }
 
-        print("[\(String(describing: type(of: self)))]#unpause id=\(id)")
+        debug("#unpause id=\(id)")
 
         queue.async {
             guard let upload = self.get(id),
@@ -193,7 +201,7 @@ class UploadManager {
     }
 
     @objc func done(notification: Notification) {
-        print("[\(String(describing: type(of: self)))]#done")
+        debug("#done")
 
         guard let id = notification.object as? String else {
             return
@@ -202,7 +210,7 @@ class UploadManager {
         let error = notification.userInfo?[.error] as? String
         let url = notification.userInfo?[.url] as? URL
 
-        print("[\(String(describing: type(of: self)))]#done id=\(id), error=\(error ?? "nil"), url=\(url?.absoluteString ?? "nil")")
+        debug("#done id=\(id), error=\(error ?? "nil"), url=\(url?.absoluteString ?? "nil")")
 
         queue.async {
             guard let upload = self.get(id),
@@ -245,6 +253,14 @@ class UploadManager {
         }
     }
 
+    @objc func reachabilityChanged(notification: Notification) {
+        debug("#reachabilityChanged connection=\(reachability?.connection ?? .none)")
+
+        if reachability?.connection ?? .none != .none {
+            uploadNext()
+        }
+    }
+
 
     // MARK: Private Methods
 
@@ -254,23 +270,29 @@ class UploadManager {
 
     private func uploadNext() {
         queue.async {
-            print("[\(String(describing: type(of: self)))]#refresh \(self.uploads.count) items in upload queue")
+            self.debug("#uploadNext \(self.uploads.count) items in upload queue")
 
             // Check if there's at least on item currently uploading.
             if self.isUploading() {
-                print("[\(String(describing: type(of: self)))]#refresh already one uploading")
+                self.debug("#uploadNext already one uploading")
                 return
             }
 
             guard let upload = self.getNext(),
                 let asset = upload.asset else {
 
-                    print("[\(String(describing: type(of: self)))]#refresh nothing to upload")
+                    self.debug("#uploadNext nothing to upload")
 
                     return
             }
 
-            print("[\(String(describing: type(of: self)))]#refresh try upload=\(upload)")
+            if self.reachability?.connection ?? Reachability.Connection.none == .none {
+                self.debug("#uploadNext no connection")
+
+                return
+            }
+
+            self.debug("#uploadNext try upload=\(upload)")
 
             upload.liveProgress = asset.space?.upload(asset, uploadId: upload.id)
             upload.error = nil
@@ -308,5 +330,11 @@ class UploadManager {
         }
 
         return upload
+    }
+
+    private func debug(_ text: String) {
+        #if DEBUG
+        print("[\(String(describing: type(of: self)))] \(text)")
+        #endif
     }
 }

@@ -46,6 +46,7 @@ PODS:
   - MBProgressHUD (1.1.0)
   - MDFInternationalization (2.0.0)
   - MDFTextAccessibility (2.0.0)
+  - ReachabilitySwift (4.3.1)
   - TUSafariActivity (1.0.4)
   - UIImage-Resize (1.0.1)
   - YapDatabase (3.1.2):
@@ -125,6 +126,7 @@ DEPENDENCIES:
   - MaterialComponents/Buttons (~> 81)
   - MaterialComponents/Tabs (~> 81)
   - MBProgressHUD (~> 1.1)
+  - ReachabilitySwift (~> 4.3)
   - TUSafariActivity (~> 1.0)
   - UIImage-Resize (~> 1.0)
   - YapDatabase (~> 3.1)
@@ -144,6 +146,7 @@ SPEC REPOS:
     - MBProgressHUD
     - MDFInternationalization
     - MDFTextAccessibility
+    - ReachabilitySwift
     - TUSafariActivity
     - UIImage-Resize
     - YapDatabase
@@ -172,10 +175,11 @@ SPEC CHECKSUMS:
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
   MDFTextAccessibility: 85c09a1bd9c321f494348e632a25063bcda35a53
+  ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
   TUSafariActivity: afc55a00965377939107ce4fdc7f951f62454546
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   YapDatabase: d8cd02058e36bc0902e405d8f3326eb8d7dbf36c
 
-PODFILE CHECKSUM: 300eaa46d72164f1d9eb4406c10a7237ba3c39a6
+PODFILE CHECKSUM: 5262fc140ec030ce5c693b369aee2ea394e6adc5
 
 COCOAPODS: 1.6.1
