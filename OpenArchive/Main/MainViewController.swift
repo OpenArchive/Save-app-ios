@@ -223,6 +223,8 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
                 message: "Please go to the Settings app to grant this app access to your photo library, if you want to upload photos or videos.".localize(),
                 title: "Access Denied".localize(),
                 actions: [AlertHelper.cancelAction()])
+        @unknown default:
+            break
         }
     }
     
@@ -382,6 +384,8 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
                 if let indexPath = change.indexPath {
                     toReload.insert(indexPath.section)
                 }
+            @unknown default:
+                break
             }
         }
 
