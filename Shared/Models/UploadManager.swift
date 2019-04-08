@@ -24,6 +24,24 @@ extension AnyHashable {
     static let url = "url"
 }
 
+/**
+ Handles uploads in the background.
+
+ Retry logic should work as follows:
+
+ - Check every minute.
+ - If no network connection - come back later.
+ - If network connection, try upload.
+ - If failed, increase retry counter of upload, wait with that upload for retry ^ 1.5 minutes (see [plot](http://fooplot.com/?lang=en#W3sidHlwZSI6MCwiZXEiOiJ4XjEuNSIsImNvbG9yIjoiIzAwMDAwMCJ9LHsidHlwZSI6MTAwMCwid2luZG93IjpbIjAiLCIxMSIsIjAiLCI0MCJdfV0-))
+ - If retried 10 times, give up with that upload: set it paused. User can restart through unpausing.
+ - Circuit breaker per space (to reduce load on server):
+   - Count failed upload attempts.
+   - If failed 10 times, wait 10 minutes before any other upload to that space is tried.
+   - If one upload retry failed again, wait 10 minutes again before next upload is tried.
+   - If one upload succeeded, reset space's fail count.
+
+ User can pause and unpause a scheduled upload any time to reset counters and have a retry immediately.
+ */
 class UploadManager {
 
     /**
