@@ -74,8 +74,24 @@ class Upload: NSObject, Item {
     }
 
     var order: Int
+
     var paused = false
     var error: String?
+    var tries = 0
+    var lastTry: Date?
+
+    /**
+     Returns the date after which another try should be done.
+
+     It is calculated by adding the number of `tries` to the power of 1.5 in
+     minutes to `lastTry`.
+
+     If `lastTry` is `nil` returns the epoch.
+    */
+    var nextTry: Date {
+        return lastTry?.addingTimeInterval(pow(Double(tries), 1.5) * 60)
+            ?? Date(timeIntervalSince1970: 0)
+    }
 
     var liveProgress: Progress?
 
@@ -158,6 +174,8 @@ class Upload: NSObject, Item {
         order = decoder.decodeInteger(forKey: "order")
         _progress = decoder.decodeDouble(forKey: "progress")
         paused = decoder.decodeBool(forKey: "paused")
+        tries = decoder.decodeInteger(forKey: "tries")
+        lastTry = decoder.decodeObject(forKey: "lastTry") as? Date
         error = decoder.decodeObject(forKey: "error") as? String
         assetId = decoder.decodeObject(forKey: "assetId") as? String
     }
@@ -167,6 +185,8 @@ class Upload: NSObject, Item {
         coder.encode(order, forKey: "order")
         coder.encode(progress, forKey: "progress")
         coder.encode(paused, forKey: "paused")
+        coder.encode(tries, forKey: "tries")
+        coder.encode(lastTry, forKey: "lastTry")
         coder.encode(error, forKey: "error")
         coder.encode(assetId, forKey: "assetId")
     }
@@ -176,7 +196,8 @@ class Upload: NSObject, Item {
 
     override var description: String {
         return "\(String(describing: type(of: self))): [id=\(id), order=\(order), "
-            + "progress=\(progress), paused=\(paused), error=\(error ?? "nil"), "
+            + "progress=\(progress), paused=\(paused), tries=\(tries), "
+            + "lastTry=\(lastTry?.debugDescription ?? "nil"), error=\(error ?? "nil"), "
             + "assetId=\(assetId ?? "nil")]"
     }
 

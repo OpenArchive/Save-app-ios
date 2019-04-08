@@ -9,6 +9,7 @@
 import Foundation
 import YapDatabase
 import Reachability
+import FilesProvider
 
 extension Notification.Name {
     static let uploadManagerPause = Notification.Name("uploadManagerPause")
@@ -24,6 +25,11 @@ extension AnyHashable {
 }
 
 class UploadManager {
+
+    /**
+     Maximum number of upload retries per upload item before giving up.
+    */
+    static let maxRetries = 10
 
     static let shared = UploadManager()
 
@@ -71,8 +77,6 @@ class UploadManager {
             }
         }
 
-        uploadNext()
-
         let nc = NotificationCenter.default
 
         nc.addObserver(self, selector: #selector(yapDatabaseModified),
@@ -94,6 +98,13 @@ class UploadManager {
                        name: .reachabilityChanged, object: reachability)
 
         try? reachability?.startNotifier()
+
+        // Schedule a timer, which calls #uploadNext every 60 seconds beginning
+        // in 1 second.
+        RunLoop.main.add(Timer(fireAt: Date().addingTimeInterval(1), interval: 60,
+                               target: self, selector: #selector(self.uploadNext),
+                               userInfo: nil, repeats: true),
+                         forMode: .common)
     }
 
     // MARK: Observers
@@ -191,11 +202,22 @@ class UploadManager {
             }
 
             upload.paused = false
-            upload.progress = 0
             upload.error = nil
+            upload.tries = 0
+            upload.lastTry = nil
+            upload.progress = 0
+
+            // Also reset circuit-breaker. Otherwise users will get confused.
+            let space = upload.asset?.space
+            space?.tries = 0
+            space?.lastTry = nil
 
             Db.writeConn?.asyncReadWrite { transaction in
                 transaction.setObject(upload, forKey: id, inCollection: Upload.collection)
+
+                if let space = space {
+                    transaction.setObject(space, forKey: space.id, inCollection: Space.collection)
+                }
             }
         }
     }
@@ -207,10 +229,10 @@ class UploadManager {
             return
         }
 
-        let error = notification.userInfo?[.error] as? String
+        let error = notification.userInfo?[.error] as? Error
         let url = notification.userInfo?[.url] as? URL
 
-        debug("#done id=\(id), error=\(error ?? "nil"), url=\(url?.absoluteString ?? "nil")")
+        debug("#done id=\(id), error=\(String(describing: error)), url=\(url?.absoluteString ?? "nil")")
 
         queue.async {
             guard let upload = self.get(id),
@@ -219,20 +241,32 @@ class UploadManager {
             }
 
             let collection: Collection?
+            let space = asset.space
 
             if error != nil || url == nil {
                 asset.isUploaded = false
 
-                upload.paused = true
+                // Circuit breaker pattern: Increase circuit breaker counter on error.
+                space?.tries += 1
+                space?.lastTry = Date()
+
+                upload.tries += 1
+                // We stop retrying, if the server denies us, or as soon as we hit the maximum number of retries.
+                upload.paused = error is FileProviderHTTPError || UploadManager.maxRetries <= upload.tries
+                upload.lastTry = Date()
                 upload.liveProgress = nil
                 upload.progress = 0
-                upload.error = error ?? (url == nil ? "No URL provided." : "Unknown error.")
+                upload.error = error?.localizedDescription ?? (url == nil ? "No URL provided." : "Unknown error.")
 
                 collection = nil
             }
             else {
                 asset.publicUrl = url
                 asset.isUploaded = true
+
+                // Circuit breaker pattern: Reset circuit breaker counter on success.
+                space?.tries = 0
+                space?.lastTry = nil
 
                 collection = asset.collection
                 collection?.setUploadedNow()
@@ -246,6 +280,10 @@ class UploadManager {
                 }
                 else {
                     transaction.setObject(upload, forKey: id, inCollection: Upload.collection)
+                }
+
+                if let space = space {
+                    transaction.setObject(space, forKey: space.id, inCollection: Space.collection)
                 }
 
                 transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
@@ -268,28 +306,22 @@ class UploadManager {
         return uploads.first { $0.id == id }
     }
 
-    private func uploadNext() {
+    @objc private func uploadNext() {
         queue.async {
             self.debug("#uploadNext \(self.uploads.count) items in upload queue")
 
             // Check if there's at least on item currently uploading.
             if self.isUploading() {
-                self.debug("#uploadNext already one uploading")
-                return
+                return self.debug("#uploadNext already one uploading")
             }
 
             guard let upload = self.getNext(),
                 let asset = upload.asset else {
-
-                    self.debug("#uploadNext nothing to upload")
-
-                    return
+                    return self.debug("#uploadNext nothing to upload")
             }
 
             if self.reachability?.connection ?? Reachability.Connection.none == .none {
-                self.debug("#uploadNext no connection")
-
-                return
+                return self.debug("#uploadNext no connection")
             }
 
             self.debug("#uploadNext try upload=\(upload)")
@@ -318,6 +350,8 @@ class UploadManager {
     private func getNext() -> Upload? {
         return uploads.first {
             $0.liveProgress == nil && !$0.paused && $0.asset != nil && !$0.isUploaded
+                && $0.nextTry.compare(Date()) == .orderedAscending
+                && $0.asset?.space?.uploadAllowed ?? false
         }
     }
 

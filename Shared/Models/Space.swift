@@ -9,6 +9,18 @@
 import UIKit
 import YapDatabase
 
+class InvalidConfError: NSError {
+    init() {
+        super.init(domain: String(describing: UploadManager.self), code: -123,
+                   userInfo: [NSLocalizedDescriptionKey: "Configuration invalid.".localize()])
+    }
+
+    required init?(coder decoder: NSCoder) {
+        super.init(coder: decoder)
+    }
+}
+
+
 /**
  A `Space` represents the root folder of an upload destination on a WebDAV server.
 
@@ -17,6 +29,11 @@ import YapDatabase
  A `name` is optional and is only for a user's informational purposes.
  */
 class Space: NSObject {
+
+    /**
+     Maximum number of failed uploads per space before the circuit breaker opens.
+     */
+    static let maxFails = 10
 
     // MARK: Item - implemented by sublcasses
 
@@ -74,6 +91,16 @@ class Space: NSObject {
     var authorRole: String?
     var authorOther: String?
 
+    // Circuit breaker pattern for uploads
+    var tries = 0
+    var lastTry: Date?
+    var nextTry: Date {
+        return lastTry?.addingTimeInterval(10 * 60) ?? Date(timeIntervalSince1970: 0)
+    }
+    var uploadAllowed: Bool {
+        return tries < Space.maxFails || nextTry.compare(Date()) == .orderedAscending
+    }
+
     var prettyName: String {
         return name ?? url?.host ?? url?.absoluteString ?? Space.defaultPrettyName
     }
@@ -98,27 +125,31 @@ class Space: NSObject {
     // MARK: NSCoding
 
     required init?(coder decoder: NSCoder) {
-        id = decoder.decodeObject() as? String ?? UUID().uuidString
-        name = decoder.decodeObject() as? String
-        url = decoder.decodeObject() as? URL
-        favIcon = decoder.decodeObject() as? UIImage
-        username = decoder.decodeObject() as? String
-        password = decoder.decodeObject() as? String
-        authorName = decoder.decodeObject() as? String
-        authorRole = decoder.decodeObject() as? String
-        authorOther = decoder.decodeObject() as? String
+        id = decoder.decodeObject(forKey: "id") as? String ?? UUID().uuidString
+        name = decoder.decodeObject(forKey: "name") as? String
+        url = decoder.decodeObject(forKey: "url") as? URL
+        favIcon = decoder.decodeObject(forKey: "favIcon") as? UIImage
+        username = decoder.decodeObject(forKey: "username") as? String
+        password = decoder.decodeObject(forKey: "password") as? String
+        authorName = decoder.decodeObject(forKey: "authorName") as? String
+        authorRole = decoder.decodeObject(forKey: "authorRole") as? String
+        authorOther = decoder.decodeObject(forKey: "authorOther") as? String
+        tries = decoder.decodeInteger(forKey: "tries")
+        lastTry = decoder.decodeObject(forKey: "lastTry") as? Date
     }
 
     @objc(encodeWithCoder:) func encode(with coder: NSCoder) {
-        coder.encode(id)
-        coder.encode(name)
-        coder.encode(url)
-        coder.encode(favIcon)
-        coder.encode(username)
-        coder.encode(password)
-        coder.encode(authorName)
-        coder.encode(authorRole)
-        coder.encode(authorOther)
+        coder.encode(id, forKey: "id")
+        coder.encode(name, forKey: "name")
+        coder.encode(url, forKey: "url")
+        coder.encode(favIcon, forKey: "favIcon")
+        coder.encode(username, forKey: "username")
+        coder.encode(password, forKey: "password")
+        coder.encode(authorName, forKey: "authorName")
+        coder.encode(authorRole, forKey: "authorRole")
+        coder.encode(authorOther, forKey: "authorOther")
+        coder.encode(tries, forKey: "tries")
+        coder.encode(lastTry, forKey: "lastTry")
     }
 
 
@@ -130,7 +161,7 @@ class Space: NSObject {
             + "favIcon=\(favIcon?.description ?? "nil"), "
             + "username=\(username ?? "nil"), password=\(password ?? "nil"), "
             + "authorName=\(authorName ?? "nil"), authorRole=\(authorRole ?? "nil"), "
-            + "authorOther=\(authorOther ?? "nil")]"
+            + "authorOther=\(authorOther ?? "nil"), tries=\(tries), lastTry=\(String(describing: lastTry))]"
     }
 
 
@@ -202,10 +233,10 @@ class Space: NSObject {
      ```
 
      - parameter uploadId: The `ID` of the tracked upload.
-     - parameter error: An optional error `String`, defaults to `nil`.
+     - parameter error: An optional `Error`, defaults to `nil`.
      - parameter url: The URL the asset was uploaded to, if any. Defaults to `nil`.
     */
-    func done(_ uploadId: String, _ error: String? = nil, _ url: URL? = nil) {
+    func done(_ uploadId: String, _ error: Error? = nil, _ url: URL? = nil) {
         var userInfo = [AnyHashable: Any]()
 
         if let error = error {
@@ -217,22 +248,5 @@ class Space: NSObject {
 
         NotificationCenter.default.post(name: .uploadManagerDone, object: uploadId,
                                         userInfo: userInfo)
-    }
-
-    /**
-     Boilerplate reducer. Sets an error on the `userInfo` notification object,
-     if any provided and posts the `.uploadManagerDone` notification.
-
-     You can even call it like this to reduce LOCs:
-
-     ```Swift
-     return self.done(uploadId)
-     ```
-
-     - parameter uploadId: The `ID` of the tracked upload.
-     - parameter error: An optional Error object.
-     */
-    func done(_ uploadId: String, _ error: Error?) {
-        done(uploadId, error?.localizedDescription)
     }
 }

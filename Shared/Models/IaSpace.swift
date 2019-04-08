@@ -92,7 +92,7 @@ class IaSpace: Space, Item {
             let url = self.url(for: asset)
             else {
                 DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
-                    self.done(uploadId, "Configuration invalid.".localize())
+                    self.done(uploadId, InvalidConfError())
                 }
 
                 return progress

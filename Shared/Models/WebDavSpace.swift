@@ -91,7 +91,7 @@ class WebDavSpace: Space, Item {
             let file = asset.file
         else {
             DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
-                self.done(uploadId, "Configuration invalid.".localize())
+                self.done(uploadId, InvalidConfError())
             }
 
             return progress
@@ -142,7 +142,7 @@ class WebDavSpace: Space, Item {
                         // Reset to normal session, so #remove doesn't break.
                         provider.session = oldSession
 
-                        self.done(uploadId, error?.localizedDescription,
+                        self.done(uploadId, error,
                                   Space.construct(url: self.url, projectName,
                                                   collectionName, asset.filename))
                     }
