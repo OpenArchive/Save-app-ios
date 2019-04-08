@@ -49,8 +49,6 @@ class UploadManager {
     */
     static let maxRetries = 10
 
-    static let shared = UploadManager()
-
     private var readConn = Db.newLongLivedReadConn()
 
     private var mappings = YapDatabaseViewMappings(groups: UploadsView.groups,
@@ -58,17 +56,15 @@ class UploadManager {
 
     private var uploads = [Upload]()
 
-    private var reachability = Reachability()
+    var reachability = Reachability()
+
+    private let queue = DispatchQueue(label: "\(Bundle.main.bundleIdentifier!).\(String(describing: UploadManager.self))")
 
     /**
      Polls tracked Progress objects and updates `Update` objects every second.
     */
-    private let progressTimer: DispatchSourceTimer
-
-    private let queue = DispatchQueue(label: "\(Bundle.main.bundleIdentifier!).UploadManager")
-
-    private init() {
-        progressTimer = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
+    lazy var progressTimer: DispatchSourceTimer = {
+        let progressTimer = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
         progressTimer.schedule(deadline: .now(), repeating: .seconds(1))
         progressTimer.setEventHandler {
             Db.writeConn?.asyncReadWrite { transaction in
@@ -81,7 +77,14 @@ class UploadManager {
                 }
             }
         }
-        progressTimer.resume()
+
+        return progressTimer
+    }()
+
+    private var singleCompletionHandler: ((UIBackgroundFetchResult) -> Void)?
+
+    init(_ singleCompletionHandler: ((UIBackgroundFetchResult) -> Void)?) {
+        self.singleCompletionHandler = singleCompletionHandler
 
         // Initialize mapping and current uploads.
         readConn?.read { transaction in
@@ -95,34 +98,8 @@ class UploadManager {
             }
         }
 
-        let nc = NotificationCenter.default
-
-        nc.addObserver(self, selector: #selector(yapDatabaseModified),
-                       name: .YapDatabaseModified, object: nil)
-
-        nc.addObserver(self, selector: #selector(yapDatabaseModified),
-                       name: .YapDatabaseModifiedExternally, object: nil)
-
-        nc.addObserver(self, selector: #selector(pause),
-                       name: .uploadManagerPause, object: nil)
-
-        nc.addObserver(self, selector: #selector(unpause),
-                       name: .uploadManagerUnpause, object: nil)
-
-        nc.addObserver(self, selector: #selector(done),
-                       name: .uploadManagerDone, object: nil)
-
-        nc.addObserver(self, selector: #selector(reachabilityChanged),
-                       name: .reachabilityChanged, object: reachability)
-
-        try? reachability?.startNotifier()
-
-        // Schedule a timer, which calls #uploadNext every 60 seconds beginning
-        // in 1 second.
-        RunLoop.main.add(Timer(fireAt: Date().addingTimeInterval(1), interval: 60,
-                               target: self, selector: #selector(self.uploadNext),
-                               userInfo: nil, repeats: true),
-                         forMode: .common)
+        NotificationCenter.default.addObserver(self, selector: #selector(done),
+                                               name: .uploadManagerDone, object: nil)
     }
 
     // MARK: Observers
@@ -244,6 +221,8 @@ class UploadManager {
         debug("#done")
 
         guard let id = notification.object as? String else {
+            singleCompletionHandler?(.failed)
+
             return
         }
 
@@ -255,6 +234,8 @@ class UploadManager {
         queue.async {
             guard let upload = self.get(id),
                 let asset = upload.asset else {
+                    self.singleCompletionHandler?(.failed)
+
                     return
             }
 
@@ -306,6 +287,8 @@ class UploadManager {
 
                 transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
             }
+
+            self.singleCompletionHandler?(asset.isUploaded ? .newData : .failed)
         }
     }
 
@@ -317,28 +300,27 @@ class UploadManager {
         }
     }
 
-
-    // MARK: Private Methods
-
-    private func get(_ id: String) -> Upload? {
-        return uploads.first { $0.id == id }
-    }
-
-    @objc private func uploadNext() {
+    @objc func uploadNext() {
         queue.async {
             self.debug("#uploadNext \(self.uploads.count) items in upload queue")
 
             // Check if there's at least on item currently uploading.
             if self.isUploading() {
+                self.singleCompletionHandler?(.noData)
+
                 return self.debug("#uploadNext already one uploading")
             }
 
             guard let upload = self.getNext(),
                 let asset = upload.asset else {
+                    self.singleCompletionHandler?(.noData)
+
                     return self.debug("#uploadNext nothing to upload")
             }
 
             if self.reachability?.connection ?? Reachability.Connection.none == .none {
+                self.singleCompletionHandler?(.noData)
+
                 return self.debug("#uploadNext no connection")
             }
 
@@ -359,6 +341,18 @@ class UploadManager {
                 transaction.setObject(upload, forKey: upload.id, inCollection: Upload.collection)
             }
         }
+    }
+
+    func debug(_ text: String) {
+        #if DEBUG
+        print("[\(String(describing: type(of: self)))] \(text)")
+        #endif
+    }
+
+    // MARK: Private Methods
+
+    private func get(_ id: String) -> Upload? {
+        return uploads.first { $0.id == id }
     }
 
     private func isUploading() -> Bool {
@@ -382,11 +376,5 @@ class UploadManager {
         }
 
         return upload
-    }
-
-    private func debug(_ text: String) {
-        #if DEBUG
-        print("[\(String(describing: type(of: self)))] \(text)")
-        #endif
     }
 }

@@ -13,7 +13,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
-    var uploadManager: UploadManager?
+    var uploadManager: BackgroundUploadManager?
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions
@@ -23,7 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         Db.setup()
 
-        uploadManager = UploadManager.shared
+        uploadManager = BackgroundUploadManager.shared
 
         return true
     }
@@ -50,6 +50,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+        Db.setup()
 
+        uploadManager = BackgroundUploadManager(completionHandler)
+        uploadManager?.uploadNext()
+    }
 }
-

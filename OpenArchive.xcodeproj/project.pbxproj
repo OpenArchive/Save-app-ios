@@ -47,7 +47,6 @@
 		A0552050222566CE00B9645F /* UIView+animateHideShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A055204F222566CE00B9645F /* UIView+animateHideShow.swift */; };
 		A0552051222566CE00B9645F /* UIView+animateHideShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A055204F222566CE00B9645F /* UIView+animateHideShow.swift */; };
 		A059E647223AE9FB00ABC621 /* UploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A059E646223AE9FB00ABC621 /* UploadManager.swift */; };
-		A059E648223AE9FB00ABC621 /* UploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A059E646223AE9FB00ABC621 /* UploadManager.swift */; };
 		A05C582A21EF94FC00141633 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05C582921EF94FC00141633 /* BaseViewController.swift */; };
 		A05C582B21EF95A800141633 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05C582921EF94FC00141633 /* BaseViewController.swift */; };
 		A0631B552203022100B3E90D /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0631B542203022100B3E90D /* BaseTableViewController.swift */; };
@@ -150,6 +149,8 @@
 		A0FB4DBC21F8C9B600B46099 /* RoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DBA21F8C9B600B46099 /* RoundedImageView.swift */; };
 		A0FB4DBE21F8CC2300B46099 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DBD21F8CC2300B46099 /* MainViewController.swift */; };
 		A0FB4DC021F8EBDD00B46099 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DBF21F8EBDD00B46099 /* ImageCell.swift */; };
+		A0FDB681225BCDEE00998B6C /* UploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A059E646223AE9FB00ABC621 /* UploadManager.swift */; };
+		A0FDB683225BCE4000998B6C /* BackgroundUploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FDB682225BCE4000998B6C /* BackgroundUploadManager.swift */; };
 		E3237719CED5D0E5FB3A9540 /* Pods_ShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA57E87D37FC97CE551149A6 /* Pods_ShareExtension.framework */; };
 /* End PBXBuildFile section */
 
@@ -284,6 +285,7 @@
 		A0FB4DBA21F8C9B600B46099 /* RoundedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImageView.swift; sourceTree = "<group>"; };
 		A0FB4DBD21F8CC2300B46099 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		A0FB4DBF21F8EBDD00B46099 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
+		A0FDB682225BCE4000998B6C /* BackgroundUploadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundUploadManager.swift; sourceTree = "<group>"; };
 		CC67BE20A50BF4C22AE484F1 /* Pods-OpenArchive.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenArchive.release.xcconfig"; path = "Pods/Target Support Files/Pods-OpenArchive/Pods-OpenArchive.release.xcconfig"; sourceTree = "<group>"; };
 		DA57E87D37FC97CE551149A6 /* Pods_ShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9D40196C7AFBE8474EA6241 /* Pods-OpenArchive.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenArchive.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OpenArchive/Pods-OpenArchive.debug.xcconfig"; sourceTree = "<group>"; };
@@ -401,6 +403,7 @@
 			children = (
 				A098980522369F8100022851 /* ManagementViewController.swift */,
 				A09898072236A7B100022851 /* UploadCell.swift */,
+				A0FDB682225BCE4000998B6C /* BackgroundUploadManager.swift */,
 			);
 			path = Management;
 			sourceTree = "<group>";
@@ -637,7 +640,7 @@
 								enabled = 1;
 							};
 							com.apple.BackgroundModes = {
-								enabled = 0;
+								enabled = 1;
 							};
 						};
 					};
@@ -795,13 +798,13 @@
 			files = (
 				A0E271FE224E261100CB7113 /* BaseProjectViewController.swift in Sources */,
 				A0A192DE21F208DA009A8CF0 /* Space.swift in Sources */,
-				A059E648223AE9FB00ABC621 /* UploadManager.swift in Sources */,
 				A0E2720A224E335400CB7113 /* NewProjectViewController.swift in Sources */,
 				A08C2CE821F0B613008ACA3E /* BaseCell.swift in Sources */,
 				A08C2CE921F0B617008ACA3E /* TableHeader.swift in Sources */,
 				A0AC06B22201E5B900BD5FBA /* WorkingOverlay.swift in Sources */,
 				A0F7FDDD22491C6C006610F0 /* TintedButton.swift in Sources */,
 				A0E27201224E26A500CB7113 /* FolderCell.swift in Sources */,
+				A0FDB681225BCDEE00998B6C /* UploadManager.swift in Sources */,
 				A0AC0580224CE8C7008B9249 /* TableWithSpacesViewController.swift in Sources */,
 				A0C7DC04224A40E5004B78FF /* ActiveProjectsView.swift in Sources */,
 				A00A8D48220C7EDD0083F0CB /* AssetsByCollectionFilteredView.swift in Sources */,
@@ -917,6 +920,7 @@
 				A0656AB821F9BC8500070C4B /* ConnectSpaceViewController.swift in Sources */,
 				A0FB4DBE21F8CC2300B46099 /* MainViewController.swift in Sources */,
 				A0DE78AF21F76D2200B6B68B /* Project.swift in Sources */,
+				A0FDB683225BCE4000998B6C /* BackgroundUploadManager.swift in Sources */,
 				A098980D2236C23200022851 /* Upload.swift in Sources */,
 				A0AFCF0F22300E41005E57FD /* MultilineTitle.swift in Sources */,
 				A0A192DB21F1EE88009A8CF0 /* AlertHelper.swift in Sources */,

@@ -11,7 +11,7 @@ import YapDatabase
 
 class InvalidConfError: NSError {
     init() {
-        super.init(domain: String(describing: UploadManager.self), code: -123,
+        super.init(domain: String(describing: Space.self), code: -123,
                    userInfo: [NSLocalizedDescriptionKey: "Configuration invalid.".localize()])
     }
 
