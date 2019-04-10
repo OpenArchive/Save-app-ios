@@ -42,7 +42,7 @@ class AssetFactory {
         return options
     }()
 
-    private static var videoOptions: PHVideoRequestOptions = {
+    private static var avOptions: PHVideoRequestOptions = {
         let options = PHVideoRequestOptions()
         options.version = .current
         options.deliveryMode = .highQualityFormat
@@ -70,13 +70,13 @@ class AssetFactory {
      [How to get Original Image and media type from PHAsset?](https://stackoverflow.com/questions/35264023/how-to-get-original-image-and-media-type-from-phasset)
 
      - parameter phasset: The `PHAsset`.
-     - parameter mediaType: The media type. (e.g. `kUTTypeImage`)
      - parameter collection: The collection the asset will belong to.
      - parameter resultHandler: Callback with the created `Asset` object.
      */
-    class func create(fromPhasset phasset: PHAsset, _ mediaType: String,
-                      _ collection: Collection, _ resultHandler: @escaping ResultHandler) {
-        if mediaType == kUTTypeImage as String {
+    class func create(fromPhasset phasset: PHAsset, _ collection: Collection,
+                      _ resultHandler: @escaping ResultHandler) {
+
+        if phasset.mediaType == .image {
             // Fetch non-resized version first. We need the UTI, the filename and the original
             // image data.
 
@@ -98,8 +98,8 @@ class AssetFactory {
                 }
             }
         }
-        else if mediaType == kUTTypeMovie as String {
-            imageManager.requestAVAsset(forVideo: phasset, options: videoOptions) {
+        else if phasset.mediaType == .video || phasset.mediaType == .audio {
+            imageManager.requestAVAsset(forVideo: phasset, options: avOptions) {
                 avAsset, audioMix, info in
 
                 if let avAsset = avAsset {
@@ -107,16 +107,18 @@ class AssetFactory {
 
                     if presets.count > 0 {
                         imageManager.requestExportSession(forVideo: phasset,
-                                                          options: videoOptions,
+                                                          options: avOptions,
                                                           exportPreset: presets[0])
                         { exportSession, info in
-                            let asset = Asset(kUTTypeMPEG4 as String, collection)
+                            let uti: AVFileType = phasset.mediaType == .audio ? .mp3 : .mp4
+
+                            let asset = Asset(uti.rawValue, collection)
 
                             if let exportSession = exportSession,
                                 createParentDir(file: asset.file) {
 
                                 exportSession.outputURL = asset.file
-                                exportSession.outputFileType = .mp4
+                                exportSession.outputFileType = uti
 
                                 exportSession.exportAsynchronously {
                                     if exportSession.status == .completed {
@@ -143,14 +145,13 @@ class AssetFactory {
      [How to get Original Image and media type from PHAsset?](https://stackoverflow.com/questions/35264023/how-to-get-original-image-and-media-type-from-phasset)
 
      - parameter url: The URL as received in `UIImagePickerControllerReferenceURL`
-     - parameter mediaType: The media type. (e.g. `kUTTypeImage`)
      - parameter collection: The collection the asset will belong to.
      - parameter resultHandler: Callback with the created `Asset` object.
      */
-    class func create(fromAlAssetUrl url: URL, _ mediaType: String,
-                      _ collection: Collection, _ resultHandler: @escaping ResultHandler) {
+    class func create(fromAlAssetUrl url: URL, _ collection: Collection,
+                      _ resultHandler: @escaping ResultHandler) {
         if let phasset = PHAsset.fetchAssets(withALAssetURLs: [url], options: nil).firstObject {
-            create(fromPhasset: phasset, mediaType, collection, resultHandler)
+            create(fromPhasset: phasset, collection, resultHandler)
         }
     }
 

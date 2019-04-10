@@ -12,41 +12,48 @@ PODS:
   - ImageRow (4.0.0):
     - Eureka (~> 5.0)
   - Localize (2.2.0)
-  - MaterialComponents/AnimationTiming (81.0.0)
-  - MaterialComponents/Buttons (81.0.0):
+  - MaterialComponents/AnimationTiming (81.1.0)
+  - MaterialComponents/Buttons (81.1.0):
     - MaterialComponents/Ink
     - MaterialComponents/private/Math
+    - MaterialComponents/Ripple
     - MaterialComponents/ShadowElevations
     - MaterialComponents/ShadowLayer
     - MaterialComponents/Shapes
     - MaterialComponents/Typography
     - MDFInternationalization
     - MDFTextAccessibility
-  - MaterialComponents/Ink (81.0.0):
+  - MaterialComponents/Ink (81.1.0):
     - MaterialComponents/private/Math
-  - MaterialComponents/private/Application (81.0.0)
-  - MaterialComponents/private/Math (81.0.0)
-  - MaterialComponents/ShadowElevations (81.0.0)
-  - MaterialComponents/ShadowLayer (81.0.0):
+  - MaterialComponents/Palettes (81.1.0)
+  - MaterialComponents/private/Application (81.1.0)
+  - MaterialComponents/private/Math (81.1.0)
+  - MaterialComponents/Ripple (81.1.0):
+    - MaterialComponents/AnimationTiming
+    - MaterialComponents/private/Math
+  - MaterialComponents/ShadowElevations (81.1.0)
+  - MaterialComponents/ShadowLayer (81.1.0):
     - MaterialComponents/ShadowElevations
-  - MaterialComponents/Shapes (81.0.0):
+  - MaterialComponents/Shapes (81.1.0):
     - MaterialComponents/private/Math
     - MaterialComponents/ShadowLayer
-  - MaterialComponents/Tabs (81.0.0):
+  - MaterialComponents/Tabs (81.1.0):
     - MaterialComponents/AnimationTiming
     - MaterialComponents/Ink
+    - MaterialComponents/Palettes
     - MaterialComponents/private/Math
     - MaterialComponents/ShadowElevations
     - MaterialComponents/ShadowLayer
     - MaterialComponents/Typography
     - MDFInternationalization
-  - MaterialComponents/Typography (81.0.0):
+  - MaterialComponents/Typography (81.1.0):
     - MaterialComponents/private/Application
     - MaterialComponents/private/Math
   - MBProgressHUD (1.1.0)
   - MDFInternationalization (2.0.0)
   - MDFTextAccessibility (2.0.0)
   - ReachabilitySwift (4.3.1)
+  - TLPhotoPicker (1.8.5)
   - TUSafariActivity (1.0.4)
   - UIImage-Resize (1.0.1)
   - YapDatabase (3.1.2):
@@ -127,6 +134,7 @@ DEPENDENCIES:
   - MaterialComponents/Tabs (~> 81)
   - MBProgressHUD (~> 1.1)
   - ReachabilitySwift (~> 4.3)
+  - TLPhotoPicker (~> 1.8)
   - TUSafariActivity (~> 1.0)
   - UIImage-Resize (~> 1.0)
   - YapDatabase (~> 3.1)
@@ -147,6 +155,7 @@ SPEC REPOS:
     - MDFInternationalization
     - MDFTextAccessibility
     - ReachabilitySwift
+    - TLPhotoPicker
     - TUSafariActivity
     - UIImage-Resize
     - YapDatabase
@@ -171,15 +180,16 @@ SPEC CHECKSUMS:
   FilesProvider: 2a8ae17d8b9c23a6feadb1308ee638fa31d21065
   ImageRow: e65b2e1a33f89062bf2a553a2aad61d975eb7428
   Localize: db1c46fb0f275cee2ec63bcdf194c567d8fda6c0
-  MaterialComponents: 9ef60e1abd89463ac018ca6d354be41fd5df059a
+  MaterialComponents: c2045515505992357e210b33cb3ffc3a404a14fd
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
   MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
   MDFTextAccessibility: 85c09a1bd9c321f494348e632a25063bcda35a53
   ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
+  TLPhotoPicker: 4274455aacc5b75b53aafa2de95bd1f53e7c79f8
   TUSafariActivity: afc55a00965377939107ce4fdc7f951f62454546
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   YapDatabase: d8cd02058e36bc0902e405d8f3326eb8d7dbf36c
 
-PODFILE CHECKSUM: 5262fc140ec030ce5c693b369aee2ea394e6adc5
+PODFILE CHECKSUM: 5b9e4b05e10b1f1134af9b7d30d955728d16ae69
 
 COCOAPODS: 1.6.1

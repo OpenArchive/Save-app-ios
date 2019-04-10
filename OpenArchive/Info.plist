@@ -23,7 +23,9 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>NSCameraUsageDescription</key>
-	<string>Please grant this app access to your camera, if you want to create your avatar image with it.</string>
+	<string>Please grant this app access to your camera, if you directly want to take photos or videos.</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Please grant this app access to your microphone, if you directly want to take videos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Please grant this app access to your photo library, if you want to upload photos or videos.</string>
 	<key>UIBackgroundModes</key>

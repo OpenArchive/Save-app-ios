@@ -11,10 +11,11 @@ import MobileCoreServices
 import Photos
 import YapDatabase
 import MaterialComponents.MaterialTabs
+import TLPhotoPicker
 
 class MainViewController: UIViewController, UICollectionViewDelegate,
-UICollectionViewDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate,
-ProjectsTabBarDelegate, HeaderViewDelegate {
+UICollectionViewDataSource, UINavigationControllerDelegate,
+ProjectsTabBarDelegate, HeaderViewDelegate, TLPhotosPickerViewControllerDelegate {
 
     private static let segueConnectSpace = "connectSpaceSegue"
     private static let segueShowSpace = "showSpaceSegue"
@@ -75,14 +76,18 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
         return tabBar
     }()
 
-    lazy var imagePicker: UIImagePickerController = {
-        let imagePicker = UIImagePickerController()
-        imagePicker.delegate = self
-        imagePicker.sourceType = .photoLibrary
-        imagePicker.mediaTypes = [kUTTypeImage as String, kUTTypeMovie as String]
-        imagePicker.modalPresentationStyle = .popover
+    lazy var pickerConf: TLPhotosPickerConfigure = {
+        var conf = TLPhotosPickerConfigure()
+        conf.defaultCameraRollTitle = "Camera Roll".localize()
+        conf.tapHereToChange = "Tap here to change".localize()
+        conf.cancelTitle = "Cancel".localize()
+        conf.doneTitle = "Done".localize()
+        conf.emptyMessage = "No albums".localize()
+        conf.allowedAlbumCloudShared = true
+        conf.recordingVideoQuality = .typeHigh
+        conf.selectedColor = UIColor.accent
 
-        return imagePicker
+        return conf
     }()
 
 
@@ -197,17 +202,18 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
             return didSelectAdd(tabBar)
         }
 
-        imagePicker.popoverPresentationController?.sourceView = addBt
-        imagePicker.popoverPresentationController?.sourceRect = addBt.bounds
+        let tlpp = TLPhotosPickerViewController()
+        tlpp.delegate = self
+        tlpp.configure = pickerConf
 
         switch PHPhotoLibrary.authorizationStatus() {
         case .authorized:
-            present(imagePicker, animated: true)
+            present(tlpp, animated: true)
 
         case .notDetermined:
             PHPhotoLibrary.requestAuthorization() { newStatus in
                 if newStatus == .authorized {
-                    self.present(self.imagePicker, animated: true)
+                    self.present(tlpp, animated: true)
                 }
             }
 
@@ -227,29 +233,22 @@ ProjectsTabBarDelegate, HeaderViewDelegate {
             break
         }
     }
-    
 
-    // MARK: UIImagePickerControllerDelegate
 
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo
-        info: [UIImagePickerController.InfoKey : Any]) {
+    // MARK: TLPhotosPickerViewControllerDelegate
 
-        if let type = info[.mediaType] as? String,
-            let url = info[.referenceURL] as? URL,
-            let collection = tabBar.selectedProject?.currentCollection {
+    func dismissPhotoPicker(withPHAssets assets: [PHAsset]) {
+        guard let collection = tabBar.selectedProject?.currentCollection else {
+            return
+        }
 
-            AssetFactory.create(fromAlAssetUrl: url, type, collection) { asset in
+        for asset in assets {
+            AssetFactory.create(fromPhasset: asset, collection) { asset in
                 Db.writeConn?.asyncReadWrite() { transaction in
                     transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
                 }
             }
         }
-
-        dismiss(animated: true)
-    }
-
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true)
     }
 
 
