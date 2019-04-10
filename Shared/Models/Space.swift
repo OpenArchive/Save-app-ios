@@ -8,6 +8,7 @@
 
 import UIKit
 import YapDatabase
+import Alamofire
 
 class InvalidConfError: NSError {
     init() {
@@ -62,14 +63,6 @@ class Space: NSObject {
         return "Unnamed".localize()
     }
 
-    static let sessionConf: URLSessionConfiguration = {
-        let conf = URLSessionConfiguration.background(withIdentifier:
-            "\(Bundle.main.bundleIdentifier ?? "").background")
-        conf.sharedContainerIdentifier = Constants.appGroup
-
-        return conf
-    }()
-
     /**
      A pretty-printing JSON encoder using ISO8601 date formats.
     */
@@ -79,6 +72,25 @@ class Space: NSObject {
         encoder.dateEncodingStrategy = .iso8601
 
         return encoder
+    }()
+
+    /**
+     This needs to be tied to an object, otherwise the SessionManager will get
+     destroyed during the request and the request will break with error -999.
+
+     See [Getting code=-999 using custom SessionManager](https://github.com/Alamofire/Alamofire/issues/1684)
+     */
+    lazy var sessionManager: SessionManager = {
+        let conf = URLSessionConfiguration.background(withIdentifier:
+            "\(Bundle.main.bundleIdentifier ?? "").background")
+        conf.sharedContainerIdentifier = Constants.appGroup
+
+        // Fix error "CredStore - performQuery - Error copying matching creds."
+        conf.urlCredentialStorage = nil
+
+        conf.httpAdditionalHeaders = SessionManager.defaultHTTPHeaders
+
+        return SessionManager(configuration: conf)
     }()
 
 

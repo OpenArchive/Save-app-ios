@@ -30,6 +30,16 @@ class WebDavSpace: Space, Item {
 
     private static let metaFileExt = "meta.json"
 
+    private var credential: URLCredential? {
+        if let username = username,
+            let password = password {
+
+            return URLCredential(user: username, password: password, persistence: .forSession)
+        }
+
+        return nil
+    }
+
     /**
      Create a `WebDAVFileProvider`, if credentials are available and the `url` is a valid
      WebDAV URL.
@@ -37,11 +47,8 @@ class WebDavSpace: Space, Item {
      - returns: a `WebDAVFileProvider` for this space.
      */
     var provider: WebDAVFileProvider? {
-        if let username = username,
-            let password = password,
-            let baseUrl = url {
-
-            let credential = URLCredential(user: username, password: password, persistence: .forSession)
+        if let baseUrl = url,
+            let credential = credential {
 
             let provider = WebDAVFileProvider(baseURL: baseUrl, credential: credential)
 
@@ -85,10 +92,10 @@ class WebDavSpace: Space, Item {
 
         let progress = Progress.discreteProgress(totalUnitCount: 100)
 
-        guard let provider = provider,
-            let projectName = asset.collection.project.name,
+        guard let projectName = asset.collection.project.name,
             let collectionName = asset.collection.name,
-            let file = asset.file
+            let file = asset.file,
+            let credential = credential
         else {
             DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
                 self.done(uploadId, InvalidConfError())
@@ -97,66 +104,41 @@ class WebDavSpace: Space, Item {
             return progress
         }
 
-        create(folder: projectName, at: "") { error in
+        let p = create(folder: projectName, at: "") { error in
             if error != nil || progress.isCancelled {
                 return self.done(uploadId, error)
             }
 
-            progress.completedUnitCount += 5
-
-            self.create(folder: collectionName, at: projectName) { error in
+            let p = self.create(folder: collectionName, at: projectName) { error in
                 if error != nil || progress.isCancelled {
                     return self.done(uploadId, error)
                 }
 
-                progress.completedUnitCount += 5
+                let to = Space.construct(url: self.url, projectName, collectionName, asset.filename)
 
-                let filepath = Space.construct(url: nil, projectName, collectionName, asset.filename).path
+                let p = self.copyMetadata(asset, to: to.appendingPathExtension(WebDavSpace.metaFileExt),
+                                          credential) { error in
 
-                // Inject our own background session, so upload can finish, when
-                // user quits app.
-                // This can only be done on upload, we would get an error on
-                // deletion.
-                let conf = Space.sessionConf
-                conf.urlCache = provider.cache
-                conf.requestCachePolicy = .returnCacheDataElseLoad
+                    if error != nil || progress.isCancelled {
+                        return self.done(uploadId, error)
+                    }
 
-                let sessionDelegate = SessionDelegate(fileProvider: provider)
-
-                // Store for later re-set.
-                let oldSession = provider.session
-
-                provider.session = URLSession(configuration: conf,
-                                              delegate: sessionDelegate as URLSessionDelegate?,
-                                              delegateQueue: provider.operation_queue)
-
-//                let p = self.copyMetadata(asset, to: "\(filepath).\(WebDavSpace.metaFileExt)") { error in
-//                    if error != nil || progress.isCancelled {
-//                        // Reset to normal session, so #remove doesn't break.
-//                        provider.session = oldSession
-//
-//                        return self.done(uploadId, error)
-//                    }
-
-                    let p = provider.copyItem(localFile: file, to: filepath) { error in
-                        // Reset to normal session, so #remove doesn't break.
-                        provider.session = oldSession
-
+                    let p = self.upload(file, to: to, credential) { error in
                         self.done(uploadId, error,
                                   Space.construct(url: self.url, projectName,
                                                   collectionName, asset.filename))
                     }
 
-                    if let p = p {
-                        progress.addChild(p, withPendingUnitCount: 75)
-                    }
-//                }
-//
-//                if let p = p {
-//                    progress.addChild(p, withPendingUnitCount: 15)
-//                }
+                    progress.addChild(p, withPendingUnitCount: 75)
+                }
+
+                progress.addChild(p, withPendingUnitCount: 15)
             }
+
+            progress.addChild(p, withPendingUnitCount: 5)
         }
+
+        progress.addChild(p, withPendingUnitCount: 5)
 
         return progress
     }
@@ -201,20 +183,30 @@ class WebDavSpace: Space, Item {
      - parameter completionHandler: Callback, when done.
         If an error was returned, it is from the creation attempt.
     */
-    private func create(folder: String, at: String, _ completionHandler: SimpleCompletionHandler) {
+    private func create(folder: String, at: String, _ completionHandler: SimpleCompletionHandler) -> Progress {
         let folderpath = URL(fileURLWithPath: at).appendingPathComponent(folder).path
+
+        let progress = Progress(totalUnitCount: 100)
 
         provider?.attributesOfItem(path: folderpath) { attributes, error in
 
             if attributes == nil {
+                progress.completedUnitCount = 50
+
                 // Does not exist - create.
-                self.provider?.create(folder: folder, at: at, completionHandler: completionHandler)
+                if let p = self.provider?.create(folder: folder, at: at, completionHandler: completionHandler) {
+                    progress.addChild(p, withPendingUnitCount: 50)
+                }
             }
             else {
+                progress.completedUnitCount = 100
+
                 // Does exist: continue.
                 completionHandler?(nil)
             }
         }
+
+        return progress
     }
 
     /**
@@ -222,18 +214,17 @@ class WebDavSpace: Space, Item {
      destination on the WebDAV server.
 
      - parameter asset: The `Asset` to extract metadata from.
-     - parameter to: The target file on the WebDAV server.
+     - parameter to: The destination on the WebDAV server.
+     - parameter credential: The credentials to authenticate with.
      - parameter completionHandler: The callback to call when the copy is done,
        or when an error happened.
      - returns: the progress of the `#copyItem` call or nil, if an error happened.
     */
-    private func copyMetadata(_ asset: Asset, to: String, _ completionHandler: SimpleCompletionHandler) -> Progress? {
-        let fm = FileManager.default
+    private func copyMetadata(_ asset: Asset, to: URL, _ credential: URLCredential,
+                              _ completionHandler: SimpleCompletionHandler) -> Progress {
 
-        guard let provider = provider else {
-            completionHandler?(nil)
-            return nil
-        }
+        let progress = Progress(totalUnitCount: 100)
+        let fm = FileManager.default
 
         let tempDir: URL
 
@@ -242,11 +233,12 @@ class WebDavSpace: Space, Item {
                                      in: .userDomainMask,
                                      appropriateFor: asset.file, create: true)
         } catch {
-            completionHandler?(error)
-            return nil
-        }
+            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
+                completionHandler?(error)
+            }
 
-        let metaFile = tempDir.appendingPathComponent("\(asset.filename).\(WebDavSpace.metaFileExt)")
+            return progress
+        }
 
         let json: Data
 
@@ -254,23 +246,66 @@ class WebDavSpace: Space, Item {
             try json = Space.jsonEncoder.encode(asset)
         }
         catch {
-            completionHandler?(error)
-            return nil
+            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
+                completionHandler?(error)
+            }
+
+            return progress
         }
+
+        let metaFile = tempDir.appendingPathComponent("\(asset.filename).\(WebDavSpace.metaFileExt)")
 
         do {
             try json.write(to: metaFile, options: .atomicWrite)
         }
         catch {
-            completionHandler?(error)
-            return nil
+            try? fm.removeItem(at: metaFile)
+
+            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
+                completionHandler?(error)
+            }
+
+            return progress
         }
 
-        return provider.copyItem(localFile: metaFile, to: to) { error in
+        return upload(metaFile, to: to, credential) { error in
             try? fm.removeItem(at: metaFile)
 
             completionHandler?(error)
         }
+    }
+
+    /**
+     Uploads a file to a destination.
+
+     This method deliberatly doesn't use the FilesProvder library, but Alamofire
+     instead, since FilesProvider's latest version fails on uploading the
+     metadata for an unkown reason. Addtionally, it's easier with the background
+     upload, when using Alamofire directly.
+
+     - parameter file: The file on the local file system.
+     - parameter to: The destination on the WebDAV server.
+     - parameter credential: The credentials to authenticate with.
+     - parameter completionHandler: The callback to call when the copy is done,
+     or when an error happened.
+     - returns: the progress of the `#copyItem` call or nil, if an error happened before the actual copy.
+    */
+    private func upload(_ file: URL, to: URL, _ credential: URLCredential,
+                        _ completionHandler: SimpleCompletionHandler) -> Progress {
+
+        let req = sessionManager.upload(file, to: to, method: .put)
+            .authenticate(usingCredential: credential)
+            .debug()
+            .validate(statusCode: 200..<300)
+            .responseData() { response in
+                completionHandler?(response.error)
+            }
+
+        let progress = Progress()
+        progress.addChild(req.uploadProgress, withPendingUnitCount: 90)
+        progress.addChild(req.progress, withPendingUnitCount: 10)
+
+        return progress
     }
 
     /**
