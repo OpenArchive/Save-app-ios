@@ -175,6 +175,9 @@ class WebDavSpace: Space, Item {
         }
     }
 
+
+    // MARK: Private Methods
+
     /**
      Asynchronously tests, if a folder exists and if not, creates it.
 
