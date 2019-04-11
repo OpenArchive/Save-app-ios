@@ -71,7 +71,7 @@ class IaSpace: Space, Item {
 
 
     override func upload(_ asset: Asset, uploadId: String) -> Progress {
-        let progress = Progress.discreteProgress(totalUnitCount: 2)
+        let progress = Progress(totalUnitCount: 100)
 
         guard let accessKey = username,
             let secretKey = password,
@@ -119,20 +119,9 @@ class IaSpace: Space, Item {
             headers["x-archive-meta-licenseurl"] = license
         }
 
-        let req = sessionManager.upload(file, to: url, method: .put, headers: headers)
-            .debug()
-            .validate(statusCode: 200..<300)
-            .responseData() { response in
-                switch response.result {
-                case .success:
-                    self.done(uploadId, nil, url)
-                case .failure(let error):
-                    self.done(uploadId, error)
-                }
-            }
-
-        progress.addChild(req.uploadProgress, withPendingUnitCount: 1)
-        progress.addChild(req.progress, withPendingUnitCount: 1)
+        self.upload(file, to: url, progress, headers: headers) { error in
+            self.done(uploadId, error, url)
+        }
 
         return progress
     }

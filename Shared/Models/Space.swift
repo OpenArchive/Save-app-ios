@@ -9,6 +9,7 @@
 import UIKit
 import YapDatabase
 import Alamofire
+import FilesProvider
 
 class InvalidConfError: NSError {
     init() {
@@ -268,5 +269,45 @@ class Space: NSObject {
 
         NotificationCenter.default.post(name: .uploadManagerDone, object: uploadId,
                                         userInfo: userInfo)
+    }
+
+    /**
+     Uploads a file to a destination.
+
+     This method deliberatly doesn't use the FilesProvder library, but Alamofire
+     instead, since FilesProvider's latest version fails on uploading the
+     metadata for an unkown reason. Addtionally, it's easier with the background
+     upload, when using Alamofire directly.
+
+     - parameter file: The file on the local file system.
+     - parameter to: The destination on the WebDAV server.
+     - parameter credential: The credentials to authenticate with.
+     - parameter headers: Addtitional request headers.
+     - parameter progress: The main progress to report on.
+     - parameter completionHandler: The callback to call when the copy is done,
+     or when an error happened.
+     */
+    func upload(_ file: URL, to: URL, _ progress: Progress, credential: URLCredential? = nil,
+                headers: HTTPHeaders? = nil, _ completionHandler: SimpleCompletionHandler) {
+
+        let start = progress.completedUnitCount
+        let share = progress.totalUnitCount - start
+
+        let req = sessionManager.upload(file, to: to, method: .put, headers: headers)
+            .validate(statusCode: 200..<300)
+            .uploadProgress {
+                progress.completedUnitCount = start + $0.completedUnitCount * share / $0.totalUnitCount
+            }
+            .responseData { response in
+                completionHandler?(response.error)
+            }
+
+        if let credential = credential {
+            req.authenticate(usingCredential: credential)
+        }
+
+        #if DEBUG
+        _ = req.debug()
+        #endif
     }
 }

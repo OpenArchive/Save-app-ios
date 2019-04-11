@@ -123,13 +123,11 @@ class WebDavSpace: Space, Item {
                         return self.done(uploadId, error)
                     }
 
-                    let p = self.upload(file, to: to, credential) { error in
+                    self.upload(file, to: to, progress, credential: credential) { error in
                         self.done(uploadId, error,
                                   Space.construct(url: self.url, projectName,
                                                   collectionName, asset.filename))
                     }
-
-                    progress.addChild(p, withPendingUnitCount: 75)
                 }
 
                 progress.addChild(p, withPendingUnitCount: 15)
@@ -271,42 +269,11 @@ class WebDavSpace: Space, Item {
             return progress
         }
 
-        return upload(metaFile, to: to, credential) { error in
+        upload(metaFile, to: to, progress, credential: credential) { error in
             try? fm.removeItem(at: metaFile)
 
             completionHandler?(error)
         }
-    }
-
-    /**
-     Uploads a file to a destination.
-
-     This method deliberatly doesn't use the FilesProvder library, but Alamofire
-     instead, since FilesProvider's latest version fails on uploading the
-     metadata for an unkown reason. Addtionally, it's easier with the background
-     upload, when using Alamofire directly.
-
-     - parameter file: The file on the local file system.
-     - parameter to: The destination on the WebDAV server.
-     - parameter credential: The credentials to authenticate with.
-     - parameter completionHandler: The callback to call when the copy is done,
-     or when an error happened.
-     - returns: the progress of the `#copyItem` call or nil, if an error happened before the actual copy.
-    */
-    private func upload(_ file: URL, to: URL, _ credential: URLCredential,
-                        _ completionHandler: SimpleCompletionHandler) -> Progress {
-
-        let req = sessionManager.upload(file, to: to, method: .put)
-            .authenticate(usingCredential: credential)
-            .debug()
-            .validate(statusCode: 200..<300)
-            .responseData() { response in
-                completionHandler?(response.error)
-            }
-
-        let progress = Progress()
-        progress.addChild(req.uploadProgress, withPendingUnitCount: 90)
-        progress.addChild(req.progress, withPendingUnitCount: 10)
 
         return progress
     }

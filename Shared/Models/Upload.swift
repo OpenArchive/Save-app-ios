@@ -137,10 +137,6 @@ class Upload: NSObject, Item {
     }
 
     var state: PKDownloadButtonState {
-        if isUploaded || progress >= 1 {
-            return .downloaded
-        }
-
         if paused {
             return .startDownload
         }
