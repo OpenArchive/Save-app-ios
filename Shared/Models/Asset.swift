@@ -282,6 +282,14 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     }
 
 
+    // MARK: NSCopying
+
+    func copy(with zone: NSZone? = nil) -> Any {
+        return NSKeyedUnarchiver.unarchiveObject(with:
+            NSKeyedArchiver.archivedData(withRootObject: self))!
+    }
+
+
     // MARK: Encodable
 
     enum CodingKeys: String, CodingKey {

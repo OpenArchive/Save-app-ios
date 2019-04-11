@@ -129,6 +129,14 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
     }
 
 
+    // MARK: NSCopying
+
+    func copy(with zone: NSZone? = nil) -> Any {
+        return NSKeyedUnarchiver.unarchiveObject(with:
+            NSKeyedArchiver.archivedData(withRootObject: self))!
+    }
+
+
     // MARK: NSObject
 
     override var description: String {
