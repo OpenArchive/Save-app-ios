@@ -190,13 +190,17 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
 
             if data.count > 0 {
                 data.withUnsafeBytes {
-                    _ = CC_SHA256_Update(&context, $0, UInt32(data.count))
+                    if let pointer = $0.baseAddress {
+                        _ = CC_SHA256_Update(&context, pointer, UInt32(data.count))
+                    }
                 }
             }
 
             var digest = Data(count: Int(CC_SHA256_DIGEST_LENGTH))
             digest.withUnsafeMutableBytes {
-                _ = CC_SHA256_Final($0, &context)
+                if let pointer = $0.baseAddress?.assumingMemoryBound(to: UInt8.self) {
+                    _ = CC_SHA256_Final(pointer, &context)
+                }
             }
 
             return digest
