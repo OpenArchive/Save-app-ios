@@ -213,7 +213,9 @@ ProjectsTabBarDelegate, HeaderViewDelegate, TLPhotosPickerViewControllerDelegate
         case .notDetermined:
             PHPhotoLibrary.requestAuthorization() { newStatus in
                 if newStatus == .authorized {
-                    self.present(tlpp, animated: true)
+                    DispatchQueue.main.async {
+                        self.present(tlpp, animated: true)
+                    }
                 }
             }
 
