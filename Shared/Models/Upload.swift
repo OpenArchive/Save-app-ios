@@ -123,17 +123,14 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
 
         set {
             assetId = newValue?.id
-            _asset = nil
+            _asset = newValue
         }
     }
 
-    var isUploaded: Bool {
-        get {
-            return asset?.isUploaded ?? false
-        }
-        set {
-            asset?.isUploaded = newValue
-        }
+    var isReady: Bool {
+        return (asset?.isReady ?? false)
+            && !(asset?.isUploaded ?? false)
+            && (asset?.space?.uploadAllowed ?? false)
     }
 
     var state: PKDownloadButtonState {

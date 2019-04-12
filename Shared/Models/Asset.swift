@@ -49,6 +49,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     var tags: [String]?
     var notes: String?
     var publicUrl: URL?
+    var isReady = false
     var isUploaded = false
     private(set) var collectionId: String
 
@@ -262,6 +263,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         notes = decoder.decodeObject(forKey: "notes") as? String
         tags = decoder.decodeObject(forKey: "tags") as? [String]
         publicUrl = decoder.decodeObject(forKey: "publicUrl") as? URL
+        isReady = decoder.decodeBool(forKey: "isReady")
         isUploaded = decoder.decodeBool(forKey: "isUploaded")
         collectionId = decoder.decodeObject(forKey: "collectionId") as! String
     }
@@ -277,6 +279,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         coder.encode(notes, forKey: "notes")
         coder.encode(tags, forKey: "tags")
         coder.encode(publicUrl, forKey: "publicUrl")
+        coder.encode(isReady, forKey: "isReady")
         coder.encode(isUploaded, forKey: "isUploaded")
         coder.encode(collectionId, forKey: "collectionId")
     }
@@ -368,7 +371,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
             + "mimeType=\(mimeType), filename=\(filename), "
             + "file=\(file?.description ?? "nil"), thumb=\(thumb?.description ?? "nil"), "
             + "publicUrl=\(publicUrl?.absoluteString ?? "nil"), "
-            + "isUploaded=\(isUploaded)]"
+            + "isReady=\(isReady), isUploaded=\(isUploaded)]"
     }
 
 

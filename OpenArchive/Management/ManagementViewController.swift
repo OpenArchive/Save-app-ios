@@ -201,22 +201,28 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
 
             tableView.beginUpdates()
 
+            // NOTE: Sections other than 0 are ignored, because `UploadsView`
+            // also tracks changes in `Asset`s, so `UploadManager` can update
+            // its referenced assets, when their status changes.
+            // (Needed, when movie import takes longer as the user hits upload.)
+
             for change in changes {
                 switch change.type {
                 case .delete:
-                    if let indexPath = change.indexPath {
+                    if let indexPath = change.indexPath, indexPath.section == 0 {
                         tableView.deleteRows(at: [indexPath], with: .automatic)
                     }
                 case .insert:
-                    if let newIndexPath = change.newIndexPath {
+                    if let newIndexPath = change.newIndexPath, newIndexPath.section == 0 {
                         tableView.insertRows(at: [newIndexPath], with: .automatic)
                     }
                 case .move:
-                    if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
+                    if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath,
+                        indexPath.section == 0 && newIndexPath.section == 0 {
                         tableView.reloadRows(at: [indexPath, newIndexPath], with: .none)
                     }
                 case .update:
-                    if let indexPath = change.indexPath {
+                    if let indexPath = change.indexPath, indexPath.section == 0 {
                         tableView.reloadRows(at: [indexPath], with: .none)
                     }
                 @unknown default:

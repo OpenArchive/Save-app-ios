@@ -18,7 +18,7 @@ class AssetFactory {
     /**
      - parameter asset: The created `Asset`.
     */
-    typealias ResultHandler = (_ asset: Asset) -> Void
+    typealias ResultHandler = (_ asset: Asset?) -> Void
 
     static var imageManager = PHImageManager()
     static var thumbnailSize = CGSize(width: 320, height: 240)
@@ -60,10 +60,7 @@ class AssetFactory {
 
 
     /**
-     Create an `Asset` object from a given `PHAsset` object.
-
-     You will *only* receive the `resultHandler` callback, if the original image or a video export
-     can be processed successfully!
+     Create an `Asset` object from a given `PHAsset` object and store it in the database.
 
      [PHImageManager](https://developer.apple.com/documentation/photokit/phimagemanager)
 
@@ -71,10 +68,8 @@ class AssetFactory {
 
      - parameter phasset: The `PHAsset`.
      - parameter collection: The collection the asset will belong to.
-     - parameter resultHandler: Callback with the created `Asset` object.
      */
-    class func create(fromPhasset phasset: PHAsset, _ collection: Collection,
-                      _ resultHandler: @escaping ResultHandler) {
+    class func create(fromPhasset phasset: PHAsset, _ collection: Collection) {
 
         if phasset.mediaType == .image {
             // Fetch non-resized version first. We need the UTI, the filename and the original
@@ -93,7 +88,11 @@ class AssetFactory {
                     if let file = asset.file,
                         createParentDir(file: file) && (try? data.write(to: file)) != nil {
 
-                        fetchThumb(phasset, asset, resultHandler)
+                        fetchThumb(phasset, asset) // asynchronous
+
+                        asset.isReady = true
+
+                        store(asset) // asynchronous
                     }
                 }
             }
@@ -114,6 +113,13 @@ class AssetFactory {
 
                             let asset = Asset(uti.rawValue, collection)
 
+                            // Store asset before export, so display of it
+                            // isn't displayed too long without notice.
+                            // Else it would lead to strange bugs, when users
+                            // upload a collection before the asset is ready.
+                            fetchThumb(phasset, asset) // asynchronous
+                            store(asset) // asynchronous
+
                             if let exportSession = exportSession,
                                 createParentDir(file: asset.file) {
 
@@ -121,8 +127,26 @@ class AssetFactory {
                                 exportSession.outputFileType = uti
 
                                 exportSession.exportAsynchronously {
-                                    if exportSession.status == .completed {
-                                        fetchThumb(phasset, asset, resultHandler)
+                                    switch exportSession.status {
+                                    case .unknown, .waiting, .exporting:
+                                        break
+
+                                    case .completed:
+                                        if let thumb = asset.thumb?.path,
+                                            !FileManager.default.fileExists(atPath: thumb) {
+
+                                            createThumb(asset)
+                                        }
+
+                                        asset.isReady = true
+
+                                        store(asset)
+
+                                    case .failed, .cancelled:
+                                        remove(asset)
+
+                                    @unknown default:
+                                        break
                                     }
                                 }
                             }
@@ -135,10 +159,7 @@ class AssetFactory {
 
     /**
      Create an `Asset` object from a given `AIAssetUrl` as returned by
-     `imagePickerController:didFinishPickingMediaWithInfo`.
-
-     You will *only* receive the `resultHandler` callback, if a `PHAsset` can be found and the
-     original image or a video export can be processed successfully!
+     `imagePickerController:didFinishPickingMediaWithInfo` and store it in the database.
 
      [PHImageManager](https://developer.apple.com/documentation/photokit/phimagemanager)
 
@@ -146,23 +167,20 @@ class AssetFactory {
 
      - parameter url: The URL as received in `UIImagePickerControllerReferenceURL`
      - parameter collection: The collection the asset will belong to.
-     - parameter resultHandler: Callback with the created `Asset` object.
      */
-    class func create(fromAlAssetUrl url: URL, _ collection: Collection,
-                      _ resultHandler: @escaping ResultHandler) {
+    class func create(fromAlAssetUrl url: URL, _ collection: Collection) {
         if let phasset = PHAsset.fetchAssets(withALAssetURLs: [url], options: nil).firstObject {
-            create(fromPhasset: phasset, collection, resultHandler)
+            create(fromPhasset: phasset, collection)
         }
     }
 
     /**
-     Create an `Asset` object from a given file `URL`.
+     Create an `Asset` object from a given file `URL` and store it in the database.
 
      Will try to generate a thumbnail from the asset's file, if `thumbnail` is `nil` or could not
      be written to the proper location for whatever reason.
 
-     You will *only* receive the `resultHandler` callback, if the given file can be successfully
-     copied to its new location inside the app!
+     If an error happened, your `resultHandler` will receive nil as `asset`.
 
      - parameter url: A file URL.
      - parameter thumbnail: A `UIImage` which represents a thumbnail of this asset.
@@ -175,10 +193,9 @@ class AssetFactory {
             let asset = Asset(uti, collection)
             asset.filename = url.lastPathComponent
 
-            if  let file = asset.file,
-                createParentDir(file: file) &&
-                    // BEWARE: Move will only work in Simulator!
-                    (try? FileManager.default.copyItem(at: url, to: file)) != nil {
+            if  let file = asset.file, createParentDir(file: file)
+                // BEWARE: Using move in the ShareExtension will only work in the simulator!
+                && (try? FileManager.default.copyItem(at: url, to: file)) != nil {
 
                 if let thumb = asset.thumb,
                     createParentDir(file: thumb) {
@@ -192,21 +209,22 @@ class AssetFactory {
                     }
                 }
 
-                resultHandler(asset)
+                store(asset, resultHandler)
+            }
+            else {
+                resultHandler(nil)
             }
         }
     }
 
     /**
      Fetch a thumbnail image for the given `PHAsset`. Store that thumbnail at the according path
-     for the given `Asset` and call the resultHandler, when done, regardless, if the thumbnail could
-     be fetched or not.
+     for the given `Asset`.
 
      - parameter phasset: The `PHAsset` to fetch the thumbnail from.
      - parameter asset: The `Asset` to store the thumbnail with.
-     - parameter resultHandler: Callback with the created `Asset` object.
     */
-    private class func fetchThumb(_ phasset: PHAsset, _ asset: Asset, _ resultHandler: @escaping ResultHandler) {
+    private class func fetchThumb(_ phasset: PHAsset, _ asset: Asset) {
         imageManager.requestImage(for: phasset, targetSize: thumbnailSize,
                                   contentMode: .default,
                                   options: loResOptions)
@@ -221,8 +239,6 @@ class AssetFactory {
                     self.createThumb(asset)
                 }
             }
-
-            resultHandler(asset)
         }
     }
 
@@ -259,5 +275,32 @@ class AssetFactory {
         }
 
         return false
+    }
+
+    /**
+     Store an asset in the database. When done, call a handler on the main queue.
+
+     - parameter asset: The asset to store.
+     - parameter resultHandler: The handler to call after storing.
+    */
+    private class func store(_ asset: Asset, _ resultHandler: ResultHandler? = nil) {
+        Db.writeConn?.asyncReadWrite { transaction in
+            transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
+
+            DispatchQueue.main.async {
+                resultHandler?(asset)
+            }
+        }
+    }
+
+    /**
+     Remove an asset from the database.
+
+     - parameter asset: The asset to remove.
+    */
+    private class func remove(_ asset: Asset) {
+        Db.writeConn?.asyncReadWrite { transaction in
+            transaction.removeObject(forKey: asset.id, inCollection: Asset.collection)
+        }
     }
 }

@@ -243,19 +243,17 @@ class MainViewController: TableWithSpacesViewController {
                             return self.onCompletion(error!)
                         }
 
+                        let error = "Couldn't import item!".localize()
+
                         guard let url = item as? URL else {
-                            return self.onCompletion(error: "Couldn't acquire item!".localize())
+                            return self.onCompletion(error: error)
                         }
 
                         AssetFactory.create(fromFileUrl: url,
                                             thumbnail: thumbnail as? UIImage,
                                             collection)
                         { asset in
-                            Db.writeConn?.asyncReadWrite() { transaction in
-                                transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
-
-                                self.onCompletion()
-                            }
+                            self.onCompletion(error: asset == nil ? error : nil)
                         }
                     }
                 }

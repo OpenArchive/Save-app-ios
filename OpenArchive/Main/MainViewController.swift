@@ -245,11 +245,7 @@ ProjectsTabBarDelegate, HeaderViewDelegate, TLPhotosPickerViewControllerDelegate
         }
 
         for asset in assets {
-            AssetFactory.create(fromPhasset: asset, collection) { asset in
-                Db.writeConn?.asyncReadWrite() { transaction in
-                    transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
-                }
-            }
+            AssetFactory.create(fromPhasset: asset, collection)
         }
     }
 

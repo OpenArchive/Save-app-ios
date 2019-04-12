@@ -122,32 +122,52 @@ class UploadManager {
             return
         }
 
+        // NOTE: Section 0 are `Upload`s, section 1 tracks changes in `Asset`s,
+        // which is only interesting in an `.update` case, where we want to update
+        // the `Asset` object referenced from an `Upload`.
+
         queue.async {
             for change in changes {
                 switch change.type {
                 case .delete:
-                    if let indexPath = change.indexPath {
+                    if let indexPath = change.indexPath, indexPath.section == 0 {
                         let upload = self.uploads.remove(at: indexPath.row)
                         upload.cancel()
                     }
                 case .insert:
-                    if let newIndexPath = change.newIndexPath,
-                        let upload = self.readUpload(newIndexPath) {
-
-                        self.uploads.insert(upload, at: newIndexPath.row)
+                    if let newIndexPath = change.newIndexPath, newIndexPath.section == 0 {
+                        if let upload = self.readUpload(newIndexPath) {
+                            self.uploads.insert(upload, at: newIndexPath.row)
+                        }
                     }
                 case .move:
-                    if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
+                    if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath, indexPath.section == 0 && newIndexPath.section == 0 {
                         let upload = self.uploads.remove(at: indexPath.row)
                         upload.order = newIndexPath.row
                         self.uploads.insert(upload, at: newIndexPath.row)
                     }
                 case .update:
-                    if let indexPath = change.indexPath,
-                        let upload = self.readUpload(indexPath) {
+                    if let indexPath = change.indexPath {
 
+                        // Notice changes in `Asset`s ready state.
+                        // (The audio/video import took longer than the user
+                        // hitting "upload".)
+                        if indexPath.section > 0 {
+                            if let asset = self.getAsset(indexPath) {
+                                for upload in self.uploads {
+                                    if upload.assetId == asset.id {
+                                        upload.asset = asset
+                                    }
+                                }
+                            }
+
+                            break
+                        }
+
+                        if let upload = self.readUpload(indexPath) {
                             upload.liveProgress = self.uploads[indexPath.row].liveProgress
                             self.uploads[indexPath.row] = upload
+                        }
                     }
                 @unknown default:
                     break
@@ -361,9 +381,8 @@ class UploadManager {
 
     private func getNext() -> Upload? {
         return uploads.first {
-            $0.liveProgress == nil && !$0.paused && $0.asset != nil && !$0.isUploaded
+            $0.liveProgress == nil && !$0.paused && $0.isReady
                 && $0.nextTry.compare(Date()) == .orderedAscending
-                && $0.asset?.space?.uploadAllowed ?? false
         }
     }
 
@@ -376,5 +395,16 @@ class UploadManager {
         }
 
         return upload
+    }
+
+    private func getAsset(_ indexPath: IndexPath) -> Asset? {
+        var asset: Asset?
+
+        readConn?.read() { transaction in
+            asset = (transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction)?
+                .object(at: indexPath, with: self.mappings) as? Asset
+        }
+
+        return asset
     }
 }
