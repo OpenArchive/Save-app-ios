@@ -11,6 +11,8 @@ import DownloadButton
 
 protocol UploadCellDelegate {
     func progressTapped(_ upload: Upload, _ button: PKDownloadButton)
+
+    func showError(_ upload: Upload)
 }
 
 class UploadCell: BaseCell, PKDownloadButtonDelegate {
@@ -43,13 +45,16 @@ class UploadCell: BaseCell, PKDownloadButtonDelegate {
         }
     }
     
+    @IBOutlet weak var errorBt: UIButton!
     @IBOutlet weak var thumbnail: UIImageView!
     @IBOutlet weak var nameLb: UILabel!
 
     weak var upload: Upload? {
         didSet {
+            progress.isHidden = upload?.error != nil
             progress.state = upload?.state ?? .pending
             progress.stopDownloadButton.progress = CGFloat(upload?.progress ?? 0)
+            errorBt.isHidden = upload?.error == nil
             thumbnail.image = upload?.thumbnail
             nameLb.text = upload?.filename
         }
@@ -63,6 +68,12 @@ class UploadCell: BaseCell, PKDownloadButtonDelegate {
     func downloadButtonTapped(_ downloadButton: PKDownloadButton!, currentState state: PKDownloadButtonState) {
         if let upload = upload {
             delegate?.progressTapped(upload, downloadButton)
+        }
+    }
+
+    @IBAction func showError() {
+        if let upload = upload {
+            delegate?.showError(upload)
         }
     }
 }

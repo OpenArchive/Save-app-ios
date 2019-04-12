@@ -179,6 +179,20 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
         }
     }
 
+    func showError(_ upload: Upload) {
+        AlertHelper.present(
+            self, message: upload.error,
+            title: "Multiple attempts with no success".localize(),
+            actions: [
+                AlertHelper.destructiveAction("Remove".localize(), handler: { _ in
+                    Upload.remove(id: upload.id)
+                }),
+                AlertHelper.defaultAction("Retry".localize(), handler: { _ in
+                    NotificationCenter.default.post(name: .uploadManagerUnpause, object: upload.id)
+                }),
+                AlertHelper.cancelAction()])
+    }
+
 
     // MARK: Observers
 

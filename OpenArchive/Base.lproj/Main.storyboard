@@ -237,19 +237,19 @@
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" text="Uploading" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="8" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PNO-3V-865">
-                                            <rect key="frame" x="8" y="8" width="259" height="17"/>
+                                            <rect key="frame" x="8" y="8" width="204" height="17"/>
                                             <fontDescription key="fontDescription" type="boldSystem" pointSize="14"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" text="0 of 2 items uploaded" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LqD-hD-tvG">
-                                            <rect key="frame" x="8" y="27.5" width="259" height="14.5"/>
+                                            <rect key="frame" x="8" y="27.5" width="204" height="14.5"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gDn-sm-fFy">
-                                            <rect key="frame" x="275" y="8" width="60" height="30"/>
+                                            <rect key="frame" x="220" y="8" width="60" height="30"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="60" id="Arb-3M-mod"/>
                                             </constraints>
@@ -468,15 +468,15 @@
             <objects>
                 <tableViewController id="sLd-mD-wXL" customClass="ManagementViewController" customModule="OpenArchive" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="CwK-VJ-1ys">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="uploadCell" id="pBx-SL-j5G" customClass="UploadCell" customModule="OpenArchive" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="44"/>
+                                <rect key="frame" x="0.0" y="28" width="320" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pBx-SL-j5G" id="iMX-Oo-sxn">
-                                    <rect key="frame" x="0.0" y="0.0" width="375" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FlS-G5-rgz" customClass="PKDownloadButton">
@@ -489,6 +489,16 @@
                                                 <outlet property="delegate" destination="pBx-SL-j5G" id="7yV-Mg-WhL"/>
                                             </connections>
                                         </view>
+                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XXm-v8-OtX">
+                                            <rect key="frame" x="16" y="10" width="24" height="24"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="XXm-v8-OtX" secondAttribute="height" multiplier="1:1" id="Cmc-rg-wKQ"/>
+                                            </constraints>
+                                            <state key="normal" image="ic_error"/>
+                                            <connections>
+                                                <action selector="showError" destination="pBx-SL-j5G" eventType="touchUpInside" id="dZ5-D4-Iac"/>
+                                            </connections>
+                                        </button>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Xe9-1V-dIV">
                                             <rect key="frame" x="46" y="11" width="22" height="22"/>
                                             <constraints>
@@ -496,7 +506,7 @@
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ax2-xI-c8g">
-                                            <rect key="frame" x="76" y="13" width="283" height="18"/>
+                                            <rect key="frame" x="76" y="13" width="228" height="18"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
@@ -508,13 +518,16 @@
                                         <constraint firstItem="ax2-xI-c8g" firstAttribute="trailing" secondItem="iMX-Oo-sxn" secondAttribute="trailingMargin" id="KfT-i8-J6V"/>
                                         <constraint firstItem="Xe9-1V-dIV" firstAttribute="bottom" secondItem="iMX-Oo-sxn" secondAttribute="bottomMargin" id="Mqm-GT-s4Y"/>
                                         <constraint firstItem="FlS-G5-rgz" firstAttribute="top" secondItem="iMX-Oo-sxn" secondAttribute="topMargin" id="S4k-OC-Cgs"/>
+                                        <constraint firstItem="XXm-v8-OtX" firstAttribute="leading" secondItem="iMX-Oo-sxn" secondAttribute="leadingMargin" id="Til-fv-KnB"/>
                                         <constraint firstItem="ax2-xI-c8g" firstAttribute="centerY" secondItem="iMX-Oo-sxn" secondAttribute="centerY" id="h0Y-0D-eFK"/>
                                         <constraint firstItem="FlS-G5-rgz" firstAttribute="leading" secondItem="iMX-Oo-sxn" secondAttribute="leadingMargin" id="lvm-L6-NPg"/>
                                         <constraint firstItem="FlS-G5-rgz" firstAttribute="bottom" secondItem="iMX-Oo-sxn" secondAttribute="bottomMargin" id="nIU-vD-E6l"/>
                                         <constraint firstItem="Xe9-1V-dIV" firstAttribute="top" secondItem="iMX-Oo-sxn" secondAttribute="topMargin" id="xtg-JC-v9b"/>
+                                        <constraint firstItem="XXm-v8-OtX" firstAttribute="centerY" secondItem="iMX-Oo-sxn" secondAttribute="centerY" id="yKz-Ow-lKb"/>
                                     </constraints>
                                 </tableViewCellContentView>
                                 <connections>
+                                    <outlet property="errorBt" destination="XXm-v8-OtX" id="K5a-q4-qsq"/>
                                     <outlet property="nameLb" destination="ax2-xI-c8g" id="smh-K3-P2T"/>
                                     <outlet property="progress" destination="FlS-G5-rgz" id="CnM-xr-TeV"/>
                                     <outlet property="thumbnail" destination="Xe9-1V-dIV" id="dGW-h2-NEI"/>
@@ -773,6 +786,7 @@
     <resources>
         <image name="ic_cancel" width="12" height="12"/>
         <image name="ic_edit" width="13" height="13"/>
+        <image name="ic_error" width="24" height="24"/>
         <image name="ic_flag" width="12" height="13"/>
         <image name="ic_location" width="12" height="16"/>
         <image name="ic_plus" width="11" height="11"/>
@@ -781,7 +795,7 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="aBM-nf-RSW"/>
-        <segue reference="UyH-Ug-Ubg"/>
+        <segue reference="oOr-Wp-7YS"/>
         <segue reference="Rwx-7w-lhD"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.70398116438356162" blue="0.64921339897260277" alpha="1" colorSpace="calibratedRGB"/>
