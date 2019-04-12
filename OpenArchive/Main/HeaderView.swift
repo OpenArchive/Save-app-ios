@@ -9,8 +9,6 @@
 import UIKit
 
 protocol HeaderViewDelegate: class {
-    func showUploadManager()
-
     func showDetails(_ collection: Collection)
 }
 
@@ -54,9 +52,7 @@ class HeaderView: UICollectionReusableView {
                     ? "% of % item uploaded".localize(values: Formatters.format(uploaded), Formatters.format(total))
                     : "% of % items uploaded".localize(values: Formatters.format(uploaded), Formatters.format(total))
 
-                manageBt.setImage(nil, for: .normal)
-                manageBt.setTitle("Manage".localize(), for: .normal)
-                manageBt.isHidden = false
+                manageBt.isHidden = true
             }
             else {
                 infoLb.text = "Waiting".localize().localizedUppercase
@@ -67,18 +63,13 @@ class HeaderView: UICollectionReusableView {
                     ? "% item ready to upload".localize(value: Formatters.format(waiting))
                     : "% items ready to upload".localize(value: Formatters.format(waiting))
 
-                manageBt.setImage(nil, for: .normal)
-                manageBt.setTitle("Upload".localize(), for: .normal)
                 manageBt.isHidden = false
             }
         }
     }
     
     @IBAction func manage() {
-        if collection?.closed != nil {
-            delegate?.showUploadManager()
-        }
-        else if let collection = collection {
+        if let collection = collection {
             delegate?.showDetails(collection)
         }
         else {

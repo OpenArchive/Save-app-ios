@@ -21,27 +21,31 @@ class UploadCell: BaseCell, PKDownloadButtonDelegate {
         return "uploadCell"
     }
 
+    class func style(_ button: PKDownloadButton) {
+        let icon = UIImage(named: "ic_up")
+
+        button.startDownloadButton.setTitle(nil, for: .normal)
+        button.startDownloadButton.setAttributedTitle(nil, for: .normal)
+        button.startDownloadButton.setImage(icon?.withRenderingMode(.alwaysTemplate), for: .normal)
+        button.startDownloadButton.setBackgroundImage(
+            UIImage.buttonBackground(with: UIColor.accent)?
+                .resizableImage(withCapInsets: UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)),
+            for: .normal)
+        button.startDownloadButton.setTitle(nil, for: .highlighted)
+        button.startDownloadButton.setAttributedTitle(nil, for: .highlighted)
+        button.startDownloadButton.setImage(icon, for: .highlighted)
+        button.startDownloadButton.setBackgroundImage(
+            UIImage.highlitedButtonBackground(with: UIColor.accent),
+            for: .highlighted)
+
+        button.stopDownloadButton.stopButton.setImage(
+            UIImage.stop(ofSize: button.stopDownloadButton.stopButtonWidth, color: UIColor.accent),
+            for: .normal)
+    }
+
     @IBOutlet weak var progress: PKDownloadButton! {
         didSet {
-            let icon = UIImage(named: "ic_up")
-
-            progress.startDownloadButton.setTitle(nil, for: .normal)
-            progress.startDownloadButton.setAttributedTitle(nil, for: .normal)
-            progress.startDownloadButton.setImage(icon?.withRenderingMode(.alwaysTemplate), for: .normal)
-            progress.startDownloadButton.setBackgroundImage(
-                UIImage.buttonBackground(with: UIColor.accent)?
-                    .resizableImage(withCapInsets: UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)),
-                for: .normal)
-            progress.startDownloadButton.setTitle(nil, for: .highlighted)
-            progress.startDownloadButton.setAttributedTitle(nil, for: .highlighted)
-            progress.startDownloadButton.setImage(icon, for: .highlighted)
-            progress.startDownloadButton.setBackgroundImage(
-                UIImage.highlitedButtonBackground(with: UIColor.accent),
-                for: .highlighted)
-
-            progress.stopDownloadButton.stopButton.setImage(
-                UIImage.stop(ofSize: progress.stopDownloadButton.stopButtonWidth, color: UIColor.accent),
-                for: .normal)
+            UploadCell.style(progress)
         }
     }
     
@@ -65,7 +69,7 @@ class UploadCell: BaseCell, PKDownloadButtonDelegate {
 
     // MARK: PKDownloadButtonDelegate
 
-    func downloadButtonTapped(_ downloadButton: PKDownloadButton!, currentState state: PKDownloadButtonState) {
+    func downloadButtonTapped(_ downloadButton: PKDownloadButton, currentState state: PKDownloadButtonState) {
         if let upload = upload {
             delegate?.progressTapped(upload, downloadButton)
         }

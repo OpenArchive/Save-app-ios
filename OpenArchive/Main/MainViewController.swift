@@ -12,10 +12,12 @@ import Photos
 import YapDatabase
 import MaterialComponents.MaterialTabs
 import TLPhotoPicker
+import DownloadButton
 
 class MainViewController: UIViewController, UICollectionViewDelegate,
 UICollectionViewDataSource, UINavigationControllerDelegate,
-ProjectsTabBarDelegate, HeaderViewDelegate, TLPhotosPickerViewControllerDelegate {
+ProjectsTabBarDelegate, HeaderViewDelegate, TLPhotosPickerViewControllerDelegate,
+PKDownloadButtonDelegate {
 
     private static let segueConnectSpace = "connectSpaceSegue"
     private static let segueShowSpace = "showSpaceSegue"
@@ -25,6 +27,13 @@ ProjectsTabBarDelegate, HeaderViewDelegate, TLPhotosPickerViewControllerDelegate
 
     @IBOutlet weak var spaceFavIcon: UIImageView!
     @IBOutlet weak var spaceName: UILabel!
+    @IBOutlet weak var manageBt: PKDownloadButton! {
+        didSet {
+            UploadCell.style(manageBt)
+            manageBt.state = .startDownload
+        }
+    }
+
     @IBOutlet weak var tabBarContainer: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var addBt: MDCFloatingButton!
@@ -269,13 +278,17 @@ ProjectsTabBarDelegate, HeaderViewDelegate, TLPhotosPickerViewControllerDelegate
 
     // MARK: HeaderViewDelegate
 
-    func showUploadManager() {
-        performSegue(withIdentifier: MainViewController.segueShowManagement, sender: nil)
-    }
-
     func showDetails(_ collection: Collection) {
         performSegue(withIdentifier: MainViewController.segueShowPreview, sender: collection)
     }
+
+
+    // MARK: PKDownloadButtonDelegate
+
+    func downloadButtonTapped(_ downloadButton: PKDownloadButton, currentState state: PKDownloadButtonState) {
+        performSegue(withIdentifier: MainViewController.segueShowManagement, sender: nil)
+    }
+
 
     // MARK: Navigation
 
