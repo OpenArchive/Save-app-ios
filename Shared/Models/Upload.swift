@@ -10,7 +10,7 @@ import UIKit
 import DownloadButton
 import YapDatabase
 
-class Upload: NSObject, Item {
+class Upload: NSObject, Item, YapDatabaseRelationshipNode {
 
     // MARK: Item
 
@@ -203,6 +203,19 @@ class Upload: NSObject, Item {
             + "progress=\(progress), paused=\(paused), tries=\(tries), "
             + "lastTry=\(lastTry?.debugDescription ?? "nil"), error=\(error ?? "nil"), "
             + "assetId=\(assetId ?? "nil")]"
+    }
+
+
+    // MARK: YapDatabaseRelationshipNode
+
+    func yapDatabaseRelationshipEdges() -> [YapDatabaseRelationshipEdge]? {
+        if let assetId = assetId {
+            return [YapDatabaseRelationshipEdge(
+                name: "asset", destinationKey: assetId, collection: Asset.collection,
+                nodeDeleteRules: .deleteSourceIfDestinationDeleted)]
+        }
+
+        return nil
     }
 
 
