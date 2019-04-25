@@ -14,16 +14,8 @@ class SpaceViewController: TableWithSpacesViewController {
 
     private lazy var projectsReadConn = Db.newLongLivedReadConn()
 
-    private lazy var projectsMappings: YapDatabaseViewMappings = {
-        let mappings = YapDatabaseViewMappings(groups: ProjectsView.groups,
-                                               view: ProjectsView.name)
-
-        projectsReadConn?.read { transaction in
-            mappings.update(with: transaction)
-        }
-
-        return mappings
-    }()
+    private lazy var projectsMappings = YapDatabaseViewMappings(groups:
+        ProjectsView.groups, view: ProjectsView.name)
 
     private var projectsCount: Int {
         return Int(projectsMappings.numberOfItems(inSection: 0))
@@ -51,6 +43,8 @@ class SpaceViewController: TableWithSpacesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        projectsReadConn?.update(mappings: projectsMappings)
+
         allowAdd = true
 
         let nc = NotificationCenter.default
@@ -58,7 +52,7 @@ class SpaceViewController: TableWithSpacesViewController {
         nc.addObserver(self, selector: #selector(yapDatabaseModified),
                        name: .YapDatabaseModified, object: nil)
 
-        nc.addObserver(self, selector: #selector(yapDatabaseModifiedExternally),
+        nc.addObserver(self, selector: #selector(yapDatabaseModified),
                        name: .YapDatabaseModifiedExternally, object: nil)
     }
 
@@ -211,21 +205,29 @@ class SpaceViewController: TableWithSpacesViewController {
     // MARK: Observers
 
     /**
-     Callback for `YapDatabaseModified` notification.
+     Callback for `YapDatabaseModified` and `YapDatabaseModifiedExternally` notifications.
 
-     Will be called, when something inside the process changed the database.
+     Shall be called, when something changes the database.
      */
     @objc override func yapDatabaseModified(notification: Notification) {
         super.yapDatabaseModified(notification: notification)
 
+        guard let notifications = projectsReadConn?.beginLongLivedReadTransaction(),
+            let viewConn = projectsReadConn?.ext(ProjectsView.name) as? YapDatabaseViewConnection else {
+                return
+        }
+
+        if !viewConn.hasChanges(for: notifications) {
+            projectsReadConn?.update(mappings: projectsMappings)
+
+            return
+        }
+
         var sectionChanges = NSArray()
         var changes = NSArray()
 
-        (projectsReadConn?.ext(ProjectsView.name) as? YapDatabaseViewConnection)?
-            .getSectionChanges(&sectionChanges,
-                               rowChanges: &changes,
-                               for: projectsReadConn?.beginLongLivedReadTransaction() ?? [],
-                               with: projectsMappings)
+        viewConn.getSectionChanges(&sectionChanges, rowChanges: &changes,
+                                   for: notifications, with: projectsMappings)
 
         if let changes = changes as? [YapDatabaseViewRowChange],
             changes.count > 0 {
@@ -257,24 +259,6 @@ class SpaceViewController: TableWithSpacesViewController {
 
             tableView.endUpdates()
         }
-    }
-
-    /**
-     Callback for `YapDatabaseModifiedExternally` notification.
-
-     Will be called, when something outside the process (e.g. in the share extension) changed
-     the database.
-     */
-    @objc override func yapDatabaseModifiedExternally(notification: Notification) {
-        super.yapDatabaseModifiedExternally(notification: notification)
-
-        projectsReadConn?.beginLongLivedReadTransaction()
-
-        projectsReadConn?.read { transaction in
-            self.projectsMappings.update(with: transaction)
-        }
-
-        tableView.reloadData()
     }
 
 

@@ -16,16 +16,8 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
 
     private lazy var readConn = Db.newLongLivedReadConn()
 
-    private lazy var mappings: YapDatabaseViewMappings = {
-        let mappings = YapDatabaseViewMappings(groups: UploadsView.groups,
-                                               view: UploadsView.name)
-
-        readConn?.read { transaction in
-            mappings.update(with: transaction)
-        }
-
-        return mappings
-    }()
+    private lazy var mappings = YapDatabaseViewMappings(
+        groups: UploadsView.groups, view: UploadsView.name)
 
     private var count: Int {
         return Int(mappings.numberOfItems(inSection: 0))
@@ -66,6 +58,8 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        readConn?.update(mappings: mappings)
+
         updateTitle()
         setButton()
 
@@ -74,7 +68,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
         nc.addObserver(self, selector: #selector(yapDatabaseModified),
                        name: .YapDatabaseModified, object: nil)
 
-        nc.addObserver(self, selector: #selector(yapDatabaseModifiedExternally),
+        nc.addObserver(self, selector: #selector(yapDatabaseModified),
                        name: .YapDatabaseModifiedExternally, object: nil)
     }
 
@@ -197,18 +191,26 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
     // MARK: Observers
 
     /**
-     Callback for `YapDatabaseModified` notification.
+     Callback for `YapDatabaseModified` and `YapDatabaseModifiedExternally` notifications.
 
-     Will be called, when something inside the process changed the database.
+     Will be called, when something changed the database.
      */
     @objc func yapDatabaseModified(notification: Notification) {
+        guard let notifications = readConn?.beginLongLivedReadTransaction(),
+            let viewConn = readConn?.ext(UploadsView.name) as? YapDatabaseViewConnection else {
+                return
+        }
+
+        if !viewConn.hasChanges(for: notifications) {
+            readConn?.update(mappings: mappings)
+
+            return
+        }
+
         var changes = NSArray()
 
-        (readConn?.ext(UploadsView.name) as? YapDatabaseViewConnection)?
-            .getSectionChanges(nil,
-                               rowChanges: &changes,
-                               for: readConn?.beginLongLivedReadTransaction() ?? [],
-                               with: mappings)
+        viewConn.getSectionChanges(nil, rowChanges: &changes,
+                                   for: notifications, with: mappings)
 
         if let changes = changes as? [YapDatabaseViewRowChange],
             changes.count > 0 {
@@ -249,22 +251,6 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
             updateTitle()
             setButton()
         }
-    }
-
-    /**
-     Callback for `YapDatabaseModifiedExternally` notification.
-
-     Will be called, when something outside the process (e.g. in the share extension) changed
-     the database.
-     */
-    @objc func yapDatabaseModifiedExternally(notification: Notification) {
-        readConn?.beginLongLivedReadTransaction()
-
-        readConn?.read { transaction in
-            self.mappings.update(with: transaction)
-        }
-
-        tableView.reloadData()
     }
 
 

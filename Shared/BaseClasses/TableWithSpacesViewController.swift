@@ -15,16 +15,8 @@ class TableWithSpacesViewController: BaseTableViewController, UICollectionViewDe
 
     private lazy var spacesReadConn = Db.newLongLivedReadConn()
 
-    private lazy var spacesMappings: YapDatabaseViewMappings = {
-        let mappings = YapDatabaseViewMappings(groups: SpacesView.groups,
-                                               view: SpacesView.name)
-
-        spacesReadConn?.read { transaction in
-            mappings.update(with: transaction)
-        }
-
-        return mappings
-    }()
+    private lazy var spacesMappings = YapDatabaseViewMappings(
+        groups: SpacesView.groups, view: SpacesView.name)
 
     private var spacesCount: Int {
         return Int(spacesMappings.numberOfItems(inSection: 0))
@@ -34,6 +26,8 @@ class TableWithSpacesViewController: BaseTableViewController, UICollectionViewDe
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        spacesReadConn?.update(mappings: spacesMappings)
 
         tableView.register(SpacesListCell.nib, forCellReuseIdentifier: SpacesListCell.reuseId)
         tableView.register(SelectedSpaceCell.nib, forCellReuseIdentifier: SelectedSpaceCell.reuseId)
@@ -96,18 +90,26 @@ class TableWithSpacesViewController: BaseTableViewController, UICollectionViewDe
     // MARK: Observers
 
     /**
-     Callback for `YapDatabaseModified` notification.
+     Callback for `YapDatabaseModified` and `YapDatabaseModifiedExternally` notifications.
 
-     Will be called, when something inside the process changed the database.
+     Shall be called, when something changes the database.
      */
     @objc func yapDatabaseModified(notification: Notification) {
+        guard let notifications = spacesReadConn?.beginLongLivedReadTransaction(),
+            let viewConn = spacesReadConn?.ext(SpacesView.name) as? YapDatabaseViewConnection else {
+            return
+        }
+
+        if !viewConn.hasChanges(for: notifications) {
+            spacesReadConn?.update(mappings: spacesMappings)
+
+            return
+        }
+
         var changes = NSArray()
 
-        (spacesReadConn?.ext(SpacesView.name) as? YapDatabaseViewConnection)?
-            .getSectionChanges(nil,
-                               rowChanges: &changes,
-                               for: spacesReadConn?.beginLongLivedReadTransaction() ?? [],
-                               with: spacesMappings)
+        viewConn.getSectionChanges(nil, rowChanges: &changes,
+                                   for: notifications, with: spacesMappings)
 
         if let changes = changes as? [YapDatabaseViewRowChange],
             changes.count > 0 {
@@ -139,23 +141,7 @@ class TableWithSpacesViewController: BaseTableViewController, UICollectionViewDe
         }
     }
 
-    /**
-     Callback for `YapDatabaseModifiedExternally` notification.
-
-     Will be called, when something outside the process (e.g. in the share extension) changed
-     the database.
-     */
-    @objc func yapDatabaseModifiedExternally(notification: Notification) {
-        spacesReadConn?.beginLongLivedReadTransaction()
-
-        spacesReadConn?.read { transaction in
-            self.spacesMappings.update(with: transaction)
-        }
-
-        collectionView?.reloadData()
-    }
-
-
+    
     // MARK: Private Methods
 
     private func getSpace(_ indexPath: IndexPath) -> Space? {

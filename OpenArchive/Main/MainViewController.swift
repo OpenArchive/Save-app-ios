@@ -40,40 +40,16 @@ PKDownloadButtonDelegate {
 
     private lazy var projectsReadConn = Db.newLongLivedReadConn()
 
-    private lazy var projectsMappings: YapDatabaseViewMappings = {
-        let mappings = YapDatabaseViewMappings(groups: ActiveProjectsView.groups,
-                                               view: ActiveProjectsView.name)
-
-        projectsReadConn?.read { transaction in
-            mappings.update(with: transaction)
-        }
-
-        return mappings
-    }()
+    private lazy var projectsMappings = YapDatabaseViewMappings(
+        groups: ActiveProjectsView.groups, view: ActiveProjectsView.name)
 
     private lazy var collectionsReadConn = Db.newLongLivedReadConn()
 
-    private lazy var collectionsMappings: YapDatabaseViewMappings = {
-        let mappings = CollectionsView.createMappings()
-
-        collectionsReadConn?.read { transaction in
-            mappings.update(with: transaction)
-        }
-
-        return mappings
-    }()
+    private lazy var collectionsMappings = CollectionsView.createMappings()
 
     private lazy var assetsReadConn = Db.newLongLivedReadConn()
 
-    private lazy var assetsMappings: YapDatabaseViewMappings = {
-        let mappings = AssetsByCollectionFilteredView.createMappings()
-
-        assetsReadConn?.read() { transaction in
-            mappings.update(with: transaction)
-        }
-
-        return mappings
-    }()
+    private lazy var assetsMappings = AssetsByCollectionFilteredView.createMappings()
 
 
     private lazy var tabBar: ProjectsTabBar = {
@@ -103,6 +79,10 @@ PKDownloadButtonDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        projectsReadConn?.update(mappings: projectsMappings)
+        collectionsReadConn?.update(mappings: collectionsMappings)
+        assetsReadConn?.update(mappings: assetsMappings)
+
         tabBar.addToSubview(tabBarContainer)
 
         let nc = NotificationCenter.default
@@ -110,7 +90,7 @@ PKDownloadButtonDelegate {
         nc.addObserver(self, selector: #selector(yapDatabaseModified),
                        name: .YapDatabaseModified, object: nil)
 
-        nc.addObserver(self, selector: #selector(yapDatabaseModifiedExternally),
+        nc.addObserver(self, selector: #selector(yapDatabaseModified),
                        name: .YapDatabaseModifiedExternally, object: nil)
     }
     
@@ -314,88 +294,107 @@ PKDownloadButtonDelegate {
      Will be called, when something inside the process changed the database.
      */
     @objc func yapDatabaseModified(notification: Notification) {
-        var rowChanges = NSArray()
+        if let notifications = projectsReadConn?.beginLongLivedReadTransaction(),
+            let viewConn = projectsReadConn?.ext(ActiveProjectsView.name) as? YapDatabaseViewConnection {
 
-        (projectsReadConn?.ext(ActiveProjectsView.name) as? YapDatabaseViewConnection)?
-            .getSectionChanges(nil,
-                               rowChanges: &rowChanges,
-                               for: projectsReadConn?.beginLongLivedReadTransaction() ?? [],
-                               with: projectsMappings)
+            if viewConn.hasChanges(for: notifications) {
+                var rowChanges = NSArray()
 
-        for change in rowChanges as? [YapDatabaseViewRowChange] ?? [] {
-            tabBar.handle(change)
+                viewConn.getSectionChanges(nil, rowChanges: &rowChanges,
+                                           for: notifications, with: projectsMappings)
+
+                for change in rowChanges as? [YapDatabaseViewRowChange] ?? [] {
+                    tabBar.handle(change)
+                }
+            }
+            else {
+                projectsReadConn?.update(mappings: projectsMappings)
+            }
         }
-
-        var collectionChanges = NSArray()
-
-        (collectionsReadConn?.ext(CollectionsView.name) as? YapDatabaseViewConnection)?
-            .getSectionChanges(nil,
-                               rowChanges: &collectionChanges,
-                               for: collectionsReadConn?.beginLongLivedReadTransaction() ?? [],
-                               with: collectionsMappings)
-
-        rowChanges = NSArray()
-        var sectionChanges = NSArray()
-
-        (assetsReadConn?.ext(AssetsByCollectionFilteredView.name) as? YapDatabaseViewConnection)?
-            .getSectionChanges(&sectionChanges,
-                               rowChanges: &rowChanges,
-                               for: assetsReadConn?.beginLongLivedReadTransaction() ?? [],
-                               with: assetsMappings)
 
         var toDelete = IndexSet()
         var toInsert = IndexSet()
         var toReload = IndexSet()
 
-        for change in sectionChanges as? [YapDatabaseViewSectionChange] ?? [] {
-            switch change.type {
-            case .delete:
-                toDelete.insert(Int(change.index))
-            case .insert:
-                toInsert.insert(Int(change.index))
-            default:
-                break
+        if let notifications = collectionsReadConn?.beginLongLivedReadTransaction(),
+            let viewConn = collectionsReadConn?.ext(CollectionsView.name) as? YapDatabaseViewConnection {
+
+            if viewConn.hasChanges(for: notifications) {
+                var collectionChanges = NSArray()
+
+                viewConn.getSectionChanges(nil, rowChanges: &collectionChanges,
+                                           for: notifications,
+                                           with: collectionsMappings)
+
+                // We need to recognize changes in `Collection` objects used in the
+                // section headers.
+                for change in collectionChanges as? [YapDatabaseViewRowChange] ?? [] {
+                    switch change.type {
+                    case .update:
+                        if let indexPath = change.indexPath,
+                            change.finalGroup == tabBar.selectedProject?.id {
+
+                            toReload.insert(indexPath.row)
+                        }
+                    default:
+                        break
+                    }
+                }
+            }
+            else {
+                collectionsReadConn?.update(mappings: collectionsMappings)
             }
         }
 
-        // We need to recognize changes in `Collection` objects used in the
-        // section headers.
-        for change in collectionChanges as? [YapDatabaseViewRowChange] ?? [] {
-            switch change.type {
-            case .update:
-                if let indexPath = change.indexPath,
-                    change.finalGroup == tabBar.selectedProject?.id {
+        if let notifications = assetsReadConn?.beginLongLivedReadTransaction(),
+            let viewConn = assetsReadConn?.ext(AssetsByCollectionFilteredView.name) as? YapDatabaseViewConnection {
 
-                    toReload.insert(indexPath.row)
+            if viewConn.hasChanges(for: notifications) {
+                var rowChanges = NSArray()
+                var sectionChanges = NSArray()
+
+                viewConn.getSectionChanges(&sectionChanges, rowChanges: &rowChanges,
+                                           for: notifications, with: assetsMappings)
+
+                for change in sectionChanges as? [YapDatabaseViewSectionChange] ?? [] {
+                    switch change.type {
+                    case .delete:
+                        toDelete.insert(Int(change.index))
+                    case .insert:
+                        toInsert.insert(Int(change.index))
+                    default:
+                        break
+                    }
                 }
-            default:
-                break
+
+                // We need to reload the complete section, so the section header
+                // gets updated, too, and the `Collection.assets` array along with it.
+                for change in rowChanges as? [YapDatabaseViewRowChange] ?? [] {
+                    switch change.type {
+                    case .delete:
+                        if let indexPath = change.indexPath {
+                            toReload.insert(indexPath.section)
+                        }
+                    case .insert:
+                        if let newIndexPath = change.newIndexPath {
+                            toReload.insert(newIndexPath.section)
+                        }
+                    case .move:
+                        if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
+                            toReload.insert(indexPath.section)
+                            toReload.insert(newIndexPath.section)
+                        }
+                    case .update:
+                        if let indexPath = change.indexPath {
+                            toReload.insert(indexPath.section)
+                        }
+                    @unknown default:
+                        break
+                    }
+                }
             }
-        }
-
-        // We need to reload the complete section, so the section header
-        // gets updated, too, and the `Collection.assets` array along with it.
-        for change in rowChanges as? [YapDatabaseViewRowChange] ?? [] {
-            switch change.type {
-            case .delete:
-                if let indexPath = change.indexPath {
-                    toReload.insert(indexPath.section)
-                }
-            case .insert:
-                if let newIndexPath = change.newIndexPath {
-                    toReload.insert(newIndexPath.section)
-                }
-            case .move:
-                if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
-                    toReload.insert(indexPath.section)
-                    toReload.insert(newIndexPath.section)
-                }
-            case .update:
-                if let indexPath = change.indexPath {
-                    toReload.insert(indexPath.section)
-                }
-            @unknown default:
-                break
+            else {
+                assetsReadConn?.update(mappings: assetsMappings)
             }
         }
 
@@ -412,35 +411,5 @@ PKDownloadButtonDelegate {
 
             collectionView.toggle(numberOfSections(in: collectionView) != 0, animated: true)
         }
-    }
-
-    /**
-     Callback for `YapDatabaseModifiedExternally` notification.
-
-     Will be called, when something outside the process (e.g. in the share extension) changed
-     the database.
-     */
-    @objc func yapDatabaseModifiedExternally(notification: Notification) {
-        projectsReadConn?.beginLongLivedReadTransaction()
-
-        projectsReadConn?.read { transaction in
-            self.projectsMappings.update(with: transaction)
-        }
-
-        tabBar.reloadInputViews()
-
-        collectionsReadConn?.beginLongLivedReadTransaction()
-
-        collectionsReadConn?.read { transaction in
-            self.collectionsMappings.update(with: transaction)
-        }
-
-        assetsReadConn?.beginLongLivedReadTransaction()
-
-        assetsReadConn?.read { transaction in
-            self.assetsMappings.update(with: transaction)
-        }
-
-        collectionView.reloadData()
     }
 }

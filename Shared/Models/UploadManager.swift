@@ -110,13 +110,21 @@ class UploadManager {
     @objc func yapDatabaseModified(notification: Notification) {
         debug("#yapDatabaseModified")
 
+        guard let notifications = readConn?.beginLongLivedReadTransaction(),
+            let viewConn = readConn?.ext(UploadsView.name) as? YapDatabaseViewConnection else {
+            return
+        }
+
+        if !viewConn.hasChanges(for: notifications) {
+            readConn?.update(mappings: mappings)
+
+            return
+        }
+
         var rowChanges = NSArray()
 
-        (readConn?.ext(UploadsView.name) as? YapDatabaseViewConnection)?
-            .getSectionChanges(nil,
-                               rowChanges: &rowChanges,
-                               for: readConn?.beginLongLivedReadTransaction() ?? [],
-                               with: mappings)
+        viewConn.getSectionChanges(nil, rowChanges: &rowChanges,
+                                   for: notifications, with: mappings)
 
         guard let changes = rowChanges as? [YapDatabaseViewRowChange] else {
             return

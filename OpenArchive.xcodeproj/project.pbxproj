@@ -135,6 +135,8 @@
 		A0E739DD20E4C85D00DB31E1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DB20E4C85D00DB31E1 /* Main.storyboard */; };
 		A0E739DF20E4C85E00DB31E1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DE20E4C85E00DB31E1 /* Assets.xcassets */; };
 		A0E739E220E4C85E00DB31E1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0E739E020E4C85E00DB31E1 /* LaunchScreen.storyboard */; };
+		A0F1364F227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */; };
+		A0F13650227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */; };
 		A0F7FDDC22491C6C006610F0 /* TintedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDB22491C6C006610F0 /* TintedButton.swift */; };
 		A0F7FDDD22491C6C006610F0 /* TintedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDB22491C6C006610F0 /* TintedButton.swift */; };
 		A0F7FDDF224936C8006610F0 /* TintedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDE224936C8006610F0 /* TintedImageView.swift */; };
@@ -276,6 +278,7 @@
 		A0E739DE20E4C85E00DB31E1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A0E739E120E4C85E00DB31E1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A0E739E320E4C85E00DB31E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YapDatabaseConnection+updateMappings.swift"; sourceTree = "<group>"; };
 		A0F5BD612136E4B500691E34 /* OpenArchive-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenArchive-Bridging-Header.h"; sourceTree = "<group>"; };
 		A0F7FDDB22491C6C006610F0 /* TintedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintedButton.swift; sourceTree = "<group>"; };
 		A0F7FDDE224936C8006610F0 /* TintedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintedImageView.swift; sourceTree = "<group>"; };
@@ -331,6 +334,7 @@
 				A070335A2119E7DF00BF1F33 /* Request+debug.swift */,
 				A0362191220DA390003C21DC /* UIColor+accent.swift */,
 				A055204F222566CE00B9645F /* UIView+animateHideShow.swift */,
+				A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -833,6 +837,7 @@
 				A0FB4DB321F8799100B46099 /* SpacesView.swift in Sources */,
 				A071290C2111DE3C007A432A /* Asset.swift in Sources */,
 				A045D1FC224D02AA008FF8C1 /* TitleCell.swift in Sources */,
+				A0F13650227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift in Sources */,
 				A08750AA2112099700BFAFE4 /* Constants.m in Sources */,
 				A05275152211A91300BDB14B /* CollectionsView.swift in Sources */,
 				A0AFCF1022300E41005E57FD /* MultilineTitle.swift in Sources */,
@@ -875,6 +880,7 @@
 				A01A7B6F2200A05C00E18DE0 /* ProjectsTabBar.swift in Sources */,
 				A08C2CE621F0B46C008ACA3E /* FormViewController.swift in Sources */,
 				A0F7FDE722494E2F006610F0 /* RemoveProjectAlert.swift in Sources */,
+				A0F1364F227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift in Sources */,
 				A0DE78B221F771A700B6B68B /* BaseProjectViewController.swift in Sources */,
 				A08C2CED21F0C634008ACA3E /* AvatarRow.swift in Sources */,
 				A00DC98A22315D4F004F07E0 /* ImageViewController.swift in Sources */,
