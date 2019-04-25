@@ -25,7 +25,7 @@ class AssetsByCollectionFilteredView: YapDatabaseFilteredView {
 
       See `AssetsByCollectionView#groupKey(for:)` for reference.
     */
-    static var mappings: YapDatabaseViewMappings {
+    class func createMappings() -> YapDatabaseViewMappings {
         return YapDatabaseViewMappings(
             groupFilterBlock: { group, transaction in
                 return true

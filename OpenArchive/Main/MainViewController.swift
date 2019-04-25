@@ -54,7 +54,7 @@ PKDownloadButtonDelegate {
     private lazy var collectionsReadConn = Db.newLongLivedReadConn()
 
     private lazy var collectionsMappings: YapDatabaseViewMappings = {
-        let mappings = CollectionsView.mappings
+        let mappings = CollectionsView.createMappings()
 
         collectionsReadConn?.read { transaction in
             mappings.update(with: transaction)
@@ -66,7 +66,7 @@ PKDownloadButtonDelegate {
     private lazy var assetsReadConn = Db.newLongLivedReadConn()
 
     private lazy var assetsMappings: YapDatabaseViewMappings = {
-        let mappings = AssetsByCollectionFilteredView.mappings
+        let mappings = AssetsByCollectionFilteredView.createMappings()
 
         assetsReadConn?.read() { transaction in
             mappings.update(with: transaction)

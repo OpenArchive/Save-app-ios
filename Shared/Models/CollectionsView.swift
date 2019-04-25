@@ -20,7 +20,7 @@ class CollectionsView: YapDatabaseAutoView {
 
     static let name = Collection.collection
 
-    static var mappings: YapDatabaseViewMappings {
+    class func createMappings() -> YapDatabaseViewMappings {
         return YapDatabaseViewMappings(
             groupFilterBlock: { group, transaction in
                 return true
