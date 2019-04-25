@@ -40,6 +40,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
+
+        // MainViewController#viewWillAppear will not be called, when the app
+        // is still running, but we need to update the selected project filter
+        // anyway, because the share extension could have reset it.
+        // Here is the only place where we know, that we're in this situation.
+        if let mainVc = (window?.rootViewController as? UINavigationController)?
+            .viewControllers.first as? MainViewController {
+
+            mainVc.updateFilter()
+        }
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {

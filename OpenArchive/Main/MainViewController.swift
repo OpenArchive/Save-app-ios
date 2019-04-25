@@ -113,6 +113,20 @@ PKDownloadButtonDelegate {
         collectionView.toggle(numberOfSections(in: collectionView) != 0, animated: animated)
     }
 
+    /**
+     Workaround for the filtered view, which potentially got reset by the share
+     extension's `Db#setup` call.
+
+     Needs to be called from `AppDelegate#applicationWillEnterForeground`.
+    */
+    func updateFilter() {
+        // Reset collection, otherwise an inconsistent changeset will be applied
+        // in #yapDatabaseModified.
+        collectionView.reloadData()
+
+        AssetsByCollectionFilteredView.updateFilter(tabBar.selectedProject?.id)
+    }
+
 
     // MARK: UICollectionViewDataSource
 
