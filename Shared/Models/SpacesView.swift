@@ -9,6 +9,7 @@
 import UIKit
 import YapDatabase
 
+@objc(SpacesView)
 class SpacesView: YapDatabaseAutoView {
 
     static let name = Space.collection

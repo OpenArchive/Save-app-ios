@@ -14,6 +14,7 @@ import YapDatabase
 
  Use `updateFilter(:)` to engage filtering.
  */
+@objc(AssetsByCollectionFilteredView)
 class AssetsByCollectionFilteredView: YapDatabaseFilteredView {
 
     static let name = "assets_by_collection_filtered"

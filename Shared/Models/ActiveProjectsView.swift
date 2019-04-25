@@ -9,6 +9,7 @@
 import UIKit
 import YapDatabase
 
+@objc(ActiveProjectsView)
 class ActiveProjectsView: YapDatabaseFilteredView {
 
     static let name = "active_projects"

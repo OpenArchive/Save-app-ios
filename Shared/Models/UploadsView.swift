@@ -12,6 +12,7 @@ import YapDatabase
 /**
  Tracks changes in all `Upload` (first section) and `Asset` (second section) objects.
  */
+@objc(UploadsView)
 class UploadsView: YapDatabaseAutoView {
 
     static let name = Upload.collection

@@ -15,6 +15,7 @@ import YapDatabase
  This is needed in order to get noticed on updates to a collection which are
  used for section headers in the `MainViewController`.
  */
+@objc(CollectionsView)
 class CollectionsView: YapDatabaseAutoView {
 
     static let name = Collection.collection

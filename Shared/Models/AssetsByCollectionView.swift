@@ -16,6 +16,7 @@ import YapDatabase
  `created` date of the `Collection` and filterable by the `projectId` the
  `Collection` belongs to.
  */
+@objc(AssetsByCollectionView)
 class AssetsByCollectionView: YapDatabaseAutoView {
 
     static let name = "assets_by_collection"

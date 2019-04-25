@@ -9,6 +9,7 @@
 import UIKit
 import YapDatabase
 
+@objc(ProjectsView)
 class ProjectsView: YapDatabaseAutoView {
 
     static let name = Project.collection
