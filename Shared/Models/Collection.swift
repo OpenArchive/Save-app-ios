@@ -129,19 +129,19 @@ class Collection: NSObject, Item, YapDatabaseRelationshipNode {
     // MARK: NSCoding
 
     required init?(coder: NSCoder) {
-        id = coder.decodeObject() as? String ?? UUID().uuidString
-        projectId = coder.decodeObject() as! String
-        created = coder.decodeObject() as? Date ?? Date()
-        closed = coder.decodeObject() as? Date
-        uploaded = coder.decodeObject() as? Date
+        id = coder.decodeObject(forKey: "id") as? String ?? UUID().uuidString
+        projectId = coder.decodeObject(forKey: "projectId") as! String
+        created = coder.decodeObject(forKey: "created") as? Date ?? Date()
+        closed = coder.decodeObject(forKey: "closed") as? Date
+        uploaded = coder.decodeObject(forKey: "uploaded") as? Date
     }
 
     func encode(with coder: NSCoder) {
-        coder.encode(id)
-        coder.encode(projectId)
-        coder.encode(created)
-        coder.encode(closed)
-        coder.encode(uploaded)
+        coder.encode(id, forKey: "id")
+        coder.encode(projectId, forKey: "projectId")
+        coder.encode(created, forKey: "created")
+        coder.encode(closed, forKey: "closed")
+        coder.encode(uploaded, forKey: "uploaded")
     }
 
 
