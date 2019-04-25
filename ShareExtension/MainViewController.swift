@@ -337,7 +337,7 @@ class MainViewController: TableWithSpacesViewController {
     /**
      Callback for `YapDatabaseModifiedExternally` notification.
 
-     Will be called, when something outside the process (e.g. in the share extension) changed
+     Will be called, when something outside the process (e.g. in the main app) changed
      the database.
      */
     @objc override func yapDatabaseModifiedExternally(notification: Notification) {
