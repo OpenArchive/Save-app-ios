@@ -395,7 +395,11 @@ class MainViewController: TableWithSpacesViewController {
      - parameter error: An optional localized error string to show to the user.
      */
     private func onCompletion(error: String? = nil) {
+        var showLonger = false
+
         if let error = error {
+            showLonger = true
+
             DispatchQueue.main.async {
                 self.hud.detailsLabel.text = error
             }
@@ -406,7 +410,11 @@ class MainViewController: TableWithSpacesViewController {
         if progress.completedUnitCount == progress.totalUnitCount {
             showNotification()
 
-            DispatchQueue.main.asyncAfter(deadline: .now() + (self.hud.label.text?.isEmpty ?? true ? 0 : 5)) {
+            showLonger = showLonger // last asset had an error
+                || !notificationsAllowed // user didn't allow notifications, so show text in HUD instead
+                || !(hud.detailsLabel.text?.isEmpty ?? true) // earlier asset had an error
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + (showLonger ? 5 : 0.5)) {
                 self.done()
             }
         }
