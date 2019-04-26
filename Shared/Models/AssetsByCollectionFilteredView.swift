@@ -37,9 +37,14 @@ class AssetsByCollectionFilteredView: YapDatabaseFilteredView {
     }
 
     override init() {
+
+        // No need to persist this, it changes way to often.
+        let options = YapDatabaseViewOptions()
+        options.isPersistent = false
+
         super.init(parentViewName: AssetsByCollectionView.name,
                    filtering: AssetsByCollectionFilteredView.getFilter(),
-                   versionTag: nil, options: nil)
+                   versionTag: nil, options: options)
     }
 
     /**
