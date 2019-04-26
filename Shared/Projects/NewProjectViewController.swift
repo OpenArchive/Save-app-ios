@@ -24,6 +24,9 @@ class NewProjectViewController: BaseProjectViewController, BrowseDelegate {
     }
 
     override func viewDidLoad() {
+        navigationItem.title = "New Project".localize()
+
+
         if isModal {
             navigationItem.leftBarButtonItem = UIBarButtonItem(
                 barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
@@ -34,22 +37,14 @@ class NewProjectViewController: BaseProjectViewController, BrowseDelegate {
 
         form
             +++ LabelRow() {
-                $0.title = "New Project".localize()
-                $0.cellStyle = .default
-            }
-            .cellUpdate { cell, row in
-                cell.textLabel?.textAlignment = .center
-                cell.textLabel?.font = UIFont.boldSystemFont(ofSize: 28)
-                cell.textLabel?.textColor = UIColor.accent
-            }
-
-            <<< LabelRow() {
                 $0.cell.textLabel?.numberOfLines = 0
                 $0.cell.textLabel?.textAlignment = .center
                 $0.title = "Curate your own project or browse for an existing one.".localize()
             }
 
-            +++ nameRow.cellUpdate() { _, row in
+            +++ nameRow.cellUpdate { cell, _ in
+                cell.textField.textAlignment = .left
+
                 self.enableDone()
             }
 

@@ -58,7 +58,9 @@ class EditProjectViewController: BaseProjectViewController {
         nameRow.value = project.name
 
         form
-            +++ nameRow.cellUpdate() { _, row in
+            +++ nameRow.cellUpdate { cell, row in
+                cell.textField.textAlignment = .left
+
                 self.project.name = row.value
                 self.navigationItem.title = self.project.name
                 self.store()
