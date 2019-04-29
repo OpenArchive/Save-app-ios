@@ -487,15 +487,15 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="uploadCell" id="pBx-SL-j5G" customClass="UploadCell" customModule="OpenArchive" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="320" height="44"/>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="uploadCell" rowHeight="64" id="pBx-SL-j5G" customClass="UploadCell" customModule="OpenArchive" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="28" width="320" height="64"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="pBx-SL-j5G" id="iMX-Oo-sxn">
-                                    <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="63.5"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FlS-G5-rgz" customClass="PKDownloadButton">
-                                            <rect key="frame" x="16" y="10" width="24" height="24"/>
+                                            <rect key="frame" x="16" y="20" width="24" height="24"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <constraints>
                                                 <constraint firstAttribute="height" constant="24" id="4kZ-hf-wLe"/>
@@ -506,7 +506,7 @@
                                             </connections>
                                         </view>
                                         <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="XXm-v8-OtX">
-                                            <rect key="frame" x="16" y="10" width="24" height="24"/>
+                                            <rect key="frame" x="16" y="20" width="24" height="24"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" constant="24" id="X2z-8Y-JM5"/>
                                                 <constraint firstAttribute="height" constant="24" id="dbm-at-Pdx"/>
@@ -517,26 +517,35 @@
                                             </connections>
                                         </button>
                                         <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Xe9-1V-dIV">
-                                            <rect key="frame" x="48" y="11" width="22" height="22"/>
+                                            <rect key="frame" x="48" y="11" width="42" height="42"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="Xe9-1V-dIV" secondAttribute="height" multiplier="1:1" id="jM7-NX-pIl"/>
                                             </constraints>
                                         </imageView>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ax2-xI-c8g">
-                                            <rect key="frame" x="78" y="13" width="226" height="18"/>
-                                            <fontDescription key="fontDescription" type="system" pointSize="15"/>
+                                            <rect key="frame" x="98" y="11" width="206" height="18"/>
+                                            <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
                                             <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12 MB" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PAz-BW-AyP">
+                                            <rect key="frame" x="98" y="37" width="206" height="14.5"/>
+                                            <fontDescription key="fontDescription" type="system" pointSize="12"/>
+                                            <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="ax2-xI-c8g" firstAttribute="leading" secondItem="PAz-BW-AyP" secondAttribute="leading" id="0Xc-b7-yam"/>
+                                        <constraint firstItem="PAz-BW-AyP" firstAttribute="top" secondItem="ax2-xI-c8g" secondAttribute="bottom" constant="8" id="2XH-PY-WbY"/>
                                         <constraint firstItem="Xe9-1V-dIV" firstAttribute="leading" secondItem="FlS-G5-rgz" secondAttribute="trailing" constant="8" id="K41-T4-1sn"/>
                                         <constraint firstItem="ax2-xI-c8g" firstAttribute="leading" secondItem="Xe9-1V-dIV" secondAttribute="trailing" constant="8" id="K5q-QB-jn9"/>
                                         <constraint firstItem="ax2-xI-c8g" firstAttribute="trailing" secondItem="iMX-Oo-sxn" secondAttribute="trailingMargin" id="KfT-i8-J6V"/>
                                         <constraint firstItem="Xe9-1V-dIV" firstAttribute="bottom" secondItem="iMX-Oo-sxn" secondAttribute="bottomMargin" id="Mqm-GT-s4Y"/>
+                                        <constraint firstItem="PAz-BW-AyP" firstAttribute="trailing" secondItem="iMX-Oo-sxn" secondAttribute="trailingMargin" id="PhD-Zv-ZWF"/>
                                         <constraint firstItem="FlS-G5-rgz" firstAttribute="centerY" secondItem="iMX-Oo-sxn" secondAttribute="centerY" id="QF6-L7-ArA"/>
                                         <constraint firstItem="XXm-v8-OtX" firstAttribute="leading" secondItem="iMX-Oo-sxn" secondAttribute="leadingMargin" id="Til-fv-KnB"/>
-                                        <constraint firstItem="ax2-xI-c8g" firstAttribute="centerY" secondItem="iMX-Oo-sxn" secondAttribute="centerY" id="h0Y-0D-eFK"/>
+                                        <constraint firstItem="ax2-xI-c8g" firstAttribute="top" secondItem="iMX-Oo-sxn" secondAttribute="topMargin" id="iBw-o1-lp1"/>
                                         <constraint firstItem="FlS-G5-rgz" firstAttribute="leading" secondItem="iMX-Oo-sxn" secondAttribute="leadingMargin" id="lvm-L6-NPg"/>
                                         <constraint firstItem="Xe9-1V-dIV" firstAttribute="top" secondItem="iMX-Oo-sxn" secondAttribute="topMargin" id="xtg-JC-v9b"/>
                                         <constraint firstItem="XXm-v8-OtX" firstAttribute="centerY" secondItem="iMX-Oo-sxn" secondAttribute="centerY" id="yKz-Ow-lKb"/>
@@ -546,6 +555,7 @@
                                     <outlet property="errorBt" destination="XXm-v8-OtX" id="K5a-q4-qsq"/>
                                     <outlet property="nameLb" destination="ax2-xI-c8g" id="smh-K3-P2T"/>
                                     <outlet property="progress" destination="FlS-G5-rgz" id="CnM-xr-TeV"/>
+                                    <outlet property="sizeLb" destination="PAz-BW-AyP" id="4jh-O4-TCO"/>
                                     <outlet property="thumbnail" destination="Xe9-1V-dIV" id="dGW-h2-NEI"/>
                                 </connections>
                             </tableViewCell>
@@ -558,7 +568,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9QC-fy-UTW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1717.5999999999999" y="886.50674662668678"/>
+            <point key="canvasLocation" x="1717.5" y="886.26760563380287"/>
         </scene>
         <!--Edit View Controller-->
         <scene sceneID="Yne-zj-yRc">

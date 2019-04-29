@@ -35,7 +35,14 @@ class Formatters: NSObject {
         return formatter
     }()
 
-    static let integer = NumberFormatter()
+    static let integer: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.usesGroupingSeparator = true
+
+        return formatter
+    }()
+
+    static let bytes = ByteCountFormatter()
 
     /**
      Formats an integer properly localized.
@@ -47,8 +54,15 @@ class Formatters: NSObject {
     /**
      Formats an integer properly localized.
      */
-    static func format(_ value: Int64) -> String {
-        return integer.string(from: NSNumber(value: value)) ?? "-1"
+    static func format(_ value: Int64?) -> String {
+        return integer.string(from: NSNumber(value: value ?? Int64.min)) ?? "-1"
+    }
+
+    /**
+     Formats an integer properly localized as a human readable byte count.
+     */
+    static func formatByteCount(_ value: UInt64?) -> String {
+        return bytes.string(fromByteCount: value == nil ? Int64.min : Int64(value!))
     }
 
     /**
