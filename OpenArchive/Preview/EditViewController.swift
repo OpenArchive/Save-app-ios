@@ -45,8 +45,8 @@ class EditViewController: BaseViewController, UITextViewDelegate,
     }
 
     private let descPlaceholder = "Who is here? Separate names with commas.".localize()
-    private let locPlaceholder = "No location".localize()
-    private let notesPlaceholder = "Notes".localize()
+    private let locPlaceholder = "Where is this location?".localize()
+    private let notesPlaceholder = "Add notes or tags here.".localize()
 
     private var originalFrame: CGRect?
 
