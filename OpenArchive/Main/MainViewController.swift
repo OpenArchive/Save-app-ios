@@ -30,13 +30,22 @@ PKDownloadButtonDelegate {
     @IBOutlet weak var manageBt: PKDownloadButton! {
         didSet {
             UploadCell.style(manageBt)
-            manageBt.state = .startDownload
+            manageBt.state = .downloading
+            manageBt.stopDownloadButton.stopButton.setImage(nil, for: .normal)
+            manageBt.stopDownloadButton.stopButton.setTitleColor(UIColor.accent, for: .normal)
+            manageBt.stopDownloadButton.stopButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 11)
+            manageBt.isHidden = true
         }
     }
 
     @IBOutlet weak var tabBarContainer: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var addBt: MDCFloatingButton!
+
+    private lazy var uploadsReadConn = Db.newLongLivedReadConn()
+
+    private lazy var uploadsMappings = YapDatabaseViewMappings(
+        groups: UploadsView.groups, view: UploadsView.name)
 
     private lazy var projectsReadConn = Db.newLongLivedReadConn()
 
@@ -79,6 +88,7 @@ PKDownloadButtonDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        uploadsReadConn?.update(mappings: uploadsMappings)
         projectsReadConn?.update(mappings: projectsMappings)
         collectionsReadConn?.update(mappings: collectionsMappings)
         assetsReadConn?.update(mappings: assetsMappings)
@@ -111,6 +121,8 @@ PKDownloadButtonDelegate {
         AssetsByCollectionFilteredView.updateFilter(tabBar.selectedProject?.id)
 
         collectionView.toggle(numberOfSections(in: collectionView) != 0, animated: animated)
+
+        updateManageBt()
     }
 
     /**
@@ -308,6 +320,16 @@ PKDownloadButtonDelegate {
      Will be called, when something inside the process changed the database.
      */
     @objc func yapDatabaseModified(notification: Notification) {
+        if let notifications = uploadsReadConn?.beginLongLivedReadTransaction(),
+            let viewConn = uploadsReadConn?.ext(UploadsView.name) as? YapDatabaseViewConnection {
+
+            uploadsReadConn?.update(mappings: uploadsMappings)
+
+            if viewConn.hasChanges(for: notifications) {
+                updateManageBt()
+            }
+        }
+
         if let notifications = projectsReadConn?.beginLongLivedReadTransaction(),
             let viewConn = projectsReadConn?.ext(ActiveProjectsView.name) as? YapDatabaseViewConnection {
 
@@ -424,6 +446,26 @@ PKDownloadButtonDelegate {
             })
 
             collectionView.toggle(numberOfSections(in: collectionView) != 0, animated: true)
+        }
+    }
+
+
+    // MARK: Private Methods
+
+    private func updateManageBt() {
+        uploadsReadConn?.asyncRead { transaction in
+            let count = (transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction)?
+                .numberOfItems(inGroup: Upload.collection) ?? 0
+
+            DispatchQueue.main.async {
+                if count > 0 {
+                    self.manageBt.stopDownloadButton.stopButton.setTitle(Formatters.format(count), for: .normal)
+                    self.manageBt.show2(animated: true)
+                }
+                else {
+                    self.manageBt.hide(animated: true)
+                }
+            }
         }
     }
 }

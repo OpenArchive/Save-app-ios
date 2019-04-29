@@ -47,15 +47,22 @@ class Formatters: NSObject {
     /**
      Formats an integer properly localized.
     */
-    static func format(_ value: Int) -> String {
-        return format(Int64(value))
+    static func format(_ value: Int?) -> String {
+        return format(value == nil ? Int64.min : Int64(value!))
+    }
+
+    /**
+     Formats an integer properly localized.
+     */
+    static func format(_ value: UInt?) -> String {
+        return format(value == nil ? Int64.min : Int64(value!))
     }
 
     /**
      Formats an integer properly localized.
      */
     static func format(_ value: Int64?) -> String {
-        return integer.string(from: NSNumber(value: value ?? Int64.min)) ?? "-1"
+        return integer.string(from: NSNumber(value: value ?? Int64.min)) ?? String(Int64.min)
     }
 
     /**
