@@ -38,6 +38,9 @@ class BackgroundUploadManager: UploadManager {
         nc.addObserver(self, selector: #selector(reachabilityChanged),
                        name: .reachabilityChanged, object: reachability)
 
+        nc.addObserver(self, selector: #selector(dataUsageChanged),
+                       name: .uploadManagerDataUsageChange, object: nil)
+
         try? reachability?.startNotifier()
 
         schedule = Timer(fireAt: Date().addingTimeInterval(1), interval: 60,

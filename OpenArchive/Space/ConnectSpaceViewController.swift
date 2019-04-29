@@ -10,18 +10,6 @@ import UIKit
 
 class ConnectSpaceViewController: BaseTableViewController, DoneDelegate {
 
-    private static let alreadyRun = "already_run"
-
-    class var firstRunDone: Bool {
-        get {
-            return UserDefaults(suiteName: Constants.suiteName)?.bool(forKey: alreadyRun)
-                ?? false
-        }
-        set {
-            UserDefaults(suiteName: Constants.suiteName)?.set(newValue, forKey: alreadyRun)
-        }
-    }
-
     var hasOneInternetArchive = false
 
     override func viewDidLoad() {
@@ -31,7 +19,7 @@ class ConnectSpaceViewController: BaseTableViewController, DoneDelegate {
         // users can see the main scene. Where they can't do anything, but
         // at least they can have a glimpse.
         // All other times they can back out with a navigation back button.
-        if !ConnectSpaceViewController.firstRunDone {
+        if !Settings.firstRunDone {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
                 title: "Skip".localize(), style: .plain, target: self,
                 action: #selector(done))
@@ -87,11 +75,11 @@ class ConnectSpaceViewController: BaseTableViewController, DoneDelegate {
     // MARK: ConnectSpaceDelegate
 
     @objc func done() {
-        if !ConnectSpaceViewController.firstRunDone {
+        if !Settings.firstRunDone {
             // We're still in the onboarding phase. Need to change root view
             // controller to main scene.
 
-            ConnectSpaceViewController.firstRunDone = true
+            Settings.firstRunDone = true
 
             (navigationController as? MainNavigationController)?.setRoot()
         }

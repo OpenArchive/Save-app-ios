@@ -17,6 +17,8 @@ extension Notification.Name {
     static let uploadManagerUnpause = Notification.Name("uploadManagerUnpause")
 
     static let uploadManagerDone = Notification.Name("uploadManagerDone")
+
+    static let uploadManagerDataUsageChange = Notification.Name("uploadManagerDataUsageChange")
 }
 
 extension AnyHashable {
@@ -56,7 +58,12 @@ class UploadManager {
 
     private var uploads = [Upload]()
 
-    var reachability = Reachability()
+    var reachability: Reachability? = {
+        var reachability = Reachability()
+        reachability?.allowsCellularConnection = !Settings.wifiOnly
+
+        return reachability
+    }()
 
     private let queue = DispatchQueue(label: "\(Bundle.main.bundleIdentifier!).\(String(describing: UploadManager.self))")
 
@@ -318,6 +325,16 @@ class UploadManager {
 
             self.singleCompletionHandler?(asset.isUploaded ? .newData : .failed)
         }
+    }
+
+    @objc func dataUsageChanged(notification: Notification) {
+        let wifiOnly = notification.object as? Bool ?? false
+
+        debug("#dataUsageChanged wifiOnly=\(wifiOnly)")
+
+        reachability?.allowsCellularConnection = !wifiOnly
+
+        reachabilityChanged(notification: Notification(name: .reachabilityChanged))
     }
 
     @objc func reachabilityChanged(notification: Notification) {

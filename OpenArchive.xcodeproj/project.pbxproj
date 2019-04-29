@@ -145,6 +145,9 @@
 		A0F7FDE822494E3E006610F0 /* RemoveProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */; };
 		A0FA93412277387D0086D276 /* Bundle+displayName.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA93402277387D0086D276 /* Bundle+displayName.swift */; };
 		A0FA93422277387D0086D276 /* Bundle+displayName.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA93402277387D0086D276 /* Bundle+displayName.swift */; };
+		A0FA93442277557D0086D276 /* DataUsageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA93432277557D0086D276 /* DataUsageViewController.swift */; };
+		A0FA9346227757100086D276 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA9345227757100086D276 /* Settings.swift */; };
+		A0FA9347227757100086D276 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA9345227757100086D276 /* Settings.swift */; };
 		A0FB4DB221F8799100B46099 /* SpacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DB121F8799100B46099 /* SpacesView.swift */; };
 		A0FB4DB321F8799100B46099 /* SpacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DB121F8799100B46099 /* SpacesView.swift */; };
 		A0FB4DB521F89FD500B46099 /* AssetsByCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DB421F89FD500B46099 /* AssetsByCollectionView.swift */; };
@@ -286,6 +289,8 @@
 		A0F7FDDE224936C8006610F0 /* TintedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintedImageView.swift; sourceTree = "<group>"; };
 		A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveProjectAlert.swift; sourceTree = "<group>"; };
 		A0FA93402277387D0086D276 /* Bundle+displayName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+displayName.swift"; sourceTree = "<group>"; };
+		A0FA93432277557D0086D276 /* DataUsageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUsageViewController.swift; sourceTree = "<group>"; };
+		A0FA9345227757100086D276 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
 		A0FB4DB121F8799100B46099 /* SpacesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacesView.swift; sourceTree = "<group>"; };
 		A0FB4DB421F89FD500B46099 /* AssetsByCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsByCollectionView.swift; sourceTree = "<group>"; };
 		A0FB4DBA21F8C9B600B46099 /* RoundedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImageView.swift; sourceTree = "<group>"; };
@@ -470,6 +475,7 @@
 				A05275132211A91300BDB14B /* CollectionsView.swift */,
 				A0FB4DB121F8799100B46099 /* SpacesView.swift */,
 				A059E646223AE9FB00ABC621 /* UploadManager.swift */,
+				A0FA9345227757100086D276 /* Settings.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -512,6 +518,7 @@
 				A08C2CE321F0A98C008ACA3E /* PrivateServerViewController.swift */,
 				A08C2CE121F09B3F008ACA3E /* InternetArchiveViewController.swift */,
 				A0E2720B224E33D000CB7113 /* EditProjectViewController.swift */,
+				A0FA93432277557D0086D276 /* DataUsageViewController.swift */,
 			);
 			path = Space;
 			sourceTree = "<group>";
@@ -824,6 +831,7 @@
 				A08C2CE721F0B5FA008ACA3E /* FormViewController.swift in Sources */,
 				A0362199220DB384003C21DC /* WebDavSpace.swift in Sources */,
 				A0F7FDE0224936C8006610F0 /* TintedImageView.swift in Sources */,
+				A0FA9347227757100086D276 /* Settings.swift in Sources */,
 				A0AC0581224CEBE3008B9249 /* SpacesListCell.swift in Sources */,
 				A07129112111E4F1007A432A /* Db.swift in Sources */,
 				A0552051222566CE00B9645F /* UIView+animateHideShow.swift in Sources */,
@@ -877,6 +885,7 @@
 				A0C7DC03224A40E5004B78FF /* ActiveProjectsView.swift in Sources */,
 				A0FB4DB221F8799100B46099 /* SpacesView.swift in Sources */,
 				A0FB4DBB21F8C9B600B46099 /* RoundedImageView.swift in Sources */,
+				A0FA9346227757100086D276 /* Settings.swift in Sources */,
 				A00A8D47220C7EDD0083F0CB /* AssetsByCollectionFilteredView.swift in Sources */,
 				A0A3D9C72226D8DB00BB5A19 /* SpaceCell.swift in Sources */,
 				A08750A92112099700BFAFE4 /* Constants.m in Sources */,
@@ -926,6 +935,7 @@
 				A0656ABA21F9BFB800070C4B /* MainNavigationController.swift in Sources */,
 				A09898082236A7B100022851 /* UploadCell.swift in Sources */,
 				A0FB4DC021F8EBDD00B46099 /* ImageCell.swift in Sources */,
+				A0FA93442277557D0086D276 /* DataUsageViewController.swift in Sources */,
 				A0362192220DA390003C21DC /* UIColor+accent.swift in Sources */,
 				A0E1A68721EE834D00E4F6B7 /* BaseCell.swift in Sources */,
 				A0F7FDDC22491C6C006610F0 /* TintedButton.swift in Sources */,
