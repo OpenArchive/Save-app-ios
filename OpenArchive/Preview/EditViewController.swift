@@ -22,7 +22,6 @@ class EditViewController: BaseViewController, UITextViewDelegate,
         case notes
     }
 
-    @IBOutlet weak var closeBt: UIButton!
     @IBOutlet weak var tagBt: UIButton!
     @IBOutlet weak var locationBt: UIButton!
     @IBOutlet weak var notesBt: UIButton!
@@ -54,6 +53,8 @@ class EditViewController: BaseViewController, UITextViewDelegate,
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationItem.titleView = MultilineTitle()
+
         hideKeyboardOnOutsideTap()
 
         let pageVc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
@@ -76,6 +77,12 @@ class EditViewController: BaseViewController, UITextViewDelegate,
         pageVc.setViewControllers(vcs, direction: .forward, animated: false)
 
         refresh()
+    }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.setNavigationBarHidden(false, animated: animated)
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -291,6 +298,10 @@ class EditViewController: BaseViewController, UITextViewDelegate,
         if !allowEdit {
             dismissKeyboard()
         }
+
+        let title = navigationItem.titleView as? MultilineTitle
+        title?.title.text = asset?.filename
+        title?.subtitle.text = Formatters.formatByteCount(asset?.filesize)
 
         tagBt.isSelected = !(asset?.desc?.isEmpty ?? true)
 
