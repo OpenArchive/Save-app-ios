@@ -143,6 +143,8 @@
 		A0F7FDE0224936C8006610F0 /* TintedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDE224936C8006610F0 /* TintedImageView.swift */; };
 		A0F7FDE722494E2F006610F0 /* RemoveProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */; };
 		A0F7FDE822494E3E006610F0 /* RemoveProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */; };
+		A0FA93412277387D0086D276 /* Bundle+displayName.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA93402277387D0086D276 /* Bundle+displayName.swift */; };
+		A0FA93422277387D0086D276 /* Bundle+displayName.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA93402277387D0086D276 /* Bundle+displayName.swift */; };
 		A0FB4DB221F8799100B46099 /* SpacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DB121F8799100B46099 /* SpacesView.swift */; };
 		A0FB4DB321F8799100B46099 /* SpacesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DB121F8799100B46099 /* SpacesView.swift */; };
 		A0FB4DB521F89FD500B46099 /* AssetsByCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DB421F89FD500B46099 /* AssetsByCollectionView.swift */; };
@@ -283,6 +285,7 @@
 		A0F7FDDB22491C6C006610F0 /* TintedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintedButton.swift; sourceTree = "<group>"; };
 		A0F7FDDE224936C8006610F0 /* TintedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintedImageView.swift; sourceTree = "<group>"; };
 		A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveProjectAlert.swift; sourceTree = "<group>"; };
+		A0FA93402277387D0086D276 /* Bundle+displayName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+displayName.swift"; sourceTree = "<group>"; };
 		A0FB4DB121F8799100B46099 /* SpacesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacesView.swift; sourceTree = "<group>"; };
 		A0FB4DB421F89FD500B46099 /* AssetsByCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetsByCollectionView.swift; sourceTree = "<group>"; };
 		A0FB4DBA21F8C9B600B46099 /* RoundedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImageView.swift; sourceTree = "<group>"; };
@@ -327,11 +330,12 @@
 			isa = PBXGroup;
 			children = (
 				A0A192D921F1EE88009A8CF0 /* AlertHelper.swift */,
+				A0FA93402277387D0086D276 /* Bundle+displayName.swift */,
 				A092C0EF223A8D4B003EB0AA /* DoneDelegate.swift */,
 				A004E24B20EBCF1700A1D5F5 /* Formatters.swift */,
 				A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */,
-				A0457E6620EF96FB00B8FBCB /* StringUtils.swift */,
 				A070335A2119E7DF00BF1F33 /* Request+debug.swift */,
+				A0457E6620EF96FB00B8FBCB /* StringUtils.swift */,
 				A0362191220DA390003C21DC /* UIColor+accent.swift */,
 				A055204F222566CE00B9645F /* UIView+animateHideShow.swift */,
 				A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */,
@@ -809,6 +813,7 @@
 				A08C2CE921F0B617008ACA3E /* TableHeader.swift in Sources */,
 				A0AC06B22201E5B900BD5FBA /* WorkingOverlay.swift in Sources */,
 				A0F7FDDD22491C6C006610F0 /* TintedButton.swift in Sources */,
+				A0FA93422277387D0086D276 /* Bundle+displayName.swift in Sources */,
 				A0E27201224E26A500CB7113 /* FolderCell.swift in Sources */,
 				A0FDB681225BCDEE00998B6C /* UploadManager.swift in Sources */,
 				A0AC0580224CE8C7008B9249 /* TableWithSpacesViewController.swift in Sources */,
@@ -877,6 +882,7 @@
 				A08750A92112099700BFAFE4 /* Constants.m in Sources */,
 				A0362198220DB384003C21DC /* WebDavSpace.swift in Sources */,
 				A045D201224D07C3008FF8C1 /* ButtonCell.swift in Sources */,
+				A0FA93412277387D0086D276 /* Bundle+displayName.swift in Sources */,
 				A01A7B6F2200A05C00E18DE0 /* ProjectsTabBar.swift in Sources */,
 				A08C2CE621F0B46C008ACA3E /* FormViewController.swift in Sources */,
 				A0F7FDE722494E2F006610F0 /* RemoveProjectAlert.swift in Sources */,

@@ -68,7 +68,7 @@ class SpaceViewController: TableWithSpacesViewController {
     // MARK: UITableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 3
+        return 4
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -78,7 +78,9 @@ class SpaceViewController: TableWithSpacesViewController {
         case 1:
             return projectsCount
         case 2:
-            return 3
+            return 1
+        case 3:
+            return 2
         default:
             return 0
         }
@@ -106,6 +108,7 @@ class SpaceViewController: TableWithSpacesViewController {
             }
             else if indexPath.row == 1,
                 let cell = getSelectedSpaceCell() {
+                cell.accessoryType = .disclosureIndicator
 
                 return cell
             }
@@ -115,20 +118,20 @@ class SpaceViewController: TableWithSpacesViewController {
         
         switch indexPath.section {
         case 0:
-            return cell.set("Profile".localize())
+            return cell.set("Profile".localize(), accessoryType: .disclosureIndicator)
 
         case 1:
-            return cell.set(Project.getName(getProject(indexPath)))
+            return cell.set(Project.getName(getProject(indexPath)), accessoryType: .disclosureIndicator)
 
         case 2:
-            cell.addIndicator.isHidden = true
+            return cell.set("Data Usage".localize(), accessoryType: .disclosureIndicator)
+
+        case 3:
             switch indexPath.row {
             case 0:
-                return cell.set("Data Use".localize())
-            case 1:
-                return cell.set("Privacy".localize())
+                return cell.set("About \(Bundle.main.displayName)".localize(), accessoryType: .disclosureIndicator)
             default:
-                return cell.set("About".localize())
+                return cell.set("Privacy Policy".localize(), accessoryType: .disclosureIndicator)
             }
 
         default:
@@ -144,8 +147,10 @@ class SpaceViewController: TableWithSpacesViewController {
 
         switch section {
         case 1:
-            header.label.text = "Projects".localize().localizedUppercase
+            header.label.text = "Project Settings".localize().localizedUppercase
         case 2:
+            header.label.text = "App Settings".localize().localizedUppercase
+        case 3:
             header.label.text = "Info".localize().localizedUppercase
         default:
             header.label.text = nil

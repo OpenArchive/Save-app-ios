@@ -747,7 +747,7 @@
             </objects>
             <point key="canvasLocation" x="3612" y="116"/>
         </scene>
-        <!--Settings-->
+        <!--Menu-->
         <scene sceneID="Sa8-ZH-k0c">
             <objects>
                 <tableViewController id="60Y-gn-6Z7" customClass="SpaceViewController" customModule="OpenArchive" customModuleProvider="target" sceneMemberID="viewController">
@@ -760,7 +760,7 @@
                             <outlet property="delegate" destination="60Y-gn-6Z7" id="RE6-iD-uno"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Settings" id="cRy-9F-upv"/>
+                    <navigationItem key="navigationItem" title="Menu" id="cRy-9F-upv"/>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <segue destination="6Ji-DQ-0NT" kind="show" identifier="connectSpaceSegue" id="Rwx-7w-lhD"/>
@@ -799,7 +799,7 @@
     <inferredMetricsTieBreakers>
         <segue reference="ePG-WN-AhZ"/>
         <segue reference="FnB-Jb-td1"/>
-        <segue reference="Po4-0Y-GwW"/>
+        <segue reference="Rwx-7w-lhD"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.70398116438356162" blue="0.64921339897260277" alpha="1" colorSpace="calibratedRGB"/>
 </document>

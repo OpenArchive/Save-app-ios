@@ -123,7 +123,6 @@ class MainViewController: TableWithSpacesViewController {
             let cell = getSelectedSpaceCell() {
 
             cell.selectionStyle = .none
-            cell.centered()
 
             return cell
         }

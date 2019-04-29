@@ -11,7 +11,7 @@ import UIKit
 class SelectedSpaceCell: BaseCell {
 
     override class var height: CGFloat {
-        return 163
+        return 86
     }
 
     @IBOutlet weak var favIcon: UIImageView!
@@ -24,20 +24,5 @@ class SelectedSpaceCell: BaseCell {
             serverNameLb.text = space?.prettyName
             userNameLb.text = space?.authorName ?? space?.username
         }
-    }
-
-    func centered() {
-        if let superview = favIcon.superview {
-            favIcon.constraints.forEach {
-                if $0.firstAttribute == .leading {
-                    $0.isActive = false
-                }
-            }
-
-            favIcon.centerXAnchor.constraint(equalTo: superview.centerXAnchor).isActive = true
-        }
-
-        serverNameLb.textAlignment = .center
-        userNameLb.textAlignment = .center
     }
 }
