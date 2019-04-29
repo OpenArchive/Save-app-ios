@@ -55,13 +55,13 @@ class HeaderView: UICollectionReusableView {
                 manageBt.isHidden = true
             }
             else {
-                infoLb.text = "Waiting".localize().localizedUppercase
+                infoLb.text = "Ready to upload".localize().localizedUppercase
 
                 let waiting = collection?.waitingAssetsCount ?? 0
 
                 subInfoLb.text = waiting == 1
-                    ? "% item ready to upload".localize(value: Formatters.format(waiting))
-                    : "% items ready to upload".localize(value: Formatters.format(waiting))
+                    ? "% item".localize(value: Formatters.format(waiting))
+                    : "% items".localize(value: Formatters.format(waiting))
 
                 manageBt.isHidden = false
             }
