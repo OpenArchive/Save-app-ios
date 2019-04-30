@@ -140,6 +140,9 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate, DoneDel
         Db.writeConn?.asyncReadWrite { transaction in
             var order = 0
 
+            transaction.setObject(self.collection, forKey: self.collection.id,
+                                  inCollection: Collection.collection)
+
             transaction.enumerateKeysAndObjects(inCollection: Upload.collection) { key, object, stop in
                 if let upload = object as? Upload, upload.order >= order {
                     order = upload.order + 1
