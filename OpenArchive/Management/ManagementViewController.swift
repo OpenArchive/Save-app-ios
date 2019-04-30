@@ -26,15 +26,15 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
     /**
      Delete action for table list row. Deletes an upload.
      */
-    private lazy var deleteAction: UITableViewRowAction = {
+    private lazy var removeAction: UITableViewRowAction = {
         let action = UITableViewRowAction(
             style: .destructive,
-            title: "Delete".localize())
+            title: "Remove".localize())
         { (action, indexPath) in
 
-            let title = "Delete Upload".localize()
+            let title = "Remove Upload".localize()
             let upload = self.getUpload(indexPath)
-            let message = "Are you sure you want to delete \"%\"?".localize(value: upload?.filename ?? "")
+            let message = "Are you sure you want to remove \"%\"?".localize(value: upload?.filename ?? "")
             let handler: AlertHelper.ActionHandler = { _ in
                 if let id = upload?.id {
                     Upload.remove(id: id)
@@ -45,7 +45,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
                 self, message: message,
                 title: title, actions: [
                     AlertHelper.cancelAction(),
-                    AlertHelper.destructiveAction("Delete".localize(), handler: handler)
+                    AlertHelper.destructiveAction("Remove Upload".localize(), handler: handler)
                 ])
 
             self.toggleEdit()
@@ -116,7 +116,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
     }
 
     override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        return [deleteAction]
+        return [removeAction]
     }
 
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {

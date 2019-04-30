@@ -426,6 +426,22 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         return UIImage(named: "NoImage")
     }
 
+    /**
+     Asynchronously deletes this asset from the database.
+
+     - parameter callback: Optional callback is called asynchronously on main queue after removal.
+    */
+    func remove(_ callback: (() -> Void)? = nil) {
+        Db.writeConn?.asyncReadWrite { transaction in
+            transaction.removeObject(forKey: self.id, inCollection: Asset.collection)
+
+            if let callback = callback {
+                DispatchQueue.main.async(execute: callback)
+            }
+        }
+    }
+
+
     // MARK: Class methods
 
     /**

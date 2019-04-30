@@ -143,7 +143,7 @@ class AssetFactory {
                                         store(asset)
 
                                     case .failed, .cancelled:
-                                        remove(asset)
+                                        asset.remove()
 
                                     @unknown default:
                                         break
@@ -290,17 +290,6 @@ class AssetFactory {
             DispatchQueue.main.async {
                 resultHandler?(asset)
             }
-        }
-    }
-
-    /**
-     Remove an asset from the database.
-
-     - parameter asset: The asset to remove.
-    */
-    private class func remove(_ asset: Asset) {
-        Db.writeConn?.asyncReadWrite { transaction in
-            transaction.removeObject(forKey: asset.id, inCollection: Asset.collection)
         }
     }
 }

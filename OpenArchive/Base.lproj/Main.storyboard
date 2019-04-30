@@ -577,20 +577,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VtO-pQ-hh5">
-                                <rect key="frame" x="0.0" y="20" width="320" height="240"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="240"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="240" id="OL9-I9-qtU"/>
                                 </constraints>
                             </view>
                             <view alpha="0.20000000000000001" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FRw-v8-E49">
-                                <rect key="frame" x="0.0" y="20" width="320" height="48"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="48"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="8E3-Y9-mEW"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y3B-88-FGI" customClass="TintedButton" customModule="OpenArchive" customModuleProvider="target">
-                                <rect key="frame" x="160" y="36" width="24" height="24"/>
+                                <rect key="frame" x="160" y="80" width="24" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="24" id="0hP-hZ-k1O"/>
                                     <constraint firstAttribute="height" constant="24" id="8yU-SJ-tPF"/>
@@ -601,7 +601,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DzD-tW-eDu" customClass="TintedButton" customModule="OpenArchive" customModuleProvider="target">
-                                <rect key="frame" x="200" y="36" width="24" height="24"/>
+                                <rect key="frame" x="200" y="80" width="24" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="3jC-gi-fmh"/>
                                     <constraint firstAttribute="width" constant="24" id="rrB-81-CbC"/>
@@ -612,7 +612,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OhU-Sr-Gc1" customClass="TintedButton" customModule="OpenArchive" customModuleProvider="target">
-                                <rect key="frame" x="240" y="36" width="24" height="24"/>
+                                <rect key="frame" x="240" y="80" width="24" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="1hb-Jv-Ho6"/>
                                     <constraint firstAttribute="width" constant="24" id="wCd-7u-9Ea"/>
@@ -623,7 +623,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hDR-sa-zhP" customClass="TintedButton" customModule="OpenArchive" customModuleProvider="target">
-                                <rect key="frame" x="280" y="36" width="24" height="24"/>
+                                <rect key="frame" x="280" y="80" width="24" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="Lxc-EF-NXa"/>
                                     <constraint firstAttribute="width" constant="24" id="gLl-Je-qFV"/>
@@ -702,6 +702,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="XDi-4n-FXA"/>
                     </view>
+                    <navigationItem key="navigationItem" id="cSn-hs-Enw">
+                        <barButtonItem key="rightBarButtonItem" systemItem="trash" id="7vA-iF-KjI">
+                            <connections>
+                                <action selector="remove" destination="WUt-u5-nda" id="Rnk-1U-Ff7"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="container" destination="VtO-pQ-hh5" id="MmH-lb-J19"/>
                         <outlet property="descTv" destination="Lxf-bv-e0W" id="MDt-72-U2p"/>
@@ -797,7 +804,7 @@
         <image name="server" width="27" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ePG-WN-AhZ"/>
+        <segue reference="aBM-nf-RSW"/>
         <segue reference="FnB-Jb-td1"/>
         <segue reference="Rwx-7w-lhD"/>
     </inferredMetricsTieBreakers>

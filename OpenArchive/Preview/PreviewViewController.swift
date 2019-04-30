@@ -13,22 +13,16 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate, DoneDel
     var collection: Collection!
 
     /**
-     Delete action for table list row. Deletes an asset.
+     Remove action for table list row. Deletes an asset.
      */
-    private lazy var deleteAction: UITableViewRowAction = {
+    private lazy var removeAction: UITableViewRowAction = {
         let action = UITableViewRowAction(
             style: .destructive,
-            title: "Delete".localize())
+            title: "Remove".localize())
         { (action, indexPath) in
-
-            let title = "Delete Asset".localize()
             let asset = self.collection.assets[indexPath.row]
-            let message = "Are you sure you want to delete \"%\"?".localize(value: asset.filename)
-            let handler: AlertHelper.ActionHandler = { _ in
-                Db.writeConn?.asyncReadWrite() { transaction in
-                    transaction.removeObject(forKey: asset.id, inCollection: Asset.collection)
-                }
 
+            self.present(RemoveAssetAlert(asset, {
                 self.collection.assets.remove(at: indexPath.row)
 
                 self.tableView.beginUpdates()
@@ -37,16 +31,9 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate, DoneDel
 
                 // Leave, if no assets anymore.
                 if self.collection.assets.count < 1 {
-                    self.navigationController?.popViewController(animated: true)
+                    self.done()
                 }
-            }
-
-            AlertHelper.present(
-                self, message: message,
-                title: title, actions: [
-                    AlertHelper.cancelAction(),
-                    AlertHelper.destructiveAction("Delete".localize(), handler: handler)
-                ])
+            }), animated: true)
 
             self.tableView.setEditing(false, animated: true)
         }
@@ -109,7 +96,7 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate, DoneDel
     }
 
     override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        return [deleteAction]
+        return [removeAction]
     }
 
     // MARK: PreviewCellDelegate

@@ -64,6 +64,8 @@
 		A071290C2111DE3C007A432A /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D58DCD20E51517005A2F34 /* Asset.swift */; };
 		A07129102111E4F1007A432A /* Db.swift in Sources */ = {isa = PBXBuildFile; fileRef = A071290F2111E4F1007A432A /* Db.swift */; };
 		A07129112111E4F1007A432A /* Db.swift in Sources */ = {isa = PBXBuildFile; fileRef = A071290F2111E4F1007A432A /* Db.swift */; };
+		A077732A22786BF500291F5D /* RemoveAssetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A077732922786BCA00291F5D /* RemoveAssetAlert.swift */; };
+		A077732B22786BF500291F5D /* RemoveAssetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A077732922786BCA00291F5D /* RemoveAssetAlert.swift */; };
 		A08750A92112099700BFAFE4 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = A08750A82112099700BFAFE4 /* Constants.m */; };
 		A08750AA2112099700BFAFE4 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = A08750A82112099700BFAFE4 /* Constants.m */; };
 		A08C2CE221F09B3F008ACA3E /* InternetArchiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CE121F09B3F008ACA3E /* InternetArchiveViewController.swift */; };
@@ -225,6 +227,7 @@
 		A071290F2111E4F1007A432A /* Db.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Db.swift; sourceTree = "<group>"; };
 		A07129122111F4D5007A432A /* OpenArchive.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenArchive.entitlements; sourceTree = "<group>"; };
 		A07129132111F4F8007A432A /* ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExtension.entitlements; sourceTree = "<group>"; };
+		A077732922786BCA00291F5D /* RemoveAssetAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAssetAlert.swift; sourceTree = "<group>"; };
 		A08750A72112099700BFAFE4 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		A08750A82112099700BFAFE4 /* Constants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		A08750AF21120EBF00BFAFE4 /* OpenArchive-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenArchive-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -490,6 +493,7 @@
 				A0AC06B32201E94000BD5FBA /* MenuItemCell.xib */,
 				A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */,
 				A01A7B6E2200A05C00E18DE0 /* ProjectsTabBar.swift */,
+				A077732922786BCA00291F5D /* RemoveAssetAlert.swift */,
 				A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */,
 				A0FB4DBA21F8C9B600B46099 /* RoundedImageView.swift */,
 				A045D1EF224CFB96008FF8C1 /* SelectedSpaceCell.xib */,
@@ -825,6 +829,7 @@
 				A0FDB681225BCDEE00998B6C /* UploadManager.swift in Sources */,
 				A0AC0580224CE8C7008B9249 /* TableWithSpacesViewController.swift in Sources */,
 				A0C7DC04224A40E5004B78FF /* ActiveProjectsView.swift in Sources */,
+				A077732B22786BF500291F5D /* RemoveAssetAlert.swift in Sources */,
 				A00A8D48220C7EDD0083F0CB /* AssetsByCollectionFilteredView.swift in Sources */,
 				A098980B2236A9E800022851 /* UploadsView.swift in Sources */,
 				A098980E2236C23200022851 /* Upload.swift in Sources */,
@@ -907,6 +912,7 @@
 				A04526082231309D007A6F53 /* EditViewController.swift in Sources */,
 				A070335B2119E7DF00BF1F33 /* Request+debug.swift in Sources */,
 				A045D1F6224CFFB4008FF8C1 /* SelectedSpaceCell.swift in Sources */,
+				A077732A22786BF500291F5D /* RemoveAssetAlert.swift in Sources */,
 				A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */,
 				A0AC06B02201E30E00BD5FBA /* WorkingOverlay.swift in Sources */,
 				A08C2CEB21F0B71B008ACA3E /* EditProfileViewController.swift in Sources */,

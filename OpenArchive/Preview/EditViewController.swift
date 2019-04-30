@@ -287,6 +287,23 @@ class EditViewController: BaseViewController, UITextViewDelegate,
         store()
     }
 
+    @IBAction func remove() {
+        guard let asset = asset else {
+            return
+        }
+
+        self.present(RemoveAssetAlert(asset, {
+            self.collection?.assets.remove(at: self.selected!)
+
+            if self.asset == nil, let navVc = self.navigationController {
+                navVc.popToRootViewController(animated: true)
+            }
+            else {
+                self.dismiss()
+            }
+
+        }), animated: true)
+    }
 
     // MARK: Private Methods
 

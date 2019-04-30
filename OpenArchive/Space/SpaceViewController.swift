@@ -22,9 +22,9 @@ class SpaceViewController: TableWithSpacesViewController {
     }
 
     /**
-     Delete action for table list row. Deletes a space.
+     Remove action for table list row. Deletes a space.
      */
-    private lazy var deleteAction: UITableViewRowAction = {
+    private lazy var removeAction: UITableViewRowAction = {
         let action = UITableViewRowAction(
             style: .destructive,
             title: "Remove".localize())
@@ -168,7 +168,7 @@ class SpaceViewController: TableWithSpacesViewController {
     }
 
     override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        return [deleteAction]
+        return [removeAction]
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

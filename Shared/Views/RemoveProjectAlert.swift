@@ -10,7 +10,7 @@ import UIKit
 
 class RemoveProjectAlert: UIAlertController {
 
-    convenience init(_ project: Project, _ onSuccess: (() -> ())? = nil) {
+    convenience init(_ project: Project, _ onSuccess: (() -> Void)? = nil) {
         self.init(title: "Remove from App".localize(),
                    message: "Are you sure you want to remove your project \"%\"?".localize(value: project.name ?? ""),
                    preferredStyle: .alert)
@@ -20,8 +20,8 @@ class RemoveProjectAlert: UIAlertController {
             Db.writeConn?.asyncReadWrite() { transaction in
                 transaction.removeObject(forKey: project.id, inCollection: Project.collection)
 
-                DispatchQueue.main.async {
-                    onSuccess?()
+                if let onSuccess = onSuccess {
+                    DispatchQueue.main.async(execute: onSuccess)
                 }
             }
         }))
