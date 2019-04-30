@@ -23,6 +23,8 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
         return Int(mappings.numberOfItems(inSection: 0))
     }
 
+    private var isDirectEdit = false
+
     /**
      Delete action for table list row. Deletes an upload.
      */
@@ -30,25 +32,26 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
         let action = UITableViewRowAction(
             style: .destructive,
             title: "Remove".localize())
-        { (action, indexPath) in
+        { action, indexPath in
+            guard let upload = self.getUpload(indexPath) else {
+                return
+            }
 
-            let title = "Remove Upload".localize()
-            let upload = self.getUpload(indexPath)
-            let message = "Are you sure you want to remove \"%\"?".localize(value: upload?.filename ?? "")
-            let handler: AlertHelper.ActionHandler = { _ in
-                if let id = upload?.id {
-                    Upload.remove(id: id)
-                }
+            if !self.isDirectEdit {
+                Upload.remove(id: upload.id)
+
+                return
             }
 
             AlertHelper.present(
-                self, message: message,
-                title: title, actions: [
+                self, message: "Are you sure you want to remove \"%\"?".localize(value: upload.filename),
+                title: "Remove Upload".localize(),
+                actions: [
                     AlertHelper.cancelAction(),
-                    AlertHelper.destructiveAction("Remove Upload".localize(), handler: handler)
+                    AlertHelper.destructiveAction("Remove Upload".localize(), handler: { _ in
+                        Upload.remove(id: upload.id)
+                    })
                 ])
-
-            self.toggleEdit()
         }
 
         return action
@@ -113,6 +116,14 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
         cell.delegate = self
 
         return cell
+    }
+
+    override func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath) {
+        isDirectEdit = true
+    }
+
+    override func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
+        isDirectEdit = false
     }
 
     override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
@@ -277,17 +288,9 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
         navigationItem.titleView = titleView
     }
 
-    @objc private func toggleEdit() {
-        tableView.setEditing(!tableView.isEditing, animated: true)
-
-        setButton()
-    }
-
     private func setButton() {
         if count > 0 {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(
-                barButtonSystemItem: tableView.isEditing ? .done : .edit,
-                target: self, action: #selector(toggleEdit))
+            navigationItem.rightBarButtonItem = editButtonItem
         }
         else {
             navigationItem.rightBarButtonItem = nil
