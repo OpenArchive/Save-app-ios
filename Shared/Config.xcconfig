@@ -5,21 +5,22 @@
 //  Created by Benjamin Erhart on 01.08.18.
 //  Copyright © 2018 Open Archive. All rights reserved.
 //
+// Avoid accidental checkins:
+// git update-index --skip-worktree Shared/Config.xcconfig
+// git update-index --no-skip-worktree Shared/Config.xcconfig
 
-OA_APP_BUNDLE_ID = org.open-archive.OpenArchive
-OA_EXT_BUNDLE_ID = org.open-archive.OpenArchive.ShareExtension
-OA_APP_GROUP = group.org.open-archive.OpenArchive
+OA_APP_BUNDLE_ID[config=Debug] =
+OA_EXT_BUNDLE_ID[config=Debug] =
+OA_APP_GROUP[config=Debug] =
+DEVELOPMENT_TEAM[config=Debug] =
+PROVISIONING_PROFILE_SPECIFIER_MAIN[config=Debug] =
+PROVISIONING_PROFILE_SPECIFIER_SHARE_EXTENSION[config=Debug] =
 
-DEVELOPMENT_TEAM =
-
-PROVISIONING_PROFILE_MAIN_DEV =
-PROVISIONING_PROFILE_SPECIFIER_MAIN_DEV =
-PROVISIONING_PROFILE_MAIN_RELEASE =
-PROVISIONING_PROFILE_SPECIFIER_MAIN_RELEASE =
-
-PROVISIONING_PROFILE_SHARE_EXTENSION_DEV =
-PROVISIONING_PROFILE_SPECIFIER_SHARE_EXTENSION_DEV =
-PROVISIONING_PROFILE_SHARE_EXTENSION_RELEASE =
-PROVISIONING_PROFILE_SPECIFIER_SHARE_EXTENSION_RELEASE =
+OA_APP_BUNDLE_ID[config=Release] = org.open-archive.save
+OA_EXT_BUNDLE_ID[config=Release] = org.open-archive.save.ShareExtension
+OA_APP_GROUP[config=Release] = group.org.open-archive.save
+DEVELOPMENT_TEAM[config=Release] = FZP8ANTLPS
+PROVISIONING_PROFILE_SPECIFIER_MAIN[config=Release] = save Distribution
+PROVISIONING_PROFILE_SPECIFIER_SHARE_EXTENSION[config=Release] = save Share Extension Distribution
 
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) OA_APP_GROUP="$(OA_APP_GROUP)" DEVELOPMENT_TEAM="$(DEVELOPMENT_TEAM)"
