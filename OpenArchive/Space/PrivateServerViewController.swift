@@ -9,6 +9,7 @@
 import UIKit
 import Eureka
 import FavIcon
+import YapDatabase
 
 class PrivateServerViewController: BaseServerViewController {
 
@@ -60,6 +61,17 @@ class PrivateServerViewController: BaseServerViewController {
             <<< passwordRow.cellUpdate() { _, _ in
                 self.enableConnect()
             }
+
+        if space != nil {
+            form
+            +++ ButtonRow() {
+                $0.title = "Remove".localize()
+            }
+            .cellUpdate({ cell, _ in
+                cell.textLabel?.textColor = UIColor.red
+            })
+            .onCellSelection(removeSpace)
+        }
 
         form.validate()
         enableConnect()
@@ -118,5 +130,44 @@ class PrivateServerViewController: BaseServerViewController {
     private func enableConnect() {
         navigationItem.rightBarButtonItem?.isEnabled = urlRow.isValid
             && userNameRow.isValid && passwordRow.isValid
+    }
+
+    private func removeSpace(cell: ButtonCellOf<String>, row: ButtonRow) {
+        guard let space = self.space else {
+            return
+        }
+
+        AlertHelper.present(
+            self, message: "This will remove all assets stored in that space, too!".localize(),
+            title: "Remove Space".localize(),
+            actions: [
+                AlertHelper.cancelAction(),
+                AlertHelper.destructiveAction(
+                    "Remove Space".localize(),
+                    handler: { action in
+                        Db.writeConn?.asyncReadWrite { transaction in
+                            transaction.removeObject(forKey: space.id, inCollection: Space.collection)
+
+                            SelectedSpace.id = nil
+
+                            transaction.enumerateKeys(inCollection: Space.collection) { key, stop in
+                                SelectedSpace.id = key
+
+                                stop.pointee = true
+                            }
+
+                            DispatchQueue.main.async(execute: self.goToMenu)
+                        }
+                })
+            ])
+    }
+
+    private func goToMenu() {
+        if let navVc = navigationController,
+            let menuVc = navVc.viewControllers.first(where: { $0 is MenuViewController })
+            ?? navVc.viewControllers.first {
+
+            navVc.popToViewController(menuVc, animated: true)
+        }
     }
 }

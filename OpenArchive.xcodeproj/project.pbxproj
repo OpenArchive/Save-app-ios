@@ -64,6 +64,7 @@
 		A071290C2111DE3C007A432A /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D58DCD20E51517005A2F34 /* Asset.swift */; };
 		A07129102111E4F1007A432A /* Db.swift in Sources */ = {isa = PBXBuildFile; fileRef = A071290F2111E4F1007A432A /* Db.swift */; };
 		A07129112111E4F1007A432A /* Db.swift in Sources */ = {isa = PBXBuildFile; fileRef = A071290F2111E4F1007A432A /* Db.swift */; };
+		A072C4D6227C8B3C0022BC58 /* SpaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A072C4D5227C8B3C0022BC58 /* SpaceViewController.swift */; };
 		A077732A22786BF500291F5D /* RemoveAssetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A077732922786BCA00291F5D /* RemoveAssetAlert.swift */; };
 		A077732B22786BF500291F5D /* RemoveAssetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A077732922786BCA00291F5D /* RemoveAssetAlert.swift */; };
 		A08750A92112099700BFAFE4 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = A08750A82112099700BFAFE4 /* Constants.m */; };
@@ -119,7 +120,7 @@
 		A0DE78AF21F76D2200B6B68B /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78AE21F76D2200B6B68B /* Project.swift */; };
 		A0DE78B021F76D2200B6B68B /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78AE21F76D2200B6B68B /* Project.swift */; };
 		A0DE78B221F771A700B6B68B /* BaseProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78B121F771A700B6B68B /* BaseProjectViewController.swift */; };
-		A0E1A67C21EE7A5C00E4F6B7 /* SpaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A67B21EE7A5C00E4F6B7 /* SpaceViewController.swift */; };
+		A0E1A67C21EE7A5C00E4F6B7 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A67B21EE7A5C00E4F6B7 /* MenuViewController.swift */; };
 		A0E1A68121EE7BE900E4F6B7 /* MenuItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */; };
 		A0E1A68721EE834D00E4F6B7 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68621EE834D00E4F6B7 /* BaseCell.swift */; };
 		A0E1A68921EE873200E4F6B7 /* TableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68821EE873200E4F6B7 /* TableHeader.swift */; };
@@ -227,6 +228,7 @@
 		A071290F2111E4F1007A432A /* Db.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Db.swift; sourceTree = "<group>"; };
 		A07129122111F4D5007A432A /* OpenArchive.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenArchive.entitlements; sourceTree = "<group>"; };
 		A07129132111F4F8007A432A /* ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExtension.entitlements; sourceTree = "<group>"; };
+		A072C4D5227C8B3C0022BC58 /* SpaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceViewController.swift; sourceTree = "<group>"; };
 		A077732922786BCA00291F5D /* RemoveAssetAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAssetAlert.swift; sourceTree = "<group>"; };
 		A08750A72112099700BFAFE4 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		A08750A82112099700BFAFE4 /* Constants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
@@ -271,7 +273,7 @@
 		A0D58DCD20E51517005A2F34 /* Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		A0DE78AE21F76D2200B6B68B /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		A0DE78B121F771A700B6B68B /* BaseProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProjectViewController.swift; sourceTree = "<group>"; };
-		A0E1A67B21EE7A5C00E4F6B7 /* SpaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceViewController.swift; sourceTree = "<group>"; };
+		A0E1A67B21EE7A5C00E4F6B7 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemCell.swift; sourceTree = "<group>"; };
 		A0E1A68321EE831300E4F6B7 /* SelectedSpaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedSpaceCell.swift; sourceTree = "<group>"; };
 		A0E1A68621EE834D00E4F6B7 /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
@@ -496,8 +498,8 @@
 				A077732922786BCA00291F5D /* RemoveAssetAlert.swift */,
 				A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */,
 				A0FB4DBA21F8C9B600B46099 /* RoundedImageView.swift */,
-				A045D1EF224CFB96008FF8C1 /* SelectedSpaceCell.xib */,
 				A0E1A68321EE831300E4F6B7 /* SelectedSpaceCell.swift */,
+				A045D1EF224CFB96008FF8C1 /* SelectedSpaceCell.xib */,
 				A0A3D9C62226D8DB00BB5A19 /* SpaceCell.swift */,
 				A045D1E2224CF034008FF8C1 /* SpaceCell.xib */,
 				A050AA482225DF4000AE5D15 /* SpacesListCell.swift */,
@@ -516,7 +518,8 @@
 			isa = PBXGroup;
 			children = (
 				A0656AB721F9BC8500070C4B /* ConnectSpaceViewController.swift */,
-				A0E1A67B21EE7A5C00E4F6B7 /* SpaceViewController.swift */,
+				A0E1A67B21EE7A5C00E4F6B7 /* MenuViewController.swift */,
+				A072C4D5227C8B3C0022BC58 /* SpaceViewController.swift */,
 				A08C2CEA21F0B71B008ACA3E /* EditProfileViewController.swift */,
 				A050147E2228209E0056ED95 /* BaseServerViewController.swift */,
 				A08C2CE321F0A98C008ACA3E /* PrivateServerViewController.swift */,
@@ -883,7 +886,7 @@
 			files = (
 				A0E739D820E4C85D00DB31E1 /* AppDelegate.swift in Sources */,
 				A0362195220DB2CA003C21DC /* IaSpace.swift in Sources */,
-				A0E1A67C21EE7A5C00E4F6B7 /* SpaceViewController.swift in Sources */,
+				A0E1A67C21EE7A5C00E4F6B7 /* MenuViewController.swift in Sources */,
 				A004E24C20EBCF1700A1D5F5 /* Formatters.swift in Sources */,
 				A0FB4DB521F89FD500B46099 /* AssetsByCollectionView.swift in Sources */,
 				A0A192E021F23B61009A8CF0 /* Constants+Swift.swift in Sources */,
@@ -951,6 +954,7 @@
 				A0FB4DBE21F8CC2300B46099 /* MainViewController.swift in Sources */,
 				A0DE78AF21F76D2200B6B68B /* Project.swift in Sources */,
 				A0FDB683225BCE4000998B6C /* BackgroundUploadManager.swift in Sources */,
+				A072C4D6227C8B3C0022BC58 /* SpaceViewController.swift in Sources */,
 				A098980D2236C23200022851 /* Upload.swift in Sources */,
 				A0AFCF0F22300E41005E57FD /* MultilineTitle.swift in Sources */,
 				A0A192DB21F1EE88009A8CF0 /* AlertHelper.swift in Sources */,
