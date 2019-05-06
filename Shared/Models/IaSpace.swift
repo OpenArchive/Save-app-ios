@@ -28,13 +28,13 @@ class IaSpace: Space, Item {
 
     // MARK: IaSpace
 
-    private static let BASE_URL = "https://s3.us.archive.org"
+    private static let baseUrl = "https://s3.us.archive.org"
 
     static let favIcon = UIImage(named: "InternetArchiveLogo")
 
 
     init(accessKey: String? = nil, secretKey: String? = nil) {
-        super.init(name: IaSpace.defaultPrettyName, url: URL(string: IaSpace.BASE_URL), username: accessKey, password: secretKey)
+        super.init(name: IaSpace.defaultPrettyName, url: URL(string: IaSpace.baseUrl), username: accessKey, password: secretKey)
     }
 
     required init?(coder decoder: NSCoder) {
@@ -61,14 +61,18 @@ class IaSpace: Space, Item {
      Don't store the favIcon in the database. It's bundled with the app anyway.
      */
     @objc(encodeWithCoder:) override func encode(with coder: NSCoder) {
-        coder.encode(id)
-        coder.encode(name)
-        coder.encode(url)
-        coder.encode(nil)
-        coder.encode(username)
-        coder.encode(password)
+        coder.encode(id, forKey: "id")
+        coder.encode(name, forKey: "name")
+        coder.encode(url, forKey: "url")
+        coder.encode(nil, forKey: "favIcon")
+        coder.encode(username, forKey: "username")
+        coder.encode(password, forKey: "password")
+        coder.encode(authorName, forKey: "authorName")
+        coder.encode(authorRole, forKey: "authorRole")
+        coder.encode(authorOther, forKey: "authorOther")
+        coder.encode(tries, forKey: "tries")
+        coder.encode(lastTry, forKey: "lastTry")
     }
-
 
     override func upload(_ asset: Asset, uploadId: String) -> Progress {
         let progress = Progress(totalUnitCount: 100)
@@ -175,6 +179,6 @@ class IaSpace: Space, Item {
 
 //        slug = "IMG-0003-u4z6"
 
-        return URL(string: "\(IaSpace.BASE_URL)/\(slug)/\(asset.filename)")
+        return URL(string: "\(IaSpace.baseUrl)/\(slug)/\(asset.filename)")
     }
 }
