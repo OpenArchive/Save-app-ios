@@ -47,6 +47,8 @@ class MenuViewController: TableWithSpacesViewController {
 
         allowAdd = true
 
+        tableView.separatorStyle = .none
+
         let nc = NotificationCenter.default
 
         nc.addObserver(self, selector: #selector(yapDatabaseModified),

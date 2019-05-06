@@ -25,6 +25,24 @@ class BaseServerViewController: FormViewController, DoneDelegate {
         $0.add(rule: RuleRequired())
     }
 
+    let removeRow = ButtonRow() {
+        $0.title = "Remove from App".localize()
+    }
+    .cellUpdate({ cell, _ in
+        cell.textLabel?.textColor = UIColor.red
+        cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: cell.bounds.width)
+    })
+
+    override init() {
+        super.init()
+
+        removeRow.onCellSelection(removeSpace)
+    }
+
+    required init?(coder decoder: NSCoder) {
+        super.init(coder: decoder)
+    }
+
     @objc func connect() {
         SelectedSpace.space = space
 
@@ -43,6 +61,7 @@ class BaseServerViewController: FormViewController, DoneDelegate {
             self.navigationController?.pushViewController(vc, animated: true)
         }
     }
+
     
     // MARK: ConnectSpaceDelegate
 
@@ -55,5 +74,53 @@ class BaseServerViewController: FormViewController, DoneDelegate {
         // If ConnectSpaceViewController called us, let it know, that the
         // user created a space successfully.
         delegate?.done()
+    }
+
+
+    // MARK: Private Methods
+
+    /**
+     Shows an alert and removes this space from the database, if user says so.
+    */
+    private func removeSpace(cell: ButtonCellOf<String>, row: ButtonRow) {
+        guard let space = self.space else {
+            return
+        }
+
+        AlertHelper.present(
+            self, message: "This will remove the asset history for that space, too!".localize(),
+            title: "Remove Space".localize(),
+            actions: [
+                AlertHelper.cancelAction(),
+                AlertHelper.destructiveAction(
+                    "Remove Space".localize(),
+                    handler: { action in
+                        Db.writeConn?.asyncReadWrite { transaction in
+                            transaction.removeObject(forKey: space.id, inCollection: Space.collection)
+
+                            SelectedSpace.id = nil
+
+                            transaction.enumerateKeys(inCollection: Space.collection) { key, stop in
+                                SelectedSpace.id = key
+
+                                stop.pointee = true
+                            }
+
+                            DispatchQueue.main.async(execute: self.goToMenu)
+                        }
+                })
+            ])
+    }
+
+    /**
+     Pop to MenuViewController or to first view controller in navigation stack.
+    */
+    private func goToMenu() {
+        if let navVc = navigationController,
+            let menuVc = navVc.viewControllers.first(where: { $0 is MenuViewController })
+                ?? navVc.viewControllers.first {
+
+            navVc.popToViewController(menuVc, animated: true)
+        }
     }
 }

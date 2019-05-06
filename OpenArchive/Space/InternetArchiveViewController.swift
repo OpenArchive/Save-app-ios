@@ -23,7 +23,8 @@ class InternetArchiveViewController: BaseServerViewController {
 
         navigationItem.title = "Internet Archive".localize()
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "Connect".localize(), style: .done, target: self,
+            title: space != nil ? "Done".localize() : "Connect".localize(),
+            style: .done, target: self,
             action: #selector(connect))
 
         favIconRow.value = IaSpace.favIcon
@@ -32,9 +33,7 @@ class InternetArchiveViewController: BaseServerViewController {
         secretKeyRow.value = space?.password
 
         form
-            +++ Section()
-
-            <<< favIconRow
+            +++ favIconRow
 
             <<< LabelRow() {
                 $0.cell.textLabel?.numberOfLines = 0
@@ -47,6 +46,11 @@ class InternetArchiveViewController: BaseServerViewController {
             <<< userNameRow.cellUpdate(enableConnect(_:_:))
 
             <<< secretKeyRow.cellUpdate(enableConnect(_:_:))
+
+        if space != nil {
+            form
+                +++ removeRow
+        }
 
         form.validate()
         enableConnect()

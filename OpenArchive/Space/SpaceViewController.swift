@@ -9,50 +9,79 @@
 import UIKit
 import Eureka
 
-class SpaceViewController: FormViewController {
+/**
+ Shows a menu to either forward to `InternetArchiveViewController`,
+ `PrivateServerViewController` or `EditProfileViewController`.
+ */
+class SpaceViewController: BaseTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let space = SelectedSpace.space
+        tableView.register(SelectedSpaceCell.nib, forCellReuseIdentifier: SelectedSpaceCell.reuseId)
 
-        navigationItem.title = space?.prettyName
+        tableView.separatorStyle = .none
+    }
 
-        form
-            +++ AvatarRow() {
-                $0.disabled = true
-                $0.placeholderImage = SelectedSpace.defaultFavIcon
-                $0.value = space?.favIcon
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationItem.title = SelectedSpace.space?.prettyName
+
+        tableView.reloadData()
+    }
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return indexPath.row == 0 ? SelectedSpaceCell.height : MenuItemCell.height
+    }
+
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return 3
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == 0,
+            let cell = tableView.dequeueReusableCell(withIdentifier: SelectedSpaceCell.reuseId) as? SelectedSpaceCell {
+
+            cell.space = SelectedSpace.space
+
+            return cell
+        }
+
+        let cell = tableView.dequeueReusableCell(withIdentifier: MenuItemCell.reuseId, for: indexPath) as! MenuItemCell
+        cell.accessoryType = .disclosureIndicator
+        cell.label.text = indexPath.row == 1
+            ? "Login Info".localize() : "Profile".localize()
+
+        return cell
+    }
+
+    override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        return indexPath.row == 0 ? nil : indexPath
+    }
+
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let vc: UIViewController
+
+        if indexPath.row == 2 {
+            vc = EditProfileViewController()
+        }
+        else {
+            if let space = SelectedSpace.space as? IaSpace {
+                let iavc = InternetArchiveViewController()
+                iavc.space = space
+                vc = iavc
             }
-            +++ LabelRow() {
-                $0.title = "Login Info".localize()
-                $0.cell.accessoryType = .disclosureIndicator
+            else if let space = SelectedSpace.space as? WebDavSpace {
+                let psvc = PrivateServerViewController()
+                psvc.space = space
+                vc = psvc
             }
-            .onCellSelection({ _, _ in
-                let vc: UIViewController
-
-                if let space = SelectedSpace.space as? IaSpace {
-                    let iavc = InternetArchiveViewController()
-                    iavc.space = space
-                    vc = iavc
-                }
-                else if let space = SelectedSpace.space as? WebDavSpace {
-                    let psvc = PrivateServerViewController()
-                    psvc.space = space
-                    vc = psvc
-                }
-                else {
-                    return
-                }
-
-                self.navigationController?.pushViewController(vc, animated: true)
-            })
-            <<< LabelRow() {
-                $0.title = "Profile".localize()
-                $0.cell.accessoryType = .disclosureIndicator
+            else {
+                return
             }
-            .onCellSelection({ _, _ in
-                self.navigationController?.pushViewController(EditProfileViewController(), animated: true)
-            })
+        }
+
+        navigationController?.pushViewController(vc, animated: true)
     }
 }
