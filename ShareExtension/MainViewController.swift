@@ -276,10 +276,9 @@ class MainViewController: TableWithSpacesViewController {
             return
         }
 
-        var sectionChanges = NSArray()
         var changes = NSArray()
 
-        viewConn.getSectionChanges(&sectionChanges, rowChanges: &changes,
+        viewConn.getSectionChanges(nil, rowChanges: &changes,
                                    for: notifications, with: projectsMappings)
 
         if let changes = changes as? [YapDatabaseViewRowChange],
