@@ -21,13 +21,7 @@ class BackgroundUploadManager: UploadManager {
 
         progressTimer.resume()
 
-        let nc = NotificationCenter.default
-
-        nc.addObserver(self, selector: #selector(yapDatabaseModified),
-                       name: .YapDatabaseModified, object: nil)
-
-        nc.addObserver(self, selector: #selector(yapDatabaseModified),
-                       name: .YapDatabaseModifiedExternally, object: nil)
+        let nc = Db.add(observer: self, #selector(yapDatabaseModified))
 
         nc.addObserver(self, selector: #selector(pause),
                        name: .uploadManagerPause, object: nil)

@@ -62,13 +62,17 @@ class Db {
 
      - parameter observer: The class which will observe the notifications.
      - parameter selector: The method which will receive the notifications.
+     - returns: The `NotificationCenter.default`
     */
-    public class func add(observer: Any, _ selector: Selector) {
+    @discardableResult
+    public class func add(observer: Any, _ selector: Selector) -> NotificationCenter {
         let nc = NotificationCenter.default
 
         nc.addObserver(observer, selector: selector, name: .YapDatabaseModified, object: nil)
 
         nc.addObserver(observer, selector: selector, name: .YapDatabaseModifiedExternally, object: nil)
+
+        return nc
     }
 
     /**

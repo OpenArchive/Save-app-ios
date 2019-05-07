@@ -66,13 +66,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
         updateTitle()
         setButton()
 
-        let nc = NotificationCenter.default
-
-        nc.addObserver(self, selector: #selector(yapDatabaseModified),
-                       name: .YapDatabaseModified, object: nil)
-
-        nc.addObserver(self, selector: #selector(yapDatabaseModified),
-                       name: .YapDatabaseModifiedExternally, object: nil)
+        Db.add(observer: self, #selector(yapDatabaseModified))
     }
 
     override func viewWillAppear(_ animated: Bool) {

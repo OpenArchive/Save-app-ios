@@ -60,13 +60,7 @@ class MainViewController: TableWithSpacesViewController {
         tableView.register(TitleCell.self, forCellReuseIdentifier: TitleCell.reuseId)
         tableView.register(ButtonCell.self, forCellReuseIdentifier: ButtonCell.reuseId)
 
-        let nc = NotificationCenter.default
-
-        nc.addObserver(self, selector: #selector(yapDatabaseModified),
-                       name: .YapDatabaseModified, object: nil)
-
-        nc.addObserver(self, selector: #selector(yapDatabaseModified),
-                       name: .YapDatabaseModifiedExternally, object: nil)
+        Db.add(observer: self, #selector(yapDatabaseModified))
 
         // Hovering close button.
 
