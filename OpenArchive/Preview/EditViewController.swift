@@ -285,23 +285,33 @@ class EditViewController: BaseViewController, UITextViewDelegate,
             return
         }
 
-        var direction = UIPageViewController.NavigationDirection.forward
+        if sectionChanges.filter({ $0.type == .delete }).count > 0
+            || rowChanges.filter({ $0.type == .delete }).count > 0 {
 
-        if selected ?? 0 >= sc.count {
-            selected = sc.count - 1
-            direction = .reverse
-        }
+            if sc.count < 1 {
+                // If there's no assets left, leave immediately.
+                navigationController?.popViewController(animated: true)
+                return
+            }
 
-        var vcs = [ImageViewController]()
+            var direction = UIPageViewController.NavigationDirection.forward
 
-        if let vc = getImageVc(selected ?? 0) {
-            vcs.append(vc)
-        }
+            if selected ?? 0 >= sc.count {
+                selected = sc.count - 1
+                direction = .reverse
+            }
 
-        DispatchQueue.main.async {
-            self.pageVc.setViewControllers(vcs, direction: direction, animated: true)
+            var vcs = [ImageViewController]()
 
-            self.refresh()
+            if let vc = getImageVc(selected ?? 0) {
+                vcs.append(vc)
+            }
+
+            DispatchQueue.main.async {
+                self.pageVc.setViewControllers(vcs, direction: direction, animated: true)
+
+                self.refresh()
+            }
         }
     }
 
