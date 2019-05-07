@@ -12,7 +12,7 @@ class RemoveAssetAlert: UIAlertController {
 
     convenience init(_ asset: Asset, _ onSuccess: (() -> Void)? = nil) {
         self.init(title: "Remove Media".localize(),
-                   message: "This item will be removed from your project!".localize(),
+                   message: "This item will be removed from your project.".localize(),
                    preferredStyle: .alert)
 
         addAction(AlertHelper.cancelAction())
