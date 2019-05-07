@@ -30,7 +30,6 @@ class BaseServerViewController: FormViewController, DoneDelegate {
     }
     .cellUpdate({ cell, _ in
         cell.textLabel?.textColor = UIColor.red
-        cell.separatorInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: cell.bounds.width)
     })
 
     override init() {
