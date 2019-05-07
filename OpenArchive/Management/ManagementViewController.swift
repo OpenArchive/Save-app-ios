@@ -23,8 +23,6 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
         return Int(mappings.numberOfItems(inSection: 0))
     }
 
-    private var isDirectEdit = false
-
     /**
      Delete action for table list row. Deletes an upload.
      */
@@ -37,21 +35,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
                 return
             }
 
-            if !self.isDirectEdit {
-                upload.remove()
-
-                return
-            }
-
-            AlertHelper.present(
-                self, message: "Are you sure you want to remove \"%\"?".localize(value: upload.filename),
-                title: "Remove Upload".localize(),
-                actions: [
-                    AlertHelper.cancelAction(),
-                    AlertHelper.destructiveAction("Remove Upload".localize(), handler: { _ in
-                        upload.remove()
-                    })
-                ])
+            upload.remove()
         }
 
         return action
@@ -110,14 +94,6 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
         cell.delegate = self
 
         return cell
-    }
-
-    override func tableView(_ tableView: UITableView, willBeginEditingRowAt indexPath: IndexPath) {
-        isDirectEdit = true
-    }
-
-    override func tableView(_ tableView: UITableView, didEndEditingRowAt indexPath: IndexPath?) {
-        isDirectEdit = false
     }
 
     override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
@@ -231,11 +207,11 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
                 switch change.type {
                 case .delete:
                     if let indexPath = change.indexPath, indexPath.section == 0 {
-                        tableView.deleteRows(at: [indexPath], with: .automatic)
+                        tableView.deleteRows(at: [indexPath], with: .fade)
                     }
                 case .insert:
                     if let newIndexPath = change.newIndexPath, newIndexPath.section == 0 {
-                        tableView.insertRows(at: [newIndexPath], with: .automatic)
+                        tableView.insertRows(at: [newIndexPath], with: .fade)
                     }
                 case .move:
                     if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath,
