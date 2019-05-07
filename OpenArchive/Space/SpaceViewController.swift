@@ -31,9 +31,8 @@ class SpaceViewController: BaseTableViewController {
         tableView.reloadData()
     }
 
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return indexPath.row == 0 ? SelectedSpaceCell.height : MenuItemCell.height
-    }
+
+    // MARK: UITableViewDataSource
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 3
@@ -54,6 +53,13 @@ class SpaceViewController: BaseTableViewController {
             ? "Login Info".localize() : "Profile".localize()
 
         return cell
+    }
+
+
+    // MARK: UITableViewDelegate
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return indexPath.row == 0 ? SelectedSpaceCell.height : MenuItemCell.height
     }
 
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
