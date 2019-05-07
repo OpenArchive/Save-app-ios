@@ -33,14 +33,14 @@ class EditViewController: BaseViewController, UITextViewDelegate,
     
     private let sc = SelectedCollection()
 
-    var selected: Int?
+    var selected = 0
 
     var directEdit: EditViewController.DirectEdit?
 
     private var asset: Asset? {
-        return selected ?? Int.min < 0 || selected ?? Int.max >= sc.count
+        return selected < 0 || selected >= sc.count
             ? nil
-            : sc.getAsset(selected!)
+            : sc.getAsset(selected)
     }
 
     private let descPlaceholder = "Who is here? Separate names with commas.".localize()
@@ -69,14 +69,7 @@ class EditViewController: BaseViewController, UITextViewDelegate,
         container.addSubview(pageVc.view)
         pageVc.view.frame = container.bounds
         pageVc.didMove(toParent: self)
-
-        var vcs = [ImageViewController]()
-
-        if let vc = getImageVc(selected ?? 0) {
-            vcs.append(vc)
-        }
-
-        pageVc.setViewControllers(vcs, direction: .forward, animated: false)
+        pageVc.setViewControllers(getFreshImageVcList(), direction: .forward, animated: false)
 
         refresh()
 
@@ -285,32 +278,49 @@ class EditViewController: BaseViewController, UITextViewDelegate,
             return
         }
 
-        if sectionChanges.filter({ $0.type == .delete }).count > 0
-            || rowChanges.filter({ $0.type == .delete }).count > 0 {
-
-            if sc.count < 1 {
+        for change in sectionChanges {
+            switch change.type {
+            case .delete:
                 // If there's no assets left, leave immediately.
                 navigationController?.popViewController(animated: true)
                 return
+
+            default:
+                break
             }
+        }
 
-            var direction = UIPageViewController.NavigationDirection.forward
+        for change in rowChanges {
+            switch change.type {
+            case .delete:
+                if change.indexPath?.row == selected {
+                    var direction = UIPageViewController.NavigationDirection.forward
 
-            if selected ?? 0 >= sc.count {
-                selected = sc.count - 1
-                direction = .reverse
-            }
+                    if selected >= sc.count {
+                        selected = sc.count - 1
+                        direction = .reverse
+                    }
 
-            var vcs = [ImageViewController]()
+                    DispatchQueue.main.async {
+                        self.pageVc.setViewControllers(self.getFreshImageVcList(),
+                                                       direction: direction, animated: true)
 
-            if let vc = getImageVc(selected ?? 0) {
-                vcs.append(vc)
-            }
+                        self.refresh()
+                    }
+                }
 
-            DispatchQueue.main.async {
-                self.pageVc.setViewControllers(vcs, direction: direction, animated: true)
+            case .insert:
+                if change.newIndexPath?.row == selected {
+                    DispatchQueue.main.async {
+                        self.pageVc.setViewControllers(self.getFreshImageVcList(),
+                                                       direction: .forward, animated: false)
 
-                self.refresh()
+                        self.refresh()
+                    }
+                }
+
+            default:
+                break
             }
         }
     }
@@ -407,5 +417,15 @@ class EditViewController: BaseViewController, UITextViewDelegate,
         vc?.index = index
 
         return vc
+    }
+
+    private func getFreshImageVcList() -> [ImageViewController] {
+        var vcs = [ImageViewController]()
+
+        if let vc = getImageVc(selected) {
+            vcs.append(vc)
+        }
+
+        return vcs
     }
 }

@@ -255,12 +255,7 @@ PKDownloadButtonDelegate {
 
         AbcFilteredByCollectionView.updateFilter(collection.id)
 
-        if assets.count < 2 {
-            performSegue(withIdentifier: MainViewController.segueShowEdit, sender: 0)
-        }
-        else {
-            performSegue(withIdentifier: MainViewController.segueShowPreview, sender: nil)
-        }
+        performSegue(withIdentifier: MainViewController.segueShowPreview, sender: nil)
     }
 
 
