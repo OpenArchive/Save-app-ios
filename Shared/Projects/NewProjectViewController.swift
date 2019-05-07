@@ -33,7 +33,7 @@ class NewProjectViewController: BaseProjectViewController, BrowseDelegate {
         }
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .save, target: self, action: #selector(connect))
+            barButtonSystemItem: .done, target: self, action: #selector(connect))
 
         form
             +++ LabelRow() {
@@ -74,8 +74,8 @@ class NewProjectViewController: BaseProjectViewController, BrowseDelegate {
 
     func didSelect(name: String) {
         nameRow.value = name
-        nameRow.disabled = true
-        nameRow.evaluateDisabled()
+
+        connect()
     }
 
 

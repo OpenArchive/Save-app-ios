@@ -14,6 +14,7 @@ class FolderCell: BaseCell {
     @IBOutlet weak var nameLb: UILabel!
     @IBOutlet weak var modifiedLb: UILabel!
 
+    @discardableResult
     func set(folder: FileObject) -> FolderCell {
         nameLb.text = folder.name
 

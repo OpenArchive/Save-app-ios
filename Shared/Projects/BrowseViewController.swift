@@ -27,11 +27,15 @@ class BrowseViewController: BaseTableViewController {
 
     private var folders = [FileObject]()
 
+    private var selected: Int?
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         navigationItem.title = "Browse Projects".localize()
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
+        navigationItem.rightBarButtonItem?.isEnabled = false
 
         tableView.register(FolderCell.nib, forCellReuseIdentifier: FolderCell.reuseId)
 
@@ -47,7 +51,7 @@ class BrowseViewController: BaseTableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section > 0 {
-            return loading ? 0 : 1
+            return error == nil ? 0 : 1
         }
 
         return folders.count
@@ -58,21 +62,21 @@ class BrowseViewController: BaseTableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: MenuItemCell.reuseId,
                                                  for: indexPath) as! MenuItemCell
 
-            if let error = error {
-                return cell.set(error)
-            }
-
-            return cell.set("Add New".localize())
+            return cell.set(error!)
         }
 
         let cell = tableView.dequeueReusableCell(withIdentifier: FolderCell.reuseId,
                                                  for: indexPath) as! FolderCell
 
-        return cell.set(folder: folders[indexPath.row])
+        cell.set(folder: folders[indexPath.row])
+
+        cell.accessoryType = indexPath.row == selected ? .checkmark : .none
+
+        return cell
     }
 
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        if error != nil {
+        if indexPath.section > 0 || error != nil {
             return nil
         }
 
@@ -80,44 +84,16 @@ class BrowseViewController: BaseTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.section > 0 {
-            tableView.deselectRow(at: indexPath, animated: true)
+        var rows = [indexPath]
 
-            let alert = AlertHelper.build(
-                title: "Add New".localize(),
-                actions: [AlertHelper.cancelAction()])
-
-            AlertHelper.addTextField(alert, placeholder: "New Project Name".localize())
-
-            alert.addAction(AlertHelper.defaultAction() { action in
-                if let newName = alert.textFields?.first?.text?.trimmingCharacters(in: .whitespacesAndNewlines),
-                    !newName.isEmpty {
-
-                    self.beginWork {
-                        self.provider?.create(folder: newName, at: "") { error in
-                            if error != nil {
-                                self.endWork(error)
-                            }
-                            else {
-                                self.loadFolders()
-                            }
-                        }
-                    }
-                }
-                else {
-                    AlertHelper.present(self, message:
-                        "Please don't use an empty name or a name consisting only of white space!"
-                            .localize())
-                }
-            })
-
-            present(alert, animated: true)
+        if let selected = selected {
+            rows.append(IndexPath.init(row: selected, section: indexPath.section))
         }
-        else {
-            delegate?.didSelect(name: folders[indexPath.row].name)
 
-            navigationController?.popViewController(animated: true)
-        }
+        selected = indexPath.row
+        navigationItem.rightBarButtonItem?.isEnabled = true
+
+        tableView.reloadRows(at: rows, with: .none)
     }
 
 
@@ -165,5 +141,17 @@ class BrowseViewController: BaseTableViewController {
                 self.endWork(error)
             }
         }
+    }
+
+    @objc private func done() {
+        guard let selected = selected else {
+            return
+        }
+
+        // The NewProjectViewController will animate back, also.
+        // So, no animation here. Mind the execution order of the callback!
+        navigationController?.popViewController(animated: false)
+
+        delegate?.didSelect(name: folders[selected].name)
     }
 }
