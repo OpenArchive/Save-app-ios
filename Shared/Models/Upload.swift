@@ -38,41 +38,6 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
 
     // MARK: Upload
 
-    /**
-     Remove uploads identified by their IDs and reorder the others, if necessary.
-
-     - parameter ids: A list of upload IDs to remove.
-    */
-    class func remove(ids: [String]) {
-        Db.writeConn?.asyncReadWrite { transaction in
-            for id in ids {
-                transaction.removeObject(forKey: id, inCollection: collection)
-            }
-
-            // Reorder uploads.
-            (transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction)?
-                .enumerateKeysAndObjects(inGroup: UploadsView.groups[0])
-                { collection, key, object, index, stop in
-                    if let upload = object as? Upload,
-                        upload.order != index {
-
-                        upload.order = Int(index)
-
-                        transaction.setObject(upload, forKey: upload.id, inCollection: collection)
-                    }
-            }
-        }
-    }
-
-    /**
-     Remove an upload identified by its ID and reorder the others, if necessary.
-
-     - parameter id: An upload ID to remove.
-     */
-    class func remove(id: String) {
-        remove(ids: [id])
-    }
-
     var order: Int
 
     var paused = false
@@ -228,5 +193,38 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
 
     func hasProgressChanged() -> Bool {
         return _progress != liveProgress?.fractionCompleted ?? 0
+    }
+
+    /**
+     Asynchronously deletes this upload and its asset from the database
+     and reorders the other uploads, if necessary.
+
+     - parameter callback: Optional callback is called asynchronously on main queue after removal.
+     */
+    func remove(_ callback: (() -> Void)? = nil) {
+        Db.writeConn?.asyncReadWrite { transaction in
+            transaction.removeObject(forKey: self.id, inCollection: Upload.collection)
+
+            if let assetId = self.assetId {
+                transaction.removeObject(forKey: assetId, inCollection: Asset.collection)
+            }
+
+            // Reorder uploads.
+            (transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction)?
+                .enumerateKeysAndObjects(inGroup: UploadsView.groups[0])
+                { collection, key, object, index, stop in
+                    if let upload = object as? Upload,
+                        upload.order != index {
+
+                        upload.order = Int(index)
+
+                        transaction.setObject(upload, forKey: upload.id, inCollection: collection)
+                    }
+            }
+
+            if let callback = callback {
+                DispatchQueue.main.async(execute: callback)
+            }
+        }
     }
 }

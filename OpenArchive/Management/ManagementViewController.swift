@@ -38,7 +38,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
             }
 
             if !self.isDirectEdit {
-                Upload.remove(id: upload.id)
+                upload.remove()
 
                 return
             }
@@ -49,7 +49,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
                 actions: [
                     AlertHelper.cancelAction(),
                     AlertHelper.destructiveAction("Remove Upload".localize(), handler: { _ in
-                        Upload.remove(id: upload.id)
+                        upload.remove()
                     })
                 ])
         }
@@ -184,7 +184,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
             title: "Multiple attempts with no success".localize(),
             actions: [
                 AlertHelper.destructiveAction("Remove".localize(), handler: { _ in
-                    Upload.remove(id: upload.id)
+                    upload.remove()
                 }),
                 AlertHelper.defaultAction("Retry".localize(), handler: { _ in
                     NotificationCenter.default.post(name: .uploadManagerUnpause, object: upload.id)
