@@ -31,16 +31,16 @@ class EditViewController: BaseViewController, UITextViewDelegate,
     @IBOutlet weak var locationTv: UITextView!
     @IBOutlet weak var notesTv: UITextView!
     
-    var collection: Collection?
+    private let sc = SelectedCollection()
 
     var selected: Int?
 
     var directEdit: EditViewController.DirectEdit?
 
     private var asset: Asset? {
-        return selected ?? Int.min < 0 || selected ?? Int.max >= (collection?.assets.count ?? 0)
+        return selected ?? Int.min < 0 || selected ?? Int.max >= sc.count
             ? nil
-            : collection?.assets[selected!]
+            : sc.getAsset(selected!)
     }
 
     private let descPlaceholder = "Who is here? Separate names with commas.".localize()
@@ -48,6 +48,14 @@ class EditViewController: BaseViewController, UITextViewDelegate,
     private let notesPlaceholder = "Add notes or tags here.".localize()
 
     private var originalFrame: CGRect?
+
+    private lazy var pageVc: UIPageViewController = {
+        let pageVc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
+        pageVc.dataSource = self
+        pageVc.delegate = self
+
+        return pageVc
+    }()
 
 
     override func viewDidLoad() {
@@ -57,15 +65,9 @@ class EditViewController: BaseViewController, UITextViewDelegate,
 
         hideKeyboardOnOutsideTap()
 
-        let pageVc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
-        pageVc.dataSource = self
-        pageVc.delegate = self
-
         addChild(pageVc)
-
         container.addSubview(pageVc.view)
         pageVc.view.frame = container.bounds
-        
         pageVc.didMove(toParent: self)
 
         var vcs = [ImageViewController]()
@@ -77,6 +79,8 @@ class EditViewController: BaseViewController, UITextViewDelegate,
         pageVc.setViewControllers(vcs, direction: .forward, animated: false)
 
         refresh()
+
+        Db.add(observer: self, #selector(yapDatabaseModified))
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -174,6 +178,8 @@ class EditViewController: BaseViewController, UITextViewDelegate,
      Update indicator button and store changes.
      */
     func textViewDidEndEditing(_ textView: UITextView) {
+        let asset = self.asset
+
         switch textView {
         case descTv:
             asset?.desc = textView.text
@@ -241,7 +247,7 @@ class EditViewController: BaseViewController, UITextViewDelegate,
 
         let index = (viewController as? ImageViewController)?.index ?? Int.max
 
-        if index >= (collection?.assets.count ?? 0) - 1 {
+        if index >= sc.count - 1 {
             return nil
         }
 
@@ -265,6 +271,41 @@ class EditViewController: BaseViewController, UITextViewDelegate,
     }
 
 
+    // MARK: Observers
+
+    /**
+     Callback for `YapDatabaseModified` and `YapDatabaseModifiedExternally` notifications.
+
+     Will be called, when something changed the database.
+     */
+    @objc func yapDatabaseModified(notification: Notification) {
+        let (sectionChanges, rowChanges) = sc.yapDatabaseModified()
+
+        if sectionChanges.count < 1 && rowChanges.count < 1 {
+            return
+        }
+
+        var direction = UIPageViewController.NavigationDirection.forward
+
+        if selected ?? 0 >= sc.count {
+            selected = sc.count - 1
+            direction = .reverse
+        }
+
+        var vcs = [ImageViewController]()
+
+        if let vc = getImageVc(selected ?? 0) {
+            vcs.append(vc)
+        }
+
+        DispatchQueue.main.async {
+            self.pageVc.setViewControllers(vcs, direction: direction, animated: true)
+
+            self.refresh()
+        }
+    }
+
+
     // MARK: Actions
 
     @IBAction func edit(_ sender: UIButton) {
@@ -281,8 +322,12 @@ class EditViewController: BaseViewController, UITextViewDelegate,
     }
 
     @IBAction func flag() {
-        asset?.flagged = !(asset?.flagged ?? true)
-        flagBt.isSelected = asset?.flagged ?? false
+        guard let asset = asset else {
+            return
+        }
+
+        asset.flagged = !asset.flagged
+        flagBt.isSelected = asset.flagged
 
         store()
     }
@@ -292,17 +337,7 @@ class EditViewController: BaseViewController, UITextViewDelegate,
             return
         }
 
-        self.present(RemoveAssetAlert(asset, {
-            self.collection?.assets.remove(at: self.selected!)
-
-            if self.asset == nil, let navVc = self.navigationController {
-                navVc.popToRootViewController(animated: true)
-            }
-            else {
-                self.dismiss()
-            }
-
-        }), animated: true)
+        self.present(RemoveAssetAlert(asset), animated: true)
     }
 
     // MARK: Private Methods
@@ -346,17 +381,19 @@ class EditViewController: BaseViewController, UITextViewDelegate,
     }
 
     private func store() {
-        if let asset = asset {
-            Db.writeConn?.asyncReadWrite { transaction in
-                transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
-            }
+        guard let asset = asset else {
+            return
+        }
+
+        Db.writeConn?.asyncReadWrite { transaction in
+            transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
         }
     }
 
     private func getImageVc(_ index: Int) -> ImageViewController? {
         let vc = ImageViewController.initFromStoryboard()
 
-        vc?.image = collection?.assets[index].getThumbnail()
+        vc?.image = sc.getAsset(index)?.getThumbnail()
         vc?.index = index
 
         return vc

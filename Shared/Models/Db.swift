@@ -41,7 +41,8 @@ class Db {
         Upload.fixArchiverName()
 
         shared?.register(AssetsByCollectionView(), withName: AssetsByCollectionView.name)
-        shared?.register(AssetsByCollectionFilteredView(), withName: AssetsByCollectionFilteredView.name)
+        shared?.register(AbcFilteredByProjectView(), withName: AbcFilteredByProjectView.name)
+        shared?.register(AbcFilteredByCollectionView(), withName: AbcFilteredByCollectionView.name)
         shared?.register(UploadsView(), withName: UploadsView.name)
         shared?.register(ProjectsView(), withName: ProjectsView.name)
         shared?.register(ActiveProjectsView(), withName: ActiveProjectsView.name)
@@ -53,6 +54,21 @@ class Db {
 
         // Enable cross-process notifications.
         shared?.register(YapDatabaseCrossProcessNotification(), withName: "xProcNotification")
+    }
+
+    /**
+     Hook the given method to `YapDatabaseModified` and `YapDatabaseModifiedExternally`
+     notifications.
+
+     - parameter observer: The class which will observe the notifications.
+     - parameter selector: The method which will receive the notifications.
+    */
+    public class func add(observer: Any, _ selector: Selector) {
+        let nc = NotificationCenter.default
+
+        nc.addObserver(observer, selector: selector, name: .YapDatabaseModified, object: nil)
+
+        nc.addObserver(observer, selector: selector, name: .YapDatabaseModifiedExternally, object: nil)
     }
 
     /**

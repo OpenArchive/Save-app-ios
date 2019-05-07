@@ -469,7 +469,6 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <segue destination="WUt-u5-nda" kind="show" identifier="showEditSegue" id="aBM-nf-RSW"/>
-                        <segue destination="sLd-mD-wXL" kind="show" identifier="showManagmentSegue" id="oOr-Wp-7YS"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="BhU-IF-vwi" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -566,7 +565,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9QC-fy-UTW" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1717.5" y="886.26760563380287"/>
+            <point key="canvasLocation" x="619" y="912"/>
         </scene>
         <!--Edit View Controller-->
         <scene sceneID="Yne-zj-yRc">
@@ -805,7 +804,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="aBM-nf-RSW"/>
-        <segue reference="FnB-Jb-td1"/>
         <segue reference="Rwx-7w-lhD"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.70398116438356162" blue="0.64921339897260277" alpha="1" colorSpace="calibratedRGB"/>

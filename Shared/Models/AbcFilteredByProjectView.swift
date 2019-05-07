@@ -1,5 +1,5 @@
 //
-//  AssetsByCollectionFilteredView.swift
+//  AbcFilteredByProjectView.swift
 //  OpenArchive
 //
 //  Created by Benjamin Erhart on 07.02.19.
@@ -14,10 +14,10 @@ import YapDatabase
 
  Use `updateFilter(:)` to engage filtering.
  */
-@objc(AssetsByCollectionFilteredView)
-class AssetsByCollectionFilteredView: YapDatabaseFilteredView {
+@objc(AbcFilteredByProjectView)
+class AbcFilteredByProjectView: YapDatabaseFilteredView {
 
-    static let name = "assets_by_collection_filtered"
+    static let name = "assets_by_collection_filtered_by_project"
 
     /**
      A mapping which reverse sorts the groups by creation date of the collection
@@ -43,7 +43,7 @@ class AssetsByCollectionFilteredView: YapDatabaseFilteredView {
         options.isPersistent = false
 
         super.init(parentViewName: AssetsByCollectionView.name,
-                   filtering: AssetsByCollectionFilteredView.getFilter(),
+                   filtering: AbcFilteredByProjectView.getFilter(),
                    versionTag: nil, options: options)
     }
 

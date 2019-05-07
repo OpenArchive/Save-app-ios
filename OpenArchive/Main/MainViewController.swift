@@ -58,7 +58,7 @@ PKDownloadButtonDelegate {
 
     private lazy var assetsReadConn = Db.newLongLivedReadConn()
 
-    private lazy var assetsMappings = AssetsByCollectionFilteredView.createMappings()
+    private lazy var assetsMappings = AbcFilteredByProjectView.createMappings()
 
 
     private lazy var tabBar: ProjectsTabBar = {
@@ -118,7 +118,7 @@ PKDownloadButtonDelegate {
 
         navigationController?.setNavigationBarHidden(true, animated: animated)
 
-        AssetsByCollectionFilteredView.updateFilter(tabBar.selectedProject?.id)
+        AbcFilteredByProjectView.updateFilter(tabBar.selectedProject?.id)
 
         collectionView.toggle(numberOfSections(in: collectionView) != 0, animated: animated)
 
@@ -136,7 +136,7 @@ PKDownloadButtonDelegate {
         // in #yapDatabaseModified.
         collectionView.reloadData()
 
-        AssetsByCollectionFilteredView.updateFilter(tabBar.selectedProject?.id)
+        AbcFilteredByProjectView.updateFilter(tabBar.selectedProject?.id)
     }
 
 
@@ -166,7 +166,7 @@ PKDownloadButtonDelegate {
         collection?.assets.removeAll()
 
         assetsReadConn?.read { transaction in
-            (transaction.ext(AssetsByCollectionFilteredView.name) as? YapDatabaseViewTransaction)?
+            (transaction.ext(AbcFilteredByProjectView.name) as? YapDatabaseViewTransaction)?
                 .enumerateKeysAndObjects(inGroup: group!) { collName, key, object, index, stop in
                     if let asset = object as? Asset {
                         collection?.assets.append(asset)
@@ -184,7 +184,7 @@ PKDownloadButtonDelegate {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.reuseId, for: indexPath) as! ImageCell
 
         assetsReadConn?.read() { transaction in
-            cell.asset = (transaction.ext(AssetsByCollectionFilteredView.name) as? YapDatabaseViewTransaction)?
+            cell.asset = (transaction.ext(AbcFilteredByProjectView.name) as? YapDatabaseViewTransaction)?
                 .object(at: indexPath, with: self.assetsMappings) as? Asset
         }
 
@@ -192,14 +192,10 @@ PKDownloadButtonDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        AbcFilteredByCollectionView.updateFilter(AssetsByCollectionView.collectionId(
+            from: assetsMappings.group(forSection: UInt(indexPath.section))))
 
-        let group = assetsMappings.group(forSection: UInt(indexPath.section))
-
-        let collection = Collection.get(byId: AssetsByCollectionView.collectionId(from: group),
-                                        conn: collectionsReadConn)
-
-
-        performSegue(withIdentifier: MainViewController.segueShowEdit, sender: (collection, indexPath.row))
+        performSegue(withIdentifier: MainViewController.segueShowEdit, sender: indexPath.row)
     }
 
 
@@ -262,6 +258,15 @@ PKDownloadButtonDelegate {
         for asset in assets {
             AssetFactory.create(fromPhasset: asset, collection)
         }
+
+        AbcFilteredByCollectionView.updateFilter(collection.id)
+
+        if assets.count < 2 {
+            performSegue(withIdentifier: MainViewController.segueShowEdit, sender: 0)
+        }
+        else {
+            performSegue(withIdentifier: MainViewController.segueShowPreview, sender: nil)
+        }
     }
 
 
@@ -278,14 +283,16 @@ PKDownloadButtonDelegate {
     }
 
     func didSelect(_ tabBar: ProjectsTabBar, project: Project) {
-        AssetsByCollectionFilteredView.updateFilter(project.id)
+        AbcFilteredByProjectView.updateFilter(project.id)
     }
 
 
     // MARK: HeaderViewDelegate
 
     func showDetails(_ collection: Collection) {
-        performSegue(withIdentifier: MainViewController.segueShowPreview, sender: collection)
+        AbcFilteredByCollectionView.updateFilter(collection.id)
+
+        performSegue(withIdentifier: MainViewController.segueShowPreview, sender: nil)
     }
 
 
@@ -299,25 +306,20 @@ PKDownloadButtonDelegate {
     // MARK: Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let previewVc = segue.destination as? PreviewViewController,
-            let collection = sender as? Collection {
-            
-            previewVc.collection = collection
-        }
-        else if let editVc = segue.destination as? EditViewController,
-            let (collection, index) = sender as? (Collection, Int) {
+        if let editVc = segue.destination as? EditViewController,
+            let index = sender as? Int {
 
-            editVc.collection = collection
             editVc.selected = index
         }
     }
 
+
     // MARK: Observers
 
     /**
-     Callback for `YapDatabaseModified` notification.
+     Callback for `YapDatabaseModified` and `YapDatabaseModifiedExternally` notifications.
 
-     Will be called, when something inside the process changed the database.
+     Will be called, when something changed the database.
      */
     @objc func yapDatabaseModified(notification: Notification) {
         if let notifications = uploadsReadConn?.beginLongLivedReadTransaction(),
@@ -383,7 +385,7 @@ PKDownloadButtonDelegate {
         }
 
         if let notifications = assetsReadConn?.beginLongLivedReadTransaction(),
-            let viewConn = assetsReadConn?.ext(AssetsByCollectionFilteredView.name) as? YapDatabaseViewConnection {
+            let viewConn = assetsReadConn?.ext(AbcFilteredByProjectView.name) as? YapDatabaseViewConnection {
 
             if viewConn.hasChanges(for: notifications) {
                 var rowChanges = NSArray()

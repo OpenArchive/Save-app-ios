@@ -48,7 +48,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // app is still running, but we need to update the selected project
             // filter anyway, because the share extension could have added an
             // image and for an unkown reason, this update doesn't bubble up
-            // into the `AssetsByCollectionFilteredView`.
+            // into the `AbcFilteredByProjectView`.
             // Here is the only place where we know, that we're in this situation.
             mainVc.updateFilter()
 
