@@ -16,6 +16,8 @@ class DataUsageViewController: FormViewController {
 
         navigationItem.title = "Data Usage".localize()
 
+        tableView.separatorStyle = .none
+
         form
             +++ SwitchRow() {
                 $0.title = "Only upload media when you are connected to WiFi".localize()
