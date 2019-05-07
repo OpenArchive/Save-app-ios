@@ -43,8 +43,6 @@ class NewProjectViewController: BaseProjectViewController, BrowseDelegate {
             }
 
             +++ nameRow.cellUpdate { cell, _ in
-                cell.textField.textAlignment = .left
-
                 self.enableDone()
             }
 

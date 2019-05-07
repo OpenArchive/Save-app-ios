@@ -14,7 +14,7 @@ class BaseProjectViewController: FormViewController {
     var project: Project
 
     let nameRow = TextRow() {
-        $0.title = "Name".localize()
+        $0.placeholder = "Name your project".localize()
         $0.add(rule: RuleRequired())
     }
 
