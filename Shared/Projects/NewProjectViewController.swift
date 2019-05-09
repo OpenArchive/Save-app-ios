@@ -39,7 +39,7 @@ class NewProjectViewController: BaseProjectViewController, BrowseDelegate {
             +++ LabelRow() {
                 $0.cell.textLabel?.numberOfLines = 0
                 $0.cell.textLabel?.textAlignment = .center
-                $0.title = "Curate your own project or browse for an existing one.".localize()
+                $0.title = "Create a new project or browse for an existing one.".localize()
             }
 
             +++ nameRow.cellUpdate { cell, _ in
