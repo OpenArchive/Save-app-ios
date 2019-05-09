@@ -233,6 +233,8 @@ class AssetFactory {
                 // BEWARE: Using move in the ShareExtension will only work in the simulator!
                 && (try? FileManager.default.copyItem(at: url, to: file)) != nil {
 
+                self.fetchLocation(asset)
+
                 if let thumb = asset.thumb,
                     createParentDir(file: thumb) {
 
@@ -276,6 +278,29 @@ class AssetFactory {
 
                 if !FileManager.default.fileExists(atPath: thumb.path) {
                     self.createThumb(asset)
+                }
+            }
+        }
+    }
+
+    /**
+     Fetch address using an images EXIF GPS metadata, if any available.
+
+     - parameter asset: The `Asset` to fetch the address for.
+    */
+    private class func fetchLocation(_ asset: Asset) {
+        if let file = asset.file as CFURL?,
+            let source = CGImageSourceCreateWithURL(file, nil),
+            let metadata = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString : AnyObject],
+            let gps = metadata[kCGImagePropertyGPSDictionary] as? [CFString : AnyObject],
+            let latitude = gps[kCGImagePropertyGPSLatitude] as? Double,
+            let longitude = gps[kCGImagePropertyGPSLongitude] as? Double {
+
+            // Try to acquire a proper address from metadata.
+            Geocoder.shared.fetchAddress(from: CLLocation(latitude: latitude, longitude: longitude)) { address in
+                if let address = address {
+                    asset.location = address
+                    store(asset)
                 }
             }
         }
