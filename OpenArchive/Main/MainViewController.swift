@@ -107,7 +107,7 @@ PKDownloadButtonDelegate {
         }
         else {
             spaceFavIcon.image = SelectedSpace.defaultFavIcon
-            spaceName.text = "SAVE".localize()
+            spaceName.text = Bundle.main.displayName
         }
 
         navigationController?.setNavigationBarHidden(true, animated: animated)
