@@ -110,6 +110,8 @@
 		A0AFCF1222302054005E57FD /* PreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF1122302054005E57FD /* PreviewCell.swift */; };
 		A0B24C6421F0CD94006C0CC6 /* AvatarRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */; };
 		A0B24C6521F0CDA6006C0CC6 /* AvatarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */; };
+		A0BBEF8922846F310071EE93 /* Geocoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BBEF8822846F310071EE93 /* Geocoder.swift */; };
+		A0BBEF8A22846F310071EE93 /* Geocoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BBEF8822846F310071EE93 /* Geocoder.swift */; };
 		A0C475B4211474A50012937E /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A004E24B20EBCF1700A1D5F5 /* Formatters.swift */; };
 		A0C475B5211474A70012937E /* RegexUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */; };
 		A0C475B7211488BF0012937E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DE20E4C85E00DB31E1 /* Assets.xcassets */; };
@@ -270,6 +272,7 @@
 		A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineTitle.swift; sourceTree = "<group>"; };
 		A0AFCF1122302054005E57FD /* PreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewCell.swift; sourceTree = "<group>"; };
 		A0BA76E52111FA130009801D /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
+		A0BBEF8822846F310071EE93 /* Geocoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geocoder.swift; sourceTree = "<group>"; };
 		A0C0732B20EE7AB600EA48F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		A0C475B6211481710012937E /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		A0C475BF21149B040012937E /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -355,6 +358,7 @@
 				A0362191220DA390003C21DC /* UIColor+accent.swift */,
 				A055204F222566CE00B9645F /* UIView+animateHideShow.swift */,
 				A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */,
+				A0BBEF8822846F310071EE93 /* Geocoder.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -829,6 +833,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A0E271FE224E261100CB7113 /* BaseProjectViewController.swift in Sources */,
+				A0BBEF8A22846F310071EE93 /* Geocoder.swift in Sources */,
 				A0A192DE21F208DA009A8CF0 /* Space.swift in Sources */,
 				A0E2720A224E335400CB7113 /* NewProjectViewController.swift in Sources */,
 				A08C2CE821F0B613008ACA3E /* BaseCell.swift in Sources */,
@@ -895,6 +900,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A0E739D820E4C85D00DB31E1 /* AppDelegate.swift in Sources */,
+				A0BBEF8922846F310071EE93 /* Geocoder.swift in Sources */,
 				A0362195220DB2CA003C21DC /* IaSpace.swift in Sources */,
 				A0E1A67C21EE7A5C00E4F6B7 /* MenuViewController.swift in Sources */,
 				A004E24C20EBCF1700A1D5F5 /* Formatters.swift in Sources */,

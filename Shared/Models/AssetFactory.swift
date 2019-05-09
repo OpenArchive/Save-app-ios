@@ -97,6 +97,14 @@ class AssetFactory {
     */
     class func load(from phasset: PHAsset, into asset: Asset) {
 
+        // Try to acquire a proper address from metadata.
+        Geocoder.shared.fetchAddress(from: phasset) { address in
+            if let address = address {
+                asset.location = address
+                store(asset)
+            }
+        }
+
         if phasset.mediaType == .image {
             // Fetch non-resized version first. We need the UTI, the filename and the original
             // image data.

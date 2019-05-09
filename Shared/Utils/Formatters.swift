@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Contacts
 
 class Formatters: NSObject {
 
@@ -44,6 +45,8 @@ class Formatters: NSObject {
 
     static let bytes = ByteCountFormatter()
 
+    static let address = CNPostalAddressFormatter()
+    
     /**
      Formats an integer properly localized.
     */
