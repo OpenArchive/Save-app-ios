@@ -48,6 +48,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     var location: String?
     var tags: [String]?
     var notes: String?
+    var phassetId: String?
     var publicUrl: URL?
     var isReady = false
     var isUploaded = false
@@ -262,6 +263,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         location = decoder.decodeObject(forKey: "location") as? String
         notes = decoder.decodeObject(forKey: "notes") as? String
         tags = decoder.decodeObject(forKey: "tags") as? [String]
+        phassetId = decoder.decodeObject(forKey: "phassetId") as? String
         publicUrl = decoder.decodeObject(forKey: "publicUrl") as? URL
         isReady = decoder.decodeBool(forKey: "isReady")
         isUploaded = decoder.decodeBool(forKey: "isUploaded")
@@ -278,6 +280,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         coder.encode(location, forKey: "location")
         coder.encode(notes, forKey: "notes")
         coder.encode(tags, forKey: "tags")
+        coder.encode(phassetId, forKey: "phassetId")
         coder.encode(publicUrl, forKey: "publicUrl")
         coder.encode(isReady, forKey: "isReady")
         coder.encode(isUploaded, forKey: "isUploaded")
@@ -370,6 +373,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
             + "tags=\(tags?.description ?? "nil"), "
             + "mimeType=\(mimeType), filename=\(filename), "
             + "file=\(file?.description ?? "nil"), thumb=\(thumb?.description ?? "nil"), "
+            + "phassetId=\(phassetId ?? "nil"), "
             + "publicUrl=\(publicUrl?.absoluteString ?? "nil"), "
             + "isReady=\(isReady), isUploaded=\(isUploaded)]"
     }

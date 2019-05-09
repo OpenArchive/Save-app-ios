@@ -80,6 +80,7 @@ class AssetFactory {
 
                 if let data = data, let uti = uti {
                     let asset = Asset(uti, collection)
+                    asset.phassetId = phasset.localIdentifier
 
                     if let info = info, let fileUrl = info["PHImageFileURLKey"] as? URL {
                         asset.filename = fileUrl.lastPathComponent
@@ -112,7 +113,8 @@ class AssetFactory {
                             let uti: AVFileType = phasset.mediaType == .audio ? .mp3 : .mp4
 
                             let asset = Asset(uti.rawValue, collection)
-
+                            asset.phassetId = phasset.localIdentifier
+                            
                             // Store asset before export, so display of it
                             // isn't displayed too long without notice.
                             // Else it would lead to strange bugs, when users
@@ -215,6 +217,9 @@ class AssetFactory {
                 resultHandler(nil)
             }
         }
+        else {
+            resultHandler(nil)
+        }
     }
 
     /**
@@ -269,9 +274,8 @@ class AssetFactory {
         if var dir = file {
             dir.deleteLastPathComponent()
 
-            return (try? FileManager.default.createDirectory(at: dir,
-                                                             withIntermediateDirectories: true,
-                                                             attributes: nil)) != nil
+            return (try? FileManager.default.createDirectory(
+                at: dir, withIntermediateDirectories: true, attributes: nil)) != nil
         }
 
         return false
@@ -287,8 +291,10 @@ class AssetFactory {
         Db.writeConn?.asyncReadWrite { transaction in
             transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
 
-            DispatchQueue.main.async {
-                resultHandler?(asset)
+            if let resultHandler = resultHandler {
+                DispatchQueue.main.async {
+                    resultHandler(asset)
+                }
             }
         }
     }
