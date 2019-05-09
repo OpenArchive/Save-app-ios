@@ -70,6 +70,32 @@ class AssetFactory {
      - parameter collection: The collection the asset will belong to.
      */
     class func create(fromPhasset phasset: PHAsset, _ collection: Collection) {
+        load(from: phasset, into: Asset(collection))
+    }
+
+    /**
+     Reloads the `PHAsset` for a given `Asset`.
+
+     - returns: true, if possible, false if not.
+    */
+    class func reload(for asset: Asset) -> Bool {
+        guard let phassetId = asset.phassetId,
+            let phasset = PHAsset.fetchAssets(withLocalIdentifiers: [phassetId], options: nil).firstObject else {
+            return false
+        }
+
+        load(from: phasset, into: asset)
+
+        return true
+    }
+
+    /**
+     Load the content of a `PHAsset` and store it with the given `Asset`.
+
+     - parameter phasset: The `PHAsset` to read from.
+     - parameter asset: The `Asset` to write to.
+    */
+    class func load(from phasset: PHAsset, into asset: Asset) {
 
         if phasset.mediaType == .image {
             // Fetch non-resized version first. We need the UTI, the filename and the original
@@ -79,7 +105,7 @@ class AssetFactory {
                 data, uti, orientation, info in
 
                 if let data = data, let uti = uti {
-                    let asset = Asset(uti, collection)
+                    asset.uti = uti
                     asset.phassetId = phasset.localIdentifier
 
                     if let info = info, let fileUrl = info["PHImageFileURLKey"] as? URL {
@@ -112,7 +138,7 @@ class AssetFactory {
                         { exportSession, info in
                             let uti: AVFileType = phasset.mediaType == .audio ? .mp3 : .mp4
 
-                            let asset = Asset(uti.rawValue, collection)
+                            asset.uti = uti.rawValue
                             asset.phassetId = phasset.localIdentifier
                             
                             // Store asset before export, so display of it
@@ -192,7 +218,7 @@ class AssetFactory {
     class func create(fromFileUrl url: URL, thumbnail: UIImage? = nil,
                       _ collection: Collection, _ resultHandler: @escaping ResultHandler) {
         if let uti = (try? url.resourceValues(forKeys: [.typeIdentifierKey]))?.typeIdentifier {
-            let asset = Asset(uti, collection)
+            let asset = Asset(collection, uti: uti)
             asset.filename = url.lastPathComponent
 
             if  let file = asset.file, createParentDir(file: file)

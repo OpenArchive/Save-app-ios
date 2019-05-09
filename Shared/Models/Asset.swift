@@ -41,7 +41,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
 
     let id: String
     let created: Date
-    let uti: String
+    var uti: String
     private var _filename: String?
     var title: String?
     var desc: String?
@@ -49,9 +49,9 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     var tags: [String]?
     var notes: String?
     var phassetId: String?
-    var publicUrl: URL?
+    private(set) var publicUrl: URL?
     var isReady = false
-    var isUploaded = false
+    private(set) var isUploaded = false
     private(set) var collectionId: String
 
     var author: String? {
@@ -243,7 +243,9 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         }
     }
 
-    init(_ uti: String, _ collection: Collection, id: String = UUID().uuidString, created: Date = Date()) {
+    init(_ collection: Collection, uti: String = kUTTypeData as String,
+         id: String = UUID().uuidString, created: Date = Date()) {
+
         self.id = id
         self.created = created
         self.uti = uti
@@ -434,8 +436,10 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
      Asynchronously deletes this asset from the database.
 
      - parameter callback: Optional callback is called asynchronously on main queue after removal.
+     - returns: self for fluency.
     */
-    func remove(_ callback: (() -> Void)? = nil) {
+    @discardableResult
+    func remove(_ callback: (() -> Void)? = nil) -> Asset {
         Db.writeConn?.asyncReadWrite { transaction in
             transaction.removeObject(forKey: self.id, inCollection: Asset.collection)
 
@@ -443,8 +447,34 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
                 DispatchQueue.main.async(execute: callback)
             }
         }
+
+        return self
     }
 
+    /**
+     Sets `publicUrl` to the given value, sets `isUploaded` to true, if the argument
+     is non-nil and to false, if nil and removes the actual file from the app's
+     file system, in order to keep the disk usage in check.
+
+     - parameter url: The public URL on the server, where this was uploaded to.
+     - returns: self for fluency.
+    */
+    @discardableResult
+    func setUploaded(_ url: URL?) -> Asset {
+        publicUrl = url
+        isUploaded = url != nil
+
+        if isUploaded, let file = file {
+            if (try? FileManager.default.removeItem(at: file)) != nil {
+                // Set this to false, so in the case, that we implement a
+                // re-upload, the upload isn't tried as long as there's no
+                // asset file back.
+                isReady = false
+            }
+        }
+
+        return self
+    }
 
     // MARK: Class methods
 

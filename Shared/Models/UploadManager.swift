@@ -278,7 +278,7 @@ class UploadManager {
             let space = asset.space
 
             if error != nil || url == nil {
-                asset.isUploaded = false
+                asset.setUploaded(nil)
 
                 // Circuit breaker pattern: Increase circuit breaker counter on error.
                 space?.tries += 1
@@ -295,8 +295,7 @@ class UploadManager {
                 collection = nil
             }
             else {
-                asset.publicUrl = url
-                asset.isUploaded = true
+                asset.setUploaded(url)
 
                 // Circuit breaker pattern: Reset circuit breaker counter on success.
                 space?.tries = 0

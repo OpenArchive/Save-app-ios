@@ -148,8 +148,7 @@ class WebDavSpace: Space, Item {
 
             provider.removeItem(path: filepath) { error in
                 if error == nil {
-                    asset.publicUrl = nil
-                    asset.isUploaded = false
+                    asset.setUploaded(nil)
                 }
 
                 provider.removeItem(path: "\(filepath).\(WebDavSpace.metaFileExt)") { error in

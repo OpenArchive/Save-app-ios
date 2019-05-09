@@ -149,8 +149,7 @@ class IaSpace: Space, Item {
 
                     switch response.result {
                     case .success:
-                        asset.publicUrl = nil
-                        asset.isUploaded = false
+                        asset.setUploaded(nil)
                     default:
                         break
                     }
