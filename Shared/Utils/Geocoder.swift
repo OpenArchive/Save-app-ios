@@ -114,6 +114,9 @@ class Geocoder {
                 if let address = placemarks?.first?.postalAddress {
                     prettyAddress = Formatters.address.string(from: address)
                 }
+                else {
+                    prettyAddress = Formatters.location.string(from: object.location)
+                }
 
                 object.completionHandler(prettyAddress)
 

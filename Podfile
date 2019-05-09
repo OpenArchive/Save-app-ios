@@ -19,6 +19,7 @@ def shared_pods
     pod 'MBProgressHUD', '~> 1.1'
     pod 'ReachabilitySwift', '~> 4.3'
     pod 'TLPhotoPicker', '~> 1.8'
+    pod 'FormatterKit', '~> 1.8'
 end
 
 target 'OpenArchive' do

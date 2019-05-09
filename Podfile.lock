@@ -9,6 +9,36 @@ PODS:
   - Eureka (5.0.0)
   - FavIcon (3.0.6)
   - FilesProvider (0.26.0)
+  - FormatterKit (1.8.2):
+    - FormatterKit/AddressFormatter (= 1.8.2)
+    - FormatterKit/ArrayFormatter (= 1.8.2)
+    - FormatterKit/ColorFormatter (= 1.8.2)
+    - FormatterKit/LocationFormatter (= 1.8.2)
+    - FormatterKit/NameFormatter (= 1.8.2)
+    - FormatterKit/OrdinalNumberFormatter (= 1.8.2)
+    - FormatterKit/Resources (= 1.8.2)
+    - FormatterKit/TimeIntervalFormatter (= 1.8.2)
+    - FormatterKit/UnitOfInformationFormatter (= 1.8.2)
+    - FormatterKit/URLRequestFormatter (= 1.8.2)
+  - FormatterKit/AddressFormatter (1.8.2):
+    - FormatterKit/Resources
+  - FormatterKit/ArrayFormatter (1.8.2):
+    - FormatterKit/Resources
+  - FormatterKit/ColorFormatter (1.8.2):
+    - FormatterKit/Resources
+  - FormatterKit/LocationFormatter (1.8.2):
+    - FormatterKit/Resources
+  - FormatterKit/NameFormatter (1.8.2):
+    - FormatterKit/Resources
+  - FormatterKit/OrdinalNumberFormatter (1.8.2):
+    - FormatterKit/Resources
+  - FormatterKit/Resources (1.8.2)
+  - FormatterKit/TimeIntervalFormatter (1.8.2):
+    - FormatterKit/Resources
+  - FormatterKit/UnitOfInformationFormatter (1.8.2):
+    - FormatterKit/Resources
+  - FormatterKit/URLRequestFormatter (1.8.2):
+    - FormatterKit/Resources
   - ImageRow (4.0.0):
     - Eureka (~> 5.0)
   - Localize (2.3.0)
@@ -53,7 +83,7 @@ PODS:
   - MDFInternationalization (2.0.0)
   - MDFTextAccessibility (2.0.0)
   - ReachabilitySwift (4.3.1)
-  - TLPhotoPicker (1.8.6)
+  - TLPhotoPicker (1.8.8)
   - TUSafariActivity (1.0.4)
   - UIImage-Resize (1.0.1)
   - YapDatabase (3.1.2):
@@ -128,6 +158,7 @@ DEPENDENCIES:
   - Eureka (~> 5.0)
   - FavIcon (~> 3.0)
   - FilesProvider (~> 0.26)
+  - FormatterKit (~> 1.8)
   - ImageRow (from `https://github.com/EurekaCommunity/ImageRow.git`)
   - Localize (~> 2.2)
   - MaterialComponents/Buttons (~> 81)
@@ -149,6 +180,7 @@ SPEC REPOS:
     - Eureka
     - FavIcon
     - FilesProvider
+    - FormatterKit
     - Localize
     - MaterialComponents
     - MBProgressHUD
@@ -178,6 +210,7 @@ SPEC CHECKSUMS:
   Eureka: 0f64f477ec8ef6201c6fec143d60ff5c201cf654
   FavIcon: e07ba9dd3cac1f76b81ccaa08fc2b41baa000b07
   FilesProvider: 2a8ae17d8b9c23a6feadb1308ee638fa31d21065
+  FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   ImageRow: e65b2e1a33f89062bf2a553a2aad61d975eb7428
   Localize: cb1ae53ed73decaad0dce217806ed983091913f5
   MaterialComponents: c2045515505992357e210b33cb3ffc3a404a14fd
@@ -185,11 +218,11 @@ SPEC CHECKSUMS:
   MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
   MDFTextAccessibility: 85c09a1bd9c321f494348e632a25063bcda35a53
   ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
-  TLPhotoPicker: c5aefdc9beaca82116d7855924f1d8abdd055f79
+  TLPhotoPicker: f90e8567aa33fff6b1b9cad4adbd57090b200acc
   TUSafariActivity: afc55a00965377939107ce4fdc7f951f62454546
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   YapDatabase: d8cd02058e36bc0902e405d8f3326eb8d7dbf36c
 
-PODFILE CHECKSUM: 5b9e4b05e10b1f1134af9b7d30d955728d16ae69
+PODFILE CHECKSUM: ffdb65d648c7073b5403f8ab9d21f71b7d5fc5a5
 
 COCOAPODS: 1.6.1

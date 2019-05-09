@@ -8,6 +8,7 @@
 
 import UIKit
 import Contacts
+import FormatterKit
 
 class Formatters: NSObject {
 
@@ -46,7 +47,14 @@ class Formatters: NSObject {
     static let bytes = ByteCountFormatter()
 
     static let address = CNPostalAddressFormatter()
-    
+
+    static let location: TTTLocationFormatter = {
+        let formatter = TTTLocationFormatter()
+        formatter.coordinateStyle = .degreesMinutesSecondsFormat
+
+        return formatter
+    }()
+
     /**
      Formats an integer properly localized.
     */
