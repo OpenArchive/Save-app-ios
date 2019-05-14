@@ -296,7 +296,8 @@ PKDownloadButtonDelegate {
     // MARK: TLPhotosPickerViewControllerDelegate
 
     func dismissPhotoPicker(withPHAssets assets: [PHAsset]) {
-        guard let collection = tabBar.selectedProject?.currentCollection else {
+        guard let collection = tabBar.selectedProject?.currentCollection,
+            assets.count > 0 else {
             return
         }
 
