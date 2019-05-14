@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="38r-I9-0nI">
-    <device id="retina4_7" orientation="portrait">
+    <device id="retina4_0" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
@@ -15,19 +15,19 @@
             <objects>
                 <viewController id="38r-I9-0nI" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="1HR-i9-Bfr">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="server" translatesAutoresizingMaskIntoConstraints="NO" id="ynJ-sp-AwL">
-                                <rect key="frame" x="16" y="36" width="40" height="40"/>
+                                <rect key="frame" x="16" y="36" width="36" height="36"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="40" id="qTc-Vi-WTK"/>
-                                    <constraint firstAttribute="width" constant="40" id="qTs-ye-ucK"/>
+                                    <constraint firstAttribute="height" constant="36" id="qTc-Vi-WTK"/>
+                                    <constraint firstAttribute="width" constant="36" id="qTs-ye-ucK"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R3i-5i-bPY">
-                                <rect key="frame" x="64" y="40" width="295" height="32"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="26"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save" textAlignment="natural" lineBreakMode="tailTruncation" minimumFontSize="7" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R3i-5i-bPY">
+                                <rect key="frame" x="60" y="35" width="244" height="38.5"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
                                 <color key="textColor" red="0.0" green="0.70398116440000003" blue="0.64921339899999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
