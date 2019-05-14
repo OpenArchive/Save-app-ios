@@ -33,16 +33,27 @@ class MenuItemCell: BaseCell {
 
         switch accessoryType {
         case .none:
+            accessoryView = nil
             self.accessoryType = .none
+
         case .disclosureIndicator:
+            accessoryView = nil
             self.accessoryType = .disclosureIndicator
+
         case .detailDisclosureButton:
+            accessoryView = nil
             self.accessoryType = .detailDisclosureButton
+
         case .checkmark:
+            accessoryView = nil
             self.accessoryType = .checkmark
+
         case .detailButton:
+            accessoryView = nil
             self.accessoryType = .detailButton
+
         case .addIndicator:
+            self.accessoryType = .none
             let add = UILabel()
             add.font = UIFont.systemFont(ofSize: 22)
             add.textColor = UIColor.lightGray
@@ -55,11 +66,11 @@ class MenuItemCell: BaseCell {
     }
 
     func set(_ text: String, isPlaceholder: Bool = false) -> MenuItemCell {
-        return set(text, textColor: isPlaceholder ? UIColor.lightGray : UIColor.darkText,
+        return set(text, textColor: isPlaceholder ? .lightGray : .darkText,
                    accessoryType: isPlaceholder ? .addIndicator : .none)
     }
 
     func set(_ error: Error) -> MenuItemCell {
-        return set(error.localizedDescription, textColor: UIColor.red)
+        return set(error.localizedDescription, textColor: .red)
     }
 }

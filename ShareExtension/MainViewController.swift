@@ -139,13 +139,10 @@ class MainViewController: TableWithSpacesViewController {
 
         if indexPath.section == MainViewController.projectSection {
             if indexPath.row < projectsCount {
-                cell.accessoryType = selectedRow == indexPath.row ? .checkmark : .none
-
-                return cell.set(Project.getName(getProject(indexPath)))
+                return cell.set(Project.getName(getProject(indexPath)),
+                                accessoryType: selectedRow == indexPath.row ? .checkmark : .none)
             }
             else {
-                cell.accessoryType = .none
-
                 return cell.set("New Project".localize(), isPlaceholder: true)
             }
         }
