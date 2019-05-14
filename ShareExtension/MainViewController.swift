@@ -176,11 +176,14 @@ class MainViewController: TableWithSpacesViewController {
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == MainViewController.projectSection {
             if indexPath.row >= projectsCount {
-                let navVc = UINavigationController(rootViewController:
+                let vc = UINavigationController(rootViewController:
                     NewProjectViewController(isModal: true))
-                navVc.view.tintColor = UIColor.accent
+                vc.view.tintColor = UIColor.accent
+                vc.modalPresentationStyle = .popover
+                vc.popoverPresentationController?.sourceView = tableView.cellForRow(at: indexPath)
+                vc.popoverPresentationController?.sourceRect = tableView.rectForRow(at: indexPath)
 
-                present(navVc, animated: true)
+                present(vc, animated: true)
 
                 tableView.deselectRow(at: indexPath, animated: false)
 

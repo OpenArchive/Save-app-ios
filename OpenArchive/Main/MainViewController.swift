@@ -314,8 +314,12 @@ PKDownloadButtonDelegate {
 
     func didSelectAdd(_ tabBar: ProjectsTabBar) {
         if SelectedSpace.available {
-            navigationController?.pushViewController(NewProjectViewController(),
-                                                     animated: true)
+            let vc = UINavigationController.init(rootViewController: NewProjectViewController(isModal: true))
+            vc.modalPresentationStyle = .popover
+            vc.popoverPresentationController?.sourceView = tabBar
+            vc.popoverPresentationController?.sourceRect = tabBar.frame
+
+            present(vc, animated: true)
         }
         else {
             performSegue(withIdentifier: MainViewController.segueShowMenu, sender: self)
