@@ -18,27 +18,11 @@ class SelectedSpace {
     static var defaultFavIcon = UIImage(named: "server")
 
 
-    private static let ID = "selected_space_id"
-
-    private static var _id: String?
+    private static let collection  = "selected_space"
 
     static var id: String? {
         get {
-            if _id == nil {
-                _id = UserDefaults(suiteName: Constants.suiteName)?
-                    .string(forKey: ID)
-            }
-
-            return _id
-        }
-        set {
-            _id = newValue
-            _space = nil // Invalidate cache.
-
-            UserDefaults(suiteName: Constants.suiteName)?.set(_id, forKey: ID)
-
-            // Update projects grouping to show projects of currently selected space.
-            ProjectsView.updateGrouping()
+            return space?.id
         }
     }
 
@@ -50,19 +34,48 @@ class SelectedSpace {
 
     static var space: Space? {
         get {
-            if _space == nil,
-                let id = id {
-                Db.newLongLivedReadConn()?.read { transaction in
-                    _space = transaction.object(
-                        forKey: id, inCollection: Space.collection) as? Space
+            if _space == nil {
+                Db.bgRwConn?.read { transaction in
+                    for id in transaction.allKeys(inCollection: SelectedSpace.collection) {
+                        self._space = transaction.object(
+                            forKey: id, inCollection: Space.collection) as? Space
+
+                        if self._space != nil {
+                            break
+                        }
+                    }
+
+                    if self._space == nil {
+                        transaction.enumerateKeysAndObjects(inCollection: Space.collection) { key, object, stop in
+                            if let space = object as? Space {
+                                self._space = space
+                                stop.pointee = true
+                            }
+                        }
+                    }
                 }
             }
 
             return _space
         }
         set {
-            id = newValue?.id
             _space = newValue
+
+            Db.bgRwConn?.asyncReadWrite { transaction in
+                transaction.removeAllObjects(inCollection: SelectedSpace.collection)
+
+                if let space = _space {
+                    // We just need any serializable object to store here, otherwise
+                    // when sending nil, nothing is stored.
+                    // That object is never read. The original space is always read instead!
+                    transaction.setObject(space, forKey: space.id, inCollection: SelectedSpace.collection)
+                }
+
+                // Update projects grouping to show projects of currently selected space.
+                DispatchQueue.main.async {
+                    ProjectsView.updateGrouping()
+                }
+            }
         }
     }
 }

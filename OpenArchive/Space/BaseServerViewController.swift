@@ -97,12 +97,17 @@ class BaseServerViewController: FormViewController, DoneDelegate {
                         Db.writeConn?.asyncReadWrite { transaction in
                             transaction.removeObject(forKey: space.id, inCollection: Space.collection)
 
-                            SelectedSpace.id = nil
+                            var newSelectedSpace: Space?
 
-                            transaction.enumerateKeys(inCollection: Space.collection) { key, stop in
-                                SelectedSpace.id = key
+                            transaction.enumerateKeysAndObjects(inCollection: Space.collection) { key, object, stop in
+                                if let space = object as? Space {
+                                    newSelectedSpace = space
+                                    stop.pointee = true
+                                }
+                            }
 
-                                stop.pointee = true
+                            DispatchQueue.main.async {
+                                SelectedSpace.space = newSelectedSpace
                             }
 
                             DispatchQueue.main.async(execute: self.goToMenu)

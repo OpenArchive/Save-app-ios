@@ -473,11 +473,11 @@
 			isa = PBXGroup;
 			children = (
 				A071290F2111E4F1007A432A /* Db.swift */,
-				A0E2BC712226AA10006D33E3 /* SelectedSpace.swift */,
 				A0C797E822807DF00009751A /* SelectedCollection.swift */,
 				A0A192DC21F208DA009A8CF0 /* Space.swift */,
 				A0362194220DB2CA003C21DC /* IaSpace.swift */,
 				A0362197220DB384003C21DC /* WebDavSpace.swift */,
+				A0E2BC712226AA10006D33E3 /* SelectedSpace.swift */,
 				A0DE78AE21F76D2200B6B68B /* Project.swift */,
 				A0631B5A22034F0700B3E90D /* Collection.swift */,
 				A0D58DCD20E51517005A2F34 /* Asset.swift */,
