@@ -247,6 +247,8 @@ class AssetFactory {
                     }
                 }
 
+                asset.isReady = true
+
                 store(asset, resultHandler)
             }
             else {

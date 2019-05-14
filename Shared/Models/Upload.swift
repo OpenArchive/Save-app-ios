@@ -164,7 +164,7 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
         return "\(String(describing: type(of: self))): [id=\(id), order=\(order), "
             + "progress=\(progress), paused=\(paused), tries=\(tries), "
             + "lastTry=\(lastTry?.debugDescription ?? "nil"), error=\(error ?? "nil"), "
-            + "assetId=\(assetId ?? "nil")]"
+            + "assetId=\(assetId ?? "nil"), asset=\(asset?.description ?? "nil")]"
     }
 
 
