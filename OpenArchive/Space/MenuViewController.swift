@@ -195,6 +195,13 @@ class MenuViewController: TableWithSpacesViewController {
     }
 
 
+    // MARK: Actions
+
+    @IBAction func done() {
+        dismiss(animated: true)
+    }
+
+
     // MARK: Observers
 
     /**

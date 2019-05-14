@@ -19,8 +19,7 @@ UICollectionViewDataSource, UINavigationControllerDelegate,
 ProjectsTabBarDelegate, HeaderViewDelegate, TLPhotosPickerViewControllerDelegate,
 PKDownloadButtonDelegate {
 
-    private static let segueConnectSpace = "connectSpaceSegue"
-    private static let segueShowSpace = "showSpaceSegue"
+    private static let segueShowMenu = "showMenuSegue"
     private static let segueShowPreview = "showPreviewSegue"
     private static let segueShowEdit = "showEditSegue"
     private static let segueShowManagement = "showManagmentSegue"
@@ -217,9 +216,7 @@ PKDownloadButtonDelegate {
     // MARK: Actions
 
     @IBAction func connectShowSpace() {
-        performSegue(withIdentifier: SelectedSpace.available
-            ? MainViewController.segueShowSpace
-            : MainViewController.segueConnectSpace, sender: self)
+        performSegue(withIdentifier: MainViewController.segueShowMenu, sender: self)
     }
 
     @IBAction func add() {
@@ -321,7 +318,7 @@ PKDownloadButtonDelegate {
                                                      animated: true)
         }
         else {
-            performSegue(withIdentifier: MainViewController.segueConnectSpace, sender: self)
+            performSegue(withIdentifier: MainViewController.segueShowMenu, sender: self)
         }
     }
 
@@ -353,6 +350,10 @@ PKDownloadButtonDelegate {
             let index = sender as? Int {
 
             editVc.selected = index
+        }
+        else if segue.identifier == MainViewController.segueShowMenu {
+            segue.destination.popoverPresentationController?.sourceView = spaceFavIcon
+            segue.destination.popoverPresentationController?.sourceRect = spaceFavIcon.bounds
         }
     }
 
