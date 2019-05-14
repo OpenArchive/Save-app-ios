@@ -22,7 +22,7 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate, DoneDel
             title: "Remove".localize())
         { (action, indexPath) in
             if let asset = self.sc.getAsset(indexPath) {
-                self.present(RemoveAssetAlert(asset), animated: true)
+                self.present(RemoveAssetAlert([asset]), animated: true)
             }
 
             self.tableView.setEditing(false, animated: true)

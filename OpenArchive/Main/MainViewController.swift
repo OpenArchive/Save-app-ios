@@ -41,6 +41,7 @@ PKDownloadButtonDelegate {
     @IBOutlet weak var tabBarContainer: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var addBt: MDCFloatingButton!
+    @IBOutlet weak var toolbar: UIToolbar!
 
     private lazy var uploadsReadConn = Db.newLongLivedReadConn()
 
@@ -87,6 +88,8 @@ PKDownloadButtonDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        collectionView.allowsMultipleSelection = true
 
         uploadsReadConn?.update(mappings: uploadsMappings)
         projectsReadConn?.update(mappings: projectsMappings)
@@ -186,10 +189,28 @@ PKDownloadButtonDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+
+        // If the currently selected number of items is exactly one, that means,
+        // that there was no selection before, and this item was just selected.
+        // In that case, ignore the selection and instead move to EditViewController.
+        // Because in this scenario, the first selection is done by a long press,
+        // which basically enters an "edit" mode. (See #longPressItem.)
+        if collectionView.indexPathsForSelectedItems?.count ?? 0 != 1 {
+            return
+        }
+
+        collectionView.deselectItem(at: indexPath, animated: false)
+
         AbcFilteredByCollectionView.updateFilter(AssetsByCollectionView.collectionId(
             from: assetsMappings.group(forSection: UInt(indexPath.section))))
 
         performSegue(withIdentifier: MainViewController.segueShowEdit, sender: indexPath.row)
+    }
+
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        if collectionView.indexPathsForSelectedItems?.count ?? 0 == 0 {
+            toggleToolbar(false)
+        }
     }
 
 
@@ -239,6 +260,39 @@ PKDownloadButtonDelegate {
         @unknown default:
             break
         }
+    }
+
+    @IBAction func longPressItem(_ sender: UILongPressGestureRecognizer) {
+
+        // We only recognize this the first time, it is triggered.
+        // It will continue triggering with .changed and .ended states, but
+        // .ended is only released after the user lifts the finger which feels
+        // awkward.
+        if sender.state != .began {
+            return
+        }
+
+        if let indexPath = collectionView.indexPathForItem(at: sender.location(in: collectionView)) {
+            collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredVertically)
+
+            toggleToolbar(true)
+        }
+    }
+
+    @IBAction func removeItems() {
+        var assets = [Asset]()
+
+        assetsReadConn?.read() { transaction in
+            for indexPath in self.collectionView.indexPathsForSelectedItems ?? [] {
+                if let asset = (transaction.ext(AbcFilteredByProjectView.name) as? YapDatabaseViewTransaction)?
+                        .object(at: indexPath, with: self.assetsMappings) as? Asset
+                {
+                    assets.append(asset)
+                }
+            }
+        }
+
+        present(RemoveAssetAlert(assets, { self.toggleToolbar(false) }), animated: true)
     }
 
 
@@ -458,5 +512,15 @@ PKDownloadButtonDelegate {
                 }
             }
         }
+    }
+
+    /**
+     Shows/hides the toolbar, depending on the toggle.
+
+     - parameter toggle: true, to show toolbar, false to hide.
+    */
+    private func toggleToolbar(_ toggle: Bool) {
+        toolbar.toggle(toggle, animated: true)
+        addBt.toggle(!toggle, animated: true)
     }
 }

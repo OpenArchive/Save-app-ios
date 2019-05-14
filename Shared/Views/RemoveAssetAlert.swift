@@ -10,14 +10,25 @@ import UIKit
 
 class RemoveAssetAlert: UIAlertController {
 
-    convenience init(_ asset: Asset, _ onSuccess: (() -> Void)? = nil) {
+    convenience init(_ assets: [Asset], _ onSuccess: (() -> Void)? = nil) {
+        let message = assets.count == 1
+            ? "This item will be removed from your project.".localize()
+            : "These items will be removed from your project.".localize()
+
         self.init(title: "Remove Media".localize(),
-                   message: "This item will be removed from your project.".localize(),
+                   message: message,
                    preferredStyle: .alert)
 
         addAction(AlertHelper.cancelAction())
         addAction(AlertHelper.destructiveAction("Remove Media".localize(), handler: { _ in
-            asset.remove(onSuccess)
+            for asset in assets {
+                if asset == assets.last {
+                    asset.remove(onSuccess)
+                }
+                else {
+                    asset.remove()
+                }
+            }
         }))
     }
 

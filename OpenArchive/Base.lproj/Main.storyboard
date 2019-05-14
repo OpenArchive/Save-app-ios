@@ -182,6 +182,17 @@
                                     <outletCollection property="gestureRecognizers" destination="pKZ-zU-I6a" appends="YES" id="uZv-Jj-4q2"/>
                                 </connections>
                             </label>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XfW-o7-R6f" customClass="PKDownloadButton">
+                                <rect key="frame" x="280" y="42" width="24" height="24"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="24" id="Eft-YN-17R"/>
+                                    <constraint firstAttribute="width" constant="24" id="ggo-xB-G2n"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="delegate" destination="wAB-WM-ZQl" id="Ehh-9e-VIe"/>
+                                </connections>
+                            </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sv8-ax-o88">
                                 <rect key="frame" x="16" y="80" width="288" height="48"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -277,6 +288,7 @@
                                 <connections>
                                     <outlet property="dataSource" destination="wAB-WM-ZQl" id="QC6-YG-Zks"/>
                                     <outlet property="delegate" destination="wAB-WM-ZQl" id="Mtw-we-Bj8"/>
+                                    <outletCollection property="gestureRecognizers" destination="14q-rz-o7S" appends="YES" id="JH8-YX-NYG"/>
                                 </connections>
                             </collectionView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kiu-eR-U6M" customClass="MDCFloatingButton">
@@ -291,17 +303,17 @@
                                     <action selector="add" destination="wAB-WM-ZQl" eventType="touchUpInside" id="6xh-dv-Vgs"/>
                                 </connections>
                             </button>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XfW-o7-R6f" customClass="PKDownloadButton">
-                                <rect key="frame" x="280" y="42" width="24" height="24"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="24" id="Eft-YN-17R"/>
-                                    <constraint firstAttribute="width" constant="24" id="ggo-xB-G2n"/>
-                                </constraints>
-                                <connections>
-                                    <outlet property="delegate" destination="wAB-WM-ZQl" id="Ehh-9e-VIe"/>
-                                </connections>
-                            </view>
+                            <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iaU-RN-V3u">
+                                <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <items>
+                                    <barButtonItem systemItem="trash" id="Ua2-8a-Ofg">
+                                        <connections>
+                                            <action selector="removeItems" destination="wAB-WM-ZQl" id="cPA-0k-ySD"/>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -309,17 +321,20 @@
                             <constraint firstItem="XfW-o7-R6f" firstAttribute="leading" secondItem="IgM-tk-GPC" secondAttribute="trailing" constant="8" id="3Ow-Ef-CRl"/>
                             <constraint firstItem="dIV-uA-I3m" firstAttribute="centerY" secondItem="VEn-ta-I3v" secondAttribute="centerY" id="9Dt-AG-kUt"/>
                             <constraint firstItem="vgM-P6-FLk" firstAttribute="trailing" secondItem="XfW-o7-R6f" secondAttribute="trailing" constant="16" id="C3D-K9-0Yv"/>
+                            <constraint firstItem="iaU-RN-V3u" firstAttribute="bottom" secondItem="vgM-P6-FLk" secondAttribute="bottom" id="LvN-wm-AzM"/>
                             <constraint firstItem="cdB-Ih-Rhb" firstAttribute="leading" secondItem="vgM-P6-FLk" secondAttribute="leading" constant="16" id="SCf-xT-Um4"/>
                             <constraint firstItem="dIV-uA-I3m" firstAttribute="centerX" secondItem="VEn-ta-I3v" secondAttribute="centerX" id="ZHa-BD-C1k"/>
                             <constraint firstItem="hpS-2l-dcc" firstAttribute="top" secondItem="vgM-P6-FLk" secondAttribute="top" constant="16" id="a3F-RM-YwV"/>
                             <constraint firstItem="hpS-2l-dcc" firstAttribute="leading" secondItem="vgM-P6-FLk" secondAttribute="leading" constant="16" id="aEv-nP-VtX"/>
                             <constraint firstItem="Sv8-ax-o88" firstAttribute="leading" secondItem="vgM-P6-FLk" secondAttribute="leading" constant="16" id="bw4-nr-zcQ"/>
+                            <constraint firstItem="iaU-RN-V3u" firstAttribute="trailing" secondItem="VEn-ta-I3v" secondAttribute="trailing" id="cg5-fc-wUz"/>
                             <constraint firstItem="vgM-P6-FLk" firstAttribute="bottom" secondItem="cdB-Ih-Rhb" secondAttribute="bottom" constant="8" id="cnw-Hn-FeE"/>
                             <constraint firstItem="vgM-P6-FLk" firstAttribute="trailing" secondItem="kiu-eR-U6M" secondAttribute="trailing" constant="16" id="eYn-bF-MvK"/>
                             <constraint firstItem="cdB-Ih-Rhb" firstAttribute="top" secondItem="Sv8-ax-o88" secondAttribute="bottom" constant="8" id="gOV-8w-Ea8"/>
                             <constraint firstItem="IgM-tk-GPC" firstAttribute="centerY" secondItem="hpS-2l-dcc" secondAttribute="centerY" id="k5I-6E-vR2"/>
                             <constraint firstItem="Sv8-ax-o88" firstAttribute="top" secondItem="hpS-2l-dcc" secondAttribute="bottom" constant="8" id="lua-IY-9Qt"/>
                             <constraint firstItem="XfW-o7-R6f" firstAttribute="centerY" secondItem="IgM-tk-GPC" secondAttribute="centerY" id="mI2-0U-YUm"/>
+                            <constraint firstItem="iaU-RN-V3u" firstAttribute="leading" secondItem="VEn-ta-I3v" secondAttribute="leading" id="sVH-1x-nOh"/>
                             <constraint firstItem="IgM-tk-GPC" firstAttribute="leading" secondItem="hpS-2l-dcc" secondAttribute="trailing" constant="8" id="tp6-BB-5v5"/>
                             <constraint firstItem="vgM-P6-FLk" firstAttribute="trailing" secondItem="cdB-Ih-Rhb" secondAttribute="trailing" constant="16" id="tzz-2E-Mhp"/>
                             <constraint firstItem="vgM-P6-FLk" firstAttribute="trailing" secondItem="Sv8-ax-o88" secondAttribute="trailing" constant="16" id="xEs-VH-mKB"/>
@@ -334,6 +349,7 @@
                         <outlet property="spaceFavIcon" destination="hpS-2l-dcc" id="f3r-5D-oXV"/>
                         <outlet property="spaceName" destination="IgM-tk-GPC" id="3jS-qS-wAR"/>
                         <outlet property="tabBarContainer" destination="Sv8-ax-o88" id="Mk4-Mv-SE6"/>
+                        <outlet property="toolbar" destination="iaU-RN-V3u" id="4Hd-cO-hJ0"/>
                         <segue destination="60Y-gn-6Z7" kind="show" identifier="showSpaceSegue" id="rqB-hq-ZIX"/>
                         <segue destination="6Ji-DQ-0NT" kind="show" identifier="connectSpaceSegue" id="Po4-0Y-GwW"/>
                         <segue destination="O4c-xl-krb" kind="show" identifier="showPreviewSegue" id="CKO-ZC-74a"/>
@@ -352,6 +368,11 @@
                         <action selector="connectShowSpace" destination="wAB-WM-ZQl" id="M4l-Su-Dxe"/>
                     </connections>
                 </tapGestureRecognizer>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="14q-rz-o7S">
+                    <connections>
+                        <action selector="longPressItem:" destination="wAB-WM-ZQl" id="iWn-YO-jvL"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="618.75" y="115.14084507042254"/>
         </scene>
@@ -576,20 +597,20 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VtO-pQ-hh5">
-                                <rect key="frame" x="0.0" y="64" width="320" height="240"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="240"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="240" id="OL9-I9-qtU"/>
                                 </constraints>
                             </view>
                             <view alpha="0.20000000000000001" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="FRw-v8-E49">
-                                <rect key="frame" x="0.0" y="64" width="320" height="48"/>
+                                <rect key="frame" x="0.0" y="20" width="320" height="48"/>
                                 <color key="backgroundColor" cocoaTouchSystemColor="viewFlipsideBackgroundColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="48" id="8E3-Y9-mEW"/>
                                 </constraints>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Y3B-88-FGI" customClass="TintedButton" customModule="OpenArchive" customModuleProvider="target">
-                                <rect key="frame" x="160" y="80" width="24" height="24"/>
+                                <rect key="frame" x="160" y="36" width="24" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="24" id="0hP-hZ-k1O"/>
                                     <constraint firstAttribute="height" constant="24" id="8yU-SJ-tPF"/>
@@ -600,7 +621,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="DzD-tW-eDu" customClass="TintedButton" customModule="OpenArchive" customModuleProvider="target">
-                                <rect key="frame" x="200" y="80" width="24" height="24"/>
+                                <rect key="frame" x="200" y="36" width="24" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="3jC-gi-fmh"/>
                                     <constraint firstAttribute="width" constant="24" id="rrB-81-CbC"/>
@@ -611,7 +632,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="OhU-Sr-Gc1" customClass="TintedButton" customModule="OpenArchive" customModuleProvider="target">
-                                <rect key="frame" x="240" y="80" width="24" height="24"/>
+                                <rect key="frame" x="240" y="36" width="24" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="1hb-Jv-Ho6"/>
                                     <constraint firstAttribute="width" constant="24" id="wCd-7u-9Ea"/>
@@ -622,7 +643,7 @@
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hDR-sa-zhP" customClass="TintedButton" customModule="OpenArchive" customModuleProvider="target">
-                                <rect key="frame" x="280" y="80" width="24" height="24"/>
+                                <rect key="frame" x="280" y="36" width="24" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="Lxc-EF-NXa"/>
                                     <constraint firstAttribute="width" constant="24" id="gLl-Je-qFV"/>
@@ -803,8 +824,8 @@
         <image name="server" width="27" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="aBM-nf-RSW"/>
-        <segue reference="Rwx-7w-lhD"/>
+        <segue reference="ePG-WN-AhZ"/>
+        <segue reference="Po4-0Y-GwW"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.70398116438356162" blue="0.64921339897260277" alpha="1" colorSpace="calibratedRGB"/>
 </document>

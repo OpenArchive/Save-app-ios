@@ -16,6 +16,16 @@ class ImageCell: UICollectionViewCell {
     
     @IBOutlet var imgView: UIImageView!
 
+    private lazy var selectedView: UIView = {
+        let view = UIView()
+
+        view.layer.borderColor = UIColor.accent.cgColor
+        view.layer.borderWidth = 10
+        view.layer.cornerRadius = 15
+
+        return view
+    }()
+
     var asset: Asset? {
         didSet {
             self.imgView.image = asset?.getThumbnail()
@@ -32,6 +42,21 @@ class ImageCell: UICollectionViewCell {
             }
             else {
                 blurView?.removeFromSuperview()
+            }
+        }
+    }
+
+    override var isSelected: Bool {
+        didSet {
+            if isSelected {
+                addSubview(selectedView)
+                selectedView.frame = CGRect.init(x: bounds.origin.x - 5,
+                                                 y: bounds.origin.y - 5,
+                                                 width: bounds.size.width + 10,
+                                                 height: bounds.size.height + 10)
+            }
+            else {
+                selectedView.removeFromSuperview()
             }
         }
     }
