@@ -9,6 +9,7 @@
 import UIKit
 import CoreLocation
 import Photos
+import Contacts
 
 /**
  Facility to fetch addresses from given `CLLocation`s or `PHAsset` metadata.
@@ -111,7 +112,9 @@ class Geocoder {
 
                 var prettyAddress: String? = nil
 
-                if let address = placemarks?.first?.postalAddress {
+                if let address = placemarks?.first?.postalAddress?.mutableCopy() as? CNMutablePostalAddress {
+                    address.street = "" // Remove too much detail.
+
                     prettyAddress = Formatters.address.string(from: address)
                 }
                 else {
