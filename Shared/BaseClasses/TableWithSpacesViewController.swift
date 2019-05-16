@@ -78,7 +78,7 @@ class TableWithSpacesViewController: BaseTableViewController, UICollectionViewDe
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if indexPath.row < spacesCount {
-            SelectedSpace.space = getSpace(indexPath)
+            SelectedSpace.setSpace(getSpace(indexPath))
             tableView.reloadData()
         }
         else {
