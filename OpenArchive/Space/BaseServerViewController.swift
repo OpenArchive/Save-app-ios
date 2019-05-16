@@ -43,11 +43,13 @@ class BaseServerViewController: FormViewController, DoneDelegate {
     }
 
     @objc func connect() {
+        SelectedSpace.space = self.space
+
         Db.writeConn?.asyncReadWrite() { transaction in
+            SelectedSpace.store(transaction)
+
             transaction.setObject(self.space, forKey: self.space!.id,
                                   inCollection: Space.collection)
-
-            SelectedSpace.setSpace(self.space, transaction)
         }
 
         if isEdit ?? true {
@@ -106,7 +108,8 @@ class BaseServerViewController: FormViewController, DoneDelegate {
                                 }
                             }
 
-                            SelectedSpace.setSpace(newSelectedSpace, transaction)
+                            SelectedSpace.space = newSelectedSpace
+                            SelectedSpace.store(transaction)
 
                             DispatchQueue.main.async(execute: self.goToNext)
                         }

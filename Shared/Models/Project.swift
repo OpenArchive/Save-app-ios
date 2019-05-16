@@ -155,7 +155,7 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
         if let id = spaceId {
             edges.append(YapDatabaseRelationshipEdge(
                 name: "space", destinationKey: id, collection: Space.collection,
-                nodeDeleteRules: .notifyIfDestinationDeleted))
+                nodeDeleteRules: .deleteSourceIfDestinationDeleted))
         }
 
         if let id = collectionId {

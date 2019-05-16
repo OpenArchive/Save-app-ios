@@ -33,41 +33,44 @@ class SelectedSpace {
     private static var _space: Space?
 
     static var space: Space? {
-        if _space == nil {
-            Db.bgRwConn?.read { transaction in
-                for id in transaction.allKeys(inCollection: SelectedSpace.collection) {
-                    self._space = transaction.object(
-                        forKey: id, inCollection: Space.collection) as? Space
+        get {
+            if _space == nil {
+                Db.bgRwConn?.read { transaction in
+                    for id in transaction.allKeys(inCollection: SelectedSpace.collection) {
+                        self._space = transaction.object(
+                            forKey: id, inCollection: Space.collection) as? Space
 
-                    if self._space != nil {
-                        break
+                        if self._space != nil {
+                            break
+                        }
                     }
-                }
 
-                if self._space == nil {
-                    transaction.enumerateKeysAndObjects(inCollection: Space.collection) { key, object, stop in
-                        if let space = object as? Space {
-                            self._space = space
-                            stop.pointee = true
+                    if self._space == nil {
+                        transaction.enumerateKeysAndObjects(inCollection: Space.collection) { key, object, stop in
+                            if let space = object as? Space {
+                                self._space = space
+                                stop.pointee = true
+                            }
                         }
                     }
                 }
             }
-        }
 
-        return _space
+            return _space
+        }
+        set {
+            _space = newValue
+        }
     }
 
-    static func setSpace(_ space: Space?, _ transaction: YapDatabaseReadWriteTransaction? = nil) {
+    static func store(_ transaction: YapDatabaseReadWriteTransaction? = nil) {
         guard let transaction = transaction else {
             Db.bgRwConn?.asyncReadWrite { transaction in
-                self.setSpace(space, transaction)
+                self.store(transaction)
             }
 
             return
         }
-
-        _space = space
 
         transaction.removeAllObjects(inCollection: SelectedSpace.collection)
 
