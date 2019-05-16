@@ -67,6 +67,8 @@ class UploadManager {
 
     private let queue = DispatchQueue(label: "\(Bundle.main.bundleIdentifier!).\(String(describing: UploadManager.self))")
 
+    private var globalPause = false
+
     /**
      Polls tracked Progress objects and updates `Update` objects every second.
     */
@@ -194,59 +196,85 @@ class UploadManager {
     }
 
     @objc func pause(notification: Notification) {
-        debug("#pause")
+        let id = notification.object as? String
 
-        guard let id = notification.object as? String else {
-            return
-        }
-
-        debug("#pause id=\(id)")
+        debug("#pause id=\(id ?? "globally")")
 
         queue.async {
-            guard let upload = self.get(id) else {
-                return
+            var updates = [Upload]()
+
+            if let id = id {
+                guard let upload = self.get(id) else {
+                    return
+                }
+
+                upload.cancel()
+                upload.paused = true
+
+                updates.append(upload)
+            }
+            else {
+                self.globalPause = true
+
+                for upload in self.uploads {
+                    if upload.liveProgress != nil {
+                        upload.cancel()
+
+                        updates.append(upload)
+                    }
+                }
             }
 
-            upload.cancel()
-            upload.paused = true
-
             Db.writeConn?.asyncReadWrite { transaction in
-                transaction.setObject(upload, forKey: id, inCollection: Upload.collection)
+                for upload in updates {
+                    transaction.setObject(upload, forKey: upload.id, inCollection: Upload.collection)
+                }
             }
         }
     }
 
     @objc func unpause(notification: Notification) {
-        debug("#unpause")
+        let id = notification.object as? String
 
-        guard let id = notification.object as? String else {
-            return
-        }
-
-        debug("#unpause id=\(id)")
+        debug("#unpause id=\(id ?? "globally")")
 
         queue.async {
-            guard let upload = self.get(id),
-                upload.liveProgress == nil else {
-                    return
+            var updates = [Upload]()
+
+            if let id = id {
+                guard let upload = self.get(id),
+                    upload.liveProgress == nil else {
+                        return
+                }
+
+                self.reset(upload)
+
+                updates.append(upload)
+            }
+            else {
+                for upload in self.uploads {
+                    if upload.tries > 0 {
+                        self.reset(upload)
+                    }
+                }
+
+                self.globalPause = false
             }
 
-            upload.paused = false
-            upload.error = nil
-            upload.tries = 0
-            upload.lastTry = nil
-            upload.progress = 0
-
-            // Also reset circuit-breaker. Otherwise users will get confused.
-            let space = upload.asset?.space
-            space?.tries = 0
-            space?.lastTry = nil
-
             Db.writeConn?.asyncReadWrite { transaction in
-                transaction.setObject(upload, forKey: id, inCollection: Upload.collection)
+                for upload in updates {
+                    transaction.setObject(upload, forKey: upload.id, inCollection: Upload.collection)
 
-                if let space = space {
-                    transaction.setObject(space, forKey: space.id, inCollection: Space.collection)
+                    if let space = upload.asset?.space {
+                        transaction.setObject(space, forKey: space.id, inCollection: Space.collection)
+                    }
+                }
+
+                // If objects were changed, #uploadNext is triggered via #yapDatabaseModified,
+                // if no objects were changed, we need to do it explicitely, because
+                // that's a state change in #globalPause, then.
+                if updates.count < 1 {
+                    self.uploadNext()
                 }
             }
         }
@@ -280,17 +308,21 @@ class UploadManager {
             if error != nil || url == nil {
                 asset.setUploaded(nil)
 
-                // Circuit breaker pattern: Increase circuit breaker counter on error.
-                space?.tries += 1
-                space?.lastTry = Date()
-
-                upload.tries += 1
-                // We stop retrying, if the server denies us, or as soon as we hit the maximum number of retries.
-                upload.paused = error is FileProviderHTTPError || UploadManager.maxRetries <= upload.tries
-                upload.lastTry = Date()
                 upload.liveProgress = nil
                 upload.progress = 0
-                upload.error = error?.localizedDescription ?? (url == nil ? "No URL provided." : "Unknown error.")
+
+                if !upload.paused && !self.globalPause {
+                    // Circuit breaker pattern: Increase circuit breaker counter on error.
+                    space?.tries += 1
+                    space?.lastTry = Date()
+
+                    upload.tries += 1
+                    // We stop retrying, if the server denies us, or as soon as we hit the maximum number of retries.
+                    upload.paused = error is FileProviderHTTPError || UploadManager.maxRetries <= upload.tries
+                    upload.lastTry = Date()
+
+                    upload.error = error?.localizedDescription ?? (url == nil ? "No URL provided." : "Unknown error.")
+                }
 
                 collection = nil
             }
@@ -347,6 +379,10 @@ class UploadManager {
     @objc func uploadNext() {
         queue.async {
             self.debug("#uploadNext \(self.uploads.count) items in upload queue")
+
+            if self.globalPause {
+                return self.debug("#uploadNext globally paused")
+            }
 
             // Check if there's at least on item currently uploading.
             if self.isUploading() {
@@ -430,5 +466,18 @@ class UploadManager {
         }
 
         return asset
+    }
+
+    private func reset(_ upload: Upload) {
+        upload.paused = false
+        upload.error = nil
+        upload.tries = 0
+        upload.lastTry = nil
+        upload.progress = 0
+
+        // Also reset circuit-breaker. Otherwise users will get confused.
+        let space = upload.asset?.space
+        space?.tries = 0
+        space?.lastTry = nil
     }
 }

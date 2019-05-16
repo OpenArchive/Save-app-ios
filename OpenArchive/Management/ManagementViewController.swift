@@ -100,6 +100,17 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
         return [removeAction]
     }
 
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+
+        if editing {
+            NotificationCenter.default.post(name: .uploadManagerPause, object: nil)
+        }
+        else {
+            NotificationCenter.default.post(name: .uploadManagerUnpause, object: nil)
+        }
+    }
+
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
         if let upload = getUpload(indexPath) {
             return upload.state == .pending || upload.state == .startDownload
@@ -172,6 +183,10 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
     // MARK: Actions
 
     @IBAction func done() {
+        if isEditing {
+            NotificationCenter.default.post(name: .uploadManagerUnpause, object: nil)
+        }
+
         dismiss(animated: true)
     }
 
