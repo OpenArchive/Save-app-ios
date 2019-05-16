@@ -142,7 +142,7 @@ class IaSpace: Space, Item {
                 "x-archive-keep-old-version": "0",
                 ]
 
-            sessionManager.request(url, method: .delete, headers: headers)
+            Space.sessionManager.request(url, method: .delete, headers: headers)
                 .debug()
                 .validate(statusCode: 200..<300)
                 .responseData() { response in

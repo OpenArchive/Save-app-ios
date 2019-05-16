@@ -81,7 +81,7 @@ class Space: NSObject {
 
      See [Getting code=-999 using custom SessionManager](https://github.com/Alamofire/Alamofire/issues/1684)
      */
-    lazy var sessionManager: SessionManager = {
+    static var sessionManager: SessionManager = {
         let conf = URLSessionConfiguration.background(withIdentifier:
             "\(Bundle.main.bundleIdentifier ?? "").background")
         conf.sharedContainerIdentifier = Constants.appGroup
@@ -293,7 +293,7 @@ class Space: NSObject {
         let start = progress.completedUnitCount
         let share = progress.totalUnitCount - start
 
-        let req = sessionManager.upload(file, to: to, method: .put, headers: headers)
+        let req = Space.sessionManager.upload(file, to: to, method: .put, headers: headers)
             .validate(statusCode: 200..<300)
             .uploadProgress {
                 progress.completedUnitCount = start + $0.completedUnitCount * share / $0.totalUnitCount
