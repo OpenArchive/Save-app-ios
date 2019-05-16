@@ -19,7 +19,7 @@ class ConnectSpaceViewController: BaseTableViewController, DoneDelegate {
         // users can see the main scene. Where they can't do anything, but
         // at least they can have a glimpse.
         // All other times they can back out with a navigation back button.
-        if !Settings.firstRunDone {
+        if !SelectedSpace.available {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
                 title: "Skip".localize(), style: .plain, target: self,
                 action: #selector(done))
@@ -84,10 +84,10 @@ class ConnectSpaceViewController: BaseTableViewController, DoneDelegate {
             (navigationController as? MainNavigationController)?.setRoot()
         }
         else {
-            // All other times: We're not the root view controller, so just
-            // back out.
+            // All other times: We should be running in a popover as root.
+            // Dismiss that.
 
-            navigationController?.popViewController(animated: true)
+            dismiss(animated: true)
         }
     }
 }

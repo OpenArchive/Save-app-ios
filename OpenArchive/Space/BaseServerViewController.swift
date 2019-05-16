@@ -108,21 +108,22 @@ class BaseServerViewController: FormViewController, DoneDelegate {
 
                             SelectedSpace.setSpace(newSelectedSpace, transaction)
 
-                            DispatchQueue.main.async(execute: self.goToMenu)
+                            DispatchQueue.main.async(execute: self.goToNext)
                         }
                 })
             ])
     }
 
     /**
-     Pop to MenuViewController or to first view controller in navigation stack.
+     Pop to MenuViewController or to ConnectSpaceViewController, depending on
+     if we still have a space.
     */
-    private func goToMenu() {
-        if let navVc = navigationController,
-            let menuVc = navVc.viewControllers.first(where: { $0 is MenuViewController })
-                ?? navVc.viewControllers.first {
-
-            navVc.popToViewController(menuVc, animated: true)
+    private func goToNext() {
+        if SelectedSpace.available {
+            navigationController?.popToRootViewController(animated: true)
+            return
         }
+
+        (navigationController as? MenuNavigationController)?.setRoot()
     }
 }

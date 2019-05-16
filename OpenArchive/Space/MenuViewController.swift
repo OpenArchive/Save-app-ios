@@ -58,10 +58,6 @@ class MenuViewController: TableWithSpacesViewController {
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
         tableView.reloadData()
-
-        if SelectedSpace.id == nil {
-            performSegue(withIdentifier: "connectSpaceSegue", sender: self)
-        }
     }
 
 

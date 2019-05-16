@@ -27,7 +27,7 @@ class SelectedSpace {
     }
 
     static var available: Bool {
-        return id != nil
+        return space != nil
     }
 
     private static var _space: Space?

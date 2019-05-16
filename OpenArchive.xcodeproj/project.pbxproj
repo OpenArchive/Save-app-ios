@@ -152,6 +152,7 @@
 		A0F7FDE0224936C8006610F0 /* TintedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDE224936C8006610F0 /* TintedImageView.swift */; };
 		A0F7FDE722494E2F006610F0 /* RemoveProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */; };
 		A0F7FDE822494E3E006610F0 /* RemoveProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */; };
+		A0F889EB228DA3440033A74D /* MenuNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F889EA228DA3440033A74D /* MenuNavigationController.swift */; };
 		A0FA93412277387D0086D276 /* Bundle+displayName.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA93402277387D0086D276 /* Bundle+displayName.swift */; };
 		A0FA93422277387D0086D276 /* Bundle+displayName.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA93402277387D0086D276 /* Bundle+displayName.swift */; };
 		A0FA93442277557D0086D276 /* DataUsageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA93432277557D0086D276 /* DataUsageViewController.swift */; };
@@ -302,6 +303,7 @@
 		A0F7FDDB22491C6C006610F0 /* TintedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintedButton.swift; sourceTree = "<group>"; };
 		A0F7FDDE224936C8006610F0 /* TintedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintedImageView.swift; sourceTree = "<group>"; };
 		A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveProjectAlert.swift; sourceTree = "<group>"; };
+		A0F889EA228DA3440033A74D /* MenuNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuNavigationController.swift; sourceTree = "<group>"; };
 		A0FA93402277387D0086D276 /* Bundle+displayName.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+displayName.swift"; sourceTree = "<group>"; };
 		A0FA93432277557D0086D276 /* DataUsageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataUsageViewController.swift; sourceTree = "<group>"; };
 		A0FA9345227757100086D276 /* Settings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Settings.swift; sourceTree = "<group>"; };
@@ -529,6 +531,7 @@
 		A0E1A67D21EE7B3200E4F6B7 /* Space */ = {
 			isa = PBXGroup;
 			children = (
+				A0F889EA228DA3440033A74D /* MenuNavigationController.swift */,
 				A0656AB721F9BC8500070C4B /* ConnectSpaceViewController.swift */,
 				A0E1A67B21EE7A5C00E4F6B7 /* MenuViewController.swift */,
 				A072C4D5227C8B3C0022BC58 /* SpaceViewController.swift */,
@@ -914,6 +917,7 @@
 				A0FA9346227757100086D276 /* Settings.swift in Sources */,
 				A0C797E922807DF00009751A /* SelectedCollection.swift in Sources */,
 				A00A8D47220C7EDD0083F0CB /* AbcFilteredByProjectView.swift in Sources */,
+				A0F889EB228DA3440033A74D /* MenuNavigationController.swift in Sources */,
 				A0A3D9C72226D8DB00BB5A19 /* SpaceCell.swift in Sources */,
 				A08750A92112099700BFAFE4 /* Constants.m in Sources */,
 				A0362198220DB384003C21DC /* WebDavSpace.swift in Sources */,
