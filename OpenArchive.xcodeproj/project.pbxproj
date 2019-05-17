@@ -140,6 +140,7 @@
 		A0E2720C224E33D000CB7113 /* EditProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2720B224E33D000CB7113 /* EditProjectViewController.swift */; };
 		A0E2BC722226AA10006D33E3 /* SelectedSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2BC712226AA10006D33E3 /* SelectedSpace.swift */; };
 		A0E2BC732226AA10006D33E3 /* SelectedSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2BC712226AA10006D33E3 /* SelectedSpace.swift */; };
+		A0E321F6228EBE6A00F2E9BD /* FlagInfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E321F5228EBE6A00F2E9BD /* FlagInfoAlert.swift */; };
 		A0E739D820E4C85D00DB31E1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E739D720E4C85D00DB31E1 /* AppDelegate.swift */; };
 		A0E739DD20E4C85D00DB31E1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DB20E4C85D00DB31E1 /* Main.storyboard */; };
 		A0E739DF20E4C85E00DB31E1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DE20E4C85E00DB31E1 /* Assets.xcassets */; };
@@ -292,6 +293,7 @@
 		A0E27208224E335400CB7113 /* NewProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewProjectViewController.swift; sourceTree = "<group>"; };
 		A0E2720B224E33D000CB7113 /* EditProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProjectViewController.swift; sourceTree = "<group>"; };
 		A0E2BC712226AA10006D33E3 /* SelectedSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedSpace.swift; sourceTree = "<group>"; };
+		A0E321F5228EBE6A00F2E9BD /* FlagInfoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagInfoAlert.swift; sourceTree = "<group>"; };
 		A0E739D420E4C85D00DB31E1 /* OpenArchive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenArchive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0E739D720E4C85D00DB31E1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A0E739DC20E4C85D00DB31E1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -467,6 +469,7 @@
 				A0AFCF1122302054005E57FD /* PreviewCell.swift */,
 				A04526072231309D007A6F53 /* EditViewController.swift */,
 				A00DC98922315D4F004F07E0 /* ImageViewController.swift */,
+				A0E321F5228EBE6A00F2E9BD /* FlagInfoAlert.swift */,
 			);
 			path = Preview;
 			sourceTree = "<group>";
@@ -779,6 +782,7 @@
 				"${BUILT_PRODUCTS_DIR}/MDFTextAccessibility/MDFTextAccessibility.framework",
 				"${BUILT_PRODUCTS_DIR}/MaterialComponents/MaterialComponents.framework",
 				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
+				"${BUILT_PRODUCTS_DIR}/SDCAlertView/SDCAlertView.framework",
 				"${BUILT_PRODUCTS_DIR}/TLPhotoPicker/TLPhotoPicker.framework",
 				"${BUILT_PRODUCTS_DIR}/TUSafariActivity/TUSafariActivity.framework",
 				"${BUILT_PRODUCTS_DIR}/UIImage-Resize/UIImage_Resize.framework",
@@ -802,6 +806,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MDFTextAccessibility.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MaterialComponents.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDCAlertView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TLPhotoPicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TUSafariActivity.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIImage_Resize.framework",
@@ -944,6 +949,7 @@
 				A08C2CEB21F0B71B008ACA3E /* EditProfileViewController.swift in Sources */,
 				A0E27209224E335400CB7113 /* NewProjectViewController.swift in Sources */,
 				A0552050222566CE00B9645F /* UIView+animateHideShow.swift in Sources */,
+				A0E321F6228EBE6A00F2E9BD /* FlagInfoAlert.swift in Sources */,
 				A05275142211A91300BDB14B /* CollectionsView.swift in Sources */,
 				A07129102111E4F1007A432A /* Db.swift in Sources */,
 				A059E647223AE9FB00ABC621 /* UploadManager.swift in Sources */,

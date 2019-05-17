@@ -350,6 +350,8 @@ class EditViewController: BaseViewController, UITextViewDelegate,
         flagBt.isSelected = asset.flagged
 
         store()
+
+        FlagInfoAlert.presentIfNeeded(self)
     }
 
     @IBAction func remove() {

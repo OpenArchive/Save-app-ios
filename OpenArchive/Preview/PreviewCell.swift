@@ -65,6 +65,8 @@ class PreviewCell: BaseCell {
             Db.writeConn?.asyncReadWrite { transaction in
                 transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
             }
+
+            FlagInfoAlert.presentIfNeeded()
         }
     }
 }

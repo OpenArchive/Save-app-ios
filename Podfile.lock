@@ -83,6 +83,7 @@ PODS:
   - MDFInternationalization (2.0.0)
   - MDFTextAccessibility (2.0.0)
   - ReachabilitySwift (4.3.1)
+  - SDCAlertView (10.0)
   - TLPhotoPicker (1.8.8)
   - TUSafariActivity (1.0.4)
   - UIImage-Resize (1.0.1)
@@ -165,6 +166,7 @@ DEPENDENCIES:
   - MaterialComponents/Tabs (~> 81)
   - MBProgressHUD (~> 1.1)
   - ReachabilitySwift (~> 4.3)
+  - SDCAlertView (~> 10.0)
   - TLPhotoPicker (~> 1.8)
   - TUSafariActivity (~> 1.0)
   - UIImage-Resize (~> 1.0)
@@ -187,6 +189,7 @@ SPEC REPOS:
     - MDFInternationalization
     - MDFTextAccessibility
     - ReachabilitySwift
+    - SDCAlertView
     - TLPhotoPicker
     - TUSafariActivity
     - UIImage-Resize
@@ -218,11 +221,12 @@ SPEC CHECKSUMS:
   MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
   MDFTextAccessibility: 85c09a1bd9c321f494348e632a25063bcda35a53
   ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
+  SDCAlertView: 5fbc48cae6d7bf9781097e3f27883924ef3b922c
   TLPhotoPicker: f90e8567aa33fff6b1b9cad4adbd57090b200acc
   TUSafariActivity: afc55a00965377939107ce4fdc7f951f62454546
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   YapDatabase: d8cd02058e36bc0902e405d8f3326eb8d7dbf36c
 
-PODFILE CHECKSUM: ffdb65d648c7073b5403f8ab9d21f71b7d5fc5a5
+PODFILE CHECKSUM: b42c571e15e0ea3d6cea42913a5f189d825c0f1b
 
 COCOAPODS: 1.6.1

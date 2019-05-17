@@ -28,6 +28,7 @@ target 'OpenArchive' do
   pod 'FavIcon', '~> 3.0'
   pod 'TUSafariActivity', '~> 1.0'
   pod 'ARChromeActivity', '~> 1.0'
+  pod 'SDCAlertView', '~> 10.0'
 end
 
 target 'ShareExtension' do
