@@ -21,7 +21,7 @@ PKDownloadButtonDelegate {
 
     private static let segueShowMenu = "showMenuSegue"
     private static let segueShowPreview = "showPreviewSegue"
-    private static let segueShowEdit = "showEditSegue"
+    private static let segueShowDarkroom = "showDarkroomSegue"
     private static let segueShowManagement = "showManagmentSegue"
 
     @IBOutlet weak var spaceFavIcon: UIImageView!
@@ -203,7 +203,7 @@ PKDownloadButtonDelegate {
         AbcFilteredByCollectionView.updateFilter(AssetsByCollectionView.collectionId(
             from: assetsMappings.group(forSection: UInt(indexPath.section))))
 
-        performSegue(withIdentifier: MainViewController.segueShowEdit, sender: indexPath.row)
+        performSegue(withIdentifier: MainViewController.segueShowDarkroom, sender: indexPath.row)
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -351,10 +351,10 @@ PKDownloadButtonDelegate {
     // MARK: Navigation
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let editVc = segue.destination as? EditViewController,
+        if let vc = segue.destination as? DarkroomViewController,
             let index = sender as? Int {
 
-            editVc.selected = index
+            vc.selected = index
         }
         else if segue.identifier == MainViewController.segueShowMenu {
             segue.destination.popoverPresentationController?.sourceView = spaceFavIcon

@@ -359,7 +359,7 @@ class EditViewController: BaseViewController, UITextViewDelegate,
             return
         }
 
-        self.present(RemoveAssetAlert([asset]), animated: true)
+        present(RemoveAssetAlert([asset]), animated: true)
     }
 
     // MARK: Private Methods

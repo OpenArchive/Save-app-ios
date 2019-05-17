@@ -87,6 +87,7 @@ PODS:
   - TLPhotoPicker (1.8.8)
   - TUSafariActivity (1.0.4)
   - UIImage-Resize (1.0.1)
+  - UIImageViewAlignedSwift (0.7.0)
   - YapDatabase (3.1.2):
     - YapDatabase/Standard (= 3.1.2)
   - YapDatabase/Standard (3.1.2):
@@ -170,6 +171,7 @@ DEPENDENCIES:
   - TLPhotoPicker (~> 1.8)
   - TUSafariActivity (~> 1.0)
   - UIImage-Resize (~> 1.0)
+  - UIImageViewAlignedSwift (~> 0.7)
   - YapDatabase (~> 3.1)
 
 SPEC REPOS:
@@ -193,6 +195,7 @@ SPEC REPOS:
     - TLPhotoPicker
     - TUSafariActivity
     - UIImage-Resize
+    - UIImageViewAlignedSwift
     - YapDatabase
 
 EXTERNAL SOURCES:
@@ -225,8 +228,9 @@ SPEC CHECKSUMS:
   TLPhotoPicker: f90e8567aa33fff6b1b9cad4adbd57090b200acc
   TUSafariActivity: afc55a00965377939107ce4fdc7f951f62454546
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
+  UIImageViewAlignedSwift: cfd56e381a894c71bf0d020cb3ef31cb3f604634
   YapDatabase: d8cd02058e36bc0902e405d8f3326eb8d7dbf36c
 
-PODFILE CHECKSUM: b42c571e15e0ea3d6cea42913a5f189d825c0f1b
+PODFILE CHECKSUM: 7f210109702b5a308e3288901d85619a627e7cbb
 
 COCOAPODS: 1.6.1

@@ -141,6 +141,11 @@
 		A0E2BC722226AA10006D33E3 /* SelectedSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2BC712226AA10006D33E3 /* SelectedSpace.swift */; };
 		A0E2BC732226AA10006D33E3 /* SelectedSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2BC712226AA10006D33E3 /* SelectedSpace.swift */; };
 		A0E321F6228EBE6A00F2E9BD /* FlagInfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E321F5228EBE6A00F2E9BD /* FlagInfoAlert.swift */; };
+		A0E321F9228EDBE900F2E9BD /* DarkroomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E321F8228EDBE900F2E9BD /* DarkroomViewController.swift */; };
+		A0E321FB228EFA8800F2E9BD /* InfoContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E321FA228EFA8800F2E9BD /* InfoContainer.swift */; };
+		A0E321FD228EFDA200F2E9BD /* InfoContainer.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E321FC228EFDA200F2E9BD /* InfoContainer.xib */; };
+		A0E321FE228EFDA200F2E9BD /* InfoContainer.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E321FC228EFDA200F2E9BD /* InfoContainer.xib */; };
+		A0E321FF228EFE7100F2E9BD /* InfoContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E321FA228EFA8800F2E9BD /* InfoContainer.swift */; };
 		A0E739D820E4C85D00DB31E1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E739D720E4C85D00DB31E1 /* AppDelegate.swift */; };
 		A0E739DD20E4C85D00DB31E1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DB20E4C85D00DB31E1 /* Main.storyboard */; };
 		A0E739DF20E4C85E00DB31E1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DE20E4C85E00DB31E1 /* Assets.xcassets */; };
@@ -294,6 +299,9 @@
 		A0E2720B224E33D000CB7113 /* EditProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProjectViewController.swift; sourceTree = "<group>"; };
 		A0E2BC712226AA10006D33E3 /* SelectedSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedSpace.swift; sourceTree = "<group>"; };
 		A0E321F5228EBE6A00F2E9BD /* FlagInfoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagInfoAlert.swift; sourceTree = "<group>"; };
+		A0E321F8228EDBE900F2E9BD /* DarkroomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkroomViewController.swift; sourceTree = "<group>"; };
+		A0E321FA228EFA8800F2E9BD /* InfoContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoContainer.swift; sourceTree = "<group>"; };
+		A0E321FC228EFDA200F2E9BD /* InfoContainer.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InfoContainer.xib; sourceTree = "<group>"; };
 		A0E739D420E4C85D00DB31E1 /* OpenArchive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenArchive.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0E739D720E4C85D00DB31E1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A0E739DC20E4C85D00DB31E1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -465,6 +473,7 @@
 		A0AFCF0B223001AE005E57FD /* Preview */ = {
 			isa = PBXGroup;
 			children = (
+				A0E321F8228EDBE900F2E9BD /* DarkroomViewController.swift */,
 				A0AFCF0C22300279005E57FD /* PreviewViewController.swift */,
 				A0AFCF1122302054005E57FD /* PreviewCell.swift */,
 				A04526072231309D007A6F53 /* EditViewController.swift */,
@@ -508,6 +517,8 @@
 				A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */,
 				A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */,
 				A045D200224D07C3008FF8C1 /* ButtonCell.swift */,
+				A0E321FA228EFA8800F2E9BD /* InfoContainer.swift */,
+				A0E321FC228EFDA200F2E9BD /* InfoContainer.xib */,
 				A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */,
 				A0AC06B32201E94000BD5FBA /* MenuItemCell.xib */,
 				A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */,
@@ -718,6 +729,7 @@
 				A0E27205224E2A4D00CB7113 /* FolderCell.xib in Resources */,
 				A0C475B7211488BF0012937E /* Assets.xcassets in Resources */,
 				A045D1E9224CF24F008FF8C1 /* SpacesListCell.xib in Resources */,
+				A0E321FE228EFDA200F2E9BD /* InfoContainer.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -730,6 +742,7 @@
 				A0AC06B42201E94000BD5FBA /* MenuItemCell.xib in Resources */,
 				A045D1E4224CF034008FF8C1 /* SpaceCell.xib in Resources */,
 				A045D1E8224CF24E008FF8C1 /* SpacesListCell.xib in Resources */,
+				A0E321FD228EFDA200F2E9BD /* InfoContainer.xib in Resources */,
 				A0A98AEC22428A9300596B74 /* TableHeader.xib in Resources */,
 				A0E739E220E4C85E00DB31E1 /* LaunchScreen.storyboard in Resources */,
 				A0E739DF20E4C85E00DB31E1 /* Assets.xcassets in Resources */,
@@ -786,6 +799,7 @@
 				"${BUILT_PRODUCTS_DIR}/TLPhotoPicker/TLPhotoPicker.framework",
 				"${BUILT_PRODUCTS_DIR}/TUSafariActivity/TUSafariActivity.framework",
 				"${BUILT_PRODUCTS_DIR}/UIImage-Resize/UIImage_Resize.framework",
+				"${BUILT_PRODUCTS_DIR}/UIImageViewAlignedSwift/UIImageViewAlignedSwift.framework",
 				"${BUILT_PRODUCTS_DIR}/YapDatabase/YapDatabase.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -810,6 +824,7 @@
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TLPhotoPicker.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TUSafariActivity.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIImage_Resize.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIImageViewAlignedSwift.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YapDatabase.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -844,6 +859,7 @@
 			files = (
 				A0E271FE224E261100CB7113 /* BaseProjectViewController.swift in Sources */,
 				A0BBEF8A22846F310071EE93 /* Geocoder.swift in Sources */,
+				A0E321FF228EFE7100F2E9BD /* InfoContainer.swift in Sources */,
 				A0A192DE21F208DA009A8CF0 /* Space.swift in Sources */,
 				A0E2720A224E335400CB7113 /* NewProjectViewController.swift in Sources */,
 				A08C2CE821F0B613008ACA3E /* BaseCell.swift in Sources */,
@@ -938,9 +954,11 @@
 				A01A7B722200F2D700E18DE0 /* HeaderView.swift in Sources */,
 				A050147F2228209E0056ED95 /* BaseServerViewController.swift in Sources */,
 				A0AC06AA2201CFD800BD5FBA /* BrowseViewController.swift in Sources */,
+				A0E321FB228EFA8800F2E9BD /* InfoContainer.swift in Sources */,
 				A0D58DCE20E51517005A2F34 /* Asset.swift in Sources */,
 				A08C2CE421F0A98C008ACA3E /* PrivateServerViewController.swift in Sources */,
 				A04526082231309D007A6F53 /* EditViewController.swift in Sources */,
+				A0E321F9228EDBE900F2E9BD /* DarkroomViewController.swift in Sources */,
 				A070335B2119E7DF00BF1F33 /* Request+debug.swift in Sources */,
 				A045D1F6224CFFB4008FF8C1 /* SelectedSpaceCell.swift in Sources */,
 				A077732A22786BF500291F5D /* RemoveAssetAlert.swift in Sources */,

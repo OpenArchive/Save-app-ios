@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import UIImageViewAlignedSwift
 
 class ImageViewController: UIViewController {
 
@@ -15,7 +16,7 @@ class ImageViewController: UIViewController {
             .instantiateViewController(withIdentifier: "imageViewController") as? ImageViewController
     }
 
-    @IBOutlet weak var imageView: UIImageView!
+    @IBOutlet weak var imageView: UIImageViewAligned!
 
     var image: UIImage?
 
@@ -25,5 +26,6 @@ class ImageViewController: UIViewController {
         super.viewDidLoad()
 
         imageView.image = image
+        imageView.alignment = .top
     }
 }
