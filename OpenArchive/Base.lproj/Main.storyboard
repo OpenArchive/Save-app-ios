@@ -520,6 +520,7 @@
                                                 <constraint firstAttribute="height" constant="24" id="JCM-fh-Sa9"/>
                                                 <constraint firstAttribute="width" constant="24" id="PZm-eh-BxS"/>
                                             </constraints>
+                                            <color key="tintColor" red="0.9137254901960784" green="0.74117647058823533" blue="0.027450980392156862" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                             <state key="normal" image="ic_flag"/>
                                             <connections>
                                                 <action selector="flag" destination="FlE-CG-61G" eventType="touchUpInside" id="5Tm-2O-Q6K"/>
@@ -749,6 +750,7 @@
                                     <constraint firstAttribute="height" constant="24" id="Lxc-EF-NXa"/>
                                     <constraint firstAttribute="width" constant="24" id="gLl-Je-qFV"/>
                                 </constraints>
+                                <color key="tintColor" red="0.9137254901960784" green="0.74117647058823533" blue="0.027450980392156862" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" image="ic_flag"/>
                                 <connections>
                                     <action selector="flag" destination="WUt-u5-nda" eventType="touchUpInside" id="ufq-nw-ztt"/>

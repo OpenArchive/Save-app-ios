@@ -28,20 +28,17 @@ class DarkroomViewController: UIViewController, UIPageViewControllerDataSource, 
     @IBOutlet weak var toolbar: UIToolbar!
     private var toolbarHeight: NSLayoutConstraint?
 
-    private lazy var desc: InfoContainer? = {
-        return InfoContainer.instantiate("ic_tag", infos)
-    }()
+    private lazy var desc: InfoBox? = InfoBox.instantiate("ic_tag", infos)
 
-    private lazy var location: InfoContainer? = {
-        return InfoContainer.instantiate("ic_location", infos)
-    }()
+    private lazy var location: InfoBox? = InfoBox.instantiate("ic_location", infos)
 
-    private lazy var notes: InfoContainer? = {
-        return InfoContainer.instantiate("ic_edit", infos)
-    }()
+    private lazy var notes: InfoBox? = InfoBox.instantiate("ic_edit", infos)
 
-    private lazy var flag: InfoContainer? = {
-        return InfoContainer.instantiate("ic_flag", infos)
+    private lazy var flag: InfoBox? = {
+        let box = InfoBox.instantiate("ic_flag", infos)
+        box?.icon.tintColor = UIColor.warning
+
+        return box
     }()
 
 

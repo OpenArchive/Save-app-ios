@@ -1,5 +1,5 @@
 //
-//  InfoContainer.swift
+//  InfoBox.swift
 //  OpenArchive
 //
 //  Created by Benjamin Erhart on 17.05.19.
@@ -8,11 +8,11 @@
 
 import UIKit
 
-class InfoContainer: UIView {
+class InfoBox: UIView {
 
-    class func instantiate(_ icon: String? = nil, _ superview: UIView? = nil) -> InfoContainer? {
+    class func instantiate(_ icon: String? = nil, _ superview: UIView? = nil) -> InfoBox? {
         let info = UINib(nibName: String(describing: self), bundle: Bundle(for: self))
-            .instantiate(withOwner: nil, options: nil).first as? InfoContainer
+            .instantiate(withOwner: nil, options: nil).first as? InfoBox
 
         if let info = info {
             if let icon = icon {
