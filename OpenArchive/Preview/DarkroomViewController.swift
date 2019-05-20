@@ -248,7 +248,7 @@ class DarkroomViewController: UIViewController, UIPageViewControllerDataSource, 
         desc?.set(asset?.desc)
         location?.set(asset?.location)
         notes?.set(asset?.notes)
-        flag?.set(asset?.flagged ?? false ? "SIGNIFICANT CONTENT".localize() : nil)
+        flag?.set(asset?.flagged ?? false ? Asset.flag : nil)
 
         UIView.animate(withDuration: 0.5) {
             self.infos.layoutIfNeeded()
