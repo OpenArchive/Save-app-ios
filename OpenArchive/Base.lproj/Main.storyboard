@@ -436,10 +436,18 @@
                             <outletCollection property="gestureRecognizers" destination="HMK-gK-PqI" appends="YES" id="QK2-LN-fx1"/>
                         </connections>
                     </view>
+                    <navigationItem key="navigationItem" id="jcE-gw-Agw">
+                        <barButtonItem key="rightBarButtonItem" title="Add Info" id="uwn-Dh-0gK">
+                            <connections>
+                                <action selector="addInfo:" destination="VxB-Su-waJ" id="Wn0-TJ-tLW"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="container" destination="p3T-VI-YwW" id="aeo-dr-Z6F"/>
                         <outlet property="infos" destination="Cpd-AK-jKO" id="8d2-Xc-Wge"/>
+                        <outlet property="infosBottom" destination="Dxj-ac-vW2" id="BNd-qf-8xo"/>
                         <outlet property="infosHeight" destination="OMC-Or-Xq6" id="XRU-rX-RSp"/>
                         <outlet property="toolbar" destination="JX4-tp-20k" id="3qR-94-bQj"/>
                     </connections>

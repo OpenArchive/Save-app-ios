@@ -18,25 +18,56 @@ import UIKit
 
  Nice animations, also.
  */
-class DarkroomViewController: UIViewController, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+class DarkroomViewController: BaseViewController, UIPageViewControllerDataSource,
+UIPageViewControllerDelegate, InfoBoxDelegate {
 
     var selected = 0
 
+    var addMode = false
+
     @IBOutlet weak var container: UIView!
+
     @IBOutlet weak var infos: UIView!
     @IBOutlet weak var infosHeight: NSLayoutConstraint?
+    @IBOutlet weak var infosBottom: NSLayoutConstraint!
+
     @IBOutlet weak var toolbar: UIToolbar!
-    private var toolbarHeight: NSLayoutConstraint?
+    private lazy var toolbarHeight: NSLayoutConstraint = toolbar.heightAnchor.constraint(equalToConstant: 0)
 
-    private lazy var desc: InfoBox? = InfoBox.instantiate("ic_tag", infos)
+    private lazy var desc: InfoBox? = {
+        let box = InfoBox.instantiate("ic_tag", infos)
 
-    private lazy var location: InfoBox? = InfoBox.instantiate("ic_location", infos)
+        box?.delegate = self
 
-    private lazy var notes: InfoBox? = InfoBox.instantiate("ic_edit", infos)
+        return box
+    }()
+
+    private lazy var location: InfoBox? = {
+        let box = InfoBox.instantiate("ic_location", infos)
+
+        box?.delegate = self
+
+        return box
+    }()
+
+    private lazy var notes: InfoBox? = {
+        let box = InfoBox.instantiate("ic_edit", infos)
+        
+        box?.delegate = self
+
+        return box
+    }()
 
     private lazy var flag: InfoBox? = {
         let box = InfoBox.instantiate("ic_flag", infos)
+
         box?.icon.tintColor = UIColor.warning
+        box?.textView.isEditable = false
+        box?.textView.isSelectable = false
+
+        let tap = UITapGestureRecognizer(target: self, action: #selector(flagged))
+        tap.cancelsTouchesInView = true
+        box?.addGestureRecognizer(tap)
 
         return box
     }()
@@ -60,6 +91,11 @@ class DarkroomViewController: UIViewController, UIPageViewControllerDataSource, 
         return pageVc
     }()
 
+    private let descPlaceholder = "Add People".localize()
+    private let locPlaceholder = "Add Location".localize()
+    private let notesPlaceholder = "Add Notes".localize()
+    private let flagPlaceholder = "Tap to flag as significant content".localize()
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -78,6 +114,8 @@ class DarkroomViewController: UIViewController, UIPageViewControllerDataSource, 
 
         infosHeight?.isActive = false
 
+        toolbarHeight.isActive = false
+
         refresh()
 
         Db.add(observer: self, #selector(yapDatabaseModified))
@@ -87,6 +125,23 @@ class DarkroomViewController: UIViewController, UIPageViewControllerDataSource, 
         super.viewWillAppear(animated)
 
         navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+
+
+    // MARK: BaseViewController
+
+    override func keyboardWillShow(notification: Notification) {
+        if let kbSize = getKeyboardSize(notification) {
+            infosBottom.constant = kbSize.height
+
+            animateDuringKeyboardMovement(notification)
+        }
+    }
+
+    override func keyboardWillBeHidden(notification: Notification) {
+        infosBottom.constant = 0
+
+        animateDuringKeyboardMovement(notification)
     }
 
 
@@ -130,6 +185,31 @@ class DarkroomViewController: UIViewController, UIPageViewControllerDataSource, 
 
             refresh()
         }
+    }
+
+
+    // MARK: InfoBoxDelegate
+
+    /**
+     Callback for `desc`, `location` and `notes`.
+
+     Store changes.
+     */
+    func textChanged(_ infoBox: InfoBox, _ text: String) {
+        let asset = self.asset
+
+        switch infoBox {
+        case desc:
+            asset?.desc = text
+
+        case location:
+            asset?.location = text
+
+        default:
+            asset?.notes = text
+        }
+
+        store()
     }
 
 
@@ -206,20 +286,23 @@ class DarkroomViewController: UIViewController, UIPageViewControllerDataSource, 
     }
 
     @IBAction func toggleUi() {
+        if addMode {
+            dismissKeyboard()
+
+            return
+        }
+
         showUi = !showUi
 
         navigationController?.setNavigationBarHidden(!showUi, animated: true)
 
+        // This should not be nil, but it is sometimes, for an unkown reason.
         if infosHeight == nil {
             infosHeight = infos.heightAnchor.constraint(equalToConstant: 0)
         }
 
-        if toolbarHeight == nil {
-            toolbarHeight = toolbar.heightAnchor.constraint(equalToConstant: 0)
-        }
-
         infosHeight?.isActive = !showUi
-        toolbarHeight?.isActive = !showUi
+        toolbarHeight.isActive = !showUi
 
         if showUi {
             self.infos.isHidden = false
@@ -236,6 +319,39 @@ class DarkroomViewController: UIViewController, UIPageViewControllerDataSource, 
         }
     }
 
+    @IBAction func addInfo(_ sender: UIBarButtonItem) {
+        addMode = !addMode
+
+        sender.title = addMode ? "Done".localize() : "Add Info".localize()
+
+        setInfos(defaults: addMode)
+
+        toolbarHeight.isActive = addMode
+
+        if !addMode {
+            self.toolbar.isHidden = false
+        }
+
+        UIView.animate(withDuration: 0.5, animations: {
+            self.view.layoutIfNeeded()
+        }) { _ in
+            if self.addMode {
+                self.toolbar.isHidden = true
+            }
+        }
+    }
+
+    @objc func flagged() {
+        if addMode {
+            asset?.flagged = !(asset?.flagged ?? false)
+
+            setInfos(defaults: addMode)
+
+            store()
+        }
+    }
+
+
     // MARK: Private Methods
 
     private func refresh() {
@@ -245,13 +361,10 @@ class DarkroomViewController: UIViewController, UIPageViewControllerDataSource, 
         title?.title.text = asset?.filename
         title?.subtitle.text = Formatters.formatByteCount(asset?.filesize)
 
-        desc?.set(asset?.desc)
-        location?.set(asset?.location)
-        notes?.set(asset?.notes)
-        flag?.set(asset?.flagged ?? false ? Asset.flag : nil)
+        setInfos(defaults: addMode)
 
         UIView.animate(withDuration: 0.5) {
-            self.infos.layoutIfNeeded()
+            self.view.layoutIfNeeded()
         }
     }
 
@@ -272,5 +385,29 @@ class DarkroomViewController: UIViewController, UIPageViewControllerDataSource, 
         }
 
         return vcs
+    }
+
+    private func setInfos(defaults: Bool = false) {
+        desc?.set(asset?.desc, with: defaults ? descPlaceholder : nil)
+        desc?.textView.isEditable = addMode
+
+        location?.set(asset?.location, with: defaults ? locPlaceholder : nil)
+        location?.textView.isEditable = addMode
+
+        notes?.set(asset?.notes, with: defaults ? notesPlaceholder : nil)
+        notes?.textView.isEditable = addMode
+
+        flag?.set(asset?.flagged ?? false ? Asset.flag : nil,
+                  with: defaults ? flagPlaceholder : nil)
+    }
+
+    private func store() {
+        guard let asset = asset else {
+            return
+        }
+
+        Db.writeConn?.asyncReadWrite { transaction in
+            transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
+        }
     }
 }

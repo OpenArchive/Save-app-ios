@@ -8,7 +8,13 @@
 
 import UIKit
 
-class InfoBox: UIView {
+protocol InfoBoxDelegate {
+    func textChanged(_ infoBox: InfoBox, _ text: String)
+}
+
+class InfoBox: UIView, UITextViewDelegate {
+
+    private static let fontSize: CGFloat = 13
 
     class func instantiate(_ icon: String? = nil, _ superview: UIView? = nil) -> InfoBox? {
         let info = UINib(nibName: String(describing: self), bundle: Bundle(for: self))
@@ -16,7 +22,7 @@ class InfoBox: UIView {
 
         if let info = info {
             if let icon = icon {
-                info.icon.image = UIImage(named: icon)?.withRenderingMode(.alwaysTemplate)
+                info.icon.image = UIImage(named: icon)
             }
 
             superview?.addSubview(info)
@@ -25,10 +31,29 @@ class InfoBox: UIView {
         return info
     }
 
-    @IBOutlet weak var icon: UIImageView!
-    @IBOutlet weak var label: UILabel!
+    var delegate: InfoBoxDelegate?
 
-    private var zeroHeight: NSLayoutConstraint?
+    var isUsed: Bool = false {
+        didSet {
+            icon.image = icon.image?.withRenderingMode(isUsed ? .alwaysTemplate : .alwaysOriginal)
+        }
+    }
+
+
+    @IBOutlet weak var icon: UIImageView!
+
+    @IBOutlet weak var textView: UITextView! {
+        didSet {
+            textView.delegate = self
+        }
+    }
+
+    private lazy var textHeight: NSLayoutConstraint = textView.heightAnchor.constraint(equalToConstant: 0)
+
+    private lazy var zeroHeight: NSLayoutConstraint = heightAnchor.constraint(equalToConstant: 0)
+
+    private var text: String?
+    private var placeholder: String?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -49,15 +74,82 @@ class InfoBox: UIView {
         bottomAnchor.constraint(equalTo: bottom == nil ? superview.bottomAnchor : bottom!.topAnchor).isActive = true
     }
 
-    func set(_ text: String?) {
-        label.text = text
+    func set(_ text: String?, with placeholder: String? = nil) {
+        self.text = text
+        self.placeholder = placeholder
 
-        if zeroHeight == nil {
-            zeroHeight = heightAnchor.constraint(equalToConstant: 0)
+        isUsed = !(text?.isEmpty ?? true)
+        let hasPlaceholder = !(placeholder?.isEmpty ?? true)
+
+        let isDefault = !isUsed && hasPlaceholder
+
+        textView.text = isUsed ? text : (textView.isFirstResponder ? nil : placeholder)
+        textView.font = isDefault && !textView.isFirstResponder
+            ? UIFont.italicSystemFont(ofSize: textView.font?.pointSize ?? InfoBox.fontSize)
+            : UIFont.systemFont(ofSize: textView.font?.pointSize ?? InfoBox.fontSize)
+
+        // UITextView does not auto-size as UILabel. So we do that here.
+        textHeight.constant = textView.sizeThatFits(CGSize(width: textView.frame.size.width,
+                                                           height: CGFloat.greatestFiniteMagnitude)).height
+        textHeight.isActive = true
+
+        isHidden = !isUsed && !hasPlaceholder
+
+        zeroHeight.isActive = isHidden
+    }
+
+
+    // MARK: UITextViewDelegate
+
+    /**
+     Callback for `textView`.
+
+     `UITextViews` cannot have placeholders like `UITextField`.
+     Therefore, manually remove placeholder, if any.
+     */
+    func textViewShouldBeginEditing(_ textView: UITextView) -> Bool {
+        if textView.text == placeholder {
+            textView.text = nil
         }
 
-        isHidden = text?.isEmpty ?? true
+        textView.font = UIFont.systemFont(ofSize: textView.font?.pointSize ?? InfoBox.fontSize)
 
-        zeroHeight?.isActive = isHidden
+        return true
+    }
+
+    /**
+     Callback for `textView`.
+
+     `UITextViews` cannot have placeholders like `UITextField`.
+     Therefore, restore placeholder, if nothing entered.
+
+     Update indicator button and delegate changes.
+     */
+    func textViewDidEndEditing(_ textView: UITextView) {
+        text = textView.text
+
+        isUsed = !text!.isEmpty
+
+        if !isUsed {
+            textView.text = placeholder
+            textView.font = UIFont.italicSystemFont(ofSize: textView.font?.pointSize ?? InfoBox.fontSize)
+        }
+
+        delegate?.textChanged(self, text!)
+    }
+
+    /**
+     Callback for `textView`.
+
+     Hide keyboard, when user hits [enter].
+     */
+    func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
+        if text == "\n" {
+            textView.endEditing(true)
+
+            return false
+        }
+
+        return true
     }
 }
