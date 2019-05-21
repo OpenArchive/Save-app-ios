@@ -216,14 +216,9 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate, DoneDel
 
         tableView.endUpdates()
 
-        if sc.count < 1 {
-            // When we don't have any assets anymore after an update, because the
-            // user deleted them, it doesn't make sense, to show this view
-            // controller anymore. So we leave here.
-            // This will also work, when this one is not visible, but the user
-            // is deeper in the navigation stack. (e.g. in EditViewController)
-            navigationController?.popToRootViewController(animated: true)
-        }
+        // NOTICE: Don't leave this scene automatically, just because there's
+        // no asset to display anymore. This could just be intermittently, due
+        // to all that asynchronous DB updating.
     }
 
 

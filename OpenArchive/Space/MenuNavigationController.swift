@@ -18,10 +18,8 @@ class MenuNavigationController: UINavigationController {
 
     func setRoot() {
         if !SelectedSpace.available {
-            let vc = UIStoryboard(name: "Main", bundle: nil)
-                .instantiateViewController(withIdentifier: "connectSpace")
-
-            setViewControllers([vc], animated: true)
+            setViewControllers([UIStoryboard.main.instantiate(ConnectSpaceViewController.self)],
+                               animated: true)
         }
     }
 }

@@ -25,6 +25,8 @@
 		A0362196220DB2CA003C21DC /* IaSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362194220DB2CA003C21DC /* IaSpace.swift */; };
 		A0362198220DB384003C21DC /* WebDavSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362197220DB384003C21DC /* WebDavSpace.swift */; };
 		A0362199220DB384003C21DC /* WebDavSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362197220DB384003C21DC /* WebDavSpace.swift */; };
+		A04255CE22944C1B0048E00C /* UIStoryboard+main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04255CD22944C1B0048E00C /* UIStoryboard+main.swift */; };
+		A04255CF22944C1B0048E00C /* UIStoryboard+main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04255CD22944C1B0048E00C /* UIStoryboard+main.swift */; };
 		A04526082231309D007A6F53 /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04526072231309D007A6F53 /* EditViewController.swift */; };
 		A0457E6720EF96FB00B8FBCB /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6620EF96FB00B8FBCB /* StringUtils.swift */; };
 		A0457E6920EFB57C00B8FBCB /* RegexUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */; };
@@ -216,6 +218,7 @@
 		A0362194220DB2CA003C21DC /* IaSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaSpace.swift; sourceTree = "<group>"; };
 		A0362197220DB384003C21DC /* WebDavSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDavSpace.swift; sourceTree = "<group>"; };
 		A03EE8DA224CEE63008A0281 /* SpacesListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpacesListCell.xib; sourceTree = "<group>"; };
+		A04255CD22944C1B0048E00C /* UIStoryboard+main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+main.swift"; sourceTree = "<group>"; };
 		A04526072231309D007A6F53 /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
 		A0457E6620EF96FB00B8FBCB /* StringUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
 		A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegexUtils.swift; sourceTree = "<group>"; };
@@ -368,6 +371,7 @@
 				A070335A2119E7DF00BF1F33 /* Request+debug.swift */,
 				A0457E6620EF96FB00B8FBCB /* StringUtils.swift */,
 				A0362191220DA390003C21DC /* UIColor+accent.swift */,
+				A04255CD22944C1B0048E00C /* UIStoryboard+main.swift */,
 				A055204F222566CE00B9645F /* UIView+animateHideShow.swift */,
 				A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */,
 				A0BBEF8822846F310071EE93 /* Geocoder.swift */,
@@ -898,6 +902,7 @@
 				A0FB4DB321F8799100B46099 /* SpacesView.swift in Sources */,
 				A071290C2111DE3C007A432A /* Asset.swift in Sources */,
 				A045D1FC224D02AA008FF8C1 /* TitleCell.swift in Sources */,
+				A04255CF22944C1B0048E00C /* UIStoryboard+main.swift in Sources */,
 				A0F13650227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift in Sources */,
 				A08750AA2112099700BFAFE4 /* Constants.m in Sources */,
 				A05275152211A91300BDB14B /* CollectionsView.swift in Sources */,
@@ -957,6 +962,7 @@
 				A0E321FB228EFA8800F2E9BD /* InfoBox.swift in Sources */,
 				A0D58DCE20E51517005A2F34 /* Asset.swift in Sources */,
 				A08C2CE421F0A98C008ACA3E /* PrivateServerViewController.swift in Sources */,
+				A04255CE22944C1B0048E00C /* UIStoryboard+main.swift in Sources */,
 				A04526082231309D007A6F53 /* EditViewController.swift in Sources */,
 				A0E321F9228EDBE900F2E9BD /* DarkroomViewController.swift in Sources */,
 				A070335B2119E7DF00BF1F33 /* Request+debug.swift in Sources */,

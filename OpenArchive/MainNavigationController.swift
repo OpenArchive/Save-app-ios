@@ -17,8 +17,17 @@ class MainNavigationController: UINavigationController {
     }
 
     func setRoot() {
-        performSegue(
-            withIdentifier: Settings.firstRunDone ? "mainSegue" : "onboardingSegue",
-            sender: self)
+        if Settings.firstRunDone {
+            if !(topViewController is MainViewController) {
+                setViewControllers([UIStoryboard.main.instantiate(MainViewController.self)],
+                                   animated: true)
+            }
+        }
+        else {
+            if !(topViewController is ConnectSpaceViewController) {
+                setViewControllers([UIStoryboard.main.instantiate(ConnectSpaceViewController.self)],
+                                   animated: true)
+            }
+        }
     }
 }
