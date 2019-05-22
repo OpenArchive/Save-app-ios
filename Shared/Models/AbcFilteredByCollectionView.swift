@@ -54,7 +54,9 @@ class AbcFilteredByCollectionView: YapDatabaseFilteredView {
         `nil` will disable the filter and show all entries.
     */
     class func updateFilter(_ collectionId: String? = nil) {
-        Db.writeConn?.asyncReadWrite { transaction in
+        // Note: This needs to be synchronous. Otherwise, we will have a lot of
+        // race conditions in the UI.
+        Db.writeConn?.readWrite { transaction in
             (transaction.ext(name) as? YapDatabaseFilteredViewTransaction)?
                 .setFiltering(getFilter(collectionId), versionTag: UUID().uuidString)
         }

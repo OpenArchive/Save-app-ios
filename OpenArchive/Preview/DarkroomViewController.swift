@@ -118,7 +118,6 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         container.addSubview(pageVc.view)
         pageVc.view.frame = container.bounds
         pageVc.didMove(toParent: self)
-        pageVc.setViewControllers(getFreshImageVcList(), direction: .forward, animated: false)
 
         desc?.addConstraints(infos, bottom: location)
         location?.addConstraints(infos, top: desc, bottom: notes)
@@ -129,9 +128,9 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
 
         toolbarHeight.isActive = addMode
 
-        refresh()
-
         Db.add(observer: self, #selector(yapDatabaseModified))
+
+        refresh()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -295,20 +294,14 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
                     }
 
                     DispatchQueue.main.async {
-                        self.pageVc.setViewControllers(self.getFreshImageVcList(),
-                                                       direction: direction, animated: true)
-
-                        self.refresh()
+                        self.refresh(direction)
                     }
                 }
 
             case .insert:
                 if change.newIndexPath?.row == selected {
                     DispatchQueue.main.async {
-                        self.pageVc.setViewControllers(self.getFreshImageVcList(),
-                                                       direction: .forward, animated: false)
-
-                        self.refresh()
+                        self.refresh(.forward)
                     }
                 }
 
@@ -392,7 +385,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
 
     // MARK: Private Methods
 
-    private func refresh() {
+    private func refresh(_ direction: UIPageViewController.NavigationDirection? = nil) {
         let asset = self.asset // Don't repeat asset#get all the time.
 
         let title = navigationItem.titleView as? MultilineTitle
@@ -400,6 +393,10 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         title?.subtitle.text = addMode ? asset?.filename : Formatters.formatByteCount(asset?.filesize)
 
         navigationItem.rightBarButtonItem?.isEnabled = !(asset?.isUploaded ?? true)
+
+        if pageVc.viewControllers?.isEmpty ?? true || direction != nil {
+            pageVc.setViewControllers(getFreshImageVcList(), direction: direction ?? .forward, animated: direction != nil)
+        }
 
         setInfos(defaults: addMode)
 
