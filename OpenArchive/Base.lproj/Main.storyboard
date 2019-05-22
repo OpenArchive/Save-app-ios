@@ -420,6 +420,7 @@
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <gestureRecognizers/>
                         <constraints>
+                            <constraint firstItem="Cpd-AK-jKO" firstAttribute="top" relation="greaterThanOrEqual" secondItem="h89-7R-kf9" secondAttribute="top" id="1q3-OY-Lkt"/>
                             <constraint firstItem="p3T-VI-YwW" firstAttribute="top" secondItem="h89-7R-kf9" secondAttribute="top" id="968-BJ-E4O"/>
                             <constraint firstItem="JX4-tp-20k" firstAttribute="top" secondItem="Cpd-AK-jKO" secondAttribute="bottom" id="Dxj-ac-vW2"/>
                             <constraint firstItem="Cpd-AK-jKO" firstAttribute="trailing" secondItem="h89-7R-kf9" secondAttribute="trailing" id="EO5-Dl-YeT"/>
@@ -446,9 +447,9 @@
                     <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="container" destination="p3T-VI-YwW" id="aeo-dr-Z6F"/>
-                        <outlet property="infos" destination="Cpd-AK-jKO" id="8d2-Xc-Wge"/>
-                        <outlet property="infosBottom" destination="Dxj-ac-vW2" id="BNd-qf-8xo"/>
-                        <outlet property="infosHeight" destination="OMC-Or-Xq6" id="XRU-rX-RSp"/>
+                        <outlet property="infos" destination="Cpd-AK-jKO" id="5V7-p5-7ic"/>
+                        <outlet property="infosBottom" destination="Dxj-ac-vW2" id="HNM-ft-t5n"/>
+                        <outlet property="infosHeight" destination="OMC-Or-Xq6" id="Dcf-MN-xd3"/>
                         <outlet property="toolbar" destination="JX4-tp-20k" id="3qR-94-bQj"/>
                     </connections>
                 </viewController>

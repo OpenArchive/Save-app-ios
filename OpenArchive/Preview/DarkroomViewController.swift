@@ -181,6 +181,19 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         if completed,
             let index = (pageViewController.viewControllers?.first as? ImageViewController)?.index {
 
+            if desc?.textView.isFirstResponder ?? false {
+                asset?.desc = desc?.textView.text
+                store()
+            }
+            else if location?.textView.isFirstResponder ?? false {
+                asset?.location = desc?.textView.text
+                store()
+            }
+            else if notes?.textView.isFirstResponder ?? false {
+                asset?.notes = notes?.textView.text
+                store()
+            }
+
             selected = index
 
             refresh()
@@ -287,7 +300,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
 
     @IBAction func toggleUi() {
         if addMode {
-            dismissKeyboard()
+            dismissKeyboard()  // Also stores newly entered texts.
 
             return
         }
@@ -324,13 +337,15 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
 
         sender.title = addMode ? "Done".localize() : "Add Info".localize()
 
+        if !addMode {
+            dismissKeyboard() // Also stores newly entered texts.
+
+            self.toolbar.isHidden = false
+        }
+
         setInfos(defaults: addMode)
 
         toolbarHeight.isActive = addMode
-
-        if !addMode {
-            self.toolbar.isHidden = false
-        }
 
         UIView.animate(withDuration: 0.5, animations: {
             self.view.layoutIfNeeded()

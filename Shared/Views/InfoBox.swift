@@ -14,7 +14,11 @@ protocol InfoBoxDelegate {
 
 class InfoBox: UIView, UITextViewDelegate {
 
+    // MARK: Class
+
     private static let fontSize: CGFloat = 13
+    private static let normalFont = UIFont.systemFont(ofSize: fontSize)
+    private static let placeholderFont = UIFont.italicSystemFont(ofSize: fontSize)
 
     class func instantiate(_ icon: String? = nil, _ superview: UIView? = nil) -> InfoBox? {
         let info = UINib(nibName: String(describing: self), bundle: Bundle(for: self))
@@ -30,6 +34,9 @@ class InfoBox: UIView, UITextViewDelegate {
 
         return info
     }
+
+
+    // MARK: InfoBox
 
     var delegate: InfoBoxDelegate?
 
@@ -85,8 +92,8 @@ class InfoBox: UIView, UITextViewDelegate {
 
         textView.text = isUsed ? text : (textView.isFirstResponder ? nil : placeholder)
         textView.font = isDefault && !textView.isFirstResponder
-            ? UIFont.italicSystemFont(ofSize: textView.font?.pointSize ?? InfoBox.fontSize)
-            : UIFont.systemFont(ofSize: textView.font?.pointSize ?? InfoBox.fontSize)
+            ? InfoBox.placeholderFont
+            : InfoBox.normalFont
 
         // UITextView does not auto-size as UILabel. So we do that here.
         textHeight.constant = textView.sizeThatFits(CGSize(width: textView.frame.size.width,
@@ -112,7 +119,7 @@ class InfoBox: UIView, UITextViewDelegate {
             textView.text = nil
         }
 
-        textView.font = UIFont.systemFont(ofSize: textView.font?.pointSize ?? InfoBox.fontSize)
+        textView.font = InfoBox.normalFont
 
         return true
     }
@@ -132,7 +139,7 @@ class InfoBox: UIView, UITextViewDelegate {
 
         if !isUsed {
             textView.text = placeholder
-            textView.font = UIFont.italicSystemFont(ofSize: textView.font?.pointSize ?? InfoBox.fontSize)
+            textView.font = InfoBox.placeholderFont
         }
 
         delegate?.textChanged(self, text!)
