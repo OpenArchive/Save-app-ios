@@ -81,7 +81,7 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate, DoneDel
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        performSegue(withIdentifier: "showEditSegue", sender: (indexPath.row, nil as EditViewController.DirectEdit?))
+        performSegue(withIdentifier: "showDarkroomSegue", sender: (indexPath.row, nil as DarkroomViewController.DirectEdit?))
     }
 
     override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
@@ -91,9 +91,9 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate, DoneDel
 
     // MARK: PreviewCellDelegate
 
-    func edit(_ asset: Asset, _ directEdit: EditViewController.DirectEdit? = nil) {
+    func edit(_ asset: Asset, _ directEdit: DarkroomViewController.DirectEdit? = nil) {
         if let indexPath = sc.getIndexPath(asset) {
-            performSegue(withIdentifier: "showEditSegue", sender: (indexPath.row, directEdit))
+            performSegue(withIdentifier: "showDarkroomSegue", sender: (indexPath.row, directEdit))
         }
     }
 
@@ -108,10 +108,11 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate, DoneDel
     // MARK: Navigation
 
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let editVc = segue.destination as? EditViewController {
-            if let (index, directEdit) = sender as? (Int, EditViewController.DirectEdit?) {
+        if let editVc = segue.destination as? DarkroomViewController {
+            if let (index, directEdit) = sender as? (Int, DarkroomViewController.DirectEdit?) {
                 editVc.selected = index
                 editVc.directEdit = directEdit
+                editVc.addMode = true
             }
         }
         else if let mvc = segue.destination as? ManagementViewController {

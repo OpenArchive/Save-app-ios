@@ -21,7 +21,15 @@ import UIKit
 class DarkroomViewController: BaseViewController, UIPageViewControllerDataSource,
 UIPageViewControllerDelegate, InfoBoxDelegate {
 
+    enum DirectEdit {
+        case description
+        case location
+        case notes
+    }
+
     var selected = 0
+
+    var directEdit: DarkroomViewController.DirectEdit?
 
     var addMode = false
 
@@ -91,15 +99,20 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         return pageVc
     }()
 
-    private let descPlaceholder = "Add People".localize()
-    private let locPlaceholder = "Add Location".localize()
-    private let notesPlaceholder = "Add Notes".localize()
-    private let flagPlaceholder = "Tap to flag as significant content".localize()
+    private static let descPlaceholder = "Add People".localize()
+    private static let locPlaceholder = "Add Location".localize()
+    private static let notesPlaceholder = "Add Notes".localize()
+    private static let flagPlaceholder = "Tap to flag as significant content".localize()
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
         navigationItem.titleView = MultilineTitle()
+
+        if !addMode {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                title: "Add Info".localize(), style: .plain, target: self, action: #selector(addInfo))
+        }
 
         addChild(pageVc)
         container.addSubview(pageVc.view)
@@ -114,7 +127,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
 
         infosHeight?.isActive = false
 
-        toolbarHeight.isActive = false
+        toolbarHeight.isActive = addMode
 
         refresh()
 
@@ -125,6 +138,24 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         super.viewWillAppear(animated)
 
         navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        if directEdit == .description {
+            desc?.textView.becomeFirstResponder()
+        }
+        else if directEdit == .location {
+            location?.textView.becomeFirstResponder()
+        }
+        else if directEdit == .notes {
+            notes?.textView.becomeFirstResponder()
+        }
+    }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return  .lightContent
     }
 
 
@@ -332,10 +363,10 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         }
     }
 
-    @IBAction func addInfo(_ sender: UIBarButtonItem) {
+    @IBAction func addInfo() {
         addMode = !addMode
 
-        sender.title = addMode ? "Done".localize() : "Add Info".localize()
+        navigationItem.rightBarButtonItem?.title = addMode ? "Done".localize() : "Add Info".localize()
 
         if !addMode {
             dismissKeyboard() // Also stores newly entered texts.
@@ -343,17 +374,9 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
             self.toolbar.isHidden = false
         }
 
-        setInfos(defaults: addMode)
-
         toolbarHeight.isActive = addMode
 
-        UIView.animate(withDuration: 0.5, animations: {
-            self.view.layoutIfNeeded()
-        }) { _ in
-            if self.addMode {
-                self.toolbar.isHidden = true
-            }
-        }
+        refresh()
     }
 
     @objc func flagged() {
@@ -373,13 +396,17 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         let asset = self.asset // Don't repeat asset#get all the time.
 
         let title = navigationItem.titleView as? MultilineTitle
-        title?.title.text = asset?.filename
-        title?.subtitle.text = Formatters.formatByteCount(asset?.filesize)
+        title?.title.text = addMode ? "Add Info".localize() : asset?.filename
+        title?.subtitle.text = addMode ? asset?.filename : Formatters.formatByteCount(asset?.filesize)
 
         setInfos(defaults: addMode)
 
-        UIView.animate(withDuration: 0.5) {
+        UIView.animate(withDuration: 0.5, animations: {
             self.view.layoutIfNeeded()
+        }) { _ in
+            if self.addMode {
+                self.toolbar.isHidden = true
+            }
         }
     }
 
@@ -403,17 +430,17 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     }
 
     private func setInfos(defaults: Bool = false) {
-        desc?.set(asset?.desc, with: defaults ? descPlaceholder : nil)
+        desc?.set(asset?.desc, with: defaults ? DarkroomViewController.descPlaceholder : nil)
         desc?.textView.isEditable = addMode
 
-        location?.set(asset?.location, with: defaults ? locPlaceholder : nil)
+        location?.set(asset?.location, with: defaults ? DarkroomViewController.locPlaceholder : nil)
         location?.textView.isEditable = addMode
 
-        notes?.set(asset?.notes, with: defaults ? notesPlaceholder : nil)
+        notes?.set(asset?.notes, with: defaults ? DarkroomViewController.notesPlaceholder : nil)
         notes?.textView.isEditable = addMode
 
         flag?.set(asset?.flagged ?? false ? Asset.flag : nil,
-                  with: defaults ? flagPlaceholder : nil)
+                  with: defaults ? DarkroomViewController.flagPlaceholder : nil)
     }
 
     private func store() {

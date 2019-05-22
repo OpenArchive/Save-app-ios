@@ -27,7 +27,6 @@
 		A0362199220DB384003C21DC /* WebDavSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362197220DB384003C21DC /* WebDavSpace.swift */; };
 		A04255CE22944C1B0048E00C /* UIStoryboard+main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04255CD22944C1B0048E00C /* UIStoryboard+main.swift */; };
 		A04255CF22944C1B0048E00C /* UIStoryboard+main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04255CD22944C1B0048E00C /* UIStoryboard+main.swift */; };
-		A04526082231309D007A6F53 /* EditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04526072231309D007A6F53 /* EditViewController.swift */; };
 		A0457E6720EF96FB00B8FBCB /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6620EF96FB00B8FBCB /* StringUtils.swift */; };
 		A0457E6920EFB57C00B8FBCB /* RegexUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */; };
 		A045D1E4224CF034008FF8C1 /* SpaceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A045D1E2224CF034008FF8C1 /* SpaceCell.xib */; };
@@ -219,7 +218,6 @@
 		A0362197220DB384003C21DC /* WebDavSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDavSpace.swift; sourceTree = "<group>"; };
 		A03EE8DA224CEE63008A0281 /* SpacesListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpacesListCell.xib; sourceTree = "<group>"; };
 		A04255CD22944C1B0048E00C /* UIStoryboard+main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+main.swift"; sourceTree = "<group>"; };
-		A04526072231309D007A6F53 /* EditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditViewController.swift; sourceTree = "<group>"; };
 		A0457E6620EF96FB00B8FBCB /* StringUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
 		A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegexUtils.swift; sourceTree = "<group>"; };
 		A045D1E2224CF034008FF8C1 /* SpaceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpaceCell.xib; sourceTree = "<group>"; };
@@ -477,10 +475,9 @@
 		A0AFCF0B223001AE005E57FD /* Preview */ = {
 			isa = PBXGroup;
 			children = (
-				A0E321F8228EDBE900F2E9BD /* DarkroomViewController.swift */,
 				A0AFCF0C22300279005E57FD /* PreviewViewController.swift */,
 				A0AFCF1122302054005E57FD /* PreviewCell.swift */,
-				A04526072231309D007A6F53 /* EditViewController.swift */,
+				A0E321F8228EDBE900F2E9BD /* DarkroomViewController.swift */,
 				A00DC98922315D4F004F07E0 /* ImageViewController.swift */,
 				A0E321F5228EBE6A00F2E9BD /* FlagInfoAlert.swift */,
 			);
@@ -963,7 +960,6 @@
 				A0D58DCE20E51517005A2F34 /* Asset.swift in Sources */,
 				A08C2CE421F0A98C008ACA3E /* PrivateServerViewController.swift in Sources */,
 				A04255CE22944C1B0048E00C /* UIStoryboard+main.swift in Sources */,
-				A04526082231309D007A6F53 /* EditViewController.swift in Sources */,
 				A0E321F9228EDBE900F2E9BD /* DarkroomViewController.swift in Sources */,
 				A070335B2119E7DF00BF1F33 /* Request+debug.swift in Sources */,
 				A045D1F6224CFFB4008FF8C1 /* SelectedSpaceCell.swift in Sources */,
