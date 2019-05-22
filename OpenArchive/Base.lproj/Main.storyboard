@@ -87,36 +87,42 @@
         <scene sceneID="OGd-vX-gEY">
             <objects>
                 <viewController storyboardIdentifier="SlideViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="mA8-rJ-Bvc" customClass="SlideViewController" customModule="OpenArchive" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" contentMode="scaleToFill" id="QfH-dc-X3C">
+                    <view key="view" clipsSubviews="YES" contentMode="scaleToFill" id="QfH-dc-X3C">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Heading" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Xtc-qd-Hr6">
-                                <rect key="frame" x="16" y="100" width="288" height="27.5"/>
+                                <rect key="frame" x="16" y="100" width="288" height="32"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="32" id="H0r-EL-GhU"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="23"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mX4-L9-fca">
-                                <rect key="frame" x="16" y="135.5" width="288" height="81.5"/>
+                                <rect key="frame" x="16" y="140" width="288" height="81.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="hvg-50-O1E"/>
+                                </constraints>
                                 <string key="text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam</string>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YVt-JP-CZ1">
-                                <rect key="frame" x="80" y="225" width="240" height="343"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YVt-JP-CZ1" customClass="UIImageViewAligned" customModule="UIImageViewAlignedSwift">
+                                <rect key="frame" x="80" y="229.5" width="240" height="498.5"/>
                             </imageView>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="YVt-JP-CZ1" firstAttribute="leading" secondItem="8oJ-xp-FPn" secondAttribute="leading" constant="80" id="3fX-kw-2Mu"/>
-                            <constraint firstItem="YVt-JP-CZ1" firstAttribute="bottom" secondItem="8oJ-xp-FPn" secondAttribute="bottom" id="ESs-MM-zbY"/>
-                            <constraint firstItem="YVt-JP-CZ1" firstAttribute="top" secondItem="mX4-L9-fca" secondAttribute="bottom" constant="8" id="N5t-VS-PPq"/>
+                            <constraint firstItem="YVt-JP-CZ1" firstAttribute="trailing" secondItem="QfH-dc-X3C" secondAttribute="trailing" id="2jV-Iy-qFf"/>
+                            <constraint firstItem="YVt-JP-CZ1" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="8oJ-xp-FPn" secondAttribute="leading" constant="80" id="3fX-kw-2Mu"/>
                             <constraint firstItem="mX4-L9-fca" firstAttribute="leading" secondItem="8oJ-xp-FPn" secondAttribute="leading" constant="16" id="OHn-K9-6d7"/>
                             <constraint firstItem="Xtc-qd-Hr6" firstAttribute="top" secondItem="8oJ-xp-FPn" secondAttribute="top" constant="80" id="QHv-iP-whV"/>
+                            <constraint firstItem="YVt-JP-CZ1" firstAttribute="width" secondItem="QfH-dc-X3C" secondAttribute="width" multiplier="0.75" id="VKM-Oz-Bwx"/>
+                            <constraint firstItem="YVt-JP-CZ1" firstAttribute="top" secondItem="mX4-L9-fca" secondAttribute="bottom" constant="8" id="VbK-6n-f2R"/>
                             <constraint firstItem="mX4-L9-fca" firstAttribute="top" secondItem="Xtc-qd-Hr6" secondAttribute="bottom" constant="8" id="WVY-fm-6rA"/>
                             <constraint firstItem="Xtc-qd-Hr6" firstAttribute="leading" secondItem="8oJ-xp-FPn" secondAttribute="leading" constant="16" id="XQ8-rQ-CQe"/>
-                            <constraint firstItem="YVt-JP-CZ1" firstAttribute="trailing" secondItem="8oJ-xp-FPn" secondAttribute="trailing" id="i8A-Ff-fZF"/>
                             <constraint firstItem="8oJ-xp-FPn" firstAttribute="trailing" secondItem="Xtc-qd-Hr6" secondAttribute="trailing" constant="16" id="ldM-Qd-Yj9"/>
                             <constraint firstItem="8oJ-xp-FPn" firstAttribute="trailing" secondItem="mX4-L9-fca" secondAttribute="trailing" constant="16" id="uO8-A0-Urj"/>
                         </constraints>

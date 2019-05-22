@@ -19,18 +19,22 @@ UIPageViewControllerDelegate {
     [
         "heading": "Save to a safe place.".localize(),
         "text": "Connect to a secure server or the internet archive to upload photos and videos from your phone.".localize(),
+        "illustration": "safe-place-screen",
     ],
     [
         "heading": "Stay organized.".localize(),
         "text": "Organize your media into projects.".localize(),
+        "illustration": "stay-organized-screen",
     ],
     [
         "heading": "Store the facts.".localize(),
         "text": "Capture notes, location and people with each piece of media.".localize(),
+        "illustration": "save-the-facts",
     ],
     [
         "heading": "Ensure authenticity.".localize(),
         "text": "Include your credentials while Save adds extra metadata to help with chain of custody and verification workflows.".localize(),
+        "illustration": "Ensure-Authenticity-screen",
     ],
     ]
 
@@ -56,7 +60,7 @@ UIPageViewControllerDelegate {
         pageVc.didMove(toParent: self)
         pageVc.setViewControllers([getSlide(0)], direction: .forward, animated: false)
 
-        refresh()
+        refresh(animate: false)
     }
 
 
@@ -130,13 +134,15 @@ UIPageViewControllerDelegate {
 
     // MARK: Private Methods
 
-    private func refresh() {
+    private func refresh(animate: Bool = true) {
         doneBt.isHidden = page < SlideshowViewController.data.count - 1
 
         pageControl.currentPage = page
 
-        UIView.animate(withDuration: 0.5) {
-            self.view.layoutIfNeeded()
+        if animate {
+            UIView.animate(withDuration: 0.5) {
+                self.view.layoutIfNeeded()
+            }
         }
     }
 
@@ -147,6 +153,7 @@ UIPageViewControllerDelegate {
 
         vc.heading = data["heading"]
         vc.text = data["text"]
+        vc.illustration = data["illustration"] != nil ? UIImage(named: data["illustration"]!) : nil
         vc.index = index
 
         return vc

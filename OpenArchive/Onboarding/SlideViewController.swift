@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import UIImageViewAlignedSwift
 
 class SlideViewController: UIViewController {
 
     @IBOutlet weak var headingLb: UILabel!
     @IBOutlet weak var textLb: UILabel!
-    @IBOutlet weak var illustrationImg: UIImageView!
+    @IBOutlet weak var illustrationImg: UIImageViewAligned!
 
     var index: Int?
     var heading: String?
@@ -25,5 +26,6 @@ class SlideViewController: UIViewController {
         headingLb.text = heading
         textLb.text = text
         illustrationImg.image = illustration
+        illustrationImg.alignment = .topLeft
     }
 }
