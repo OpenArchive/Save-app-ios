@@ -102,29 +102,27 @@ class Geocoder {
             return
         }
 
-        self.working = true
+        working = true
 
-        queue.async {
-            let object = self.work.removeFirst()
+        let object = work.removeFirst()
 
-            self.gc.reverseGeocodeLocation(object.location, preferredLocale: nil) { placemarks, error in
-                self.working = false
+        gc.reverseGeocodeLocation(object.location, preferredLocale: nil) { placemarks, error in
+            var prettyAddress: String? = nil
 
-                var prettyAddress: String? = nil
+            if let address = placemarks?.first?.postalAddress?.mutableCopy() as? CNMutablePostalAddress {
+                address.street = "" // Remove too much detail.
 
-                if let address = placemarks?.first?.postalAddress?.mutableCopy() as? CNMutablePostalAddress {
-                    address.street = "" // Remove too much detail.
-
-                    prettyAddress = Formatters.address.string(from: address)
-                }
-                else {
-                    prettyAddress = Formatters.location.string(from: object.location)
-                }
-
-                object.completionHandler(prettyAddress)
-
-                self.queue.async(execute: self.next)
+                prettyAddress = Formatters.address.string(from: address)
             }
+            else {
+                prettyAddress = Formatters.location.string(from: object.location)
+            }
+
+            object.completionHandler(prettyAddress)
+
+            self.working = false
+
+            self.queue.async(execute: self.next)
         }
     }
 }
