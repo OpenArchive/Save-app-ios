@@ -411,7 +411,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         }
     }
 
-    private func getImageVc(_ index: Int) -> ImageViewController? {
+    private func getImageVc(_ index: Int) -> ImageViewController {
         let vc = UIStoryboard.main.instantiate(ImageViewController.self)
 
         vc.image = sc.getAsset(index)?.getThumbnail()
@@ -421,13 +421,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     }
 
     private func getFreshImageVcList() -> [ImageViewController] {
-        var vcs = [ImageViewController]()
-
-        if let vc = getImageVc(selected) {
-            vcs.append(vc)
-        }
-
-        return vcs
+        return [getImageVc(selected)]
     }
 
     private func setInfos(defaults: Bool = false) {

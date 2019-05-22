@@ -68,6 +68,8 @@
 		A072C4D6227C8B3C0022BC58 /* SpaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A072C4D5227C8B3C0022BC58 /* SpaceViewController.swift */; };
 		A077732A22786BF500291F5D /* RemoveAssetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A077732922786BCA00291F5D /* RemoveAssetAlert.swift */; };
 		A077732B22786BF500291F5D /* RemoveAssetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A077732922786BCA00291F5D /* RemoveAssetAlert.swift */; };
+		A07E8A40229575B600E9FFAA /* SlideshowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07E8A3F229575B600E9FFAA /* SlideshowViewController.swift */; };
+		A07E8A4222958D0600E9FFAA /* SlideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07E8A4122958D0600E9FFAA /* SlideViewController.swift */; };
 		A08750A92112099700BFAFE4 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = A08750A82112099700BFAFE4 /* Constants.m */; };
 		A08750AA2112099700BFAFE4 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = A08750A82112099700BFAFE4 /* Constants.m */; };
 		A08C2CE221F09B3F008ACA3E /* InternetArchiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CE121F09B3F008ACA3E /* InternetArchiveViewController.swift */; };
@@ -244,6 +246,8 @@
 		A07129132111F4F8007A432A /* ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExtension.entitlements; sourceTree = "<group>"; };
 		A072C4D5227C8B3C0022BC58 /* SpaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceViewController.swift; sourceTree = "<group>"; };
 		A077732922786BCA00291F5D /* RemoveAssetAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAssetAlert.swift; sourceTree = "<group>"; };
+		A07E8A3F229575B600E9FFAA /* SlideshowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideshowViewController.swift; sourceTree = "<group>"; };
+		A07E8A4122958D0600E9FFAA /* SlideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideViewController.swift; sourceTree = "<group>"; };
 		A08750A72112099700BFAFE4 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		A08750A82112099700BFAFE4 /* Constants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		A08750AF21120EBF00BFAFE4 /* OpenArchive-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenArchive-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -440,6 +444,15 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
+		A07E8A3E2295759D00E9FFAA /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				A07E8A3F229575B600E9FFAA /* SlideshowViewController.swift */,
+				A07E8A4122958D0600E9FFAA /* SlideViewController.swift */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
 		A098980422369F5700022851 /* Management */ = {
 			isa = PBXGroup;
 			children = (
@@ -597,6 +610,7 @@
 		A0E739D620E4C85D00DB31E1 /* OpenArchive */ = {
 			isa = PBXGroup;
 			children = (
+				A07E8A3E2295759D00E9FFAA /* Onboarding */,
 				A01A7B732200FF2500E18DE0 /* Main */,
 				A0AFCF0B223001AE005E57FD /* Preview */,
 				A0E1A67D21EE7B3200E4F6B7 /* Space */,
@@ -967,6 +981,7 @@
 				A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */,
 				A0AC06B02201E30E00BD5FBA /* WorkingOverlay.swift in Sources */,
 				A08C2CEB21F0B71B008ACA3E /* EditProfileViewController.swift in Sources */,
+				A07E8A4222958D0600E9FFAA /* SlideViewController.swift in Sources */,
 				A0E27209224E335400CB7113 /* NewProjectViewController.swift in Sources */,
 				A0552050222566CE00B9645F /* UIView+animateHideShow.swift in Sources */,
 				A0E321F6228EBE6A00F2E9BD /* FlagInfoAlert.swift in Sources */,
@@ -985,6 +1000,7 @@
 				A0AC057F224CE8C7008B9249 /* TableWithSpacesViewController.swift in Sources */,
 				A0F7FDDF224936C8006610F0 /* TintedImageView.swift in Sources */,
 				A0AC06AC2201D00100BD5FBA /* FolderCell.swift in Sources */,
+				A07E8A40229575B600E9FFAA /* SlideshowViewController.swift in Sources */,
 				A098980A2236A9E800022851 /* UploadsView.swift in Sources */,
 				A0AFCF0D22300279005E57FD /* PreviewViewController.swift in Sources */,
 				A0457E6720EF96FB00B8FBCB /* StringUtils.swift in Sources */,
