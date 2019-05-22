@@ -158,27 +158,31 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         }
     }
 
+    private var _filesize: Int64?
     /**
      The size of the attached file in bytes, if file exists and attributes can
      be read.
     */
-    var filesize: UInt64? {
-        if let filepath = file?.path,
+    var filesize: Int64? {
+        if _filesize == nil || _filesize! <= 0,
+            let filepath = file?.path,
             let attr = try? FileManager.default.attributesOfItem(atPath: filepath) {
 
-            return attr[.size] as? UInt64
+            _filesize = (attr[.size] as? NSNumber)?.int64Value
         }
 
-        return nil
+        return _filesize
     }
 
+    private var _digest: Data?
     /**
      A SHA256 hash of the file content, if file can be read.
 
      Uses a 1 MByte buffer to keep RAM usage low.
     */
     var digest: Data? {
-        if let url = file,
+        if _digest == nil,
+            let url = file,
             let fh = try? FileHandle(forReadingFrom: url) {
 
             defer {
@@ -198,17 +202,15 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
                 }
             }
 
-            var digest = Data(count: Int(CC_SHA256_DIGEST_LENGTH))
-            digest.withUnsafeMutableBytes {
+            _digest = Data(count: Int(CC_SHA256_DIGEST_LENGTH))
+            _digest?.withUnsafeMutableBytes {
                 if let pointer = $0.baseAddress?.assumingMemoryBound(to: UInt8.self) {
                     _ = CC_SHA256_Final(pointer, &context)
                 }
             }
-
-            return digest
         }
 
-        return nil
+        return _digest
     }
 
     var thumb: URL? {
@@ -270,6 +272,8 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         isReady = decoder.decodeBool(forKey: "isReady")
         isUploaded = decoder.decodeBool(forKey: "isUploaded")
         collectionId = decoder.decodeObject(forKey: "collectionId") as! String
+        _filesize = decoder.decodeInt64(forKey: "filesize")
+        _digest = decoder.decodeObject(forKey: "digest") as? Data
     }
 
     func encode(with coder: NSCoder) {
@@ -287,6 +291,8 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         coder.encode(isReady, forKey: "isReady")
         coder.encode(isUploaded, forKey: "isUploaded")
         coder.encode(collectionId, forKey: "collectionId")
+        coder.encode(filesize ?? Int64(0), forKey: "filesize")
+        coder.encode(digest, forKey: "digest")
     }
 
 
