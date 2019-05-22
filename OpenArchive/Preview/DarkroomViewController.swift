@@ -384,10 +384,10 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     }
 
     private func getImageVc(_ index: Int) -> ImageViewController? {
-        let vc = ImageViewController.initFromStoryboard()
+        let vc = UIStoryboard.main.instantiate(ImageViewController.self)
 
-        vc?.image = sc.getAsset(index)?.getThumbnail()
-        vc?.index = index
+        vc.image = sc.getAsset(index)?.getThumbnail()
+        vc.index = index
 
         return vc
     }

@@ -859,7 +859,7 @@
         <!--Image View Controller-->
         <scene sceneID="x18-DK-E4B">
             <objects>
-                <viewController storyboardIdentifier="imageViewController" id="jLw-oO-33p" customClass="ImageViewController" customModule="OpenArchive" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ImageViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="jLw-oO-33p" customClass="ImageViewController" customModule="OpenArchive" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Mbp-K5-aua">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="240"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

@@ -11,11 +11,6 @@ import UIImageViewAlignedSwift
 
 class ImageViewController: UIViewController {
 
-    class func initFromStoryboard() -> ImageViewController? {
-        return UIStoryboard(name: "Main", bundle: nil)
-            .instantiateViewController(withIdentifier: "imageViewController") as? ImageViewController
-    }
-
     @IBOutlet weak var imageView: UIImageViewAligned!
 
     var image: UIImage?
