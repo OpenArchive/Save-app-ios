@@ -399,6 +399,8 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         title?.title.text = addMode ? "Add Info".localize() : asset?.filename
         title?.subtitle.text = addMode ? asset?.filename : Formatters.formatByteCount(asset?.filesize)
 
+        navigationItem.rightBarButtonItem?.isEnabled = !(asset?.isUploaded ?? true)
+
         setInfos(defaults: addMode)
 
         UIView.animate(withDuration: 0.5, animations: {
