@@ -379,6 +379,8 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
             setInfos(defaults: addMode)
 
             store()
+
+            FlagInfoAlert.presentIfNeeded()
         }
     }
 

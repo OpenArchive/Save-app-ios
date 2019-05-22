@@ -26,6 +26,7 @@ class FlagInfoAlert {
         }
 
         let flag = UIImageView(image: UIImage(named: "ic_flag")?.withRenderingMode(.alwaysTemplate))
+        flag.tintColor = UIColor.warning
         flag.translatesAutoresizingMaskIntoConstraints = false
 
         let title = UILabel()
