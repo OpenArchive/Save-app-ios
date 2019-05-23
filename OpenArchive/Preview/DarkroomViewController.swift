@@ -130,7 +130,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
 
         Db.add(observer: self, #selector(yapDatabaseModified))
 
-        refresh()
+        refresh(animate: false)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -294,14 +294,14 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
                     }
 
                     DispatchQueue.main.async {
-                        self.refresh(direction)
+                        self.refresh(direction: direction)
                     }
                 }
 
             case .insert:
                 if change.newIndexPath?.row == selected {
                     DispatchQueue.main.async {
-                        self.refresh(.forward)
+                        self.refresh(direction: .forward)
                     }
                 }
 
@@ -387,7 +387,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
 
     // MARK: Private Methods
 
-    private func refresh(_ direction: UIPageViewController.NavigationDirection? = nil) {
+    private func refresh(animate: Bool = true, direction: UIPageViewController.NavigationDirection? = nil) {
         let asset = self.asset // Don't repeat asset#get all the time.
 
         let title = navigationItem.titleView as? MultilineTitle
@@ -402,12 +402,15 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
 
         setInfos(defaults: addMode)
 
-        UIView.animate(withDuration: 0.5, animations: {
-            self.view.layoutIfNeeded()
-        }) { _ in
-            if self.addMode {
-                self.toolbar.isHidden = true
+        if animate {
+            UIView.animate(withDuration: 0.5, animations: {
+                self.view.layoutIfNeeded()
+            }) { _ in
+                self.toolbar.isHidden = self.addMode
             }
+        }
+        else {
+            toolbar.isHidden = addMode
         }
     }
 
