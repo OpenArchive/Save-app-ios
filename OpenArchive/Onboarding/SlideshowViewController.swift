@@ -13,6 +13,7 @@ UIPageViewControllerDelegate {
 
     @IBOutlet weak var container: UIView!
     @IBOutlet weak var doneBt: UIButton!
+    @IBOutlet weak var doneIcon: UIImageView!
     @IBOutlet weak var pageControl: UIPageControl!
 
     private static let data = [
@@ -53,6 +54,7 @@ UIPageViewControllerDelegate {
         super.viewDidLoad()
 
         doneBt.isHidden = true
+        doneIcon.isHidden = true
 
         addChild(pageVc)
         container.addSubview(pageVc.view)
@@ -136,6 +138,7 @@ UIPageViewControllerDelegate {
 
     private func refresh(animate: Bool = true) {
         doneBt.isHidden = page < SlideshowViewController.data.count - 1
+        doneIcon.isHidden = doneBt.isHidden
 
         pageControl.currentPage = page
 
