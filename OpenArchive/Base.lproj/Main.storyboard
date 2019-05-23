@@ -410,10 +410,9 @@
                                     <constraint firstAttribute="height" constant="48" id="1ot-z2-tx9"/>
                                 </constraints>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap the button below to add media to your project." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dIV-uA-I3m">
-                                <rect key="frame" x="60" y="204" width="200" height="160"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Tap the button below to add media to your project." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dIV-uA-I3m">
+                                <rect key="frame" x="60" y="136" width="200" height="424"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="160" id="A5I-2R-6Tu"/>
                                     <constraint firstAttribute="width" constant="200" id="dXC-NF-KJw"/>
                                 </constraints>
                                 <fontDescription key="fontDescription" type="boldSystem" pointSize="24"/>
@@ -529,7 +528,6 @@
                         <constraints>
                             <constraint firstItem="vgM-P6-FLk" firstAttribute="bottom" secondItem="kiu-eR-U6M" secondAttribute="bottom" constant="16" id="00k-gS-vG2"/>
                             <constraint firstItem="XfW-o7-R6f" firstAttribute="leading" secondItem="IgM-tk-GPC" secondAttribute="trailing" constant="8" id="3Ow-Ef-CRl"/>
-                            <constraint firstItem="dIV-uA-I3m" firstAttribute="centerY" secondItem="VEn-ta-I3v" secondAttribute="centerY" id="9Dt-AG-kUt"/>
                             <constraint firstItem="vgM-P6-FLk" firstAttribute="trailing" secondItem="XfW-o7-R6f" secondAttribute="trailing" constant="16" id="C3D-K9-0Yv"/>
                             <constraint firstItem="iaU-RN-V3u" firstAttribute="bottom" secondItem="vgM-P6-FLk" secondAttribute="bottom" id="LvN-wm-AzM"/>
                             <constraint firstItem="cdB-Ih-Rhb" firstAttribute="leading" secondItem="vgM-P6-FLk" secondAttribute="leading" constant="16" id="SCf-xT-Um4"/>
@@ -541,6 +539,8 @@
                             <constraint firstItem="vgM-P6-FLk" firstAttribute="bottom" secondItem="cdB-Ih-Rhb" secondAttribute="bottom" constant="8" id="cnw-Hn-FeE"/>
                             <constraint firstItem="vgM-P6-FLk" firstAttribute="trailing" secondItem="kiu-eR-U6M" secondAttribute="trailing" constant="16" id="eYn-bF-MvK"/>
                             <constraint firstItem="cdB-Ih-Rhb" firstAttribute="top" secondItem="Sv8-ax-o88" secondAttribute="bottom" constant="8" id="gOV-8w-Ea8"/>
+                            <constraint firstItem="dIV-uA-I3m" firstAttribute="top" secondItem="cdB-Ih-Rhb" secondAttribute="top" id="hEj-4N-hDI"/>
+                            <constraint firstItem="dIV-uA-I3m" firstAttribute="bottom" secondItem="cdB-Ih-Rhb" secondAttribute="bottom" id="hlM-rW-UDJ"/>
                             <constraint firstItem="IgM-tk-GPC" firstAttribute="centerY" secondItem="hpS-2l-dcc" secondAttribute="centerY" id="k5I-6E-vR2"/>
                             <constraint firstItem="Sv8-ax-o88" firstAttribute="top" secondItem="hpS-2l-dcc" secondAttribute="bottom" constant="8" id="lua-IY-9Qt"/>
                             <constraint firstItem="XfW-o7-R6f" firstAttribute="centerY" secondItem="IgM-tk-GPC" secondAttribute="centerY" id="mI2-0U-YUm"/>
@@ -999,13 +999,13 @@
         <image name="ic_error" width="24" height="24"/>
         <image name="ic_flag" width="12" height="13"/>
         <image name="ic_location" width="12" height="16"/>
-        <image name="ic_next" width="13" height="20"/>
+        <image name="ic_next" width="10" height="15"/>
         <image name="ic_tag" width="18" height="17"/>
         <image name="logo" width="92" height="52"/>
         <image name="server" width="27" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="yZV-Bw-XYb"/>
+        <segue reference="tKg-5v-fna"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.70398116438356162" blue="0.64921339897260277" alpha="1" colorSpace="calibratedRGB"/>
 </document>
