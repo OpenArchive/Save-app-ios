@@ -179,6 +179,13 @@ class MenuViewController: TableWithSpacesViewController {
         case 2:
             vc = DataUsageViewController()
 
+        case 3:
+            if indexPath.row == 1 {
+                if let url = URL(string: "https://open-archive.org/privacy/") {
+                    UIApplication.shared.open(url, options: [:])
+                }
+            }
+
         default:
             break
         }
