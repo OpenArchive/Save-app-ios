@@ -161,7 +161,7 @@ class MainViewController: TableWithSpacesViewController {
     }
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
-        return UIView()
+        return section == 3 ? tableView.separatorView : UIView()
     }
 
     override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {

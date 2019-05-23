@@ -69,6 +69,10 @@ class NewProjectViewController: BaseProjectViewController, BrowseDelegate {
         return TableHeader.reducedHeight
     }
 
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return section == 1 ? tableView.separatorView : nil
+    }
+
 
     // MARK: BrowseDelegate
 

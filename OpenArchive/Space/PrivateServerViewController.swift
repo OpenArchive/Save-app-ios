@@ -15,16 +15,19 @@ class PrivateServerViewController: BaseServerViewController {
 
     private let nameRow = TextRow() {
         $0.title = "Name".localize()
+        $0.placeholder = "Optional".localize()
     }
 
     private let urlRow = URLRow() {
         $0.title = "Server URL".localize()
+        $0.placeholder = "Required".localize()
         $0.add(rule: RuleRequired())
         $0.formatter = Formatters.URLFormatter()
     }
 
     private let passwordRow = PasswordRow() {
         $0.title = "Password".localize()
+        $0.placeholder = "Required".localize()
         $0.add(rule: RuleRequired())
     }
 

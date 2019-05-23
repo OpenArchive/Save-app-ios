@@ -55,4 +55,8 @@ class FormViewController: Eureka.FormViewController {
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return TableHeader.reducedHeight
     }
+
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        return section == 0 ? tableView.separatorView : super.tableView(tableView, viewForFooterInSection: section)
+    }
 }

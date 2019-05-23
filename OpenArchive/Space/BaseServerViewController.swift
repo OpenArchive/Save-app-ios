@@ -22,6 +22,7 @@ class BaseServerViewController: FormViewController, DoneDelegate {
 
     let userNameRow = AccountRow() {
         $0.title = "User Name".localize()
+        $0.placeholder = "Required".localize()
         $0.add(rule: RuleRequired())
     }
 

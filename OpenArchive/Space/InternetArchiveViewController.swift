@@ -15,6 +15,7 @@ class InternetArchiveViewController: BaseServerViewController {
 
     private let secretKeyRow = AccountRow() {
         $0.title = "Secret Key".localize()
+        $0.placeholder = "Required".localize()
         $0.add(rule: RuleRequired())
     }
 

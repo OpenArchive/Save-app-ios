@@ -25,6 +25,7 @@ class EditProfileViewController: FormViewController {
 
             <<< NameRow() {
                 $0.title = "Name".localize()
+                $0.placeholder = "Optional".localize()
                 $0.value = space?.authorName
             }
             .onChange() { row in
@@ -34,6 +35,7 @@ class EditProfileViewController: FormViewController {
             <<< NameRow() {
                 $0.cell.textField.textContentType = .jobTitle
                 $0.title = "Role".localize()
+                $0.placeholder = "Optional".localize()
                 $0.value = space?.authorRole
             }
             .onChange() { row in
@@ -42,6 +44,7 @@ class EditProfileViewController: FormViewController {
 
             <<< TextRow() {
                 $0.title = "Other Info".localize()
+                $0.placeholder = "Optional".localize()
                 $0.value = space?.authorOther
             }
             .onChange() { row in
