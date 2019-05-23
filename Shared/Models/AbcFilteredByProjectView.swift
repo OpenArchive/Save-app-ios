@@ -19,6 +19,8 @@ class AbcFilteredByProjectView: YapDatabaseFilteredView {
 
     static let name = "assets_by_collection_filtered_by_project"
 
+    private(set) static var projectId: String?
+
     /**
      A mapping which reverse sorts the groups by creation date of the collection
      they represent, due to the specific construction of the group key.
@@ -54,9 +56,10 @@ class AbcFilteredByProjectView: YapDatabaseFilteredView {
         `nil` will disable the filter and show all entries.
     */
     class func updateFilter(_ projectId: String? = nil) {
+        AbcFilteredByProjectView.projectId = projectId
         Db.writeConn?.asyncReadWrite { transaction in
             (transaction.ext(name) as? YapDatabaseFilteredViewTransaction)?
-                .setFiltering(getFilter(projectId), versionTag: UUID().uuidString)
+                .setFiltering(getFilter(), versionTag: UUID().uuidString)
         }
     }
 
@@ -65,15 +68,10 @@ class AbcFilteredByProjectView: YapDatabaseFilteredView {
      `nil` will disable the filter and show no entries.
      - returns: a filter block using the given projectId as criteria.
      */
-    private class func getFilter(_ projectId: String? = nil) -> YapDatabaseViewFiltering {
-        if projectId == nil {
-            return YapDatabaseViewFiltering.withKeyBlock { _, _, _, _ in
-                return false
-            }
-        }
-
+    private class func getFilter() -> YapDatabaseViewFiltering {
         return YapDatabaseViewFiltering.withKeyBlock { _, group, _, _ in
-            return AssetsByCollectionView.projectId(from: group) == projectId
+            return AbcFilteredByProjectView.projectId != nil &&
+                AssetsByCollectionView.projectId(from: group) == AbcFilteredByProjectView.projectId
         }
     }
 }

@@ -137,7 +137,7 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
         // Always select a newly inserted project or fix situation when tab bar
         // was properly populated while the "+" tab is selected, which really
         // shouldn't.
-        if insertedNew || selectFirst(),
+        if insertedNew || selectSelected(),
             let selectedProject = selectedProject {
             projectsDelegate?.didSelect(self, project: selectedProject)
         }
@@ -190,7 +190,7 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
             }
         }
 
-        _ = selectFirst()
+        selectSelected()
     }
 
     private func read(_ callback: @escaping (_ transaction: YapDatabaseViewTransaction) -> Void) {
@@ -218,9 +218,20 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
         return project
     }
 
-    private func selectFirst() -> Bool {
+    @discardableResult
+    private func selectSelected() -> Bool {
         if selectedItem?.tag == ProjectsTabBar.addTabItemTag && projects.count > 0 {
-            selectedItem = items[1] // Add is on 0, first project on 1.
+            var idx = 0
+            if let projectId = AbcFilteredByProjectView.projectId {
+                for i in 0...projects.count - 1 {
+                    if projects[i].id == projectId {
+                        idx = i
+                        break
+                    }
+                }
+            }
+
+            selectedItem = items[idx + 1] // Add is on 0, first project on 1.
 
             return true
         }
