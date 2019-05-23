@@ -21,6 +21,7 @@ def shared_pods
     pod 'TLPhotoPicker', '~> 1.8'
     pod 'FormatterKit', '~> 1.8'
     pod 'UIImageViewAlignedSwift', '~> 0.7'
+    pod 'FontBlaster', '~> 4.1'
 end
 
 target 'OpenArchive' do

@@ -9,6 +9,7 @@ PODS:
   - Eureka (5.0.0)
   - FavIcon (3.0.6)
   - FilesProvider (0.26.0)
+  - FontBlaster (4.1.0)
   - FormatterKit (1.8.2):
     - FormatterKit/AddressFormatter (= 1.8.2)
     - FormatterKit/ArrayFormatter (= 1.8.2)
@@ -84,7 +85,7 @@ PODS:
   - MDFTextAccessibility (2.0.0)
   - ReachabilitySwift (4.3.1)
   - SDCAlertView (10.0)
-  - TLPhotoPicker (1.8.8)
+  - TLPhotoPicker (1.8.9)
   - TUSafariActivity (1.0.4)
   - UIImage-Resize (1.0.1)
   - UIImageViewAlignedSwift (0.7.0)
@@ -160,6 +161,7 @@ DEPENDENCIES:
   - Eureka (~> 5.0)
   - FavIcon (~> 3.0)
   - FilesProvider (~> 0.26)
+  - FontBlaster (~> 4.1)
   - FormatterKit (~> 1.8)
   - ImageRow (from `https://github.com/EurekaCommunity/ImageRow.git`)
   - Localize (~> 2.2)
@@ -184,6 +186,7 @@ SPEC REPOS:
     - Eureka
     - FavIcon
     - FilesProvider
+    - FontBlaster
     - FormatterKit
     - Localize
     - MaterialComponents
@@ -216,6 +219,7 @@ SPEC CHECKSUMS:
   Eureka: 0f64f477ec8ef6201c6fec143d60ff5c201cf654
   FavIcon: e07ba9dd3cac1f76b81ccaa08fc2b41baa000b07
   FilesProvider: 2a8ae17d8b9c23a6feadb1308ee638fa31d21065
+  FontBlaster: 127aa66419478d1c62926c7fdb39841633344a45
   FormatterKit: 4b8f29acc9b872d5d12a63efb560661e8f2e1b98
   ImageRow: e65b2e1a33f89062bf2a553a2aad61d975eb7428
   Localize: cb1ae53ed73decaad0dce217806ed983091913f5
@@ -225,12 +229,12 @@ SPEC CHECKSUMS:
   MDFTextAccessibility: 85c09a1bd9c321f494348e632a25063bcda35a53
   ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
   SDCAlertView: 5fbc48cae6d7bf9781097e3f27883924ef3b922c
-  TLPhotoPicker: f90e8567aa33fff6b1b9cad4adbd57090b200acc
+  TLPhotoPicker: 9bf255c116129bc5d709b4cc8b42b3542e89e841
   TUSafariActivity: afc55a00965377939107ce4fdc7f951f62454546
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   UIImageViewAlignedSwift: cfd56e381a894c71bf0d020cb3ef31cb3f604634
   YapDatabase: d8cd02058e36bc0902e405d8f3326eb8d7dbf36c
 
-PODFILE CHECKSUM: 7f210109702b5a308e3288901d85619a627e7cbb
+PODFILE CHECKSUM: e3958ea1f622d7456ceb00e3270b752a18b864be
 
 COCOAPODS: 1.6.1

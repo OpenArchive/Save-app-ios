@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FontBlaster
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -25,6 +26,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         uploadManager = BackgroundUploadManager.shared
 
+        FontBlaster.blast() /* { fonts in
+            print(fonts)
+        } */
+        
         return true
     }
 

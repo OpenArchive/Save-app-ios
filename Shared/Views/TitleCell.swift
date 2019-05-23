@@ -27,7 +27,7 @@ class TitleCell: BaseCell {
 
         if let label = self.textLabel {
             label.textColor = UIColor.accent
-            label.font = UIFont.boldSystemFont(ofSize: 24)
+            label.font = UIFont(name: "Montserrat-Bold", size: 24)
             label.textAlignment = .center
         }
     }

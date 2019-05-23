@@ -11,6 +11,7 @@ import UserNotifications
 import YapDatabase
 import MobileCoreServices
 import MBProgressHUD
+import FontBlaster
 
 @objc(MainViewController)
 class MainViewController: TableWithSpacesViewController {
@@ -55,6 +56,8 @@ class MainViewController: TableWithSpacesViewController {
 
         view.tintColor = UIColor.accent
 
+        FontBlaster.blast()
+        
         super.viewDidLoad()
 
         tableView.register(TitleCell.self, forCellReuseIdentifier: TitleCell.reuseId)
