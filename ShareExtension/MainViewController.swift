@@ -262,73 +262,10 @@ class MainViewController: TableWithSpacesViewController {
     @objc override func yapDatabaseModified(notification: Notification) {
         super.yapDatabaseModified(notification: notification)
 
-        guard let notifications = projectsReadConn?.beginLongLivedReadTransaction(),
-            let viewConn = projectsReadConn?.ext(ActiveProjectsView.name) as? YapDatabaseViewConnection else {
-                return
-        }
+        projectsReadConn?.beginLongLivedReadTransaction()
+        projectsReadConn?.update(mappings: projectsMappings)
 
-        if !viewConn.hasChanges(for: notifications) {
-            projectsReadConn?.update(mappings: projectsMappings)
-
-            return
-        }
-
-        var changes = NSArray()
-
-        viewConn.getSectionChanges(nil, rowChanges: &changes,
-                                   for: notifications, with: projectsMappings)
-
-        if let changes = changes as? [YapDatabaseViewRowChange],
-            changes.count > 0 {
-
-            tableView.beginUpdates()
-
-            for change in changes {
-                switch change.type {
-                case .delete:
-                    if let indexPath = change.indexPath {
-                        if selectedRow == indexPath.row {
-                            selectedRow = -1
-                        }
-
-                        tableView.deleteRows(at: [transform(indexPath)], with: .automatic)
-                    }
-                case .insert:
-                    if let newIndexPath = change.newIndexPath {
-                        if selectedRow > -1 && selectedRow != newIndexPath.row {
-                            tableView.reloadRows(
-                                at: [IndexPath(row: selectedRow, section: MainViewController.projectSection)],
-                                with: .automatic)
-                        }
-
-                        // Always select the newly created project.
-                        selectedRow = newIndexPath.row
-
-                        tableView.insertRows(at: [transform(newIndexPath)], with: .automatic)
-                    }
-                case .move:
-                    if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
-                        if selectedRow == indexPath.row {
-                            selectedRow = newIndexPath.row
-                        }
-
-                        tableView.moveRow(at: transform(indexPath), to: transform(newIndexPath))
-                    }
-                case .update:
-                    if let indexPath = change.indexPath {
-                        if selectedRow == indexPath.row {
-                            selectedRow = -1
-                        }
-
-                        tableView.reloadRows(at: [transform(indexPath)], with: .none)
-                    }
-                @unknown default:
-                    break
-                }
-            }
-
-            tableView.endUpdates()
-        }
+        tableView.reloadSections(IndexSet(integer: MainViewController.projectSection), with: .automatic)
     }
 
 
@@ -362,7 +299,7 @@ class MainViewController: TableWithSpacesViewController {
     }
 
     private func transform(_ indexPath: IndexPath) -> IndexPath {
-        return IndexPath(row: indexPath.row, section: MainViewController.projectSection)
+        return IndexPath(row: indexPath.row, section: indexPath.section + MainViewController.projectSection)
     }
 
     /**
