@@ -51,10 +51,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             // into the `AbcFilteredByProjectView`.
             // Here is the only place where we know, that we're in this situation.
             mainVc.updateFilter()
-
-            // Ensure `MainViewController` is shown, because others
-            // (esp. `PreviewViewController`) don't get updated automatically.
-            navVc.popToRootViewController(animated: false)
         }
     }
 
