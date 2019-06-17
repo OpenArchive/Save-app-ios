@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import MobileCoreServices
 
 /**
  A special space supporting the Internet Archive.
@@ -74,6 +75,9 @@ class IaSpace: Space, Item {
         coder.encode(lastTry, forKey: "lastTry")
     }
 
+    /**
+     - Metadata reference: https://github.com/vmbrasseur/IAS3API/blob/master/metadata.md
+     */
     override func upload(_ asset: Asset, uploadId: String) -> Progress {
         let progress = Progress(totalUnitCount: 100)
 
@@ -95,7 +99,7 @@ class IaSpace: Space, Item {
             "x-amz-auto-make-bucket": "1",
             "x-archive-auto-make-bucket": "1",
             "x-archive-interactive-priority": "1",
-            "x-archive-meta-mediatype": asset.mimeType,
+            "x-archive-meta-mediatype": mediatype(for: asset),
             "x-archive-meta-collection": "opensource_media",
             ]
 
@@ -115,8 +119,22 @@ class IaSpace: Space, Item {
             headers["x-archive-meta-location"] = location
         }
 
+        if let notes = asset.notes, !notes.isEmpty {
+            headers["x-archive-meta-notes"] = notes
+        }
+
+        var subject = [String]()
+
+        if let projectName = asset.project.name, !projectName.isEmpty {
+            subject.append(projectName)
+        }
+
         if let tags = asset.tags, tags.count > 0 {
-            headers["x-archive-meta-subject"] = tags.joined(separator: ";")
+            subject.append(contentsOf: tags)
+        }
+
+        if subject.count > 0 {
+            headers["x-archive-meta-subject"] = subject.joined(separator: ";")
         }
 
         if let license = asset.license, !license.isEmpty {
@@ -179,5 +197,23 @@ class IaSpace: Space, Item {
 //        slug = "IMG-0003-u4z6"
 
         return URL(string: "\(IaSpace.baseUrl)/\(slug)/\(asset.filename)")
+    }
+
+    private func mediatype(for asset: Asset) -> String {
+        let uti = asset.uti as CFString
+
+        if UTTypeConformsTo(uti, "public.image" as CFString) {
+            return "image"
+        }
+
+        if UTTypeConformsTo(uti, "public.movie" as CFString) {
+            return "movies"
+        }
+
+        if UTTypeConformsTo(uti, "public.audio" as CFString) {
+            return "audio"
+        }
+
+        return "data"
     }
 }
