@@ -19,8 +19,6 @@ import Eureka
  */
 class FormViewController: Eureka.FormViewController {
 
-    var delegate: DoneDelegate?
-
     lazy var workingOverlay: WorkingOverlay = {
         return WorkingOverlay().addToSuperview(navigationController?.view ?? view)
     }()

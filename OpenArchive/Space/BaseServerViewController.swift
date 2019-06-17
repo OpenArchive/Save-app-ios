@@ -54,25 +54,13 @@ class BaseServerViewController: FormViewController {
         }
 
         if isEdit ?? true {
-            self.done()
+            if let rootVc = navigationController?.viewControllers.first {
+                navigationController?.setViewControllers([rootVc], animated: true)
+            }
         }
         else {
             navigationController?.setViewControllers([AddProjectViewController()], animated: true)
         }
-    }
-
-    
-    // MARK: ConnectSpaceDelegate
-
-    func done() {
-        // Only animate, if we don't have a delegate: Too much pop animations
-        // will end in the last view controller not being popped and it's also
-        // too much going on in the UI.
-        navigationController?.popViewController(animated: delegate == nil)
-
-        // If ConnectSpaceViewController called us, let it know, that the
-        // user created a space successfully.
-        delegate?.done()
     }
 
 
