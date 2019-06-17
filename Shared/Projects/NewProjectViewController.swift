@@ -22,6 +22,10 @@ class NewProjectViewController: BaseProjectViewController {
     override func viewDidLoad() {
         navigationItem.title = "New Project".localize()
 
+        if navigationController?.viewControllers.first == self {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
+        }
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .done, target: self, action: #selector(connect))

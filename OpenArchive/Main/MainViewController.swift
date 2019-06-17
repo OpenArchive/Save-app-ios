@@ -19,7 +19,7 @@ UICollectionViewDataSource, UINavigationControllerDelegate,
 ProjectsTabBarDelegate, HeaderViewDelegate, TLPhotosPickerViewControllerDelegate,
 PKDownloadButtonDelegate {
 
-    private static let segueShowMenu = "showMenuSegue"
+    static let segueShowMenu = "showMenuSegue"
     private static let segueShowPreview = "showPreviewSegue"
     private static let segueShowDarkroom = "showDarkroomSegue"
     private static let segueShowManagement = "showManagmentSegue"
@@ -103,14 +103,7 @@ PKDownloadButtonDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        if let space = SelectedSpace.space {
-            spaceFavIcon.image = space.favIcon
-            spaceName.text = space.prettyName
-        }
-        else {
-            spaceFavIcon.image = SelectedSpace.defaultFavIcon
-            spaceName.text = Bundle.main.displayName
-        }
+        updateSpace()
 
         navigationController?.setNavigationBarHidden(true, animated: animated)
 
@@ -315,7 +308,7 @@ PKDownloadButtonDelegate {
 
     func didSelectAdd(_ tabBar: ProjectsTabBar) {
         if SelectedSpace.available {
-            let vc = UINavigationController.init(rootViewController: AddProjectViewController())
+            let vc = UINavigationController(rootViewController: AddProjectViewController())
             vc.modalPresentationStyle = .popover
             vc.popoverPresentationController?.sourceView = tabBar
             vc.popoverPresentationController?.sourceRect = tabBar.frame
@@ -385,6 +378,9 @@ PKDownloadButtonDelegate {
             let viewConn = projectsReadConn?.ext(ActiveProjectsView.name) as? YapDatabaseViewConnection {
 
             if viewConn.hasChanges(for: notifications) {
+                updateSpace() // Needed on iPad, where MainViewController is not reloaded,
+                // because config changes happen in popovers.
+
                 var rowChanges = NSArray()
 
                 viewConn.getSectionChanges(nil, rowChanges: &rowChanges,
@@ -528,5 +524,19 @@ PKDownloadButtonDelegate {
     private func toggleToolbar(_ toggle: Bool) {
         toolbar.toggle(toggle, animated: true)
         addBt.toggle(!toggle, animated: true)
+    }
+
+    /**
+     UI update: Space icon and name.
+    */
+    private func updateSpace() {
+        if let space = SelectedSpace.space {
+            spaceFavIcon.image = space.favIcon
+            spaceName.text = space.prettyName
+        }
+        else {
+            spaceFavIcon.image = SelectedSpace.defaultFavIcon
+            spaceName.text = Bundle.main.displayName
+        }
     }
 }

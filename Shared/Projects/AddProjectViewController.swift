@@ -13,8 +13,19 @@ class AddProjectViewController: BaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
+        // We cannot browse the Internet Archive, so show NewProjectViewController
+        // immediately instead of this scene.
+        if SelectedSpace.space is IaSpace,
+            var stack = navigationController?.viewControllers {
+
+            stack.removeAll { $0 is AddProjectViewController }
+            stack.append(NewProjectViewController())
+            navigationController?.setViewControllers(stack, animated: false)
+        }
+        else {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(
+                barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
+        }
 
         tableView.register(TitleCell.nib, forCellReuseIdentifier: TitleCell.reuseId)
         tableView.register(BigMenuItemCell.nib, forCellReuseIdentifier: BigMenuItemCell.reuseId)
@@ -69,12 +80,5 @@ class AddProjectViewController: BaseTableViewController {
         }
 
         navigationController?.pushViewController(vc, animated: true)
-    }
-
-    
-    // MARK: Actions
-
-    @objc func cancel() {
-        dismiss(animated: true)
     }
 }

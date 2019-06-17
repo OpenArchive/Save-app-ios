@@ -24,11 +24,9 @@ class MainNavigationController: UINavigationController {
             }
         }
         else {
-            if !(topViewController is ConnectSpaceViewController) {
-                setViewControllers(
-                    [UIStoryboard.main.instantiateViewController(withIdentifier: "OnboardingViewController")],
-                    animated: true)
-            }
+            setViewControllers(
+                [UIStoryboard.main.instantiateViewController(withIdentifier: "OnboardingViewController")],
+                animated: true)
         }
     }
 }

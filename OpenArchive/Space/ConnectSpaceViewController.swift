@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ConnectSpaceViewController: BaseTableViewController, DoneDelegate {
+class ConnectSpaceViewController: BaseTableViewController {
 
     var hasOneInternetArchive = false
 
@@ -22,7 +22,7 @@ class ConnectSpaceViewController: BaseTableViewController, DoneDelegate {
         if !SelectedSpace.available {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
                 title: "Skip".localize(), style: .plain, target: self,
-                action: #selector(done))
+                action: #selector(cancel))
         }
 
         Db.bgRwConn?.asyncRead { transaction in
@@ -65,29 +65,7 @@ class ConnectSpaceViewController: BaseTableViewController, DoneDelegate {
         }
 
         if let vc = vc {
-            vc.delegate = self
-
             navigationController?.pushViewController(vc, animated: true)
-        }
-    }
-
-
-    // MARK: ConnectSpaceDelegate
-
-    @objc func done() {
-        if !Settings.firstRunDone {
-            // We're still in the onboarding phase. Need to change root view
-            // controller to main scene.
-
-            Settings.firstRunDone = true
-
-            (navigationController as? MainNavigationController)?.setRoot()
-        }
-        else {
-            // All other times: We should be running in a popover as root.
-            // Dismiss that.
-
-            dismiss(animated: true)
         }
     }
 }

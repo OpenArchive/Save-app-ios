@@ -33,4 +33,11 @@ class BaseTableViewController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
         return TableHeader.reducedHeight
     }
+
+
+    // MARK: Actions
+
+    @IBAction func cancel() {
+        dismiss(animated: true)
+    }
 }

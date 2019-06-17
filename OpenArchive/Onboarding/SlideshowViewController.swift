@@ -109,9 +109,17 @@ UIPageViewControllerDelegate {
     // MARK: Actions
 
     @IBAction func done() {
-        navigationController?.setViewControllers(
-            [UIStoryboard.main.instantiate(ConnectSpaceViewController.self)],
-            animated: true)
+        Settings.firstRunDone = true
+
+        if let navC = navigationController as? MainNavigationController {
+            navC.setRoot()
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                if let mainVc = navC.topViewController as? MainViewController {
+                    mainVc.performSegue(withIdentifier: MainViewController.segueShowMenu, sender: mainVc)
+                }
+            }
+        }
     }
 
     @IBAction func pageChanged() {

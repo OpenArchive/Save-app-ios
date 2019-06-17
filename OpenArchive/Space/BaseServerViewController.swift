@@ -9,7 +9,7 @@
 import UIKit
 import Eureka
 
-class BaseServerViewController: FormViewController, DoneDelegate {
+class BaseServerViewController: FormViewController {
 
     var space: Space?
 
@@ -57,10 +57,7 @@ class BaseServerViewController: FormViewController, DoneDelegate {
             self.done()
         }
         else {
-            let vc = NewProjectViewController()
-            vc.delegate = self
-
-            self.navigationController?.pushViewController(vc, animated: true)
+            navigationController?.setViewControllers([AddProjectViewController()], animated: true)
         }
     }
 
