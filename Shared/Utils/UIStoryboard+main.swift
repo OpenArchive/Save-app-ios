@@ -11,7 +11,7 @@ import UIKit
 extension UIStoryboard {
 
     class var main: UIStoryboard {
-        return UIStoryboard(name: "Main", bundle: Bundle.init(for: MainViewController.self))
+        return UIStoryboard(name: "Main", bundle: Bundle(for: MainViewController.self))
     }
 
     func instantiate<T>(_ class: T.Type) -> T {

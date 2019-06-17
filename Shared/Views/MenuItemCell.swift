@@ -65,11 +65,13 @@ class MenuItemCell: BaseCell {
         return self
     }
 
+    @discardableResult
     func set(_ text: String, isPlaceholder: Bool = false) -> MenuItemCell {
         return set(text, textColor: isPlaceholder ? .lightGray : .darkText,
                    accessoryType: isPlaceholder ? .addIndicator : .none)
     }
 
+    @discardableResult
     func set(_ error: Error) -> MenuItemCell {
         return set(error.localizedDescription, textColor: .red)
     }
