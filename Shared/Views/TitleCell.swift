@@ -10,25 +10,24 @@ import UIKit
 
 class TitleCell: BaseCell {
 
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-
-        setup()
+    class var fullHeight: CGFloat {
+        return 100
     }
 
-    required init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
+    @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var detailedDescription: UILabel!
 
-        setup()
-    }
+    func set(_ title: String, _ desc: String? = nil) -> TitleCell {
+        self.title.text = title
 
-    private func setup() {
-        selectionStyle = .none
-
-        if let label = self.textLabel {
-            label.textColor = UIColor.accent
-            label.font = UIFont(name: "Montserrat-Bold", size: 24)
-            label.textAlignment = .center
+        if let desc = desc {
+            detailedDescription.isHidden = false
+            detailedDescription.text = desc
         }
+        else {
+            detailedDescription.isHidden = true
+        }
+
+        return self
     }
 }

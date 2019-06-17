@@ -60,7 +60,7 @@ class MainViewController: TableWithSpacesViewController {
         
         super.viewDidLoad()
 
-        tableView.register(TitleCell.self, forCellReuseIdentifier: TitleCell.reuseId)
+        tableView.register(TitleCell.nib, forCellReuseIdentifier: TitleCell.reuseId)
         tableView.register(ButtonCell.self, forCellReuseIdentifier: ButtonCell.reuseId)
 
         Db.add(observer: self, #selector(yapDatabaseModified))
@@ -126,9 +126,7 @@ class MainViewController: TableWithSpacesViewController {
         else if indexPath.section == 2,
             let cell = tableView.dequeueReusableCell(withIdentifier: TitleCell.reuseId, for: indexPath) as? TitleCell {
 
-            cell.textLabel?.text = "Choose a Project".localize()
-
-            return cell
+            return cell.set("Choose a Project".localize())
         }
         else if indexPath.section == 4,
             let cell = tableView.dequeueReusableCell(withIdentifier: ButtonCell.reuseId, for: indexPath) as? ButtonCell {
@@ -177,7 +175,7 @@ class MainViewController: TableWithSpacesViewController {
         if indexPath.section == MainViewController.projectSection {
             if indexPath.row >= projectsCount {
                 let vc = UINavigationController(rootViewController:
-                    NewProjectViewController(isModal: true))
+                    AddProjectViewController())
                 vc.view.tintColor = UIColor.accent
                 vc.modalPresentationStyle = .popover
                 vc.popoverPresentationController?.sourceView = tableView.cellForRow(at: indexPath)

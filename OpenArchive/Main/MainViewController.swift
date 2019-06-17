@@ -315,7 +315,7 @@ PKDownloadButtonDelegate {
 
     func didSelectAdd(_ tabBar: ProjectsTabBar) {
         if SelectedSpace.available {
-            let vc = UINavigationController.init(rootViewController: NewProjectViewController(isModal: true))
+            let vc = UINavigationController.init(rootViewController: AddProjectViewController())
             vc.modalPresentationStyle = .popover
             vc.popoverPresentationController?.sourceView = tabBar
             vc.popoverPresentationController?.sourceRect = tabBar.frame

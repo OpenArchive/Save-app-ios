@@ -151,6 +151,14 @@
 		A0AFCF1222302054005E57FD /* PreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF1122302054005E57FD /* PreviewCell.swift */; };
 		A0B24C6421F0CD94006C0CC6 /* AvatarRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */; };
 		A0B24C6521F0CDA6006C0CC6 /* AvatarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */; };
+		A0B645BE22B7A11F00BBE3FF /* AddProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B645BD22B7A11F00BBE3FF /* AddProjectViewController.swift */; };
+		A0B645BF22B7A11F00BBE3FF /* AddProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B645BD22B7A11F00BBE3FF /* AddProjectViewController.swift */; };
+		A0B645C422B7AD2E00BBE3FF /* TitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0B645C322B7ABFE00BBE3FF /* TitleCell.xib */; };
+		A0B645C522B7AD2E00BBE3FF /* TitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0B645C322B7ABFE00BBE3FF /* TitleCell.xib */; };
+		A0B645C822B7ADC200BBE3FF /* BigMenuItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0B645C722B7ADAB00BBE3FF /* BigMenuItemCell.xib */; };
+		A0B645C922B7ADC200BBE3FF /* BigMenuItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0B645C722B7ADAB00BBE3FF /* BigMenuItemCell.xib */; };
+		A0B645CA22B7AEBB00BBE3FF /* BigMenuItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B645C622B7ADAA00BBE3FF /* BigMenuItemCell.swift */; };
+		A0B645CB22B7AEBB00BBE3FF /* BigMenuItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B645C622B7ADAA00BBE3FF /* BigMenuItemCell.swift */; };
 		A0BBEF8922846F310071EE93 /* Geocoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BBEF8822846F310071EE93 /* Geocoder.swift */; };
 		A0BBEF8A22846F310071EE93 /* Geocoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BBEF8822846F310071EE93 /* Geocoder.swift */; };
 		A0C475B4211474A50012937E /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A004E24B20EBCF1700A1D5F5 /* Formatters.swift */; };
@@ -342,6 +350,10 @@
 		A0AFCF0C22300279005E57FD /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineTitle.swift; sourceTree = "<group>"; };
 		A0AFCF1122302054005E57FD /* PreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewCell.swift; sourceTree = "<group>"; };
+		A0B645BD22B7A11F00BBE3FF /* AddProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectViewController.swift; sourceTree = "<group>"; };
+		A0B645C322B7ABFE00BBE3FF /* TitleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TitleCell.xib; sourceTree = "<group>"; };
+		A0B645C622B7ADAA00BBE3FF /* BigMenuItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigMenuItemCell.swift; sourceTree = "<group>"; };
+		A0B645C722B7ADAB00BBE3FF /* BigMenuItemCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BigMenuItemCell.xib; sourceTree = "<group>"; };
 		A0BA76E52111FA130009801D /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A0BBEF8822846F310071EE93 /* Geocoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geocoder.swift; sourceTree = "<group>"; };
 		A0C0732B20EE7AB600EA48F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -618,6 +630,8 @@
 			children = (
 				A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */,
 				A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */,
+				A0B645C622B7ADAA00BBE3FF /* BigMenuItemCell.swift */,
+				A0B645C722B7ADAB00BBE3FF /* BigMenuItemCell.xib */,
 				A045D200224D07C3008FF8C1 /* ButtonCell.swift */,
 				A0E321FA228EFA8800F2E9BD /* InfoBox.swift */,
 				A0E321FC228EFDA200F2E9BD /* InfoBox.xib */,
@@ -639,6 +653,7 @@
 				A0F7FDDB22491C6C006610F0 /* TintedButton.swift */,
 				A0F7FDDE224936C8006610F0 /* TintedImageView.swift */,
 				A045D1F8224D02AA008FF8C1 /* TitleCell.swift */,
+				A0B645C322B7ABFE00BBE3FF /* TitleCell.xib */,
 				A0AC06AF2201E30E00BD5FBA /* WorkingOverlay.swift */,
 			);
 			path = Views;
@@ -664,6 +679,7 @@
 		A0E271FF224E266700CB7113 /* Projects */ = {
 			isa = PBXGroup;
 			children = (
+				A0B645BD22B7A11F00BBE3FF /* AddProjectViewController.swift */,
 				A0DE78B121F771A700B6B68B /* BaseProjectViewController.swift */,
 				A0E27208224E335400CB7113 /* NewProjectViewController.swift */,
 				A0AC06A92201CFD800BD5FBA /* BrowseViewController.swift */,
@@ -836,6 +852,7 @@
 				A05471CB2296B77D009FEA93 /* Montserrat-Black.ttf in Resources */,
 				A045D1F3224CFFAD008FF8C1 /* SelectedSpaceCell.xib in Resources */,
 				A0B24C6521F0CDA6006C0CC6 /* AvatarCell.xib in Resources */,
+				A0B645C522B7AD2E00BBE3FF /* TitleCell.xib in Resources */,
 				A05471B92296B77D009FEA93 /* Montserrat-ExtraLightItalic.ttf in Resources */,
 				A05471C32296B77D009FEA93 /* Montserrat-ThinItalic.ttf in Resources */,
 				A05471D12296B77D009FEA93 /* Montserrat-ExtraLight.ttf in Resources */,
@@ -845,6 +862,7 @@
 				A05471B72296B77D009FEA93 /* Montserrat-Light.ttf in Resources */,
 				A05471D92296B77D009FEA93 /* Montserrat-Bold.ttf in Resources */,
 				A0E27205224E2A4D00CB7113 /* FolderCell.xib in Resources */,
+				A0B645C922B7ADC200BBE3FF /* BigMenuItemCell.xib in Resources */,
 				A0C475B7211488BF0012937E /* Assets.xcassets in Resources */,
 				A05471CD2296B77D009FEA93 /* Montserrat-Thin.ttf in Resources */,
 				A045D1E9224CF24F008FF8C1 /* SpacesListCell.xib in Resources */,
@@ -872,11 +890,13 @@
 				A05471C02296B77D009FEA93 /* Montserrat-ExtraBold.ttf in Resources */,
 				A05471CA2296B77D009FEA93 /* Montserrat-Black.ttf in Resources */,
 				A0E321FD228EFDA200F2E9BD /* InfoBox.xib in Resources */,
+				A0B645C422B7AD2E00BBE3FF /* TitleCell.xib in Resources */,
 				A05471C22296B77D009FEA93 /* Montserrat-ThinItalic.ttf in Resources */,
 				A0A98AEC22428A9300596B74 /* TableHeader.xib in Resources */,
 				A0E739E220E4C85E00DB31E1 /* LaunchScreen.storyboard in Resources */,
 				A05471BC2296B77D009FEA93 /* Montserrat-MediumItalic.ttf in Resources */,
 				A05471C42296B77D009FEA93 /* Montserrat-SemiBold.ttf in Resources */,
+				A0B645C822B7ADC200BBE3FF /* BigMenuItemCell.xib in Resources */,
 				A05471D82296B77D009FEA93 /* Montserrat-Bold.ttf in Resources */,
 				A0E739DF20E4C85E00DB31E1 /* Assets.xcassets in Resources */,
 				A0E739DD20E4C85D00DB31E1 /* Main.storyboard in Resources */,
@@ -1014,6 +1034,7 @@
 				A0AC0580224CE8C7008B9249 /* TableWithSpacesViewController.swift in Sources */,
 				A0C7DC04224A40E5004B78FF /* ActiveProjectsView.swift in Sources */,
 				A077732B22786BF500291F5D /* RemoveAssetAlert.swift in Sources */,
+				A0B645CB22B7AEBB00BBE3FF /* BigMenuItemCell.swift in Sources */,
 				A00A8D48220C7EDD0083F0CB /* AbcFilteredByProjectView.swift in Sources */,
 				A098980B2236A9E800022851 /* UploadsView.swift in Sources */,
 				A098980E2236C23200022851 /* Upload.swift in Sources */,
@@ -1022,6 +1043,7 @@
 				A0F7FDE0224936C8006610F0 /* TintedImageView.swift in Sources */,
 				A0FA9347227757100086D276 /* Settings.swift in Sources */,
 				A0AC0581224CEBE3008B9249 /* SpacesListCell.swift in Sources */,
+				A0B645BF22B7A11F00BBE3FF /* AddProjectViewController.swift in Sources */,
 				A07129112111E4F1007A432A /* Db.swift in Sources */,
 				A0552051222566CE00B9645F /* UIView+animateHideShow.swift in Sources */,
 				A0C475B4211474A50012937E /* Formatters.swift in Sources */,
@@ -1148,6 +1170,7 @@
 				A0FB4DBE21F8CC2300B46099 /* MainViewController.swift in Sources */,
 				A0DE78AF21F76D2200B6B68B /* Project.swift in Sources */,
 				A0FDB683225BCE4000998B6C /* BackgroundUploadManager.swift in Sources */,
+				A0B645BE22B7A11F00BBE3FF /* AddProjectViewController.swift in Sources */,
 				A072C4D6227C8B3C0022BC58 /* SpaceViewController.swift in Sources */,
 				A098980D2236C23200022851 /* Upload.swift in Sources */,
 				A0AFCF0F22300E41005E57FD /* MultilineTitle.swift in Sources */,
@@ -1155,6 +1178,7 @@
 				A0631B552203022100B3E90D /* BaseTableViewController.swift in Sources */,
 				A0E2720C224E33D000CB7113 /* EditProjectViewController.swift in Sources */,
 				A0457E6920EFB57C00B8FBCB /* RegexUtils.swift in Sources */,
+				A0B645CA22B7AEBB00BBE3FF /* BigMenuItemCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,14 +9,10 @@
 import UIKit
 import Eureka
 
-class NewProjectViewController: BaseProjectViewController, BrowseDelegate {
+class NewProjectViewController: BaseProjectViewController {
 
-    private var isModal = false
-
-    init(isModal: Bool = false) {
+    init() {
         super.init(Project(space: SelectedSpace.space))
-
-        self.isModal = isModal
     }
 
     required init?(coder decoder: NSCoder) {
@@ -27,37 +23,28 @@ class NewProjectViewController: BaseProjectViewController, BrowseDelegate {
         navigationItem.title = "New Project".localize()
 
 
-        if isModal {
-            navigationItem.leftBarButtonItem = UIBarButtonItem(
-                barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
-        }
-
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .done, target: self, action: #selector(connect))
 
         form
             +++ LabelRow() {
-                $0.cell.textLabel?.numberOfLines = 0
-                $0.cell.textLabel?.textAlignment = .center
-                $0.title = "Create a new project or browse for an existing one.".localize()
+                if let label = $0.cell.textLabel {
+                    label.numberOfLines = 0
+
+                    // Fix failed autoresizing mask constraints manually.
+                    if let superview = label.superview {
+                        label.translatesAutoresizingMaskIntoConstraints = false
+                        label.leftAnchor.constraint(equalTo: superview.leftAnchor, constant: 16).isActive = true
+                        label.rightAnchor.constraint(equalTo: superview.rightAnchor, constant: 16).isActive = true
+                    }
+                }
+
+                $0.title = "Add a project folder to the server that anyone can upload to.".localize()
             }
 
             +++ nameRow.cellUpdate { cell, _ in
                 self.enableDone()
             }
-
-        if !(project.space is IaSpace) {
-            form
-            +++ ButtonRow() {
-                $0.title = "Browse Projects".localize()
-            }
-            .onCellSelection { cell, row in
-                let browseVc = BrowseViewController()
-                browseVc.delegate = self
-
-                self.navigationController?.pushViewController(browseVc, animated: true)
-            }
-        }
 
         super.viewDidLoad()
     }
@@ -71,29 +58,5 @@ class NewProjectViewController: BaseProjectViewController, BrowseDelegate {
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return section == 1 ? tableView.separatorView : nil
-    }
-
-
-    // MARK: BrowseDelegate
-
-    func didSelect(name: String) {
-        nameRow.value = name
-
-        connect()
-    }
-
-
-    // MARK: Actions
-
-    @objc override func connect() {
-        super.connect()
-
-        if isModal {
-            cancel()
-        }
-    }
-
-    @objc func cancel() {
-        dismiss(animated: true)
     }
 }

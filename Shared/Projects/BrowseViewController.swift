@@ -9,13 +9,7 @@
 import UIKit
 import FilesProvider
 
-protocol BrowseDelegate {
-    func didSelect(name: String)
-}
-
 class BrowseViewController: BaseTableViewController {
-
-    var delegate: BrowseDelegate?
 
     private var provider: WebDAVFileProvider? {
         return (SelectedSpace.space as? WebDavSpace)?.provider
@@ -148,10 +142,13 @@ class BrowseViewController: BaseTableViewController {
             return
         }
 
-        // The NewProjectViewController will animate back, also.
-        // So, no animation here. Mind the execution order of the callback!
-        navigationController?.popViewController(animated: false)
+        let project = Project(name: folders[selected].name, space: SelectedSpace.space)
 
-        delegate?.didSelect(name: folders[selected].name)
+        Db.writeConn?.asyncReadWrite() { transaction in
+            transaction.setObject(project, forKey: project.id,
+                                  inCollection: Project.collection)
+        }
+
+        dismiss(animated: true)
     }
 }
