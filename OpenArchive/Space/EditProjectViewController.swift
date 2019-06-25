@@ -52,6 +52,13 @@ class EditProjectViewController: BaseProjectViewController {
         return project.active ? "Archive Project".localize() : "Unarchive Project".localize()
     }
 
+    /**
+     Store, as long as this is set to true.
+     Workaround for issue #122: Project gets deleted, but re-added when scene is
+     left, due to various #store calls which get triggered.
+    */
+    private var doStore = true
+
     override func viewDidLoad() {
         navigationItem.title = project.name
 
@@ -63,7 +70,10 @@ class EditProjectViewController: BaseProjectViewController {
 
                 self.project.name = row.value
                 self.navigationItem.title = self.project.name
-                self.store()
+
+                if self.doStore {
+                    self.store()
+                }
             }
 
             +++ Section("Creative Commons".localize().localizedUppercase)
@@ -88,8 +98,10 @@ class EditProjectViewController: BaseProjectViewController {
                 $0.cell.tintColor = UIColor.red
             }
             .onCellSelection { cell, row in
-                self.present(RemoveProjectAlert(self.project,
-                                                { self.navigationController?.popViewController(animated: true) }),
+                self.present(RemoveProjectAlert(self.project, {
+                    self.doStore = false
+                    self.navigationController?.popViewController(animated: true)
+                }),
                              animated: true)
             }
 
@@ -99,7 +111,9 @@ class EditProjectViewController: BaseProjectViewController {
             .onCellSelection { cell, row in
                 self.project.active = !self.project.active
 
-                self.store()
+                if self.doStore {
+                    self.store()
+                }
 
                 cell.textLabel?.text = self.archiveLabel
             }
@@ -163,6 +177,8 @@ class EditProjectViewController: BaseProjectViewController {
         licenseRow.title = project.license
         licenseRow.updateCell()
 
-        store()
+        if doStore {
+            store()
+        }
     }
 }
