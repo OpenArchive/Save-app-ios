@@ -48,6 +48,20 @@ class BaseProjectViewController: FormViewController {
     // MARK: Actions
 
     @objc func connect() {
+        if let spaceId = project.spaceId,
+            let name = nameRow.value {
+
+            let alert = DuplicateProjectAlert(nil)
+
+            if alert.exists(spaceId: spaceId, name: name) {
+                present(alert, animated: true)
+                return
+            }
+        }
+        else {
+            return
+        }
+
         project.name = nameRow.value
 
         store()

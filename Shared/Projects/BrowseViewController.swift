@@ -138,11 +138,19 @@ class BrowseViewController: BaseTableViewController {
     }
 
     @objc private func done() {
-        guard let selected = selected else {
+        guard let selected = selected,
+            let space = SelectedSpace.space else {
             return
         }
 
-        let project = Project(name: folders[selected].name, space: SelectedSpace.space)
+        let alert = DuplicateProjectAlert(nil)
+
+        if alert.exists(spaceId: space.id, name: folders[selected].name) {
+            present(alert, animated: true)
+            return
+        }
+
+        let project = Project(name: folders[selected].name, space: space)
 
         Db.writeConn?.asyncReadWrite() { transaction in
             transaction.setObject(project, forKey: project.id,

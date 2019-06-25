@@ -17,6 +17,8 @@
 		A01A7B6F2200A05C00E18DE0 /* ProjectsTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01A7B6E2200A05C00E18DE0 /* ProjectsTabBar.swift */; };
 		A01A7B702200A05C00E18DE0 /* ProjectsTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01A7B6E2200A05C00E18DE0 /* ProjectsTabBar.swift */; };
 		A01A7B722200F2D700E18DE0 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01A7B712200F2D700E18DE0 /* HeaderView.swift */; };
+		A025171922C2126C00EEFBD9 /* DuplicateProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A025171822C2126B00EEFBD9 /* DuplicateProjectAlert.swift */; };
+		A025171A22C2126C00EEFBD9 /* DuplicateProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A025171822C2126B00EEFBD9 /* DuplicateProjectAlert.swift */; };
 		A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029F6822118715700C4EF6D /* AssetFactory.swift */; };
 		A029F6842118715700C4EF6D /* AssetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029F6822118715700C4EF6D /* AssetFactory.swift */; };
 		A0362192220DA390003C21DC /* UIColor+accent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362191220DA390003C21DC /* UIColor+accent.swift */; };
@@ -260,6 +262,7 @@
 		A00DC98922315D4F004F07E0 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		A01A7B6E2200A05C00E18DE0 /* ProjectsTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsTabBar.swift; sourceTree = "<group>"; };
 		A01A7B712200F2D700E18DE0 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		A025171822C2126B00EEFBD9 /* DuplicateProjectAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateProjectAlert.swift; sourceTree = "<group>"; };
 		A029F6822118715700C4EF6D /* AssetFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFactory.swift; sourceTree = "<group>"; };
 		A0362191220DA390003C21DC /* UIColor+accent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+accent.swift"; sourceTree = "<group>"; };
 		A0362194220DB2CA003C21DC /* IaSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaSpace.swift; sourceTree = "<group>"; };
@@ -640,6 +643,7 @@
 				A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */,
 				A01A7B6E2200A05C00E18DE0 /* ProjectsTabBar.swift */,
 				A077732922786BCA00291F5D /* RemoveAssetAlert.swift */,
+				A025171822C2126B00EEFBD9 /* DuplicateProjectAlert.swift */,
 				A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */,
 				A0FB4DBA21F8C9B600B46099 /* RoundedImageView.swift */,
 				A0E1A68321EE831300E4F6B7 /* SelectedSpaceCell.swift */,
@@ -1019,6 +1023,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A0E271FE224E261100CB7113 /* BaseProjectViewController.swift in Sources */,
+				A025171A22C2126C00EEFBD9 /* DuplicateProjectAlert.swift in Sources */,
 				A0BBEF8A22846F310071EE93 /* Geocoder.swift in Sources */,
 				A0E321FF228EFE7100F2E9BD /* InfoBox.swift in Sources */,
 				A0A192DE21F208DA009A8CF0 /* Space.swift in Sources */,
@@ -1109,6 +1114,7 @@
 				A0362198220DB384003C21DC /* WebDavSpace.swift in Sources */,
 				A045D201224D07C3008FF8C1 /* ButtonCell.swift in Sources */,
 				A0FA93412277387D0086D276 /* Bundle+displayName.swift in Sources */,
+				A025171922C2126C00EEFBD9 /* DuplicateProjectAlert.swift in Sources */,
 				A01A7B6F2200A05C00E18DE0 /* ProjectsTabBar.swift in Sources */,
 				A08C2CE621F0B46C008ACA3E /* FormViewController.swift in Sources */,
 				A0F7FDE722494E2F006610F0 /* RemoveProjectAlert.swift in Sources */,
