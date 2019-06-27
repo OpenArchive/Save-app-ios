@@ -66,6 +66,9 @@ class PrivateServerViewController: BaseServerViewController {
                 self.enableConnect()
             }
 
+            // To get another divider after the last row.
+            <<< LabelRow()
+
         if space != nil {
             form
                 +++ removeRow

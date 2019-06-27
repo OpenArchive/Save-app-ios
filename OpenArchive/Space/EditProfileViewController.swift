@@ -50,6 +50,9 @@ class EditProfileViewController: FormViewController {
             .onChange() { row in
                 self.space?.authorOther = row.value
             }
+
+            // To get another divider after the last row.
+            <<< LabelRow()
     }
 
     override func viewWillDisappear(_ animated: Bool) {

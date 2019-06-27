@@ -48,6 +48,9 @@ class InternetArchiveViewController: BaseServerViewController {
 
             <<< secretKeyRow.cellUpdate(enableConnect(_:_:))
 
+            // To get another divider after the last row.
+            <<< LabelRow()
+
         if space != nil {
             form
                 +++ removeRow
