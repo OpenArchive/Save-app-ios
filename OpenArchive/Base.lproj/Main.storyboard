@@ -890,7 +890,7 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" id="rvP-Pf-6bH">
-                        <barButtonItem key="leftBarButtonItem" systemItem="done" id="oDa-l2-fbr">
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="oDa-l2-fbr">
                             <connections>
                                 <action selector="done" destination="sLd-mD-wXL" id="Zvb-XT-e6M"/>
                             </connections>

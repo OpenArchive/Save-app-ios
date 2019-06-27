@@ -50,6 +50,13 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
         updateTitle()
         setButton()
 
+        // This button says "Back" because we don't want to have 2 "Done" buttons,
+        // when in editing mode.
+        // That doesn't make too much sense on iPad, because we're displayed as a popover.
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            navigationItem.leftBarButtonItem = nil
+        }
+
         Db.add(observer: self, #selector(yapDatabaseModified))
     }
 
