@@ -173,11 +173,11 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
         selectedItemTitleFont = UIFont.systemFont(ofSize: 13, weight: .medium)
         unselectedItemTitleFont = UIFont.systemFont(ofSize: 13, weight: .medium)
 
-        setTitleColor(UIColor.gray, for: .normal)
-        setTitleColor(UIColor.black, for: .selected)
-        bottomDividerColor = UIColor.lightGray
+        setTitleColor(.gray, for: .normal)
+        setTitleColor(.black, for: .selected)
+        bottomDividerColor = .lightGray
 
-        items.append(getItem("+".localize(), ProjectsTabBar.addTabItemTag))
+        items.append(getItem("New".localize(), ProjectsTabBar.addTabItemTag))
 
         read { transaction in
             transaction.enumerateKeysAndObjects(inGroup: Project.collection) {
