@@ -11,11 +11,15 @@ import UIKit
 class RemoveAssetAlert: UIAlertController {
 
     convenience init(_ assets: [Asset], _ onSuccess: (() -> Void)? = nil) {
-        let message = assets.count == 1
-            ? "This item will be removed from your project.".localize()
-            : "These items will be removed from your project.".localize()
+        let appName = Bundle.main.displayName
 
-        self.init(title: "Remove Media".localize(),
+        let message = assets.count == 1
+        ? "This item will be removed only from the % App.\nIt will remain on the server and in your camera roll."
+            .localize(value: appName)
+            : "These items will be removed only from the % App.\nThey will remain on the server and in your camera roll."
+                .localize(value: appName)
+
+        self.init(title: "Remove Media from %".localize(value: appName),
                    message: message,
                    preferredStyle: .alert)
 
