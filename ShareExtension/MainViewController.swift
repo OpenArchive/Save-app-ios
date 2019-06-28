@@ -356,6 +356,7 @@ class MainViewController: TableWithSpacesViewController {
             content.body = "You have % items ready to upload to '%'."
                 .localize(values: Formatters.format(progress.totalUnitCount),
                           Project.getName(project))
+            content.userInfo[Project.collection] = project?.id
 
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
 

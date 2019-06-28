@@ -31,12 +31,21 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
     var projects = [Project]()
 
     var selectedProject: Project? {
-        if let index = selectedItem?.tag,
-            index < projects.count {
-            return projects[index]
-        }
+        get {
+            if let index = selectedItem?.tag,
+                index < projects.count {
+                return projects[index]
+            }
 
-        return nil
+            return nil
+        }
+        set {
+            if let project = newValue {
+                if let index = projects.firstIndex(where: { p in p.id == project.id }) {
+                    selectedItem = items[index + 1]
+                }
+            }
+        }
     }
 
     var projectsDelegate: ProjectsTabBarDelegate?

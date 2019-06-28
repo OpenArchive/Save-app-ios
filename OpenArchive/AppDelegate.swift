@@ -7,10 +7,11 @@
 //
 
 import UIKit
+import UserNotifications
 import FontBlaster
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
     var window: UIWindow?
 
@@ -19,6 +20,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+
+        UNUserNotificationCenter.current().delegate = self
 
         window?.tintColor = UIColor.accent
 
@@ -72,5 +75,58 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
         uploadManager = BackgroundUploadManager(completionHandler)
         uploadManager?.uploadNext()
+    }
+
+    // MARK: UNUserNotificationCenterDelegate
+
+    /**
+     Allow notifications, when in foreground. Mainly used for dev purposes, currently,
+     but doesn't harm, so left here to avoid unnecessary debugging.
+    */
+    func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent
+        notification: UNNotification, withCompletionHandler completionHandler:
+        @escaping (UNNotificationPresentationOptions) -> Void) {
+
+        completionHandler([.alert, .badge, .sound])
+    }
+
+    /**
+     Handle tap on the notification from Share Extension:
+
+     - Select the project, where the user added something in the Share Extension.
+     - Update MainViewController display.
+     - Jump to preview scene showing all assets of the currently open collection.
+    */
+    func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive
+        response: UNNotificationResponse, withCompletionHandler completionHandler:
+        @escaping () -> Void) {
+
+        if let projectId = response.notification.request.content.userInfo[Project.collection] as? String {
+            var project: Project?
+
+            Db.bgRwConn?.read { transaction in
+                project = transaction.object(forKey: projectId, inCollection: Project.collection) as? Project
+            }
+
+            if let project = project {
+                SelectedSpace.space = project.space
+
+                if let navVc = window?.rootViewController as? UINavigationController,
+                    let mainVc = navVc.viewControllers.first as? MainViewController {
+
+                    navVc.popToViewController(mainVc, animated: false)
+
+                    // When launching, the app needs some time to initialize everything,
+                    // otherwise it will crash.
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                        mainVc.tabBar.selectedProject = project
+                        mainVc.updateFilter()
+                        mainVc.showDetails(project.currentCollection)
+                    }
+                }
+            }
+        }
+
+        completionHandler()
     }
 }

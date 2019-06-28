@@ -61,7 +61,7 @@ PKDownloadButtonDelegate {
     private lazy var assetsMappings = AbcFilteredByProjectView.createMappings()
 
 
-    private lazy var tabBar: ProjectsTabBar = {
+    lazy var tabBar: ProjectsTabBar = {
         let tabBar = ProjectsTabBar(frame: tabBarContainer.bounds, projectsReadConn,
                                     viewName: ActiveProjectsView.name, projectsMappings)
 
