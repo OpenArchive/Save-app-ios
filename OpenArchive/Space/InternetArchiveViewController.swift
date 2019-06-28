@@ -9,9 +9,9 @@
 import UIKit
 import Eureka
 
-class InternetArchiveViewController: BaseServerViewController {
+class InternetArchiveViewController: BaseServerViewController, ScrapeDelegate {
 
-    private static let keysUrl = URL(string: "http://archive.org/account/s3.php")!
+    static let keysUrl = URL(string: "https://archive.org/account/s3.php")!
 
     private let secretKeyRow = AccountRow() {
         $0.title = "Secret Key".localize()
@@ -33,27 +33,52 @@ class InternetArchiveViewController: BaseServerViewController {
         userNameRow.value = space?.username
         secretKeyRow.value = space?.password
 
+        let actionSection = Section()
+
         form
             +++ favIconRow
-
-            <<< LabelRow() {
-                $0.cell.textLabel?.numberOfLines = 0
-                $0.title = "Please go to % and copy the displayed access and secret keys into the provided fields!".localize(value: InternetArchiveViewController.keysUrl.absoluteString)
-            }
-            .onCellSelection() { _, _ in
-                UIApplication.shared.open(InternetArchiveViewController.keysUrl, options: [:])
-            }
 
             <<< userNameRow.cellUpdate(enableConnect(_:_:))
 
             <<< secretKeyRow.cellUpdate(enableConnect(_:_:))
 
-            // To get another divider after the last row.
-            <<< LabelRow()
+            <<< LabelRow() {
+                $0.cell.textLabel?.numberOfLines = 0
+                $0.cell.textLabel?.font = .systemFont(ofSize: 11)
+
+                let appName = Bundle.main.displayName
+
+                $0.title = "% needs your Internet Archive account's API keys to be able to upload to it."
+                    .localize(value: appName)
+                    + "\n\n"
+                    + "You can let % try to acquire these keys automatically, or you can tap this row which will send you to % in Safari from where you can copy-and-paste these keys manually."
+                        .localize(values: appName, InternetArchiveViewController.keysUrl.absoluteString)
+                    + "\n\n"
+                    + "When using the \"%\" feature, make sure to log in and then press the \"Refresh\" button in the top right to let % have another try at automatically scraping the keys."
+                        .localize(values: "Acquire Keys".localize(), appName)
+                }
+                .onCellSelection() { _, _ in
+                    UIApplication.shared.open(InternetArchiveViewController.keysUrl, options: [:])
+            }
+
+            +++ actionSection
+
+            <<< ButtonRow() {
+                $0.title = "Acquire Keys".localize()
+            }
+            .cellUpdate({ cell, _ in
+                cell.textLabel?.textColor = .accent
+            })
+            .onCellSelection({ cell, row in
+                let vc = IaScrapeViewController()
+                vc.delegate = self
+
+                self.navigationController?.pushViewController(vc, animated: true)
+            })
 
         if space != nil {
-            form
-                +++ removeRow
+            actionSection
+                <<< removeRow
         }
 
         form.validate()
@@ -76,6 +101,23 @@ class InternetArchiveViewController: BaseServerViewController {
         space?.password = secretKeyRow.value
 
         super.connect()
+    }
+
+
+    // MARK: ScrapedDelegate
+
+    func scraped(accessKey: String, secretKey: String) {
+        navigationController?.popToViewController(self, animated: true)
+
+        DispatchQueue.main.async {
+            self.userNameRow.value = accessKey
+            self.userNameRow.updateCell()
+
+            self.secretKeyRow.value = secretKey
+            self.secretKeyRow.updateCell()
+
+            self.form.validate()
+        }
     }
 
 
