@@ -16,15 +16,7 @@ class ImageCell: UICollectionViewCell {
     
     @IBOutlet var imgView: UIImageView!
 
-    private lazy var selectedView: UIView = {
-        let view = UIView()
-
-        view.layer.borderColor = UIColor.accent.cgColor
-        view.layer.borderWidth = 10
-        view.layer.cornerRadius = 15
-
-        return view
-    }()
+    private lazy var selectedView = SelectedView()
 
     var asset: Asset? {
         didSet {
@@ -49,11 +41,7 @@ class ImageCell: UICollectionViewCell {
     override var isSelected: Bool {
         didSet {
             if isSelected {
-                addSubview(selectedView)
-                selectedView.frame = CGRect.init(x: bounds.origin.x - 5,
-                                                 y: bounds.origin.y - 5,
-                                                 width: bounds.size.width + 10,
-                                                 height: bounds.size.height + 10)
+                selectedView.addToSuperview(self)
             }
             else {
                 selectedView.removeFromSuperview()

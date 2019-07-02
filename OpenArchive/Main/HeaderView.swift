@@ -9,7 +9,7 @@
 import UIKit
 
 protocol HeaderViewDelegate: class {
-    func showDetails(_ collection: Collection)
+    func showDetails(_ collection: Collection, section: Int?)
 }
 
 class HeaderView: UICollectionReusableView {
@@ -21,6 +21,8 @@ class HeaderView: UICollectionReusableView {
     @IBOutlet weak var manageBt: UIButton!
 
     weak var delegate: HeaderViewDelegate?
+
+    var section: Int?
 
     var collection: Collection? {
         didSet {
@@ -70,7 +72,7 @@ class HeaderView: UICollectionReusableView {
     
     @IBAction func manage() {
         if let collection = collection {
-            delegate?.showDetails(collection)
+            delegate?.showDetails(collection, section: section)
         }
         else {
             print("[\(String(describing: type(of: self)))]#manage - no collection! That should not happen!")

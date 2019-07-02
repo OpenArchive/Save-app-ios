@@ -22,6 +22,8 @@ class PreviewCell: BaseCell {
         return 240
     }
 
+    private lazy var selectedView = SelectedView()
+
     @IBOutlet weak var previewImg: UIImageView!
     @IBOutlet weak var tagBt: UIButton!
     @IBOutlet weak var locationBt: UIButton!
@@ -39,6 +41,17 @@ class PreviewCell: BaseCell {
     }
 
     weak var delegate: PreviewCellDelegate?
+
+    override var isSelected: Bool {
+        didSet {
+            if isSelected {
+                selectedView.addToSuperview(self.contentView)
+            }
+            else {
+                selectedView.removeFromSuperview()
+            }
+        }
+    }
 
 
     // MARK: Actions

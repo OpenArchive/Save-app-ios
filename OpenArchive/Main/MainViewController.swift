@@ -60,6 +60,11 @@ PKDownloadButtonDelegate {
 
     private lazy var assetsMappings = AbcFilteredByProjectView.createMappings()
 
+    private var headerButtonTitle: String {
+        return (collectionView.indexPathsForSelectedItems ?? []).count > 0
+            ? "Select".localize()
+            : "Next".localize()
+    }
 
     lazy var tabBar: ProjectsTabBar = {
         let tabBar = ProjectsTabBar(frame: tabBarContainer.bounds, projectsReadConn,
@@ -163,7 +168,10 @@ PKDownloadButtonDelegate {
             }
         }
 
+        view.section = indexPath.section
         view.collection = collection
+        view.manageBt.setTitle(headerButtonTitle, for: .normal)
+        view.manageBt.setTitle(headerButtonTitle, for: .highlighted)
         view.delegate = self
 
         return view
@@ -201,6 +209,8 @@ PKDownloadButtonDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         if collectionView.indexPathsForSelectedItems?.count ?? 0 == 0 {
+            updateHeaderButton()
+
             toggleToolbar(false)
         }
     }
@@ -265,11 +275,13 @@ PKDownloadButtonDelegate {
         if let indexPath = collectionView.indexPathForItem(at: sender.location(in: collectionView)) {
             collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredVertically)
 
+            updateHeaderButton()
+
             toggleToolbar(true)
         }
     }
 
-    @IBAction func removeItems() {
+    @IBAction func removeAssets() {
         var assets = [Asset]()
 
         assetsReadConn?.read() { transaction in
@@ -327,7 +339,22 @@ PKDownloadButtonDelegate {
 
     // MARK: HeaderViewDelegate
 
-    func showDetails(_ collection: Collection) {
+    func showDetails(_ collection: Collection, section: Int? = nil) {
+
+        // If in "edit" mode, select all of this section.
+        if (collectionView.indexPathsForSelectedItems ?? []).count > 0 {
+
+            if let section = section {
+                for i in 0 ... collectionView.numberOfItems(inSection: section) - 1 {
+                    collectionView.selectItem(at: IndexPath(item: i, section: section),
+                                              animated: false, scrollPosition: .centeredVertically)
+                }
+            }
+
+            return
+        }
+
+        // If not in edit mode, go to PreviewViewController.
         AbcFilteredByCollectionView.updateFilter(collection.id)
 
         performSegue(withIdentifier: MainViewController.segueShowPreview, sender: nil)
@@ -537,6 +564,18 @@ PKDownloadButtonDelegate {
         else {
             spaceFavIcon.image = SelectedSpace.defaultFavIcon
             spaceName.text = Bundle.main.displayName
+        }
+    }
+
+    private func updateHeaderButton() {
+        for i in 0 ... collectionView.numberOfSections {
+            if let header = collectionView.supplementaryView(
+                forElementKind: "UICollectionElementKindSectionHeader",
+                at: IndexPath(item: 0, section: i)) as? HeaderView {
+
+                header.manageBt.setTitle(headerButtonTitle, for: .normal)
+                header.manageBt.setTitle(headerButtonTitle, for: .highlighted)
+            }
         }
     }
 }

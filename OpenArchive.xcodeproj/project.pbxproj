@@ -202,6 +202,8 @@
 		A0E739DD20E4C85D00DB31E1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DB20E4C85D00DB31E1 /* Main.storyboard */; };
 		A0E739DF20E4C85E00DB31E1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DE20E4C85E00DB31E1 /* Assets.xcassets */; };
 		A0E739E220E4C85E00DB31E1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0E739E020E4C85E00DB31E1 /* LaunchScreen.storyboard */; };
+		A0E9069322CB7D16008CD81B /* SelectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E9069222CB7D16008CD81B /* SelectedView.swift */; };
+		A0E9069422CB7D16008CD81B /* SelectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E9069222CB7D16008CD81B /* SelectedView.swift */; };
 		A0F1364F227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */; };
 		A0F13650227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */; };
 		A0F7FDDC22491C6C006610F0 /* TintedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDB22491C6C006610F0 /* TintedButton.swift */; };
@@ -389,6 +391,7 @@
 		A0E739DE20E4C85E00DB31E1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A0E739E120E4C85E00DB31E1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A0E739E320E4C85E00DB31E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A0E9069222CB7D16008CD81B /* SelectedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedView.swift; sourceTree = "<group>"; };
 		A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YapDatabaseConnection+updateMappings.swift"; sourceTree = "<group>"; };
 		A0F5BD612136E4B500691E34 /* OpenArchive-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenArchive-Bridging-Header.h"; sourceTree = "<group>"; };
 		A0F7FDDB22491C6C006610F0 /* TintedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintedButton.swift; sourceTree = "<group>"; };
@@ -650,6 +653,7 @@
 				A0FB4DBA21F8C9B600B46099 /* RoundedImageView.swift */,
 				A0E1A68321EE831300E4F6B7 /* SelectedSpaceCell.swift */,
 				A045D1EF224CFB96008FF8C1 /* SelectedSpaceCell.xib */,
+				A0E9069222CB7D16008CD81B /* SelectedView.swift */,
 				A0A3D9C62226D8DB00BB5A19 /* SpaceCell.swift */,
 				A045D1E2224CF034008FF8C1 /* SpaceCell.xib */,
 				A050AA482225DF4000AE5D15 /* SpacesListCell.swift */,
@@ -1056,6 +1060,7 @@
 				A0552051222566CE00B9645F /* UIView+animateHideShow.swift in Sources */,
 				A0C475B4211474A50012937E /* Formatters.swift in Sources */,
 				A0362196220DB2CA003C21DC /* IaSpace.swift in Sources */,
+				A0E9069422CB7D16008CD81B /* SelectedView.swift in Sources */,
 				A045D1F5224CFFB4008FF8C1 /* SelectedSpaceCell.swift in Sources */,
 				A0E2BC732226AA10006D33E3 /* SelectedSpace.swift in Sources */,
 				A070335C2119E7DF00BF1F33 /* Request+debug.swift in Sources */,
@@ -1131,6 +1136,7 @@
 				A0E321FB228EFA8800F2E9BD /* InfoBox.swift in Sources */,
 				A0D58DCE20E51517005A2F34 /* Asset.swift in Sources */,
 				A08C2CE421F0A98C008ACA3E /* PrivateServerViewController.swift in Sources */,
+				A0E9069322CB7D16008CD81B /* SelectedView.swift in Sources */,
 				A04255CE22944C1B0048E00C /* UIStoryboard+main.swift in Sources */,
 				A0E321F9228EDBE900F2E9BD /* DarkroomViewController.swift in Sources */,
 				A070335B2119E7DF00BF1F33 /* Request+debug.swift in Sources */,

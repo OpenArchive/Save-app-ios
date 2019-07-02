@@ -9,7 +9,10 @@
 import UIKit
 import YapDatabase
 
-class PreviewViewController: UITableViewController, PreviewCellDelegate, DoneDelegate {
+class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, PreviewCellDelegate, DoneDelegate {
+
+    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var toolbar: UIToolbar!
 
     private let sc = SelectedCollection()
 
@@ -57,15 +60,15 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate, DoneDel
 
     // MARK: UITableViewDataSource
 
-    override func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return sc.sections
     }
 
-    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return sc.count
     }
 
-    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: PreviewCell.reuseId, for: indexPath) as! PreviewCell
         cell.asset = sc.getAsset(indexPath)
         cell.delegate = self
@@ -76,15 +79,39 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate, DoneDel
 
     // MARK: UITableViewDelegate
 
-    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return PreviewCell.height
     }
 
-    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // If the currently selected number of rows is exactly one, that means,
+        // that there was no selection before, and this item was just selected.
+        // In that case, ignore the selection and instead move to DarkroomViewController.
+        // Because in this scenario, the first selection is done by a long press,
+        // which basically enters an "edit" mode. (See #longPressItem.)
+        if tableView.indexPathsForSelectedRows?.count ?? 0 != 1 {
+
+            // For an unkown reason, this isn't done automatically.
+            tableView.cellForRow(at: indexPath)?.isSelected = true
+
+            return
+        }
+
+        tableView.deselectRow(at: indexPath, animated: false)
+
         performSegue(withIdentifier: "showDarkroomSegue", sender: (indexPath.row, nil as DarkroomViewController.DirectEdit?))
     }
 
-    override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        // For an unkown reason, this isn't done automatically.
+        tableView.cellForRow(at: indexPath)?.isSelected = false
+
+        if tableView.indexPathsForSelectedRows?.count ?? 0 == 0 {
+            toggleToolbar(false)
+        }
+    }
+
+    public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         return [removeAction]
     }
 
@@ -160,6 +187,36 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate, DoneDel
         navigationController?.popViewController(animated: true)
     }
 
+    @IBAction func longPressCell(_ sender: UILongPressGestureRecognizer) {
+
+        // We only recognize this the first time, it is triggered.
+        // It will continue triggering with .changed and .ended states, but
+        // .ended is only released after the user lifts the finger which feels
+        // awkward.
+        if sender.state != .began {
+            return
+        }
+
+        if let indexPath = tableView.indexPathForRow(at: sender.location(in: tableView)) {
+            tableView.cellForRow(at: indexPath)?.isSelected = true
+            tableView.selectRow(at: indexPath, animated: false, scrollPosition: .middle)
+
+            toggleToolbar(true)
+        }
+    }
+
+    @IBAction func removeAssets() {
+        var assets = [Asset]()
+
+        for indexPath in self.tableView.indexPathsForSelectedRows ?? [] {
+            if let asset = sc.getAsset(indexPath) {
+                assets.append(asset)
+            }
+        }
+
+        present(RemoveAssetAlert(assets, { self.toggleToolbar(false) }), animated: true)
+    }
+
 
     // MARK: Observers
 
@@ -231,5 +288,14 @@ class PreviewViewController: UITableViewController, PreviewCellDelegate, DoneDel
     private func updateTitle() {
         let projectName = sc.collection?.project.name
         (navigationItem.titleView as? MultilineTitle)?.subtitle.text = projectName == nil ? nil : "Upload to %".localize(value: projectName!)
+    }
+
+    /**
+     Shows/hides the toolbar, depending on the toggle.
+
+     - parameter toggle: true, to show toolbar, false to hide.
+     */
+    private func toggleToolbar(_ toggle: Bool) {
+        toolbar.toggle(toggle, animated: true)
     }
 }
