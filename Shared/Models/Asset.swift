@@ -151,10 +151,19 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
 
     var file: URL? {
         get {
-            return FileManager.default.containerURL(
+            let file = FileManager.default.containerURL(
                 forSecurityApplicationGroupIdentifier: Constants.appGroup)?
                 .appendingPathComponent(Asset.collection)
                 .appendingPathComponent(id)
+
+            // We need a file extension in order to have AVAssetImageGenerator be able
+            // to recognize video formats and generate a thumbnail.
+            // See AssetFactory#createThumbnail
+            if let ext = Asset.getFileExt(uti: uti) {
+                return file?.appendingPathExtension(ext)
+            }
+
+            return file
         }
     }
 

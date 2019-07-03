@@ -315,13 +315,27 @@ class AssetFactory {
      - parameter asset: The `Asset` to read the file from and store the thumbnail with.
     */
     private class func createThumb(_ asset: Asset) {
-        if let file = asset.file as CFURL?,
-            let thumb = asset.thumb,
-            let source = CGImageSourceCreateWithURL(file, nil),
-            let cgThumbnail = CGImageSourceCreateThumbnailAtIndex(source, 0, thumbnailOptions) {
+        if let file = asset.file,
+            let thumb = asset.thumb {
 
-            let thumbnail = UIImage(cgImage: cgThumbnail)
-            try? thumbnail.jpegData(compressionQuality: 0.5)?.write(to: thumb)
+            var cgThumbnail: CGImage?
+
+            if UTTypeConformsTo(asset.uti as CFString, kUTTypeAudiovisualContent) {
+                let avAsset = AVAsset(url: file)
+                let generator = AVAssetImageGenerator(asset: avAsset)
+                generator.appliesPreferredTrackTransform = true
+                let time = min(CMTimeMakeWithSeconds(Float64(1), preferredTimescale: 100), avAsset.duration)
+
+                cgThumbnail = try? generator.copyCGImage(at: time, actualTime: nil)
+            }
+            else if let source = CGImageSourceCreateWithURL(file as CFURL, nil) {
+                cgThumbnail = CGImageSourceCreateThumbnailAtIndex(source, 0, thumbnailOptions)
+            }
+
+            if let cgThumbnail = cgThumbnail {
+                let thumbnail = UIImage(cgImage: cgThumbnail)
+                try? thumbnail.jpegData(compressionQuality: 0.5)?.write(to: thumb)
+            }
         }
     }
 
