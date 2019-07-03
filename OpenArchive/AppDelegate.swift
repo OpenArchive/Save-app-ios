@@ -15,7 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
     var window: UIWindow?
 
-    var uploadManager: BackgroundUploadManager?
+    var uploadManager: UploadManager?
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions
@@ -27,7 +27,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         Db.setup()
 
-        uploadManager = BackgroundUploadManager.shared
+        uploadManager = UploadManager.shared
 
         FontBlaster.blast() /* { fonts in
             print(fonts)
@@ -70,10 +70,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
 
+    /**
+     Catches the uploads which finished, when the app was stopped.
+    */
+    func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
+        Conduit.sessionManager.backgroundCompletionHandler = completionHandler
+    }
+
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
         Db.setup()
 
-        uploadManager = BackgroundUploadManager(completionHandler)
+        uploadManager = UploadManager(completionHandler)
         uploadManager?.uploadNext()
     }
 

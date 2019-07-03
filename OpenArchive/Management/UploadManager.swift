@@ -10,6 +10,7 @@ import Foundation
 import YapDatabase
 import Reachability
 import FilesProvider
+import Alamofire
 
 extension Notification.Name {
     static let uploadManagerPause = Notification.Name("uploadManagerPause")
@@ -44,7 +45,9 @@ extension AnyHashable {
 
  User can pause and unpause a scheduled upload any time to reset counters and have a retry immediately.
  */
-class UploadManager {
+class UploadManager: Alamofire.SessionDelegate {
+
+    static let shared = UploadManager()
 
     /**
      Maximum number of upload retries per upload item before giving up.
@@ -92,7 +95,14 @@ class UploadManager {
 
     private var singleCompletionHandler: ((UIBackgroundFetchResult) -> Void)?
 
-    init(_ singleCompletionHandler: ((UIBackgroundFetchResult) -> Void)?) {
+    private var schedule: Timer?
+
+    private var backgroundTask = UIBackgroundTaskIdentifier.invalid
+
+
+    init(_ singleCompletionHandler: ((UIBackgroundFetchResult) -> Void)? = nil) {
+        super.init()
+
         self.singleCompletionHandler = singleCompletionHandler
 
         // Initialize mapping and current uploads.
@@ -107,8 +117,38 @@ class UploadManager {
             }
         }
 
-        NotificationCenter.default.addObserver(self, selector: #selector(done),
-                                               name: .uploadManagerDone, object: nil)
+        let nc = Db.add(observer: self, #selector(yapDatabaseModified))
+
+        nc.addObserver(self, selector: #selector(done),
+                       name: .uploadManagerDone, object: nil)
+
+        nc.addObserver(self, selector: #selector(pause),
+                       name: .uploadManagerPause, object: nil)
+
+        nc.addObserver(self, selector: #selector(unpause),
+                       name: .uploadManagerUnpause, object: nil)
+
+        nc.addObserver(self, selector: #selector(reachabilityChanged),
+                       name: .reachabilityChanged, object: reachability)
+
+        nc.addObserver(self, selector: #selector(dataUsageChanged),
+                       name: .uploadManagerDataUsageChange, object: nil)
+
+        try? reachability?.startNotifier()
+
+        schedule = Timer(fireAt: Date().addingTimeInterval(1), interval: 60,
+                         target: self, selector: #selector(self.uploadNext),
+                         userInfo: nil, repeats: true)
+
+        progressTimer.resume()
+
+        // Schedule a timer, which calls #uploadNext every 60 seconds beginning
+        // in 1 second.
+        RunLoop.main.add(schedule!, forMode: .common)
+
+        backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
+            self?.endBackgroundTask()
+        }
     }
 
     // MARK: Observers
@@ -406,7 +446,7 @@ class UploadManager {
 
             self.debug("#uploadNext try upload=\(upload)")
 
-            upload.liveProgress = asset.space?.upload(asset, uploadId: upload.id)
+            upload.liveProgress = Conduit.get(for: asset)?.upload(uploadId: upload.id)
             upload.error = nil
 
             Db.writeConn?.asyncReadWrite { transaction in
@@ -479,5 +519,16 @@ class UploadManager {
         let space = upload.asset?.space
         space?.tries = 0
         space?.lastTry = nil
+    }
+
+    private func endBackgroundTask() {
+        debug("#endBackgroundTask")
+
+        schedule?.invalidate()
+
+        NotificationCenter.default.removeObserver(self)
+
+        UIApplication.shared.endBackgroundTask(backgroundTask)
+        backgroundTask = .invalid
     }
 }
