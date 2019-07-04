@@ -80,7 +80,7 @@ class Formatters: NSObject {
      Formats an integer properly localized as a human readable byte count.
      */
     static func formatByteCount(_ value: Int64?) -> String {
-        return bytes.string(fromByteCount: value == nil ? 0 : value!)
+        return bytes.string(fromByteCount: value ?? 0)
     }
 
     /**

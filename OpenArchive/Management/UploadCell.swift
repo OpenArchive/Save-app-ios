@@ -60,13 +60,23 @@ class UploadCell: BaseCell, PKDownloadButtonDelegate {
     
     weak var upload: Upload? {
         didSet {
+            let total = upload?.asset?.filesize ?? 0
+            let progressValue = upload?.progress ?? 0
+            let done = Double(total) * (progressValue - 0.25 /* The first 25% are for folder creation and metadata file upload */)
+
             progress.isHidden = upload?.error != nil
             progress.state = upload?.state ?? .pending
-            progress.stopDownloadButton.progress = CGFloat(upload?.progress ?? 0)
+            progress.stopDownloadButton.progress = CGFloat(progressValue)
             errorBt.isHidden = upload?.error == nil
             thumbnail.image = upload?.thumbnail
             nameLb.text = upload?.filename
-            sizeLb.text = Formatters.formatByteCount(upload?.asset?.filesize)
+
+            sizeLb.text = Formatters.formatByteCount(total)
+
+            if done > 0 {
+                // \u{2191} is up arrow
+                sizeLb.text = (sizeLb.text ?? "") + " – \u{2191}\(Formatters.formatByteCount(Int64(done)))"
+            }
         }
     }
 
