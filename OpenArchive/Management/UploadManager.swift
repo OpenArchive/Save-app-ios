@@ -75,51 +75,97 @@ class UploadManager: Alamofire.SessionDelegate {
     /**
      Polls tracked Progress objects and updates `Update` objects every second.
     */
-    lazy var progressTimer: DispatchSourceTimer = {
-        let progressTimer = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
-        progressTimer.schedule(deadline: .now(), repeating: .seconds(1))
-        progressTimer.setEventHandler {
-            Db.writeConn?.asyncReadWrite { transaction in
-                for upload in self.uploads {
-                    if upload.hasProgressChanged() {
-                        self.debug("#progress tracker changed for \(upload))")
-
-                        transaction.setObject(upload, forKey: upload.id, inCollection: Upload.collection)
-                    }
-                }
-            }
-        }
-
-        return progressTimer
-    }()
+    var progressTimer: DispatchSourceTimer?
 
     private var singleCompletionHandler: ((UIBackgroundFetchResult) -> Void)?
 
-    private var schedule: Timer?
+    private var scheduler: Timer?
 
     private var backgroundTask = UIBackgroundTaskIdentifier.invalid
 
+    /**
+     This handles a finished file upload task, but ignores metadata files.
+    */
+    private lazy var taskCompletionHandler: (URLSession, URLSessionTask, Error?) -> Void = { session, task, error in
+        self.debug("#taskCompletionHandler task=\(task), state=\(task.state.rawValue), url=\(task.originalRequest?.url?.absoluteString ?? "nil") error=\(String(describing: error))")
+
+        if task is URLSessionUploadTask,
+            task.state == .completed,
+            let url = task.originalRequest?.url,
+            !url.lastPathComponent.lowercased().contains(WebDavConduit.metaFileExt) {
+
+            self.done(self.uploads.first { $0.liveProgress != nil }?.id, error, url)
+        }
+    }
+
+    override func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        self.debug("#didCompleteWithError task=\(task), state=\(task.state.rawValue), url=\(task.originalRequest?.url?.absoluteString ?? "nil") error=\(String(describing: error))")
+
+        super.urlSession(session, task: task, didCompleteWithError: error)
+    }
 
     init(_ singleCompletionHandler: ((UIBackgroundFetchResult) -> Void)? = nil) {
         super.init()
 
         self.singleCompletionHandler = singleCompletionHandler
 
-        // Initialize mapping and current uploads.
-        readConn?.read { transaction in
-            self.mappings.update(with: transaction)
+        taskDidComplete = taskCompletionHandler
 
-            (transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction)?
-                .enumerateKeysAndObjects(inGroup: UploadsView.groups[0]) { collection, key, object, index, stop in
-                    if let upload = object as? Upload {
-                        self.uploads.append(upload)
+        restart()
+    }
+
+    /**
+     (Re-)starts the `UploadManager`:
+
+     - Reads current uploads from DB, if cache is empty or upload is in cache,
+       which isn't in the DB.
+     - Reconnects all observers.
+     - Restarts `Reachability` notifier.
+     - Restarts `progressTimer`.
+     - Re-initializes and starts #uploadNext scheduler.
+     - Begins a new background task to keep app alive after user goes away.
+     */
+    func restart() {
+        scheduler?.invalidate()
+        progressTimer?.cancel()
+
+        readConn?.read { transaction in
+            var dbChanged = self.uploads.count <= 0
+
+            if !dbChanged {
+                for upload in self.uploads {
+                    // Uuups. The database and the object cache are out of sync.
+                    // That really *shouldn't* happen, but we want to be sure here.
+                    if !transaction.hasObject(forKey: upload.id, inCollection: Upload.collection) {
+                        dbChanged = true
+                        break
                     }
+                }
+            }
+
+            self.debug("#refresh dbChanged=\(dbChanged)")
+
+            if dbChanged {
+                self.uploads.removeAll()
+
+                self.mappings.update(with: transaction)
+
+                (transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction)?
+                    .enumerateKeysAndObjects(inGroup: UploadsView.groups[0]) { collection, key, object, index, stop in
+                        if let upload = object as? Upload {
+                            self.uploads.append(upload)
+                        }
+                }
             }
         }
 
-        let nc = Db.add(observer: self, #selector(yapDatabaseModified))
+        let nc = NotificationCenter.default
 
-        nc.addObserver(self, selector: #selector(done),
+        nc.removeObserver(self)
+
+        Db.add(observer: self, #selector(yapDatabaseModified))
+
+        nc.addObserver(self, selector: #selector(done(_:)),
                        name: .uploadManagerDone, object: nil)
 
         nc.addObserver(self, selector: #selector(pause),
@@ -136,20 +182,40 @@ class UploadManager: Alamofire.SessionDelegate {
 
         try? reachability?.startNotifier()
 
-        schedule = Timer(fireAt: Date().addingTimeInterval(1), interval: 60,
-                         target: self, selector: #selector(self.uploadNext),
-                         userInfo: nil, repeats: true)
+        progressTimer = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
+        progressTimer?.schedule(deadline: .now(), repeating: .seconds(1))
+        progressTimer?.setEventHandler {
+            Db.writeConn?.asyncReadWrite { transaction in
+                for upload in self.uploads {
+                    if upload.hasProgressChanged() {
+                        self.debug("#progress tracker changed for \(upload))")
 
-        progressTimer.resume()
+                        // Could be, that our cache is out of sync with the database,
+                        // due to background upload not triggering a `yapDatabaseModified` callback.
+                        // Don't write non-existing objects into it: use `replace` instead of `setObject`.
+                        transaction.replace(upload, forKey: upload.id, inCollection: Upload.collection)
+                    }
+                }
+            }
+        }
+
+        progressTimer?.resume()
+
+        scheduler = Timer(fireAt: Date().addingTimeInterval(5), interval: 60,
+                          target: self, selector: #selector(uploadNext),
+                          userInfo: nil, repeats: true)
 
         // Schedule a timer, which calls #uploadNext every 60 seconds beginning
-        // in 1 second.
-        RunLoop.main.add(schedule!, forMode: .common)
+        // in 5 seconds.
+        RunLoop.main.add(scheduler!, forMode: .common)
 
-        backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
-            self?.endBackgroundTask()
+        if backgroundTask == .invalid {
+            backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
+                self?.stop()
+            }
         }
     }
+
 
     // MARK: Observers
 
@@ -320,17 +386,19 @@ class UploadManager: Alamofire.SessionDelegate {
         }
     }
 
-    @objc func done(notification: Notification) {
+    @objc func done(_ notification: Notification) {
+        done(notification.object as? String,
+             notification.userInfo?[.error] as? Error)
+    }
+
+    private func done(_ id: String?, _ error: Error?, _ url: URL? = nil) {
         debug("#done")
 
-        guard let id = notification.object as? String else {
+        guard let id = id else {
             singleCompletionHandler?(.failed)
 
             return
         }
-
-        let error = notification.userInfo?[.error] as? Error
-        let url = notification.userInfo?[.url] as? URL
 
         debug("#done id=\(id), error=\(String(describing: error)), url=\(url?.absoluteString ?? "nil")")
 
@@ -463,13 +531,14 @@ class UploadManager: Alamofire.SessionDelegate {
         }
     }
 
-    func debug(_ text: String) {
+    
+    // MARK: Private Methods
+
+    private func debug(_ text: String) {
         #if DEBUG
         print("[\(String(describing: type(of: self)))] \(text)")
         #endif
     }
-
-    // MARK: Private Methods
 
     private func get(_ id: String) -> Upload? {
         return uploads.first { $0.id == id }
@@ -521,10 +590,16 @@ class UploadManager: Alamofire.SessionDelegate {
         space?.lastTry = nil
     }
 
-    private func endBackgroundTask() {
-        debug("#endBackgroundTask")
+    private func stop() {
+        debug("#stop")
 
-        schedule?.invalidate()
+        scheduler?.invalidate()
+        scheduler = nil
+
+        reachability?.stopNotifier()
+
+        progressTimer?.cancel()
+        progressTimer = nil
 
         NotificationCenter.default.removeObserver(self)
 

@@ -26,7 +26,7 @@ class IaConduit: Conduit {
             let url = url(for: asset)
             else {
                 DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
-                    self.done(uploadId, InvalidConfError())
+                    self.error(uploadId, InvalidConfError())
                 }
 
                 return progress
@@ -80,9 +80,9 @@ class IaConduit: Conduit {
             headers["x-archive-meta-licenseurl"] = license
         }
 
-        upload(file, to: url, progress, headers: headers) { error in
-            self.done(uploadId, error, url)
-        }
+        // No callback, handling of the finished upload will be done in
+        // `UploadManager#taskCompletionHandler`.
+        upload(file, to: url, progress, headers: headers)
 
         return progress
     }

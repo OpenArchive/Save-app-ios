@@ -60,6 +60,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             // Here is the only place where we know, that we're in this situation.
             mainVc.updateFilter()
         }
+
+        // #applicationWillEnterForeground is only called, if the app was already running,
+        // not the first time.
+        // In that case, the `UploadManager` might need a restart, since it could
+        // have been #stopped, due to running out of background time.
+        uploadManager?.restart()
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {

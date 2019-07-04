@@ -130,7 +130,7 @@ class Conduit {
      or when an error happened.
      */
     func upload(_ file: URL, to: URL, _ progress: Progress, credential: URLCredential? = nil,
-                headers: HTTPHeaders? = nil, _ completionHandler: SimpleCompletionHandler) {
+                headers: HTTPHeaders? = nil, _ completionHandler: SimpleCompletionHandler = nil) {
 
         let start = progress.completedUnitCount
         let share = progress.totalUnitCount - start
@@ -155,27 +155,22 @@ class Conduit {
 
     /**
      Boilerplate reducer. Sets an error on the `userInfo` notification object,
-     if any provided, sets the URL, if any provided and posts the
-     `.uploadManagerDone` notification.
+     if any provided and posts the `.uploadManagerDone` notification.
 
      You can even call it like this to reduce LOCs:
 
      ```Swift
-     return self.done(uploadId)
+     return self.error(uploadId)
      ```
 
      - parameter uploadId: The `ID` of the tracked upload.
      - parameter error: An optional `Error`, defaults to `nil`.
-     - parameter url: The URL the asset was uploaded to, if any. Defaults to `nil`.
      */
-    func done(_ uploadId: String, _ error: Error? = nil, _ url: URL? = nil) {
+    func error(_ uploadId: String, _ error: Error? = nil) {
         var userInfo = [AnyHashable: Any]()
 
         if let error = error {
             userInfo[.error] = error
-        }
-        else {
-            userInfo[.url] = url
         }
 
         NotificationCenter.default.post(name: .uploadManagerDone, object: uploadId,

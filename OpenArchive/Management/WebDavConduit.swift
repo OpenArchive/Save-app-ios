@@ -13,7 +13,7 @@ class WebDavConduit: Conduit {
 
     // MARK: WebDavConduit
 
-    private static let metaFileExt = "meta.json"
+    static let metaFileExt = "meta.json"
 
     private var credential: URLCredential? {
         return (asset.space as? WebDavSpace)?.credential
@@ -35,7 +35,7 @@ class WebDavConduit: Conduit {
             let credential = credential
         else {
             DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
-                self.done(uploadId, InvalidConfError())
+                self.error(uploadId, InvalidConfError())
             }
 
             return progress
@@ -43,12 +43,12 @@ class WebDavConduit: Conduit {
 
         let p = create(folder: projectName, at: "") { error in
             if error != nil || progress.isCancelled {
-                return self.done(uploadId, error)
+                return self.error(uploadId, error)
             }
 
             let p = self.create(folder: collectionName, at: projectName) { error in
                 if error != nil || progress.isCancelled {
-                    return self.done(uploadId, error)
+                    return self.error(uploadId, error)
                 }
 
                 let to = Conduit.construct(url: self.asset.space?.url, projectName, collectionName, self.asset.filename)
@@ -57,14 +57,10 @@ class WebDavConduit: Conduit {
                                           credential) { error in
 
                     if error != nil || progress.isCancelled {
-                        return self.done(uploadId, error)
+                        return self.error(uploadId, error)
                     }
 
-                    self.upload(file, to: to, progress, credential: credential) { error in
-                        self.done(uploadId, error,
-                                  Conduit.construct(url: self.asset.space?.url, projectName,
-                                                    collectionName, self.asset.filename))
-                    }
+                    self.upload(file, to: to, progress, credential: credential)
                 }
 
                 progress.addChild(p, withPendingUnitCount: 15)
