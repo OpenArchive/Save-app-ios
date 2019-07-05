@@ -41,6 +41,7 @@ PKDownloadButtonDelegate {
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var addBt: MDCFloatingButton!
     @IBOutlet weak var toolbar: UIToolbar!
+    @IBOutlet weak var editAssetsBt: UIBarButtonItem!
 
     private lazy var uploadsReadConn = Db.newLongLivedReadConn()
 
@@ -198,6 +199,8 @@ PKDownloadButtonDelegate {
         // Because in this scenario, the first selection is done by a long press,
         // which basically enters an "edit" mode. (See #longPressItem.)
         if collectionView.indexPathsForSelectedItems?.count ?? 0 != 1 {
+            setEditAssetBtState()
+
             return
         }
 
@@ -210,7 +213,10 @@ PKDownloadButtonDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        if !inEditMode {
+        if inEditMode {
+            setEditAssetBtState()
+        }
+        else {
             updateHeaderButton()
 
             toggleToolbar(false)
@@ -280,6 +286,8 @@ PKDownloadButtonDelegate {
             updateHeaderButton()
 
             toggleToolbar(true)
+
+            setEditAssetBtState()
         }
     }
 
@@ -557,6 +565,19 @@ PKDownloadButtonDelegate {
     private func toggleToolbar(_ toggle: Bool) {
         toolbar.toggle(toggle, animated: true)
         addBt.toggle(!toggle, animated: true)
+    }
+
+    private func setEditAssetBtState() {
+        var enableEditBt = true
+
+        for asset in getSelectedAssets() {
+            if asset.isUploaded {
+                enableEditBt = false
+                break
+            }
+        }
+
+        editAssetsBt.isEnabled = enableEditBt
     }
 
     /**

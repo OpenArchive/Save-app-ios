@@ -533,7 +533,7 @@
                                 <items>
                                     <barButtonItem image="batchedit" id="VSL-EX-jb4">
                                         <connections>
-                                            <action selector="editAssets" destination="wAB-WM-ZQl" id="je5-aL-gXz"/>
+                                            <action selector="editAssets" destination="wAB-WM-ZQl" id="Uma-AR-gZP"/>
                                         </connections>
                                     </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="4fJ-vx-dEg"/>
@@ -576,6 +576,7 @@
                     <connections>
                         <outlet property="addBt" destination="kiu-eR-U6M" id="fVa-Q1-bhe"/>
                         <outlet property="collectionView" destination="cdB-Ih-Rhb" id="nAx-Db-2Xa"/>
+                        <outlet property="editAssetsBt" destination="VSL-EX-jb4" id="DsF-mF-k7V"/>
                         <outlet property="manageBt" destination="XfW-o7-R6f" id="OnK-vA-KRC"/>
                         <outlet property="spaceFavIcon" destination="hpS-2l-dcc" id="f3r-5D-oXV"/>
                         <outlet property="spaceName" destination="IgM-tk-GPC" id="3jS-qS-wAR"/>
@@ -1068,7 +1069,7 @@
         <image name="server" width="27" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="51p-Tu-idn"/>
+        <segue reference="tKg-5v-fna"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.70398116438356162" blue="0.64921339897260277" alpha="1" colorSpace="calibratedRGB"/>
 </document>
