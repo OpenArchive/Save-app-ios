@@ -531,7 +531,11 @@
                                 <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
-                                    <barButtonItem image="batchedit" id="VSL-EX-jb4"/>
+                                    <barButtonItem image="batchedit" id="VSL-EX-jb4">
+                                        <connections>
+                                            <action selector="editAssets" destination="wAB-WM-ZQl" id="je5-aL-gXz"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="4fJ-vx-dEg"/>
                                     <barButtonItem systemItem="trash" id="Ua2-8a-Ofg">
                                         <connections>
@@ -895,7 +899,11 @@
                                 <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
-                                    <barButtonItem image="batchedit" id="erH-7R-LeC"/>
+                                    <barButtonItem image="batchedit" id="erH-7R-LeC">
+                                        <connections>
+                                            <action selector="editAssets" destination="E3U-Mn-N4D" id="okN-3D-45g"/>
+                                        </connections>
+                                    </barButtonItem>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="bEd-NE-3j2"/>
                                     <barButtonItem systemItem="trash" id="ZtT-tz-wua">
                                         <connections>

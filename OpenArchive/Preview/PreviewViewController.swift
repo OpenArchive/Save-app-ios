@@ -205,16 +205,24 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
 
-    @IBAction func removeAssets() {
-        var assets = [Asset]()
+    @IBAction func editAssets() {
+        let assets = getSelectedAssets()
 
-        for indexPath in self.tableView.indexPathsForSelectedRows ?? [] {
-            if let asset = sc.getAsset(indexPath) {
-                assets.append(asset)
+        if assets.count == 1 {
+            if let indexPath = tableView.indexPathsForSelectedRows?[0] {
+                // Trigger deselection, so edit mode UI goes away.
+                tableView.deselectRow(at: indexPath, animated: false)
+                tableView(tableView, didDeselectRowAt: indexPath)
+
+                // Trigger selection, so DarkroomViewController gets pushed.
+                tableView.selectRow(at: indexPath, animated: false, scrollPosition: .middle)
+                tableView(tableView, didSelectRowAt: indexPath)
             }
         }
+    }
 
-        present(RemoveAssetAlert(assets, { self.toggleToolbar(false) }), animated: true)
+    @IBAction func removeAssets() {
+        present(RemoveAssetAlert(getSelectedAssets(), { self.toggleToolbar(false) }), animated: true)
     }
 
 
@@ -297,5 +305,17 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
      */
     private func toggleToolbar(_ toggle: Bool) {
         toolbar.toggle(toggle, animated: true)
+    }
+
+    private func getSelectedAssets() -> [Asset] {
+        var assets = [Asset]()
+
+        for indexPath in self.tableView.indexPathsForSelectedRows ?? [] {
+            if let asset = sc.getAsset(indexPath) {
+                assets.append(asset)
+            }
+        }
+
+        return assets
     }
 }

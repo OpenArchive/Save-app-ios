@@ -60,10 +60,12 @@ PKDownloadButtonDelegate {
 
     private lazy var assetsMappings = AbcFilteredByProjectView.createMappings()
 
+    private var inEditMode: Bool {
+        return collectionView.indexPathsForSelectedItems?.count ?? 0 > 0
+    }
+
     private var headerButtonTitle: String {
-        return (collectionView.indexPathsForSelectedItems ?? []).count > 0
-            ? "Select".localize()
-            : "Next".localize()
+        return inEditMode ? "Select".localize() : "Next".localize()
     }
 
     lazy var tabBar: ProjectsTabBar = {
@@ -208,7 +210,7 @@ PKDownloadButtonDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        if collectionView.indexPathsForSelectedItems?.count ?? 0 == 0 {
+        if !inEditMode {
             updateHeaderButton()
 
             toggleToolbar(false)
@@ -281,20 +283,24 @@ PKDownloadButtonDelegate {
         }
     }
 
-    @IBAction func removeAssets() {
-        var assets = [Asset]()
+    @IBAction func editAssets() {
+        let assets = getSelectedAssets()
 
-        assetsReadConn?.read() { transaction in
-            for indexPath in self.collectionView.indexPathsForSelectedItems ?? [] {
-                if let asset = (transaction.ext(AbcFilteredByProjectView.name) as? YapDatabaseViewTransaction)?
-                        .object(at: indexPath, with: self.assetsMappings) as? Asset
-                {
-                    assets.append(asset)
-                }
+        if assets.count == 1 {
+            if let indexPath = collectionView.indexPathsForSelectedItems?[0] {
+                // Trigger deselection, so edit mode UI goes away.
+                collectionView.deselectItem(at: indexPath, animated: false)
+                collectionView(collectionView, didDeselectItemAt: indexPath)
+
+                // Trigger selection, so DarkroomViewController gets pushed.
+                collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredVertically)
+                collectionView(collectionView, didSelectItemAt: indexPath)
             }
         }
+    }
 
-        present(RemoveAssetAlert(assets, { self.toggleToolbar(false) }), animated: true)
+    @IBAction func removeAssets() {
+        present(RemoveAssetAlert(getSelectedAssets(), { self.toggleToolbar(false) }), animated: true)
     }
 
 
@@ -342,7 +348,7 @@ PKDownloadButtonDelegate {
     func showDetails(_ collection: Collection, section: Int? = nil) {
 
         // If in "edit" mode, select all of this section.
-        if (collectionView.indexPathsForSelectedItems ?? []).count > 0 {
+        if inEditMode {
 
             if let section = section {
                 for i in 0 ... collectionView.numberOfItems(inSection: section) - 1 {
@@ -577,5 +583,21 @@ PKDownloadButtonDelegate {
                 header.manageBt.setTitle(headerButtonTitle, for: .highlighted)
             }
         }
+    }
+
+    private func getSelectedAssets() -> [Asset] {
+        var assets = [Asset]()
+
+        assetsReadConn?.read() { transaction in
+            for indexPath in self.collectionView.indexPathsForSelectedItems ?? [] {
+                if let asset = (transaction.ext(AbcFilteredByProjectView.name) as? YapDatabaseViewTransaction)?
+                    .object(at: indexPath, with: self.assetsMappings) as? Asset
+                {
+                    assets.append(asset)
+                }
+            }
+        }
+
+        return assets
     }
 }
