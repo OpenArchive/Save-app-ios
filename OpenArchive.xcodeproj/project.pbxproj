@@ -22,6 +22,7 @@
 		A026C34622C641EB007B1C5B /* IaScrapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */; };
 		A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029F6822118715700C4EF6D /* AssetFactory.swift */; };
 		A029F6842118715700C4EF6D /* AssetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029F6822118715700C4EF6D /* AssetFactory.swift */; };
+		A0357D1122CF901800292077 /* BatchEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0357D1022CF901800292077 /* BatchEditViewController.swift */; };
 		A0362192220DA390003C21DC /* UIColor+accent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362191220DA390003C21DC /* UIColor+accent.swift */; };
 		A0362193220DA390003C21DC /* UIColor+accent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362191220DA390003C21DC /* UIColor+accent.swift */; };
 		A0362195220DB2CA003C21DC /* IaSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362194220DB2CA003C21DC /* IaSpace.swift */; };
@@ -269,6 +270,7 @@
 		A025171822C2126B00EEFBD9 /* DuplicateProjectAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateProjectAlert.swift; sourceTree = "<group>"; };
 		A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaScrapeViewController.swift; sourceTree = "<group>"; };
 		A029F6822118715700C4EF6D /* AssetFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFactory.swift; sourceTree = "<group>"; };
+		A0357D1022CF901800292077 /* BatchEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchEditViewController.swift; sourceTree = "<group>"; };
 		A0362191220DA390003C21DC /* UIColor+accent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+accent.swift"; sourceTree = "<group>"; };
 		A0362194220DB2CA003C21DC /* IaSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaSpace.swift; sourceTree = "<group>"; };
 		A0362197220DB384003C21DC /* WebDavSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDavSpace.swift; sourceTree = "<group>"; };
@@ -606,6 +608,7 @@
 				A0AFCF1122302054005E57FD /* PreviewCell.swift */,
 				A0E321F8228EDBE900F2E9BD /* DarkroomViewController.swift */,
 				A00DC98922315D4F004F07E0 /* ImageViewController.swift */,
+				A0357D1022CF901800292077 /* BatchEditViewController.swift */,
 				A0E321F5228EBE6A00F2E9BD /* FlagInfoAlert.swift */,
 			);
 			path = Preview;
@@ -1146,6 +1149,7 @@
 				A070335B2119E7DF00BF1F33 /* Request+debug.swift in Sources */,
 				A045D1F6224CFFB4008FF8C1 /* SelectedSpaceCell.swift in Sources */,
 				A077732A22786BF500291F5D /* RemoveAssetAlert.swift in Sources */,
+				A0357D1122CF901800292077 /* BatchEditViewController.swift in Sources */,
 				A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */,
 				A0AC06B02201E30E00BD5FBA /* WorkingOverlay.swift in Sources */,
 				A026C34622C641EB007B1C5B /* IaScrapeViewController.swift in Sources */,

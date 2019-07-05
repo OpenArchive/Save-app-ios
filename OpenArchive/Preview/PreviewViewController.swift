@@ -99,7 +99,7 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
 
         tableView.deselectRow(at: indexPath, animated: false)
 
-        performSegue(withIdentifier: "showDarkroomSegue", sender: (indexPath.row, nil as DarkroomViewController.DirectEdit?))
+        performSegue(withIdentifier: MainViewController.segueShowDarkroom, sender: (indexPath.row, nil as DarkroomViewController.DirectEdit?))
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -120,7 +120,7 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     func edit(_ asset: Asset, _ directEdit: DarkroomViewController.DirectEdit? = nil) {
         if let indexPath = sc.getIndexPath(asset) {
-            performSegue(withIdentifier: "showDarkroomSegue", sender: (indexPath.row, directEdit))
+            performSegue(withIdentifier: MainViewController.segueShowDarkroom, sender: (indexPath.row, directEdit))
         }
     }
 
@@ -135,15 +135,18 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
     // MARK: Navigation
 
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let editVc = segue.destination as? DarkroomViewController {
+        if let vc = segue.destination as? DarkroomViewController {
             if let (index, directEdit) = sender as? (Int, DarkroomViewController.DirectEdit?) {
-                editVc.selected = index
-                editVc.directEdit = directEdit
-                editVc.addMode = true
+                vc.selected = index
+                vc.directEdit = directEdit
+                vc.addMode = true
             }
         }
-        else if let mvc = segue.destination as? ManagementViewController {
-            mvc.delegate = self
+        else if let vc = segue.destination as? BatchEditViewController {
+            vc.assets = sender as? [Asset]
+        }
+        else if let vc = segue.destination as? ManagementViewController {
+            vc.delegate = self
         }
      }
 
@@ -218,6 +221,9 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
                 tableView.selectRow(at: indexPath, animated: false, scrollPosition: .middle)
                 tableView(tableView, didSelectRowAt: indexPath)
             }
+        }
+        else if assets.count > 1 {
+            performSegue(withIdentifier: MainViewController.segueShowBatchEdit, sender: assets)
         }
     }
 

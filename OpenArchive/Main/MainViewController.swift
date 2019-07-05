@@ -21,7 +21,8 @@ PKDownloadButtonDelegate {
 
     static let segueShowMenu = "showMenuSegue"
     private static let segueShowPreview = "showPreviewSegue"
-    private static let segueShowDarkroom = "showDarkroomSegue"
+    static let segueShowDarkroom = "showDarkroomSegue"
+    static let segueShowBatchEdit = "showBatchEditSegue"
     private static let segueShowManagement = "showManagmentSegue"
 
     @IBOutlet weak var spaceFavIcon: UIImageView!
@@ -305,6 +306,9 @@ PKDownloadButtonDelegate {
                 collectionView(collectionView, didSelectItemAt: indexPath)
             }
         }
+        else if assets.count > 1 {
+            performSegue(withIdentifier: MainViewController.segueShowBatchEdit, sender: assets)
+        }
     }
 
     @IBAction func removeAssets() {
@@ -393,6 +397,9 @@ PKDownloadButtonDelegate {
         else if segue.identifier == MainViewController.segueShowMenu {
             segue.destination.popoverPresentationController?.sourceView = spaceFavIcon
             segue.destination.popoverPresentationController?.sourceRect = spaceFavIcon.bounds
+        }
+        else if let vc = segue.destination as? BatchEditViewController {
+            vc.assets = sender as? [Asset]
         }
     }
 
