@@ -53,8 +53,6 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
         updateTitle()
-
-        tableView.reloadData()
     }
 
 
@@ -89,7 +87,7 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
         // In that case, ignore the selection and instead move to DarkroomViewController.
         // Because in this scenario, the first selection is done by a long press,
         // which basically enters an "edit" mode. (See #longPressItem.)
-        if tableView.indexPathsForSelectedRows?.count ?? 0 != 1 {
+        if tableView.numberOfSelectedRows != 1 {
 
             // For an unkown reason, this isn't done automatically.
             tableView.cellForRow(at: indexPath)?.isSelected = true
@@ -106,7 +104,7 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
         // For an unkown reason, this isn't done automatically.
         tableView.cellForRow(at: indexPath)?.isSelected = false
 
-        if tableView.indexPathsForSelectedRows?.count ?? 0 == 0 {
+        if tableView.numberOfSelectedRows == 0 {
             toggleToolbar(false)
         }
     }
@@ -209,10 +207,10 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     @IBAction func editAssets() {
-        let assets = getSelectedAssets()
+        let count = tableView.numberOfSelectedRows
 
-        if assets.count == 1 {
-            if let indexPath = tableView.indexPathsForSelectedRows?[0] {
+        if count == 1 {
+            if let indexPath = tableView.indexPathsForSelectedRows?.first {
                 // Trigger deselection, so edit mode UI goes away.
                 tableView.deselectRow(at: indexPath, animated: false)
                 tableView(tableView, didDeselectRowAt: indexPath)
@@ -222,8 +220,8 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
                 tableView(tableView, didSelectRowAt: indexPath)
             }
         }
-        else if assets.count > 1 {
-            performSegue(withIdentifier: MainViewController.segueShowBatchEdit, sender: assets)
+        else if count > 1 {
+            performSegue(withIdentifier: MainViewController.segueShowBatchEdit, sender: getSelectedAssets())
         }
     }
 

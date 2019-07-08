@@ -63,11 +63,7 @@ PKDownloadButtonDelegate {
     private lazy var assetsMappings = AbcFilteredByProjectView.createMappings()
 
     private var inEditMode: Bool {
-        return collectionView.indexPathsForSelectedItems?.count ?? 0 > 0
-    }
-
-    private var headerButtonTitle: String {
-        return inEditMode ? "Select".localize() : "Next".localize()
+        return collectionView.numberOfSelectedItems > 0
     }
 
     lazy var tabBar: ProjectsTabBar = {
@@ -174,9 +170,11 @@ PKDownloadButtonDelegate {
 
         view.section = indexPath.section
         view.collection = collection
-        view.manageBt.setTitle(headerButtonTitle, for: .normal)
-        view.manageBt.setTitle(headerButtonTitle, for: .highlighted)
         view.delegate = self
+
+        let title = headerButtonTitle(indexPath.section)
+        view.manageBt.setTitle(title, for: .normal)
+        view.manageBt.setTitle(title, for: .highlighted)
 
         return view
     }
@@ -199,8 +197,10 @@ PKDownloadButtonDelegate {
         // In that case, ignore the selection and instead move to EditViewController.
         // Because in this scenario, the first selection is done by a long press,
         // which basically enters an "edit" mode. (See #longPressItem.)
-        if collectionView.indexPathsForSelectedItems?.count ?? 0 != 1 {
+        if collectionView.numberOfSelectedItems != 1 {
             setEditAssetBtState()
+
+            updateHeaderButton()
 
             return
         }
@@ -214,12 +214,12 @@ PKDownloadButtonDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
+        updateHeaderButton()
+
         if inEditMode {
             setEditAssetBtState()
         }
         else {
-            updateHeaderButton()
-
             toggleToolbar(false)
         }
     }
@@ -293,10 +293,10 @@ PKDownloadButtonDelegate {
     }
 
     @IBAction func editAssets() {
-        let assets = getSelectedAssets()
+        let count = collectionView.numberOfSelectedItems
 
-        if assets.count == 1 {
-            if let indexPath = collectionView.indexPathsForSelectedItems?[0] {
+        if count == 1 {
+            if let indexPath = collectionView.indexPathsForSelectedItems?.first {
                 // Trigger deselection, so edit mode UI goes away.
                 collectionView.deselectItem(at: indexPath, animated: false)
                 collectionView(collectionView, didDeselectItemAt: indexPath)
@@ -306,8 +306,8 @@ PKDownloadButtonDelegate {
                 collectionView(collectionView, didSelectItemAt: indexPath)
             }
         }
-        else if assets.count > 1 {
-            performSegue(withIdentifier: MainViewController.segueShowBatchEdit, sender: assets)
+        else if count > 1 {
+            performSegue(withIdentifier: MainViewController.segueShowBatchEdit, sender: getSelectedAssets())
         }
     }
 
@@ -363,10 +363,17 @@ PKDownloadButtonDelegate {
         if inEditMode {
 
             if let section = section {
-                for i in 0 ... collectionView.numberOfItems(inSection: section) - 1 {
-                    collectionView.selectItem(at: IndexPath(item: i, section: section),
-                                              animated: false, scrollPosition: .centeredVertically)
+                if collectionView.isSectionSelected(section) {
+                    // If all are selected, deselect again.
+                    collectionView.deselectSection(section, animated: false)
+
+                    toggleToolbar(false)
                 }
+                else {
+                    collectionView.selectSection(section, animated: false, scrollPosition: .centeredVertically)
+                }
+
+                updateHeaderButton()
             }
 
             return
@@ -607,10 +614,18 @@ PKDownloadButtonDelegate {
                 forElementKind: "UICollectionElementKindSectionHeader",
                 at: IndexPath(item: 0, section: i)) as? HeaderView {
 
-                header.manageBt.setTitle(headerButtonTitle, for: .normal)
-                header.manageBt.setTitle(headerButtonTitle, for: .highlighted)
+                let title = headerButtonTitle(i)
+
+                header.manageBt.setTitle(title, for: .normal)
+                header.manageBt.setTitle(title, for: .highlighted)
             }
         }
+    }
+
+    private func headerButtonTitle(_ section: Int) -> String {
+        return inEditMode
+            ? (collectionView.isSectionSelected(section) ? "Deselect".localize() : "Select".localize())
+            : "Next".localize()
     }
 
     private func getSelectedAssets() -> [Asset] {

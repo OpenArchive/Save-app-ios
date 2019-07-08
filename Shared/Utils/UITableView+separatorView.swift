@@ -24,4 +24,13 @@ extension UITableView {
 
         return view
     }
+
+    /**
+     Evaluates the number of currently selected rows.
+
+     - returns: The number of currently selected rows.
+     */
+    var numberOfSelectedRows: Int {
+        return indexPathsForSelectedRows?.count ?? 0
+    }
 }
