@@ -160,17 +160,21 @@ class Conduit {
      You can even call it like this to reduce LOCs:
 
      ```Swift
-     return self.error(uploadId)
+     return self.done(uploadId)
      ```
 
      - parameter uploadId: The `ID` of the tracked upload.
      - parameter error: An optional `Error`, defaults to `nil`.
+     - parameter url: An optional `URL`, where the file was uploaded to. Defaults to `nil`. Will only be set if error == nil.
      */
-    func error(_ uploadId: String, _ error: Error? = nil) {
+    func done(_ uploadId: String, error: Error? = nil, url: URL? = nil) {
         var userInfo = [AnyHashable: Any]()
 
         if let error = error {
             userInfo[.error] = error
+        }
+        else if let url = url {
+            userInfo[.url] = url
         }
 
         NotificationCenter.default.post(name: .uploadManagerDone, object: uploadId,

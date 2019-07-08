@@ -388,7 +388,8 @@ class UploadManager: Alamofire.SessionDelegate {
 
     @objc func done(_ notification: Notification) {
         done(notification.object as? String,
-             notification.userInfo?[.error] as? Error)
+             notification.userInfo?[.error] as? Error,
+             notification.userInfo?[.url] as? URL)
     }
 
     private func done(_ id: String?, _ error: Error?, _ url: URL? = nil) {

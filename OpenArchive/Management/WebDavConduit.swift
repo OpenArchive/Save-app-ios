@@ -35,7 +35,7 @@ class WebDavConduit: Conduit {
             let credential = credential
         else {
             DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
-                self.error(uploadId, InvalidConfError())
+                self.done(uploadId, error: InvalidConfError())
             }
 
             return progress
@@ -43,12 +43,12 @@ class WebDavConduit: Conduit {
 
         let p = create(folder: projectName, at: "") { error in
             if error != nil || progress.isCancelled {
-                return self.error(uploadId, error)
+                return self.done(uploadId, error: error)
             }
 
             let p = self.create(folder: collectionName, at: projectName) { error in
                 if error != nil || progress.isCancelled {
-                    return self.error(uploadId, error)
+                    return self.done(uploadId, error: error)
                 }
 
                 let to = Conduit.construct(url: self.asset.space?.url, projectName, collectionName, self.asset.filename)
@@ -57,13 +57,21 @@ class WebDavConduit: Conduit {
                                           credential) { error in
 
                     if error != nil || progress.isCancelled {
-                        return self.error(uploadId, error)
+                        return self.done(uploadId, error: error)
                     }
 
-                    self.upload(file, to: to, progress, credential: credential)
+                    let p = self.check(Conduit.construct(url: nil, projectName, collectionName, self.asset.filename).path) { exists in
+                        if progress.isCancelled || exists {
+                            return self.done(uploadId, url: to)
+                        }
+
+                        self.upload(file, to: to, progress, credential: credential)
+                    }
+
+                    progress.addChild(p, withPendingUnitCount: 5)
                 }
 
-                progress.addChild(p, withPendingUnitCount: 15)
+                progress.addChild(p, withPendingUnitCount: 10)
             }
 
             progress.addChild(p, withPendingUnitCount: 5)
@@ -137,6 +145,25 @@ class WebDavConduit: Conduit {
                 // Does exist: continue.
                 completionHandler?(nil)
             }
+        }
+
+        return progress
+    }
+
+    /**
+     Checks, if file already exists and is probably the same by comparing the filesize.
+
+     - parameter path: The path to the file on the server.
+     - parameter completionHandler: Callback, when done.
+     - parameter exists: true, if file exists and size is the same as the asset file.
+    */
+    private func check(_ path: String, _ completionHandler: ((_ exists: Bool) -> Void)?) -> Progress {
+        let progress = Progress(totalUnitCount: 100)
+
+        provider?.attributesOfItem(path: path) { attributes, error in
+            let exists = attributes != nil && attributes?.size == self.asset.filesize
+
+            completionHandler?(exists)
         }
 
         return progress
