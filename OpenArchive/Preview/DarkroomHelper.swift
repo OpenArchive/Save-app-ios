@@ -17,6 +17,7 @@ class DarkroomHelper {
 
     let delegate: InfoBoxDelegate
 
+    let publicUrl: InfoBox?
     let desc: InfoBox?
     let location: InfoBox?
     let notes: InfoBox?
@@ -24,6 +25,10 @@ class DarkroomHelper {
 
     init(_ delegate: InfoBoxDelegate, _ superview: UIView) {
         self.delegate = delegate
+
+        publicUrl = InfoBox.instantiate(nil, superview)
+        publicUrl?.textView.isEditable = false
+        publicUrl?.textView.isSelectable = false
 
         desc = InfoBox.instantiate("ic_tag", superview)
         desc?.delegate = delegate
@@ -40,17 +45,24 @@ class DarkroomHelper {
         flag?.textView.isEditable = false
         flag?.textView.isSelectable = false
 
-        let tap = UITapGestureRecognizer(target: self, action: #selector(flagged))
+        var tap = UITapGestureRecognizer(target: self, action: #selector(flagged))
         tap.cancelsTouchesInView = true
         flag?.addGestureRecognizer(tap)
 
-        desc?.addConstraints(superview, bottom: location)
+        tap = UITapGestureRecognizer(target: self, action: #selector(followLink))
+        tap.cancelsTouchesInView = true
+        publicUrl?.addGestureRecognizer(tap)
+
+        publicUrl?.addConstraints(superview, bottom: desc)
+        desc?.addConstraints(superview, top: publicUrl, bottom: location)
         location?.addConstraints(superview, top: desc, bottom: notes)
         notes?.addConstraints(superview, top: location, bottom: flag)
         flag?.addConstraints(superview, top: notes)
     }
 
     func setInfos(_ asset: Asset?, defaults: Bool = false, isEditable: Bool = true) {
+        publicUrl?.set(asset?.space is IaSpace ? asset?.publicUrl?.absoluteString : nil)
+
         desc?.set(asset?.desc, with: defaults ? DarkroomHelper.descPlaceholder : nil)
         desc?.textView.isEditable = isEditable
 
@@ -67,6 +79,13 @@ class DarkroomHelper {
     @objc private func flagged() {
         if let flag = flag {
             delegate.tapped(flag)
+        }
+    }
+
+    @objc private func followLink() {
+        if let urlString = publicUrl?.textView.text,
+            let url = URL(string: urlString) {
+            UIApplication.shared.open(url, options: [:], completionHandler: nil)
         }
     }
 }
