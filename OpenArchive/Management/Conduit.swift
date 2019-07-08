@@ -63,7 +63,7 @@ class Conduit {
             }
 
             if space is IaSpace {
-                return nil
+                return IaConduit(asset)
             }
         }
 
