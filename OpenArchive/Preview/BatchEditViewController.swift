@@ -9,54 +9,18 @@
 import UIKit
 import AlignedCollectionViewFlowLayout
 
-class BatchEditViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource, InfoBoxDelegate {
+class BatchEditViewController: BaseViewController, InfoBoxDelegate {
 
     var assets: [Asset]?
 
-    @IBOutlet weak var collectionView: UICollectionView!
+    @IBOutlet weak var container: UIView!
+    @IBOutlet weak var containerWidth: NSLayoutConstraint!
 
     @IBOutlet weak var infos: UIView!
-    @IBOutlet weak var infosHeight: NSLayoutConstraint?
+    @IBOutlet weak var infosHeight: NSLayoutConstraint!
     @IBOutlet weak var infosBottom: NSLayoutConstraint!
 
-    private lazy var desc: InfoBox? = {
-        let box = InfoBox.instantiate("ic_tag", infos)
-
-        box?.delegate = self
-
-        return box
-    }()
-
-    private lazy var location: InfoBox? = {
-        let box = InfoBox.instantiate("ic_location", infos)
-
-        box?.delegate = self
-
-        return box
-    }()
-
-    private lazy var notes: InfoBox? = {
-        let box = InfoBox.instantiate("ic_edit", infos)
-
-        box?.delegate = self
-
-        return box
-    }()
-
-    private lazy var flag: InfoBox? = {
-        let box = InfoBox.instantiate("ic_flag", infos)
-
-        box?.icon.tintColor = UIColor.warning
-        box?.textView.isEditable = false
-        box?.textView.isSelectable = false
-
-        let tap = UITapGestureRecognizer(target: self, action: #selector(flagged))
-        tap.cancelsTouchesInView = true
-        box?.addGestureRecognizer(tap)
-
-        return box
-    }()
-
+    private var dh: DarkroomHelper?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -66,14 +30,45 @@ class BatchEditViewController: UIViewController, UICollectionViewDelegate, UICol
         title.subtitle.text = "% Items Selected".localize(value: Formatters.format(assets?.count))
         navigationItem.titleView = title
 
-        let alignedFlowLayout = collectionView?.collectionViewLayout as? AlignedCollectionViewFlowLayout
-        alignedFlowLayout?.horizontalAlignment = .left
-        alignedFlowLayout?.verticalAlignment = .top
+        var lastIv: UIImageView?
 
-        desc?.addConstraints(infos, bottom: location)
-        location?.addConstraints(infos, top: desc, bottom: notes)
-        notes?.addConstraints(infos, top: location, bottom: flag)
-        flag?.addConstraints(infos, top: notes)
+        for asset in assets ?? [] {
+            let iv = UIImageView(image: asset.getThumbnail())
+            iv.contentMode = .scaleAspectFit
+            iv.translatesAutoresizingMaskIntoConstraints = false
+
+            container.addSubview(iv)
+
+            iv.topAnchor.constraint(equalTo: container.topAnchor, constant: 8).isActive = true
+            iv.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: 8).isActive = true
+            iv.addConstraint(NSLayoutConstraint(
+                item: iv, attribute: .height, relatedBy: .equal, toItem: iv,
+                attribute: .width, multiplier: iv.intrinsicContentSize.height / iv.intrinsicContentSize.width,
+                constant: 0))
+
+            if let lastIv = lastIv {
+                iv.leadingAnchor.constraint(equalTo: lastIv.trailingAnchor, constant: 8).isActive = true
+            }
+            else {
+                iv.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 8).isActive = true
+            }
+
+            lastIv = iv
+        }
+
+        lastIv?.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: 8).isActive = true
+
+        dh = DarkroomHelper(self, infos)
+
+        // These constraints are solely there to stop Interface Builder complaining
+        // about missing sizing. It's actually unneeded. The sizes will
+        // be automatically defined by its content, which whe have injected above.
+        containerWidth.isActive = false
+        infosHeight.isActive = false
+
+        dh?.setInfos(assets?.first, defaults: true, isEditable: true)
+
+        hideKeyboardOnOutsideTap()
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -83,26 +78,20 @@ class BatchEditViewController: UIViewController, UICollectionViewDelegate, UICol
     }
 
 
-    // MARK: UICollectionViewDelegate
+    // MARK: BaseViewController
 
-    func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return false
+    override func keyboardWillShow(notification: Notification) {
+        if let kbSize = getKeyboardSize(notification) {
+            infosBottom.constant = kbSize.height
+
+            animateDuringKeyboardMovement(notification)
+        }
     }
 
+    override func keyboardWillBeHidden(notification: Notification) {
+        infosBottom.constant = 0
 
-    // MARK: UICollectionViewDataSource
-
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return assets?.count ?? 0
-    }
-
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.reuseId, for: indexPath) as! ImageCell
-
-        cell.highlightNonUploaded = false
-        cell.asset = assets?[indexPath.row]
-
-        return cell
+        animateDuringKeyboardMovement(notification)
     }
 
 
@@ -115,12 +104,12 @@ class BatchEditViewController: UIViewController, UICollectionViewDelegate, UICol
      */
     func textChanged(_ infoBox: InfoBox, _ text: String) {
         switch infoBox {
-        case desc:
+        case dh?.desc:
             for asset in assets ?? [] {
                 asset.desc = text
             }
 
-        case location:
+        case dh?.location:
             for asset in assets ?? [] {
                 asset.location = text
             }
@@ -134,10 +123,7 @@ class BatchEditViewController: UIViewController, UICollectionViewDelegate, UICol
         store()
     }
 
-
-    // MARK: Actions
-
-    @objc func flagged() {
+    func tapped(_ infoBox: InfoBox) {
         // Take the first's status and set all of them to that.
         let flagged = !(assets?.first?.flagged ?? false)
 
@@ -145,6 +131,8 @@ class BatchEditViewController: UIViewController, UICollectionViewDelegate, UICol
         for asset in assets ?? [] {
             asset.flagged = flagged
         }
+
+        dh?.setInfos(assets?.first, defaults: true, isEditable: true)
 
         store()
 

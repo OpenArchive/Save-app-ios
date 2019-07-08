@@ -17,6 +17,7 @@
 		A01A7B6F2200A05C00E18DE0 /* ProjectsTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01A7B6E2200A05C00E18DE0 /* ProjectsTabBar.swift */; };
 		A01A7B702200A05C00E18DE0 /* ProjectsTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01A7B6E2200A05C00E18DE0 /* ProjectsTabBar.swift */; };
 		A01A7B722200F2D700E18DE0 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01A7B712200F2D700E18DE0 /* HeaderView.swift */; };
+		A0212FCC22D35ADC009079DC /* DarkroomHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0212FCB22D35ADC009079DC /* DarkroomHelper.swift */; };
 		A025171922C2126C00EEFBD9 /* DuplicateProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A025171822C2126B00EEFBD9 /* DuplicateProjectAlert.swift */; };
 		A025171A22C2126C00EEFBD9 /* DuplicateProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A025171822C2126B00EEFBD9 /* DuplicateProjectAlert.swift */; };
 		A026C34622C641EB007B1C5B /* IaScrapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */; };
@@ -267,6 +268,7 @@
 		A00DC98922315D4F004F07E0 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		A01A7B6E2200A05C00E18DE0 /* ProjectsTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsTabBar.swift; sourceTree = "<group>"; };
 		A01A7B712200F2D700E18DE0 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		A0212FCB22D35ADC009079DC /* DarkroomHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkroomHelper.swift; sourceTree = "<group>"; };
 		A025171822C2126B00EEFBD9 /* DuplicateProjectAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateProjectAlert.swift; sourceTree = "<group>"; };
 		A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaScrapeViewController.swift; sourceTree = "<group>"; };
 		A029F6822118715700C4EF6D /* AssetFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFactory.swift; sourceTree = "<group>"; };
@@ -607,6 +609,7 @@
 				A0AFCF0C22300279005E57FD /* PreviewViewController.swift */,
 				A0AFCF1122302054005E57FD /* PreviewCell.swift */,
 				A0E321F8228EDBE900F2E9BD /* DarkroomViewController.swift */,
+				A0212FCB22D35ADC009079DC /* DarkroomHelper.swift */,
 				A00DC98922315D4F004F07E0 /* ImageViewController.swift */,
 				A0357D1022CF901800292077 /* BatchEditViewController.swift */,
 				A0E321F5228EBE6A00F2E9BD /* FlagInfoAlert.swift */,
@@ -1156,6 +1159,7 @@
 				A08C2CEB21F0B71B008ACA3E /* EditProfileViewController.swift in Sources */,
 				A07E8A4222958D0600E9FFAA /* SlideViewController.swift in Sources */,
 				A0E27209224E335400CB7113 /* NewProjectViewController.swift in Sources */,
+				A0212FCC22D35ADC009079DC /* DarkroomHelper.swift in Sources */,
 				A0D1013C22CCF2DA0068D047 /* Conduit.swift in Sources */,
 				A0552050222566CE00B9645F /* UIView+animateHideShow.swift in Sources */,
 				A0E321F6228EBE6A00F2E9BD /* FlagInfoAlert.swift in Sources */,

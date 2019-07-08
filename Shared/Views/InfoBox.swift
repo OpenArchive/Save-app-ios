@@ -10,6 +10,8 @@ import UIKit
 
 protocol InfoBoxDelegate {
     func textChanged(_ infoBox: InfoBox, _ text: String)
+
+    func tapped(_ infoBox: InfoBox)
 }
 
 class InfoBox: UIView, UITextViewDelegate {

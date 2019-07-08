@@ -42,46 +42,9 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     @IBOutlet weak var toolbar: UIToolbar!
     private lazy var toolbarHeight: NSLayoutConstraint = toolbar.heightAnchor.constraint(equalToConstant: 0)
 
-    private lazy var desc: InfoBox? = {
-        let box = InfoBox.instantiate("ic_tag", infos)
-
-        box?.delegate = self
-
-        return box
-    }()
-
-    private lazy var location: InfoBox? = {
-        let box = InfoBox.instantiate("ic_location", infos)
-
-        box?.delegate = self
-
-        return box
-    }()
-
-    private lazy var notes: InfoBox? = {
-        let box = InfoBox.instantiate("ic_edit", infos)
-        
-        box?.delegate = self
-
-        return box
-    }()
-
-    private lazy var flag: InfoBox? = {
-        let box = InfoBox.instantiate("ic_flag", infos)
-
-        box?.icon.tintColor = UIColor.warning
-        box?.textView.isEditable = false
-        box?.textView.isSelectable = false
-
-        let tap = UITapGestureRecognizer(target: self, action: #selector(flagged))
-        tap.cancelsTouchesInView = true
-        box?.addGestureRecognizer(tap)
-
-        return box
-    }()
-
 
     private let sc = SelectedCollection()
+    private var dh: DarkroomHelper?
 
     private var asset: Asset? {
         return selected < 0 || selected >= sc.count
@@ -99,11 +62,6 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         return pageVc
     }()
 
-    private static let descPlaceholder = "Add People".localize()
-    private static let locPlaceholder = "Add Location".localize()
-    private static let notesPlaceholder = "Add Notes".localize()
-    private static let flagPlaceholder = "Tap to flag as significant content".localize()
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -119,10 +77,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         pageVc.view.frame = container.bounds
         pageVc.didMove(toParent: self)
 
-        desc?.addConstraints(infos, bottom: location)
-        location?.addConstraints(infos, top: desc, bottom: notes)
-        notes?.addConstraints(infos, top: location, bottom: flag)
-        flag?.addConstraints(infos, top: notes)
+        dh = DarkroomHelper(self, infos)
 
         infosHeight?.isActive = false
 
@@ -143,13 +98,13 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         super.viewDidAppear(animated)
 
         if directEdit == .description {
-            desc?.textView.becomeFirstResponder()
+            dh?.desc?.textView.becomeFirstResponder()
         }
         else if directEdit == .location {
-            location?.textView.becomeFirstResponder()
+            dh?.location?.textView.becomeFirstResponder()
         }
         else if directEdit == .notes {
-            notes?.textView.becomeFirstResponder()
+            dh?.notes?.textView.becomeFirstResponder()
         }
     }
 
@@ -211,16 +166,16 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         if completed,
             let index = (pageViewController.viewControllers?.first as? ImageViewController)?.index {
 
-            if desc?.textView.isFirstResponder ?? false {
-                asset?.desc = desc?.textView.text
+            if dh?.desc?.textView.isFirstResponder ?? false {
+                asset?.desc = dh?.desc?.textView.text
                 store()
             }
-            else if location?.textView.isFirstResponder ?? false {
-                asset?.location = desc?.textView.text
+            else if dh?.location?.textView.isFirstResponder ?? false {
+                asset?.location = dh?.location?.textView.text
                 store()
             }
-            else if notes?.textView.isFirstResponder ?? false {
-                asset?.notes = notes?.textView.text
+            else if dh?.notes?.textView.isFirstResponder ?? false {
+                asset?.notes = dh?.notes?.textView.text
                 store()
             }
 
@@ -242,10 +197,10 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         let asset = self.asset
 
         switch infoBox {
-        case desc:
+        case dh?.desc:
             asset?.desc = text
 
-        case location:
+        case dh?.location:
             asset?.location = text
 
         default:
@@ -253,6 +208,18 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         }
 
         store()
+    }
+
+    func tapped(_ infoBox: InfoBox) {
+        if addMode {
+            asset?.flagged = !(asset?.flagged ?? false)
+
+            dh?.setInfos(asset, defaults: addMode, isEditable: addMode)
+
+            store()
+
+            FlagInfoAlert.presentIfNeeded()
+        }
     }
 
 
@@ -372,18 +339,6 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         refresh()
     }
 
-    @objc func flagged() {
-        if addMode {
-            asset?.flagged = !(asset?.flagged ?? false)
-
-            setInfos(defaults: addMode)
-
-            store()
-
-            FlagInfoAlert.presentIfNeeded()
-        }
-    }
-
 
     // MARK: Private Methods
 
@@ -400,7 +355,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
             pageVc.setViewControllers(getFreshImageVcList(), direction: direction ?? .forward, animated: direction != nil)
         }
 
-        setInfos(defaults: addMode)
+        dh?.setInfos(asset, defaults: addMode, isEditable: addMode)
 
         if animate {
             UIView.animate(withDuration: 0.5, animations: {
@@ -425,20 +380,6 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
 
     private func getFreshImageVcList() -> [ImageViewController] {
         return [getImageVc(selected)]
-    }
-
-    private func setInfos(defaults: Bool = false) {
-        desc?.set(asset?.desc, with: defaults ? DarkroomViewController.descPlaceholder : nil)
-        desc?.textView.isEditable = addMode
-
-        location?.set(asset?.location, with: defaults ? DarkroomViewController.locPlaceholder : nil)
-        location?.textView.isEditable = addMode
-
-        notes?.set(asset?.notes, with: defaults ? DarkroomViewController.notesPlaceholder : nil)
-        notes?.textView.isEditable = addMode
-
-        flag?.set(asset?.flagged ?? false ? Asset.flag : nil,
-                  with: defaults ? DarkroomViewController.flagPlaceholder : nil)
     }
 
     private func store() {
