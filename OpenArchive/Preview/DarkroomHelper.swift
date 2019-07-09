@@ -26,7 +26,7 @@ class DarkroomHelper {
     init(_ delegate: InfoBoxDelegate, _ superview: UIView) {
         self.delegate = delegate
 
-        publicUrl = InfoBox.instantiate(nil, superview)
+        publicUrl = InfoBox.instantiate("ic_cloud", superview)
         publicUrl?.textView.isEditable = false
         publicUrl?.textView.isSelectable = false
 
