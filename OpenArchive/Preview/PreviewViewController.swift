@@ -53,6 +53,8 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
         updateTitle()
+
+        BatchInfoAlert.presentIfNeeded(self)
     }
 
 

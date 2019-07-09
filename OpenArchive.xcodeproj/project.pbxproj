@@ -14,6 +14,7 @@
 		A00A8D47220C7EDD0083F0CB /* AbcFilteredByProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00A8D46220C7EDD0083F0CB /* AbcFilteredByProjectView.swift */; };
 		A00A8D48220C7EDD0083F0CB /* AbcFilteredByProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00A8D46220C7EDD0083F0CB /* AbcFilteredByProjectView.swift */; };
 		A00DC98A22315D4F004F07E0 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00DC98922315D4F004F07E0 /* ImageViewController.swift */; };
+		A010D3A022D4A3F200FAB433 /* BatchInfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A010D39F22D4A3F200FAB433 /* BatchInfoAlert.swift */; };
 		A01A7B6F2200A05C00E18DE0 /* ProjectsTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01A7B6E2200A05C00E18DE0 /* ProjectsTabBar.swift */; };
 		A01A7B702200A05C00E18DE0 /* ProjectsTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01A7B6E2200A05C00E18DE0 /* ProjectsTabBar.swift */; };
 		A01A7B722200F2D700E18DE0 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01A7B712200F2D700E18DE0 /* HeaderView.swift */; };
@@ -268,6 +269,7 @@
 		A00A8D43220C63B20083F0CB /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
 		A00A8D46220C7EDD0083F0CB /* AbcFilteredByProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbcFilteredByProjectView.swift; sourceTree = "<group>"; };
 		A00DC98922315D4F004F07E0 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
+		A010D39F22D4A3F200FAB433 /* BatchInfoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchInfoAlert.swift; sourceTree = "<group>"; };
 		A01A7B6E2200A05C00E18DE0 /* ProjectsTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsTabBar.swift; sourceTree = "<group>"; };
 		A01A7B712200F2D700E18DE0 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		A0212FCB22D35ADC009079DC /* DarkroomHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkroomHelper.swift; sourceTree = "<group>"; };
@@ -617,6 +619,7 @@
 				A00DC98922315D4F004F07E0 /* ImageViewController.swift */,
 				A0357D1022CF901800292077 /* BatchEditViewController.swift */,
 				A0E321F5228EBE6A00F2E9BD /* FlagInfoAlert.swift */,
+				A010D39F22D4A3F200FAB433 /* BatchInfoAlert.swift */,
 			);
 			path = Preview;
 			sourceTree = "<group>";
@@ -1174,6 +1177,7 @@
 				A059E647223AE9FB00ABC621 /* UploadManager.swift in Sources */,
 				A0E1A68121EE7BE900E4F6B7 /* MenuItemCell.swift in Sources */,
 				A00A8D45220C63B20083F0CB /* ProjectsView.swift in Sources */,
+				A010D3A022D4A3F200FAB433 /* BatchInfoAlert.swift in Sources */,
 				A098980622369F8100022851 /* ManagementViewController.swift in Sources */,
 				A045D1FB224D02AA008FF8C1 /* TitleCell.swift in Sources */,
 				A092C0F0223A8D4B003EB0AA /* DoneDelegate.swift in Sources */,

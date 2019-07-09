@@ -13,6 +13,7 @@ class Settings {
     private static let kFirstRunDone = "already_run"
     private static let kWifiOnly = "wifi_only"
     private static let kFirstFlaggedDone = "first_flagged_done"
+    private static let kFirstBatchEditDone = "first_batch_edit_done"
 
     class var firstRunDone: Bool {
         get {
@@ -39,6 +40,15 @@ class Settings {
         }
         set {
             UserDefaults(suiteName: Constants.suiteName)?.set(newValue, forKey: kFirstFlaggedDone)
+        }
+    }
+
+    class var firstBatchEditDone: Bool {
+        get {
+            return UserDefaults(suiteName: Constants.suiteName)?.bool(forKey: kFirstBatchEditDone) ?? false
+        }
+        set {
+            UserDefaults(suiteName: Constants.suiteName)?.set(newValue, forKey: kFirstBatchEditDone)
         }
     }
 }
