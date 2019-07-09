@@ -81,6 +81,9 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
     // MARK: BaseViewController
 
     override func keyboardWillShow(notification: Notification) {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .done, target: self, action: #selector(dismissKeyboard))
+
         if let kbSize = getKeyboardSize(notification) {
             infosBottom.constant = kbSize.height
 
@@ -89,6 +92,8 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
     }
 
     override func keyboardWillBeHidden(notification: Notification) {
+        navigationItem.rightBarButtonItem = nil
+
         infosBottom.constant = 0
 
         animateDuringKeyboardMovement(notification)
