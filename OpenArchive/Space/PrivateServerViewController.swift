@@ -14,7 +14,7 @@ import YapDatabase
 class PrivateServerViewController: BaseServerViewController {
 
     private let nameRow = TextRow() {
-        $0.title = "Name".localize()
+        $0.title = "Server Name".localize()
         $0.placeholder = "Optional".localize()
     }
 
