@@ -190,11 +190,37 @@ class Conduit {
 
      If you don't provide any components, returns an empty file URL.
 
-     - parameter url: The base `URL` to start from. Optional.
+     - parameter url: The base `URL` to start from. Optional, defaults to nil.
      - parameter components: 0 or more path components.
      - returns: a new `URL` object constructed from the parameters.
      */
-    class func construct(url: URL?, _ components: String...) -> URL {
+    func construct(url: String, _ components: String...) -> URL {
+        return construct(url: URL(string: url), components)
+    }
+
+    /**
+     Construct a correct URL from given path components.
+
+     If you don't provide any components, returns an empty file URL.
+
+     - parameter url: The base `URL` to start from. Optional, defaults to nil.
+     - parameter components: 0 or more path components.
+     - returns: a new `URL` object constructed from the parameters.
+     */
+    func construct(url: URL? = nil, _ components: String...) -> URL {
+        return construct(url: url, components)
+    }
+
+    /**
+     Construct a correct URL from given path components.
+
+     If you don't provide any components, returns an empty file URL.
+
+     - parameter url: The base `URL` to start from. Optional, defaults to nil.
+     - parameter components: 0 or more path components.
+     - returns: a new `URL` object constructed from the parameters.
+     */
+    func construct(url: URL? = nil, _ components: [String]) -> URL {
         if let first = components.first {
 
             var url = url?.appendingPathComponent(first) ?? URL(fileURLWithPath: first)
@@ -209,6 +235,6 @@ class Conduit {
             return url
         }
 
-        return URL(fileURLWithPath: "")
+        return url ?? URL(fileURLWithPath: "")
     }
 }

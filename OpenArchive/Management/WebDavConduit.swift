@@ -15,6 +15,8 @@ class WebDavConduit: Conduit {
 
     static let metaFileExt = "meta.json"
 
+    private static let flaggedFolder = "flagged".uppercased()
+
     private var credential: URLCredential? {
         return (asset.space as? WebDavSpace)?.credential
     }
@@ -41,37 +43,39 @@ class WebDavConduit: Conduit {
             return progress
         }
 
-        let p = create(folder: projectName, at: "") { error in
+        let p = create(folder: construct(projectName)) { error in
             if error != nil || progress.isCancelled {
                 return self.done(uploadId, error: error)
             }
 
-            let p = self.create(folder: collectionName, at: projectName) { error in
+            let p = self.create(folder: self.construct(projectName, collectionName)) { error in
                 if error != nil || progress.isCancelled {
                     return self.done(uploadId, error: error)
                 }
 
-                let to = Conduit.construct(url: self.asset.space?.url, projectName, collectionName, self.asset.filename)
+                if self.asset.tags?.contains(Asset.flag) ?? false {
 
-                let p = self.copyMetadata(self.asset, to: to.appendingPathExtension(WebDavConduit.metaFileExt),
-                                          credential) { error in
-
-                    if error != nil || progress.isCancelled {
-                        return self.done(uploadId, error: error)
-                    }
-
-                    let p = self.check(Conduit.construct(url: nil, projectName, collectionName, self.asset.filename).path) { exists in
-                        if progress.isCancelled || exists {
-                            return self.done(uploadId, url: to)
+                    let p = self.create(
+                    folder: self.construct(projectName, collectionName, WebDavConduit.flaggedFolder))
+                    { error in
+                        if error != nil || progress.isCancelled {
+                            return self.done(uploadId, error: error)
                         }
 
-                        self.upload(file, to: to, progress, credential: credential)
+                        let path = [projectName, collectionName, WebDavConduit.flaggedFolder, self.asset.filename]
+
+                        self.upload(to: path, credential, progress, uploadId, file)
                     }
 
                     progress.addChild(p, withPendingUnitCount: 5)
                 }
+                else {
+                    let path = [projectName, collectionName, self.asset.filename]
 
-                progress.addChild(p, withPendingUnitCount: 10)
+                    self.upload(to: path, credential, progress, uploadId, file)
+
+                    progress.completedUnitCount += 5
+                }
             }
 
             progress.addChild(p, withPendingUnitCount: 5)
@@ -95,7 +99,7 @@ class WebDavConduit: Conduit {
                 provider.removeItem(path: "\(filepath).\(WebDavConduit.metaFileExt)") { error in
 
                     // Try to delete containing folders until root.
-                    self.delete(folder: URL(fileURLWithPath: filepath).deletingLastPathComponent().path) { error in
+                    self.delete(folder: self.construct(filepath).deletingLastPathComponent().path) { error in
                         DispatchQueue.main.async {
                             done(self.asset)
                         }
@@ -116,26 +120,50 @@ class WebDavConduit: Conduit {
 
     // MARK: Private Methods
 
+    private func upload(to path: [String], _ credential: URLCredential, _ progress: Progress, _ uploadId: String, _ file: URL) {
+        let to = construct(url: self.asset.space?.url, path)
+
+        let p = self.copyMetadata(
+            self.asset, to: to.appendingPathExtension(WebDavConduit.metaFileExt),
+            credential) { error in
+
+                if error != nil || progress.isCancelled {
+                    return self.done(uploadId, error: error)
+                }
+
+                let p = self.check(self.construct(path).path) { exists in
+                    if progress.isCancelled || exists {
+                        return self.done(uploadId, url: to)
+                    }
+
+                    self.upload(file, to: to, progress, credential: credential)
+                }
+
+                progress.addChild(p, withPendingUnitCount: 5)
+        }
+
+        progress.addChild(p, withPendingUnitCount: 5)
+    }
+
     /**
      Asynchronously tests, if a folder exists and if not, creates it.
 
-     - parameter folder: Folder name to create.
-     - parameter at: Parent path of new folder.
+     - parameter folder: Folder with path relative to WebDav endpoint.
      - parameter completionHandler: Callback, when done.
         If an error was returned, it is from the creation attempt.
      */
-    private func create(folder: String, at: String, _ completionHandler: SimpleCompletionHandler) -> Progress {
-        let folderpath = URL(fileURLWithPath: at).appendingPathComponent(folder).path
-
+    private func create(folder: URL, _ completionHandler: SimpleCompletionHandler) -> Progress {
         let progress = Progress(totalUnitCount: 100)
 
-        provider?.attributesOfItem(path: folderpath) { attributes, error in
+        provider?.attributesOfItem(path: folder.path) { attributes, error in
 
             if attributes == nil {
                 progress.completedUnitCount = 50
 
                 // Does not exist - create.
-                if let p = self.provider?.create(folder: folder, at: at, completionHandler: completionHandler) {
+                if let p = self.provider?.create(folder: folder.lastPathComponent,
+                                                 at: folder.deletingLastPathComponent().path,
+                                                 completionHandler: completionHandler) {
                     progress.addChild(p, withPendingUnitCount: 50)
                 }
             }
@@ -258,7 +286,7 @@ class WebDavConduit: Conduit {
                     else {
 
                         // Go up one higher, try to delete that, too.
-                        let parent = URL(fileURLWithPath: folder).deletingLastPathComponent().path
+                        let parent = self.construct(folder).deletingLastPathComponent().path
 
                         if parent != "" && parent != "/" {
                             self.delete(folder: parent, completionHandler)

@@ -138,7 +138,7 @@ class IaConduit: Conduit {
 
         //        slug = "IMG-0003-u4z6"
 
-        return URL(string: "\(IaSpace.baseUrl)/\(slug)/\(asset.filename)")
+        return construct(url: IaSpace.baseUrl, slug, asset.filename)
     }
 
     private func mediatype(for asset: Asset) -> String {
