@@ -51,6 +51,7 @@ class AddProjectViewController: BaseTableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: BigMenuItemCell.reuseId, for: indexPath) as! BigMenuItemCell
 
         if indexPath.row == 1 {
+            cell.accessibilityIdentifier = "cellCreateNewProject"
             cell.label?.text = "Create New Project".localize()
             cell.detailedDescription?.text = "Add a project folder to the server that anyone can upload to.".localize()
         }

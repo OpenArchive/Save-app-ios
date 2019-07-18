@@ -23,6 +23,7 @@ class BaseServerViewController: FormViewController {
     let userNameRow = AccountRow() {
         $0.title = "User Name".localize()
         $0.placeholder = "Required".localize()
+        $0.cell.textField.accessibilityIdentifier = "tfUsername"
         $0.add(rule: RuleRequired())
     }
 

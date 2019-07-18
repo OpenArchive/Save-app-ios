@@ -29,6 +29,7 @@ class NewProjectViewController: BaseProjectViewController {
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .done, target: self, action: #selector(connect))
+        navigationItem.rightBarButtonItem?.accessibilityIdentifier = "btDone"
 
         form
             +++ LabelRow() {

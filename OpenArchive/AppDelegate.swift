@@ -27,6 +27,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         Db.setup()
 
+        if CommandLine.arguments.contains("--UITests") {
+            // Disable animations to avoid timing issues.
+            UIView.setAnimationsEnabled(false)
+
+            // Reflower app into pristine condition.
+            Settings.firstRunDone = false
+
+            Db.writeConn?.readWrite({ transaction in
+                transaction.removeAllObjectsInAllCollections()
+            })
+        }
+
         uploadManager = UploadManager.shared
 
         FontBlaster.blast() /* { fonts in

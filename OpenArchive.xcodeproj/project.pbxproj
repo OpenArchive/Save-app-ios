@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -93,6 +93,8 @@
 		A05471DC2296C8FD009FEA93 /* UITableView+separatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05471DA2296C8FD009FEA93 /* UITableView+separatorView.swift */; };
 		A0552050222566CE00B9645F /* UIView+animateHideShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A055204F222566CE00B9645F /* UIView+animateHideShow.swift */; };
 		A0552051222566CE00B9645F /* UIView+animateHideShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A055204F222566CE00B9645F /* UIView+animateHideShow.swift */; };
+		A05768DA22E0B67D00B39FCE /* Screenshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05768D922E0B67D00B39FCE /* Screenshots.swift */; };
+		A05768E322E0B6F800B39FCE /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05768E122E0B6E600B39FCE /* SnapshotHelper.swift */; };
 		A059E647223AE9FB00ABC621 /* UploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A059E646223AE9FB00ABC621 /* UploadManager.swift */; };
 		A05C582A21EF94FC00141633 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05C582921EF94FC00141633 /* BaseViewController.swift */; };
 		A05C582B21EF95A800141633 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05C582921EF94FC00141633 /* BaseViewController.swift */; };
@@ -238,6 +240,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
+		A05768DC22E0B67D00B39FCE /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A0E739CC20E4C85D00DB31E1 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A0E739D320E4C85D00DB31E1;
+			remoteInfo = OpenArchive;
+		};
 		A07129032111CC90007A432A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = A0E739CC20E4C85D00DB31E1 /* Project object */;
@@ -314,6 +323,11 @@
 		A05471B32296B77D009FEA93 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		A05471DA2296C8FD009FEA93 /* UITableView+separatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+separatorView.swift"; sourceTree = "<group>"; };
 		A055204F222566CE00B9645F /* UIView+animateHideShow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+animateHideShow.swift"; sourceTree = "<group>"; };
+		A05768D722E0B67D00B39FCE /* Screenshots.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Screenshots.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A05768D922E0B67D00B39FCE /* Screenshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screenshots.swift; sourceTree = "<group>"; };
+		A05768DB22E0B67D00B39FCE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A05768E122E0B6E600B39FCE /* SnapshotHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
+		A05768E222E0B6E600B39FCE /* Snapfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Snapfile; sourceTree = "<group>"; };
 		A058628320E4FC5A00EE2F14 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A058628520E4FDBF00EE2F14 /* Podfile.lock */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile.lock; sourceTree = "<group>"; };
 		A059E646223AE9FB00ABC621 /* UploadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadManager.swift; sourceTree = "<group>"; };
@@ -425,6 +439,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		A05768D422E0B67D00B39FCE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A07128F82111CC90007A432A /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -508,6 +529,15 @@
 				A05471B32296B77D009FEA93 /* Montserrat-Bold.ttf */,
 			);
 			path = Montserrat;
+			sourceTree = "<group>";
+		};
+		A05768D822E0B67D00B39FCE /* Screenshots */ = {
+			isa = PBXGroup;
+			children = (
+				A05768D922E0B67D00B39FCE /* Screenshots.swift */,
+				A05768DB22E0B67D00B39FCE /* Info.plist */,
+			);
+			path = Screenshots;
 			sourceTree = "<group>";
 		};
 		A058628220E4FC4700EE2F14 /* Build */ = {
@@ -604,6 +634,8 @@
 				A0ACF215224CD8D1008B9249 /* Appfile */,
 				A0AC0569224CD8D5008B9249 /* Fastfile */,
 				A0ACF216224CD8D1008B9249 /* Pluginfile */,
+				A05768E222E0B6E600B39FCE /* Snapfile */,
+				A05768E122E0B6E600B39FCE /* SnapshotHelper.swift */,
 				A0AC0579224CDE9C008B9249 /* README.md */,
 			);
 			path = fastlane;
@@ -725,6 +757,7 @@
 				A0E739D620E4C85D00DB31E1 /* OpenArchive */,
 				A07129142111F991007A432A /* Shared */,
 				A07128FC2111CC90007A432A /* ShareExtension */,
+				A05768D822E0B67D00B39FCE /* Screenshots */,
 				A0E739D520E4C85D00DB31E1 /* Products */,
 				C1EED73E4FA2E0C967B7B68F /* Pods */,
 				47E32D1C59FF6EA304E114E2 /* Frameworks */,
@@ -736,6 +769,7 @@
 			children = (
 				A0E739D420E4C85D00DB31E1 /* OpenArchive.app */,
 				A07128FB2111CC90007A432A /* ShareExtension.appex */,
+				A05768D722E0B67D00B39FCE /* Screenshots.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -773,6 +807,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		A05768D622E0B67D00B39FCE /* Screenshots */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A05768E022E0B67D00B39FCE /* Build configuration list for PBXNativeTarget "Screenshots" */;
+			buildPhases = (
+				A05768D322E0B67D00B39FCE /* Sources */,
+				A05768D422E0B67D00B39FCE /* Frameworks */,
+				A05768D522E0B67D00B39FCE /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A05768DD22E0B67D00B39FCE /* PBXTargetDependency */,
+			);
+			name = Screenshots;
+			productName = Screenshots;
+			productReference = A05768D722E0B67D00B39FCE /* Screenshots.xctest */;
+			productType = "com.apple.product-type.bundle.ui-testing";
+		};
 		A07128FA2111CC90007A432A /* ShareExtension */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = A07129082111CC90007A432A /* Build configuration list for PBXNativeTarget "ShareExtension" */;
@@ -818,10 +870,14 @@
 		A0E739CC20E4C85D00DB31E1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 0940;
+				LastSwiftUpdateCheck = 1020;
 				LastUpgradeCheck = 1000;
 				ORGANIZATIONNAME = "Open Archive";
 				TargetAttributes = {
+					A05768D622E0B67D00B39FCE = {
+						CreatedOnToolsVersion = 10.2.1;
+						TestTargetID = A0E739D320E4C85D00DB31E1;
+					};
 					A07128FA2111CC90007A432A = {
 						CreatedOnToolsVersion = 9.4.1;
 						LastSwiftMigration = 1020;
@@ -860,11 +916,19 @@
 			targets = (
 				A0E739D320E4C85D00DB31E1 /* OpenArchive */,
 				A07128FA2111CC90007A432A /* ShareExtension */,
+				A05768D622E0B67D00B39FCE /* Screenshots */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		A05768D522E0B67D00B39FCE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A07128F92111CC90007A432A /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -965,57 +1029,12 @@
 			buildActionMask = 2147483647;
 			files = (
 			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-OpenArchive/Pods-OpenArchive-frameworks.sh",
-				"${BUILT_PRODUCTS_DIR}/ARChromeActivity/ARChromeActivity.framework",
-				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
-				"${BUILT_PRODUCTS_DIR}/AlignedCollectionViewFlowLayout/AlignedCollectionViewFlowLayout.framework",
-				"${BUILT_PRODUCTS_DIR}/CocoaLumberjack/CocoaLumberjack.framework",
-				"${BUILT_PRODUCTS_DIR}/DownloadButton/DownloadButton.framework",
-				"${BUILT_PRODUCTS_DIR}/Eureka/Eureka.framework",
-				"${BUILT_PRODUCTS_DIR}/FavIcon/FavIcon.framework",
-				"${BUILT_PRODUCTS_DIR}/FilesProvider/FilesProvider.framework",
-				"${BUILT_PRODUCTS_DIR}/FontBlaster/FontBlaster.framework",
-				"${BUILT_PRODUCTS_DIR}/FormatterKit/FormatterKit.framework",
-				"${BUILT_PRODUCTS_DIR}/ImageRow/ImageRow.framework",
-				"${BUILT_PRODUCTS_DIR}/Localize/Localize.framework",
-				"${BUILT_PRODUCTS_DIR}/MBProgressHUD/MBProgressHUD.framework",
-				"${BUILT_PRODUCTS_DIR}/MDFInternationalization/MDFInternationalization.framework",
-				"${BUILT_PRODUCTS_DIR}/MDFTextAccessibility/MDFTextAccessibility.framework",
-				"${BUILT_PRODUCTS_DIR}/MaterialComponents/MaterialComponents.framework",
-				"${BUILT_PRODUCTS_DIR}/ReachabilitySwift/Reachability.framework",
-				"${BUILT_PRODUCTS_DIR}/SDCAlertView/SDCAlertView.framework",
-				"${BUILT_PRODUCTS_DIR}/TLPhotoPicker/TLPhotoPicker.framework",
-				"${BUILT_PRODUCTS_DIR}/TUSafariActivity/TUSafariActivity.framework",
-				"${BUILT_PRODUCTS_DIR}/UIImage-Resize/UIImage_Resize.framework",
-				"${BUILT_PRODUCTS_DIR}/UIImageViewAlignedSwift/UIImageViewAlignedSwift.framework",
-				"${BUILT_PRODUCTS_DIR}/YapDatabase/YapDatabase.framework",
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-OpenArchive/Pods-OpenArchive-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ARChromeActivity.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/AlignedCollectionViewFlowLayout.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/CocoaLumberjack.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DownloadButton.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Eureka.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FavIcon.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FilesProvider.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FontBlaster.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/FormatterKit.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/ImageRow.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Localize.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MBProgressHUD.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MDFInternationalization.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MDFTextAccessibility.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/MaterialComponents.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Reachability.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SDCAlertView.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TLPhotoPicker.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/TUSafariActivity.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIImage_Resize.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/UIImageViewAlignedSwift.framework",
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/YapDatabase.framework",
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-OpenArchive/Pods-OpenArchive-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1043,6 +1062,15 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		A05768D322E0B67D00B39FCE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A05768DA22E0B67D00B39FCE /* Screenshots.swift in Sources */,
+				A05768E322E0B6F800B39FCE /* SnapshotHelper.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A07128F72111CC90007A432A /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1225,6 +1253,11 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		A05768DD22E0B67D00B39FCE /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A0E739D320E4C85D00DB31E1 /* OpenArchive */;
+			targetProxy = A05768DC22E0B67D00B39FCE /* PBXContainerItemProxy */;
+		};
 		A07129042111CC90007A432A /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A07128FA2111CC90007A432A /* ShareExtension */;
@@ -1252,6 +1285,51 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		A05768DE22E0B67D00B39FCE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				INFOPLIST_FILE = Screenshots/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(OA_SCS_BUNDLE_ID)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "$(PROVISIONING_PROFILE_SPECIFIER_SCREENSHOTS)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = OpenArchive;
+			};
+			name = Debug;
+		};
+		A05768DF22E0B67D00B39FCE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
+				INFOPLIST_FILE = Screenshots/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				MTL_FAST_MATH = YES;
+				PRODUCT_BUNDLE_IDENTIFIER = "$(OA_SCS_BUNDLE_ID)";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "$(PROVISIONING_PROFILE_SPECIFIER_SCREENSHOTS)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_TARGET_NAME = OpenArchive;
+			};
+			name = Release;
+		};
 		A07129062111CC90007A432A /* Debug */ = {
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 5FD7A7F483ADD21139D54407 /* Pods-ShareExtension.debug.xcconfig */;
@@ -1470,6 +1548,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		A05768E022E0B67D00B39FCE /* Build configuration list for PBXNativeTarget "Screenshots" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A05768DE22E0B67D00B39FCE /* Debug */,
+				A05768DF22E0B67D00B39FCE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		A07129082111CC90007A432A /* Build configuration list for PBXNativeTarget "ShareExtension" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
