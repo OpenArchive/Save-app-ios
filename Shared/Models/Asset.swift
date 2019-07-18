@@ -170,11 +170,10 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     private var _filesize: Int64?
     /**
      The size of the attached file in bytes, if file exists and attributes can
-     be read.
+     be read, otherwise a recorded value, since when a file was still around.
     */
     var filesize: Int64? {
-        if _filesize == nil || _filesize! <= 0,
-            let filepath = file?.path,
+        if let filepath = file?.path,
             let attr = try? FileManager.default.attributesOfItem(atPath: filepath) {
 
             _filesize = (attr[.size] as? NSNumber)?.int64Value

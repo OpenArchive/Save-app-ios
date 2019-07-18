@@ -62,7 +62,8 @@ class UploadCell: BaseCell, PKDownloadButtonDelegate {
         didSet {
             let total = upload?.asset?.filesize ?? 0
             let progressValue = upload?.progress ?? 0
-            let done = Double(total) * (progressValue - 0.25 /* The first 25% are for folder creation and metadata file upload */)
+            // The first 25% are for folder creation and metadata file upload, so correct for these.
+            let done = Double(total) * (progressValue - 0.25) / 0.75
 
             progress.isHidden = upload?.error != nil
             progress.state = upload?.state ?? .pending
