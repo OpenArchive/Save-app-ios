@@ -136,54 +136,50 @@ class AssetFactory {
             imageManager.requestAVAsset(forVideo: phasset, options: avOptions) {
                 avAsset, audioMix, info in
 
-                if let avAsset = avAsset {
-                    let presets = AVAssetExportSession.exportPresets(compatibleWith: avAsset)
+                if let avAsset = avAsset,
+                    let preset = AVAssetExportSession.exportPresets(compatibleWith: avAsset).first {
 
-                    if presets.count > 0 {
-                        imageManager.requestExportSession(forVideo: phasset,
-                                                          options: avOptions,
-                                                          exportPreset: presets[0])
-                        { exportSession, info in
-                            let uti: AVFileType = phasset.mediaType == .audio ? .mp3 : .mp4
+                    imageManager.requestExportSession(forVideo: phasset,
+                                                      options: avOptions,
+                                                      exportPreset: preset)
+                    { exportSession, info in
+                        let uti: AVFileType = phasset.mediaType == .audio ? .mp3 : .mp4
 
-                            asset.uti = uti.rawValue
-                            asset.phassetId = phasset.localIdentifier
-                            
-                            // Store asset before export, so display of it
-                            // isn't displayed too long without notice.
-                            // Else it would lead to strange bugs, when users
-                            // upload a collection before the asset is ready.
-                            fetchThumb(phasset, asset) // asynchronous
-                            store(asset) // asynchronous
+                        asset.uti = uti.rawValue
+                        asset.phassetId = phasset.localIdentifier
 
-                            if let exportSession = exportSession,
-                                createParentDir(file: asset.file) {
+                        // Store asset before export, so user doesn't have the
+                        // feeling that it got lost.
+                        fetchThumb(phasset, asset) // asynchronous
+                        store(asset) // asynchronous
 
-                                exportSession.outputURL = asset.file
-                                exportSession.outputFileType = uti
+                        if let exportSession = exportSession,
+                            createParentDir(file: asset.file) {
 
-                                exportSession.exportAsynchronously {
-                                    switch exportSession.status {
-                                    case .unknown, .waiting, .exporting:
-                                        break
+                            exportSession.outputURL = asset.file
+                            exportSession.outputFileType = uti
 
-                                    case .completed:
-                                        if let thumb = asset.thumb?.path,
-                                            !FileManager.default.fileExists(atPath: thumb) {
+                            exportSession.exportAsynchronously {
+                                switch exportSession.status {
+                                case .unknown, .waiting, .exporting:
+                                    break
 
-                                            createThumb(asset)
-                                        }
+                                case .completed:
+                                    if let thumb = asset.thumb?.path,
+                                        !FileManager.default.fileExists(atPath: thumb) {
 
-                                        asset.isReady = true
-
-                                        store(asset)
-
-                                    case .failed, .cancelled:
-                                        asset.remove()
-
-                                    @unknown default:
-                                        break
+                                        createThumb(asset)
                                     }
+
+                                    asset.isReady = true
+
+                                    store(asset)
+
+                                case .failed, .cancelled:
+                                    asset.remove()
+
+                                @unknown default:
+                                    break
                                 }
                             }
                         }
