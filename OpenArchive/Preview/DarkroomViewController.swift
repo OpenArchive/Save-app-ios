@@ -351,7 +351,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         title?.title.text = addMode ? "Add Info".localize() : asset?.filename
         title?.subtitle.text = addMode ? asset?.filename : Formatters.formatByteCount(asset?.filesize)
 
-        navigationItem.rightBarButtonItem?.isEnabled = !(asset?.isUploaded ?? true)
+        navigationItem.rightBarButtonItem?.isEnabled = asset != nil && !asset!.isUploaded && !asset!.isUploading
 
         if pageVc.viewControllers?.isEmpty ?? true || direction != nil {
             pageVc.setViewControllers(getFreshImageVcList(), direction: direction ?? .forward, animated: direction != nil)

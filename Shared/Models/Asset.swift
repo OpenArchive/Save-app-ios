@@ -253,6 +253,29 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         }
     }
 
+    /**
+     Checks, if asset is currently in an upload queue and *not* paused.
+
+     Be careful, this is an expensive check! Cache, if you need to reuse!
+    */
+    var isUploading: Bool {
+        var isUploading = false
+
+        Db.bgRwConn?.read { transaction in
+            transaction.enumerateKeysAndObjects(inCollection: Upload.collection) { key, object, stop in
+                if let upload = object as? Upload,
+                    upload.assetId == self.id,
+                    !upload.paused {
+
+                    isUploading = true
+                    stop.pointee = true
+                }
+            }
+        }
+
+        return isUploading
+    }
+
     init(_ collection: Collection, uti: String = kUTTypeData as String,
          id: String = UUID().uuidString, created: Date = Date()) {
 
