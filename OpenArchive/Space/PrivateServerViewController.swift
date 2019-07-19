@@ -10,7 +10,6 @@ import UIKit
 import Eureka
 import FavIcon
 import YapDatabase
-import FilesProvider
 
 class PrivateServerViewController: BaseServerViewController {
 
@@ -108,19 +107,7 @@ class PrivateServerViewController: BaseServerViewController {
                 self.workingOverlay.isHidden = true
 
                 if let error = error {
-                    var message: String?
-
-                    if let error = error as? FileProviderWebDavError {
-                        switch error.code {
-                        case .unauthorized:
-                            message = "Incorrect login or password.".localize()
-
-                        default:
-                            message = error.localizedDescription
-                        }
-                    }
-
-                    AlertHelper.present(self, message: message ?? error.localizedDescription)
+                    AlertHelper.present(self, message: error.friendlyMessage)
                 }
                 else {
                     super.connect()

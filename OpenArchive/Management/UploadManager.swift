@@ -430,7 +430,7 @@ class UploadManager: Alamofire.SessionDelegate {
                     upload.paused = error is FileProviderHTTPError || UploadManager.maxRetries <= upload.tries
                     upload.lastTry = Date()
 
-                    upload.error = error?.localizedDescription ?? (url == nil ? "No URL provided." : "Unknown error.")
+                    upload.error = error?.friendlyMessage ?? (url == nil ? "No URL provided.".localize() : "Unknown error.".localize())
                 }
 
                 collection = nil

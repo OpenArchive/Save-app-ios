@@ -73,6 +73,6 @@ class MenuItemCell: BaseCell {
 
     @discardableResult
     func set(_ error: Error) -> MenuItemCell {
-        return set(error.localizedDescription, textColor: .red)
+        return set(error.friendlyMessage, textColor: .red)
     }
 }

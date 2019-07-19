@@ -311,7 +311,7 @@ class MainViewController: TableWithSpacesViewController {
      - parameter error: An optional localized error string to show to the user.
      */
     private func onCompletion(_ error: Error) {
-        onCompletion(error: error.localizedDescription)
+        onCompletion(error: error.friendlyMessage)
     }
 
     /**

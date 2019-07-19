@@ -61,12 +61,12 @@ class IaScrapeViewController: UIViewController, WKUIDelegate, WKNavigationDelega
     }
 
     func webView(_ webView: WKWebView, didFailProvisionalNavigation navigation: WKNavigation!, withError error: Error) {
-        AlertHelper.present(self, message: error.localizedDescription)
+        AlertHelper.present(self, message: error.friendlyMessage)
     }
 
 
     func webView(_ webView: WKWebView, didFail navigation: WKNavigation!, withError error: Error) {
-        AlertHelper.present(self, message: error.localizedDescription)
+        AlertHelper.present(self, message: error.friendlyMessage)
     }
 
 

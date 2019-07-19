@@ -236,6 +236,8 @@
 		A0FB4DBC21F8C9B600B46099 /* RoundedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DBA21F8C9B600B46099 /* RoundedImageView.swift */; };
 		A0FB4DBE21F8CC2300B46099 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DBD21F8CC2300B46099 /* MainViewController.swift */; };
 		A0FB4DC021F8EBDD00B46099 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DBF21F8EBDD00B46099 /* ImageCell.swift */; };
+		A0FE2C1E22E1E8D200C5443F /* Error+friendlyMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FE2C1D22E1E8D200C5443F /* Error+friendlyMessage.swift */; };
+		A0FE2C1F22E1E8D200C5443F /* Error+friendlyMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FE2C1D22E1E8D200C5443F /* Error+friendlyMessage.swift */; };
 		E3237719CED5D0E5FB3A9540 /* Pods_ShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA57E87D37FC97CE551149A6 /* Pods_ShareExtension.framework */; };
 /* End PBXBuildFile section */
 
@@ -433,6 +435,7 @@
 		A0FB4DBA21F8C9B600B46099 /* RoundedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RoundedImageView.swift; sourceTree = "<group>"; };
 		A0FB4DBD21F8CC2300B46099 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		A0FB4DBF21F8EBDD00B46099 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
+		A0FE2C1D22E1E8D200C5443F /* Error+friendlyMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+friendlyMessage.swift"; sourceTree = "<group>"; };
 		CC67BE20A50BF4C22AE484F1 /* Pods-OpenArchive.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenArchive.release.xcconfig"; path = "Pods/Target Support Files/Pods-OpenArchive/Pods-OpenArchive.release.xcconfig"; sourceTree = "<group>"; };
 		DA57E87D37FC97CE551149A6 /* Pods_ShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9D40196C7AFBE8474EA6241 /* Pods-OpenArchive.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenArchive.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OpenArchive/Pods-OpenArchive.debug.xcconfig"; sourceTree = "<group>"; };
@@ -480,6 +483,7 @@
 				A0A192D921F1EE88009A8CF0 /* AlertHelper.swift */,
 				A0FA93402277387D0086D276 /* Bundle+displayName.swift */,
 				A092C0EF223A8D4B003EB0AA /* DoneDelegate.swift */,
+				A0FE2C1D22E1E8D200C5443F /* Error+friendlyMessage.swift */,
 				A004E24B20EBCF1700A1D5F5 /* Formatters.swift */,
 				A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */,
 				A070335A2119E7DF00BF1F33 /* Request+debug.swift */,
@@ -1088,6 +1092,7 @@
 				A0C797EA22807DF00009751A /* SelectedCollection.swift in Sources */,
 				A0FA93422277387D0086D276 /* Bundle+displayName.swift in Sources */,
 				A0E27201224E26A500CB7113 /* FolderCell.swift in Sources */,
+				A0FE2C1F22E1E8D200C5443F /* Error+friendlyMessage.swift in Sources */,
 				A0AC0580224CE8C7008B9249 /* TableWithSpacesViewController.swift in Sources */,
 				A0C7DC04224A40E5004B78FF /* ActiveProjectsView.swift in Sources */,
 				A077732B22786BF500291F5D /* RemoveAssetAlert.swift in Sources */,
@@ -1224,6 +1229,7 @@
 				A050AA492225DF4000AE5D15 /* SpacesListCell.swift in Sources */,
 				A0656ABA21F9BFB800070C4B /* MainNavigationController.swift in Sources */,
 				A05471DB2296C8FD009FEA93 /* UITableView+separatorView.swift in Sources */,
+				A0FE2C1E22E1E8D200C5443F /* Error+friendlyMessage.swift in Sources */,
 				A09898082236A7B100022851 /* UploadCell.swift in Sources */,
 				A0C797E6228063280009751A /* AbcFilteredByCollectionView.swift in Sources */,
 				A0FB4DC021F8EBDD00B46099 /* ImageCell.swift in Sources */,
