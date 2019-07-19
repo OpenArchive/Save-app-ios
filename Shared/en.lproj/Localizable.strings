@@ -1,0 +1,400 @@
+/* 
+  Localizable.strings
+  OpenArchive
+
+  Created by Benjamin Erhart on 19.07.19.
+  Copyright © 2019 Open Archive. All rights reserved.
+*/
+
+/* SlideshowViewController */
+"Save to a safe place." = "Save to a safe place.";
+
+/* SlideshowViewController */
+"Connect to a secure server or the Internet Archive to upload photos and videos from your phone." = "Connect to a secure server or the Internet Archive to upload photos and videos from your phone.";
+
+/* SlideshowViewController */
+"Stay organized." = "Stay organized.";
+
+/* SlideshowViewController */
+"Organize your media into projects." = "Organize your media into projects.";
+
+/* SlideshowViewController */
+"Store the facts." = "Store the facts.";
+
+/* SlideshowViewController */
+"Capture notes, location and people with each piece of media." = "Capture notes, location and people with each piece of media.";
+
+/* SlideshowViewController */
+"Ensure authenticity." = "Ensure authenticity.";
+
+/* SlideshowViewController */
+"Include your credentials while Save adds extra metadata to help with chain of custody and verification workflows." = "Include your credentials while Save adds extra metadata to help with chain of custody and verification workflows.";
+
+/* MainViewController */
+"Camera Roll" = "Camera Roll";
+
+/* MainViewController */
+"Tap here to change" = "Tap here to change";
+
+/* MainViewController, AlertHelper */
+"Cancel" = "Cancel";
+
+/* MainViewController, DarkroomViewController, PrivateServerViewController, InternetArchiveViewController, ManagementViewController, Main.storyboard */
+"Done" = "Done";
+
+/* MainViewController */
+"No albums" = "No albums";
+
+/* MainViewController */
+"Sorry, you are not allowed to view the camera roll." = "Sorry, you are not allowed to view the camera roll.";
+
+/* MainViewController */
+"Access Restricted" = "Access Restricted";
+
+/* MainViewController */
+"Please go to the Settings app to grant this app access to your photo library, if you want to upload photos or videos." = "Please go to the Settings app to grant this app access to your photo library, if you want to upload photos or videos.";
+
+/* MainViewController */
+"Access Denied" = "Access Denied";
+
+/* MainViewController */
+"Deselect" = "Deselect";
+
+/* MainViewController */
+"Select" = "Select";
+
+/* MainViewController */
+"Next" = "Next";
+
+/* HeaderView */
+"% Item Uploaded" = "% Item Uploaded";
+
+/* HeaderView */
+"% Items Uploaded" = "% Items Uploaded";
+
+/* HeaderView */
+"Just now" = "Just now";
+
+/* HeaderView */
+"Uploading" = "Uploading";
+
+/* HeaderView */
+"% of % item uploaded" = "% of % item uploaded";
+
+/* HeaderView */
+"% of % items uploaded" = "% of % items uploaded";
+
+/* HeaderView */
+"Ready to upload" = "Ready to upload";
+
+/* HeaderView */
+"% item" = "% item";
+
+/* HeaderView */
+"% items" = "% items";
+
+/* PreviewViewController, MenuViewController, ManagementViewController, RemoveProjectAlert */
+"Remove" = "Remove";
+
+/* PreviewViewController */
+"Preview" = "Preview";
+
+/* PreviewViewController */
+"Upload to %" = "Upload to %";
+
+/* DarkroomViewController */
+"Add Info" = "Add Info";
+
+/* DarkroomHelper */
+"Add People" = "Add People";
+
+/* DarkroomHelper */
+"Add Location" = "Add Location";
+
+/* DarkroomHelper */
+"Add Notes" = "Add Notes";
+
+/* DarkroomHelper */
+"Tap to flag as significant content" = "Tap to flag as significant content";
+
+/* BatchEditViewController, Main.storyboard */
+"Batch Edit" = "Batch Edit";
+
+/* BatchEditViewController */
+"% Items Selected" = "% Items Selected";
+
+/* FlagInfoAlert */
+"Flag Significant Content" = "Flag Significant Content";
+
+/* FlagInfoAlert */
+"When you flag an item, it is routed into a subfolder within the chosen project folder on the server." = "When you flag an item, it is routed into a subfolder within the chosen project folder on the server.";
+
+/* FlagInfoAlert, BatchInfoAlert */
+"Got it" = "Got it";
+
+/* BatchInfoAlert */
+"Edit Multiple Items" = "Edit Multiple Items";
+
+/* BatchInfoAlert */
+"To edit multiple items, press and hold each." = "To edit multiple items, press and hold each.";
+
+/* ConnectSpaceViewController */
+"Skip" = "Skip";
+
+/* MenuViewController, DataUsageViewController */
+"Data Usage" = "Data Usage";
+
+/* MenuViewController */
+"About %" = "About %";
+
+/* MenuViewController */
+"Privacy Policy" = "Privacy Policy";
+
+/* MenuViewController */
+"Project Settings" = "Project Settings";
+
+/* MenuViewController */
+"App Settings" = "App Settings";
+
+/* MenuViewController */
+"Info" = "Info";
+
+/* SpaceViewController */
+"Login Info" = "Login Info";
+
+/* SpaceViewController, EditProfileViewController */
+"Profile" = "Profile";
+
+/* EditProfileViewController */
+"Name" = "Name";
+
+/* EditProfileViewController, PrivateServerViewController */
+"Optional" = "Optional";
+
+/* EditProfileViewController */
+"Role" = "Role";
+
+/* EditProfileViewController */
+"Other Info" = "Other Info";
+
+/* BaseServerViewController */
+"User Name" = "User Name";
+
+/* BaseServerViewController, PrivateServerViewController, InternetArchiveViewController */
+"Required" = "Required";
+
+/* BaseServerViewController, EditProjectViewController, RemoveProjectAlert */
+"Remove from App" = "Remove from App";
+
+/* BaseServerViewController */
+"This will remove the asset history for that space, too!" = "This will remove the asset history for that space, too!";
+
+/* BaseServerViewController */
+"Remove Space" = "Remove Space";
+
+/* PrivateServerViewController */
+"Server Name" = "Server Name";
+
+/* PrivateServerViewController */
+"Server URL" = "Server URL";
+
+/* PrivateServerViewController */
+"Password" = "Password";
+
+/* PrivateServerViewController, Main.storyboard */
+"Private Server" = "Private Server";
+
+/* PrivateServerViewController, InternetArchiveViewController */
+"Connect" = "Connect";
+
+/* InternetArchiveViewController */
+"Secret Key" = "Secret Key";
+
+/* InternetArchiveViewController, IaScrapeViewController, Main.storyboard */
+"Internet Archive" = "Internet Archive";
+
+/* InternetArchiveViewController */
+"Access Key" = "Access Key";
+
+/* InternetArchiveViewController */
+"% needs your Internet Archive account's API keys to be able to upload to it." = "% needs your Internet Archive account's API keys to be able to upload to it.";
+
+/* InternetArchiveViewController */
+"You can let % try to acquire these keys automatically, or you can tap this row which will send you to % in Safari from where you can copy-and-paste these keys manually." = "You can let % try to acquire these keys automatically, or you can tap this row which will send you to % in Safari from where you can copy-and-paste these keys manually.";
+
+/* InternetArchiveViewController */
+"When using the \"%\" feature, make sure to log in and then press the \"Refresh\" button in the top right to let % have another try at automatically scraping the keys." = "When using the \"%\" feature, make sure to log in and then press the \"Refresh\" button in the top right to let % have another try at automatically scraping the keys.";
+
+/* InternetArchiveViewController */
+"Acquire Keys" = "Acquire Keys";
+
+/* EditProjectViewController */
+"Allow Creative Commons use for all media in this project" = "Allow Creative Commons use for all media in this project";
+
+/* EditProjectViewController */
+"Allow anyone to remix and share" = "Allow anyone to remix and share";
+
+/* EditProjectViewController */
+"Require them to share like you have" = "Require them to share like you have";
+
+/* EditProjectViewController */
+"Allow commercial use" = "Allow commercial use";
+
+/* EditProjectViewController */
+"Archive Project" = "Archive Project";
+
+/* EditProjectViewController */
+"Unarchive Project" = "Unarchive Project";
+
+/* EditProjectViewController */
+"Creative Commons" = "Creative Commons";
+
+/* DataUsageViewController */
+"Only upload media when you are connected to WiFi" = "Only upload media when you are connected to WiFi";
+
+/* ManagementViewController */
+"Multiple attempts with no success" = "Multiple attempts with no success";
+
+/* ManagementViewController */
+"Retry" = "Retry";
+
+/* ManagementViewController */
+"Uploading…" = "Uploading…";
+
+/* ManagementViewController */
+"Waiting…" = "Waiting…";
+
+/* ManagementViewController */
+"% left" = "% left";
+
+/* UploadManager */
+"No URL provided." = "No URL provided.";
+
+/* UploadManager */
+"Unknown error." = "Unknown error.";
+
+/* AddProjectViewController */
+"Add a Project" = "Add a Project";
+
+/* AddProjectViewController, Main.storyboard */
+"Set up where you want your media to be stored." = "Set up where you want your media to be stored.";
+
+/* AddProjectViewController */
+"Create New Project" = "Create New Project";
+
+/* AddProjectViewController, NewProjectViewController */
+"Add a project folder to the server that anyone can upload to." = "Add a project folder to the server that anyone can upload to.";
+
+/* AddProjectViewController */
+"Browse Existing Projects" = "Browse Existing Projects";
+
+/* AddProjectViewController */
+"Choose a project folder from the server." = "Choose a project folder from the server.";
+
+/* BaseProjectViewController */
+"Name your project" = "Name your project";
+
+/* NewProjectViewController, ShareExtension.MainViewController */
+"New Project" = "New Project";
+
+/* BrowseViewController */
+"Browse Projects" = "Browse Projects";
+
+/* AlertHelper */
+"Error" = "Error";
+
+/* AlertHelper */
+"OK" = "OK";
+
+/* Bundle+displayName */
+"OpenArchive" = "OpenArchive";
+
+/* Error+friendlyMessage */
+"Incorrect login or password." = "Incorrect login or password.";
+
+/* Space */
+"Configuration invalid." = "Configuration invalid.";
+
+/* Space */
+"Unnamed" = "Unnamed";
+
+/* Project */
+"Unnamed Project" = "Unnamed Project";
+
+/* Asset */
+"Significant Content" = "Significant Content";
+
+/* ProjectsTabBar */
+"New" = "New";
+
+/* RemoveAssetAlert */
+"This item will be removed only from the % App.\nIt will remain on the server and in your camera roll." = "This item will be removed only from the % App.\nIt will remain on the server and in your camera roll.";
+
+/* RemoveAssetAlert */
+"These items will be removed only from the % App.\nThey will remain on the server and in your camera roll." = "These items will be removed only from the % App.\nThey will remain on the server and in your camera roll.";
+
+/* RemoveAssetAlert */
+"Remove Media from %" = "Remove Media from %";
+
+/* RemoveAssetAlert */
+"Remove Media" = "Remove Media";
+
+/* DuplicateProjectAlert */
+"Please choose another name/project or use the existing one instead." = "Please choose another name/project or use the existing one instead.";
+
+/* DuplicateProjectAlert */
+"Project Already Exists" = "Project Already Exists";
+
+/* RemoveProjectAlert */
+"Are you sure you want to remove your project \"%\"?" = "Are you sure you want to remove your project \"%\"?";
+
+/* ShareExtension.MainViewController */
+"Adding…" = "Adding…";
+
+/* ShareExtension.MainViewController */
+"Choose a Project" = "Choose a Project";
+
+/* ShareExtension.MainViewController */
+"Import" = "Import";
+
+/* ShareExtension.MainViewController */
+"Couldn't import item!" = "Couldn't import item!";
+
+/* ShareExtension.MainViewController */
+"You have % items ready to upload to '%'." = "You have % items ready to upload to '%'.";
+
+/* ShareExtension.MainViewController */
+"Go to the app to upload!" = "Go to the app to upload!";
+
+/* Main.storyboard */
+"by OpenArchive" = "by OpenArchive";
+
+/* Main.storyboard */
+"Save all the things!" = "Save all the things!";
+
+/* Main.storyboard */
+"Secure Mobile Media Preservation" = "Secure Mobile Media Preservation";
+
+/* Main.storyboard */
+"Get Started" = "Get Started";
+
+/* Main.storyboard */
+"Connect Your Space" = "Connect Your Space";
+
+/* Main.storyboard */
+"Send directly to a private server." = "Send directly to a private server.";
+
+/* Main.storyboard */
+"Upload to the Internet Archive" = "Upload to the Internet Archive";
+
+/* Main.storyboard */
+"Menu" = "Menu";
+
+/* Main.storyboard */
+"Tap the button below to add media to your project." = "Tap the button below to add media to your project.";
+
+/* Main.storyboard */
+"Upload" = "Upload";
+
+/* Main.storyboard */
+"Back" = " Back";

@@ -238,6 +238,9 @@
 		A0FB4DC021F8EBDD00B46099 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DBF21F8EBDD00B46099 /* ImageCell.swift */; };
 		A0FE2C1E22E1E8D200C5443F /* Error+friendlyMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FE2C1D22E1E8D200C5443F /* Error+friendlyMessage.swift */; };
 		A0FE2C1F22E1E8D200C5443F /* Error+friendlyMessage.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FE2C1D22E1E8D200C5443F /* Error+friendlyMessage.swift */; };
+		A0FE2C2322E1FE7C00C5443F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0FE2C2622E1FE7C00C5443F /* Localizable.strings */; };
+		A0FE2C2422E1FE7C00C5443F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0FE2C2622E1FE7C00C5443F /* Localizable.strings */; };
+		A0FE2C2A22E20C5A00C5443F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0FE2C2C22E20C5A00C5443F /* InfoPlist.strings */; };
 		E3237719CED5D0E5FB3A9540 /* Pods_ShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA57E87D37FC97CE551149A6 /* Pods_ShareExtension.framework */; };
 /* End PBXBuildFile section */
 
@@ -436,6 +439,10 @@
 		A0FB4DBD21F8CC2300B46099 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		A0FB4DBF21F8EBDD00B46099 /* ImageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageCell.swift; sourceTree = "<group>"; };
 		A0FE2C1D22E1E8D200C5443F /* Error+friendlyMessage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Error+friendlyMessage.swift"; sourceTree = "<group>"; };
+		A0FE2C2522E1FE7C00C5443F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A0FE2C2722E1FECF00C5443F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A0FE2C2B22E20C5A00C5443F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A0FE2C2D22E20C6200C5443F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		CC67BE20A50BF4C22AE484F1 /* Pods-OpenArchive.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenArchive.release.xcconfig"; path = "Pods/Target Support Files/Pods-OpenArchive/Pods-OpenArchive.release.xcconfig"; sourceTree = "<group>"; };
 		DA57E87D37FC97CE551149A6 /* Pods_ShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F9D40196C7AFBE8474EA6241 /* Pods-OpenArchive.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenArchive.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OpenArchive/Pods-OpenArchive.debug.xcconfig"; sourceTree = "<group>"; };
@@ -595,6 +602,7 @@
 				A08750A82112099700BFAFE4 /* Constants.m */,
 				A0A192DF21F23B61009A8CF0 /* Constants+Swift.swift */,
 				A0BA76E52111FA130009801D /* Config.xcconfig */,
+				A0FE2C2622E1FE7C00C5443F /* Localizable.strings */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -793,6 +801,7 @@
 				A0E739DB20E4C85D00DB31E1 /* Main.storyboard */,
 				A0E739E020E4C85E00DB31E1 /* LaunchScreen.storyboard */,
 				A0E739E320E4C85E00DB31E1 /* Info.plist */,
+				A0FE2C2C22E20C5A00C5443F /* InfoPlist.strings */,
 			);
 			path = OpenArchive;
 			sourceTree = "<group>";
@@ -912,6 +921,7 @@
 			knownRegions = (
 				en,
 				Base,
+				de,
 			);
 			mainGroup = A0E739CB20E4C85D00DB31E1;
 			productRefGroup = A0E739D520E4C85D00DB31E1 /* Products */;
@@ -962,6 +972,7 @@
 				A0B645C922B7ADC200BBE3FF /* BigMenuItemCell.xib in Resources */,
 				A0C475B7211488BF0012937E /* Assets.xcassets in Resources */,
 				A05471CD2296B77D009FEA93 /* Montserrat-Thin.ttf in Resources */,
+				A0FE2C2422E1FE7C00C5443F /* Localizable.strings in Resources */,
 				A045D1E9224CF24F008FF8C1 /* SpacesListCell.xib in Resources */,
 				A05471BB2296B77D009FEA93 /* Montserrat-Italic.ttf in Resources */,
 				A0E321FE228EFDA200F2E9BD /* InfoBox.xib in Resources */,
@@ -986,6 +997,7 @@
 				A045D1E8224CF24E008FF8C1 /* SpacesListCell.xib in Resources */,
 				A05471C02296B77D009FEA93 /* Montserrat-ExtraBold.ttf in Resources */,
 				A05471CA2296B77D009FEA93 /* Montserrat-Black.ttf in Resources */,
+				A0FE2C2322E1FE7C00C5443F /* Localizable.strings in Resources */,
 				A0E321FD228EFDA200F2E9BD /* InfoBox.xib in Resources */,
 				A0B645C422B7AD2E00BBE3FF /* TitleCell.xib in Resources */,
 				A05471C22296B77D009FEA93 /* Montserrat-ThinItalic.ttf in Resources */,
@@ -1003,6 +1015,7 @@
 				A05471B62296B77D009FEA93 /* Montserrat-Light.ttf in Resources */,
 				A05471D42296B77D009FEA93 /* Montserrat-ExtraBoldItalic.ttf in Resources */,
 				A05471CC2296B77D009FEA93 /* Montserrat-Thin.ttf in Resources */,
+				A0FE2C2A22E20C5A00C5443F /* InfoPlist.strings in Resources */,
 				A05471B82296B77D009FEA93 /* Montserrat-ExtraLightItalic.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1288,6 +1301,24 @@
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
 		};
+		A0FE2C2622E1FE7C00C5443F /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A0FE2C2522E1FE7C00C5443F /* en */,
+				A0FE2C2722E1FECF00C5443F /* de */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+		A0FE2C2C22E20C5A00C5443F /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A0FE2C2B22E20C5A00C5443F /* en */,
+				A0FE2C2D22E20C6200C5443F /* de */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
@@ -1390,6 +1421,7 @@
 			baseConfigurationReference = A0BA76E52111FA130009801D /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
@@ -1451,6 +1483,7 @@
 			baseConfigurationReference = A0BA76E52111FA130009801D /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_ANALYZER_NONNULL = YES;
 				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";

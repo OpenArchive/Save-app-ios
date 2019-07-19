@@ -256,7 +256,7 @@ PKDownloadButtonDelegate {
 
         case .restricted:
             AlertHelper.present(
-                self, message: "Sorry, you are not allowed to view the photo library.".localize(),
+                self, message: "Sorry, you are not allowed to view the camera roll.".localize(),
                 title: "Access Restricted".localize(),
                 actions: [AlertHelper.cancelAction()])
 

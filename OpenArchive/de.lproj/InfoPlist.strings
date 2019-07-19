@@ -1,0 +1,10 @@
+/* 
+  InfoPlist.strings
+  OpenArchive
+
+  Created by Benjamin Erhart on 19.07.19.
+  Copyright © 2019 Open Archive. All rights reserved.
+*/
+NSCameraUsageDescription = "Bitte erlaube dieser App Zugriff auf Deine Kammera, wenn Du direkt Fotos oder Videos machen willst.";
+NSMicrophoneUsageDescription = "Bitte erlaube dieser App Zugriff auf Dein Mikrofon, wenn Du direkt Videos aufnehmen willst.";
+NSPhotoLibraryUsageDescription = "Bitte erlaube dieser App Zugriff auf Deine Aufnahmen, wenn Du sie hochladen willst.";

@@ -11,6 +11,7 @@ import UserNotifications
 import YapDatabase
 import MobileCoreServices
 import MBProgressHUD
+import Localize
 import FontBlaster
 
 @objc(MainViewController)
@@ -55,6 +56,10 @@ class MainViewController: TableWithSpacesViewController {
         projectsReadConn?.update(mappings: projectsMappings)
 
         view.tintColor = UIColor.accent
+
+        Localize.update(provider: .strings)
+        Localize.update(bundle: Bundle(for: type(of: self)))
+        Localize.update(fileName: "Localizable")
 
         FontBlaster.blast()
         

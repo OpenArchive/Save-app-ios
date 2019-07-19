@@ -8,6 +8,7 @@
 
 import UIKit
 import UserNotifications
+import Localize
 import FontBlaster
 
 @UIApplicationMain
@@ -41,10 +42,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         uploadManager = UploadManager.shared
 
-        FontBlaster.blast() /* { fonts in
-            print(fonts)
-        } */
-        
+        setUp()
+
         return true
     }
 
@@ -153,5 +152,15 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
 
         completionHandler()
+    }
+
+    private func setUp() {
+        Localize.update(provider: .strings)
+        Localize.update(bundle: Bundle(for: type(of: self)))
+        Localize.update(fileName: "Localizable")
+
+        FontBlaster.blast() /* { fonts in
+            print(fonts)
+        } */
     }
 }

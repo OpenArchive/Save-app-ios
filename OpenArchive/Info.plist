@@ -27,7 +27,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Please grant this app access to your microphone, if you directly want to take videos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Please grant this app access to your photo library, if you want to upload photos or videos.</string>
+	<string>Please grant this app access to your camera roll, if you want to upload photos or videos.</string>
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>fetch</string>

@@ -19,7 +19,7 @@ UIPageViewControllerDelegate {
     private static let data = [
     [
         "heading": "Save to a safe place.".localize(),
-        "text": "Connect to a secure server or the internet archive to upload photos and videos from your phone.".localize(),
+        "text": "Connect to a secure server or the Internet Archive to upload photos and videos from your phone.".localize(),
         "illustration": "safe-place-screen",
     ],
     [

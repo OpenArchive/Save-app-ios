@@ -122,7 +122,7 @@ class MenuViewController: TableWithSpacesViewController {
         case 3:
             switch indexPath.row {
             case 0:
-                return cell.set("About \(Bundle.main.displayName)".localize(), accessoryType: .disclosureIndicator)
+                return cell.set("About %".localize(value: Bundle.main.displayName), accessoryType: .disclosureIndicator)
             default:
                 return cell.set("Privacy Policy".localize(), accessoryType: .disclosureIndicator)
             }
