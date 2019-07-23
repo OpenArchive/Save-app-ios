@@ -21,7 +21,6 @@ class PrivateServerViewController: BaseServerViewController {
     private let urlRow = URLRow() {
         $0.title = "Server URL".localize()
         $0.placeholder = "Required".localize()
-        $0.cell.textField.accessibilityIdentifier = "tfServerUrl"
         $0.add(rule: RuleRequired())
         $0.formatter = Formatters.URLFormatter()
     }
@@ -29,7 +28,6 @@ class PrivateServerViewController: BaseServerViewController {
     private let passwordRow = PasswordRow() {
         $0.title = "Password".localize()
         $0.placeholder = "Required".localize()
-        $0.cell.textField.accessibilityIdentifier = "tfPassword"
         $0.add(rule: RuleRequired())
     }
 
@@ -41,7 +39,6 @@ class PrivateServerViewController: BaseServerViewController {
             title: space != nil ? "Done".localize() : "Connect".localize(),
             style: .done, target: self,
             action: #selector(connect))
-        navigationItem.rightBarButtonItem?.accessibilityIdentifier = "btConnect"
 
         favIconRow.value = space?.favIcon
         nameRow.value = space?.name

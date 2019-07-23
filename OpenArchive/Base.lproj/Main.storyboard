@@ -389,6 +389,7 @@
                         <subviews>
                             <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="server" translatesAutoresizingMaskIntoConstraints="NO" id="hpS-2l-dcc">
                                 <rect key="frame" x="16" y="36" width="36" height="36"/>
+                                <accessibility key="accessibilityConfiguration" identifier="imgFavIcon"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="36" id="WCF-GJ-S02"/>
                                     <constraint firstAttribute="height" constant="36" id="YMA-T2-Ey1"/>

@@ -99,6 +99,7 @@ class Space: NSObject {
 
     // MARK: NSCoding
 
+    @objc(initWithCoder:)
     required init?(coder decoder: NSCoder) {
         id = decoder.decodeObject(forKey: "id") as? String ?? UUID().uuidString
         name = decoder.decodeObject(forKey: "name") as? String

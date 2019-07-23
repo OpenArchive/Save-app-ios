@@ -27,6 +27,8 @@ class SpaceCell: UICollectionViewCell {
             favIcon.layer.borderWidth = 0
             favIcon.layer.borderColor = UIColor.clear.cgColor
             favIcon.layer.cornerRadius = favIcon.frame.width / 2
+
+            accessibilityIdentifier = nil
         }
     }
 
@@ -37,5 +39,7 @@ class SpaceCell: UICollectionViewCell {
         favIcon.layer.borderColor = UIColor.accent.cgColor
         favIcon.layer.cornerRadius = favIcon.frame.width / 2
         favIcon.image = UIImage(named: "ic_add")?.withRenderingMode(.alwaysTemplate)
+
+        accessibilityIdentifier = "cellSpaceAdd"
     }
 }

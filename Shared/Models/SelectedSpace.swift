@@ -21,9 +21,7 @@ class SelectedSpace {
     private static let collection  = "selected_space"
 
     static var id: String? {
-        get {
-            return space?.id
-        }
+        return space?.id
     }
 
     static var available: Bool {

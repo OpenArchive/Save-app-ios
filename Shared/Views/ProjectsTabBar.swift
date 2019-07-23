@@ -109,12 +109,26 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
             if let newIndexPath = change.newIndexPath,
                 let project = getProject(at: newIndexPath) {
 
-                projects.insert(project, at: newIndexPath.row)
-                items.insert(getItem(project.name, newIndexPath.row), at: newIndexPath.row + 1)
+                // Fix issue when multiple projects are inserted at once, which
+                // happens on DB setup for screenshot creation.
+                // NOTE: This will mess up the order with more than 2 projects at once!
+                if projects.endIndex < newIndexPath.row {
+                    projects.append(project)
+                }
+                else {
+                    projects.insert(project, at: newIndexPath.row)
+                }
 
                 // When a new project is created, it will be selected immediately.
-                selectedItem = items[newIndexPath.row + 1]
+                selectedItem = getItem(project.name, newIndexPath.row)
                 insertedNew = true
+
+                if items.endIndex < newIndexPath.row + 1 {
+                    items.append(selectedItem!)
+                }
+                else {
+                    items.insert(selectedItem!, at: newIndexPath.row + 1)
+                }
             }
         case .move:
             if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {

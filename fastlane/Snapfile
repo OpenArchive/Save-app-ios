@@ -2,13 +2,15 @@
 
 # A list of devices you want to take the screenshots from
 devices([
-  "iOS 12.2 @ iPhone XR",
-  "iOS 12.2 @ iPad Pro 11",
+  "iOS 12.4 @ iPhone Xs Max",
+  "iOS 12.4 @ iPhone 8 Plus",
+  "iOS 12.4 @ iPad Pro (12.9-inch) (3rd generation)",
+  "iOS 12.4 @ iPad Pro (12.9-inch) (2nd generation)",
 ])
 
 languages([
   "en-US",
-#   "de-DE",
+  "de-DE",
 #   "it-IT",
 #   ["pt", "pt_BR"] # Portuguese with Brazilian locale
 ])

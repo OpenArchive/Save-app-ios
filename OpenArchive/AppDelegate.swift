@@ -28,15 +28,28 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
         Db.setup()
 
-        if CommandLine.arguments.contains("--UITests") {
+        if CommandLine.arguments.contains("--Screenshots") {
             // Disable animations to avoid timing issues.
             UIView.setAnimationsEnabled(false)
 
-            // Reflower app into pristine condition.
-            Settings.firstRunDone = false
+            // Create test environment.
+            Settings.firstRunDone = true
+
+            let space = Space(name: "My Cloud", favIcon: UIImage(named: "ic_nextcloud_favicon"))
+            SelectedSpace.space = space
+
+            let project1 = Project(name: "Tunis 2019", space: space)
+            let project2 = Project(name: "Berlin 2018", space: space)
+            project2.license = String(format: EditProjectViewController.ccUrl, EditProjectViewController.ccDomain, "by-nc-sa")
 
             Db.writeConn?.readWrite({ transaction in
                 transaction.removeAllObjectsInAllCollections()
+                transaction.setObject(space, forKey: space.id, inCollection: Space.collection)
+
+                SelectedSpace.store(transaction)
+
+                transaction.setObject(project1, forKey: project1.id, inCollection: Project.collection)
+                transaction.setObject(project2, forKey: project2.id, inCollection: Project.collection)
             })
         }
 

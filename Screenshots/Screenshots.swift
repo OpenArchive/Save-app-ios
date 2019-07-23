@@ -18,7 +18,7 @@ class Screenshots: XCTestCase {
 
         // UI tests must launch the application that they test. Doing this in setup will make sure it happens for each test method.
         let app = XCUIApplication()
-        app.launchArguments.append("--UITests")
+        app.launchArguments.append("--Screenshots")
         setupSnapshot(app)
         app.launch()
 
@@ -33,43 +33,23 @@ class Screenshots: XCTestCase {
         let app = XCUIApplication()
         let tablesQuery = app.tables
 
-        // Forward through Onboarding scenes.
-        app/*@START_MENU_TOKEN@*/.staticTexts["btGetStarted"]/*[[".staticTexts[\"Get Started\"]",".staticTexts[\"btGetStarted\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        snapshot("01MainScene")
 
-        let element = app.otherElements["container"]
-        element.tap()
-        element.tap()
-        element.tap()
+        app.images["imgFavIcon"].tap()
+        app.tables/*@START_MENU_TOKEN@*/.staticTexts["Berlin 2018"]/*[[".cells.staticTexts[\"Berlin 2018\"]",".staticTexts[\"Berlin 2018\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
 
-        app/*@START_MENU_TOKEN@*/.buttons["btDone"]/*[[".buttons[\"Done\"]",".buttons[\"btDone\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        snapshot("04EditProject")
 
+        app.navigationBars.firstMatch.buttons.firstMatch.tap()
 
-        // Create new Space
+        tablesQuery/*@START_MENU_TOKEN@*/.collectionViews/*[[".cells.collectionViews",".collectionViews"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.cells["cellSpaceAdd"].tap()
         app.tables.cells["cellPrivateServer"].tap()
 
-        tablesQuery.textFields["tfServerUrl"].tap()
-        tablesQuery.textFields["tfServerUrl"].typeText("https://nextcloud.example.com/remote.php/webdav/")
+        snapshot("05CreateSpace")
 
-        tablesQuery/*@START_MENU_TOKEN@*/.textFields["tfUsername"]/*[[".cells",".textFields[\"Required\"]",".textFields[\"tfUsername\"]"],[[[-1,2],[-1,1],[-1,0,1]],[[-1,2],[-1,1]]],[0]]@END_MENU_TOKEN@*/.tap()
-        tablesQuery/*@START_MENU_TOKEN@*/.textFields["tfUsername"]/*[[".cells",".textFields[\"Required\"]",".textFields[\"tfUsername\"]"],[[[-1,2],[-1,1],[-1,0,1]],[[-1,2],[-1,1]]],[0]]@END_MENU_TOKEN@*/.typeText("username")
-
-        tablesQuery/*@START_MENU_TOKEN@*/.secureTextFields["tfPassword"]/*[[".cells",".secureTextFields[\"Required\"]",".secureTextFields[\"tfPassword\"]"],[[[-1,2],[-1,1],[-1,0,1]],[[-1,2],[-1,1]]],[0]]@END_MENU_TOKEN@*/.tap()
-        tablesQuery/*@START_MENU_TOKEN@*/.secureTextFields["tfPassword"]/*[[".cells",".secureTextFields[\"Required\"]",".secureTextFields[\"tfPassword\"]"],[[[-1,2],[-1,1],[-1,0,1]],[[-1,2],[-1,1]]],[0]]@END_MENU_TOKEN@*/.typeText("password")
-
-        snapshot("01CreateSpace")
-
-        app/*@START_MENU_TOKEN@*/.buttons["btConnect"]/*[[".buttons[\"Done\"]",".buttons[\"btConnect\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
-
-
-        // Create new Space
-        app.tables.cells["cellCreateNewProject"].tap()
-
-        tablesQuery.textFields["tfProjectName"].tap()
-        tablesQuery.textFields["tfProjectName"].typeText("Test")
-
-        app.buttons["btDone"].tap()
-
-        snapshot("02Main")
+        // Back to main scene.
+        app.navigationBars.firstMatch.buttons.firstMatch.tap()
+        app.navigationBars.firstMatch.buttons.firstMatch.tap()
+        app.navigationBars.firstMatch.buttons.firstMatch.tap()
     }
-
 }
