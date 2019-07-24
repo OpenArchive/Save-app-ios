@@ -15,7 +15,7 @@ class WebDavConduit: Conduit {
 
     static let metaFileExt = "meta.json"
 
-    private static let flaggedFolder = "flagged".uppercased()
+    private static let flaggedFolder = "Flagged"
 
     private var credential: URLCredential? {
         return (asset.space as? WebDavSpace)?.credential
