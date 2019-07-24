@@ -333,7 +333,7 @@
 		A05768D922E0B67D00B39FCE /* Screenshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screenshots.swift; sourceTree = "<group>"; };
 		A05768DB22E0B67D00B39FCE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A05768E122E0B6E600B39FCE /* SnapshotHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
-		A05768E222E0B6E600B39FCE /* Snapfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Snapfile; sourceTree = "<group>"; };
+		A05768E222E0B6E600B39FCE /* Snapfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Snapfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A058628320E4FC5A00EE2F14 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A058628520E4FDBF00EE2F14 /* Podfile.lock */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile.lock; sourceTree = "<group>"; };
 		A059E646223AE9FB00ABC621 /* UploadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadManager.swift; sourceTree = "<group>"; };
@@ -352,6 +352,8 @@
 		A077732922786BCA00291F5D /* RemoveAssetAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAssetAlert.swift; sourceTree = "<group>"; };
 		A07E8A3F229575B600E9FFAA /* SlideshowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideshowViewController.swift; sourceTree = "<group>"; };
 		A07E8A4122958D0600E9FFAA /* SlideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideViewController.swift; sourceTree = "<group>"; };
+		A080538E22E85C460031D4B5 /* Screenshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screenshots.swift; sourceTree = "<group>"; };
+		A080539322E87F320031D4B5 /* Deliverfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Deliverfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A08750A72112099700BFAFE4 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		A08750A82112099700BFAFE4 /* Constants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		A08750AF21120EBF00BFAFE4 /* OpenArchive-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenArchive-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -642,14 +644,15 @@
 		A0ACF214224CD8D1008B9249 /* fastlane */ = {
 			isa = PBXGroup;
 			children = (
+				A0ACF215224CD8D1008B9249 /* Appfile */,
+				A080539322E87F320031D4B5 /* Deliverfile */,
+				A0AC0569224CD8D5008B9249 /* Fastfile */,
 				A0AC057C224CDF4F008B9249 /* Gemfile */,
 				A0AC057D224CE00E008B9249 /* Gemfile.lock */,
-				A0ACF215224CD8D1008B9249 /* Appfile */,
-				A0AC0569224CD8D5008B9249 /* Fastfile */,
 				A0ACF216224CD8D1008B9249 /* Pluginfile */,
+				A0AC0579224CDE9C008B9249 /* README.md */,
 				A05768E222E0B6E600B39FCE /* Snapfile */,
 				A05768E122E0B6E600B39FCE /* SnapshotHelper.swift */,
-				A0AC0579224CDE9C008B9249 /* README.md */,
 			);
 			path = fastlane;
 			sourceTree = "<group>";

@@ -1,0 +1,13 @@
+# The Deliverfile allows you to store various App Store Connect metadata
+# For more information, check out the docs
+# https://docs.fastlane.tools/actions/deliver/
+
+app_identifier "org.open-archive.save"
+team_id "120090840"
+
+skip_binary_upload true
+skip_metadata true
+skip_app_version_update true
+
+overwrite_screenshots true
+
