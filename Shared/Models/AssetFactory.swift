@@ -257,6 +257,38 @@ class AssetFactory {
     }
 
     /**
+     Create an `Asset` object from an XCAsset with the given `name` and return it.
+
+     Will try to generate a thumbnail from the asset's file.
+
+     This is intended as a helper method to set up the app for App Store screenshots.
+
+     - parameter name: An XCAsset's identifier.
+     - parameter collection: The collection the asset will belong to.
+     */
+    class func create(fromAssets name: String, _ collection: Collection) -> Asset {
+        let asset = Asset(collection, uti: kUTTypeJPEG as String)
+
+        let image = UIImage(named: name)
+
+        if  let file = asset.file, createParentDir(file: file) {
+            try? image?.jpegData(compressionQuality: 0.9)?.write(to: file)
+
+            self.fetchLocation(asset)
+
+            if let thumb = asset.thumb,
+                createParentDir(file: thumb) {
+
+                self.createThumb(asset)
+            }
+
+            asset.isReady = true
+        }
+
+        return asset
+    }
+
+    /**
      Fetch a thumbnail image for the given `PHAsset`. Store that thumbnail at the according path
      for the given `Asset`.
 

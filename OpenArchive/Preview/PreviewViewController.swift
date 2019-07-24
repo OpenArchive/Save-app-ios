@@ -42,6 +42,8 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
         title.title.text = "Preview".localize()
         navigationItem.titleView = title
 
+        navigationItem.rightBarButtonItem?.accessibilityIdentifier = "btUpload"
+
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
 
         Db.add(observer: self, #selector(yapDatabaseModified))

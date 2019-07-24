@@ -415,6 +415,7 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XfW-o7-R6f" customClass="PKDownloadButton">
                                 <rect key="frame" x="280" y="42" width="24" height="24"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <accessibility key="accessibilityConfiguration" identifier="btManageUploads"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="24" id="Eft-YN-17R"/>
                                     <constraint firstAttribute="width" constant="24" id="ggo-xB-G2n"/>
@@ -490,6 +491,7 @@
                                         </label>
                                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gDn-sm-fFy">
                                             <rect key="frame" x="242" y="8" width="38" height="34"/>
+                                            <accessibility key="accessibilityConfiguration" identifier="btManageCollection"/>
                                             <state key="normal" title="Next">
                                                 <color key="titleColor" red="0.0" green="0.70398116440000003" blue="0.64921339899999997" alpha="1" colorSpace="calibratedRGB"/>
                                             </state>

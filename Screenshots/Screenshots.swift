@@ -35,6 +35,25 @@ class Screenshots: XCTestCase {
 
         snapshot("01MainScene")
 
+        app.collectionViews.buttons["btManageCollection"].tap()
+        app.tables.children(matching: .cell).firstMatch.tap()
+
+        snapshot("02EditAsset")
+
+        app.navigationBars.firstMatch.buttons.firstMatch.tap()
+
+        app.navigationBars.firstMatch.buttons["btUpload"].tap()
+        app.otherElements["btManageUploads"].firstMatch.tap()
+
+        snapshot("03UploadAssets")
+
+        if UIDevice.current.userInterfaceIdiom == .pad {
+            app.otherElements["PopoverDismissRegion"].tap()
+        }
+        else {
+            app.navigationBars.firstMatch.buttons.firstMatch.tap()
+        }
+
         app.images["imgFavIcon"].tap()
         app.tables/*@START_MENU_TOKEN@*/.staticTexts["Berlin 2018"]/*[[".cells.staticTexts[\"Berlin 2018\"]",".staticTexts[\"Berlin 2018\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
 
