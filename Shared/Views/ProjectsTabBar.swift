@@ -102,8 +102,13 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
         switch change.type {
         case .delete:
             if let indexPath = change.indexPath {
-                projects.remove(at: indexPath.row)
-                items.remove(at: indexPath.row + 1)
+                if indexPath.row < projects.count {
+                    projects.remove(at: indexPath.row)
+                }
+
+                if indexPath.row + 1 < items.count {
+                    items.remove(at: indexPath.row + 1)
+                }
             }
         case .insert:
             if let newIndexPath = change.newIndexPath,
@@ -112,35 +117,53 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
                 // Fix issue when multiple projects are inserted at once, which
                 // happens on DB setup for screenshot creation.
                 // NOTE: This will mess up the order with more than 2 projects at once!
-                if projects.endIndex < newIndexPath.row {
-                    projects.append(project)
+                if newIndexPath.row < projects.count {
+                    projects.insert(project, at: newIndexPath.row)
                 }
                 else {
-                    projects.insert(project, at: newIndexPath.row)
+                    projects.append(project)
+                }
+
+                let item = getItem(project.name, newIndexPath.row)
+
+                if newIndexPath.row + 1 < items.count {
+                    items.insert(item, at: newIndexPath.row + 1)
+                }
+                else {
+                    items.append(item)
                 }
 
                 // When a new project is created, it will be selected immediately.
-                selectedItem = getItem(project.name, newIndexPath.row)
+                selectedItem = item
                 insertedNew = true
-
-                if items.endIndex < newIndexPath.row + 1 {
-                    items.append(selectedItem!)
-                }
-                else {
-                    items.insert(selectedItem!, at: newIndexPath.row + 1)
-                }
             }
         case .move:
             if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
-                projects.insert(projects.remove(at: indexPath.row), at: newIndexPath.row)
-                items.insert(items.remove(at: indexPath.row + 1), at: newIndexPath.row + 1)
+                if indexPath.row < projects.count {
+                    projects.insert(projects.remove(at: indexPath.row), at: newIndexPath.row)
+                }
+
+                if indexPath.row + 1 < items.count {
+                    items.insert(items.remove(at: indexPath.row + 1), at: newIndexPath.row + 1)
+                }
             }
         case .update:
             if let indexPath = change.indexPath,
                 let project = getProject(at: indexPath) {
 
-                projects[indexPath.row] = project
-                items[indexPath.row + 1] = getItem(project.name, indexPath.row)
+                if indexPath.row < projects.count {
+                    projects[indexPath.row] = project
+                }
+                else {
+                    projects.append(project)
+                }
+
+                if indexPath.row + 1 < items.count {
+                    items[indexPath.row + 1] = getItem(project.name, indexPath.row)
+                }
+                else {
+                    items.append(getItem(project.name, indexPath.row))
+                }
             }
         @unknown default:
             break
