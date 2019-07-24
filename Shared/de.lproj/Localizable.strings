@@ -127,7 +127,7 @@
 "Flag Significant Content" = "Besonderen Inhalt markieren";
 
 /* FlagInfoAlert */
-"When you flag an item, it is routed into a subfolder within the chosen project folder on the server." = "Wenn Du ein Element markierst, wird es in einem Unterordner innerhalb des ausgewählten Projektordners auf dem Server abgelegt.";
+"When you flag an item, it is routed into a subfolder within the chosen project folder on the private server." = "Wenn Du ein Element markierst, wird es in einem Unterordner innerhalb des ausgewählten Projektordners auf dem privaten Server abgelegt.";
 
 /* FlagInfoAlert, BatchInfoAlert */
 "Got it" = "Verstanden";

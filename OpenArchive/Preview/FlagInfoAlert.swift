@@ -38,7 +38,7 @@ class FlagInfoAlert {
 
         let message = UILabel()
         message.translatesAutoresizingMaskIntoConstraints = false
-        message.text = "When you flag an item, it is routed into a subfolder within the chosen project folder on the server.".localize()
+        message.text = "When you flag an item, it is routed into a subfolder within the chosen project folder on the private server.".localize()
         message.font = UIFont.systemFont(ofSize: 13)
         message.textAlignment = .center
         message.numberOfLines = 0

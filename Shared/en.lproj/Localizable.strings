@@ -127,7 +127,7 @@
 "Flag Significant Content" = "Flag Significant Content";
 
 /* FlagInfoAlert */
-"When you flag an item, it is routed into a subfolder within the chosen project folder on the server." = "When you flag an item, it is routed into a subfolder within the chosen project folder on the server.";
+"When you flag an item, it is routed into a subfolder within the chosen project folder on the private server." = "When you flag an item, it is routed into a subfolder within the chosen project folder on the private server.";
 
 /* FlagInfoAlert, BatchInfoAlert */
 "Got it" = "Got it";
