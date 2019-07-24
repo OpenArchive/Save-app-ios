@@ -142,6 +142,9 @@ playground.xcworkspace
 # For more information about the recommended setup visit:
 # https://docs.fastlane.tools/best-practices/source-control/#source-control
 
+# snapshot generated screenshots
+fastlane/screenshots
+
 
 ### Xcode ###
 # Xcode
