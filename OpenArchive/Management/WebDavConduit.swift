@@ -31,8 +31,8 @@ class WebDavConduit: Conduit {
 
         let progress = Progress.discreteProgress(totalUnitCount: 100)
 
-        guard let projectName = asset.collection.project.name,
-            let collectionName = asset.collection.name,
+        guard let projectName = asset.collection?.project.name,
+            let collectionName = asset.collection?.name,
             let file = asset.file,
             let credential = credential
         else {

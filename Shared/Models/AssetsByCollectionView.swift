@@ -46,8 +46,9 @@ class AssetsByCollectionView: YapDatabaseAutoView {
         Will return `nil` if `Asset` is `nil`.
     */
     class func groupKey(for asset: Asset?) -> String? {
-        if let asset = asset {
-            let collection = asset.collection
+        if let asset = asset,
+            let collection = asset.collection {
+
             let created = String(Int(collection.created.timeIntervalSince1970))
 
             return "\(created)\(separator)\(collection.projectId)\(separator)\(collection.id)"

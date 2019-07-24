@@ -254,8 +254,10 @@ class UploadManager: Alamofire.SessionDelegate {
                 switch change.type {
                 case .delete:
                     if let indexPath = change.indexPath, indexPath.section == 0 {
-                        let upload = self.uploads.remove(at: indexPath.row)
-                        upload.cancel()
+                        if self.uploads.count > indexPath.row {
+                            let upload = self.uploads.remove(at: indexPath.row)
+                            upload.cancel()
+                        }
                     }
                 case .insert:
                     if let newIndexPath = change.newIndexPath, newIndexPath.section == 0 {
@@ -519,9 +521,9 @@ class UploadManager: Alamofire.SessionDelegate {
             upload.error = nil
 
             Db.writeConn?.asyncReadWrite { transaction in
-                let collection = asset.collection
-
-                if collection.closed == nil {
+                if let collection = asset.collection,
+                    collection.closed == nil {
+                    
                     collection.close()
 
                     transaction.setObject(collection, forKey: collection.id, inCollection: Collection.collection)

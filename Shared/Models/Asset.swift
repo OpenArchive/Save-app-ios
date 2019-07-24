@@ -52,10 +52,10 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     private(set) var publicUrl: URL?
     var isReady = false
     private(set) var isUploaded = false
-    private(set) var collectionId: String
+    private(set) var collectionId: String?
 
     var author: String? {
-        if let space = collection.project.space {
+        if let space = collection?.project.space {
             var author = [String]()
 
             if let name = space.authorName {
@@ -79,36 +79,38 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     }
 
     var license: String? {
-        return collection.project.license
+        return collection?.project.license
     }
 
-    var collection: Collection {
+    var collection: Collection? {
         get {
             var collection: Collection?
 
-            Db.bgRwConn?.read { transaction in
-                collection = transaction.object(forKey: self.collectionId, inCollection: Collection.collection) as? Collection
+            if let id = self.collectionId {
+                Db.bgRwConn?.read { transaction in
+                    collection = transaction.object(forKey: id, inCollection: Collection.collection) as? Collection
+                }
             }
 
-            return collection!
+            return collection
         }
         set {
-            collectionId = newValue.id
+            collectionId = newValue?.id
         }
     }
 
     /**
      Shortcut for `.collection.project`.
     */
-    var project: Project {
-        return collection.project
+    var project: Project? {
+        return collection?.project
     }
 
     /**
      Shortcut for `.project.space`.
      */
     var space: Space? {
-        return project.space
+        return project?.space
     }
 
     /**
@@ -426,23 +428,25 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     func yapDatabaseRelationshipEdges() -> [YapDatabaseRelationshipEdge]? {
         var edges = [YapDatabaseRelationshipEdge]()
 
-        if let file = self.file,
+        if let file = file,
             FileManager.default.fileExists(atPath: file.path) {
             edges.append(YapDatabaseRelationshipEdge(
                 name: "file", destinationFileURL: file,
                 nodeDeleteRules: .deleteDestinationIfSourceDeleted))
         }
 
-        if let thumb = self.thumb,
+        if let thumb = thumb,
             FileManager.default.fileExists(atPath: thumb.path) {
             edges.append(YapDatabaseRelationshipEdge(
                 name: "thumb", destinationFileURL: thumb,
                 nodeDeleteRules: .deleteDestinationIfSourceDeleted))
         }
 
-        edges.append(YapDatabaseRelationshipEdge(
-            name: "collection", destinationKey: collectionId, collection: Collection.collection,
-            nodeDeleteRules: .deleteSourceIfDestinationDeleted))
+        if let id = collectionId {
+            edges.append(YapDatabaseRelationshipEdge(
+                name: "collection", destinationKey: id, collection: Collection.collection,
+                nodeDeleteRules: .deleteSourceIfDestinationDeleted))
+        }
 
         return edges
     }

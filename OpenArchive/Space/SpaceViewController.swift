@@ -78,13 +78,10 @@ class SpaceViewController: BaseTableViewController {
                 iavc.space = space
                 vc = iavc
             }
-            else if let space = SelectedSpace.space as? WebDavSpace {
-                let psvc = PrivateServerViewController()
-                psvc.space = space
-                vc = psvc
-            }
             else {
-                return
+                let psvc = PrivateServerViewController()
+                psvc.space = SelectedSpace.space
+                vc = psvc
             }
         }
 

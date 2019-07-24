@@ -64,7 +64,7 @@ class IaConduit: Conduit {
 
         var subject = [String]()
 
-        if let projectName = asset.project.name, !projectName.isEmpty {
+        if let projectName = asset.project?.name, !projectName.isEmpty {
             subject.append(projectName)
         }
 
