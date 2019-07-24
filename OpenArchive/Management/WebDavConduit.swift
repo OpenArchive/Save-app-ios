@@ -15,8 +15,6 @@ class WebDavConduit: Conduit {
 
     static let metaFileExt = "meta.json"
 
-    private static let flaggedFolder = "Flagged"
-
     private var credential: URLCredential? {
         return (asset.space as? WebDavSpace)?.credential
     }
@@ -56,13 +54,13 @@ class WebDavConduit: Conduit {
                 if self.asset.tags?.contains(Asset.flag) ?? false {
 
                     let p = self.create(
-                    folder: self.construct(projectName, collectionName, WebDavConduit.flaggedFolder))
+                    folder: self.construct(projectName, collectionName, Asset.flag))
                     { error in
                         if error != nil || progress.isCancelled {
                             return self.done(uploadId, error: error)
                         }
 
-                        let path = [projectName, collectionName, WebDavConduit.flaggedFolder, self.asset.filename]
+                        let path = [projectName, collectionName, Asset.flag, self.asset.filename]
 
                         self.upload(to: path, credential, progress, uploadId, file)
                     }

@@ -37,7 +37,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     /*
      A tag which is used as a generic flag.
     */
-    static let flag = "Significant Content".localize().localizedUppercase
+    static let flag = "Significant Content"
 
     let id: String
     let created: Date
