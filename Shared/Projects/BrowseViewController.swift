@@ -126,7 +126,7 @@ class BrowseViewController: BaseTableViewController {
             folders.removeAll()
 
             provider?.contentsOfDirectory(path: "") { files, error in
-                for file in files {
+                for file in files.sort(by: .modifiedDate, ascending: false, isDirectoriesFirst: true) {
                     if file.isDirectory {
                         self.folders.append(file)
                     }
