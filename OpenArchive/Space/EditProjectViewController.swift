@@ -68,11 +68,13 @@ class EditProjectViewController: BaseProjectViewController {
             +++ nameRow.cellUpdate { cell, row in
                 cell.textField.textAlignment = .left
 
-                self.project.name = row.value
-                self.navigationItem.title = self.project.name
+                if row.isValid {
+                    self.project.name = row.value
+                    self.navigationItem.title = self.project.name
 
-                if self.doStore {
-                    self.store()
+                    if self.doStore {
+                        self.store()
+                    }
                 }
             }
 

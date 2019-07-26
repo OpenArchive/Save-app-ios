@@ -11,12 +11,30 @@ import Eureka
 
 class BaseProjectViewController: FormViewController {
 
+    private static let invalidChars: CharacterSet = {
+        var invalid = CharacterSet(charactersIn: ":/")
+        invalid.formUnion(.newlines)
+        invalid.formUnion(.illegalCharacters)
+        invalid.formUnion(.controlCharacters)
+
+        return invalid
+    }()
+
     var project: Project
 
     let nameRow = TextRow() {
         $0.placeholder = "Name your project".localize()
         $0.cell.textField.accessibilityIdentifier = "tfProjectName"
+
+        let ruleFilename = RuleClosure<String> { value in
+            return (value ?? "").rangeOfCharacter(from: invalidChars) != nil
+                ? ValidationError(msg: "Invalid character contained.") // Is not displayed currently.
+                : nil
+        }
+
         $0.add(rule: RuleRequired())
+        $0.add(rule: ruleFilename)
+        $0.validationOptions = .validatesAlways
     }
 
 
