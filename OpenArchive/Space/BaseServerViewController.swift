@@ -83,19 +83,10 @@ class BaseServerViewController: FormViewController {
                 AlertHelper.destructiveAction(
                     "Remove Space".localize(),
                     handler: { action in
-                        Db.writeConn?.asyncReadWrite { transaction in
+                        Db.writeConn?.readWrite { transaction in
                             transaction.removeObject(forKey: space.id, inCollection: Space.collection)
 
-                            var newSelectedSpace: Space?
-
-                            transaction.enumerateKeysAndObjects(inCollection: Space.collection) { key, object, stop in
-                                if let space = object as? Space {
-                                    newSelectedSpace = space
-                                    stop.pointee = true
-                                }
-                            }
-
-                            SelectedSpace.space = newSelectedSpace
+                            SelectedSpace.space = nil
                             SelectedSpace.store(transaction)
 
                             DispatchQueue.main.async(execute: self.goToNext)
