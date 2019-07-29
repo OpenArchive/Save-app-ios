@@ -137,9 +137,9 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
             asset.flagged = flagged
         }
 
-        dh?.setInfos(assets?.first, defaults: true, isEditable: true)
+        store(fetchFirstResponder: true)
 
-        store()
+        dh?.setInfos(assets?.first, defaults: true, isEditable: true)
 
         FlagInfoAlert.presentIfNeeded()
     }
@@ -147,14 +147,39 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
 
     // MARK: Private Methods
 
-    private func store() {
+    private func store(always: Bool = true, fetchFirstResponder: Bool = false) {
         guard let assets = assets else {
             return
         }
 
-        Db.writeConn?.asyncReadWrite { transaction in
-            for asset in assets {
-                transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
+        var shouldStore = always
+
+        if fetchFirstResponder {
+            if dh?.desc?.textView.isFirstResponder ?? false {
+                for asset in assets {
+                    asset.desc = dh?.desc?.textView.text
+                }
+                shouldStore = true
+            }
+            else if dh?.location?.textView.isFirstResponder ?? false {
+                for asset in assets {
+                    asset.location = dh?.location?.textView.text
+                }
+                shouldStore = true
+            }
+            else if dh?.notes?.textView.isFirstResponder ?? false {
+                for asset in assets {
+                    asset.notes = dh?.notes?.textView.text
+                }
+                shouldStore = true
+            }
+        }
+
+        if shouldStore {
+            Db.writeConn?.asyncReadWrite { transaction in
+                for asset in assets {
+                    transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
+                }
             }
         }
     }

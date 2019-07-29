@@ -168,18 +168,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         if completed,
             let index = (pageViewController.viewControllers?.first as? ImageViewController)?.index {
 
-            if dh?.desc?.textView.isFirstResponder ?? false {
-                asset?.desc = dh?.desc?.textView.text
-                store()
-            }
-            else if dh?.location?.textView.isFirstResponder ?? false {
-                asset?.location = dh?.location?.textView.text
-                store()
-            }
-            else if dh?.notes?.textView.isFirstResponder ?? false {
-                asset?.notes = dh?.notes?.textView.text
-                store()
-            }
+            store(always: false, fetchFirstResponder: true)
 
             selected = index
 
@@ -216,9 +205,9 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         if addMode {
             asset?.flagged = !(asset?.flagged ?? false)
 
-            dh?.setInfos(asset, defaults: addMode, isEditable: addMode)
+            store(fetchFirstResponder: true)
 
-            store()
+            dh?.setInfos(asset, defaults: addMode, isEditable: addMode)
 
             FlagInfoAlert.presentIfNeeded()
         }
@@ -384,13 +373,32 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         return [getImageVc(selected)]
     }
 
-    private func store() {
+    private func store(always: Bool = true, fetchFirstResponder: Bool = false) {
         guard let asset = asset else {
             return
         }
 
-        Db.writeConn?.asyncReadWrite { transaction in
-            transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
+        var shouldStore = always
+
+        if fetchFirstResponder {
+            if dh?.desc?.textView.isFirstResponder ?? false {
+                asset.desc = dh?.desc?.textView.text
+                shouldStore = true
+            }
+            else if dh?.location?.textView.isFirstResponder ?? false {
+                asset.location = dh?.location?.textView.text
+                shouldStore = true
+            }
+            else if dh?.notes?.textView.isFirstResponder ?? false {
+                asset.notes = dh?.notes?.textView.text
+                shouldStore = true
+            }
+        }
+
+        if shouldStore {
+            Db.writeConn?.asyncReadWrite { transaction in
+                transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
+            }
         }
     }
 }
