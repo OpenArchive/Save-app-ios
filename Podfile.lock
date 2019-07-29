@@ -163,7 +163,7 @@ DEPENDENCIES:
   - FilesProvider (~> 0.26)
   - FontBlaster (~> 4.1)
   - FormatterKit (~> 1.8)
-  - ImageRow (from `https://github.com/EurekaCommunity/ImageRow.git`)
+  - ImageRow (~> 4.0)
   - Localize (~> 2.2)
   - MaterialComponents/Buttons (~> 81)
   - MaterialComponents/Tabs (~> 81)
@@ -188,6 +188,7 @@ SPEC REPOS:
     - FilesProvider
     - FontBlaster
     - FormatterKit
+    - ImageRow
     - Localize
     - MaterialComponents
     - MBProgressHUD
@@ -201,15 +202,6 @@ SPEC REPOS:
     - UIImageViewAlignedSwift
     - YapDatabase
 
-EXTERNAL SOURCES:
-  ImageRow:
-    :git: https://github.com/EurekaCommunity/ImageRow.git
-
-CHECKOUT OPTIONS:
-  ImageRow:
-    :commit: 3111bdd44370679b2e6af6fa48358bd498c6488b
-    :git: https://github.com/EurekaCommunity/ImageRow.git
-
 SPEC CHECKSUMS:
   Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   AlignedCollectionViewFlowLayout: ee2ef451e741ec08f8e0967d828001e2f051c20a
@@ -221,7 +213,7 @@ SPEC CHECKSUMS:
   FilesProvider: 2a8ae17d8b9c23a6feadb1308ee638fa31d21065
   FontBlaster: 127aa66419478d1c62926c7fdb39841633344a45
   FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
-  ImageRow: 7febb287efaabc760b068df040def9221f8df27b
+  ImageRow: e65b2e1a33f89062bf2a553a2aad61d975eb7428
   Localize: cb1ae53ed73decaad0dce217806ed983091913f5
   MaterialComponents: c2045515505992357e210b33cb3ffc3a404a14fd
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
@@ -235,6 +227,6 @@ SPEC CHECKSUMS:
   UIImageViewAlignedSwift: cfd56e381a894c71bf0d020cb3ef31cb3f604634
   YapDatabase: 36e10c3059d33686951eba566fa15c0fce2497ed
 
-PODFILE CHECKSUM: e3958ea1f622d7456ceb00e3270b752a18b864be
+PODFILE CHECKSUM: 50d6a2f3a93e380f1b37566bfa9179d81ebf8532
 
-COCOAPODS: 1.7.4
+COCOAPODS: 1.7.5
