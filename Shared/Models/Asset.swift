@@ -304,7 +304,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         publicUrl = decoder.decodeObject(forKey: "publicUrl") as? URL
         isReady = decoder.decodeBool(forKey: "isReady")
         isUploaded = decoder.decodeBool(forKey: "isUploaded")
-        collectionId = decoder.decodeObject(forKey: "collectionId") as! String
+        collectionId = decoder.decodeObject(forKey: "collectionId") as? String
         _filesize = decoder.decodeInt64(forKey: "filesize")
         _digest = decoder.decodeObject(forKey: "digest") as? Data
     }
