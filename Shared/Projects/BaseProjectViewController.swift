@@ -12,7 +12,7 @@ import Eureka
 class BaseProjectViewController: FormViewController {
 
     private static let invalidChars: CharacterSet = {
-        var invalid = CharacterSet(charactersIn: ":/")
+        var invalid = CharacterSet(charactersIn: ":/\\")
         invalid.formUnion(.newlines)
         invalid.formUnion(.illegalCharacters)
         invalid.formUnion(.controlCharacters)
