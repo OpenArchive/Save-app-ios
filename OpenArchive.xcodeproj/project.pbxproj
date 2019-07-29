@@ -98,6 +98,8 @@
 		A059E647223AE9FB00ABC621 /* UploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A059E646223AE9FB00ABC621 /* UploadManager.swift */; };
 		A05C582A21EF94FC00141633 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05C582921EF94FC00141633 /* BaseViewController.swift */; };
 		A05C582B21EF95A800141633 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05C582921EF94FC00141633 /* BaseViewController.swift */; };
+		A05F79FE22EEFA9F003DBB74 /* RuleFilename.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05F79FD22EEFA9F003DBB74 /* RuleFilename.swift */; };
+		A05F79FF22EEFA9F003DBB74 /* RuleFilename.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05F79FD22EEFA9F003DBB74 /* RuleFilename.swift */; };
 		A0631B552203022100B3E90D /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0631B542203022100B3E90D /* BaseTableViewController.swift */; };
 		A0631B562203022100B3E90D /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0631B542203022100B3E90D /* BaseTableViewController.swift */; };
 		A0631B572203068900B3E90D /* MenuItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */; };
@@ -338,6 +340,7 @@
 		A058628520E4FDBF00EE2F14 /* Podfile.lock */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile.lock; sourceTree = "<group>"; };
 		A059E646223AE9FB00ABC621 /* UploadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadManager.swift; sourceTree = "<group>"; };
 		A05C582921EF94FC00141633 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		A05F79FD22EEFA9F003DBB74 /* RuleFilename.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleFilename.swift; sourceTree = "<group>"; };
 		A0631B542203022100B3E90D /* BaseTableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseTableViewController.swift; sourceTree = "<group>"; };
 		A0631B5A22034F0700B3E90D /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		A0656AB721F9BC8500070C4B /* ConnectSpaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectSpaceViewController.swift; sourceTree = "<group>"; };
@@ -497,6 +500,7 @@
 				A004E24B20EBCF1700A1D5F5 /* Formatters.swift */,
 				A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */,
 				A070335A2119E7DF00BF1F33 /* Request+debug.swift */,
+				A05F79FD22EEFA9F003DBB74 /* RuleFilename.swift */,
 				A0457E6620EF96FB00B8FBCB /* StringUtils.swift */,
 				A0362191220DA390003C21DC /* UIColor+accent.swift */,
 				A04255CD22944C1B0048E00C /* UIStoryboard+main.swift */,
@@ -1128,6 +1132,7 @@
 				A0552051222566CE00B9645F /* UIView+animateHideShow.swift in Sources */,
 				A0C475B4211474A50012937E /* Formatters.swift in Sources */,
 				A0362196220DB2CA003C21DC /* IaSpace.swift in Sources */,
+				A05F79FF22EEFA9F003DBB74 /* RuleFilename.swift in Sources */,
 				A0E9069422CB7D16008CD81B /* SelectedView.swift in Sources */,
 				A045D1F5224CFFB4008FF8C1 /* SelectedSpaceCell.swift in Sources */,
 				A0E2BC732226AA10006D33E3 /* SelectedSpace.swift in Sources */,
@@ -1209,6 +1214,7 @@
 				A0E9069322CB7D16008CD81B /* SelectedView.swift in Sources */,
 				A04255CE22944C1B0048E00C /* UIStoryboard+main.swift in Sources */,
 				A0E321F9228EDBE900F2E9BD /* DarkroomViewController.swift in Sources */,
+				A05F79FE22EEFA9F003DBB74 /* RuleFilename.swift in Sources */,
 				A070335B2119E7DF00BF1F33 /* Request+debug.swift in Sources */,
 				A045D1F6224CFFB4008FF8C1 /* SelectedSpaceCell.swift in Sources */,
 				A077732A22786BF500291F5D /* RemoveAssetAlert.swift in Sources */,
