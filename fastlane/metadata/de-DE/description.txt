@@ -1,0 +1,9 @@
+Save von OpenArchive ist eine kostenlose Open-Source Archivierungslösung für Dokumentarfilmer und Menschenrechtsaktivisten, die Fotos, Videos, Tonaufzeichnungen und andere Dokumente zum Internet Archive oder eigenen Servern sicher hochladen kann.
+
+Wir haben die Kompetenz des Guardian Projects mit Creative Commons und verteilten sicheren Servern gebündelt, um Risikogruppen eine größere Kontrolle über ihre Aufzeichnungen und Mediendateien zu geben.
+
+Die App ermöglicht abgesicherte Übertragung, Pseudonymität, Nachvollziehbarkeit der Echtheit von Medien, Kontrolle über die Lizenzierung, und die Möglichkeit darüber zu entscheiden, wo und wie Medien für den späteren Zugriff und zur Weiterverwendung abgelegt werden sollen.
+
+Save adressiert eine Lücke im gegenwärtigen mobilen Ökosystem zwischen der kurzfristigen Erfassung und der langfristigen Erhaltung sensibler Dokumente.
+
+Wir bieten mobile, skalierbare, nach Industriestandards gefertigte, ethische, intuitive, einfach zu benutzende Werkzeuge für Risikogruppen an, um pseudonym Medien so zu konservieren, daß diese zugänglich bleiben und ihre Herkunft nachvollziehbar dokumentiert ist.

@@ -145,6 +145,10 @@ playground.xcworkspace
 # snapshot generated screenshots
 fastlane/screenshots
 
+# metadata containing sensitive data
+fastlane/metadata/review_information
+fastlane/metadata/trade_representative_contact_information
+
 
 ### Xcode ###
 # Xcode

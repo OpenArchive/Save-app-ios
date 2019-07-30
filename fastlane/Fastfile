@@ -19,7 +19,7 @@ platform :ios do
     desc "Generate app icon"
     lane :app_icon do
         appicon(
-            appicon_image_file: 'docs/save-logo.png',
+            appicon_image_file: 'fastlane/metadata/app_icon.png',
             appicon_devices: [:ipad, :iphone, :ios_marketing],
             appicon_path: "Shared/Assets.xcassets"
         )

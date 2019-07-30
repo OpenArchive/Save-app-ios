@@ -6,8 +6,11 @@ app_identifier "org.open-archive.save"
 team_id "120090840"
 
 skip_binary_upload true
-skip_metadata true
 skip_app_version_update true
 
-overwrite_screenshots true
+# Only metadata upload
+skip_screenshots true
 
+# Only screenshot upload
+skip_metadata true
+overwrite_screenshots true
