@@ -23,16 +23,32 @@ class AssetFactory {
     static var imageManager = PHImageManager()
     static var thumbnailSize = CGSize(width: 320, height: 240)
 
-    private static var loResOptions: PHImageRequestOptions = {
+    private static var thumbnailOptions: PHImageRequestOptions = {
         let options = PHImageRequestOptions()
         options.version = .current
-        options.deliveryMode = .opportunistic
+        options.deliveryMode = .fastFormat
         options.resizeMode = .fast
 
         return options
     }()
 
-    private static var hiResOptions: PHImageRequestOptions = {
+    private static let cgThumbnailOptions = [
+        kCGImageSourceCreateThumbnailWithTransform: true,
+        kCGImageSourceCreateThumbnailFromImageAlways: true,
+        kCGImageSourceThumbnailMaxPixelSize: thumbnailSize.width
+        ] as CFDictionary
+
+    private static var loResImageOptions: PHImageRequestOptions = {
+        let options = PHImageRequestOptions()
+        options.version = .current
+        options.deliveryMode = .fastFormat
+        options.resizeMode = .none
+        options.isNetworkAccessAllowed = true
+
+        return options
+    }()
+
+    private static var hiResImageOptions: PHImageRequestOptions = {
         let options = PHImageRequestOptions()
         options.version = .current
         options.deliveryMode = .highQualityFormat
@@ -42,7 +58,16 @@ class AssetFactory {
         return options
     }()
 
-    private static var avOptions: PHVideoRequestOptions = {
+    private static var loResAvOptions: PHVideoRequestOptions = {
+        let options = PHVideoRequestOptions()
+        options.version = .current
+        options.deliveryMode = .fastFormat
+        options.isNetworkAccessAllowed = true
+
+        return options
+    }()
+
+    private static var hiResAvOptions: PHVideoRequestOptions = {
         let options = PHVideoRequestOptions()
         options.version = .current
         options.deliveryMode = .highQualityFormat
@@ -50,13 +75,6 @@ class AssetFactory {
 
         return options
     }()
-
-    private static let thumbnailOptions = [
-        kCGImageSourceCreateThumbnailWithTransform: true,
-        kCGImageSourceCreateThumbnailFromImageAlways: true,
-        kCGImageSourceThumbnailMaxPixelSize: AssetFactory.thumbnailSize.width
-    ] as CFDictionary
-
 
 
     /**
@@ -109,7 +127,7 @@ class AssetFactory {
             // Fetch non-resized version first. We need the UTI, the filename and the original
             // image data.
 
-            imageManager.requestImageData(for: phasset, options: hiResOptions) {
+            imageManager.requestImageData(for: phasset, options: Settings.highCompression ? loResImageOptions : hiResImageOptions) {
                 data, uti, orientation, info in
 
                 if let data = data, let uti = uti {
@@ -133,14 +151,16 @@ class AssetFactory {
             }
         }
         else if phasset.mediaType == .video || phasset.mediaType == .audio {
-            imageManager.requestAVAsset(forVideo: phasset, options: avOptions) {
+            let options = Settings.highCompression ? loResAvOptions : hiResAvOptions
+
+            imageManager.requestAVAsset(forVideo: phasset, options: options) {
                 avAsset, audioMix, info in
 
                 if let avAsset = avAsset,
                     let preset = AVAssetExportSession.exportPresets(compatibleWith: avAsset).first {
 
                     imageManager.requestExportSession(forVideo: phasset,
-                                                      options: avOptions,
+                                                      options: options,
                                                       exportPreset: preset)
                     { exportSession, info in
                         let uti: AVFileType = phasset.mediaType == .audio ? .mp3 : .mp4
@@ -298,7 +318,7 @@ class AssetFactory {
     private class func fetchThumb(_ phasset: PHAsset, _ asset: Asset) {
         imageManager.requestImage(for: phasset, targetSize: thumbnailSize,
                                   contentMode: .default,
-                                  options: loResOptions)
+                                  options: thumbnailOptions)
         { image, info in
 
             // If we don't get one, fine. A default will be provided.
@@ -357,7 +377,7 @@ class AssetFactory {
                 cgThumbnail = try? generator.copyCGImage(at: time, actualTime: nil)
             }
             else if let source = CGImageSourceCreateWithURL(file as CFURL, nil) {
-                cgThumbnail = CGImageSourceCreateThumbnailAtIndex(source, 0, thumbnailOptions)
+                cgThumbnail = CGImageSourceCreateThumbnailAtIndex(source, 0, cgThumbnailOptions)
             }
 
             if let cgThumbnail = cgThumbnail {

@@ -11,6 +11,10 @@ import Eureka
 
 class DataUsageViewController: FormViewController {
 
+    private static let compressionOptions = [
+        "Better Quality".localize(),
+        "Smaller Size".localize()]
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -27,6 +31,16 @@ class DataUsageViewController: FormViewController {
                 Settings.wifiOnly = row.value ?? false
 
                 NotificationCenter.default.post(name: .uploadManagerDataUsageChange, object: Settings.wifiOnly)
+            }
+
+            +++ AlertRow<String>() {
+                $0.title = "Video/Image Compression".localize()
+                $0.selectorTitle = $0.title
+                $0.options = DataUsageViewController.compressionOptions
+                $0.value = DataUsageViewController.compressionOptions[Settings.highCompression ? 1 : 0]
+            }
+            .onChange { row in
+                Settings.highCompression = row.value == DataUsageViewController.compressionOptions[1]
             }
     }
 }

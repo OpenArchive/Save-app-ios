@@ -258,6 +258,15 @@
 /* DataUsageViewController */
 "Only upload media when you are connected to WiFi" = "Only upload media when you are connected to WiFi";
 
+/* DataUsageViewController */
+"Video/Image Compression" = "Video/Image Compression";
+
+/* DataUsageViewController */
+"Better Quality" = "Better Quality";
+
+/* DataUsageViewController */
+"Smaller Size" = "Smaller Size";
+
 /* ManagementViewController */
 "Multiple attempts with no success" = "Multiple attempts with no success";
 
