@@ -53,6 +53,8 @@
 		A050AA492225DF4000AE5D15 /* SpacesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050AA482225DF4000AE5D15 /* SpacesListCell.swift */; };
 		A05275142211A91300BDB14B /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05275132211A91300BDB14B /* CollectionsView.swift */; };
 		A05275152211A91300BDB14B /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05275132211A91300BDB14B /* CollectionsView.swift */; };
+		A052A48F230D53D800E72594 /* IaInfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A052A48E230D53D800E72594 /* IaInfoAlert.swift */; };
+		A052A492230D546F00E72594 /* InfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A052A490230D546F00E72594 /* InfoAlert.swift */; };
 		A05471B62296B77D009FEA93 /* Montserrat-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A05471A22296B77D009FEA93 /* Montserrat-Light.ttf */; };
 		A05471B72296B77D009FEA93 /* Montserrat-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A05471A22296B77D009FEA93 /* Montserrat-Light.ttf */; };
 		A05471B82296B77D009FEA93 /* Montserrat-ExtraLightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A05471A32296B77D009FEA93 /* Montserrat-ExtraLightItalic.ttf */; };
@@ -310,6 +312,8 @@
 		A050147E2228209E0056ED95 /* BaseServerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseServerViewController.swift; sourceTree = "<group>"; };
 		A050AA482225DF4000AE5D15 /* SpacesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacesListCell.swift; sourceTree = "<group>"; };
 		A05275132211A91300BDB14B /* CollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsView.swift; sourceTree = "<group>"; };
+		A052A48E230D53D800E72594 /* IaInfoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaInfoAlert.swift; sourceTree = "<group>"; };
+		A052A490230D546F00E72594 /* InfoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoAlert.swift; sourceTree = "<group>"; };
 		A05471A12296B77D009FEA93 /* OFL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
 		A05471A22296B77D009FEA93 /* Montserrat-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Light.ttf"; sourceTree = "<group>"; };
 		A05471A32296B77D009FEA93 /* Montserrat-ExtraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
@@ -888,6 +892,7 @@
 				A050147E2228209E0056ED95 /* BaseServerViewController.swift */,
 				A08C2CE321F0A98C008ACA3E /* PrivateServerViewController.swift */,
 				A08C2CE121F09B3F008ACA3E /* InternetArchiveViewController.swift */,
+				A052A48E230D53D800E72594 /* IaInfoAlert.swift */,
 				A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */,
 				A0E2720B224E33D000CB7113 /* EditProjectViewController.swift */,
 				A0FA93432277557D0086D276 /* DataUsageViewController.swift */,
@@ -943,6 +948,7 @@
 				A07129122111F4D5007A432A /* OpenArchive.entitlements */,
 				A08750AF21120EBF00BFAFE4 /* OpenArchive-Bridging-Header.h */,
 				A0E739D720E4C85D00DB31E1 /* AppDelegate.swift */,
+				A052A490230D546F00E72594 /* InfoAlert.swift */,
 				A0656AB921F9BFB800070C4B /* MainNavigationController.swift */,
 				A0E739DB20E4C85D00DB31E1 /* Main.storyboard */,
 				A0E739E020E4C85E00DB31E1 /* LaunchScreen.storyboard */,
@@ -1342,6 +1348,7 @@
 				A0F1364F227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift in Sources */,
 				A0DE78B221F771A700B6B68B /* BaseProjectViewController.swift in Sources */,
 				A08C2CED21F0C634008ACA3E /* AvatarRow.swift in Sources */,
+				A052A492230D546F00E72594 /* InfoAlert.swift in Sources */,
 				A00DC98A22315D4F004F07E0 /* ImageViewController.swift in Sources */,
 				A01A7B722200F2D700E18DE0 /* HeaderView.swift in Sources */,
 				A050147F2228209E0056ED95 /* BaseServerViewController.swift in Sources */,
@@ -1392,6 +1399,7 @@
 				A050AA492225DF4000AE5D15 /* SpacesListCell.swift in Sources */,
 				A0656ABA21F9BFB800070C4B /* MainNavigationController.swift in Sources */,
 				A05471DB2296C8FD009FEA93 /* UITableView+separatorView.swift in Sources */,
+				A052A48F230D53D800E72594 /* IaInfoAlert.swift in Sources */,
 				A0FE2C1E22E1E8D200C5443F /* Error+friendlyMessage.swift in Sources */,
 				A09898082236A7B100022851 /* UploadCell.swift in Sources */,
 				A0C797E6228063280009751A /* AbcFilteredByCollectionView.swift in Sources */,

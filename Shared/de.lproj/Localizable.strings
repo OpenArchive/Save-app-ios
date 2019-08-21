@@ -213,7 +213,7 @@
 /* InternetArchiveViewController */
 "Secret Key" = "Secret Key";
 
-/* InternetArchiveViewController, IaScrapeViewController, Main.storyboard */
+/* InternetArchiveViewController, IaInfoAlert, IaScrapeViewController, Main.storyboard */
 "Internet Archive" = "Internet Archive";
 
 /* InternetArchiveViewController */
@@ -230,6 +230,9 @@
 
 /* InternetArchiveViewController */
 "Acquire Keys" = "Schlüssel holen";
+
+/* IaInfoAlert */
+"You will need to log in to or create an Internet Archive account in order to send and preserve Save media at the Internet Archive." = "Sie müssen sich einloggen oder ein neues Benutzerkonto anlegen um Medien zum Internet Archive hochladen zu können.";
 
 /* EditProjectViewController */
 "Allow Creative Commons use for all media in this project" = "Erlaube Creative Commons für alle Medien in diesem Projekt";

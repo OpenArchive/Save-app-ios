@@ -85,6 +85,12 @@ class InternetArchiveViewController: BaseServerViewController, ScrapeDelegate {
         enableConnect()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        IaInfoAlert.presentIfNeeded(self)
+    }
+
 
     // MARK: Actions
 
