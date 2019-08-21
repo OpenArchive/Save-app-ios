@@ -156,51 +156,73 @@ class AssetFactory {
             imageManager.requestAVAsset(forVideo: phasset, options: options) {
                 avAsset, audioMix, info in
 
-                if let avAsset = avAsset,
-                    let preset = AVAssetExportSession.exportPresets(compatibleWith: avAsset).first {
+                guard let avAsset = avAsset else {
+                    return
+                }
 
-                    imageManager.requestExportSession(forVideo: phasset,
-                                                      options: options,
-                                                      exportPreset: preset)
-                    { exportSession, info in
-                        let uti: AVFileType = phasset.mediaType == .audio ? .mp3 : .mp4
+                let presets = AVAssetExportSession.exportPresets(compatibleWith: avAsset)
+                var preset: String? = presets.first
 
-                        asset.uti = uti.rawValue
-                        asset.phassetId = phasset.localIdentifier
+                if phasset.mediaType == .video {
+                    if Settings.highCompression {
+                        // AVAssetExportPresetLowQuality is actually *really* bad,
+                        // so rather not use that.
+                        if presets.contains(AVAssetExportPresetMediumQuality) {
+                            preset = AVAssetExportPresetMediumQuality
+                        }
+                    }
+                    else {
+                        if presets.contains(AVAssetExportPresetHighestQuality) {
+                            preset = AVAssetExportPresetHighestQuality
+                        }
+                    }
+                }
 
-                        // Store asset before export, so user doesn't have the
-                        // feeling that it got lost.
-                        fetchThumb(phasset, asset) // asynchronous
-                        store(asset) // asynchronous
+                if preset == nil {
+                    return
+                }
 
-                        if let exportSession = exportSession,
-                            createParentDir(file: asset.file) {
+                imageManager.requestExportSession(forVideo: phasset,
+                                                  options: options,
+                                                  exportPreset: preset!)
+                { exportSession, info in
+                    let uti: AVFileType = phasset.mediaType == .audio ? .mp3 : .mp4
 
-                            exportSession.outputURL = asset.file
-                            exportSession.outputFileType = uti
+                    asset.uti = uti.rawValue
+                    asset.phassetId = phasset.localIdentifier
 
-                            exportSession.exportAsynchronously {
-                                switch exportSession.status {
-                                case .unknown, .waiting, .exporting:
-                                    break
+                    // Store asset before export, so user doesn't have the
+                    // feeling that it got lost.
+                    fetchThumb(phasset, asset) // asynchronous
+                    store(asset) // asynchronous
 
-                                case .completed:
-                                    if let thumb = asset.thumb?.path,
-                                        !FileManager.default.fileExists(atPath: thumb) {
+                    if let exportSession = exportSession,
+                        createParentDir(file: asset.file) {
 
-                                        createThumb(asset)
-                                    }
+                        exportSession.outputURL = asset.file
+                        exportSession.outputFileType = uti
 
-                                    asset.isReady = true
+                        exportSession.exportAsynchronously {
+                            switch exportSession.status {
+                            case .unknown, .waiting, .exporting:
+                                break
 
-                                    store(asset)
+                            case .completed:
+                                if let thumb = asset.thumb?.path,
+                                    !FileManager.default.fileExists(atPath: thumb) {
 
-                                case .failed, .cancelled:
-                                    asset.remove()
-
-                                @unknown default:
-                                    break
+                                    createThumb(asset)
                                 }
+
+                                asset.isReady = true
+
+                                store(asset)
+
+                            case .failed, .cancelled:
+                                asset.remove()
+
+                            @unknown default:
+                                break
                             }
                         }
                     }
