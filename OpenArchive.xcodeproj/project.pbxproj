@@ -314,6 +314,7 @@
 		A05275132211A91300BDB14B /* CollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsView.swift; sourceTree = "<group>"; };
 		A052A48E230D53D800E72594 /* IaInfoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaInfoAlert.swift; sourceTree = "<group>"; };
 		A052A490230D546F00E72594 /* InfoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoAlert.swift; sourceTree = "<group>"; };
+		A052A493230D810300E72594 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		A05471A12296B77D009FEA93 /* OFL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
 		A05471A22296B77D009FEA93 /* Montserrat-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Light.ttf"; sourceTree = "<group>"; };
 		A05471A32296B77D009FEA93 /* Montserrat-ExtraLightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-ExtraLightItalic.ttf"; sourceTree = "<group>"; };
@@ -619,6 +620,7 @@
 				A058628320E4FC5A00EE2F14 /* Podfile */,
 				A058628520E4FDBF00EE2F14 /* Podfile.lock */,
 				A0C0732B20EE7AB600EA48F0 /* README.md */,
+				A052A493230D810300E72594 /* CHANGELOG.md */,
 				A0485C2422AAF0CD00D5B176 /* LICENSE */,
 				A0ACF214224CD8D1008B9249 /* fastlane */,
 			);
