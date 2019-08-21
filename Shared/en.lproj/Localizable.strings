@@ -117,6 +117,9 @@
 /* DarkroomHelper */
 "Tap to flag as significant content" = "Tap to flag as significant content";
 
+/* DarkroomHelper */
+"Significant Content" = "Significant Content";
+
 /* BatchEditViewController, Main.storyboard */
 "Batch Edit" = "Batch Edit";
 
