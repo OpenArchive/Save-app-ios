@@ -1,1 +1,2 @@
-
+- Added infobox to explain Internet Archive.
+- Added compression option to reduce (esp.) video size.
