@@ -17,12 +17,14 @@ import FilesProvider
 class Conduit {
 
     /**
+     A session manager, which is enabled for background uploading.
+
      This needs to be tied to an object, otherwise the SessionManager will get
      destroyed during the request and the request will break with error -999.
 
      See [Getting code=-999 using custom SessionManager](https://github.com/Alamofire/Alamofire/issues/1684)
      */
-    static var sessionManager: SessionManager = {
+    static var backgroundSessionManager: SessionManager = {
         let conf = URLSessionConfiguration.background(withIdentifier:
             "\(Bundle.main.bundleIdentifier ?? "").background")
         conf.sharedContainerIdentifier = Constants.appGroup
@@ -34,6 +36,22 @@ class Conduit {
 
         conf.isDiscretionary = false
         conf.shouldUseExtendedBackgroundIdleMode = true
+
+        return SessionManager(configuration: conf, delegate: UploadManager.shared)
+    }()
+
+    /**
+     A session manager wich is foreground-uploading only. This enables data
+     chunks to get uploaded without the need for a file on disk.
+    */
+    static var foregroundSessionManager: SessionManager = {
+        let conf = URLSessionConfiguration.default
+        conf.sharedContainerIdentifier = Constants.appGroup
+
+        // Fix error "CredStore - performQuery - Error copying matching creds."
+        conf.urlCredentialStorage = nil
+
+        conf.httpAdditionalHeaders = SessionManager.defaultHTTPHeaders
 
         return SessionManager(configuration: conf, delegate: UploadManager.shared)
     }()
@@ -135,9 +153,50 @@ class Conduit {
         let start = progress.completedUnitCount
         let share = progress.totalUnitCount - start
 
-        let req = Conduit.sessionManager.upload(file, to: to, method: .put, headers: headers)
+        // We do basic auth ourselves, to avoid double sending of files.
+        // URLSession tends to forget to send it without a challenge,
+        // which is especially annoying with big files.
+        let headers = addBasicAuth(headers, credential)
+
+        let req = Conduit.backgroundSessionManager.upload(file, to: to, method: .put, headers: headers)
             .validate(statusCode: 200..<300)
             .uploadProgress {
+                if progress.isCancelled {
+                    $0.cancel()
+                }
+
+                progress.completedUnitCount = start + $0.completedUnitCount * share / $0.totalUnitCount
+            }
+            .responseData { response in
+                completionHandler?(response.error)
+        }
+
+        if let credential = credential {
+            req.authenticate(usingCredential: credential)
+        }
+
+        #if DEBUG
+        _ = req.debug()
+        #endif
+    }
+
+    func upload(_ data: Data, to: URL, _ progress: Progress, _ share: Int64, credential: URLCredential? = nil,
+                headers: HTTPHeaders? = nil, _ completionHandler: SimpleCompletionHandler = nil) {
+
+        let start = progress.completedUnitCount
+
+        // We do basic auth ourselves, to avoid double sending of files.
+        // URLSession tends to forget to send it without a challenge,
+        // which is especially annoying with big files.
+        let headers = addBasicAuth(headers, credential)
+
+        let req = Conduit.foregroundSessionManager.upload(data, to: to, method: .put, headers: headers)
+            .validate(statusCode: 200..<300)
+            .uploadProgress {
+                if progress.isCancelled {
+                    $0.cancel()
+                }
+
                 progress.completedUnitCount = start + $0.completedUnitCount * share / $0.totalUnitCount
             }
             .responseData { response in
@@ -225,10 +284,7 @@ class Conduit {
 
             var url = url?.appendingPathComponent(first) ?? URL(fileURLWithPath: first)
 
-            var components = components
-            components.remove(at: 0)
-
-            for component in components {
+            for component in components.dropFirst() {
                 url.appendPathComponent(component)
             }
 
@@ -236,5 +292,42 @@ class Conduit {
         }
 
         return url ?? URL(fileURLWithPath: "")
+    }
+
+    /**
+     Create a HTTP Basic Auth header from the provided credentials, if valid.
+
+     - parameter headers: A headers dictionary where to add our auth header to.
+     - parameter credential: Credential to use.
+     - returns: nil, if headers was nil and no valid credential, otherwise a header
+        dictionary with an added (potentially overwritten) "Authorization" header.
+    */
+    func addBasicAuth(_ headers: HTTPHeaders?, _ credential: URLCredential?) -> HTTPHeaders? {
+        var headers = headers
+
+        if let user = credential?.user, let password = credential?.password {
+            let authorization = "\(user):\(password)".data(using: .utf8)?.base64EncodedString()
+
+            if let authorization = authorization {
+                if headers == nil {
+                    headers = [:]
+                }
+
+                headers!["Authorization"] = "Basic \(authorization)"
+            }
+        }
+
+        return headers
+    }
+
+
+    // MARK: Errors
+
+    struct InvalidConfError: LocalizedError {
+        var errorDescription = "Configuration invalid.".localize()
+    }
+
+    struct TooManyRetriesError: LocalizedError {
+        var errorDescription = "Failed after too many retries.".localize()
     }
 }

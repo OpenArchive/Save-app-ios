@@ -14,6 +14,8 @@ class WebDavConduit: Conduit {
     // MARK: WebDavConduit
 
     static let metaFileExt = "meta.json"
+    static let chunkSize: Int64 = 2 * 1024 * 1024 // 2 MByte
+    static let chunkFileSizeThreshold: Int64 = 10 * 1024 * 1024 // 10 MByte
 
     private var credential: URLCredential? {
         return (asset.space as? WebDavSpace)?.credential
@@ -31,7 +33,9 @@ class WebDavConduit: Conduit {
 
         guard let projectName = asset.collection?.project.name,
             let collectionName = asset.collection?.name,
+            let url = asset.space?.url,
             let file = asset.file,
+            let filesize = asset.filesize,
             let credential = credential
         else {
             DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
@@ -41,45 +45,68 @@ class WebDavConduit: Conduit {
             return progress
         }
 
-        let p = create(folder: construct(projectName)) { error in
+        DispatchQueue.global(qos: .background).async {
+            var error = self.create(folder: self.construct(projectName), progress)
+
             if error != nil || progress.isCancelled {
                 return self.done(uploadId, error: error)
             }
 
-            let p = self.create(folder: self.construct(projectName, collectionName)) { error in
+            error = self.create(folder: self.construct(projectName, collectionName), progress)
+
+            if error != nil || progress.isCancelled {
+                return self.done(uploadId, error: error)
+            }
+
+            var path = [projectName, collectionName]
+
+            if self.asset.tags?.contains(Asset.flag) ?? false {
+                path.append(Asset.flag)
+
+                error = self.create(folder: self.construct(path), progress)
+
                 if error != nil || progress.isCancelled {
                     return self.done(uploadId, error: error)
                 }
-
-                if self.asset.tags?.contains(Asset.flag) ?? false {
-
-                    let p = self.create(
-                    folder: self.construct(projectName, collectionName, Asset.flag))
-                    { error in
-                        if error != nil || progress.isCancelled {
-                            return self.done(uploadId, error: error)
-                        }
-
-                        let path = [projectName, collectionName, Asset.flag, self.asset.filename]
-
-                        self.upload(to: path, credential, progress, uploadId, file)
-                    }
-
-                    progress.addChild(p, withPendingUnitCount: 5)
-                }
-                else {
-                    let path = [projectName, collectionName, self.asset.filename]
-
-                    self.upload(to: path, credential, progress, uploadId, file)
-
-                    progress.completedUnitCount += 5
-                }
             }
 
-            progress.addChild(p, withPendingUnitCount: 5)
-        }
+            path.append(self.asset.filename)
 
-        progress.addChild(p, withPendingUnitCount: 5)
+            let to = self.construct(url: url, path)
+
+            error = self.copyMetadata(self.asset, to: to.appendingPathExtension(WebDavConduit.metaFileExt), progress)
+
+            if error != nil || progress.isCancelled {
+                return self.done(uploadId, error: error)
+            }
+
+            if self.isUploaded(self.construct(path), filesize) {
+                return self.done(uploadId, url: to)
+            }
+
+            if progress.isCancelled {
+                return self.done(uploadId)
+            }
+
+            //Fix to 10% from here, so uploaded bytes can be calculated properly
+            // in `UploadCell.upload#didSet`!
+            progress.completedUnitCount = 10
+
+            // Use Nextcloud chunking if enabled and file bigger than 10 MByte.
+            if self.asset.space?.isNextcloud ?? false,
+                let fh = try? FileHandle(forReadingFrom: file),
+                filesize > WebDavConduit.chunkFileSizeThreshold {
+
+                self.chunkedUpload(url, credential, uploadId, progress, filesize, fh, path)
+
+                fh.closeFile()
+            }
+            else {
+                DispatchQueue.global(qos: .background).async {
+                    self.upload(file, to: to, progress, credential: credential)
+                }
+            }
+        }
 
         return progress
     }
@@ -118,149 +145,108 @@ class WebDavConduit: Conduit {
 
     // MARK: Private Methods
 
-    private func upload(to path: [String], _ credential: URLCredential, _ progress: Progress, _ uploadId: String, _ file: URL) {
-        let to = construct(url: self.asset.space?.url, path)
-
-        let p = self.copyMetadata(
-            self.asset, to: to.appendingPathExtension(WebDavConduit.metaFileExt),
-            credential) { error in
-
-                if error != nil || progress.isCancelled {
-                    return self.done(uploadId, error: error)
-                }
-
-                let p = self.check(self.construct(path).path) { exists in
-                    if progress.isCancelled || exists {
-                        return self.done(uploadId, url: to)
-                    }
-
-                    self.upload(file, to: to, progress, credential: credential)
-                }
-
-                progress.addChild(p, withPendingUnitCount: 5)
-        }
-
-        progress.addChild(p, withPendingUnitCount: 5)
-    }
-
     /**
-     Asynchronously tests, if a folder exists and if not, creates it.
+     Tests, if a folder exists and if not, creates it.
 
      - parameter folder: Folder with path relative to WebDav endpoint.
-     - parameter completionHandler: Callback, when done.
-        If an error was returned, it is from the creation attempt.
+     - parameter progress: The overall progress object.
+     - parameter provider: A `WebDavFileProvider`. Optional. Defaults to `self.provider`.
+     If an error was returned, it is from the creation attempt.
      */
-    private func create(folder: URL, _ completionHandler: SimpleCompletionHandler) -> Progress {
-        let progress = Progress(totalUnitCount: 100)
+    private func create(folder: URL, _ progress: Progress, _ provider: WebDAVFileProvider? = nil) -> Error? {
+        guard let provider = provider ?? self.provider else {
+            return InvalidConfError()
+        }
 
-        provider?.attributesOfItem(path: folder.path) { attributes, error in
+        var error: Error? = nil
 
-            if attributes == nil {
-                progress.completedUnitCount = 50
+        let p = Progress(totalUnitCount: 2)
+        progress.addChild(p, withPendingUnitCount: 2)
 
-                // Does not exist - create.
-                if let p = self.provider?.create(folder: folder.lastPathComponent,
-                                                 at: folder.deletingLastPathComponent().path,
-                                                 completionHandler: completionHandler) {
-                    progress.addChild(p, withPendingUnitCount: 50)
+        var done = false
+
+        provider.attributesOfItem(path: folder.path) { attributes, e in
+            if !progress.isCancelled && attributes == nil {
+                p.completedUnitCount = 1
+
+                provider.create(folder: folder.lastPathComponent, at: folder.deletingLastPathComponent().path) { e in
+                    p.completedUnitCount = 2
+                    error = e
+                    done = true
                 }
             }
             else {
-                progress.completedUnitCount = 100
+                p.completedUnitCount = 2
 
-                // Does exist: continue.
-                completionHandler?(nil)
+                // Does already exist: return.
+                done = true
             }
         }
 
-        return progress
+        while !done && !progress.isCancelled {
+            Thread.sleep(forTimeInterval: 0.2)
+        }
+
+        return error
     }
 
     /**
      Checks, if file already exists and is probably the same by comparing the filesize.
 
      - parameter path: The path to the file on the server.
-     - parameter completionHandler: Callback, when done.
-     - parameter exists: true, if file exists and size is the same as the asset file.
-    */
-    private func check(_ path: String, _ completionHandler: ((_ exists: Bool) -> Void)?) -> Progress {
-        let progress = Progress(totalUnitCount: 100)
+     - parameter expectedSize: The expected size of this file.
+     - parameter provider: A `WebDavFileProvider`. Optional. Defaults to `self.provider`.
+     - returns: true, if file exists and size is the same as the asset file.
+     */
+    private func isUploaded(_ path: URL, _ expectedSize: Int64, provider: WebDAVFileProvider? = nil) -> Bool {
+        var exists = false
 
-        provider?.attributesOfItem(path: path) { attributes, error in
-            let exists = attributes != nil && attributes?.size == self.asset.filesize
+        if let provider = provider ?? self.provider {
+            var done = false
 
-            completionHandler?(exists)
+            provider.attributesOfItem(path: path.path) { attributes, error in
+                exists = attributes != nil && attributes!.size == expectedSize
+                done = true
+            }
+
+            while !done {
+                Thread.sleep(forTimeInterval: 0.2)
+            }
         }
 
-        return progress
+        return exists
     }
 
     /**
-     Writes an `Asset`'s metadata to a temporary file and copies that to the
-     destination on the WebDAV server.
+     Writes an `Asset`'s metadata to a destination on the WebDAV server.
 
      - parameter asset: The `Asset` to extract metadata from.
      - parameter to: The destination on the WebDAV server.
-     - parameter credential: The credentials to authenticate with.
-     - parameter completionHandler: The callback to call when the copy is done,
-        or when an error happened.
-     - returns: the progress of the `#copyItem` call or nil, if an error happened.
+     - returns: An eventual error.
      */
-    private func copyMetadata(_ asset: Asset, to: URL, _ credential: URLCredential,
-                              _ completionHandler: SimpleCompletionHandler) -> Progress {
-
-        let progress = Progress(totalUnitCount: 100)
-        let fm = FileManager.default
-
-        let tempDir: URL
-
-        do {
-            tempDir = try fm.url(for: .itemReplacementDirectory,
-                                 in: .userDomainMask,
-                                 appropriateFor: asset.file, create: true)
-        } catch {
-            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
-                completionHandler?(error)
-            }
-
-            return progress
-        }
-
+    private func copyMetadata(_ asset: Asset, to: URL, _ progress: Progress) -> Error? {
         let json: Data
 
         do {
             try json = Conduit.jsonEncoder.encode(asset)
         }
         catch {
-            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
-                completionHandler?(error)
-            }
-
-            return progress
+            return error
         }
 
-        let metaFile = tempDir.appendingPathComponent("\(asset.filename).\(WebDavConduit.metaFileExt)")
+        var error: Error? = nil
+        var done = false
 
-        do {
-            try json.write(to: metaFile, options: .atomicWrite)
-        }
-        catch {
-            try? fm.removeItem(at: metaFile)
-
-            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
-                completionHandler?(error)
-            }
-
-            return progress
+        upload(json, to: to, progress, 2, credential: credential) { e in
+            error = e
+            done = true
         }
 
-        upload(metaFile, to: to, progress, credential: credential) { error in
-            try? fm.removeItem(at: metaFile)
-
-            completionHandler?(error)
+        while !done && !progress.isCancelled {
+            Thread.sleep(forTimeInterval: 0.2)
         }
 
-        return progress
+        return error
     }
 
     /**
@@ -300,6 +286,142 @@ class WebDavConduit: Conduit {
                 // Folder is not empty - continue.
                 completionHandler?(nil)
             }
+        }
+    }
+
+    /**
+     Implements [Nextcloud's chunked upload](https://docs.nextcloud.com/server/stable/developer_manual/client_apis/WebDAV/chunking.html).
+
+     This **does not** work with background uploads!
+
+     This most probably will only work with the latest Nextcloud server.
+     (Version 16.0.4 when developing)
+
+     - parameter url: The space URL.
+     - parameter credential: The space credentials.
+     - parameter uploadId: The ID of the upload object which identifies this upload.
+     - parameter progress: The progress object to communicate progress with.
+     - parameter filesize: The size of the file to upload.
+     - parameter fh: An open FileHandle to the file to upload.
+     - parameter path: The destination path.
+    */
+    private func chunkedUpload(_ url: URL, _ credential: URLCredential, _ uploadId: String,
+                               _ progress: Progress, _ filesize: Int64, _ fh: FileHandle,
+                               _ path: [String]) {
+
+        guard let user = credential.user else {
+            return done(uploadId, error: InvalidConfError())
+        }
+
+        var urlc = URLComponents(url: url, resolvingAgainstBaseURL: true)
+        urlc?.path = "/"
+
+        let baseUrl = construct(url: urlc?.url, "remote.php", "dav")
+
+        let provider = WebDavSpace.createProvider(
+            baseUrl: baseUrl, credential: credential)
+
+        let folder = ["uploads", user, asset.filename]
+
+        var error = create(folder: construct(folder), progress, provider)
+
+        if progress.isCancelled || error != nil {
+            return done(uploadId, error: error)
+        }
+
+        error = nil
+        let progressPerChunk = (progress.totalUnitCount - progress.completedUnitCount) / (filesize / WebDavConduit.chunkSize + 1)
+        var allThere = false
+        var round = 1
+
+        // We loop at least 2 times:
+        // 1st: upload all chunks, one after the other.
+        // 2nd: Check, if al chunks are available. If not, upload missing chunks.
+        // Repeat until all chunks are uploaded correctly.
+        // Fail after 10 retries.
+
+        repeat {
+            allThere = true
+            var offset: Int64 = 0
+
+            while offset < filesize {
+                let expectedSize = min(WebDavConduit.chunkSize, filesize - offset)
+
+                var dest = folder
+                dest.append(String(format: "%015d-%015d", offset, offset + expectedSize - 1))
+
+                let exists = isUploaded(construct(dest), expectedSize, provider: provider)
+
+                if progress.isCancelled {
+                    return done(uploadId)
+                }
+
+                offset += expectedSize
+
+                if exists {
+                    fh.seek(toFileOffset: UInt64(offset))
+
+                    // Only increase the first time, otherwise we would exceed 100%.
+                    // (First time could be after an app restart.)
+                    if round == 1 {
+                        progress.completedUnitCount += progressPerChunk
+                    }
+                }
+                else {
+                    allThere = false
+
+                    // Deduct progress again, since, obviously, this wasn't successfully
+                    // uploaded on the last try.
+                    if round > 1 {
+                        progress.completedUnitCount -= progressPerChunk
+                    }
+
+                    let chunk = fh.readData(ofLength: Int(expectedSize))
+
+                    var done = false
+
+                    upload(chunk, to: construct(url: baseUrl, dest), progress, progressPerChunk, credential: credential) { e in
+                        error = e
+                        done = true
+                    }
+
+                    // Synchronize asynchronous call.
+                    while !done && !progress.isCancelled {
+                        Thread.sleep(forTimeInterval: 0.2)
+                    }
+
+                    if progress.isCancelled || error != nil {
+                        break
+                    }
+                }
+            }
+
+            if progress.isCancelled || error != nil {
+                break
+            }
+
+            if round > 9 {
+                error = InvalidConfError()
+                break
+            }
+
+            round += 1
+
+        } while !allThere
+
+        if progress.isCancelled || error != nil {
+            return done(uploadId, error: error)
+        }
+
+        var source = folder
+        source.append(".file")
+
+        var dest = ["files", user]
+        dest.append(contentsOf: path)
+
+        provider?.moveItem(path: construct(source).path, to: construct(dest).path) { error in
+            progress.completedUnitCount = progress.totalUnitCount
+            self.done(uploadId, url: self.construct(url: url, path))
         }
     }
 }

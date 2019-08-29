@@ -5,6 +5,7 @@ PODS:
   - CocoaLumberjack (3.5.3):
     - CocoaLumberjack/Core (= 3.5.3)
   - CocoaLumberjack/Core (3.5.3)
+  - CrossroadRegex (1.1.0)
   - DownloadButton (0.1.0)
   - Eureka (5.0.0)
   - FavIcon (3.0.6)
@@ -85,7 +86,7 @@ PODS:
   - MDFTextAccessibility (2.0.0)
   - ReachabilitySwift (4.3.1)
   - SDCAlertView (10.0)
-  - TLPhotoPicker (1.9.3)
+  - TLPhotoPicker (1.9.7)
   - TUSafariActivity (1.0.4)
   - UIImage-Resize (1.0.1)
   - UIImageViewAlignedSwift (0.7.0)
@@ -157,6 +158,7 @@ DEPENDENCIES:
   - Alamofire (~> 4.8)
   - AlignedCollectionViewFlowLayout (~> 1.1)
   - ARChromeActivity (~> 1.0)
+  - CrossroadRegex (~> 1.1)
   - DownloadButton (~> 0.1)
   - Eureka (~> 5.0)
   - FavIcon (~> 3.0)
@@ -170,7 +172,7 @@ DEPENDENCIES:
   - MBProgressHUD (~> 1.1)
   - ReachabilitySwift (~> 4.3)
   - SDCAlertView (~> 10.0)
-  - TLPhotoPicker (~> 1.8)
+  - TLPhotoPicker (~> 1.9)
   - TUSafariActivity (~> 1.0)
   - UIImage-Resize (~> 1.0)
   - UIImageViewAlignedSwift (~> 0.7)
@@ -182,6 +184,7 @@ SPEC REPOS:
     - AlignedCollectionViewFlowLayout
     - ARChromeActivity
     - CocoaLumberjack
+    - CrossroadRegex
     - DownloadButton
     - Eureka
     - FavIcon
@@ -207,6 +210,7 @@ SPEC CHECKSUMS:
   AlignedCollectionViewFlowLayout: ee2ef451e741ec08f8e0967d828001e2f051c20a
   ARChromeActivity: 5dcf9b9f09323761f992aff3525cdd777f83609d
   CocoaLumberjack: 2f44e60eb91c176d471fdba43b9e3eae6a721947
+  CrossroadRegex: 5eaadb3f7b4014728f1cbd1014756b126c1dbd9a
   DownloadButton: 49a21a89e0d7d1b42d9134f79aaa40e727cd57c3
   Eureka: 0f64f477ec8ef6201c6fec143d60ff5c201cf654
   FavIcon: e07ba9dd3cac1f76b81ccaa08fc2b41baa000b07
@@ -221,12 +225,12 @@ SPEC CHECKSUMS:
   MDFTextAccessibility: 85c09a1bd9c321f494348e632a25063bcda35a53
   ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
   SDCAlertView: 5fbc48cae6d7bf9781097e3f27883924ef3b922c
-  TLPhotoPicker: 565ec4244e70ec8e09bff7ed6e05da952d394c1c
+  TLPhotoPicker: 5b2396f402688b6868636263ebe6f4aeb8a2fdff
   TUSafariActivity: afc55a00965377939107ce4fdc7f951f62454546
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   UIImageViewAlignedSwift: cfd56e381a894c71bf0d020cb3ef31cb3f604634
   YapDatabase: 36e10c3059d33686951eba566fa15c0fce2497ed
 
-PODFILE CHECKSUM: 50d6a2f3a93e380f1b37566bfa9179d81ebf8532
+PODFILE CHECKSUM: 7b6a8dfeb121aa4a7e60e60793f7a91cf27e2f99
 
 COCOAPODS: 1.7.5

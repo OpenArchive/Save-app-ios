@@ -80,6 +80,10 @@ class IaConduit: Conduit {
             headers["x-archive-meta-licenseurl"] = license
         }
 
+        //Fix to 10% from here, so uploaded bytes can be calculated properly
+        // in `UploadCell.upload#didSet`!
+        progress.completedUnitCount = 10
+
         // No callback, handling of the finished upload will be done in
         // `UploadManager#taskCompletionHandler`.
         upload(file, to: url, progress, headers: headers)
@@ -99,7 +103,7 @@ class IaConduit: Conduit {
                 "x-archive-keep-old-version": "0",
             ]
 
-            Conduit.sessionManager.request(url, method: .delete, headers: headers)
+            Conduit.backgroundSessionManager.request(url, method: .delete, headers: headers)
                 .debug()
                 .validate(statusCode: 200..<300)
                 .responseData() { response in

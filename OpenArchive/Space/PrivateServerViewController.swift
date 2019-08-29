@@ -31,6 +31,11 @@ class PrivateServerViewController: BaseServerViewController {
         $0.add(rule: RuleRequired())
     }
 
+    private let nextcloudRow = SwitchRow() {
+        $0.title = "Use Upload Chunking (Nextcloud only)".localize()
+        $0.cell.switchControl.onTintColor = .accent
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -45,6 +50,7 @@ class PrivateServerViewController: BaseServerViewController {
         urlRow.value = space?.url
         userNameRow.value = space?.username
         passwordRow.value = space?.password
+        nextcloudRow.value = space?.isNextcloud
 
         form
             +++ Section()
@@ -68,6 +74,14 @@ class PrivateServerViewController: BaseServerViewController {
 
             // To get another divider after the last row.
             <<< LabelRow()
+
+            +++ nextcloudRow
+
+            <<< LabelRow() {
+                $0.title = "__upload_chunking_description__".localize()
+                $0.cell.textLabel?.numberOfLines = 0
+                $0.cell.textLabel?.font = .systemFont(ofSize: 12)
+            }
 
         if space != nil {
             form
@@ -97,6 +111,7 @@ class PrivateServerViewController: BaseServerViewController {
         space?.favIcon = favIconRow.value
         space?.username = userNameRow.value
         space?.password = passwordRow.value
+        space?.isNextcloud = nextcloudRow.value ?? false
 
         // Do a test request to check validity of space configuration.
         (space as? WebDavSpace)?.provider?.attributesOfItem(path: "") { file, error in

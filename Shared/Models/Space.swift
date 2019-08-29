@@ -11,18 +11,6 @@ import YapDatabase
 import Alamofire
 import FilesProvider
 
-class InvalidConfError: NSError {
-    init() {
-        super.init(domain: String(describing: Space.self), code: -123,
-                   userInfo: [NSLocalizedDescriptionKey: "Configuration invalid.".localize()])
-    }
-
-    required init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
-    }
-}
-
-
 /**
  A `Space` represents the root folder of an upload destination on a WebDAV server.
 
@@ -62,6 +50,7 @@ class Space: NSObject {
     var favIcon: UIImage?
     var username: String?
     var password: String?
+    var isNextcloud = false
     var authorName: String?
     var authorRole: String?
     var authorOther: String?
@@ -107,6 +96,7 @@ class Space: NSObject {
         favIcon = decoder.decodeObject(forKey: "favIcon") as? UIImage
         username = decoder.decodeObject(forKey: "username") as? String
         password = decoder.decodeObject(forKey: "password") as? String
+        isNextcloud = decoder.decodeBool(forKey: "nextcloud")
         authorName = decoder.decodeObject(forKey: "authorName") as? String
         authorRole = decoder.decodeObject(forKey: "authorRole") as? String
         authorOther = decoder.decodeObject(forKey: "authorOther") as? String
@@ -121,6 +111,7 @@ class Space: NSObject {
         coder.encode(favIcon, forKey: "favIcon")
         coder.encode(username, forKey: "username")
         coder.encode(password, forKey: "password")
+        coder.encode(isNextcloud, forKey: "nextcloud")
         coder.encode(authorName, forKey: "authorName")
         coder.encode(authorRole, forKey: "authorRole")
         coder.encode(authorOther, forKey: "authorOther")
@@ -144,6 +135,7 @@ class Space: NSObject {
             + "name=\(name ?? "nil"), url=\(url?.description ?? "nil"), "
             + "favIcon=\(favIcon?.description ?? "nil"), "
             + "username=\(username ?? "nil"), password=\(password ?? "nil"), "
+            + "isNextcloud=\(isNextcloud), "
             + "authorName=\(authorName ?? "nil"), authorRole=\(authorRole ?? "nil"), "
             + "authorOther=\(authorOther ?? "nil"), tries=\(tries), lastTry=\(String(describing: lastTry))]"
     }

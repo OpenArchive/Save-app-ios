@@ -11,6 +11,7 @@ import YapDatabase
 import Reachability
 import FilesProvider
 import Alamofire
+import Regex
 
 extension Notification.Name {
     static let uploadManagerPause = Notification.Name("uploadManagerPause")
@@ -84,22 +85,25 @@ class UploadManager: Alamofire.SessionDelegate {
     private var backgroundTask = UIBackgroundTaskIdentifier.invalid
 
     /**
-     This handles a finished file upload task, but ignores metadata files.
+     This handles a finished file upload task, but ignores metadata files and file chunks.
     */
     private lazy var taskCompletionHandler: (URLSession, URLSessionTask, Error?) -> Void = { session, task, error in
-        self.debug("#taskCompletionHandler task=\(task), state=\(task.state.rawValue), url=\(task.originalRequest?.url?.absoluteString ?? "nil") error=\(String(describing: error))")
+        self.debug("#taskCompletionHandler task=\(task), state=\(self.getTaskStateName(task.state)), url=\(task.originalRequest?.url?.absoluteString ?? "nil") error=\(String(describing: error))")
 
         if task is URLSessionUploadTask,
             task.state == .completed,
-            let url = task.originalRequest?.url,
-            !url.lastPathComponent.lowercased().contains(WebDavConduit.metaFileExt) {
+            let url = task.originalRequest?.url {
 
-            self.done(self.uploads.first { $0.liveProgress != nil }?.id, error, url)
+            let filename = url.lastPathComponent.lowercased()
+
+            if filename !~ "\(WebDavConduit.metaFileExt)$" && filename !~ "\\d{15}-\\d{15}" {
+                self.done(self.uploads.first { $0.liveProgress != nil }?.id, error, url)
+            }
         }
     }
 
     override func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        self.debug("#didCompleteWithError task=\(task), state=\(task.state.rawValue), url=\(task.originalRequest?.url?.absoluteString ?? "nil") error=\(String(describing: error))")
+        self.debug("#didCompleteWithError task=\(task), state=\(getTaskStateName(task.state)), url=\(task.originalRequest?.url?.absoluteString ?? "nil") error=\(String(describing: error))")
 
         super.urlSession(session, task: task, didCompleteWithError: error)
     }
@@ -541,6 +545,21 @@ class UploadManager: Alamofire.SessionDelegate {
         #if DEBUG
         print("[\(String(describing: type(of: self)))] \(text)")
         #endif
+    }
+
+    private func getTaskStateName(_ state: URLSessionTask.State) -> String {
+        switch state {
+        case .running:
+            return "running"
+        case .suspended:
+            return "suspended"
+        case .canceling:
+            return "canceling"
+        case .completed:
+            return "completed"
+        @unknown default:
+            return String(state.rawValue)
+        }
     }
 
     private func get(_ id: String) -> Upload? {

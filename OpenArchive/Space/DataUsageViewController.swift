@@ -24,7 +24,7 @@ class DataUsageViewController: FormViewController {
             +++ SwitchRow() {
                 $0.title = "Only upload media when you are connected to WiFi".localize()
                 $0.cell.textLabel?.numberOfLines = 0
-                $0.cell.switchControl.onTintColor = UIColor.accent
+                $0.cell.switchControl.onTintColor = .accent
                 $0.value = Settings.wifiOnly
             }
             .onChange { row in

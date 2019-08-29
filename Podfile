@@ -18,10 +18,11 @@ def shared_pods
     pod 'DownloadButton', '~> 0.1'
     pod 'MBProgressHUD', '~> 1.1'
     pod 'ReachabilitySwift', '~> 4.3'
-    pod 'TLPhotoPicker', '~> 1.8'
+    pod 'TLPhotoPicker', '~> 1.9'
     pod 'FormatterKit', '~> 1.8'
     pod 'UIImageViewAlignedSwift', '~> 0.7'
     pod 'FontBlaster', '~> 4.1'
+    pod 'CrossroadRegex', '~> 1.1'
 end
 
 target 'OpenArchive' do

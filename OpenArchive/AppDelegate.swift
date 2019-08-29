@@ -83,7 +83,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
      Catches the uploads which finished, when the app was stopped.
     */
     func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
-        Conduit.sessionManager.backgroundCompletionHandler = completionHandler
+        Conduit.backgroundSessionManager.backgroundCompletionHandler = completionHandler
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {

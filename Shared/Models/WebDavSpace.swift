@@ -36,31 +36,40 @@ class WebDavSpace: Space, Item {
     }
 
     /**
+     Create a `WebDAVFileProvider`.
+
+     - parameter baseURL: The base URL of the WebDAV server.
+     - parameter credential: The credential to authenticate with.
+     - returns: a `WebDAVFileProvider` for this space.
+     */
+    static func createProvider(baseUrl: URL, credential: URLCredential) -> WebDAVFileProvider? {
+        let provider = WebDAVFileProvider(baseURL: baseUrl, credential: credential)
+
+        let conf = provider?.session.configuration ?? URLSessionConfiguration.default
+
+        conf.sharedContainerIdentifier = Constants.appGroup
+        conf.urlCache = provider?.cache
+        conf.requestCachePolicy = .returnCacheDataElseLoad
+
+        // Fix error "CredStore - performQuery - Error copying matching creds."
+        conf.urlCredentialStorage = nil
+
+        provider?.session = URLSession(configuration: conf,
+                                       delegate: provider?.session.delegate,
+                                       delegateQueue: provider?.session.delegateQueue)
+
+        return provider
+    }
+
+    /**
      Create a `WebDAVFileProvider`, if credentials are available and the `url` is a valid
      WebDAV URL.
 
      - returns: a `WebDAVFileProvider` for this space.
      */
     var provider: WebDAVFileProvider? {
-        if let baseUrl = url,
-            let credential = credential {
-
-            let provider = WebDAVFileProvider(baseURL: baseUrl, credential: credential)
-
-            let conf = provider?.session.configuration ?? URLSessionConfiguration.default
-
-            conf.sharedContainerIdentifier = Constants.appGroup
-            conf.urlCache = provider?.cache
-            conf.requestCachePolicy = .returnCacheDataElseLoad
-
-            // Fix error "CredStore - performQuery - Error copying matching creds."
-            conf.urlCredentialStorage = nil
-
-            provider?.session = URLSession(configuration: conf,
-                                           delegate: provider?.session.delegate,
-                                           delegateQueue: provider?.session.delegateQueue)
-
-            return provider
+        if let baseUrl = url, let credential = credential {
+            return WebDavSpace.createProvider(baseUrl: baseUrl, credential: credential)
         }
 
         return nil

@@ -204,11 +204,17 @@
 /* PrivateServerViewController */
 "Password" = "Password";
 
+/* PrivateServerViewController */
+"Use Upload Chunking (Nextcloud only)" = "Use Upload Chunking (Nextcloud only)";
+
 /* PrivateServerViewController, Main.storyboard */
 "Private Server" = "Private Server";
 
 /* PrivateServerViewController, InternetArchiveViewController */
 "Connect" = "Connect";
+
+/* PrivateServerViewController */
+"__upload_chunking_description__" = "Only tested with latest Nextcloud! Increases reliability on bad networks. Will only upload as long as the device stays on and the app in the foreground. (Short excursions to other apps are ok, though.)";
 
 /* InternetArchiveViewController */
 "Secret Key" = "Secret Key";
