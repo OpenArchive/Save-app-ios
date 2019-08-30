@@ -208,10 +208,13 @@
 "Use Upload Chunking (Nextcloud only)" = "Upload stückeln (nur Nextcloud)";
 
 /* PrivateServerViewController, Main.storyboard */
-"Private Server" = "Privater Server";
+"Private (WebDAV) Server" = "Privater (WebDAV) Server";
 
 /* PrivateServerViewController, InternetArchiveViewController */
 "Connect" = "Verbinden";
+
+/* PrivateServerViewController */
+"__webdav_description__" = "% verbindet sich nur zu WebDAV-kompatiblen Servern. (Zum Beispiel Nextcloud und ownCloud.)";
 
 /* PrivateServerViewController */
 "__upload_chunking_description__" = "Nur mit neuestem Nextcloud getestet! Erhöht die Zuverlässigkeit bei schlechter Verbindung. Funktioniert nur, während das Gerät an und die App im Vordergrund bleibt. (Kurze Ausflüge zu anderen Apps sind aber ok.)";

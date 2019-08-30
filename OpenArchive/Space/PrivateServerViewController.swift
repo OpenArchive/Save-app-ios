@@ -33,13 +33,14 @@ class PrivateServerViewController: BaseServerViewController {
 
     private let nextcloudRow = SwitchRow() {
         $0.title = "Use Upload Chunking (Nextcloud only)".localize()
+        $0.cell.textLabel?.adjustsFontSizeToFitWidth = true
         $0.cell.switchControl.onTintColor = .accent
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = "Private Server".localize()
+        navigationItem.title = "Private (WebDAV) Server".localize()
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: space != nil ? "Done".localize() : "Connect".localize(),
             style: .done, target: self,
@@ -73,7 +74,11 @@ class PrivateServerViewController: BaseServerViewController {
             }
 
             // To get another divider after the last row.
-            <<< LabelRow()
+            <<< LabelRow() {
+                $0.title = "__webdav_description__".localize(value: Bundle.main.displayName)
+                $0.cell.textLabel?.numberOfLines = 0
+                $0.cell.textLabel?.font = .systemFont(ofSize: 12)
+            }
 
             +++ nextcloudRow
 
