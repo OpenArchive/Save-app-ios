@@ -1,2 +1,2 @@
-- Infobox hinzugefügt um Internet Archive zu erklären.
-- Kompressionsoptionen hinzugefügt um insb. Videos zu verkleinern.
+- Unterstützung für Nextcloud Upload Chunking hinzugefügt.
+- Beschriftung bei privater Serverkonfiguration geändert/hinzugefügt um zu verdeutlichen, daß es um WebDAV geht.

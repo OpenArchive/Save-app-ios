@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.2.0
+
+- Added Nextcloud upload chunking support.
+- Improved wording regarding private servers. Make clear, it's about WebDAV.
+
 ## 2.1.0
 
 - Added infobox to explain Internet Archive.

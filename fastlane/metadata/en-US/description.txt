@@ -65,5 +65,4 @@ Save addresses the gaps in the current online ecosystem existing around the a) e
 //Links
 
 Terms of Service: https://open-archive.org/privacy/#terms-of-service
-Privacy Policy: https://open-archive.org/privacy/#privacy-policy 
-
+Privacy Policy: https://open-archive.org/privacy/#privacy-policy

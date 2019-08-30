@@ -1,2 +1,2 @@
-- Added infobox to explain Internet Archive.
-- Added compression option to reduce (esp.) video size.
+- Added Nextcloud upload chunking support.
+- Improved wording regarding private servers. Make clear, it's about WebDAV.
