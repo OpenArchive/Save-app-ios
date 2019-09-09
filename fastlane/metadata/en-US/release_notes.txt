@@ -1,2 +1,4 @@
 - Added Nextcloud upload chunking support.
 - Improved wording regarding private servers. Make clear, it's about WebDAV.
+- Fixed issue where toolbar wasn't hidden, when project was switched.
+- Reduced app size.

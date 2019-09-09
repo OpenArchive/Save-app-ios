@@ -1,2 +1,4 @@
 - Unterstützung für Nextcloud Upload Chunking hinzugefügt.
 - Beschriftung bei privater Serverkonfiguration geändert/hinzugefügt um zu verdeutlichen, daß es um WebDAV geht.
+- Fehler mit Toolbar behoben, die nicht verschwunden ist, wenn das Projekt gewechselt wurde.
+- App-Größe reduziert.
