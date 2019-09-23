@@ -10,6 +10,8 @@ import UIKit
 import MobileCoreServices
 import YapDatabase
 import CommonCrypto
+import AVFoundation
+import CoreMedia
 
 /**
  Representation of a file asset in the database.
@@ -276,6 +278,25 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         }
 
         return isUploading
+    }
+
+    /**
+     Checks, if asset is audio or video.
+     */
+    var isAv: Bool {
+        return UTTypeConformsTo(uti as CFString, kUTTypeAudiovisualContent)
+    }
+
+    var duration: TimeInterval? {
+        if isAv,
+            let file = file {
+
+            let avAsset = AVAsset(url: file)
+
+            return CMTimeGetSeconds(avAsset.duration)
+        }
+
+        return nil
     }
 
     init(_ collection: Collection, uti: String = kUTTypeData as String,

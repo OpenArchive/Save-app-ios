@@ -289,6 +289,9 @@
 		A0D1013E22CCF4140068D047 /* WebDavConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D1013D22CCF4140068D047 /* WebDavConduit.swift */; };
 		A0D1014022CCFA1B0068D047 /* IaConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D1013F22CCFA1B0068D047 /* IaConduit.swift */; };
 		A0D58DCE20E51517005A2F34 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D58DCD20E51517005A2F34 /* Asset.swift */; };
+		A0DC0FAC233914BD00C4969A /* MovieIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DC0FAB233914BD00C4969A /* MovieIndicator.swift */; };
+		A0DC0FAD233914BD00C4969A /* MovieIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DC0FAB233914BD00C4969A /* MovieIndicator.swift */; };
+		A0DC0FAE233914BD00C4969A /* MovieIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DC0FAB233914BD00C4969A /* MovieIndicator.swift */; };
 		A0DE78AF21F76D2200B6B68B /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78AE21F76D2200B6B68B /* Project.swift */; };
 		A0DE78B021F76D2200B6B68B /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78AE21F76D2200B6B68B /* Project.swift */; };
 		A0DE78B221F771A700B6B68B /* BaseProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78B121F771A700B6B68B /* BaseProjectViewController.swift */; };
@@ -593,6 +596,7 @@
 		A0D1013D22CCF4140068D047 /* WebDavConduit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDavConduit.swift; sourceTree = "<group>"; };
 		A0D1013F22CCFA1B0068D047 /* IaConduit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaConduit.swift; sourceTree = "<group>"; };
 		A0D58DCD20E51517005A2F34 /* Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
+		A0DC0FAB233914BD00C4969A /* MovieIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieIndicator.swift; sourceTree = "<group>"; };
 		A0DE78AE21F76D2200B6B68B /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		A0DE78B121F771A700B6B68B /* BaseProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProjectViewController.swift; sourceTree = "<group>"; };
 		A0E1A67B21EE7A5C00E4F6B7 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
@@ -1007,6 +1011,7 @@
 				A0E321FC228EFDA200F2E9BD /* InfoBox.xib */,
 				A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */,
 				A0AC06B32201E94000BD5FBA /* MenuItemCell.xib */,
+				A0DC0FAB233914BD00C4969A /* MovieIndicator.swift */,
 				A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */,
 				A01A7B6E2200A05C00E18DE0 /* ProjectsTabBar.swift */,
 				A077732922786BCA00291F5D /* RemoveAssetAlert.swift */,
@@ -1436,6 +1441,7 @@
 				A0FE2C1F22E1E8D200C5443F /* Error+friendlyMessage.swift in Sources */,
 				A0AC0580224CE8C7008B9249 /* TableWithSpacesViewController.swift in Sources */,
 				A0C7DC04224A40E5004B78FF /* ActiveProjectsView.swift in Sources */,
+				A0DC0FAD233914BD00C4969A /* MovieIndicator.swift in Sources */,
 				A077732B22786BF500291F5D /* RemoveAssetAlert.swift in Sources */,
 				A0B645CB22B7AEBB00BBE3FF /* BigMenuItemCell.swift in Sources */,
 				A00A8D48220C7EDD0083F0CB /* AbcFilteredByProjectView.swift in Sources */,
@@ -1582,6 +1588,7 @@
 				A09B53CE23266F02005266C2 /* ImageCell.swift in Sources */,
 				A09B53CF23266F02005266C2 /* DataUsageViewController.swift in Sources */,
 				A09B53D023266F02005266C2 /* IaConduit.swift in Sources */,
+				A0DC0FAE233914BD00C4969A /* MovieIndicator.swift in Sources */,
 				A09B53D123266F02005266C2 /* UIColor+accent.swift in Sources */,
 				A09B53D223266F02005266C2 /* BaseCell.swift in Sources */,
 				A09B53D323266F02005266C2 /* TintedButton.swift in Sources */,
@@ -1683,6 +1690,7 @@
 				A05C582A21EF94FC00141633 /* BaseViewController.swift in Sources */,
 				A050AA492225DF4000AE5D15 /* SpacesListCell.swift in Sources */,
 				A0656ABA21F9BFB800070C4B /* MainNavigationController.swift in Sources */,
+				A0DC0FAC233914BD00C4969A /* MovieIndicator.swift in Sources */,
 				A05471DB2296C8FD009FEA93 /* UITableView+separatorView.swift in Sources */,
 				A052A48F230D53D800E72594 /* IaInfoAlert.swift in Sources */,
 				A0FE2C1E22E1E8D200C5443F /* Error+friendlyMessage.swift in Sources */,

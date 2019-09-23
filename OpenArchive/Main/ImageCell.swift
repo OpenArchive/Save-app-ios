@@ -14,7 +14,8 @@ class ImageCell: UICollectionViewCell {
 
     private var blurView: UIVisualEffectView?
     
-    @IBOutlet var imgView: UIImageView!
+    @IBOutlet weak var imgView: UIImageView!
+    @IBOutlet weak var movieIndicator: MovieIndicator!
 
     private lazy var selectedView = SelectedView()
 
@@ -22,7 +23,9 @@ class ImageCell: UICollectionViewCell {
 
     var asset: Asset? {
         didSet {
-            self.imgView.image = asset?.getThumbnail()
+            imgView.image = asset?.getThumbnail()
+
+            movieIndicator.isHidden = true
 
             if highlightNonUploaded && !(asset?.isUploaded ?? false) && !UIAccessibility.isReduceTransparencyEnabled {
                 if blurView == nil {
@@ -37,6 +40,9 @@ class ImageCell: UICollectionViewCell {
             else {
                 blurView?.removeFromSuperview()
             }
+
+            movieIndicator.isHidden = !(asset?.isAv ?? false)
+            movieIndicator.set(duration: asset?.duration)
         }
     }
 

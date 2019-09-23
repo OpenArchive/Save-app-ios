@@ -391,7 +391,7 @@ class AssetFactory {
 
             var cgThumbnail: CGImage?
 
-            if UTTypeConformsTo(asset.uti as CFString, kUTTypeAudiovisualContent) {
+            if asset.isAv {
                 let avAsset = AVAsset(url: file)
                 let generator = AVAssetImageGenerator(asset: avAsset)
                 generator.appliesPreferredTrackTransform = true

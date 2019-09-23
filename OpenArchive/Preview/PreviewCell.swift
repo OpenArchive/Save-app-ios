@@ -30,6 +30,8 @@ class PreviewCell: BaseCell {
     @IBOutlet weak var notesBt: UIButton!
     @IBOutlet weak var flagBt: UIButton!
 
+    @IBOutlet weak var movieIndicator: MovieIndicator!
+
     var asset: Asset? {
         didSet {
             previewImg.image = asset?.getThumbnail()
@@ -37,6 +39,8 @@ class PreviewCell: BaseCell {
             locationBt.isSelected = !(asset?.location?.isEmpty ?? true)
             notesBt.isSelected = !(asset?.notes?.isEmpty ?? true)
             flagBt.isSelected = asset?.flagged ?? false
+            movieIndicator.isHidden = !(asset?.isAv ?? false)
+            movieIndicator.set(duration: asset?.duration)
         }
     }
 
