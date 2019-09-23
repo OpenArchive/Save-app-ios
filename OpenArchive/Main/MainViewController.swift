@@ -77,14 +77,14 @@ PKDownloadButtonDelegate {
 
     lazy var pickerConf: TLPhotosPickerConfigure = {
         var conf = TLPhotosPickerConfigure()
-        conf.defaultCameraRollTitle = "Camera Roll".localize()
+        conf.customLoclizedTitle = ["Camera Roll": "Camera Roll".localize()]
         conf.tapHereToChange = "Tap here to change".localize()
         conf.cancelTitle = "Cancel".localize()
         conf.doneTitle = "Done".localize()
         conf.emptyMessage = "No albums".localize()
         conf.allowedAlbumCloudShared = true
         conf.recordingVideoQuality = .typeHigh
-        conf.selectedColor = UIColor.accent
+        conf.selectedColor = .accent
 
         return conf
     }()
