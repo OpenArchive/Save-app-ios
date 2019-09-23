@@ -21,12 +21,13 @@ class AssetFactory {
     typealias ResultHandler = (_ asset: Asset?) -> Void
 
     static var imageManager = PHImageManager()
-    static var thumbnailSize = CGSize(width: 320, height: 240)
+    static let thumbnailSize = CGSize(width: 480, height: 360)
+    private static let thumbnailCompressionQuality: CGFloat = 0.5
 
     private static var thumbnailOptions: PHImageRequestOptions = {
         let options = PHImageRequestOptions()
         options.version = .current
-        options.deliveryMode = .fastFormat
+        options.deliveryMode = .opportunistic // fastFormat was a little too ugly...
         options.resizeMode = .fast
 
         return options
@@ -277,7 +278,7 @@ class AssetFactory {
                     createParentDir(file: thumb) {
 
                     if let thumbnail = thumbnail {
-                        try? thumbnail.jpegData(compressionQuality: 0.5)?.write(to: thumb)
+                        try? thumbnail.jpegData(compressionQuality: thumbnailCompressionQuality)?.write(to: thumb)
                     }
 
                     if !FileManager.default.fileExists(atPath: thumb.path) {
@@ -346,7 +347,7 @@ class AssetFactory {
             // If we don't get one, fine. A default will be provided.
             if let image = image, let thumb = asset.thumb,
                 createParentDir(file: thumb) {
-                try? image.jpegData(compressionQuality: 0.5)?.write(to: thumb)
+                try? image.jpegData(compressionQuality: thumbnailCompressionQuality)?.write(to: thumb)
 
                 if !FileManager.default.fileExists(atPath: thumb.path) {
                     self.createThumb(asset)
@@ -404,7 +405,7 @@ class AssetFactory {
 
             if let cgThumbnail = cgThumbnail {
                 let thumbnail = UIImage(cgImage: cgThumbnail)
-                try? thumbnail.jpegData(compressionQuality: 0.5)?.write(to: thumb)
+                try? thumbnail.jpegData(compressionQuality: thumbnailCompressionQuality)?.write(to: thumb)
             }
         }
     }
