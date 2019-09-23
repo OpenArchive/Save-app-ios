@@ -148,15 +148,15 @@ class IaConduit: Conduit {
     private func mediatype(for asset: Asset) -> String {
         let uti = asset.uti as CFString
 
-        if UTTypeConformsTo(uti, "public.image" as CFString) {
+        if UTTypeConformsTo(uti, kUTTypeImage) {
             return "image"
         }
 
-        if UTTypeConformsTo(uti, "public.movie" as CFString) {
+        if UTTypeConformsTo(uti, kUTTypeMovie) {
             return "movies"
         }
 
-        if UTTypeConformsTo(uti, "public.audio" as CFString) {
+        if UTTypeConformsTo(uti, kUTTypeAudio) {
             return "audio"
         }
 
