@@ -25,15 +25,23 @@ def shared_pods
     pod 'CrossroadRegex', '~> 1.1'
 end
 
-target 'OpenArchive' do
-  shared_pods
+def app_only
+    pod 'FavIcon', '~> 3.0'
+    pod 'TUSafariActivity', '~> 1.0'
+    pod 'ARChromeActivity', '~> 1.0'
+    pod 'SDCAlertView', '~> 10.0'
+end
 
-  pod 'FavIcon', '~> 3.0'
-  pod 'TUSafariActivity', '~> 1.0'
-  pod 'ARChromeActivity', '~> 1.0'
-  pod 'SDCAlertView', '~> 10.0'
+target 'OpenArchive' do
+    shared_pods
+    app_only
 end
 
 target 'ShareExtension' do
-  shared_pods
+    shared_pods
+end
+
+target 'OpenArchive Screenshots' do
+    shared_pods
+    app_only
 end
