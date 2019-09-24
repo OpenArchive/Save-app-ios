@@ -263,7 +263,7 @@ class AssetFactory {
      - parameter resultHandler: Callback with the created `Asset` object.
      */
     class func create(fromFileUrl url: URL, thumbnail: UIImage? = nil,
-                      _ collection: Collection, _ resultHandler: @escaping ResultHandler) {
+                      _ collection: Collection, _ resultHandler: ResultHandler? = nil) {
         if let uti = (try? url.resourceValues(forKeys: [.typeIdentifierKey]))?.typeIdentifier {
             let asset = Asset(collection, uti: uti)
             asset.filename = url.lastPathComponent
@@ -291,11 +291,11 @@ class AssetFactory {
                 store(asset, resultHandler)
             }
             else {
-                resultHandler(nil)
+                resultHandler?(nil)
             }
         }
         else {
-            resultHandler(nil)
+            resultHandler?(nil)
         }
     }
 

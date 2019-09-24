@@ -15,7 +15,7 @@ import TLPhotoPicker
 import DownloadButton
 
 class MainViewController: UIViewController, UICollectionViewDelegate,
-UICollectionViewDataSource, UINavigationControllerDelegate,
+UICollectionViewDataSource, UINavigationControllerDelegate, UIDocumentPickerDelegate,
 ProjectsTabBarDelegate, HeaderViewDelegate, TLPhotosPickerViewControllerDelegate,
 PKDownloadButtonDelegate {
 
@@ -263,6 +263,18 @@ PKDownloadButtonDelegate {
         }
     }
 
+    @IBAction func addDocument() {
+        // Don't allow to add assets without a space or a project.
+        if tabBar.selectedProject == nil {
+            return didSelectAdd(tabBar)
+        }
+
+        let vc = UIDocumentPickerViewController(documentTypes: [kUTTypeItem as String], in: .import)
+        vc.delegate = self
+
+        present(vc, animated: true)
+    }
+
     @IBAction func toggleMode() {
         toggleMode(newMode: !inEditMode)
     }
@@ -299,6 +311,25 @@ PKDownloadButtonDelegate {
 
         for asset in assets {
             AssetFactory.create(fromPhasset: asset, collection)
+        }
+
+        AbcFilteredByCollectionView.updateFilter(collection.id)
+
+        performSegue(withIdentifier: MainViewController.segueShowPreview, sender: nil)
+    }
+
+
+    // MARK: UIDocumentPickerDelegate
+
+    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+        guard let collection = tabBar.selectedProject?.currentCollection,
+            controller.documentPickerMode == .import &&
+            urls.count > 0 else {
+            return
+        }
+
+        for url in urls {
+            AssetFactory.create(fromFileUrl: url, collection)
         }
 
         AbcFilteredByCollectionView.updateFilter(collection.id)
