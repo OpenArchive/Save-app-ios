@@ -11,7 +11,6 @@ def shared_pods
     pod 'Localize', '~> 2.2'
     pod 'Eureka', '~> 5.0'
     pod 'ImageRow', '~> 4.0'
-    pod 'MaterialComponents/Buttons', '~> 81'
     pod 'MaterialComponents/Tabs', '~> 81'
     pod 'UIImage-Resize', '~> 1.0'
     pod 'AlignedCollectionViewFlowLayout', '~> 1.1'

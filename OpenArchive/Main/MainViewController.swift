@@ -40,9 +40,10 @@ PKDownloadButtonDelegate {
 
     @IBOutlet weak var tabBarContainer: UIView!
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var addBt: MDCFloatingButton!
     @IBOutlet weak var toolbar: UIToolbar!
+    @IBOutlet weak var selectBt: UIBarButtonItem!
     @IBOutlet weak var editAssetsBt: UIBarButtonItem!
+    @IBOutlet weak var removeAssetsBt: UIBarButtonItem!
 
     private lazy var uploadsReadConn = Db.newLongLivedReadConn()
 
@@ -62,9 +63,7 @@ PKDownloadButtonDelegate {
 
     private lazy var assetsMappings = AbcFilteredByProjectView.createMappings()
 
-    private var inEditMode: Bool {
-        return collectionView.numberOfSelectedItems > 0
-    }
+    private var inEditMode = false
 
     lazy var tabBar: ProjectsTabBar = {
         let tabBar = ProjectsTabBar(frame: tabBarContainer.bounds, projectsReadConn,
@@ -115,6 +114,12 @@ PKDownloadButtonDelegate {
         AbcFilteredByProjectView.updateFilter(tabBar.selectedProject?.id)
 
         collectionView.toggle(numberOfSections(in: collectionView) != 0, animated: animated)
+
+        // When we add while in edit mode, the edit mode is still on, but nothing is selected.
+        // Fix this situation.
+        if inEditMode && collectionView.numberOfSelectedItems < 1 {
+            toggleMode()
+        }
 
         updateManageBt()
     }
@@ -191,16 +196,9 @@ PKDownloadButtonDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
-        // If the currently selected number of items is exactly one, that means,
-        // that there was no selection before, and this item was just selected.
-        // In that case, ignore the selection and instead move to EditViewController.
-        // Because in this scenario, the first selection is done by a long press,
-        // which basically enters an "edit" mode. (See #longPressItem.)
-        if collectionView.numberOfSelectedItems != 1 {
-            setEditAssetBtState()
-
+        if inEditMode {
             updateHeaderButton()
+            updateToolbar()
 
             return
         }
@@ -215,13 +213,7 @@ PKDownloadButtonDelegate {
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         updateHeaderButton()
-
-        if inEditMode {
-            setEditAssetBtState()
-        }
-        else {
-            toggleToolbar(false)
-        }
+        updateToolbar()
     }
 
 
@@ -271,25 +263,8 @@ PKDownloadButtonDelegate {
         }
     }
 
-    @IBAction func longPressItem(_ sender: UILongPressGestureRecognizer) {
-
-        // We only recognize this the first time, it is triggered.
-        // It will continue triggering with .changed and .ended states, but
-        // .ended is only released after the user lifts the finger which feels
-        // awkward.
-        if sender.state != .began {
-            return
-        }
-
-        if let indexPath = collectionView.indexPathForItem(at: sender.location(in: collectionView)) {
-            collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredVertically)
-
-            updateHeaderButton()
-
-            toggleToolbar(true)
-
-            setEditAssetBtState()
-        }
+    @IBAction func toggleMode() {
+        toggleMode(newMode: !inEditMode)
     }
 
     @IBAction func editAssets() {
@@ -297,9 +272,7 @@ PKDownloadButtonDelegate {
 
         if count == 1 {
             if let indexPath = collectionView.indexPathsForSelectedItems?.first {
-                // Trigger deselection, so edit mode UI goes away.
-                collectionView.deselectItem(at: indexPath, animated: false)
-                collectionView(collectionView, didDeselectItemAt: indexPath)
+                toggleMode()
 
                 // Trigger selection, so DarkroomViewController gets pushed.
                 collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredVertically)
@@ -312,7 +285,7 @@ PKDownloadButtonDelegate {
     }
 
     @IBAction func removeAssets() {
-        present(RemoveAssetAlert(getSelectedAssets(), { self.toggleToolbar(false) }), animated: true)
+        present(RemoveAssetAlert(getSelectedAssets(), { self.toggleMode(newMode: false) }), animated: true)
     }
 
 
@@ -337,6 +310,8 @@ PKDownloadButtonDelegate {
     // MARK: ProjectsTabBarDelegate
 
     func didSelectAdd(_ tabBar: ProjectsTabBar) {
+        toggleMode(newMode: false)
+
         if SelectedSpace.available {
             let vc = UINavigationController(rootViewController: AddProjectViewController())
             vc.modalPresentationStyle = .popover
@@ -352,7 +327,7 @@ PKDownloadButtonDelegate {
 
     func didSelect(_ tabBar: ProjectsTabBar, project: Project) {
         if AbcFilteredByProjectView.projectId != project.id {
-            toggleToolbar(false)
+            toggleMode(newMode: false)
         }
 
         AbcFilteredByProjectView.updateFilter(project.id)
@@ -370,14 +345,13 @@ PKDownloadButtonDelegate {
                 if collectionView.isSectionSelected(section) {
                     // If all are selected, deselect again.
                     collectionView.deselectSection(section, animated: false)
-
-                    toggleToolbar(false)
                 }
                 else {
                     collectionView.selectSection(section, animated: false, scrollPosition: .centeredVertically)
                 }
 
                 updateHeaderButton()
+                updateToolbar()
             }
 
             return
@@ -558,6 +532,9 @@ PKDownloadButtonDelegate {
 
     // MARK: Private Methods
 
+    /**
+     Shows/hides the upload manager button. Sets the number of currently queued items.
+     */
     private func updateManageBt() {
         uploadsReadConn?.asyncRead { transaction in
             let count = (transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction)?
@@ -576,26 +553,50 @@ PKDownloadButtonDelegate {
     }
 
     /**
-     Shows/hides the toolbar, depending on the toggle.
+     Enables/disables edit mode. Updates all UI depending on it.
 
-     - parameter toggle: true, to show toolbar, false to hide.
-    */
-    private func toggleToolbar(_ toggle: Bool) {
-        toolbar.toggle(toggle, animated: true)
-        addBt.toggle(!toggle, animated: true)
-    }
+     - parameter newMode: The new mode to set. If the same as the current one, nothing happens.
+     */
+    private func toggleMode(newMode: Bool) {
+        if inEditMode == newMode {
+            return
+        }
 
-    private func setEditAssetBtState() {
-        var enableEditBt = true
-
-        for asset in getSelectedAssets() {
-            if asset.isUploaded {
-                enableEditBt = false
-                break
+        if inEditMode && collectionView.numberOfSections > 0 {
+            for i in 0 ... collectionView.numberOfSections - 1 {
+                collectionView.deselectSection(i, animated: true)
             }
         }
 
-        editAssetsBt.isEnabled = enableEditBt
+        inEditMode = newMode
+
+        selectBt.title = inEditMode ? "Cancel".localize() : "Select".localize()
+
+        updateHeaderButton()
+        updateToolbar()
+    }
+
+    /**
+     Enables/disables the edit and remove buttons, depending on if and what is selected.
+     */
+    private func updateToolbar() {
+        var editEnabled = false
+        var removeEnabled = false
+
+        if inEditMode && collectionView.numberOfSelectedItems > 0 {
+            editEnabled = true
+            removeEnabled = true
+
+            for asset in getSelectedAssets() {
+                if asset.isUploaded {
+                    editEnabled = false
+                    break
+                }
+            }
+        }
+
+        editAssetsBt.isEnabled = editEnabled
+        removeAssetsBt.isEnabled = removeEnabled
     }
 
     /**
