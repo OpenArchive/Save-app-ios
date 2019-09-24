@@ -417,6 +417,7 @@
 		A00A8D46220C7EDD0083F0CB /* AbcFilteredByProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbcFilteredByProjectView.swift; sourceTree = "<group>"; };
 		A00DC98922315D4F004F07E0 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
 		A010D39F22D4A3F200FAB433 /* BatchInfoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchInfoAlert.swift; sourceTree = "<group>"; };
+		A011D558233A160D0032304A /* config */ = {isa = PBXFileReference; lastKnownFileType = text; path = config; sourceTree = "<group>"; };
 		A01A7B6E2200A05C00E18DE0 /* ProjectsTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsTabBar.swift; sourceTree = "<group>"; };
 		A01A7B712200F2D700E18DE0 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		A0212FCB22D35ADC009079DC /* DarkroomHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkroomHelper.swift; sourceTree = "<group>"; };
@@ -708,6 +709,14 @@
 			path = Utils;
 			sourceTree = "<group>";
 		};
+		A011D557233A160D0032304A /* .tx */ = {
+			isa = PBXGroup;
+			children = (
+				A011D558233A160D0032304A /* config */,
+			);
+			path = .tx;
+			sourceTree = "<group>";
+		};
 		A01A7B732200FF2500E18DE0 /* Main */ = {
 			isa = PBXGroup;
 			children = (
@@ -756,6 +765,7 @@
 		A058628220E4FC4700EE2F14 /* Build */ = {
 			isa = PBXGroup;
 			children = (
+				A011D557233A160D0032304A /* .tx */,
 				A0AC06A42201B94500BD5FBA /* docs */,
 				A0C475B6211481710012937E /* .gitignore */,
 				A058628320E4FC5A00EE2F14 /* Podfile */,

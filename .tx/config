@@ -1,0 +1,10 @@
+[main]
+host = https://www.transifex.com
+
+[openarchive.localizable-strings]
+file_filter = Shared/<lang>.lproj/Localizable.strings
+minimum_perc = 75
+source_file = Shared/en.lproj/Localizable.strings
+source_lang = en
+type = STRINGS
+
