@@ -33,6 +33,7 @@ class Db {
     }()
 
     public class func setup() {
+        Space.fixArchiverName() // Needed for screenshot testing.
         WebDavSpace.fixArchiverName()
         IaSpace.fixArchiverName()
         Project.fixArchiverName()

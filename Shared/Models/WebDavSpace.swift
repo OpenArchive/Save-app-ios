@@ -16,7 +16,7 @@ class WebDavSpace: Space, Item {
 
     // MARK: Item
 
-    static func fixArchiverName() {
+    override class func fixArchiverName() {
         NSKeyedArchiver.setClassName("WebDavSpace", for: self)
         NSKeyedUnarchiver.setClass(self, forClassName: "WebDavSpace")
     }

@@ -18,7 +18,7 @@ class IaSpace: Space, Item {
 
     // MARK: Item
 
-    static func fixArchiverName() {
+    override class func fixArchiverName() {
         NSKeyedArchiver.setClassName("IaSpace", for: self)
         NSKeyedUnarchiver.setClass(self, forClassName: "IaSpace")
     }

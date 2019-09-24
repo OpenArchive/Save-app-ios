@@ -21,6 +21,14 @@ import FilesProvider
 class Space: NSObject {
 
     /**
+      Needed for screenshot testing.
+     */
+    class func fixArchiverName() {
+        NSKeyedArchiver.setClassName("Space", for: self)
+        NSKeyedUnarchiver.setClass(self, forClassName: "Space")
+    }
+
+    /**
      Maximum number of failed uploads per space before the circuit breaker opens.
      */
     static let maxFails = 10
