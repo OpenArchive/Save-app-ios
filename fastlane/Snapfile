@@ -2,10 +2,10 @@
 
 # A list of devices you want to take the screenshots from
 devices([
-  "iOS 12.4 @ iPhone Xs Max",
-  "iOS 12.4 @ iPhone 8 Plus",
-  "iOS 12.4 @ iPad Pro (12.9-inch) (3rd generation)",
-  "iOS 12.4 @ iPad Pro (12.9-inch) (2nd generation)",
+  "iOS 13.0 @ iPhone 11 Pro Max",
+  "iOS 13.0 @ iPhone 8 Plus",
+  "iOS 13.0 @ iPad Pro (12.9-inch) (3rd generation)",
+  "iOS 13.0 @ iPad Pro (12.9-inch) (2nd generation)",
 ])
 
 languages([
@@ -22,10 +22,16 @@ scheme("Screenshots")
 output_directory("./fastlane/screenshots")
 
 # remove the '#' to clear all previously generated screenshots before creating new ones
-# clear_previous_screenshots(true)
+clear_previous_screenshots(true)
 
 # Arguments to pass to the app on launch. See https://docs.fastlane.tools/actions/snapshot/#launch-arguments
 # launch_arguments(["-favColor red"])
 
 # For more information about all available options run
 # fastlane action snapshot
+
+output_simulator_logs(true)
+# reinstall_app(true)
+clean(true)
+stop_after_first_error(true)
+# concurrent_simulators(false)

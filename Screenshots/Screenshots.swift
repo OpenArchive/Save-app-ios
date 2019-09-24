@@ -30,7 +30,8 @@ class Screenshots: XCTestCase {
 
     func testWalkthrough() {
         let app = XCUIApplication()
-        let tablesQuery = app.tables
+
+        XCTAssert(app.collectionViews.buttons["btManageCollection"].waitForExistence(timeout: 10), "App didn't start up within 10 seconds!")
 
         snapshot("01MainScene")
 
@@ -54,13 +55,13 @@ class Screenshots: XCTestCase {
         }
 
         app.images["imgFavIcon"].tap()
-        app.tables/*@START_MENU_TOKEN@*/.staticTexts["Berlin 2018"]/*[[".cells.staticTexts[\"Berlin 2018\"]",".staticTexts[\"Berlin 2018\"]"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.tap()
+        app.tables.staticTexts["Berlin 2018"].tap()
 
         snapshot("04EditProject")
 
         app.navigationBars.firstMatch.buttons.firstMatch.tap()
 
-        tablesQuery/*@START_MENU_TOKEN@*/.collectionViews/*[[".cells.collectionViews",".collectionViews"],[[[-1,1],[-1,0]]],[0]]@END_MENU_TOKEN@*/.cells["cellSpaceAdd"].tap()
+        app.tables.collectionViews.cells["cellSpaceAdd"].tap()
         app.tables.cells["cellPrivateServer"].tap()
 
         snapshot("05CreateSpace")
