@@ -44,29 +44,7 @@ PODS:
   - ImageRow (4.0.0):
     - Eureka (~> 5.0)
   - Localize (2.3.0)
-  - MaterialComponents/AnimationTiming (81.1.0)
-  - MaterialComponents/Ink (81.1.0):
-    - MaterialComponents/private/Math
-  - MaterialComponents/Palettes (81.1.0)
-  - MaterialComponents/private/Application (81.1.0)
-  - MaterialComponents/private/Math (81.1.0)
-  - MaterialComponents/ShadowElevations (81.1.0)
-  - MaterialComponents/ShadowLayer (81.1.0):
-    - MaterialComponents/ShadowElevations
-  - MaterialComponents/Tabs (81.1.0):
-    - MaterialComponents/AnimationTiming
-    - MaterialComponents/Ink
-    - MaterialComponents/Palettes
-    - MaterialComponents/private/Math
-    - MaterialComponents/ShadowElevations
-    - MaterialComponents/ShadowLayer
-    - MaterialComponents/Typography
-    - MDFInternationalization
-  - MaterialComponents/Typography (81.1.0):
-    - MaterialComponents/private/Application
-    - MaterialComponents/private/Math
   - MBProgressHUD (1.1.0)
-  - MDFInternationalization (2.0.0)
   - ReachabilitySwift (4.3.1)
   - SDCAlertView (10.0)
   - TLPhotoPicker (1.9.9)
@@ -150,7 +128,6 @@ DEPENDENCIES:
   - FormatterKit (~> 1.8)
   - ImageRow (~> 4.0)
   - Localize (~> 2.2)
-  - MaterialComponents/Tabs (~> 81)
   - MBProgressHUD (~> 1.1)
   - ReachabilitySwift (~> 4.3)
   - SDCAlertView (~> 10.0)
@@ -175,9 +152,7 @@ SPEC REPOS:
     - FormatterKit
     - ImageRow
     - Localize
-    - MaterialComponents
     - MBProgressHUD
-    - MDFInternationalization
     - ReachabilitySwift
     - SDCAlertView
     - TLPhotoPicker
@@ -200,9 +175,7 @@ SPEC CHECKSUMS:
   FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
   ImageRow: e65b2e1a33f89062bf2a553a2aad61d975eb7428
   Localize: cb1ae53ed73decaad0dce217806ed983091913f5
-  MaterialComponents: c2045515505992357e210b33cb3ffc3a404a14fd
   MBProgressHUD: e7baa36a220447d8aeb12769bf0585582f3866d9
-  MDFInternationalization: 010097556d6b09d2c4ea38e0820ea6d37be6a314
   ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
   SDCAlertView: 5fbc48cae6d7bf9781097e3f27883924ef3b922c
   TLPhotoPicker: 95cbd6d8f66fca5a4ddd8167db5081e1ed676322
@@ -211,6 +184,6 @@ SPEC CHECKSUMS:
   UIImageViewAlignedSwift: cfd56e381a894c71bf0d020cb3ef31cb3f604634
   YapDatabase: 36e10c3059d33686951eba566fa15c0fce2497ed
 
-PODFILE CHECKSUM: 1fcd7bf3abdb28e21762de46a63845d01a87b37b
+PODFILE CHECKSUM: 04acbf9aee596b7250055292bc0c60ed9bf74cc8
 
 COCOAPODS: 1.7.5

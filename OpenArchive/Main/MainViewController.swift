@@ -10,7 +10,6 @@ import UIKit
 import MobileCoreServices
 import Photos
 import YapDatabase
-import MaterialComponents.MaterialTabs
 import TLPhotoPicker
 import DownloadButton
 
@@ -99,7 +98,7 @@ PKDownloadButtonDelegate {
         collectionsReadConn?.update(mappings: collectionsMappings)
         assetsReadConn?.update(mappings: assetsMappings)
 
-        tabBar.addToSubview(tabBarContainer)
+        tabBar.addToSuperview(tabBarContainer)
 
         Db.add(observer: self, #selector(yapDatabaseModified))
     }

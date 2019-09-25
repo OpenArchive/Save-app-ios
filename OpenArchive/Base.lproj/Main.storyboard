@@ -423,14 +423,21 @@
                                 </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Sv8-ax-o88">
-                                <rect key="frame" x="16" y="60" width="288" height="48"/>
+                                <rect key="frame" x="16" y="60" width="288" height="44"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="48" id="1ot-z2-tx9"/>
+                                    <constraint firstAttribute="height" constant="44" id="1ot-z2-tx9"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gVG-Da-M5y">
+                                <rect key="frame" x="16" y="106" width="288" height="1"/>
+                                <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="1" id="hHB-iM-jSo"/>
                                 </constraints>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Tap buttons below to add media to your project." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="dIV-uA-I3m">
-                                <rect key="frame" x="60" y="116" width="200" height="444"/>
+                                <rect key="frame" x="60" y="115" width="200" height="115"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="200" id="dXC-NF-KJw"/>
                                 </constraints>
@@ -439,7 +446,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="cdB-Ih-Rhb">
-                                <rect key="frame" x="16" y="116" width="288" height="444"/>
+                                <rect key="frame" x="16" y="115" width="288" height="409"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="3" minimumInteritemSpacing="3" id="21E-IJ-odh">
                                     <size key="itemSize" width="80" height="80"/>
@@ -567,17 +574,19 @@
                         <constraints>
                             <constraint firstItem="XfW-o7-R6f" firstAttribute="leading" secondItem="IgM-tk-GPC" secondAttribute="trailing" constant="8" id="3Ow-Ef-CRl"/>
                             <constraint firstItem="vgM-P6-FLk" firstAttribute="trailing" secondItem="XfW-o7-R6f" secondAttribute="trailing" constant="16" id="C3D-K9-0Yv"/>
+                            <constraint firstItem="cdB-Ih-Rhb" firstAttribute="top" secondItem="gVG-Da-M5y" secondAttribute="bottom" constant="8" id="Exz-nO-qIj"/>
                             <constraint firstItem="iaU-RN-V3u" firstAttribute="bottom" secondItem="vgM-P6-FLk" secondAttribute="bottom" id="LvN-wm-AzM"/>
                             <constraint firstItem="cdB-Ih-Rhb" firstAttribute="leading" secondItem="vgM-P6-FLk" secondAttribute="leading" constant="16" id="SCf-xT-Um4"/>
+                            <constraint firstItem="gVG-Da-M5y" firstAttribute="top" secondItem="Sv8-ax-o88" secondAttribute="bottom" constant="2" id="YEo-C6-XAE"/>
                             <constraint firstItem="dIV-uA-I3m" firstAttribute="centerX" secondItem="VEn-ta-I3v" secondAttribute="centerX" id="ZHa-BD-C1k"/>
                             <constraint firstItem="hpS-2l-dcc" firstAttribute="top" secondItem="vgM-P6-FLk" secondAttribute="top" constant="16" id="a3F-RM-YwV"/>
                             <constraint firstItem="hpS-2l-dcc" firstAttribute="leading" secondItem="vgM-P6-FLk" secondAttribute="leading" constant="16" id="aEv-nP-VtX"/>
                             <constraint firstItem="Sv8-ax-o88" firstAttribute="leading" secondItem="vgM-P6-FLk" secondAttribute="leading" constant="16" id="bw4-nr-zcQ"/>
                             <constraint firstItem="iaU-RN-V3u" firstAttribute="trailing" secondItem="VEn-ta-I3v" secondAttribute="trailing" id="cg5-fc-wUz"/>
-                            <constraint firstItem="vgM-P6-FLk" firstAttribute="bottom" secondItem="cdB-Ih-Rhb" secondAttribute="bottom" constant="8" id="cnw-Hn-FeE"/>
-                            <constraint firstItem="cdB-Ih-Rhb" firstAttribute="top" secondItem="Sv8-ax-o88" secondAttribute="bottom" constant="8" id="gOV-8w-Ea8"/>
+                            <constraint firstItem="gVG-Da-M5y" firstAttribute="trailing" secondItem="VEn-ta-I3v" secondAttribute="trailingMargin" id="eJa-c9-WKZ"/>
+                            <constraint firstItem="gVG-Da-M5y" firstAttribute="leading" secondItem="VEn-ta-I3v" secondAttribute="leadingMargin" id="f5x-kk-w8o"/>
                             <constraint firstItem="dIV-uA-I3m" firstAttribute="top" secondItem="cdB-Ih-Rhb" secondAttribute="top" id="hEj-4N-hDI"/>
-                            <constraint firstItem="dIV-uA-I3m" firstAttribute="bottom" secondItem="cdB-Ih-Rhb" secondAttribute="bottom" id="hlM-rW-UDJ"/>
+                            <constraint firstItem="iaU-RN-V3u" firstAttribute="top" secondItem="cdB-Ih-Rhb" secondAttribute="bottom" id="hWO-A5-SFj"/>
                             <constraint firstItem="IgM-tk-GPC" firstAttribute="centerY" secondItem="hpS-2l-dcc" secondAttribute="centerY" id="k5I-6E-vR2"/>
                             <constraint firstItem="Sv8-ax-o88" firstAttribute="top" secondItem="hpS-2l-dcc" secondAttribute="bottom" constant="8" id="lua-IY-9Qt"/>
                             <constraint firstItem="XfW-o7-R6f" firstAttribute="centerY" secondItem="IgM-tk-GPC" secondAttribute="centerY" id="mI2-0U-YUm"/>
@@ -622,7 +631,7 @@
                     </connections>
                 </tapGestureRecognizer>
             </objects>
-            <point key="canvasLocation" x="619" y="115"/>
+            <point key="canvasLocation" x="618.75" y="114.08450704225352"/>
         </scene>
         <!--Darkroom View Controller-->
         <scene sceneID="Y8H-PQ-6ZC">
@@ -1175,8 +1184,8 @@
         <image name="server" width="27" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="ugS-VU-bdp"/>
-        <segue reference="tKg-5v-fna"/>
+        <segue reference="XbN-st-9jm"/>
+        <segue reference="51p-Tu-idn"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.70398116438356162" blue="0.64921339897260277" alpha="1" colorSpace="calibratedRGB"/>
 </document>

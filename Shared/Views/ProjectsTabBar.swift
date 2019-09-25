@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import MaterialComponents.MaterialTabs
 import YapDatabase
 import Localize
 
@@ -18,9 +17,7 @@ protocol ProjectsTabBarDelegate {
     func didSelect(_ tabBar: ProjectsTabBar, project: Project)
 }
 
-class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
-
-    static let addTabItemTag = 666
+class ProjectsTabBar: UIView {
 
     weak var connection: YapDatabaseConnection?
 
@@ -28,41 +25,52 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
 
     weak var mappings: YapDatabaseViewMappings?
 
-    var projects = [Project]()
+    var projectTabs = [ProjectTab]()
 
     var selectedProject: Project? {
         get {
-            if let index = selectedItem?.tag,
-                index < projects.count {
-                return projects[index]
-            }
-
-            return nil
+            return projectTabs.first { $0.isSelected }?.project
         }
         set {
-            if let project = newValue {
-                if let index = projects.firstIndex(where: { p in p.id == project.id }) {
-                    selectedItem = items[index + 1]
-                }
+            for tab in projectTabs {
+                tab.isSelected = newValue != nil && tab.project == newValue
             }
         }
     }
 
     var projectsDelegate: ProjectsTabBarDelegate?
 
-    /**
-     Don't use this. This is effectively neutered and used for internal purposes!
+    private lazy var addBt: UIButton = {
+        let bt = UIButton(type: .contactAdd)
+        bt.addTarget(self, action: #selector(add), for: .touchUpInside)
 
-     You just see this, because Swift doesn't allow us to reduce visibility of properties.
-    */
-    internal override var delegate: MDCTabBarDelegate? {
-        get {
-            return self
-        }
-        set {
-            // Do nothing, this is effectively private.
-        }
-    }
+        bt.translatesAutoresizingMaskIntoConstraints = false
+
+        addSubview(bt)
+
+        bt.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        bt.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+
+        return bt
+    }()
+
+    private lazy var container: UIScrollView = {
+        let container = UIScrollView(frame: .zero)
+
+        container.showsVerticalScrollIndicator = false
+        container.showsHorizontalScrollIndicator = false
+
+        container.translatesAutoresizingMaskIntoConstraints = false
+
+        addSubview(container)
+
+        container.leadingAnchor.constraint(equalTo: addBt.trailingAnchor, constant: 8).isActive = true
+        container.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+        container.topAnchor.constraint(equalTo: topAnchor).isActive = true
+        container.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
+
+        return container
+    }()
 
     init(frame: CGRect, _ connection: YapDatabaseConnection?, viewName: String,
          _ mappings: YapDatabaseViewMappings) {
@@ -85,10 +93,10 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
 
     // MARK: Public Methods
 
-    func addToSubview(_ view: UIView) {
-        view.addSubview(self)
-
+    func addToSuperview(_ view: UIView) {
         translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(self)
 
         topAnchor.constraint(equalTo: view.topAnchor).isActive = true
         bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
@@ -97,114 +105,50 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
     }
 
     func handle(_ change: YapDatabaseViewRowChange) {
-        var insertedNew = false
+        var selectionUpdate = false
 
         switch change.type {
         case .delete:
             if let indexPath = change.indexPath {
-                if indexPath.row < projects.count {
-                    projects.remove(at: indexPath.row)
-                }
-
-                if indexPath.row + 1 < items.count {
-                    items.remove(at: indexPath.row + 1)
-                }
+                remove(at: indexPath.row)
             }
         case .insert:
             if let newIndexPath = change.newIndexPath,
                 let project = getProject(at: newIndexPath) {
 
-                // Fix issue when multiple projects are inserted at once, which
-                // happens on DB setup for screenshot creation.
-                // NOTE: This will mess up the order with more than 2 projects at once!
-                if newIndexPath.row < projects.count {
-                    projects.insert(project, at: newIndexPath.row)
-                }
-                else {
-                    projects.append(project)
-                }
-
-                let item = getItem(project.name, newIndexPath.row)
-
-                if newIndexPath.row + 1 < items.count {
-                    items.insert(item, at: newIndexPath.row + 1)
-                }
-                else {
-                    items.append(item)
-                }
+                insert(project, at: newIndexPath.row)
 
                 // When a new project is created, it will be selected immediately.
-                selectedItem = item
-                insertedNew = true
+                selectedProject = project
+                selectionUpdate = true
             }
         case .move:
             if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
-                if indexPath.row < projects.count {
-                    projects.insert(projects.remove(at: indexPath.row), at: newIndexPath.row)
-                }
-
-                if indexPath.row + 1 < items.count {
-                    items.insert(items.remove(at: indexPath.row + 1), at: newIndexPath.row + 1)
+                if let tab = remove(at: indexPath.row) {
+                    insert(tab, at: newIndexPath.row)
                 }
             }
         case .update:
             if let indexPath = change.indexPath,
                 let project = getProject(at: indexPath) {
 
-                if indexPath.row < projects.count {
-                    projects[indexPath.row] = project
-                }
-                else {
-                    projects.append(project)
-                }
-
-                if indexPath.row + 1 < items.count {
-                    items[indexPath.row + 1] = getItem(project.name, indexPath.row)
-                }
-                else {
-                    items.append(getItem(project.name, indexPath.row))
-                }
+                update(project, at: indexPath.row)
             }
         @unknown default:
             break
         }
 
-        // Fix tags. Unfortunately, there's no way to get the tab index, so we
-        // need to make sure, that the tag is the same as the index in the
-        // projects array.
-        if projects.count > 0 {
-            for i in 0 ... projects.count - 1 {
-                if i + 1 < items.count {
-                    items[ i + 1 ].tag = i
-                }
-            }
+        if selectedProject == nil {
+            projectTabs.first?.isSelected = true
+            selectionUpdate = true
         }
 
         // Always select a newly inserted project or fix situation when tab bar
         // was properly populated while the "+" tab is selected, which really
         // shouldn't.
-        if insertedNew || selectSelected(),
+        if selectionUpdate,
             let selectedProject = selectedProject {
             projectsDelegate?.didSelect(self, project: selectedProject)
-        }
-    }
-
-
-    // MARK: MDCTabBarDelegate
-
-    func tabBar(_ tabBar: MDCTabBar, shouldSelect item: UITabBarItem) -> Bool {
-        if item.tag == ProjectsTabBar.addTabItemTag {
-            projectsDelegate?.didSelectAdd(self)
-
-            return false
-        }
-
-        return true
-    }
-
-    func tabBar(_ tabBar: MDCTabBar, didSelect item: UITabBarItem) {
-        if item.tag < projects.count {
-            projectsDelegate?.didSelect(self, project: projects[item.tag])
         }
     }
 
@@ -212,31 +156,22 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
     // MARK: Private Methods
 
     private func setup() {
-        itemAppearance = .titles
-
-        displaysUppercaseTitles = false
-
-        selectedItemTitleFont = UIFont.systemFont(ofSize: 13, weight: .medium)
-        unselectedItemTitleFont = UIFont.systemFont(ofSize: 13, weight: .medium)
-
-        setTitleColor(.gray, for: .normal)
-        setTitleColor(.black, for: .selected)
-        bottomDividerColor = .lightGray
-
-        items.append(getItem("New".localize(), ProjectsTabBar.addTabItemTag))
+        // Trigger lazy creators.
+        _ = container
 
         read { transaction in
             transaction.enumerateKeysAndObjects(inGroup: Project.collection) {
                 collection, key, object, index, stop in
 
                 if let project = object as? Project {
-                    self.projects.append(project)
-                    self.items.append(self.getItem(project.name, Int(index)))
+                    self.insert(project, at: Int.max)
+
+                    if self.selectedProject == nil {
+                        self.selectedProject = project
+                    }
                 }
             }
         }
-
-        selectSelected()
     }
 
     private func read(_ callback: @escaping (_ transaction: YapDatabaseViewTransaction) -> Void) {
@@ -246,10 +181,6 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
                 callback(viewTransaction)
             }
         }
-    }
-
-    private func getItem(_ title: String?, _ tag: Int) -> UITabBarItem {
-        return UITabBarItem(title: title, image: nil, tag: tag)
     }
 
     private func getProject(at indexPath: IndexPath) -> Project? {
@@ -264,24 +195,81 @@ class ProjectsTabBar: MDCTabBar, MDCTabBarDelegate {
         return project
     }
 
-    @discardableResult
-    private func selectSelected() -> Bool {
-        if selectedItem?.tag == ProjectsTabBar.addTabItemTag && projects.count > 0 {
-            var idx = 0
-            if let projectId = AbcFilteredByProjectView.projectId {
-                for i in 0...projects.count - 1 {
-                    if projects[i].id == projectId {
-                        idx = i
-                        break
-                    }
-                }
-            }
+    @objc private func add() {
+        projectsDelegate?.didSelectAdd(self)
+    }
 
-            selectedItem = items[idx + 1] // Add is on 0, first project on 1.
+    @objc private func projectSelected(_ sender: ProjectTab) {
+        if sender.frame.origin.x < container.contentOffset.x
+            || sender.frame.origin.x + sender.frame.width > container.contentOffset.x + container.bounds.width {
 
-            return true
+            container.setContentOffset(CGPoint(x: sender.frame.origin.x, y: container.contentOffset.y), animated: true)
         }
 
-        return false
+        selectedProject = sender.project
+        projectsDelegate?.didSelect(self, project: sender.project)
+    }
+
+    @discardableResult
+    private func remove(at index: Int) -> ProjectTab? {
+        guard index < projectTabs.count else {
+            return nil
+        }
+
+        let tab = projectTabs.remove(at: index)
+
+        tab.removeFromSuperview()
+
+        // Fix layout constraint on next sibling.
+        if index < projectTabs.count {
+            projectTabs[index].setLeadingConstraint(index > 0 ? projectTabs[index - 1] : nil)
+        }
+        else {
+            projectTabs.last?.trailingConstraintToSuperview?.isActive = true
+        }
+
+        return tab
+    }
+
+    private func insert(_ project: Project, at index: Int) {
+        let tab = ProjectTab(project)
+        tab.addTarget(self, action: #selector(projectSelected(_:)), for: .touchUpInside)
+
+        insert(tab, at: index)
+    }
+
+    private func insert(_ tab: ProjectTab, at index: Int) {
+        // Fix issue when multiple projects are inserted at once, which
+        // happens on DB setup for screenshot creation.
+        // NOTE: This will mess up the order with more than 2 projects at once!
+        if index < projectTabs.count {
+            projectTabs.insert(tab, at: index)
+        }
+        else {
+            projectTabs.append(tab)
+        }
+
+        let newIndex = projectTabs.firstIndex(of: tab)!
+        let leadingSibling = newIndex <= 0 ? nil : projectTabs[newIndex - 1]
+        leadingSibling?.trailingConstraintToSuperview?.isActive = false
+
+        tab.addToSuperview(container, leadingConstraintTo: leadingSibling)
+
+        // Fix layout constraints on next sibling.
+        if newIndex + 1 < projectTabs.count {
+            projectTabs[newIndex + 1].setLeadingConstraint(tab)
+        }
+        else {
+            tab.trailingConstraintToSuperview?.isActive = true
+        }
+    }
+
+    private func update(_ project: Project, at index: Int) {
+        if index < projectTabs.count {
+            projectTabs[index].project = project
+        }
+        else {
+            insert(project, at: index)
+        }
     }
 }

@@ -83,6 +83,9 @@
 		A0631B5C22034F0E00B3E90D /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0631B5A22034F0700B3E90D /* Collection.swift */; };
 		A0656AB821F9BC8500070C4B /* ConnectSpaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0656AB721F9BC8500070C4B /* ConnectSpaceViewController.swift */; };
 		A0656ABA21F9BFB800070C4B /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0656AB921F9BFB800070C4B /* MainNavigationController.swift */; };
+		A06D935C233B854D006B2EA3 /* ProjectTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06D935B233B854D006B2EA3 /* ProjectTab.swift */; };
+		A06D935D233B854D006B2EA3 /* ProjectTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06D935B233B854D006B2EA3 /* ProjectTab.swift */; };
+		A06D935E233B854D006B2EA3 /* ProjectTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06D935B233B854D006B2EA3 /* ProjectTab.swift */; };
 		A070335B2119E7DF00BF1F33 /* Request+debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = A070335A2119E7DF00BF1F33 /* Request+debug.swift */; };
 		A070335C2119E7DF00BF1F33 /* Request+debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = A070335A2119E7DF00BF1F33 /* Request+debug.swift */; };
 		A07129052111CC90007A432A /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A07128FB2111CC90007A432A /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
@@ -485,6 +488,7 @@
 		A0631B5A22034F0700B3E90D /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		A0656AB721F9BC8500070C4B /* ConnectSpaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectSpaceViewController.swift; sourceTree = "<group>"; };
 		A0656AB921F9BFB800070C4B /* MainNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
+		A06D935B233B854D006B2EA3 /* ProjectTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTab.swift; sourceTree = "<group>"; };
 		A070335A2119E7DF00BF1F33 /* Request+debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Request+debug.swift"; sourceTree = "<group>"; };
 		A07128FB2111CC90007A432A /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A07129022111CC90007A432A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -1033,6 +1037,7 @@
 				A0DC0FAB233914BD00C4969A /* MovieIndicator.swift */,
 				A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */,
 				A01A7B6E2200A05C00E18DE0 /* ProjectsTabBar.swift */,
+				A06D935B233B854D006B2EA3 /* ProjectTab.swift */,
 				A077732922786BCA00291F5D /* RemoveAssetAlert.swift */,
 				A025171822C2126B00EEFBD9 /* DuplicateProjectAlert.swift */,
 				A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */,
@@ -1499,6 +1504,7 @@
 				A0F7FDDD22491C6C006610F0 /* TintedButton.swift in Sources */,
 				A0C797EA22807DF00009751A /* SelectedCollection.swift in Sources */,
 				A0FA93422277387D0086D276 /* Bundle+displayName.swift in Sources */,
+				A06D935D233B854D006B2EA3 /* ProjectTab.swift in Sources */,
 				A0E27201224E26A500CB7113 /* FolderCell.swift in Sources */,
 				A0FE2C1F22E1E8D200C5443F /* Error+friendlyMessage.swift in Sources */,
 				A0AC0580224CE8C7008B9249 /* TableWithSpacesViewController.swift in Sources */,
@@ -1565,6 +1571,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A09B537D23266F02005266C2 /* Geocoder.swift in Sources */,
+				A06D935E233B854D006B2EA3 /* ProjectTab.swift in Sources */,
 				A09B537E23266F02005266C2 /* IaSpace.swift in Sources */,
 				A09B537F23266F02005266C2 /* MenuViewController.swift in Sources */,
 				A09B538023266F02005266C2 /* Formatters.swift in Sources */,
@@ -1740,6 +1747,7 @@
 				A045D1FB224D02AA008FF8C1 /* TitleCell.swift in Sources */,
 				A092C0F0223A8D4B003EB0AA /* DoneDelegate.swift in Sources */,
 				A0A192DD21F208DA009A8CF0 /* Space.swift in Sources */,
+				A06D935C233B854D006B2EA3 /* ProjectTab.swift in Sources */,
 				A08C2CE221F09B3F008ACA3E /* InternetArchiveViewController.swift in Sources */,
 				A0E1A68921EE873200E4F6B7 /* TableHeader.swift in Sources */,
 				A0AFCF1222302054005E57FD /* PreviewCell.swift in Sources */,
