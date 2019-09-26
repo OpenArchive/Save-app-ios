@@ -429,7 +429,7 @@
                                 </connections>
                             </button>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="AyW-lX-T0b" customClass="ProjectsTabBar" customModule="OpenArchive" customModuleProvider="target">
-                                <rect key="frame" x="49" y="60" width="255" height="44"/>
+                                <rect key="frame" x="57" y="60" width="247" height="44"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="44" id="N5K-vt-4xL"/>
@@ -583,7 +583,7 @@
                             <constraint firstItem="vgM-P6-FLk" firstAttribute="trailing" secondItem="XfW-o7-R6f" secondAttribute="trailing" constant="16" id="C3D-K9-0Yv"/>
                             <constraint firstItem="cdB-Ih-Rhb" firstAttribute="top" secondItem="gVG-Da-M5y" secondAttribute="bottom" constant="8" id="Exz-nO-qIj"/>
                             <constraint firstItem="iaU-RN-V3u" firstAttribute="bottom" secondItem="vgM-P6-FLk" secondAttribute="bottom" id="LvN-wm-AzM"/>
-                            <constraint firstItem="AyW-lX-T0b" firstAttribute="leading" secondItem="a26-95-KQU" secondAttribute="trailing" constant="8" id="MVo-tO-zCn"/>
+                            <constraint firstItem="AyW-lX-T0b" firstAttribute="leading" secondItem="a26-95-KQU" secondAttribute="trailing" constant="16" id="MVo-tO-zCn"/>
                             <constraint firstItem="cdB-Ih-Rhb" firstAttribute="leading" secondItem="vgM-P6-FLk" secondAttribute="leading" constant="16" id="SCf-xT-Um4"/>
                             <constraint firstItem="a26-95-KQU" firstAttribute="leading" secondItem="vgM-P6-FLk" secondAttribute="leading" constant="16" id="Sbw-Zb-o22"/>
                             <constraint firstItem="dIV-uA-I3m" firstAttribute="centerX" secondItem="VEn-ta-I3v" secondAttribute="centerX" id="ZHa-BD-C1k"/>

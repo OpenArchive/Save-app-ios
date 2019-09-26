@@ -12,9 +12,33 @@ class ProjectTab: UIButton {
 
     var project: Project
 
-    var leadingConstraint: NSLayoutConstraint?
     var trailingConstraintToSuperview: NSLayoutConstraint?
 
+    override var isSelected: Bool {
+        didSet {
+            if isSelected {
+                addSubview(indicator)
+
+                indicator.leadingAnchor.constraint(equalTo: leadingAnchor).isActive = true
+                indicator.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
+                indicator.topAnchor.constraint(equalTo: bottomAnchor, constant: 4).isActive = true
+                indicator.heightAnchor.constraint(equalToConstant: 2).isActive = true
+            }
+            else {
+                indicator.removeFromSuperview()
+            }
+        }
+    }
+
+    private var leadingConstraint: NSLayoutConstraint?
+
+    private lazy var indicator: UIView = {
+        let indicator = UIView(frame: .zero)
+        indicator.backgroundColor = .accent
+        indicator.translatesAutoresizingMaskIntoConstraints = false
+
+        return indicator
+    }()
 
     init(_ project: Project) {
         self.project = project
@@ -53,7 +77,7 @@ class ProjectTab: UIButton {
         leadingConstraint?.isActive = false
 
         if let leadingSibling = leadingSibling {
-            leadingConstraint = leadingAnchor.constraint(equalTo: leadingSibling.trailingAnchor, constant: 8)
+            leadingConstraint = leadingAnchor.constraint(equalTo: leadingSibling.trailingAnchor, constant: 16)
         }
         else if let superview = superview {
             leadingConstraint = leadingAnchor.constraint(equalTo: superview.leadingAnchor)

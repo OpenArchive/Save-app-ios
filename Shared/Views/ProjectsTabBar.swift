@@ -145,10 +145,22 @@ class ProjectsTabBar: UIScrollView {
     }
 
     @objc private func projectSelected(_ sender: ProjectTab) {
-        if sender.frame.origin.x < contentOffset.x
-            || sender.frame.origin.x + sender.frame.width > contentOffset.x + bounds.width {
+        var scrollX: CGFloat?
 
-            setContentOffset(CGPoint(x: sender.frame.origin.x, y: contentOffset.y), animated: true)
+        if sender.frame.origin.x < contentOffset.x {
+            // Scroll to right, if selected item is partly out of the left edge.
+            scrollX = sender.frame.origin.x
+        }
+        else if sender.frame.origin.x + sender.frame.width > contentOffset.x + bounds.width {
+            // Scroll to left, if selected item is partly out of the right edge,
+            // but don't scroll further than to the beginning of the item, if
+            // it's actually longer than the width of the scroll view.
+            scrollX = sender.frame.origin.x + min(0, sender.frame.width - bounds.width)
+        }
+
+        // Scroll, if selected item is partly out of view.
+        if let scrollX = scrollX {
+            setContentOffset(CGPoint(x: scrollX, y: contentOffset.y), animated: true)
         }
 
         selectedProject = sender.project
