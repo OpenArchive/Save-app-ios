@@ -37,7 +37,15 @@ PKDownloadButtonDelegate {
         }
     }
 
-    @IBOutlet weak var tabBarContainer: UIView!
+    @IBOutlet weak var tabBar: ProjectsTabBar! {
+        didSet {
+            tabBar.connection = projectsReadConn
+            tabBar.viewName = ActiveProjectsView.name
+            tabBar.mappings = projectsMappings
+            tabBar.projectsDelegate = self
+            tabBar.load()
+        }
+    }
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var toolbar: UIToolbar!
     @IBOutlet weak var selectBt: UIBarButtonItem!
@@ -64,15 +72,6 @@ PKDownloadButtonDelegate {
 
     private var inEditMode = false
 
-    lazy var tabBar: ProjectsTabBar = {
-        let tabBar = ProjectsTabBar(frame: tabBarContainer.bounds, projectsReadConn,
-                                    viewName: ActiveProjectsView.name, projectsMappings)
-
-        tabBar.projectsDelegate = self
-
-        return tabBar
-    }()
-
     lazy var pickerConf: TLPhotosPickerConfigure = {
         var conf = TLPhotosPickerConfigure()
         conf.customLoclizedTitle = ["Camera Roll": "Camera Roll".localize()]
@@ -97,8 +96,6 @@ PKDownloadButtonDelegate {
         projectsReadConn?.update(mappings: projectsMappings)
         collectionsReadConn?.update(mappings: collectionsMappings)
         assetsReadConn?.update(mappings: assetsMappings)
-
-        tabBar.addToSuperview(tabBarContainer)
 
         Db.add(observer: self, #selector(yapDatabaseModified))
     }
@@ -222,10 +219,28 @@ PKDownloadButtonDelegate {
         performSegue(withIdentifier: MainViewController.segueShowMenu, sender: self)
     }
 
+    @IBAction func addProject() {
+        toggleMode(newMode: false)
+
+        if SelectedSpace.available {
+            let vc = UINavigationController(rootViewController: AddProjectViewController())
+            vc.modalPresentationStyle = .popover
+            vc.popoverPresentationController?.sourceView = tabBar
+            vc.popoverPresentationController?.sourceRect = tabBar.frame
+
+            present(vc, animated: true)
+        }
+        else {
+            performSegue(withIdentifier: MainViewController.segueShowMenu, sender: self)
+        }
+    }
+
+
+
     @IBAction func add() {
         // Don't allow to add assets without a space or a project.
         if tabBar.selectedProject == nil {
-            return didSelectAdd(tabBar)
+            return addProject()
         }
 
         let tlpp = TLPhotosPickerViewController()
@@ -265,7 +280,7 @@ PKDownloadButtonDelegate {
     @IBAction func addDocument() {
         // Don't allow to add assets without a space or a project.
         if tabBar.selectedProject == nil {
-            return didSelectAdd(tabBar)
+            return addProject()
         }
 
         let vc = UIDocumentPickerViewController(documentTypes: [kUTTypeItem as String], in: .import)
@@ -338,22 +353,6 @@ PKDownloadButtonDelegate {
 
 
     // MARK: ProjectsTabBarDelegate
-
-    func didSelectAdd(_ tabBar: ProjectsTabBar) {
-        toggleMode(newMode: false)
-
-        if SelectedSpace.available {
-            let vc = UINavigationController(rootViewController: AddProjectViewController())
-            vc.modalPresentationStyle = .popover
-            vc.popoverPresentationController?.sourceView = tabBar
-            vc.popoverPresentationController?.sourceRect = tabBar.frame
-
-            present(vc, animated: true)
-        }
-        else {
-            performSegue(withIdentifier: MainViewController.segueShowMenu, sender: self)
-        }
-    }
 
     func didSelect(_ tabBar: ProjectsTabBar, project: Project) {
         if AbcFilteredByProjectView.projectId != project.id {

@@ -12,12 +12,10 @@ import Localize
 
 protocol ProjectsTabBarDelegate {
 
-    func didSelectAdd(_ tabBar: ProjectsTabBar)
-
     func didSelect(_ tabBar: ProjectsTabBar, project: Project)
 }
 
-class ProjectsTabBar: UIView {
+class ProjectsTabBar: UIScrollView {
 
     weak var connection: YapDatabaseConnection?
 
@@ -40,69 +38,23 @@ class ProjectsTabBar: UIView {
 
     var projectsDelegate: ProjectsTabBarDelegate?
 
-    private lazy var addBt: UIButton = {
-        let bt = UIButton(type: .contactAdd)
-        bt.addTarget(self, action: #selector(add), for: .touchUpInside)
-
-        bt.translatesAutoresizingMaskIntoConstraints = false
-
-        addSubview(bt)
-
-        bt.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
-        bt.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-
-        return bt
-    }()
-
-    private lazy var container: UIScrollView = {
-        let container = UIScrollView(frame: .zero)
-
-        container.showsVerticalScrollIndicator = false
-        container.showsHorizontalScrollIndicator = false
-
-        container.translatesAutoresizingMaskIntoConstraints = false
-
-        addSubview(container)
-
-        container.leadingAnchor.constraint(equalTo: addBt.trailingAnchor, constant: 8).isActive = true
-        container.trailingAnchor.constraint(equalTo: trailingAnchor).isActive = true
-        container.topAnchor.constraint(equalTo: topAnchor).isActive = true
-        container.bottomAnchor.constraint(equalTo: bottomAnchor).isActive = true
-
-        return container
-    }()
-
-    init(frame: CGRect, _ connection: YapDatabaseConnection?, viewName: String,
-         _ mappings: YapDatabaseViewMappings) {
-        
-        self.connection = connection
-        self.viewName = viewName
-        self.mappings = mappings
-
+    
+    override init(frame: CGRect) {
         super.init(frame: frame)
 
-        setup()
+        showsVerticalScrollIndicator = false
+        showsHorizontalScrollIndicator = false
     }
 
     required init?(coder: NSCoder) {
         super.init(coder: coder)
 
-        setup()
+        showsVerticalScrollIndicator = false
+        showsHorizontalScrollIndicator = false
     }
 
 
     // MARK: Public Methods
-
-    func addToSuperview(_ view: UIView) {
-        translatesAutoresizingMaskIntoConstraints = false
-
-        view.addSubview(self)
-
-        topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
-        leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-    }
 
     func handle(_ change: YapDatabaseViewRowChange) {
         var selectionUpdate = false
@@ -152,13 +104,7 @@ class ProjectsTabBar: UIView {
         }
     }
 
-
-    // MARK: Private Methods
-
-    private func setup() {
-        // Trigger lazy creators.
-        _ = container
-
+    func load() {
         read { transaction in
             transaction.enumerateKeysAndObjects(inGroup: Project.collection) {
                 collection, key, object, index, stop in
@@ -173,6 +119,9 @@ class ProjectsTabBar: UIView {
             }
         }
     }
+
+
+    // MARK: Private Methods
 
     private func read(_ callback: @escaping (_ transaction: YapDatabaseViewTransaction) -> Void) {
         connection?.read() { transaction in
@@ -195,15 +144,11 @@ class ProjectsTabBar: UIView {
         return project
     }
 
-    @objc private func add() {
-        projectsDelegate?.didSelectAdd(self)
-    }
-
     @objc private func projectSelected(_ sender: ProjectTab) {
-        if sender.frame.origin.x < container.contentOffset.x
-            || sender.frame.origin.x + sender.frame.width > container.contentOffset.x + container.bounds.width {
+        if sender.frame.origin.x < contentOffset.x
+            || sender.frame.origin.x + sender.frame.width > contentOffset.x + bounds.width {
 
-            container.setContentOffset(CGPoint(x: sender.frame.origin.x, y: container.contentOffset.y), animated: true)
+            setContentOffset(CGPoint(x: sender.frame.origin.x, y: contentOffset.y), animated: true)
         }
 
         selectedProject = sender.project
@@ -253,7 +198,7 @@ class ProjectsTabBar: UIView {
         let leadingSibling = newIndex <= 0 ? nil : projectTabs[newIndex - 1]
         leadingSibling?.trailingConstraintToSuperview?.isActive = false
 
-        tab.addToSuperview(container, leadingConstraintTo: leadingSibling)
+        tab.addToSuperview(self, leadingConstraintTo: leadingSibling)
 
         // Fix layout constraints on next sibling.
         if newIndex + 1 < projectTabs.count {
