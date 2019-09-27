@@ -127,6 +127,8 @@ PKDownloadButtonDelegate {
      Needs to be called from `AppDelegate#applicationWillEnterForeground`.
     */
     func updateFilter() {
+        tabBar.load()
+
         // Reset collection, otherwise an inconsistent changeset will be applied
         // in #yapDatabaseModified.
         collectionView.reloadData()

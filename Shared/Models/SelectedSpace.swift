@@ -63,7 +63,7 @@ class SelectedSpace {
 
     static func store(_ transaction: YapDatabaseReadWriteTransaction? = nil) {
         guard let transaction = transaction else {
-            Db.bgRwConn?.asyncReadWrite { transaction in
+            Db.writeConn?.asyncReadWrite { transaction in
                 self.store(transaction)
             }
 

@@ -137,6 +137,13 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
     }
 
 
+    // MARK: Equatable
+
+    static func == (lhs: Project, rhs: Project) -> Bool {
+        return lhs.id == rhs.id
+    }
+
+
     // MARK: NSObject
 
     override var description: String {

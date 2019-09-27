@@ -8,6 +8,7 @@
 
 import UIKit
 import YapDatabase
+import CocoaLumberjack
 
 /**
  Encapsulates YapDatabase setup and connection creation.
@@ -33,6 +34,8 @@ class Db {
     }()
 
     public class func setup() {
+//        DDLog.add(DDTTYLogger.sharedInstance)
+
         Space.fixArchiverName() // Needed for screenshot testing.
         WebDavSpace.fixArchiverName()
         IaSpace.fixArchiverName()
@@ -54,7 +57,7 @@ class Db {
         shared?.register(YapDatabaseRelationship(), withName: "relationships")
 
         // Enable cross-process notifications.
-        shared?.register(YapDatabaseCrossProcessNotification(), withName: "xProcNotification")
+        shared?.register(YapDatabaseCrossProcessNotification(identifier: DB_NAME), withName: "xProcNotification")
     }
 
     /**

@@ -110,10 +110,12 @@ class ProjectsTabBar: UIScrollView {
                 collection, key, object, index, stop in
 
                 if let project = object as? Project {
-                    self.insert(project, at: Int.max)
+                    if !self.projectTabs.contains(where: { $0.project == project }) {
+                        self.insert(project, at: Int(index))
 
-                    if self.selectedProject == nil {
-                        self.selectedProject = project
+                        if self.selectedProject == nil {
+                            self.selectedProject = project
+                        }
                     }
                 }
             }

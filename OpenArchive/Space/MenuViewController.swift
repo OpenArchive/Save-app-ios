@@ -174,7 +174,9 @@ class MenuViewController: TableWithSpacesViewController {
             }
 
         case 1:
-            vc = EditProjectViewController(getProject(indexPath)!)
+            if let project = getProject(indexPath) {
+                vc = EditProjectViewController(project)
+            }
 
         case 2:
             vc = DataUsageViewController()
