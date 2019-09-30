@@ -48,7 +48,6 @@ PKDownloadButtonDelegate {
     }
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var toolbar: UIToolbar!
-    @IBOutlet weak var selectBt: UIBarButtonItem!
     @IBOutlet weak var editAssetsBt: UIBarButtonItem!
     @IBOutlet weak var removeAssetsBt: UIBarButtonItem!
 
@@ -210,8 +209,14 @@ PKDownloadButtonDelegate {
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        updateHeaderButton()
-        updateToolbar()
+        // Switch off edit mode, when last item was deselected.
+        if collectionView.numberOfSelectedItems < 1 {
+            toggleMode(newMode: false)
+        }
+        else {
+            updateHeaderButton()
+            updateToolbar()
+        }
     }
 
 
@@ -279,6 +284,9 @@ PKDownloadButtonDelegate {
         }
     }
 
+    /**
+     Deactivated, was deemed too confusing.
+     */
     @IBAction func addDocument() {
         // Don't allow to add assets without a space or a project.
         if tabBar.selectedProject == nil {
@@ -291,8 +299,21 @@ PKDownloadButtonDelegate {
         present(vc, animated: true)
     }
 
-    @IBAction func toggleMode() {
-        toggleMode(newMode: !inEditMode)
+    @IBAction func longPressItem(_ sender: UILongPressGestureRecognizer) {
+
+        // We only recognize this the first time, it is triggered.
+        // It will continue triggering with .changed and .ended states, but
+        // .ended is only released after the user lifts the finger which feels
+        // awkward.
+        if sender.state != .began {
+            return
+        }
+
+        if let indexPath = collectionView.indexPathForItem(at: sender.location(in: collectionView)) {
+            collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredVertically)
+
+            toggleMode(newMode: true)
+        }
     }
 
     @IBAction func editAssets() {
@@ -381,8 +402,14 @@ PKDownloadButtonDelegate {
                     collectionView.selectSection(section, animated: false, scrollPosition: .centeredVertically)
                 }
 
-                updateHeaderButton()
-                updateToolbar()
+                // Switch off edit mode, when last item was deselected.
+                if collectionView.numberOfSelectedItems < 1 {
+                    toggleMode(newMode: false)
+                }
+                else {
+                    updateHeaderButton()
+                    updateToolbar()
+                }
             }
 
             return
@@ -583,6 +610,10 @@ PKDownloadButtonDelegate {
         }
     }
 
+    private func toggleMode() {
+        toggleMode(newMode: !inEditMode)
+    }
+
     /**
      Enables/disables edit mode. Updates all UI depending on it.
 
@@ -600,8 +631,6 @@ PKDownloadButtonDelegate {
         }
 
         inEditMode = newMode
-
-        selectBt.title = inEditMode ? "Cancel".localize() : "Select".localize()
 
         updateHeaderButton()
         updateToolbar()

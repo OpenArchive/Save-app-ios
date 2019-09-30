@@ -541,36 +541,28 @@
                                 <connections>
                                     <outlet property="dataSource" destination="wAB-WM-ZQl" id="QC6-YG-Zks"/>
                                     <outlet property="delegate" destination="wAB-WM-ZQl" id="Mtw-we-Bj8"/>
+                                    <outletCollection property="gestureRecognizers" destination="z3W-RY-PUD" appends="YES" id="aBI-6G-e5p"/>
                                 </connections>
                             </collectionView>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="iaU-RN-V3u">
                                 <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
-                                    <barButtonItem title="Select" id="CeK-aX-7DK">
-                                        <connections>
-                                            <action selector="toggleMode" destination="wAB-WM-ZQl" id="cJP-Jf-PDK"/>
-                                        </connections>
-                                    </barButtonItem>
                                     <barButtonItem enabled="NO" image="ic_batchedit" id="VSL-EX-jb4">
                                         <connections>
                                             <action selector="editAssets" destination="wAB-WM-ZQl" id="Uma-AR-gZP"/>
                                         </connections>
                                     </barButtonItem>
-                                    <barButtonItem enabled="NO" systemItem="trash" id="Ua2-8a-Ofg">
-                                        <connections>
-                                            <action selector="removeAssets" destination="wAB-WM-ZQl" id="cPA-0k-ySD"/>
-                                        </connections>
-                                    </barButtonItem>
-                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="hwi-R0-tNi"/>
-                                    <barButtonItem systemItem="organize" id="ckV-eP-gDr">
-                                        <connections>
-                                            <action selector="addDocument" destination="wAB-WM-ZQl" id="D9H-Kf-itA"/>
-                                        </connections>
-                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="aS4-8x-SJH"/>
                                     <barButtonItem systemItem="add" id="CpM-lq-8Cg">
                                         <connections>
                                             <action selector="add" destination="wAB-WM-ZQl" id="Cvx-fX-JaN"/>
+                                        </connections>
+                                    </barButtonItem>
+                                    <barButtonItem style="plain" systemItem="flexibleSpace" id="hwi-R0-tNi"/>
+                                    <barButtonItem enabled="NO" systemItem="trash" id="Ua2-8a-Ofg">
+                                        <connections>
+                                            <action selector="removeAssets" destination="wAB-WM-ZQl" id="cPA-0k-ySD"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -611,7 +603,6 @@
                         <outlet property="editAssetsBt" destination="VSL-EX-jb4" id="DsF-mF-k7V"/>
                         <outlet property="manageBt" destination="XfW-o7-R6f" id="OnK-vA-KRC"/>
                         <outlet property="removeAssetsBt" destination="Ua2-8a-Ofg" id="yhb-HF-4lO"/>
-                        <outlet property="selectBt" destination="CeK-aX-7DK" id="zN8-3z-b98"/>
                         <outlet property="spaceFavIcon" destination="hpS-2l-dcc" id="f3r-5D-oXV"/>
                         <outlet property="spaceName" destination="IgM-tk-GPC" id="3jS-qS-wAR"/>
                         <outlet property="tabBar" destination="AyW-lX-T0b" id="TMJ-iJ-tiG"/>
@@ -638,6 +629,11 @@
                         <action selector="connectShowSpace" destination="wAB-WM-ZQl" id="M4l-Su-Dxe"/>
                     </connections>
                 </tapGestureRecognizer>
+                <pongPressGestureRecognizer allowableMovement="10" minimumPressDuration="0.5" id="z3W-RY-PUD">
+                    <connections>
+                        <action selector="longPressItem:" destination="wAB-WM-ZQl" id="fVm-p9-Tjr"/>
+                    </connections>
+                </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="618.75" y="114.08450704225352"/>
         </scene>
