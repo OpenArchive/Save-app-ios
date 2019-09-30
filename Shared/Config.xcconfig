@@ -11,16 +11,22 @@
 
 OA_APP_BUNDLE_ID[config=Debug] =
 OA_EXT_BUNDLE_ID[config=Debug] =
+OA_SCS_BUNDLE_ID[config=Debug] =
 OA_APP_GROUP[config=Debug] =
 DEVELOPMENT_TEAM[config=Debug] =
 PROVISIONING_PROFILE_SPECIFIER_MAIN[config=Debug] =
 PROVISIONING_PROFILE_SPECIFIER_SHARE_EXTENSION[config=Debug] =
+PROVISIONING_PROFILE_SPECIFIER_SCREENSHOTS[config=Debug] =
 
 OA_APP_BUNDLE_ID[config=Release] = org.open-archive.save
 OA_EXT_BUNDLE_ID[config=Release] = org.open-archive.save.ShareExtension
+OA_SCS_BUNDLE_ID[config=Release] = org.open-archive.save.Screenshots
 OA_APP_GROUP[config=Release] = group.org.open-archive.save
 DEVELOPMENT_TEAM[config=Release] = FZP8ANTLPS
 PROVISIONING_PROFILE_SPECIFIER_MAIN[config=Release] = save Distribution
 PROVISIONING_PROFILE_SPECIFIER_SHARE_EXTENSION[config=Release] = save Share Extension Distribution
+PROVISIONING_PROFILE_SPECIFIER_SCREENSHOTS[config=Release] =
 
-GCC_PREPROCESSOR_DEFINITIONS = $(inherited) OA_APP_GROUP="$(OA_APP_GROUP)" DEVELOPMENT_TEAM="$(DEVELOPMENT_TEAM)"
+CURRENT_PROJECT_VERSION = 42
+
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) OA_APP_GROUP="$(OA_APP_GROUP)" DEVELOPMENT_TEAM="$(DEVELOPMENT_TEAM)" CURRENT_PROJECT_VERSION="$(CURRENT_PROJECT_VERSION)"
