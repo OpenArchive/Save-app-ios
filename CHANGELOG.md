@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.3.0
+- Uses Xcode 11 (iOS 13)
+- Improved thumbnail quality.
+- Indicate audio/video content.
+- Added Transifex support.
+- Fixed "Screenshot" target, improved screenshots.
+- Replaced hovering "+" button with a "+" button in an always visible toolbar.
+- Replaced Google tab bar with self-made one. New project button now always visible and a big plus sign instead of word "New".
+- Fixed bugs when returning from a share extension. 
+
 ## 2.2.0
 
 - Added Nextcloud upload chunking support.
