@@ -18,14 +18,16 @@ class ImageViewController: UIViewController {
 
     var index: Int?
 
+    var isAv: Bool?
+
     var duration: TimeInterval?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         imageView.image = image
 
-        movieIndicator.isHidden = duration == nil
+        movieIndicator.isHidden = !(isAv ?? false)
         movieIndicator.set(duration: duration)
         movieIndicator.inset(9.5)
     }

@@ -287,16 +287,22 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         return UTTypeConformsTo(uti as CFString, kUTTypeAudiovisualContent)
     }
 
+    private var _duration: TimeInterval?
+
+    /**
+     The duration of a audio/video file.
+     */
     var duration: TimeInterval? {
         if isAv,
-            let file = file {
+            let file = file,
+            FileManager.default.fileExists(atPath: file.path) {
 
             let avAsset = AVAsset(url: file)
 
-            return CMTimeGetSeconds(avAsset.duration)
+            _duration = CMTimeGetSeconds(avAsset.duration)
         }
 
-        return nil
+        return _duration
     }
 
     init(_ collection: Collection, uti: String = kUTTypeData as String,
@@ -328,6 +334,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         collectionId = decoder.decodeObject(forKey: "collectionId") as? String
         _filesize = decoder.decodeInt64(forKey: "filesize")
         _digest = decoder.decodeObject(forKey: "digest") as? Data
+        _duration = decoder.decodeObject(forKey: "duration") as? TimeInterval
     }
 
     func encode(with coder: NSCoder) {
@@ -347,6 +354,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         coder.encode(collectionId, forKey: "collectionId")
         coder.encode(filesize ?? Int64(0), forKey: "filesize")
         coder.encode(digest, forKey: "digest")
+        coder.encode(duration, forKey: "duration")
     }
 
 

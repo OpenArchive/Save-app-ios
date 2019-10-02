@@ -366,6 +366,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
 
         vc.image = asset?.getThumbnail()
         vc.index = index
+        vc.isAv = asset?.isAv
         vc.duration = asset?.duration
 
         return vc
