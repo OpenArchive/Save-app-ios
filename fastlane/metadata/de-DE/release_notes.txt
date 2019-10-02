@@ -1,4 +1,8 @@
-- Unterstützung für Nextcloud Upload Chunking hinzugefügt.
-- Beschriftung bei privater Serverkonfiguration geändert/hinzugefügt um zu verdeutlichen, daß es um WebDAV geht.
-- Fehler mit Toolbar behoben, die nicht verschwunden ist, wenn das Projekt gewechselt wurde.
-- App-Größe reduziert.
+- Unterstützt iOS 13.
+- Vorschaubilderqualität verbessert.
+- Audio/Video-Inhalt wird hervorgehoben.
+- Schwebenden "+"-Button ersetzt durch einen"+"-Button in einer immer sichtbaren Werkzeugleiste.
+- Button zur Erstellung eines neuen Projekts verbessert: Immer sichtbares grünes "+"
+  statt Wort "Neu".
+- Bugfix, wenn man zur App zurückkehrt nachdem von einer anderen App aus etwas in Save
+  hinein in ein neues Projekt geteilt wurde.

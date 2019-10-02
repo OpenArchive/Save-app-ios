@@ -4,8 +4,8 @@
 devices([
   "iOS 13.0 @ iPhone 11 Pro Max",
   "iOS 13.0 @ iPhone 8 Plus",
-  "iOS 13.0 @ iPad Pro (12.9-inch) (3rd generation)",
   "iOS 13.0 @ iPad Pro (12.9-inch) (2nd generation)",
+  "iOS 13.0 @ iPad Pro (12.9-inch) (3rd generation)",
 ])
 
 languages([
@@ -34,4 +34,4 @@ output_simulator_logs(true)
 # reinstall_app(true)
 clean(true)
 stop_after_first_error(true)
-# concurrent_simulators(false)
+concurrent_simulators(false)

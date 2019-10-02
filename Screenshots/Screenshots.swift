@@ -10,6 +10,8 @@ import XCTest
 
 class Screenshots: XCTestCase {
 
+    private static let startupTimeout: TimeInterval = 10
+
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
 
@@ -31,7 +33,8 @@ class Screenshots: XCTestCase {
     func testWalkthrough() {
         let app = XCUIApplication()
 
-        XCTAssert(app.collectionViews.buttons["btManageCollection"].waitForExistence(timeout: 10), "App didn't start up within 10 seconds!")
+        XCTAssert(app.collectionViews.buttons["btManageCollection"].waitForExistence(timeout: Screenshots.startupTimeout),
+                  "App didn't start up within \(Screenshots.startupTimeout) seconds!")
 
         snapshot("01MainScene")
 

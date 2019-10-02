@@ -1,4 +1,6 @@
-- Added Nextcloud upload chunking support.
-- Improved wording regarding private servers. Make clear, it's about WebDAV.
-- Fixed issue where toolbar wasn't hidden, when project was switched.
-- Reduced app size.
+- iOS 13 support.
+- Improved thumbnail quality.
+- Indicate audio/video content.
+- Replaced hovering "+" button with a "+" button in an always visible toolbar.
+- New project button now always visible and a big plus sign instead of word "New".
+- Fixed bugs when returning from a share extension.
