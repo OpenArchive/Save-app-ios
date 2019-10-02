@@ -646,7 +646,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p3T-VI-YwW">
-                                <rect key="frame" x="0.0" y="44" width="320" height="480"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cpd-AK-jKO">
                                 <rect key="frame" x="0.0" y="524" width="320" height="0.0"/>
@@ -664,7 +664,7 @@
                                     <constraint firstItem="PDk-Rp-dFQ" firstAttribute="top" secondItem="Cpd-AK-jKO" secondAttribute="top" id="Vmk-z3-VlB"/>
                                 </constraints>
                             </view>
-                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JX4-tp-20k">
+                            <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JX4-tp-20k">
                                 <rect key="frame" x="0.0" y="524" width="320" height="44"/>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="ng0-sf-nFd"/>
@@ -696,7 +696,6 @@
                             <outletCollection property="gestureRecognizers" destination="HMK-gK-PqI" appends="YES" id="QK2-LN-fx1"/>
                         </connections>
                     </view>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="container" destination="p3T-VI-YwW" id="aeo-dr-Z6F"/>
                         <outlet property="infos" destination="Cpd-AK-jKO" id="5V7-p5-7ic"/>
@@ -819,11 +818,11 @@
             <objects>
                 <viewController id="E3U-Mn-N4D" customClass="PreviewViewController" customModule="OpenArchive" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="bUU-pI-00W">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsMultipleSelection="YES" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fzS-xy-6ni">
-                                <rect key="frame" x="0.0" y="44" width="320" height="524"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="none" indentationWidth="10" reuseIdentifier="previewCell" rowHeight="240" id="FlE-CG-61G" customClass="PreviewCell" customModule="OpenArchive" customModuleProvider="target">
@@ -934,8 +933,8 @@
                                     <outletCollection property="gestureRecognizers" destination="pkG-Qp-cyT" appends="YES" id="rmj-7n-i8d"/>
                                 </connections>
                             </tableView>
-                            <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="mTG-ZC-ss8">
-                                <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                            <toolbar hidden="YES" opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mTG-ZC-ss8">
+                                <rect key="frame" x="0.0" y="480" width="320" height="44"/>
                                 <color key="backgroundColor" white="0.66666666669999997" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <items>
                                     <barButtonItem image="ic_batchedit" id="erH-7R-LeC">
@@ -971,7 +970,7 @@
                             </connections>
                         </barButtonItem>
                     </navigationItem>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
+                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" translucent="NO" prompted="NO"/>
                     <connections>
                         <outlet property="tableView" destination="fzS-xy-6ni" id="2ed-fc-HmQ"/>
                         <outlet property="toolbar" destination="mTG-ZC-ss8" id="mlv-rR-0D5"/>
@@ -1094,7 +1093,7 @@
         <scene sceneID="lB7-bA-cEV">
             <objects>
                 <navigationController navigationBarHidden="YES" id="3f6-u4-WuB" customClass="MainNavigationController" customModule="OpenArchive" customModuleProvider="target" sceneMemberID="viewController">
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="sX2-BZ-6A2">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translucent="NO" id="sX2-BZ-6A2">
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -1114,10 +1113,10 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cl7-oc-Mh0">
-                                <rect key="frame" x="0.0" y="44" width="320" height="262"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="284"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hFB-7y-b3z">
-                                        <rect key="frame" x="0.0" y="0.0" width="200" height="262"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="284"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="iYN-9s-Esf"/>
                                         </constraints>
@@ -1162,7 +1161,6 @@
                         <viewLayoutGuide key="safeArea" id="1ap-UG-RGR"/>
                     </view>
                     <navigationItem key="navigationItem" title="Batch Edit" id="uQQ-6M-irW"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
                     <connections>
                         <outlet property="container" destination="hFB-7y-b3z" id="rf8-5o-Mmw"/>
                         <outlet property="containerWidth" destination="iYN-9s-Esf" id="MeG-Sc-d3w"/>
