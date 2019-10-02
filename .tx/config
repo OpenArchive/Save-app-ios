@@ -1,10 +1,49 @@
 [main]
 host = https://www.transifex.com
 
-[openarchive.localizable-strings]
+[SAVE.localizable-strings]
 file_filter = Shared/<lang>.lproj/Localizable.strings
 minimum_perc = 75
 source_file = Shared/en.lproj/Localizable.strings
 source_lang = en
 type = STRINGS
 
+[SAVE.subtitle]
+file_filter = fastlane/metadata/<lang>/subtitle.txt
+minimum_perc = 100
+source_file = fastlane/metadata/en-US/subtitle.txt
+source_lang = en
+type = TXT
+trans.de = fastlane/metadata/de-DE/subtitle.txt
+
+[SAVE.keywords]
+file_filter = fastlane/metadata/<lang>/keywords.txt
+minimum_perc = 75
+source_file = fastlane/metadata/en-US/keywords.txt
+source_lang = en
+type = TXT
+trans.de = fastlane/metadata/de-DE/keywords.txt
+
+[SAVE.promotional_text]
+file_filter = fastlane/metadata/<lang>/promotional_text.txt
+minimum_perc = 75
+source_file = fastlane/metadata/en-US/promotional_text.txt
+source_lang = en
+type = TXT
+trans.de = fastlane/metadata/de-DE/promotional_text.txt
+
+[SAVE.name]
+file_filter = fastlane/metadata/<lang>/name.txt
+minimum_perc = 100
+source_file = fastlane/metadata/en-US/name.txt
+source_lang = en
+type = TXT
+trans.de = fastlane/metadata/de-DE/name.txt
+
+[SAVE.description]
+file_filter = fastlane/metadata/<lang>/description.txt
+minimum_perc = 100
+source_file = fastlane/metadata/en-US/description.txt
+source_lang = en
+type = TXT
+trans.de = fastlane/metadata/de-DE/description.txt
