@@ -18,7 +18,7 @@ def shared_pods
     pod 'ReachabilitySwift', '~> 4.3'
     pod 'TLPhotoPicker', '~> 1.9'
     pod 'FormatterKit', '~> 1.8'
-    pod 'UIImageViewAlignedSwift', '~> 0.7'
+    pod 'UIImageViewAlignedSwift', git: 'https://github.com/mirego/UIImageViewAlignedSwift.git'
     pod 'FontBlaster', '~> 4.1'
     pod 'CrossroadRegex', '~> 1.1'
 end

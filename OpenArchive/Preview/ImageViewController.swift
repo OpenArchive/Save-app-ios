@@ -24,7 +24,6 @@ class ImageViewController: UIViewController {
         super.viewDidLoad()
 
         imageView.image = image
-        imageView.alignment = .top
 
         movieIndicator.isHidden = duration == nil
         movieIndicator.set(duration: duration)

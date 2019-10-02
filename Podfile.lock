@@ -2,9 +2,9 @@ PODS:
   - Alamofire (4.9.0)
   - AlignedCollectionViewFlowLayout (1.1.2)
   - ARChromeActivity (1.0.6)
-  - CocoaLumberjack (3.5.3):
-    - CocoaLumberjack/Core (= 3.5.3)
-  - CocoaLumberjack/Core (3.5.3)
+  - CocoaLumberjack (3.6.0):
+    - CocoaLumberjack/Core (= 3.6.0)
+  - CocoaLumberjack/Core (3.6.0)
   - CrossroadRegex (1.1.0)
   - DownloadButton (0.1.0)
   - Eureka (5.0.1)
@@ -134,7 +134,7 @@ DEPENDENCIES:
   - TLPhotoPicker (~> 1.9)
   - TUSafariActivity (~> 1.0)
   - UIImage-Resize (~> 1.0)
-  - UIImageViewAlignedSwift (~> 0.7)
+  - UIImageViewAlignedSwift (from `https://github.com/mirego/UIImageViewAlignedSwift.git`)
   - YapDatabase (~> 3.1)
 
 SPEC REPOS:
@@ -158,14 +158,22 @@ SPEC REPOS:
     - TLPhotoPicker
     - TUSafariActivity
     - UIImage-Resize
-    - UIImageViewAlignedSwift
     - YapDatabase
+
+EXTERNAL SOURCES:
+  UIImageViewAlignedSwift:
+    :git: https://github.com/mirego/UIImageViewAlignedSwift.git
+
+CHECKOUT OPTIONS:
+  UIImageViewAlignedSwift:
+    :commit: b48ff9fd27e6cb202caa64e4f573582d1e2b4c82
+    :git: https://github.com/mirego/UIImageViewAlignedSwift.git
 
 SPEC CHECKSUMS:
   Alamofire: afc3e7c6db61476cb45cdd23fed06bad03bbc321
   AlignedCollectionViewFlowLayout: ee2ef451e741ec08f8e0967d828001e2f051c20a
   ARChromeActivity: 5dcf9b9f09323761f992aff3525cdd777f83609d
-  CocoaLumberjack: 2f44e60eb91c176d471fdba43b9e3eae6a721947
+  CocoaLumberjack: 78b0c238666f4f58db069738ec176f4519557516
   CrossroadRegex: 5eaadb3f7b4014728f1cbd1014756b126c1dbd9a
   DownloadButton: 49a21a89e0d7d1b42d9134f79aaa40e727cd57c3
   Eureka: da9d2294da234eae40b22e7273b9fc2335502fc1
@@ -181,9 +189,9 @@ SPEC CHECKSUMS:
   TLPhotoPicker: 95cbd6d8f66fca5a4ddd8167db5081e1ed676322
   TUSafariActivity: afc55a00965377939107ce4fdc7f951f62454546
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
-  UIImageViewAlignedSwift: cfd56e381a894c71bf0d020cb3ef31cb3f604634
+  UIImageViewAlignedSwift: 2d082e1623c5121dec11b298d9066ae4ce704a58
   YapDatabase: 36e10c3059d33686951eba566fa15c0fce2497ed
 
-PODFILE CHECKSUM: 04acbf9aee596b7250055292bc0c60ed9bf74cc8
+PODFILE CHECKSUM: a3462f960137dfc36497b65795bf933ba3335c27
 
 COCOAPODS: 1.7.5
