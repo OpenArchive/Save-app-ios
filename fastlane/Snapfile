@@ -11,7 +11,7 @@ devices([
 languages([
   "en-US",
   "de-DE",
-#   "it-IT",
+  "fr-FR",
 #   ["pt", "pt_BR"] # Portuguese with Brazilian locale
 ])
 
