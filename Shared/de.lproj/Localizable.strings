@@ -334,7 +334,7 @@
 "OpenArchive" = "OpenArchive";
 
 /* Error+friendlyMessage */
-"Incorrect login or password." = "Falscher Benutzername oder falsches Passwort.";
+"Incorrect username or password." = "Falscher Benutzername oder falsches Passwort.";
 
 /* Space */
 "Configuration invalid." = "Konfiguration ungültig.";

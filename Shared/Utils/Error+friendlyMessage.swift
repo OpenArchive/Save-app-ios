@@ -15,7 +15,7 @@ extension Error {
         if let error = self as? FileProviderWebDavError {
             switch error.code {
             case .unauthorized:
-                return "Incorrect login or password.".localize()
+                return "Incorrect username or password.".localize()
 
             default:
                 // For an unkown reason, casting self gives a better error
