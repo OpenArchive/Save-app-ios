@@ -54,7 +54,7 @@ class InternetArchiveViewController: BaseServerViewController, ScrapeDelegate {
                     + "You can let % try to acquire these keys automatically, or you can tap this row which will send you to % in Safari from where you can copy-and-paste these keys manually."
                         .localize(values: appName, InternetArchiveViewController.keysUrl.absoluteString)
                     + "\n\n"
-                    + "When using the \"%\" feature, make sure to log in and then press the \"Refresh\" button in the top right to let % have another try at automatically scraping the keys."
+                    + "When using the \"%\" feature, make sure to log in and then touch the \"Refresh\" button in the top right to let % have another try at automatically scraping the keys."
                         .localize(values: "Acquire Keys".localize(), appName)
                 }
                 .onCellSelection() { _, _ in

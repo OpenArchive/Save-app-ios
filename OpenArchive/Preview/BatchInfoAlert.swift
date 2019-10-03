@@ -24,7 +24,7 @@ class BatchInfoAlert: InfoAlert {
     }
 
     override class var message: String {
-        return "To edit multiple items, press and hold each.".localize()
+        return "To edit multiple items, tap and hold each.".localize()
     }
 
     override class var wasAlreadyShown: Bool {

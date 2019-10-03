@@ -139,7 +139,7 @@
 "Edit Multiple Items" = "Edit Multiple Items";
 
 /* BatchInfoAlert */
-"To edit multiple items, press and hold each." = "To edit multiple items, press and hold each.";
+"To edit multiple items, tap and hold each." = "To edit multiple items, tap and hold each.";
 
 /* ConnectSpaceViewController */
 "Skip" = "Skip";
@@ -235,7 +235,7 @@
 "You can let % try to acquire these keys automatically, or you can tap this row which will send you to % in Safari from where you can copy-and-paste these keys manually." = "You can let % try to acquire these keys automatically, or you can tap this row which will send you to % in Safari from where you can copy-and-paste these keys manually.";
 
 /* InternetArchiveViewController */
-"When using the \"%\" feature, make sure to log in and then press the \"Refresh\" button in the top right to let % have another try at automatically scraping the keys." = "When using the \"%\" feature, make sure to log in and then press the \"Refresh\" button in the top right to let % have another try at automatically scraping the keys.";
+"When using the \"%\" feature, make sure to log in and then touch the \"Refresh\" button in the top right to let % have another try at automatically scraping the keys." = "When using the \"%\" feature, make sure to log in and then touch the \"Refresh\" button in the top right to let % have another try at automatically scraping the keys.";
 
 /* InternetArchiveViewController */
 "Acquire Keys" = "Acquire Keys";
