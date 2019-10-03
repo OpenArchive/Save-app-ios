@@ -35,6 +35,7 @@ class DataUsageViewController: FormViewController {
 
             +++ AlertRow<String>() {
                 $0.title = "Video/Image Compression".localize()
+                $0.cell.textLabel?.numberOfLines = 0
                 $0.selectorTitle = $0.title
                 $0.options = DataUsageViewController.compressionOptions
                 $0.value = DataUsageViewController.compressionOptions[Settings.highCompression ? 1 : 0]

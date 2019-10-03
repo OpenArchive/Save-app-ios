@@ -14,6 +14,20 @@ class BigMenuItemCell: BaseCell {
         return 100
     }
 
-    @IBOutlet weak var label: UILabel!
-    @IBOutlet weak var detailedDescription: UILabel!
+    @IBOutlet weak var label: UILabel! {
+        didSet {
+            label.minimumScaleFactor = 0.5
+            label.adjustsFontSizeToFitWidth = true
+            label.allowsDefaultTighteningForTruncation = true
+        }
+    }
+
+    @IBOutlet weak var detailedDescription: UILabel! {
+        didSet {
+            detailedDescription.numberOfLines = 2
+            detailedDescription.minimumScaleFactor = 0.5
+            detailedDescription.adjustsFontSizeToFitWidth = true
+            detailedDescription.allowsDefaultTighteningForTruncation = true
+        }
+    }
 }

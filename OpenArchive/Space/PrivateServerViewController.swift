@@ -73,7 +73,6 @@ class PrivateServerViewController: BaseServerViewController {
                 self.enableConnect()
             }
 
-            // To get another divider after the last row.
             <<< LabelRow() {
                 $0.title = "__webdav_description__".localize(value: Bundle.main.displayName)
                 $0.cell.textLabel?.numberOfLines = 0
