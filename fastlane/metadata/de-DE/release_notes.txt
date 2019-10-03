@@ -6,3 +6,4 @@
   statt Wort "Neu".
 - Bugfix, wenn man zur App zurückkehrt nachdem von einer anderen App aus etwas in Save
   hinein in ein neues Projekt geteilt wurde.
+- Französisch und Spanisch (teilweise) Lokalisierung.
