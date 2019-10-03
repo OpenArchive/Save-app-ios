@@ -496,6 +496,12 @@
 		A07129122111F4D5007A432A /* OpenArchive.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenArchive.entitlements; sourceTree = "<group>"; };
 		A07129132111F4F8007A432A /* ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExtension.entitlements; sourceTree = "<group>"; };
 		A072C4D5227C8B3C0022BC58 /* SpaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceViewController.swift; sourceTree = "<group>"; };
+		A07727442345FA7C00366ADD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A07727452345FA7C00366ADD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A07727682345FAB900366ADD /* subtitle.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = subtitle.txt; sourceTree = "<group>"; };
+		A07727692345FAB900366ADD /* keywords.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = keywords.txt; sourceTree = "<group>"; };
+		A077276A2345FAB900366ADD /* promotional_text.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = promotional_text.txt; sourceTree = "<group>"; };
+		A077276B2345FAB900366ADD /* name.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = name.txt; sourceTree = "<group>"; };
 		A077732922786BCA00291F5D /* RemoveAssetAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAssetAlert.swift; sourceTree = "<group>"; };
 		A07E8A3F229575B600E9FFAA /* SlideshowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideshowViewController.swift; sourceTree = "<group>"; };
 		A07E8A4122958D0600E9FFAA /* SlideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideViewController.swift; sourceTree = "<group>"; };
@@ -832,6 +838,17 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
+		A07727672345FAB900366ADD /* fr */ = {
+			isa = PBXGroup;
+			children = (
+				A077276B2345FAB900366ADD /* name.txt */,
+				A07727682345FAB900366ADD /* subtitle.txt */,
+				A07727692345FAB900366ADD /* keywords.txt */,
+				A077276A2345FAB900366ADD /* promotional_text.txt */,
+			);
+			path = fr;
+			sourceTree = "<group>";
+		};
 		A07E8A3E2295759D00E9FFAA /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
@@ -846,16 +863,17 @@
 			children = (
 				A0902BFD22F05F0400062F6E /* app_icon.png */,
 				A0902BC722F0429900062F6E /* copyright.txt */,
-				A0902BC922F0429900062F6E /* en-US */,
-				A0902BD422F0429900062F6E /* trade_representative_contact_information */,
-				A0902BE222F0429900062F6E /* secondary_first_sub_category.txt */,
-				A0902BE322F0429900062F6E /* secondary_category.txt */,
-				A0902BE422F0429900062F6E /* secondary_second_sub_category.txt */,
-				A0902BE522F0429900062F6E /* de-DE */,
+				A0902BFA22F0429900062F6E /* primary_category.txt */,
+				A0902BF922F0429900062F6E /* primary_first_sub_category.txt */,
 				A0902BF022F0429900062F6E /* primary_second_sub_category.txt */,
 				A0902BF122F0429900062F6E /* review_information */,
-				A0902BF922F0429900062F6E /* primary_first_sub_category.txt */,
-				A0902BFA22F0429900062F6E /* primary_category.txt */,
+				A0902BE322F0429900062F6E /* secondary_category.txt */,
+				A0902BE222F0429900062F6E /* secondary_first_sub_category.txt */,
+				A0902BE422F0429900062F6E /* secondary_second_sub_category.txt */,
+				A0902BD422F0429900062F6E /* trade_representative_contact_information */,
+				A0902BE522F0429900062F6E /* de-DE */,
+				A0902BC922F0429900062F6E /* en-US */,
+				A07727672345FAB900366ADD /* fr */,
 			);
 			path = metadata;
 			sourceTree = "<group>";
@@ -863,16 +881,16 @@
 		A0902BC922F0429900062F6E /* en-US */ = {
 			isa = PBXGroup;
 			children = (
-				A0902BCA22F0429900062F6E /* privacy_url.txt */,
-				A0902BCB22F0429900062F6E /* subtitle.txt */,
-				A0902BCC22F0429900062F6E /* support_url.txt */,
-				A0902BCD22F0429900062F6E /* keywords.txt */,
-				A0902BCE22F0429900062F6E /* apple_tv_privacy_policy.txt */,
-				A0902BCF22F0429900062F6E /* promotional_text.txt */,
-				A0902BD022F0429900062F6E /* release_notes.txt */,
 				A0902BD122F0429900062F6E /* name.txt */,
-				A0902BD222F0429900062F6E /* marketing_url.txt */,
+				A0902BCB22F0429900062F6E /* subtitle.txt */,
+				A0902BCD22F0429900062F6E /* keywords.txt */,
+				A0902BCF22F0429900062F6E /* promotional_text.txt */,
 				A0902BD322F0429900062F6E /* description.txt */,
+				A0902BD022F0429900062F6E /* release_notes.txt */,
+				A0902BCE22F0429900062F6E /* apple_tv_privacy_policy.txt */,
+				A0902BD222F0429900062F6E /* marketing_url.txt */,
+				A0902BCA22F0429900062F6E /* privacy_url.txt */,
+				A0902BCC22F0429900062F6E /* support_url.txt */,
 			);
 			path = "en-US";
 			sourceTree = "<group>";
@@ -880,19 +898,19 @@
 		A0902BD422F0429900062F6E /* trade_representative_contact_information */ = {
 			isa = PBXGroup;
 			children = (
-				A0902BD522F0429900062F6E /* phone_number.txt */,
+				A0902BE022F0429900062F6E /* first_name.txt */,
+				A0902BDE22F0429900062F6E /* last_name.txt */,
 				A0902BD622F0429900062F6E /* address_line1.txt */,
-				A0902BD722F0429900062F6E /* country.txt */,
-				A0902BD822F0429900062F6E /* city_name.txt */,
 				A0902BD922F0429900062F6E /* address_line3.txt */,
 				A0902BDA22F0429900062F6E /* address_line2.txt */,
-				A0902BDB22F0429900062F6E /* trade_name.txt */,
-				A0902BDC22F0429900062F6E /* email_address.txt */,
-				A0902BDD22F0429900062F6E /* is_displayed_on_app_store.txt */,
-				A0902BDE22F0429900062F6E /* last_name.txt */,
 				A0902BDF22F0429900062F6E /* postal_code.txt */,
-				A0902BE022F0429900062F6E /* first_name.txt */,
+				A0902BD822F0429900062F6E /* city_name.txt */,
 				A0902BE122F0429900062F6E /* state.txt */,
+				A0902BD722F0429900062F6E /* country.txt */,
+				A0902BDC22F0429900062F6E /* email_address.txt */,
+				A0902BD522F0429900062F6E /* phone_number.txt */,
+				A0902BDB22F0429900062F6E /* trade_name.txt */,
+				A0902BDD22F0429900062F6E /* is_displayed_on_app_store.txt */,
 			);
 			path = trade_representative_contact_information;
 			sourceTree = "<group>";
@@ -900,16 +918,16 @@
 		A0902BE522F0429900062F6E /* de-DE */ = {
 			isa = PBXGroup;
 			children = (
-				A0902BE622F0429900062F6E /* privacy_url.txt */,
-				A0902BE722F0429900062F6E /* subtitle.txt */,
-				A0902BE822F0429900062F6E /* support_url.txt */,
-				A0902BE922F0429900062F6E /* keywords.txt */,
-				A0902BEA22F0429900062F6E /* apple_tv_privacy_policy.txt */,
-				A0902BEB22F0429900062F6E /* promotional_text.txt */,
-				A0902BEC22F0429900062F6E /* release_notes.txt */,
 				A0902BED22F0429900062F6E /* name.txt */,
-				A0902BEE22F0429900062F6E /* marketing_url.txt */,
+				A0902BE722F0429900062F6E /* subtitle.txt */,
+				A0902BE922F0429900062F6E /* keywords.txt */,
+				A0902BEB22F0429900062F6E /* promotional_text.txt */,
 				A0902BEF22F0429900062F6E /* description.txt */,
+				A0902BEC22F0429900062F6E /* release_notes.txt */,
+				A0902BEA22F0429900062F6E /* apple_tv_privacy_policy.txt */,
+				A0902BEE22F0429900062F6E /* marketing_url.txt */,
+				A0902BE622F0429900062F6E /* privacy_url.txt */,
+				A0902BE822F0429900062F6E /* support_url.txt */,
 			);
 			path = "de-DE";
 			sourceTree = "<group>";
@@ -917,13 +935,13 @@
 		A0902BF122F0429900062F6E /* review_information */ = {
 			isa = PBXGroup;
 			children = (
-				A0902BF222F0429900062F6E /* phone_number.txt */,
 				A0902BF322F0429900062F6E /* demo_user.txt */,
-				A0902BF422F0429900062F6E /* notes.txt */,
-				A0902BF522F0429900062F6E /* email_address.txt */,
-				A0902BF622F0429900062F6E /* last_name.txt */,
-				A0902BF722F0429900062F6E /* first_name.txt */,
 				A0902BF822F0429900062F6E /* demo_password.txt */,
+				A0902BF522F0429900062F6E /* email_address.txt */,
+				A0902BF722F0429900062F6E /* first_name.txt */,
+				A0902BF622F0429900062F6E /* last_name.txt */,
+				A0902BF422F0429900062F6E /* notes.txt */,
+				A0902BF222F0429900062F6E /* phone_number.txt */,
 			);
 			path = review_information;
 			sourceTree = "<group>";
@@ -1281,6 +1299,7 @@
 				en,
 				Base,
 				de,
+				fr,
 			);
 			mainGroup = A0E739CB20E4C85D00DB31E1;
 			productRefGroup = A0E739D520E4C85D00DB31E1 /* Products */;
@@ -1839,6 +1858,7 @@
 			children = (
 				A0FE2C2522E1FE7C00C5443F /* en */,
 				A0FE2C2722E1FECF00C5443F /* de */,
+				A07727452345FA7C00366ADD /* fr */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1848,6 +1868,7 @@
 			children = (
 				A0FE2C2B22E20C5A00C5443F /* en */,
 				A0FE2C2D22E20C6200C5443F /* de */,
+				A07727442345FA7C00366ADD /* fr */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
