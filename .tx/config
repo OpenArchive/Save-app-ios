@@ -8,6 +8,13 @@ source_file = Shared/en.lproj/Localizable.strings
 source_lang = en
 type = STRINGS
 
+[SAVE.info-plist]
+file_filter = OpenArchive/<lang>.lproj/InfoPlist.strings
+minimum_perc = 75
+source_file = OpenArchive/en.lproj/InfoPlist.strings
+source_lang = en
+type = STRINGS
+
 [SAVE.subtitle]
 file_filter = fastlane/metadata/<lang>/subtitle.txt
 minimum_perc = 100
