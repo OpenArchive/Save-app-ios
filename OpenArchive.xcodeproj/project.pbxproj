@@ -447,6 +447,16 @@
 		A045D1F8224D02AA008FF8C1 /* TitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleCell.swift; sourceTree = "<group>"; };
 		A045D200224D07C3008FF8C1 /* ButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCell.swift; sourceTree = "<group>"; };
 		A0485C2422AAF0CD00D5B176 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
+		A04FA3F623462085001BBF15 /* privacy_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = privacy_url.txt; sourceTree = "<group>"; };
+		A04FA3F723462085001BBF15 /* subtitle.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = subtitle.txt; sourceTree = "<group>"; };
+		A04FA3F823462085001BBF15 /* support_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = support_url.txt; sourceTree = "<group>"; };
+		A04FA3F923462085001BBF15 /* keywords.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = keywords.txt; sourceTree = "<group>"; };
+		A04FA3FA23462085001BBF15 /* apple_tv_privacy_policy.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = apple_tv_privacy_policy.txt; sourceTree = "<group>"; };
+		A04FA3FB23462085001BBF15 /* promotional_text.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = promotional_text.txt; sourceTree = "<group>"; };
+		A04FA3FC23462085001BBF15 /* release_notes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = release_notes.txt; sourceTree = "<group>"; };
+		A04FA3FD23462085001BBF15 /* name.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = name.txt; sourceTree = "<group>"; };
+		A04FA3FE23462085001BBF15 /* marketing_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = marketing_url.txt; sourceTree = "<group>"; };
+		A04FA3FF23462085001BBF15 /* description.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = description.txt; sourceTree = "<group>"; };
 		A050147E2228209E0056ED95 /* BaseServerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseServerViewController.swift; sourceTree = "<group>"; };
 		A050AA482225DF4000AE5D15 /* SpacesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacesListCell.swift; sourceTree = "<group>"; };
 		A05275132211A91300BDB14B /* CollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsView.swift; sourceTree = "<group>"; };
@@ -508,6 +518,8 @@
 		A077277A2346074500366ADD /* support_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = support_url.txt; sourceTree = "<group>"; };
 		A077277B2346074500366ADD /* marketing_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = marketing_url.txt; sourceTree = "<group>"; };
 		A077277C2346079D00366ADD /* description.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = description.txt; sourceTree = "<group>"; };
+		A077277D2346203A00366ADD /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A077277E2346203A00366ADD /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A077732922786BCA00291F5D /* RemoveAssetAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAssetAlert.swift; sourceTree = "<group>"; };
 		A07E8A3F229575B600E9FFAA /* SlideshowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideshowViewController.swift; sourceTree = "<group>"; };
 		A07E8A4122958D0600E9FFAA /* SlideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideViewController.swift; sourceTree = "<group>"; };
@@ -751,6 +763,23 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
+		A04FA3F523462085001BBF15 /* es-MX */ = {
+			isa = PBXGroup;
+			children = (
+				A04FA3FD23462085001BBF15 /* name.txt */,
+				A04FA3F723462085001BBF15 /* subtitle.txt */,
+				A04FA3F923462085001BBF15 /* keywords.txt */,
+				A04FA3FB23462085001BBF15 /* promotional_text.txt */,
+				A04FA3FF23462085001BBF15 /* description.txt */,
+				A04FA3FC23462085001BBF15 /* release_notes.txt */,
+				A04FA3FA23462085001BBF15 /* apple_tv_privacy_policy.txt */,
+				A04FA3FE23462085001BBF15 /* marketing_url.txt */,
+				A04FA3F823462085001BBF15 /* support_url.txt */,
+				A04FA3F623462085001BBF15 /* privacy_url.txt */,
+			);
+			path = "es-MX";
+			sourceTree = "<group>";
+		};
 		A05471A02296B77D009FEA93 /* Montserrat */ = {
 			isa = PBXGroup;
 			children = (
@@ -885,6 +914,7 @@
 				A0902BD422F0429900062F6E /* trade_representative_contact_information */,
 				A0902BE522F0429900062F6E /* de-DE */,
 				A0902BC922F0429900062F6E /* en-US */,
+				A04FA3F523462085001BBF15 /* es-MX */,
 				A07727672345FAB900366ADD /* fr-FR */,
 			);
 			path = metadata;
@@ -1312,6 +1342,7 @@
 				Base,
 				de,
 				fr,
+				es,
 			);
 			mainGroup = A0E739CB20E4C85D00DB31E1;
 			productRefGroup = A0E739D520E4C85D00DB31E1 /* Products */;
@@ -1871,6 +1902,7 @@
 				A0FE2C2522E1FE7C00C5443F /* en */,
 				A0FE2C2722E1FECF00C5443F /* de */,
 				A07727452345FA7C00366ADD /* fr */,
+				A077277E2346203A00366ADD /* es */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1881,6 +1913,7 @@
 				A0FE2C2B22E20C5A00C5443F /* en */,
 				A0FE2C2D22E20C6200C5443F /* de */,
 				A07727442345FA7C00366ADD /* fr */,
+				A077277D2346203A00366ADD /* es */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
