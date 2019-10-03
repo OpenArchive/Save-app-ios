@@ -11,6 +11,15 @@ Designed with and for newsrooms, human rights defenders, and archivists, Save ke
 Benjamin Erhart, Die Netzarchitekten e.U.
 https://die.netzarchitekten.com/
 
+## Translators
+
+These people kindly donored their time and work to translate the app and surrounding material:
+
+- French: yahoe.001
+- Spanish: yamilabadu
+
+Thank you very much, folks!
+
 ## Copyright
 
 2019 OpenArchive
