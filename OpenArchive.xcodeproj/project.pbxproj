@@ -502,6 +502,12 @@
 		A07727692345FAB900366ADD /* keywords.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = keywords.txt; sourceTree = "<group>"; };
 		A077276A2345FAB900366ADD /* promotional_text.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = promotional_text.txt; sourceTree = "<group>"; };
 		A077276B2345FAB900366ADD /* name.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = name.txt; sourceTree = "<group>"; };
+		A07727772346074400366ADD /* release_notes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = release_notes.txt; sourceTree = "<group>"; };
+		A07727782346074400366ADD /* apple_tv_privacy_policy.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = apple_tv_privacy_policy.txt; sourceTree = "<group>"; };
+		A07727792346074500366ADD /* privacy_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = privacy_url.txt; sourceTree = "<group>"; };
+		A077277A2346074500366ADD /* support_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = support_url.txt; sourceTree = "<group>"; };
+		A077277B2346074500366ADD /* marketing_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = marketing_url.txt; sourceTree = "<group>"; };
+		A077277C2346079D00366ADD /* description.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = description.txt; sourceTree = "<group>"; };
 		A077732922786BCA00291F5D /* RemoveAssetAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAssetAlert.swift; sourceTree = "<group>"; };
 		A07E8A3F229575B600E9FFAA /* SlideshowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideshowViewController.swift; sourceTree = "<group>"; };
 		A07E8A4122958D0600E9FFAA /* SlideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideViewController.swift; sourceTree = "<group>"; };
@@ -838,15 +844,21 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
-		A07727672345FAB900366ADD /* fr */ = {
+		A07727672345FAB900366ADD /* fr-FR */ = {
 			isa = PBXGroup;
 			children = (
 				A077276B2345FAB900366ADD /* name.txt */,
 				A07727682345FAB900366ADD /* subtitle.txt */,
 				A07727692345FAB900366ADD /* keywords.txt */,
 				A077276A2345FAB900366ADD /* promotional_text.txt */,
+				A077277C2346079D00366ADD /* description.txt */,
+				A07727772346074400366ADD /* release_notes.txt */,
+				A07727782346074400366ADD /* apple_tv_privacy_policy.txt */,
+				A077277B2346074500366ADD /* marketing_url.txt */,
+				A07727792346074500366ADD /* privacy_url.txt */,
+				A077277A2346074500366ADD /* support_url.txt */,
 			);
-			path = fr;
+			path = "fr-FR";
 			sourceTree = "<group>";
 		};
 		A07E8A3E2295759D00E9FFAA /* Onboarding */ = {
@@ -873,7 +885,7 @@
 				A0902BD422F0429900062F6E /* trade_representative_contact_information */,
 				A0902BE522F0429900062F6E /* de-DE */,
 				A0902BC922F0429900062F6E /* en-US */,
-				A07727672345FAB900366ADD /* fr */,
+				A07727672345FAB900366ADD /* fr-FR */,
 			);
 			path = metadata;
 			sourceTree = "<group>";
