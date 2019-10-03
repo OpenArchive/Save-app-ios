@@ -22,7 +22,7 @@ class DataUsageViewController: FormViewController {
 
         form
             +++ SwitchRow() {
-                $0.title = "Only upload media when you are connected to WiFi".localize()
+                $0.title = "Only upload media when you are connected to Wi-Fi".localize()
                 $0.cell.textLabel?.numberOfLines = 0
                 $0.cell.switchControl.onTintColor = .accent
                 $0.value = Settings.wifiOnly
