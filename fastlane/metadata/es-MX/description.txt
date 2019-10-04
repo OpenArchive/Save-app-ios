@@ -1,4 +1,4 @@
-Save by OpenArchive le permite resguardar, organizar y compartir de manera segura sus medios móviles
+Save le permite resguardar, y compartir de manera segura sus medios móvil 
 
 Diseñado con y para salas de redacción, defensores de derechos humanos y archiveros, Save lo mantiene en control de sus medios móviles en todo momento.
 
@@ -18,7 +18,7 @@ Diseñado con y para salas de redacción, defensores de derechos humanos y archi
 
 - Compartir para guardar desde otras aplicaciones en su teléfono, como sus fotos o aplicaciones de notas de voz
 
-- Configuración de carga "solo-Wi-Fi", para cuando las redes de datos celulares no son confiables o son caras
+- Configuración de subida "solo-Wi-Fi", para cuando las redes de datos celulares no son confiables o son caras
 
 - Opciones de licencia Creative Commons para los medios que recopila y comparte
 
@@ -41,7 +41,7 @@ Envíe archivos multimedia a la aplicación Save, desde la galeria de la cámara
 
 Seguro
 Save siempre usa el cifrado TLS, que cifra la conexión entre su dispositivo móvil y su destino elegido, ya sea un servidor privado o el Archivo de Internet.
-Save funciona con un software de servidor como Nextcloud que facilita el cifrado de los datos que ha recopilado
+Save funciona con un software de servidor como Nextcloud que facilita el cifrado de los datos que ha recopilado.
 
 =====================
 

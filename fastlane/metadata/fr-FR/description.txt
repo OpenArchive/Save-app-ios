@@ -1,1 +1,68 @@
+Save par OpenArchive vous permet de préserver, d’organiser et de partager en toute sécurité vos contenus multimédias mobiles.
 
+Conçue avec et pour les salles de nouvelles, les défenseurs des droits de la personne et les archivistes, Save vous permet de toujours garder le contrôle de vos contenus multimédias.
+
+========================
+
+//Caractéristiques
+
+– Télécharger n’importe quel type de contenu multimédia vers un serveur privé ou directement vers Internet Archive
+
+– Modifier les métadonnées des contenus multimédias, dont les personnes, la position géographique et les notes supplémentaires
+
+– Marquer un contenu multimédia comme « important » à fin d’organisation ou de récupération ultérieure facile
+
+– Modifier les contenus multimédias par lot : modifier en une fois les métadonnées de plusieurs fichiers multimédias
+
+— Créer différents albums de projet pour garder vos contenus multimédias organisés (p. ex. « Été 2019 », « Photos pour le travail », « Rénovation de la cuisine », « Insurrection en Syrie 2016 », etc.)
+
+– Partager vers Save à partir d’autres applis sur votre téléphone, telles que Photos ou des applis de notes vocales
+
+– Paramètre de téléversement « Wi-Fi seulement » pour les cas où les réseaux de données mobiles sont peu fiables ou chers
+
+– Options de licences Creative Commons pour les contenus multimédias que vous recueillez et partagez
+
+========================
+
+//Avantages
+
+Préserver
+– Téléversez vos contenus multimédias mobiles importants vers un serveur privé de votre choix (en utilisant une plate-forme libre et ouverte telle que Nextcloud ou ownCloud).
+Publiez le contenu multimédia publiquement sur Internet Archive, afin d’assurer une préservation résiliente et robuste par un tiers.
+
+Organiser
+Créez des projets dont le nom est personnalisé, pour garder vos contenus multimédias triés d’une matière logique à vos yeux.
+Ajoutez des notes utiles, une position géographique et d’autres renseignements contextuels, un par un ou par lot.
+Facilitez les recherches et l’organisation dans l’appli avec des dossiers qui correspondent à votre propre serveur privé
+
+Partager
+Connectez-vous à des albums de projet existants créés et gérés par des partenaires ou des collègues.
+Envoyez du contenu multimédia vers l’appli Save à partir de votre album Pellicule ou d’autres applications pour iOS.
+
+Sécuriser
+Save fait toujours appel au chiffrement TLS, qui chiffre la connexion entre votre appareil mobile et votre destination de choix, que ce soit un serveur privé ou Internet Archive.
+Save fonctionne avec des logiciels serveur tels que Nextcloud, ce qui facilite le chiffrement des données que vous recueillez.
+
+========================
+
+//Aide et assistance
+FAQ d’OpenArchive – https://open-archive.org/faq/ (page en anglais)
+Contactez nous à info[à]open-archive[point]org
+
+========================
+
+//À propos
+
+OpenArchive est un collectif de technologues des droits de la personne, d’ethnographes et d’archivistes dévoués à la protection de la liberté des contenus multimédias. Nos technologies sont conçues pour préserver, amplifier et acheminer en toute sécurité les contenus multimédias mobiles vers des collections maintenues par la communauté, dans des archives publiques et privées accessibles, en dehors des jardins clos d’entreprise qui dominent l’écosystème des contenus multimédias sur Internet.
+
+À propos de Save
+Save par OpenArchive est une application mobile d’archivage gratuite et à code source ouvert destinée aux documentaristes et aux défenseurs des droits de la personne. Elle offre aux groupes à risque un contrôle supplémentaire de leurs données historiques en y ajoutant l’authentification des contenus multimédias, le pseudonymat, le contrôle des licences et la possibilité de choisir où et comment le contenu multimédia sera stocké pour un accès et une réutilisation prolongés.
+
+Save comble les lacunes de l’écosystème actuel sur Internet, dans a) la collection éthique à court terme et b) la préservation prolongée de contenus multimédias mobiles délicats. Nous offrons aux communautés à risque des outils axés sur les appareils mobiles, évolutifs, qui répondent aux normes de l’industrie, éthiques, intuitifs et faciles à utiliser, pour préserver pseudonymement et authentifier leurs contenus multimédias afin qu’ils restent accessibles et que leur provenance soit conservée dans le futur.
+
+========================
+
+//Liens
+
+Conditions générales d’utilisation : https://open-archive.org/privacy/#terms-of-service (page en anglais) 
+Politique de confidentialité : https://open-archive.org/privacy/#privacy-policy (page en anglais)
