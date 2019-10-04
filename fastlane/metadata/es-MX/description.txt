@@ -27,8 +27,8 @@ Diseñado con y para salas de redacción, defensores de derechos humanos y archi
 //Beneficios
 
 resguardar
-Cargue sus medios móviles importantes a un servidor privado de su elección (utilizando una plataforma gratuita y de código abierto como NextCloud o ownCloud
-Publique los medios de comunicación públicamente en el Archivo de Internet para la preservación resistente y robusta de un tercero
+Cargue sus medios móviles importantes a un servidor privado de su elección (utilizando una plataforma gratuita y de código abierto como Nextcloud o ownCloud.
+Publique los medios de comunicación públicamente en el Archivo de Internet para la preservación resistente y robusta de un tercero.
 
 Organizar
 Cree proyectos con nombres personalizados para mantener sus medios ordenados de manera que tenga sentido para usted.
@@ -41,7 +41,7 @@ Envíe archivos multimedia a la aplicación Save, desde la galeria de la cámara
 
 Seguro
 Save siempre usa el cifrado TLS, que cifra la conexión entre su dispositivo móvil y su destino elegido, ya sea un servidor privado o el Archivo de Internet.
-Save funciona con un software de servidor como NextCloud que facilita el cifrado de los datos que ha recopilado
+Save funciona con un software de servidor como Nextcloud que facilita el cifrado de los datos que ha recopilado
 
 =====================
 

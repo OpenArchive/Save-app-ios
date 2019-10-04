@@ -27,8 +27,8 @@ Designed with and for newsrooms, human rights defenders, and archivists, Save ke
 //Benefits
 
 Preserve
-Upload your important mobile media to a private server of your choice (using a free and open source platform like NextCloud or ownCloud)
-Publish the media publicly to the Internet Archive for resilient, robust preservation by a third-party
+Upload your important mobile media to a private server of your choice (using a free and open source platform like Nextcloud or ownCloud).
+Publish the media publicly to the Internet Archive for resilient, robust preservation by a third-party.
 
 Organize
 Create custom-named Projects to keep your media sorted in ways that make sense to you.
@@ -41,7 +41,7 @@ Send media to the Save app from your camera roll and other iOS applications.
 
 Secure
 Save always uses TLS encryption, which encrypts the connection between your mobile device and your chosen destination, whether a private server or the Internet Archive.
-Save works with server software like NextCloud that makes it easy to encrypt the data you’ve collected.
+Save works with server software like Nextcloud that makes it easy to encrypt the data you’ve collected.
 
 ========================
 
