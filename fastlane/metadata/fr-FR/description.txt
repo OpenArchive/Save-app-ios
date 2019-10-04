@@ -56,13 +56,10 @@ Contactez nous à info[à]open-archive[point]org
 OpenArchive est un collectif de technologues des droits de la personne, d’ethnographes et d’archivistes dévoués à la protection de la liberté des contenus multimédias. Nos technologies sont conçues pour préserver, amplifier et acheminer en toute sécurité les contenus multimédias mobiles vers des collections maintenues par la communauté, dans des archives publiques et privées accessibles, en dehors des jardins clos d’entreprise qui dominent l’écosystème des contenus multimédias sur Internet.
 
 À propos de Save
-Save par OpenArchive est une application mobile d’archivage gratuite et à code source ouvert destinée aux documentaristes et aux défenseurs des droits de la personne. Elle offre aux groupes à risque un contrôle supplémentaire de leurs données historiques en y ajoutant l’authentification des contenus multimédias, le pseudonymat, le contrôle des licences et la possibilité de choisir où et comment le contenu multimédia sera stocké pour un accès et une réutilisation prolongés.
-
-Save comble les lacunes de l’écosystème actuel sur Internet, dans a) la collection éthique à court terme et b) la préservation prolongée de contenus multimédias mobiles délicats. Nous offrons aux communautés à risque des outils axés sur les appareils mobiles, évolutifs, qui répondent aux normes de l’industrie, éthiques, intuitifs et faciles à utiliser, pour préserver pseudonymement et authentifier leurs contenus multimédias afin qu’ils restent accessibles et que leur provenance soit conservée dans le futur.
-
+Save par OpenArchive est une application mobile d’archivage gratuite et à code source ouvert destinée aux documentaristes et aux défenseurs des droits de la personne.
 ========================
 
 //Liens
 
-Conditions générales d’utilisation : https://open-archive.org/privacy/#terms-of-service (page en anglais) 
+Conditions générales d’utilisation : https://open-archive.org/privacy/#terms-of-service (page en anglais)
 Politique de confidentialité : https://open-archive.org/privacy/#privacy-policy (page en anglais)
