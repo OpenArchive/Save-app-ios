@@ -1,4 +1,4 @@
-Save le permite resguardar, y compartir de manera segura sus medios móvil 
+Save le permite resguardar, y compartir de manera segura sus medios móvil.
 
 Diseñado con y para salas de redacción, defensores de derechos humanos y archiveros, Save lo mantiene en control de sus medios móviles en todo momento.
 
@@ -6,11 +6,11 @@ Diseñado con y para salas de redacción, defensores de derechos humanos y archi
 
 //Caracteristicas
 
-- Cargue cualquier tipo de medio a un servidor privado o directamente a un archivo de internet
+- Cargue cualquier tipo de medio a un servidor privado o directamente a un archivo de internet.
 
-- Edite metadatos de medios, incluidas personas, ubicación y notas adicionales
+- Edite metadatos de medios, incluidas personas, ubicación y notas adicionales.
 
-- Marcar los medios como "significativos" para la organización y/o fácil recuperación más tarde
+- Marcar los medios como "significativos" para la organización y/o fácil recuperación más tarde.
 
 - Edición por lotes de medios — actualice los metadatos de múltiples archivos multimedia a la vez
 

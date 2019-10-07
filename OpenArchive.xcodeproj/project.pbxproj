@@ -421,6 +421,8 @@
 		5FD7A7F483ADD21139D54407 /* Pods-ShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ShareExtension/Pods-ShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		9A0DA47842D4E38A056664EC /* Pods-OpenArchive Screenshots.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenArchive Screenshots.release.xcconfig"; path = "Pods/Target Support Files/Pods-OpenArchive Screenshots/Pods-OpenArchive Screenshots.release.xcconfig"; sourceTree = "<group>"; };
 		A004E24B20EBCF1700A1D5F5 /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
+		A005B8B4234B57E1005611F5 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A005B8B5234B57E1005611F5 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A00A8D43220C63B20083F0CB /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
 		A00A8D46220C7EDD0083F0CB /* AbcFilteredByProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbcFilteredByProjectView.swift; sourceTree = "<group>"; };
 		A00DC98922315D4F004F07E0 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
@@ -1343,6 +1345,7 @@
 				de,
 				fr,
 				es,
+				ru,
 			);
 			mainGroup = A0E739CB20E4C85D00DB31E1;
 			productRefGroup = A0E739D520E4C85D00DB31E1 /* Products */;
@@ -1903,6 +1906,7 @@
 				A0FE2C2722E1FECF00C5443F /* de */,
 				A07727452345FA7C00366ADD /* fr */,
 				A077277E2346203A00366ADD /* es */,
+				A005B8B5234B57E1005611F5 /* ru */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1914,6 +1918,7 @@
 				A0FE2C2D22E20C6200C5443F /* de */,
 				A07727442345FA7C00366ADD /* fr */,
 				A077277D2346203A00366ADD /* es */,
+				A005B8B4234B57E1005611F5 /* ru */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";

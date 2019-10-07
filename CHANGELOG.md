@@ -9,7 +9,7 @@
 - Replaced hovering "+" button with a "+" button in an always visible toolbar.
 - Replaced Google tab bar with self-made one. New project button now always visible and a big plus sign instead of word "New".
 - Fixed bugs when returning from a share extension.
-- Added French and Spanish (partial) localization. 
+- Added French, Spanish (partial) and Russian (partial) localization. 
 
 ## 2.2.0
 

@@ -4,4 +4,4 @@
 - Replaced hovering "+" button with a "+" button in an always visible toolbar.
 - New project button now always visible and a big plus sign instead of word "New".
 - Fixed bugs when returning from a share extension.
-- Added French and Spanish (partial) localization.
+- Added French, Spanish (partial) and Russian (partial) localization.

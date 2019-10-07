@@ -57,7 +57,7 @@ trans.es = fastlane/metadata/es-MX/name.txt
 
 [SAVE.description]
 file_filter = fastlane/metadata/<lang>/description.txt
-minimum_perc = 75
+minimum_perc = 50
 source_file = fastlane/metadata/en-US/description.txt
 source_lang = en
 type = TXT

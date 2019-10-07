@@ -27,7 +27,7 @@ Conçue avec et pour les salles de nouvelles, les défenseurs des droits de la p
 //Avantages
 
 Préserver
-– Téléversez vos contenus multimédias mobiles importants vers un serveur privé de votre choix (en utilisant une plate-forme libre et ouverte telle que Nextcloud ou ownCloud).
+Téléversez vos contenus multimédias mobiles importants vers un serveur privé de votre choix (en utilisant une plate-forme libre et ouverte telle que Nextcloud ou ownCloud).
 Publiez le contenu multimédia publiquement sur Internet Archive, afin d’assurer une préservation résiliente et robuste par un tiers.
 
 Organiser
