@@ -126,6 +126,8 @@ PKDownloadButtonDelegate {
      Needs to be called from `AppDelegate#applicationWillEnterForeground`.
     */
     func updateFilter() {
+        ProjectsView.updateGrouping()
+
         tabBar.load()
 
         // Reset collection, otherwise an inconsistent changeset will be applied
