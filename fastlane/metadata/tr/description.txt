@@ -1,0 +1,68 @@
+OpenArchive tarafından geliştirilen Save mobil ortamlarınızı güvenle korumanızı, düzenli tutmanızı ve paylaşmanızı sağlar.
+
+Haber merkezleri, insan hakları savunucuları ve aktivistler tarafından onlar için tasarlanmıştır. Mobil ortamlarınızın her zaman sizin yönetiminiz altında olmasını sağlar.
+
+========================
+
+//Özellikleri
+
+- Her türde ortamı özel bir sunucuya ya da Internet Archive üzerine doğrudan yükleyebilir
+
+- Ortam üst verilerindeki kişi, konum ve ek notları düzenleyebilir
+
+- Ortamı “önemli” olarak işaretleyerek daha sonra kolayca bulunmasını sağlayabilir
+
+- Birden çok ortam dosyasının üst verilerini bir seferde güncelleyebilir.
+
+- Birden çok proje albümü ile ortamların düzenlenmesine yardımcı olur ("2019 yazı", "İş fotoğrafları", "Mutfak dekorasyonu", "2016 Suriye ayaklanması" gibi)
+
+- Telefonunuzdaki Fotoğraflar ve Notlar gibi diğer uygulamaların Save üzerinden paylaşım yapmasını sağlar
+
+- Hücresel veri ağlarının sorunlu ya da pahalı olduğu yerlerde yükleme için "Yalnız Wi-Fi" seçeneği sunar
+
+- Toplayıp paylaştığınız ortamlar için creative Commons lisansı kullanma seçeneği sunar
+
+========================
+
+//Yararları
+
+Koruma
+Önemli mobil ortamlarınızı seçebileceğiniz özel bir sunucuya yükleyebilirsiniz (Nextcloud ya da ownCloud gibi ücretsiz ve açık kaynaklı bir platform da kullanabilirsiniz).
+Ortamı, üçüncü taraflarca sağlanan esnek ve sağlam bir koruma ile Internet Archive sitesinde herkese açık olarak yayınlayabilirsiniz.
+
+Düzenleme
+Ortamlarınızı, istediğiniz adı verebileceğiniz projeler içine koyarak sizin için anlamlı bir düzende tutabilirsiniz.
+Ortamlara tek tek ya da toplu olarak, ileride yardımcı olacak notlar, konum ve diğer ilgili bilgileri ekleyebilirsiniz.
+Özel sunucunuzdaki klasör yapısını uygulama içinde kullanarak arama ve düzenlemeyi kolaylaştırabilirsiniz.
+
+Paylaşma
+Daha önce iş ortaklarınız ya da çalışma arkadaşlarınız tarafından oluşturulmuş ve güncellenen proje albümlerine bağlanabilirsiniz.
+Fotoğraflarınızdaki ve diğer iOS uygulamalarınızdaki ortamları Save uygulamasına gönderebilirsiniz.
+
+Güvenli Tutma
+Save her zaman mobil aygıtınız ile seçtiğiniz hedef sunucu arasında TLS şifrelemesini kullanır. Hedef sunucu özel bir sunucu olabileceği gibi Internet Archive sunucuları da olabilir.
+Save, Nextcloud gibi topladığınız verileri şifrelemeyi kolaylaştıran sunucu yazılımları ile birlikte çalışabilir.
+
+========================
+
+//Yardım ve Destek
+OpenArchive SSS - https://open-archive.org/faq/
+Bize info[at]open-archive[dot]org adresinden yazabilirsiniz
+
+========================
+
+//Hakkında
+
+OpenArchive, basın özgürlüğünü korumaya adanmış insan hakları teknolojisi uzmanları, etnograflar ve arşivcilerden oluşan bir topluluktur. Teknolojilerimiz, şu anda çevrimiçi basın ekosistemine hâkim olan kurumsal duvarlı bahçelerin dışında kalarak, mobil medyayı herkese açık ya da özel arşivler üzerinden, topluluk tarafından güncellenen koleksiyonlarda saklamak, güçlendirmek ve güvenli bir şekilde aktarmak amacıyla tasarlanmıştır.
+
+Save Hakkında
+OpenArchive tarafından geliştirilen Save, belgesel yapımcıları ve insan hakları savunucuları için ücretsiz, açık kaynak kodlu bir mobil arşivleme uygulamasıdır. Risk altındaki gruplara, medya doğrulaması, taklitçiliğe karşı koruma, lisanslama denetimi,  uzun süreli erişim ve yeniden kullanım olanağı sağlamak için ortamların nerede ve nasıl saklanacağını seçme gibi özellikler sunarak, geçmiş kayıtlar üzerinde geniş bir aracılık sağlar.
+
+Save a) etik kısa süreli derleme ile b) hassas mobil ortamların uzun süreli korunması konusunda var olan çevrimiçi ekosistemdeki eksikleri doldurmaktadır. Risk altındaki topluluklar için, ortamların gelecekte erişilebilir olmasını sağlamak, taklit edilemeyecek bir şekilde kökenlerini korumak ve doğrulamak için mobil merkezli, ölçeklenebilir, endüstri standardında, etik, sezgisel, kullanımı kolay araçlar sunuyoruz.
+
+========================
+
+//Bağlantılar
+
+Hizmet Koşulları: https://open-archive.org/privacy/#terms-of-service
+Gizlilk İlkesi: https://open-archive.org/privacy/#privacy-policy

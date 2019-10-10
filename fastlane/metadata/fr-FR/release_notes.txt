@@ -1,1 +1,7 @@
-
+- Prise en charge d'iOS 13.
+- Amélioration de la qualité des vignettes.
+- Indiquer le contenu audio / vidéo.
+- Remplacement du bouton "+" en survol par un bouton "+" dans une barre d'outils toujours visible.
+- Nouveau bouton de projet maintenant toujours visible et un gros signe plus à la place du mot "Nouveau".
+- Correction de bugs lors du retour d'une extension de partage.
+- Ajout de la localisation française, espagnole (partielle) et russe (partielle).

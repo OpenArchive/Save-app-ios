@@ -596,6 +596,28 @@
 		A09B541323267119005266C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A09B5415232671D0005266C2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A09B5418232673E2005266C2 /* AppDelegateBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateBase.swift; sourceTree = "<group>"; };
+		A09DE5E9234F374400CB3E4D /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A09DE5EA234F374400CB3E4D /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A09DE5EC234F38A000CB3E4D /* description.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = description.txt; sourceTree = "<group>"; };
+		A09DE5ED234F38A000CB3E4D /* release_notes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = release_notes.txt; sourceTree = "<group>"; };
+		A09DE5EE234F38A000CB3E4D /* keywords.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = keywords.txt; sourceTree = "<group>"; };
+		A09DE5EF234F38A000CB3E4D /* support_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = support_url.txt; sourceTree = "<group>"; };
+		A09DE5F0234F38A000CB3E4D /* subtitle.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = subtitle.txt; sourceTree = "<group>"; };
+		A09DE5F1234F38A000CB3E4D /* privacy_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = privacy_url.txt; sourceTree = "<group>"; };
+		A09DE5F2234F38A000CB3E4D /* promotional_text.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = promotional_text.txt; sourceTree = "<group>"; };
+		A09DE5F3234F38A000CB3E4D /* marketing_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = marketing_url.txt; sourceTree = "<group>"; };
+		A09DE5F4234F38A000CB3E4D /* name.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = name.txt; sourceTree = "<group>"; };
+		A09DE5F5234F38A000CB3E4D /* apple_tv_privacy_policy.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = apple_tv_privacy_policy.txt; sourceTree = "<group>"; };
+		A09DE5F7234F3AAF00CB3E4D /* privacy_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = privacy_url.txt; sourceTree = "<group>"; };
+		A09DE5F8234F3AAF00CB3E4D /* subtitle.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = subtitle.txt; sourceTree = "<group>"; };
+		A09DE5F9234F3AAF00CB3E4D /* support_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = support_url.txt; sourceTree = "<group>"; };
+		A09DE5FA234F3AAF00CB3E4D /* keywords.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = keywords.txt; sourceTree = "<group>"; };
+		A09DE5FB234F3AAF00CB3E4D /* apple_tv_privacy_policy.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = apple_tv_privacy_policy.txt; sourceTree = "<group>"; };
+		A09DE5FC234F3AAF00CB3E4D /* promotional_text.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = promotional_text.txt; sourceTree = "<group>"; };
+		A09DE5FD234F3AAF00CB3E4D /* release_notes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = release_notes.txt; sourceTree = "<group>"; };
+		A09DE5FE234F3AAF00CB3E4D /* name.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = name.txt; sourceTree = "<group>"; };
+		A09DE5FF234F3AAF00CB3E4D /* marketing_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = marketing_url.txt; sourceTree = "<group>"; };
+		A09DE600234F3AAF00CB3E4D /* description.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = description.txt; sourceTree = "<group>"; };
 		A0A192D921F1EE88009A8CF0 /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
 		A0A192DC21F208DA009A8CF0 /* Space.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Space.swift; sourceTree = "<group>"; };
 		A0A192DF21F23B61009A8CF0 /* Constants+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Constants+Swift.swift"; sourceTree = "<group>"; };
@@ -918,6 +940,8 @@
 				A0902BC922F0429900062F6E /* en-US */,
 				A04FA3F523462085001BBF15 /* es-MX */,
 				A07727672345FAB900366ADD /* fr-FR */,
+				A09DE5F6234F3AAF00CB3E4D /* ru */,
+				A09DE5EB234F384800CB3E4D /* tr */,
 			);
 			path = metadata;
 			sourceTree = "<group>";
@@ -1013,6 +1037,40 @@
 				A09B540F23266F03005266C2 /* Info.plist */,
 			);
 			path = "OpenArchive Screenshots";
+			sourceTree = "<group>";
+		};
+		A09DE5EB234F384800CB3E4D /* tr */ = {
+			isa = PBXGroup;
+			children = (
+				A09DE5F4234F38A000CB3E4D /* name.txt */,
+				A09DE5F0234F38A000CB3E4D /* subtitle.txt */,
+				A09DE5EE234F38A000CB3E4D /* keywords.txt */,
+				A09DE5F2234F38A000CB3E4D /* promotional_text.txt */,
+				A09DE5EC234F38A000CB3E4D /* description.txt */,
+				A09DE5ED234F38A000CB3E4D /* release_notes.txt */,
+				A09DE5F5234F38A000CB3E4D /* apple_tv_privacy_policy.txt */,
+				A09DE5F3234F38A000CB3E4D /* marketing_url.txt */,
+				A09DE5F1234F38A000CB3E4D /* privacy_url.txt */,
+				A09DE5EF234F38A000CB3E4D /* support_url.txt */,
+			);
+			path = tr;
+			sourceTree = "<group>";
+		};
+		A09DE5F6234F3AAF00CB3E4D /* ru */ = {
+			isa = PBXGroup;
+			children = (
+				A09DE5FE234F3AAF00CB3E4D /* name.txt */,
+				A09DE5F8234F3AAF00CB3E4D /* subtitle.txt */,
+				A09DE5FA234F3AAF00CB3E4D /* keywords.txt */,
+				A09DE5FC234F3AAF00CB3E4D /* promotional_text.txt */,
+				A09DE600234F3AAF00CB3E4D /* description.txt */,
+				A09DE5FD234F3AAF00CB3E4D /* release_notes.txt */,
+				A09DE5FB234F3AAF00CB3E4D /* apple_tv_privacy_policy.txt */,
+				A09DE5FF234F3AAF00CB3E4D /* marketing_url.txt */,
+				A09DE5F7234F3AAF00CB3E4D /* privacy_url.txt */,
+				A09DE5F9234F3AAF00CB3E4D /* support_url.txt */,
+			);
+			path = ru;
 			sourceTree = "<group>";
 		};
 		A0AC06A42201B94500BD5FBA /* docs */ = {
@@ -1346,6 +1404,7 @@
 				fr,
 				es,
 				ru,
+				tr,
 			);
 			mainGroup = A0E739CB20E4C85D00DB31E1;
 			productRefGroup = A0E739D520E4C85D00DB31E1 /* Products */;
@@ -1907,6 +1966,7 @@
 				A07727452345FA7C00366ADD /* fr */,
 				A077277E2346203A00366ADD /* es */,
 				A005B8B5234B57E1005611F5 /* ru */,
+				A09DE5EA234F374400CB3E4D /* tr */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -1919,6 +1979,7 @@
 				A07727442345FA7C00366ADD /* fr */,
 				A077277D2346203A00366ADD /* es */,
 				A005B8B4234B57E1005611F5 /* ru */,
+				A09DE5E9234F374400CB3E4D /* tr */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";

@@ -1,1 +1,7 @@
-
+- Soporte para iOS 13.
+- Mejora de la calidad de las miniaturas.
+- Indicar contenido de audio / video.
+- Se reemplazó el botón flotante "+" con un botón "+" en una barra de herramientas siempre visible.
+- Nuevo botón de proyecto ahora siempre visible y un gran signo más en lugar de la palabra "Nuevo".
+- Se corrigieron errores al regresar de una extensión compartida.
+- Se agregó la localización en francés, español (parcial) y ruso (parcial).
