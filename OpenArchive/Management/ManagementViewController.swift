@@ -148,7 +148,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
             for upload in uploads {
                 if upload.order != i {
                     upload.order = i
-                    transaction.setObject(upload, forKey: upload.id, inCollection: Upload.collection)
+                    transaction.replace(upload, forKey: upload.id, inCollection: Upload.collection)
                 }
 
                 i += 1

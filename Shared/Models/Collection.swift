@@ -42,18 +42,20 @@ class Collection: NSObject, Item, YapDatabaseRelationshipNode {
 
     private(set) var projectId: String
 
+    private var _project: Project?
     var project: Project {
         get {
-            var project: Project?
-
-            Db.bgRwConn?.read { transaction in
-                project = transaction.object(forKey: self.projectId, inCollection: Project.collection) as? Project
+            if _project == nil {
+                Db.bgRwConn?.read { transaction in
+                    _project = transaction.object(forKey: self.projectId, inCollection: Project.collection) as? Project
+                }
             }
 
-            return project!
+            return _project!
         }
         set {
             projectId = newValue.id
+            _project = newValue
         }
     }
 

@@ -57,20 +57,22 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
 
     private(set) var spaceId: String?
 
+    private var _space: Space?
     var space: Space? {
         get {
-            var space: Space?
+            if _space == nil,
+                let id = spaceId {
 
-            if let id = spaceId {
                 Db.bgRwConn?.read { transaction in
-                    space = transaction.object(forKey: id, inCollection: Space.collection) as? Space
+                    _space = transaction.object(forKey: id, inCollection: Space.collection) as? Space
                 }
             }
 
-            return space
+            return _space
         }
         set {
             spaceId = newValue?.id
+            _space = newValue
         }
     }
 

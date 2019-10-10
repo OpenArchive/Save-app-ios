@@ -84,20 +84,22 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         return collection?.project.license
     }
 
+    private var _collection: Collection?
     var collection: Collection? {
         get {
-            var collection: Collection?
+            if _collection == nil,
+                let id = collectionId {
 
-            if let id = self.collectionId {
                 Db.bgRwConn?.read { transaction in
-                    collection = transaction.object(forKey: id, inCollection: Collection.collection) as? Collection
+                    self._collection = transaction.object(forKey: id, inCollection: Collection.collection) as? Collection
                 }
             }
 
-            return collection
+            return _collection
         }
         set {
             collectionId = newValue?.id
+            _collection = newValue
         }
     }
 

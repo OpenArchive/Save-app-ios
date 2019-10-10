@@ -55,12 +55,7 @@ class UploadManager: Alamofire.SessionDelegate {
     */
     static let maxRetries = 10
 
-    private var readConn = Db.newLongLivedReadConn()
-
-    private var mappings = YapDatabaseViewMappings(groups: UploadsView.groups,
-                                               view: UploadsView.name)
-
-    private var uploads = [Upload]()
+    private var current: Upload?
 
     var reachability: Reachability? = {
         var reachability = Reachability()
@@ -94,10 +89,13 @@ class UploadManager: Alamofire.SessionDelegate {
             task.state == .completed,
             let url = task.originalRequest?.url {
 
-            let filename = url.lastPathComponent.lowercased()
+            let filename = url.lastPathComponent
 
-            if filename !~ "\(WebDavConduit.metaFileExt)$" && filename !~ "\\d{15}-\\d{15}" {
-                self.done(self.uploads.first { $0.liveProgress != nil }?.id, error, url)
+            if filename.lowercased() !~ "\(WebDavConduit.metaFileExt)$"
+                && filename !~ "\\d{15}-\\d{15}"
+                && self.current?.filename == filename {
+
+                self.done(self.current?.id, nil, url)
             }
         }
     }
@@ -121,8 +119,6 @@ class UploadManager: Alamofire.SessionDelegate {
     /**
      (Re-)starts the `UploadManager`:
 
-     - Reads current uploads from DB, if cache is empty or upload is in cache,
-       which isn't in the DB.
      - Reconnects all observers.
      - Restarts `Reachability` notifier.
      - Restarts `progressTimer`.
@@ -132,36 +128,6 @@ class UploadManager: Alamofire.SessionDelegate {
     func restart() {
         scheduler?.invalidate()
         progressTimer?.cancel()
-
-        readConn?.read { transaction in
-            var dbChanged = self.uploads.count <= 0
-
-            if !dbChanged {
-                for upload in self.uploads {
-                    // Uuups. The database and the object cache are out of sync.
-                    // That really *shouldn't* happen, but we want to be sure here.
-                    if !transaction.hasObject(forKey: upload.id, inCollection: Upload.collection) {
-                        dbChanged = true
-                        break
-                    }
-                }
-            }
-
-            self.debug("#refresh dbChanged=\(dbChanged)")
-
-            if dbChanged {
-                self.uploads.removeAll()
-
-                self.mappings.update(with: transaction)
-
-                (transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction)?
-                    .enumerateKeysAndObjects(inGroup: UploadsView.groups[0]) { collection, key, object, index, stop in
-                        if let upload = object as? Upload {
-                            self.uploads.append(upload)
-                        }
-                }
-            }
-        }
 
         let nc = NotificationCenter.default
 
@@ -189,27 +155,26 @@ class UploadManager: Alamofire.SessionDelegate {
         progressTimer = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
         progressTimer?.schedule(deadline: .now(), repeating: .seconds(1))
         progressTimer?.setEventHandler {
-            Db.writeConn?.asyncReadWrite { transaction in
-                for upload in self.uploads {
-                    if upload.hasProgressChanged() {
-                        self.debug("#progress tracker changed for \(upload))")
+            if let upload = self.current,
+                upload.hasProgressChanged() {
 
-                        // Could be, that our cache is out of sync with the database,
-                        // due to background upload not triggering a `yapDatabaseModified` callback.
-                        // Don't write non-existing objects into it: use `replace` instead of `setObject`.
-                        transaction.replace(upload, forKey: upload.id, inCollection: Upload.collection)
-                    }
-                }
+                self.debug("#progress tracker changed for \(upload))")
+
+                // Update internal _progress to latest progress, so #hasProgressChanged
+                // doesn't trigger anymore.
+                self.current?.progress = upload.progress
+
+                self.storeCurrent()
             }
         }
 
         progressTimer?.resume()
 
-        scheduler = Timer(fireAt: Date().addingTimeInterval(5), interval: 60,
+        scheduler = Timer(fireAt: Date().addingTimeInterval(5), interval: 10,
                           target: self, selector: #selector(uploadNext),
                           userInfo: nil, repeats: true)
 
-        // Schedule a timer, which calls #uploadNext every 60 seconds beginning
+        // Schedule a timer, which calls #uploadNext every 10 seconds beginning
         // in 5 seconds.
         RunLoop.main.add(scheduler!, forMode: .common)
 
@@ -225,179 +190,120 @@ class UploadManager: Alamofire.SessionDelegate {
 
     /**
      Callback for `YapDatabaseModified` and `YapDatabaseModifiedExternally` notifications.
+
+     - parameter notification: YapDatabaseModified` or `YapDatabaseModifiedExternally` notification.
      */
     @objc func yapDatabaseModified(notification: Notification) {
-        debug("#yapDatabaseModified")
-
-        guard let notifications = readConn?.beginLongLivedReadTransaction(),
-            let viewConn = readConn?.ext(UploadsView.name) as? YapDatabaseViewConnection else {
+        guard let current = current else {
             return
         }
 
-        if !viewConn.hasChanges(for: notifications) {
-            readConn?.update(mappings: mappings)
+        var found = false
 
-            return
-        }
+        Db.bgRwConn?.read { transaction in
+            let viewTransaction = transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction
 
-        var rowChanges = NSArray()
+            viewTransaction?.enumerateKeysAndObjects(inGroup: UploadsView.groups[0])
+            { collection, key, object, index, stop in
+                if let upload = object as? Upload,
+                    upload.id == current.id {
 
-        viewConn.getSectionChanges(nil, rowChanges: &rowChanges,
-                                   for: notifications, with: mappings)
+                    // First attach object chain to upload before next call,
+                    // otherwise, that will trigger another DB read.
+                    self.heatCache(transaction, upload)
+                    upload.liveProgress = current.liveProgress
 
-        guard let changes = rowChanges as? [YapDatabaseViewRowChange] else {
-            return
-        }
+                    self.current = upload
 
-        // NOTE: Section 0 are `Upload`s, section 1 tracks changes in `Asset`s,
-        // which is only interesting in an `.update` case, where we want to update
-        // the `Asset` object referenced from an `Upload`.
-
-        queue.async {
-            for change in changes {
-                switch change.type {
-                case .delete:
-                    if let indexPath = change.indexPath, indexPath.section == 0 {
-                        if self.uploads.count > indexPath.row {
-                            let upload = self.uploads.remove(at: indexPath.row)
-                            upload.cancel()
-                        }
-                    }
-                case .insert:
-                    if let newIndexPath = change.newIndexPath, newIndexPath.section == 0 {
-                        if let upload = self.readUpload(newIndexPath) {
-                            self.uploads.insert(upload, at: newIndexPath.row)
-                        }
-                    }
-                case .move:
-                    if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath, indexPath.section == 0 && newIndexPath.section == 0 {
-                        let upload = self.uploads.remove(at: indexPath.row)
-                        upload.order = newIndexPath.row
-                        self.uploads.insert(upload, at: newIndexPath.row)
-                    }
-                case .update:
-                    if let indexPath = change.indexPath {
-
-                        // Notice changes in `Asset`s ready state.
-                        // (The audio/video import took longer than the user
-                        // hitting "upload".)
-                        if indexPath.section > 0 {
-                            if let asset = self.getAsset(indexPath) {
-                                for upload in self.uploads {
-                                    if upload.assetId == asset.id {
-                                        upload.asset = asset
-                                    }
-                                }
-                            }
-
-                            break
-                        }
-
-                        if let upload = self.readUpload(indexPath) {
-                            upload.liveProgress = self.uploads[indexPath.row].liveProgress
-                            self.uploads[indexPath.row] = upload
-                        }
-                    }
-                @unknown default:
-                    break
+                    found = true
+                    stop.pointee = true
                 }
             }
+        }
 
-            self.uploadNext()
+        // Our job got deleted!
+        if !found {
+            current.cancel()
+            self.current = nil
         }
     }
 
+    /**
+     User pressed pause on an upload job or started editing the job list.
+
+     - parameter notification: An `uploadManagerPause` notification.
+     */
     @objc func pause(notification: Notification) {
         let id = notification.object as? String
 
         debug("#pause id=\(id ?? "globally")")
 
         queue.async {
-            var updates = [Upload]()
-
             if let id = id {
-                guard let upload = self.get(id) else {
-                    return
-                }
-
-                upload.cancel()
-                upload.paused = true
-
-                updates.append(upload)
+                self.pause(id)
             }
             else {
                 self.globalPause = true
 
-                for upload in self.uploads {
-                    if upload.liveProgress != nil {
-                        upload.cancel()
+                // We also need to stop the current upload. Otherwise we could
+                // earn a race condition, where the upload gets finished, while
+                // at the same time the user tries to reorder the uploads.
+                // Then an assertion will kill the app, if two different
+                // animations for a row will happen at the same time.
+                self.current?.cancel()
 
-                        updates.append(upload)
-                    }
-                }
+                self.storeCurrent()
+
+                self.current = nil
             }
 
-            Db.writeConn?.asyncReadWrite { transaction in
-                for upload in updates {
-                    transaction.setObject(upload, forKey: upload.id, inCollection: Upload.collection)
-                }
-            }
+            self.uploadNext()
         }
     }
 
+    /**
+     User pressed unpause on an upload job or ended editing the job list.
+
+     - parameter notification: An `uploadManagerUnpause` notification.
+     */
     @objc func unpause(notification: Notification) {
         let id = notification.object as? String
 
         debug("#unpause id=\(id ?? "globally")")
 
         queue.async {
-            var updates = [Upload]()
-
             if let id = id {
-                guard let upload = self.get(id),
-                    upload.liveProgress == nil else {
-                        return
-                }
-
-                self.reset(upload)
-
-                updates.append(upload)
+                self.pause(id, pause: false)
             }
             else {
-                for upload in self.uploads {
-                    if upload.tries > 0 {
-                        self.reset(upload)
-                    }
-                }
-
                 self.globalPause = false
             }
 
-            Db.writeConn?.asyncReadWrite { transaction in
-                for upload in updates {
-                    transaction.setObject(upload, forKey: upload.id, inCollection: Upload.collection)
-
-                    if let space = upload.asset?.space {
-                        transaction.setObject(space, forKey: space.id, inCollection: Space.collection)
-                    }
-                }
-
-                // If objects were changed, #uploadNext is triggered via #yapDatabaseModified,
-                // if no objects were changed, we need to do it explicitely, because
-                // that's a state change in #globalPause, then.
-                if updates.count < 1 {
-                    self.uploadNext()
-                }
-            }
+            self.uploadNext()
         }
     }
 
+    /**
+     Handles upload errors.
+
+     Should  always be errors, since success is actually handled in `#taskCompletionHandler`.
+
+     - parameter notification: An `uploadManagerDone` notification.
+     */
     @objc func done(_ notification: Notification) {
         done(notification.object as? String,
              notification.userInfo?[.error] as? Error,
              notification.userInfo?[.url] as? URL)
     }
 
+    /**
+     Will record an upload error to the `current` upload job and handle automatic delayed retries for that
+     job or will remove the job and record status accordingly to `Asset` and `Collection`.
+
+     - parameter id: The upload ID. Should match `current`'s ID, otherwise will return silently.
+     - parameter error: An eventual error that happened.
+     - parameter url: The URL the file was saved to.
+     */
     private func done(_ id: String?, _ error: Error?, _ url: URL? = nil) {
         debug("#done")
 
@@ -410,7 +316,8 @@ class UploadManager: Alamofire.SessionDelegate {
         debug("#done id=\(id), error=\(String(describing: error)), url=\(url?.absoluteString ?? "nil")")
 
         queue.async {
-            guard let upload = self.get(id),
+            guard id == self.current?.id,
+                let upload = self.current,
                 let asset = upload.asset else {
                     self.singleCompletionHandler?(.failed)
 
@@ -452,27 +359,40 @@ class UploadManager: Alamofire.SessionDelegate {
                 collection?.setUploadedNow()
             }
 
-            Db.writeConn?.asyncReadWrite { transaction in
+            Db.writeConn?.readWrite { transaction in
                 if asset.isUploaded {
                     transaction.removeObject(forKey: id, inCollection: Upload.collection)
 
-                    transaction.setObject(collection, forKey: collection!.id, inCollection: Collection.collection)
+                    transaction.replace(collection, forKey: collection!.id, inCollection: Collection.collection)
                 }
                 else {
-                    transaction.setObject(upload, forKey: id, inCollection: Upload.collection)
+                    transaction.replace(upload, forKey: id, inCollection: Upload.collection)
                 }
 
                 if let space = space {
-                    transaction.setObject(space, forKey: space.id, inCollection: Space.collection)
+                    transaction.replace(space, forKey: space.id, inCollection: Space.collection)
                 }
 
-                transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
+                transaction.replace(asset, forKey: asset.id, inCollection: Asset.collection)
             }
 
-            self.singleCompletionHandler?(asset.isUploaded ? .newData : .failed)
+            self.current = nil
+
+            if let singleCompletionHandler = self.singleCompletionHandler {
+                // Background upload. We're good here.
+                singleCompletionHandler(asset.isUploaded ? .newData : .failed)
+            }
+            else {
+                self.uploadNext()
+            }
         }
     }
 
+    /**
+     User changed the WiFi-only flag.
+
+     - parameter notification: An `uploadManagerDataUsageChange` notification.
+     */
     @objc func dataUsageChanged(notification: Notification) {
         let wifiOnly = notification.object as? Bool ?? false
 
@@ -483,6 +403,9 @@ class UploadManager: Alamofire.SessionDelegate {
         reachabilityChanged(notification: Notification(name: .reachabilityChanged))
     }
 
+    /**
+     Network status changed.
+     */
     @objc func reachabilityChanged(notification: Notification) {
         debug("#reachabilityChanged connection=\(reachability?.connection ?? .none)")
 
@@ -493,14 +416,20 @@ class UploadManager: Alamofire.SessionDelegate {
 
     @objc func uploadNext() {
         queue.async {
-            self.debug("#uploadNext \(self.uploads.count) items in upload queue")
+            self.debug("#uploadNext")
 
             if self.globalPause {
                 return self.debug("#uploadNext globally paused")
             }
 
-            // Check if there's at least on item currently uploading.
-            if self.isUploading() {
+            if self.reachability?.connection ?? Reachability.Connection.none == .none {
+                self.singleCompletionHandler?(.noData)
+
+                return self.debug("#uploadNext no connection")
+            }
+
+            // Check if there's currently an item uploading.
+            if self.current != nil {
                 self.singleCompletionHandler?(.noData)
 
                 return self.debug("#uploadNext already one uploading")
@@ -513,27 +442,21 @@ class UploadManager: Alamofire.SessionDelegate {
                     return self.debug("#uploadNext nothing to upload")
             }
 
-            if self.reachability?.connection ?? Reachability.Connection.none == .none {
-                self.singleCompletionHandler?(.noData)
-
-                return self.debug("#uploadNext no connection")
-            }
-
             self.debug("#uploadNext try upload=\(upload)")
 
             upload.liveProgress = Conduit.get(for: asset)?.upload(uploadId: upload.id)
             upload.error = nil
 
-            Db.writeConn?.asyncReadWrite { transaction in
+            Db.writeConn?.readWrite { transaction in
                 if let collection = asset.collection,
                     collection.closed == nil {
                     
                     collection.close()
 
-                    transaction.setObject(collection, forKey: collection.id, inCollection: Collection.collection)
+                    transaction.replace(collection, forKey: collection.id, inCollection: Collection.collection)
                 }
 
-                transaction.setObject(upload, forKey: upload.id, inCollection: Upload.collection)
+                transaction.replace(upload, forKey: upload.id, inCollection: Upload.collection)
             }
         }
     }
@@ -562,54 +485,147 @@ class UploadManager: Alamofire.SessionDelegate {
         }
     }
 
-    private func get(_ id: String) -> Upload? {
-        return uploads.first { $0.id == id }
-    }
+    /**
+     Fetches the next upload job from the database.
 
-    private func isUploading() -> Bool {
-        return uploads.first { $0.liveProgress != nil } != nil
-    }
+     Careful: Will overwrite a `current` if already there, so check before calling this!
 
+     - returns: `current` for convenience or `nil` if none found.
+     */
     private func getNext() -> Upload? {
-        return uploads.first {
-            $0.liveProgress == nil && !$0.paused && $0.isReady
-                && $0.nextTry.compare(Date()) == .orderedAscending
+        Db.bgRwConn?.read { transaction in
+            let viewTransaction = transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction
+
+            var next: Upload? = nil
+
+            viewTransaction?.enumerateKeysAndObjects(inGroup: UploadsView.groups[0])
+            { collection, key, object, index, stop in
+
+                // Look at next, if it's paused or delayed.
+                guard let upload = object as? Upload,
+                    !upload.paused
+                    && upload.nextTry.compare(Date()) == .orderedAscending else {
+                    return
+                }
+
+                // First attach object chain to upload before next call,
+                // otherwise, that will trigger more DB reads and with that
+                // a deadlock.
+                self.heatCache(transaction, upload)
+
+                // Look at next, if it's not ready, yet.
+                guard upload.isReady else {
+                    return
+                }
+
+                next = upload
+                stop.pointee = true
+            }
+
+            current = next
+        }
+
+        return current
+    }
+
+    /**
+     Pause/unpause an upload.
+
+     If it's the current upload, the upload will be cancelled and removed from being current.
+
+     If it's not the current upload, just the according database entry's `paused` flag will be updated.
+
+     - parameter id: The upload ID.
+     - parameter pause: `true` to pause, `false` to unpause. Defaults to `true`.
+     */
+    private func pause(_ id: String, pause: Bool = true) {
+
+        // The current upload can only ever get paused, because there should
+        // be no paused current upload. It gets cancelled and removed when paused.
+        if let upload = current, upload.id == id {
+            if pause {
+                current?.cancel()
+                current?.paused = true
+
+                storeCurrent()
+
+                current = nil
+            }
+        }
+        else {
+            Db.bgRwConn?.readWrite { transaction in
+                if let upload = transaction.object(forKey: id, inCollection: Upload.collection) as? Upload {
+                    self.heatCache(transaction, upload)
+
+                    if upload.paused != pause {
+                        if pause {
+                            upload.paused = true
+                        }
+                        else {
+                            upload.paused = false
+                            upload.error = nil
+                            upload.tries = 0
+                            upload.lastTry = nil
+                            upload.progress = 0
+
+                            // Also reset circuit-breaker. Otherwise users will get confused.
+                            if let space = upload.asset?.space {
+                                space.tries = 0
+                                space.lastTry = nil
+
+                                transaction.replace(space, forKey: space.id, inCollection: Space.collection)
+                            }
+                        }
+
+                        transaction.replace(upload, forKey: id, inCollection: Upload.collection)
+                    }
+                }
+            }
         }
     }
 
-    private func readUpload(_ indexPath: IndexPath) -> Upload? {
-        var upload: Upload?
+    /**
+     Prefill the object chain to avoid deadlocking DB access when trying to access these objects.
 
-        readConn?.read() { transaction in
-            upload = (transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction)?
-                .object(at: indexPath, with: self.mappings) as? Upload
+     - parameter transaction: An active DB transaction
+     - parameter upload: The object to heat up
+     */
+    private func heatCache(_ transaction: YapDatabaseReadTransaction, _ upload: Upload) {
+        if let assetId = upload.assetId {
+            upload.asset = transaction.object(forKey: assetId, inCollection: Asset.collection) as? Asset
+
+            if let collectionId = upload.asset?.collectionId {
+                upload.asset?.collection = transaction.object(
+                    forKey: collectionId, inCollection: Collection.collection) as? Collection
+
+                if let projectId = upload.asset?.collection?.projectId,
+                    let project = transaction.object(forKey: projectId, inCollection: Project.collection) as? Project {
+
+                    upload.asset?.collection?.project = project
+
+                    if let spaceId = project.spaceId {
+                        upload.asset?.collection?.project.space =
+                            transaction.object(forKey: spaceId, inCollection: Space.collection) as? Space
+                    }
+                }
+            }
         }
-
-        return upload
     }
 
-    private func getAsset(_ indexPath: IndexPath) -> Asset? {
-        var asset: Asset?
+    /**
+     Store the current upload job to the database.
 
-        readConn?.read() { transaction in
-            asset = (transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction)?
-                .object(at: indexPath, with: self.mappings) as? Asset
+     Fails silently, when `current` is `nil`!
+     */
+    private func storeCurrent() {
+        if let upload = current {
+            Db.writeConn?.readWrite { transaction in
+                // Could be, that our cache is out of sync with the database,
+                // due to background upload not triggering a `yapDatabaseModified` callback.
+                // Don't write non-existing objects into it: use `replace` instead of `setObject`.
+                transaction.replace(upload, forKey: upload.id, inCollection: Upload.collection)
+            }
         }
-
-        return asset
-    }
-
-    private func reset(_ upload: Upload) {
-        upload.paused = false
-        upload.error = nil
-        upload.tries = 0
-        upload.lastTry = nil
-        upload.progress = 0
-
-        // Also reset circuit-breaker. Otherwise users will get confused.
-        let space = upload.asset?.space
-        space?.tries = 0
-        space?.lastTry = nil
     }
 
     private func stop() {

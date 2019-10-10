@@ -218,7 +218,7 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
 
                         upload.order = Int(index)
 
-                        transaction.setObject(upload, forKey: upload.id, inCollection: collection)
+                        transaction.replace(upload, forKey: upload.id, inCollection: collection)
                     }
             }
 
