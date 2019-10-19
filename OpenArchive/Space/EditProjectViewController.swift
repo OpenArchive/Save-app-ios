@@ -17,20 +17,20 @@ class EditProjectViewController: BaseProjectViewController {
     private let ccSw = SwitchRow("cc") {
         $0.title = "Allow Creative Commons use for all media in this project".localize()
         $0.cell.textLabel?.numberOfLines = 0
-        $0.cell.switchControl.onTintColor = UIColor.accent
+        $0.cell.switchControl.onTintColor = .accent
     }
 
     private let remixSw = SwitchRow("remixSw") {
         $0.title = "Allow anyone to remix and share".localize()
         $0.cell.textLabel?.numberOfLines = 0
-        $0.cell.switchControl.onTintColor = UIColor.accent
+        $0.cell.switchControl.onTintColor = .accent
         $0.hidden = "$cc != true"
     }
 
     private let shareAlikeSw = SwitchRow() {
         $0.title = "Require them to share like you have".localize()
         $0.cell.textLabel?.numberOfLines = 0
-        $0.cell.switchControl.onTintColor = UIColor.accent
+        $0.cell.switchControl.onTintColor = .accent
         $0.disabled = "$remixSw != true"
         $0.hidden = "$cc != true"
     }
@@ -38,7 +38,7 @@ class EditProjectViewController: BaseProjectViewController {
     private let commercialSw = SwitchRow() {
         $0.title = "Allow commercial use".localize()
         $0.cell.textLabel?.numberOfLines = 0
-        $0.cell.switchControl.onTintColor = UIColor.accent
+        $0.cell.switchControl.onTintColor = .accent
         $0.hidden = "$cc != true"
     }
 
@@ -97,7 +97,7 @@ class EditProjectViewController: BaseProjectViewController {
 
             +++ ButtonRow() {
                 $0.title = "Remove from App".localize()
-                $0.cell.tintColor = UIColor.red
+                $0.cell.tintColor = .systemRed
             }
             .onCellSelection { cell, row in
                 self.present(RemoveProjectAlert(self.project, {

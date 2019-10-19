@@ -91,8 +91,14 @@ class ProjectTab: UIButton {
 
         titleLabel?.font = .systemFont(ofSize: 13, weight: .medium)
 
-        setTitleColor(.gray, for: .normal)
-        setTitleColor(.black, for: .selected)
+        if #available(iOS 13.0, *) {
+            setTitleColor(.systemGray, for: .normal)
+            setTitleColor(.label, for: .selected)
+        }
+        else {
+            setTitleColor(.gray, for: .normal)
+            setTitleColor(.black, for: .selected)
+        }
     }
 
     override func layoutSubviews() {

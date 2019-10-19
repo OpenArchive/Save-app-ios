@@ -91,9 +91,15 @@ open class WorkingOverlay: UIView {
     
     private lazy var activityIndicator: UIActivityIndicatorView = {
         let indicator = UIActivityIndicatorView()
-        indicator.color = .black
         indicator.translatesAutoresizingMaskIntoConstraints = false
-        
+
+        if #available(iOS 13.0, *) {
+            indicator.color = .label
+        }
+        else {
+            indicator.color = .black
+        }
+
         addSubview(indicator)
         indicator.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         indicator.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
@@ -103,9 +109,15 @@ open class WorkingOverlay: UIView {
 
     private lazy var label: UILabel = {
         let label = UILabel()
-        label.textColor = .black
         label.translatesAutoresizingMaskIntoConstraints = false
-        
+
+        if #available(iOS 13.0, *) {
+            label.textColor = .label
+        }
+        else {
+            label.textColor = .black
+        }
+
         addSubview(label)
         label.centerXAnchor.constraint(equalTo: centerXAnchor).isActive = true
         label.topAnchor.constraint(equalTo: activityIndicator.bottomAnchor, constant: 8).isActive = true
@@ -116,8 +128,14 @@ open class WorkingOverlay: UIView {
     public init() {
         super.init(frame: CGRect(x: 0, y: 0, width: 320, height: 240))
         
+        if #available(iOS 13.0, *) {
+            backgroundColor = .systemBackground
+        }
+        else {
+            backgroundColor = .white
+        }
+
         alpha = 0.75
-        backgroundColor = .white
         isHidden = true
         translatesAutoresizingMaskIntoConstraints = false
     }

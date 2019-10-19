@@ -66,7 +66,12 @@ class MovieIndicator: UIView {
 
         durationLb = UILabel()
         durationLb.textAlignment = .right
-        durationLb.textColor = .white
+        if #available(iOS 13.0, *) {
+            durationLb.textColor = .systemBackground
+        }
+        else {
+            durationLb.textColor = .white
+        }
         durationLb.font = .systemFont(ofSize: 12)
         durationLb.translatesAutoresizingMaskIntoConstraints = false
         durationLb.isHidden = true

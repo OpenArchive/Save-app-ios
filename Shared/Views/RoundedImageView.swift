@@ -13,7 +13,13 @@ class RoundedImageView: UIImageView {
     override func layoutSubviews() {
         layer.cornerRadius = frame.width / 2
         layer.borderWidth = 3
-        layer.borderColor = UIColor.white.cgColor
+
+        if #available(iOS 13.0, *) {
+            layer.borderColor = UIColor.systemBackground.cgColor
+        }
+        else {
+            layer.borderColor = UIColor.white.cgColor
+        }
 
         super.layoutSubviews()
     }

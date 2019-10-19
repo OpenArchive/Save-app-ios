@@ -16,7 +16,7 @@ class BatchInfoAlert: InfoAlert {
     }
 
     override class var tintColor: UIColor {
-        return UIColor.warning
+        return .warning
     }
 
     override class var title: String {

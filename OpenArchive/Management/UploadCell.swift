@@ -32,18 +32,18 @@ class UploadCell: BaseCell, PKDownloadButtonDelegate {
         button.startDownloadButton.setAttributedTitle(nil, for: .normal)
         button.startDownloadButton.setImage(icon?.withRenderingMode(.alwaysTemplate), for: .normal)
         button.startDownloadButton.setBackgroundImage(
-            UIImage.buttonBackground(with: UIColor.accent)?
+            UIImage.buttonBackground(with: .accent)?
                 .resizableImage(withCapInsets: UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)),
             for: .normal)
         button.startDownloadButton.setTitle(nil, for: .highlighted)
         button.startDownloadButton.setAttributedTitle(nil, for: .highlighted)
         button.startDownloadButton.setImage(icon, for: .highlighted)
         button.startDownloadButton.setBackgroundImage(
-            UIImage.highlitedButtonBackground(with: UIColor.accent),
+            UIImage.highlitedButtonBackground(with: .accent),
             for: .highlighted)
 
         button.stopDownloadButton.stopButton.setImage(
-            UIImage.stop(ofSize: button.stopDownloadButton.stopButtonWidth, color: UIColor.accent),
+            UIImage.stop(ofSize: button.stopDownloadButton.stopButtonWidth, color: .accent),
             for: .normal)
     }
 

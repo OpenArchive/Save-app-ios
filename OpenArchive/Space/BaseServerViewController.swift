@@ -31,7 +31,7 @@ class BaseServerViewController: FormViewController {
         $0.title = "Remove from App".localize()
     }
     .cellUpdate({ cell, _ in
-        cell.textLabel?.textColor = UIColor.red
+        cell.textLabel?.textColor = .systemRed
     })
 
     override init() {

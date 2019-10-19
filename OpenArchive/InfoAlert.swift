@@ -92,7 +92,7 @@ class InfoAlert {
             title = UILabel()
             title?.translatesAutoresizingMaskIntoConstraints = false
             title?.text = self.title
-            title?.font = UIFont.boldSystemFont(ofSize: 17)
+            title?.font = .boldSystemFont(ofSize: 17)
             title?.textAlignment = .center
             title?.adjustsFontSizeToFitWidth = true
         }
@@ -110,6 +110,11 @@ class InfoAlert {
         let alert = AlertController(title: nil, message: nil)
 
         let cv = alert.contentView
+
+        if #available(iOS 13.0, *) {
+            alert.visualStyle.backgroundColor = .systemBackground
+            cv.backgroundColor = .systemBackground
+        }
 
         if let illustration = illustration {
             cv.addSubview(illustration)

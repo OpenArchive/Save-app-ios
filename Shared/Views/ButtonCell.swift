@@ -37,7 +37,7 @@ class ButtonCell: BaseCell {
     private func setup() {
         selectionStyle = .none
 
-        label.textColor = UIColor.accent
+        label.textColor = .accent
         label.font = UIFont.boldSystemFont(ofSize: 14)
         label.textAlignment = .center
         label.layer.borderWidth = 2

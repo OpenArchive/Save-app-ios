@@ -36,11 +36,16 @@ class FormViewController: Eureka.FormViewController {
 
         tableView.register(TableHeader.nib, forHeaderFooterViewReuseIdentifier: TableHeader.reuseId)
 
-        tableView?.backgroundColor = UIColor.white
+        if #available(iOS 13.0, *) {
+            tableView?.backgroundColor = .systemBackground
+        }
+        else {
+            tableView?.backgroundColor = .white
+        }
         tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
 
-        view.tintColor = UIColor.accent
-        NavigationAccessoryView.appearance().tintColor = UIColor.accent
+        view.tintColor = .accent
+        NavigationAccessoryView.appearance().tintColor = .accent
     }
 
 

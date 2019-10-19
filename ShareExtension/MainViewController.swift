@@ -55,7 +55,7 @@ class MainViewController: TableWithSpacesViewController {
 
         projectsReadConn?.update(mappings: projectsMappings)
 
-        view.tintColor = UIColor.accent
+        view.tintColor = .accent
 
         Localize.update(provider: .strings)
         Localize.update(bundle: Bundle(for: type(of: self)))
@@ -181,7 +181,7 @@ class MainViewController: TableWithSpacesViewController {
             if indexPath.row >= projectsCount {
                 let vc = UINavigationController(rootViewController:
                     AddProjectViewController())
-                vc.view.tintColor = UIColor.accent
+                vc.view.tintColor = .accent
                 vc.modalPresentationStyle = .popover
                 vc.popoverPresentationController?.sourceView = tableView.cellForRow(at: indexPath)
                 vc.popoverPresentationController?.sourceRect = tableView.rectForRow(at: indexPath)

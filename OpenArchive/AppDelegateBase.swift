@@ -23,7 +23,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 
         UNUserNotificationCenter.current().delegate = self
 
-        window?.tintColor = UIColor.accent
+        window?.tintColor = .accent
 
         Db.setup()
 

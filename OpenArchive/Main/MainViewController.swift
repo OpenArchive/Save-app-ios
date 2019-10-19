@@ -31,7 +31,7 @@ PKDownloadButtonDelegate {
             UploadCell.style(manageBt)
             manageBt.state = .downloading
             manageBt.stopDownloadButton.stopButton.setImage(nil, for: .normal)
-            manageBt.stopDownloadButton.stopButton.setTitleColor(UIColor.accent, for: .normal)
+            manageBt.stopDownloadButton.stopButton.setTitleColor(.accent, for: .normal)
             manageBt.stopDownloadButton.stopButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 11)
             manageBt.isHidden = true
         }
@@ -73,7 +73,7 @@ PKDownloadButtonDelegate {
 
     lazy var pickerConf: TLPhotosPickerConfigure = {
         var conf = TLPhotosPickerConfigure()
-        conf.customLoclizedTitle = ["Camera Roll": "Camera Roll".localize()]
+        conf.customLocalizedTitle = ["Camera Roll": "Camera Roll".localize()]
         conf.tapHereToChange = "Tap here to change".localize()
         conf.cancelTitle = "Cancel".localize()
         conf.doneTitle = "Done".localize()

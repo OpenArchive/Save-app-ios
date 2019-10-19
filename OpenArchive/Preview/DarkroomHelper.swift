@@ -41,7 +41,7 @@ class DarkroomHelper {
 
         flag = InfoBox.instantiate("ic_flag", superview)
 
-        flag?.icon.tintColor = UIColor.warning
+        flag?.icon.tintColor = .warning
         flag?.textView.isEditable = false
         flag?.textView.isSelectable = false
 

@@ -29,7 +29,15 @@ class MenuItemCell: BaseCell {
     func set(_ text: String = "", textColor: UIColor = .darkText, accessoryType: AccType = .none) -> MenuItemCell {
 
         label.text = text
-        label.textColor = textColor
+
+        if #available(iOS 13.0, *),
+            textColor == .darkText {
+            
+            label.textColor = .label
+        }
+        else {
+            label.textColor = textColor
+        }
 
         switch accessoryType {
         case .none:
@@ -55,8 +63,14 @@ class MenuItemCell: BaseCell {
         case .addIndicator:
             self.accessoryType = .none
             let add = UILabel()
-            add.font = UIFont.systemFont(ofSize: 22)
-            add.textColor = UIColor.lightGray
+            add.font = .systemFont(ofSize: 22)
+
+            if #available(iOS 13.0, *) {
+                add.textColor = .systemGray2
+            }
+            else {
+                add.textColor = .lightGray
+            }
             add.text = "+"
             add.sizeToFit()
             accessoryView = add
@@ -67,12 +81,21 @@ class MenuItemCell: BaseCell {
 
     @discardableResult
     func set(_ text: String, isPlaceholder: Bool = false) -> MenuItemCell {
-        return set(text, textColor: isPlaceholder ? .lightGray : .darkText,
+        let textColor: UIColor
+
+        if #available(iOS 13.0, *) {
+            textColor = isPlaceholder ? .systemGray3 : .label
+        }
+        else {
+            textColor = isPlaceholder ? .lightGray : .darkText
+        }
+
+        return set(text, textColor: textColor,
                    accessoryType: isPlaceholder ? .addIndicator : .none)
     }
 
     @discardableResult
     func set(_ error: Error) -> MenuItemCell {
-        return set(error.friendlyMessage, textColor: .red)
+        return set(error.friendlyMessage, textColor: .systemRed)
     }
 }
