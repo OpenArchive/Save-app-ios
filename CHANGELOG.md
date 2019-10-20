@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.4.0
+- Fixed iOS 13 dark mode bugs
+- Added Arabic and Farsi localization.
+
 ## 2.3.0
 - Uses Xcode 11 (iOS 13)
 - Improved thumbnail quality.
