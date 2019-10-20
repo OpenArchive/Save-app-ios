@@ -1,1 +1,2 @@
-
+- Sabit iOS 13 karanlık modlu hatalar.
+- Arapça ve Farsça yerelleştirme eklendi.

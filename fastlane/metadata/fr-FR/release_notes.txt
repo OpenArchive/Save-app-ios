@@ -1,1 +1,2 @@
-
+- Correction de 13 bugs liés au mode sombre iOS 13.
+- Ajout de la localisation en arabe et en farsi.
