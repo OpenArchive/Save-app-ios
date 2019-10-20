@@ -812,8 +812,8 @@
 				A04FA3FC23462085001BBF15 /* release_notes.txt */,
 				A04FA3FA23462085001BBF15 /* apple_tv_privacy_policy.txt */,
 				A04FA3FE23462085001BBF15 /* marketing_url.txt */,
-				A04FA3F823462085001BBF15 /* support_url.txt */,
 				A04FA3F623462085001BBF15 /* privacy_url.txt */,
+				A04FA3F823462085001BBF15 /* support_url.txt */,
 			);
 			path = "es-MX";
 			sourceTree = "<group>";
