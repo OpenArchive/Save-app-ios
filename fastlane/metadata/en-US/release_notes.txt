@@ -1,7 +1,2 @@
-- iOS 13 support.
-- Improved thumbnail quality.
-- Indicate audio/video content.
-- Replaced hovering "+" button with a "+" button in an always visible toolbar.
-- New project button now always visible and a big plus sign instead of word "New".
-- Fixed bugs when returning from a share extension.
-- Added French, Spanish (partial) and Russian (partial) localization.
+- Fixed iOS 13 dark mode bugs.
+- Added Arabic and Farsi localization.
