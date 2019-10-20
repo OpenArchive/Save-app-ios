@@ -2,7 +2,8 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "edit-unselected.pdf"
+      "filename" : "edit-unselected.pdf",
+      "language-direction" : "left-to-right"
     }
   ],
   "info" : {

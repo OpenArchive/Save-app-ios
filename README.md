@@ -15,8 +15,12 @@ https://die.netzarchitekten.com/
 
 These people kindly donored their time and work to translate the app and surrounding material:
 
-- French: yahoe.001
-- Spanish: yamilabadu
+- French: yahoe.001, n.perraut, soizicat
+- Spanish: yamilabadu,  josephdg18
+- Russian: palyanitsin
+- Turkish: kayazeren
+- Arabic: ahmedessamdev, mahmoud_th
+- Persian: arminoza
 
 Thank you very much, folks!
 

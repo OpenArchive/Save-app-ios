@@ -2,7 +2,8 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "ic_edit.pdf"
+      "filename" : "ic_edit.pdf",
+      "language-direction" : "left-to-right"
     }
   ],
   "info" : {

@@ -123,7 +123,7 @@ UIPageViewControllerDelegate {
     }
 
     @IBAction func pageChanged() {
-        let direction: UIPageViewController.NavigationDirection = page < pageControl.currentPage ? .forward : .reverse
+        let direction = getDirection(forward: page < pageControl.currentPage)
         page = pageControl.currentPage
 
         pageVc.setViewControllers([getSlide(page)], direction: direction, animated: true)
@@ -136,7 +136,7 @@ UIPageViewControllerDelegate {
 
         if page != newPage {
             page = newPage
-            pageVc.setViewControllers([getSlide(page)], direction: .forward, animated: true)
+            pageVc.setViewControllers([getSlide(page)], direction: getDirection(), animated: true)
 
             refresh()
         }
@@ -168,5 +168,21 @@ UIPageViewControllerDelegate {
         vc.index = index
 
         return vc
+    }
+
+    /**
+     Fixes right-to-left direction missmatch.
+
+     Strange: Even though, keywords are reading direction agnostic, animations are wrong, anyway, so
+     needs reversal on right-to-left languages.
+     */
+    private func getDirection(forward: Bool = true) -> UIPageViewController.NavigationDirection {
+        var direction: UIPageViewController.NavigationDirection = forward ? .forward : .reverse
+
+        if UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft {
+            direction = direction == .forward ? .reverse : .forward
+        }
+
+        return direction
     }
 }

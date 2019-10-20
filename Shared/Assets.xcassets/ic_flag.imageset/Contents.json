@@ -2,7 +2,8 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "flag-no-border.pdf"
+      "filename" : "flag-no-border.pdf",
+      "language-direction" : "left-to-right"
     }
   ],
   "info" : {
