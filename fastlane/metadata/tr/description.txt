@@ -2,7 +2,7 @@ OpenArchive tarafından geliştirilen Save mobil ortamlarınızı güvenle korum
 
 Haber merkezleri, insan hakları savunucuları ve aktivistler tarafından onlar için tasarlanmıştır. Mobil ortamlarınızın her zaman sizin yönetiminiz altında olmasını sağlar.
 
-========================
+=============
 
 //Özellikleri
 
@@ -22,7 +22,7 @@ Haber merkezleri, insan hakları savunucuları ve aktivistler tarafından onlar 
 
 - Toplayıp paylaştığınız ortamlar için creative Commons lisansı kullanma seçeneği sunar
 
-========================
+=============
 
 //Yararları
 
@@ -43,13 +43,13 @@ Güvenli Tutma
 Save her zaman mobil aygıtınız ile seçtiğiniz hedef sunucu arasında TLS şifrelemesini kullanır. Hedef sunucu özel bir sunucu olabileceği gibi Internet Archive sunucuları da olabilir.
 Save, Nextcloud gibi topladığınız verileri şifrelemeyi kolaylaştıran sunucu yazılımları ile birlikte çalışabilir.
 
-========================
+=============
 
 //Yardım ve Destek
 OpenArchive SSS - https://open-archive.org/faq/
 Bize info[at]open-archive[dot]org adresinden yazabilirsiniz
 
-========================
+=============
 
 //Hakkında
 
@@ -60,7 +60,7 @@ OpenArchive tarafından geliştirilen Save, belgesel yapımcıları ve insan hak
 
 Save a) etik kısa süreli derleme ile b) hassas mobil ortamların uzun süreli korunması konusunda var olan çevrimiçi ekosistemdeki eksikleri doldurmaktadır. Risk altındaki topluluklar için, ortamların gelecekte erişilebilir olmasını sağlamak, taklit edilemeyecek bir şekilde kökenlerini korumak ve doğrulamak için mobil merkezli, ölçeklenebilir, endüstri standardında, etik, sezgisel, kullanımı kolay araçlar sunuyoruz.
 
-========================
+=============
 
 //Bağlantılar
 
