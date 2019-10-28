@@ -21,7 +21,6 @@ minimum_perc = 100
 source_file = fastlane/metadata/en-US/name.txt
 source_lang = en
 type = TXT
-trans.ar = fastlane/metadata/ar-SA/name.txt
 trans.de = fastlane/metadata/de-DE/name.txt
 trans.es = fastlane/metadata/es-MX/name.txt
 trans.fr = fastlane/metadata/fr-FR/name.txt
