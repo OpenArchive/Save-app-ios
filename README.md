@@ -29,6 +29,23 @@ Thank you very much, folks!
 2019 OpenArchive
 https://open-archive.org/
 
+## Contributing
+
+If you would like to contribute code, please consider the following:
+
+- Contributions will only be considered when sent via a Git pull request.
+- Stick to the general formatting of the rest of the source code. If you find inconsistencies, your 
+improvements are welcome via pull requests.
+- Stick to the naming conventions of the rest of code. Think hard about naming.
+- Refactor early, don't repeat yourself.
+- Spaghetti code, 1k+ line methods and similar abominations won't be accepted.
+- Don't be too clever. Code which isn't understandable by anyone but you while writing it,
+won't be acepted. Document the non-obvious!
+- If you find violations of these rules in the existing code, again: Happy to see your pull requests!
+- Contributor License Agreement: If you send pull requests, please state, that you grant 
+OpenArchive the non-revocable right to use your code for this project in any way OpenArchive 
+deems necessary. This includes, re-licensing under another license.
+
 ## Dev Stuff
 
 ### Internet Archive S3 reference:
