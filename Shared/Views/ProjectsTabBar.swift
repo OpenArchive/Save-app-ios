@@ -12,7 +12,7 @@ import Localize
 
 protocol ProjectsTabBarDelegate {
 
-    func didSelect(_ tabBar: ProjectsTabBar, project: Project)
+    func didSelect(_ tabBar: ProjectsTabBar, project: Project?)
 }
 
 class ProjectsTabBar: UIScrollView {
@@ -98,8 +98,7 @@ class ProjectsTabBar: UIScrollView {
         // Always select a newly inserted project or fix situation when tab bar
         // was properly populated while the "+" tab is selected, which really
         // shouldn't.
-        if selectionUpdate,
-            let selectedProject = selectedProject {
+        if selectionUpdate {
             projectsDelegate?.didSelect(self, project: selectedProject)
         }
     }

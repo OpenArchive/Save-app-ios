@@ -379,12 +379,12 @@ PKDownloadButtonDelegate {
 
     // MARK: ProjectsTabBarDelegate
 
-    func didSelect(_ tabBar: ProjectsTabBar, project: Project) {
-        if AbcFilteredByProjectView.projectId != project.id {
+    func didSelect(_ tabBar: ProjectsTabBar, project: Project?) {
+        if AbcFilteredByProjectView.projectId != project?.id {
             toggleMode(newMode: false)
         }
 
-        AbcFilteredByProjectView.updateFilter(project.id)
+        AbcFilteredByProjectView.updateFilter(project?.id)
     }
 
 
