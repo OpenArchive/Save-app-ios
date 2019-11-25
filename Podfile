@@ -19,12 +19,12 @@ def shared_pods
     pod 'TLPhotoPicker', '~> 2.0'
     pod 'FormatterKit', '~> 1.8'
     pod 'UIImageViewAlignedSwift', git: 'https://github.com/mirego/UIImageViewAlignedSwift.git'
-    pod 'FontBlaster', '~> 4.1'
+    pod 'FontBlaster', '~> 5.1'
     pod 'CrossroadRegex', git: 'https://github.com/crossroadlabs/Regex.git', tag: '1.2.0'
 end
 
 def app_only
-    pod 'FavIcon', '~> 3.0'
+    pod 'FavIcon', git: 'https://github.com/leonbreedt/FavIcon.git', branch: 'swift-5'
     pod 'TUSafariActivity', '~> 1.0'
     pod 'ARChromeActivity', '~> 1.0'
     pod 'SDCAlertView', '~> 10.0'

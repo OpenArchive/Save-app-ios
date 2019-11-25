@@ -7,7 +7,7 @@ PODS:
   - Eureka (5.1.0)
   - FavIcon (3.0.6)
   - FilesProvider (0.26.0)
-  - FontBlaster (4.1.0)
+  - FontBlaster (5.1.0)
   - FormatterKit (1.9.0):
     - FormatterKit/AddressFormatter (= 1.9.0)
     - FormatterKit/ArrayFormatter (= 1.9.0)
@@ -162,9 +162,9 @@ DEPENDENCIES:
   - CrossroadRegex (from `https://github.com/crossroadlabs/Regex.git`, tag `1.2.0`)
   - DownloadButton (~> 0.1)
   - Eureka (~> 5.1)
-  - FavIcon (~> 3.0)
+  - FavIcon (from `https://github.com/leonbreedt/FavIcon.git`, branch `swift-5`)
   - FilesProvider (~> 0.26)
-  - FontBlaster (~> 4.1)
+  - FontBlaster (~> 5.1)
   - FormatterKit (~> 1.8)
   - ImageRow (~> 4.0)
   - Localize (~> 2.2)
@@ -184,7 +184,6 @@ SPEC REPOS:
     - ARChromeActivity
     - DownloadButton
     - Eureka
-    - FavIcon
     - FilesProvider
     - FontBlaster
     - FormatterKit
@@ -202,6 +201,9 @@ EXTERNAL SOURCES:
   CrossroadRegex:
     :git: https://github.com/crossroadlabs/Regex.git
     :tag: 1.2.0
+  FavIcon:
+    :branch: swift-5
+    :git: https://github.com/leonbreedt/FavIcon.git
   UIImageViewAlignedSwift:
     :git: https://github.com/mirego/UIImageViewAlignedSwift.git
 
@@ -209,6 +211,9 @@ CHECKOUT OPTIONS:
   CrossroadRegex:
     :git: https://github.com/crossroadlabs/Regex.git
     :tag: 1.2.0
+  FavIcon:
+    :commit: 41eb6817e7bd8122d9dba06c04d9be27d7723970
+    :git: https://github.com/leonbreedt/FavIcon.git
   UIImageViewAlignedSwift:
     :commit: b48ff9fd27e6cb202caa64e4f573582d1e2b4c82
     :git: https://github.com/mirego/UIImageViewAlignedSwift.git
@@ -222,7 +227,7 @@ SPEC CHECKSUMS:
   Eureka: 18a5076dcf0c41f9cd9748aa1c42f4d11434bdae
   FavIcon: e07ba9dd3cac1f76b81ccaa08fc2b41baa000b07
   FilesProvider: 2a8ae17d8b9c23a6feadb1308ee638fa31d21065
-  FontBlaster: 127aa66419478d1c62926c7fdb39841633344a45
+  FontBlaster: 67017432ef1d187e038c353fd48ed8744a54484a
   FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
   ImageRow: e65b2e1a33f89062bf2a553a2aad61d975eb7428
   Localize: cb1ae53ed73decaad0dce217806ed983091913f5
@@ -235,6 +240,6 @@ SPEC CHECKSUMS:
   UIImageViewAlignedSwift: 2d082e1623c5121dec11b298d9066ae4ce704a58
   YapDatabase: 260b1b0b3e6ae6775383edc923e19813586615eb
 
-PODFILE CHECKSUM: 03b3b9b100276e176ecdb3adfae4ef30761c45f7
+PODFILE CHECKSUM: 917cff54f0106da5b4aa42207bc1d22af03517e9
 
 COCOAPODS: 1.8.4
