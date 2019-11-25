@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.5.0
+- Updated dependencies: CocoaPods, Alamofire, CrossroadRegex, TLPhotoPicker, YapDatabase, FavIcon, FontBlaster, Fastlane
+- Fixed dark mode issue with launch screen.
+- Made text "Tap buttons below to add media to your project." tappable itself.
+- Encode asset digest as hexadecimal number instead of BASE64 to be in line with tools like sha256sum.
+
 ## 2.4.0
 - Fixed iOS 13 dark mode bugs.
 - Added Arabic and Farsi localization.

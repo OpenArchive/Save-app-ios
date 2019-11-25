@@ -1,2 +1,3 @@
-- iOS 13 Dark Mode gefixt.
-- Arabisch und Farsi Lokalisierung.
+- Dark Mode Unterstützung beim Start gefixt.
+- Text "Die Buttons unten verwenden um Medien zu Deinem Projekt hinzuzufügen." berührbar gemacht.
+- Dateiprüfsumme wird jetzt als Hexadezimalzahl statt BASE64-kodiert ausgegeben.

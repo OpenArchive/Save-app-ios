@@ -1,2 +1,3 @@
-- Fixed iOS 13 dark mode bugs.
-- Added Arabic and Farsi localization.
+- Fixed dark mode issue with launch screen.
+- Made text "Tap buttons below to add media to your project." tappable itself.
+- Encode asset digest as hexadecimal number instead of BASE64 to be in line with tools like sha256sum.

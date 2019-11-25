@@ -1,2 +1,3 @@
-- Correction de 13 bugs liés au mode sombre iOS 13.
-- Ajout de la localisation en arabe et en farsi.
+- Correction du problème de mode sombre avec l'écran de lancement.
+- Texte fabriqué "Appuyez sur les boutons ci-dessous pour ajouter un média à votre projet." tappable lui-même.
+- Encodez les données de synthèse de l’actif sous forme de nombre hexadécimal au lieu de BASE64 afin d’être en ligne avec des outils tels que sha256sum.

@@ -1,2 +1,3 @@
-- Sabit iOS 13 karanlık modlu hatalar.
-- Arapça ve Farsça yerelleştirme eklendi.
+- Açılış ekranı ile karanlık mod sorunu düzeltildi.
+- Metin yaptı "Projenize medya eklemek için aşağıdaki düğmelere dokunun." kendi kendine dokunulabilir.
+- Varlık özetini, BASE64 yerine onaltılık sayı olarak sha256sum gibi araçlarla aynı hizaya getirin.
