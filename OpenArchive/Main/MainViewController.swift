@@ -165,7 +165,7 @@ PKDownloadButtonDelegate {
 
         assetsReadConn?.read { transaction in
             (transaction.ext(AbcFilteredByProjectView.name) as? YapDatabaseViewTransaction)?
-                .enumerateKeysAndObjects(inGroup: group!) { collName, key, object, index, stop in
+                .iterateKeysAndObjects(inGroup: group!) { collName, key, object, index, stop in
                     if let asset = object as? Asset {
                         collection?.assets.append(asset)
                     }
@@ -474,12 +474,10 @@ PKDownloadButtonDelegate {
                 updateSpace() // Needed on iPad, where MainViewController is not reloaded,
                 // because config changes happen in popovers.
 
-                var rowChanges = NSArray()
+                let (_, rowChanges) = viewConn.getChanges(forNotifications: notifications,
+                                                          withMappings: projectsMappings)
 
-                viewConn.getSectionChanges(nil, rowChanges: &rowChanges,
-                                           for: notifications, with: projectsMappings)
-
-                for change in rowChanges as? [YapDatabaseViewRowChange] ?? [] {
+                for change in rowChanges {
                     tabBar.handle(change)
                 }
             }
@@ -496,15 +494,12 @@ PKDownloadButtonDelegate {
             let viewConn = collectionsReadConn?.ext(CollectionsView.name) as? YapDatabaseViewConnection {
 
             if viewConn.hasChanges(for: notifications) {
-                var collectionChanges = NSArray()
-
-                viewConn.getSectionChanges(nil, rowChanges: &collectionChanges,
-                                           for: notifications,
-                                           with: collectionsMappings)
+                let (_, collectionChanges) = viewConn.getChanges(forNotifications: notifications,
+                                                                 withMappings: collectionsMappings)
 
                 // We need to recognize changes in `Collection` objects used in the
                 // section headers.
-                for change in collectionChanges as? [YapDatabaseViewRowChange] ?? [] {
+                for change in collectionChanges {
                     switch change.type {
                     case .update:
                         if let indexPath = change.indexPath,
@@ -526,13 +521,10 @@ PKDownloadButtonDelegate {
             let viewConn = assetsReadConn?.ext(AbcFilteredByProjectView.name) as? YapDatabaseViewConnection {
 
             if viewConn.hasChanges(for: notifications) {
-                var rowChanges = NSArray()
-                var sectionChanges = NSArray()
+                let (sectionChanges, rowChanges) = viewConn.getChanges(forNotifications: notifications,
+                                                                       withMappings: assetsMappings)
 
-                viewConn.getSectionChanges(&sectionChanges, rowChanges: &rowChanges,
-                                           for: notifications, with: assetsMappings)
-
-                for change in sectionChanges as? [YapDatabaseViewSectionChange] ?? [] {
+                for change in sectionChanges {
                     switch change.type {
                     case .delete:
                         toDelete.insert(Int(change.index))
@@ -545,7 +537,7 @@ PKDownloadButtonDelegate {
 
                 // We need to reload the complete section, so the section header
                 // gets updated, too, and the `Collection.assets` array along with it.
-                for change in rowChanges as? [YapDatabaseViewRowChange] ?? [] {
+                for change in rowChanges {
                     switch change.type {
                     case .delete:
                         if let indexPath = change.indexPath {

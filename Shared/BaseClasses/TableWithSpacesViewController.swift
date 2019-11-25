@@ -107,14 +107,9 @@ class TableWithSpacesViewController: BaseTableViewController, UICollectionViewDe
             return
         }
 
-        var changes = NSArray()
+        let (_, changes) = viewConn.getChanges(forNotifications: notifications, withMappings: spacesMappings)
 
-        viewConn.getSectionChanges(nil, rowChanges: &changes,
-                                   for: notifications, with: spacesMappings)
-
-        if let changes = changes as? [YapDatabaseViewRowChange],
-            changes.count > 0 {
-
+        if changes.count > 0 {
             collectionView?.performBatchUpdates({
                 for change in changes {
                     switch change.type {

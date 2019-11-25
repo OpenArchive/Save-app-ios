@@ -203,7 +203,7 @@ class UploadManager: Alamofire.SessionDelegate {
         Db.bgRwConn?.read { transaction in
             let viewTransaction = transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction
 
-            viewTransaction?.enumerateKeysAndObjects(inGroup: UploadsView.groups[0])
+            viewTransaction?.iterateKeysAndObjects(inGroup: UploadsView.groups[0])
             { collection, key, object, index, stop in
                 if let upload = object as? Upload,
                     upload.id == current.id {
@@ -216,7 +216,7 @@ class UploadManager: Alamofire.SessionDelegate {
                     self.current = upload
 
                     found = true
-                    stop.pointee = true
+                    stop = true
                 }
             }
         }
@@ -498,7 +498,7 @@ class UploadManager: Alamofire.SessionDelegate {
 
             var next: Upload? = nil
 
-            viewTransaction?.enumerateKeysAndObjects(inGroup: UploadsView.groups[0])
+            viewTransaction?.iterateKeysAndObjects(inGroup: UploadsView.groups[0])
             { collection, key, object, index, stop in
 
                 // Look at next, if it's paused or delayed.
@@ -519,7 +519,7 @@ class UploadManager: Alamofire.SessionDelegate {
                 }
 
                 next = upload
-                stop.pointee = true
+                stop = true
             }
 
             current = next

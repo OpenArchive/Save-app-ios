@@ -211,12 +211,12 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
 
             // Reorder uploads.
             (transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction)?
-                .enumerateKeysAndObjects(inGroup: UploadsView.groups[0])
+                .iterateKeysAndObjects(inGroup: UploadsView.groups[0])
                 { collection, key, object, index, stop in
                     if let upload = object as? Upload,
                         upload.order != index {
 
-                        upload.order = Int(index)
+                        upload.order = index
 
                         transaction.replace(upload, forKey: upload.id, inCollection: collection)
                     }

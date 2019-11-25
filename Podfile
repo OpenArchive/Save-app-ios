@@ -5,7 +5,7 @@ platform :ios, '11.0'
 use_frameworks!
 
 def shared_pods
-    pod 'YapDatabase', '~> 3.1'
+    pod 'YapDatabase', '~> 4.0'
     pod 'Alamofire', '~> 4.9'
     pod 'FilesProvider', '~> 0.26'
     pod 'Localize', '~> 2.2'
@@ -20,7 +20,7 @@ def shared_pods
     pod 'FormatterKit', '~> 1.8'
     pod 'UIImageViewAlignedSwift', git: 'https://github.com/mirego/UIImageViewAlignedSwift.git'
     pod 'FontBlaster', '~> 4.1'
-    pod 'CrossroadRegex', '~> 1.1'
+    pod 'CrossroadRegex', git: 'https://github.com/crossroadlabs/Regex.git', tag: '1.2.0'
 end
 
 def app_only

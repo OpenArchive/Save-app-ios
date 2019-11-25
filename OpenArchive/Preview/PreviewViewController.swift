@@ -159,8 +159,8 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
         Db.writeConn?.asyncReadWrite { transaction in
             var order = 0
 
-            transaction.enumerateKeysAndObjects(inCollection: Upload.collection) { key, object, stop in
-                if let upload = object as? Upload, upload.order >= order {
+            transaction.iterateKeysAndObjects(inCollection: Upload.collection) { (key, upload: Upload, stop) in
+                if upload.order >= order {
                     order = upload.order + 1
                 }
             }
@@ -179,7 +179,7 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
 
             (transaction.ext(AbcFilteredByCollectionView.name) as? YapDatabaseViewTransaction)?
-                .enumerateKeysAndObjects(inGroup: group) { collection, key, object, index, stop in
+                .iterateKeysAndObjects(inGroup: group) { collection, key, object, index, stop in
 
                     if let asset = object as? Asset {
                         let upload = Upload(order: order, asset: asset)

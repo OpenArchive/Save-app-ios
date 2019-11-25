@@ -107,13 +107,6 @@ class SelectedCollection {
             return ([], [])
         }
 
-        var sectionChanges = NSArray()
-        var rowChanges = NSArray()
-
-        viewConn.getSectionChanges(&sectionChanges, rowChanges: &rowChanges,
-                                   for: notifications, with: mappings)
-
-        return (sectionChanges as? [YapDatabaseViewSectionChange] ?? [],
-                rowChanges as? [YapDatabaseViewRowChange] ?? [])
+        return viewConn.getChanges(forNotifications: notifications, withMappings: mappings)
     }
 }

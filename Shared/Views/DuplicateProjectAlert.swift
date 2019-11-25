@@ -41,12 +41,10 @@ class DuplicateProjectAlert: UIAlertController {
         var exists = false
 
         Db.bgRwConn?.read { transaction in
-            transaction.enumerateKeysAndObjects(inCollection: Project.collection) { (key, object, stop) in
-                if let project = object as? Project,
-                    project.spaceId == spaceId,
-                    project.name == name {
+            transaction.iterateKeysAndObjects(inCollection: Project.collection) { (key, project: Project, stop) in
+                if project.spaceId == spaceId && project.name == name {
                     exists = true
-                    stop.pointee = true
+                    stop = true
                 }
             }
         }

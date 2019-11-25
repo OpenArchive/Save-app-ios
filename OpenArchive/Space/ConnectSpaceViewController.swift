@@ -26,16 +26,14 @@ class ConnectSpaceViewController: BaseTableViewController {
         }
 
         Db.bgRwConn?.asyncRead { transaction in
-            transaction.enumerateKeysAndObjects(inCollection: Space.collection, using: { key, object, stop in
-                if object is IaSpace {
-                    self.hasOneInternetArchive = true
+            transaction.iterateKeysAndObjects(inCollection: Space.collection, using: { (key, object: IaSpace, stop) in
+                self.hasOneInternetArchive = true
 
-                    DispatchQueue.main.async {
-                        self.tableView.reloadData()
-                    }
-
-                    stop.pointee = true
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
                 }
+
+                stop = true
             })
         }
     }

@@ -233,14 +233,9 @@ class MenuViewController: TableWithSpacesViewController {
             return
         }
 
-        var changes = NSArray()
+        let (_, changes) = viewConn.getChanges(forNotifications: notifications, withMappings: projectsMappings)
 
-        viewConn.getSectionChanges(nil, rowChanges: &changes,
-                                   for: notifications, with: projectsMappings)
-
-        if let changes = changes as? [YapDatabaseViewRowChange],
-            changes.count > 0 {
-
+        if changes.count > 0 {
             tableView.beginUpdates()
 
             for change in changes {

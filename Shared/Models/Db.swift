@@ -8,7 +8,6 @@
 
 import UIKit
 import YapDatabase
-import CocoaLumberjack
 
 /**
  Encapsulates YapDatabase setup and connection creation.
@@ -27,7 +26,7 @@ class Db {
             let options = YapDatabaseOptions()
             options.enableMultiProcessSupport = true
 
-            return YapDatabase(path: path.path, options: options)
+            return YapDatabase(url: path, options: options)
         }
 
         return nil
@@ -37,12 +36,25 @@ class Db {
 //        DDLog.add(DDTTYLogger.sharedInstance)
 
         Space.fixArchiverName() // Needed for screenshot testing.
+        shared?.setObjectPolicy(.copy, forCollection: Space.collection)
+
         WebDavSpace.fixArchiverName()
+        shared?.setObjectPolicy(.copy, forCollection: WebDavSpace.collection)
+
         IaSpace.fixArchiverName()
+        shared?.setObjectPolicy(.copy, forCollection: IaSpace.collection)
+
         Project.fixArchiverName()
+        shared?.setObjectPolicy(.copy, forCollection: Project.collection)
+
         Collection.fixArchiverName()
+        shared?.setObjectPolicy(.copy, forCollection: Collection.collection)
+
         Asset.fixArchiverName()
+        shared?.setObjectPolicy(.copy, forCollection: Asset.collection)
+
         Upload.fixArchiverName()
+        shared?.setObjectPolicy(.copy, forCollection: Upload.collection)
 
         shared?.register(AssetsByCollectionView(), withName: AssetsByCollectionView.name)
         shared?.register(AbcFilteredByProjectView(), withName: AbcFilteredByProjectView.name)
@@ -123,8 +135,6 @@ class Db {
 
     private class func newConnection() -> YapDatabaseConnection? {
         let conn = shared?.newConnection()
-
-        conn?.objectPolicy = .copy
 
         // 250 is default, currently just here for reference. Increase, if need be.
         conn?.objectCacheLimit = 250

@@ -268,13 +268,10 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         var isUploading = false
 
         Db.bgRwConn?.read { transaction in
-            transaction.enumerateKeysAndObjects(inCollection: Upload.collection) { key, object, stop in
-                if let upload = object as? Upload,
-                    upload.assetId == self.id,
-                    !upload.paused {
-
+            transaction.iterateKeysAndObjects(inCollection: Upload.collection) { (key, upload: Upload, stop) in
+                if upload.assetId == self.id && !upload.paused {
                     isUploading = true
-                    stop.pointee = true
+                    stop = true
                 }
             }
         }

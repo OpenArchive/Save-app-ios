@@ -135,7 +135,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
             var uploads = [Upload]()
 
             (transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction)?
-                .enumerateKeysAndObjects(inGroup: UploadsView.groups[0])
+                .iterateKeysAndObjects(inGroup: UploadsView.groups[0])
                 { collection, key, object, index, stop in
                     if let upload = object as? Upload {
                         uploads.append(upload)
@@ -217,14 +217,9 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
             return
         }
 
-        var changes = NSArray()
+        let (_, changes) = viewConn.getChanges(forNotifications: notifications, withMappings: mappings)
 
-        viewConn.getSectionChanges(nil, rowChanges: &changes,
-                                   for: notifications, with: mappings)
-
-        if let changes = changes as? [YapDatabaseViewRowChange],
-            changes.count > 0 {
-
+        if changes.count > 0 {
             tableView.beginUpdates()
 
             // NOTE: Sections other than 0 are ignored, because `UploadsView`

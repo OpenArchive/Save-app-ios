@@ -44,11 +44,9 @@ class SelectedSpace {
                     }
 
                     if self._space == nil {
-                        transaction.enumerateKeysAndObjects(inCollection: Space.collection) { key, object, stop in
-                            if let space = object as? Space {
-                                self._space = space
-                                stop.pointee = true
-                            }
+                        transaction.iterateKeysAndObjects(inCollection: Space.collection) { (key, space: Space, stop) in
+                            self._space = space
+                            stop = true
                         }
                     }
                 }

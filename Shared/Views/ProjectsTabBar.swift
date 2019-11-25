@@ -106,7 +106,7 @@ class ProjectsTabBar: UIScrollView {
 
     func load() {
         read { transaction in
-            transaction.enumerateKeysAndObjects(inGroup: Project.collection) {
+            transaction.iterateKeysAndObjects(inGroup: Project.collection) {
                 collection, key, object, index, stop in
 
                 if let project = object as? Project {
