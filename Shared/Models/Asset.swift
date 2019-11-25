@@ -427,8 +427,9 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
 
         try container.encode(filename, forKey: .filename)
 
-        if let filehash = digest {
-            try container.encode(filehash, forKey: .digest)
+        if let digest = digest {
+            // Encode as hex string.
+            try container.encode(digest.map({ String(format: "%02hhx", $0) }).joined(), forKey: .digest)
         }
     }
 
