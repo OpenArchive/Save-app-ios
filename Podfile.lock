@@ -162,7 +162,7 @@ DEPENDENCIES:
   - CrossroadRegex (from `https://github.com/crossroadlabs/Regex.git`, tag `1.2.0`)
   - DownloadButton (~> 0.1)
   - Eureka (~> 5.1)
-  - FavIcon (from `https://github.com/leonbreedt/FavIcon.git`, branch `swift-5`)
+  - FavIcon (from `https://github.com/tladesignz/FavIcon.git`, branch `swift-5`)
   - FilesProvider (~> 0.26)
   - FontBlaster (~> 5.1)
   - FormatterKit (~> 1.8)
@@ -203,7 +203,7 @@ EXTERNAL SOURCES:
     :tag: 1.2.0
   FavIcon:
     :branch: swift-5
-    :git: https://github.com/leonbreedt/FavIcon.git
+    :git: https://github.com/tladesignz/FavIcon.git
   UIImageViewAlignedSwift:
     :git: https://github.com/mirego/UIImageViewAlignedSwift.git
 
@@ -212,10 +212,10 @@ CHECKOUT OPTIONS:
     :git: https://github.com/crossroadlabs/Regex.git
     :tag: 1.2.0
   FavIcon:
-    :commit: 41eb6817e7bd8122d9dba06c04d9be27d7723970
-    :git: https://github.com/leonbreedt/FavIcon.git
+    :commit: 91d67049226db70000488690311ea9fe1aed265c
+    :git: https://github.com/tladesignz/FavIcon.git
   UIImageViewAlignedSwift:
-    :commit: b48ff9fd27e6cb202caa64e4f573582d1e2b4c82
+    :commit: 8d33fd1a153010bc437527d8b08c75ed86fc9ae1
     :git: https://github.com/mirego/UIImageViewAlignedSwift.git
 
 SPEC CHECKSUMS:
@@ -225,7 +225,7 @@ SPEC CHECKSUMS:
   CrossroadRegex: 9af32b4b4dc6ff404c87647ef1bc68ea711cc570
   DownloadButton: 49a21a89e0d7d1b42d9134f79aaa40e727cd57c3
   Eureka: 18a5076dcf0c41f9cd9748aa1c42f4d11434bdae
-  FavIcon: e07ba9dd3cac1f76b81ccaa08fc2b41baa000b07
+  FavIcon: 9fd386d96324ce0f6063732f8bf6c7f1d5bf17a3
   FilesProvider: 2a8ae17d8b9c23a6feadb1308ee638fa31d21065
   FontBlaster: 67017432ef1d187e038c353fd48ed8744a54484a
   FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
@@ -240,6 +240,6 @@ SPEC CHECKSUMS:
   UIImageViewAlignedSwift: 2d082e1623c5121dec11b298d9066ae4ce704a58
   YapDatabase: 260b1b0b3e6ae6775383edc923e19813586615eb
 
-PODFILE CHECKSUM: 917cff54f0106da5b4aa42207bc1d22af03517e9
+PODFILE CHECKSUM: e0d9872c11d173f22396c6cd8f94adb894bc9a79
 
 COCOAPODS: 1.8.4

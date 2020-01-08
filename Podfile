@@ -24,7 +24,7 @@ def shared_pods
 end
 
 def app_only
-    pod 'FavIcon', git: 'https://github.com/leonbreedt/FavIcon.git', branch: 'swift-5'
+    pod 'FavIcon', git: 'https://github.com/tladesignz/FavIcon.git', branch: 'swift-5'
     pod 'TUSafariActivity', '~> 1.0'
     pod 'ARChromeActivity', '~> 1.0'
     pod 'SDCAlertView', '~> 10.0'
