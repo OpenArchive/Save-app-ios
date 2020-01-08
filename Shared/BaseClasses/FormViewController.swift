@@ -48,6 +48,15 @@ class FormViewController: Eureka.FormViewController {
         NavigationAccessoryView.appearance().tintColor = .accent
     }
 
+    override func keyboardWillShow(_ notification: Notification) {
+        // When showing inside a popover on iPad, the popover gets resized on
+        // keyboard display, so we shall not do this inside the view.
+        if popoverPresentationController != nil && UIDevice.current.userInterfaceIdiom == .pad {
+            return
+        }
+
+        super.keyboardWillShow(notification)
+    }
 
     // MARK: UITableViewDelegate
 
