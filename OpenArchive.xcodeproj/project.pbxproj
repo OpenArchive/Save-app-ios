@@ -19,6 +19,7 @@
 		A01A7B6F2200A05C00E18DE0 /* ProjectsTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01A7B6E2200A05C00E18DE0 /* ProjectsTabBar.swift */; };
 		A01A7B702200A05C00E18DE0 /* ProjectsTabBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01A7B6E2200A05C00E18DE0 /* ProjectsTabBar.swift */; };
 		A01A7B722200F2D700E18DE0 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01A7B712200F2D700E18DE0 /* HeaderView.swift */; };
+		A020C12323C602A700F219DA /* ClaimViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A020C12223C602A700F219DA /* ClaimViewController.swift */; };
 		A0212FCC22D35ADC009079DC /* DarkroomHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0212FCB22D35ADC009079DC /* DarkroomHelper.swift */; };
 		A0212FCE22D374CA009079DC /* UICollectionView+selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0212FCD22D374CA009079DC /* UICollectionView+selection.swift */; };
 		A0212FCF22D374CA009079DC /* UICollectionView+selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0212FCD22D374CA009079DC /* UICollectionView+selection.swift */; };
@@ -431,6 +432,7 @@
 		A011D559233A1F630032304A /* PreviewViewController+Screenshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PreviewViewController+Screenshots.swift"; sourceTree = "<group>"; };
 		A01A7B6E2200A05C00E18DE0 /* ProjectsTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsTabBar.swift; sourceTree = "<group>"; };
 		A01A7B712200F2D700E18DE0 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		A020C12223C602A700F219DA /* ClaimViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimViewController.swift; sourceTree = "<group>"; };
 		A0212FCB22D35ADC009079DC /* DarkroomHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkroomHelper.swift; sourceTree = "<group>"; };
 		A0212FCD22D374CA009079DC /* UICollectionView+selection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+selection.swift"; sourceTree = "<group>"; };
 		A025171822C2126B00EEFBD9 /* DuplicateProjectAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateProjectAlert.swift; sourceTree = "<group>"; };
@@ -921,6 +923,7 @@
 		A07E8A3E2295759D00E9FFAA /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
+				A020C12223C602A700F219DA /* ClaimViewController.swift */,
 				A07E8A3F229575B600E9FFAA /* SlideshowViewController.swift */,
 				A07E8A4122958D0600E9FFAA /* SlideViewController.swift */,
 			);
@@ -1831,6 +1834,7 @@
 				A0A3D9C72226D8DB00BB5A19 /* SpaceCell.swift in Sources */,
 				A08750A92112099700BFAFE4 /* Constants.m in Sources */,
 				A0362198220DB384003C21DC /* WebDavSpace.swift in Sources */,
+				A020C12323C602A700F219DA /* ClaimViewController.swift in Sources */,
 				A045D201224D07C3008FF8C1 /* ButtonCell.swift in Sources */,
 				A0FA93412277387D0086D276 /* Bundle+displayName.swift in Sources */,
 				A025171922C2126C00EEFBD9 /* DuplicateProjectAlert.swift in Sources */,
