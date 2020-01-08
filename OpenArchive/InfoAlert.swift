@@ -103,7 +103,7 @@ class InfoAlert {
         let message = UILabel()
         message.translatesAutoresizingMaskIntoConstraints = false
         message.text = self.message
-        message.font = UIFont.systemFont(ofSize: 13)
+        message.font = .systemFont(ofSize: 13)
         message.textAlignment = .center
         message.numberOfLines = 0
 
