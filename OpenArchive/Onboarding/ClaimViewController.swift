@@ -15,6 +15,13 @@ class ClaimViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        claimLb.text = "Share%Archive%Verify%Encrypt".localize(value: "\n")
+        // Don't use Localize's single percent-sign placeholder (%), Transifex
+        // will see the following characters as qualifiers to that and won't
+        // allow translators to save their translation, if e.g. it doesn't contain "%E".
+        //
+        // Therefore we replace spaces between words with newlines and hope,
+        // that translators don't translate one word with multiple words...
+        claimLb.text = "Share Archive Verify Encrypt".localize()
+            .split(using: "\\s+".r).joined(separator: "\n")
     }
 }

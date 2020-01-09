@@ -390,8 +390,8 @@
 /* Main.storyboard */
 "by OpenArchive" = "by OpenArchive";
 
-/* Main.storyboard */
-"Share%Archive%Verify%Encrypt" = "Share%Archive%Verify%Encrypt";
+/* ClaimViewController */
+"Share Archive Verify Encrypt" = "Share Archive Verify Encrypt";
 
 /* Main.storyboard */
 "Secure Mobile Media Preservation" = "Secure Mobile Media Preservation";
