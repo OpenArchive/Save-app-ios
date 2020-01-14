@@ -1,3 +1,4 @@
-- Açılış ekranı ile karanlık mod sorunu düzeltildi.
-- Metin yaptı "Projenize medya eklemek için aşağıdaki düğmelere dokunun." kendi kendine dokunulabilir.
-- Varlık özetini, BASE64 yerine onaltılık sayı olarak sha256sum gibi araçlarla aynı hizaya getirin.
+- Başlatma ekranı ile ilgili karanlık mod sorunu düzeltildi.
+- Yapılan metin "Projenize medya eklemek için aşağıdaki düğmelere dokunun." kendini tıklatılabilir.
+- Varlık özetini sha256sum gibi araçlarla aynı hizada olmak için BASE64 yerine onaltılık sayı olarak kodlayın.
+- iPad'deki formlarda yumuşak klavye ile ilgili sorunlar düzeltildi.

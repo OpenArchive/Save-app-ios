@@ -1,3 +1,4 @@
 - Se solucionó el problema del modo oscuro con la pantalla de inicio.
 - Texto creado "Toque los botones a continuación para agregar medios a su proyecto". tappable en sí.
 - Codifique el resumen de activos como número hexadecimal en lugar de BASE64 para estar en línea con herramientas como sha256sum.
+- Se corrigieron problemas con el teclado virtual en formularios en iPad.

@@ -1,3 +1,4 @@
-- Correction du problème de mode sombre avec l'écran de lancement.
-- Texte fabriqué "Appuyez sur les boutons ci-dessous pour ajouter un média à votre projet." tappable lui-même.
-- Encodez les données de synthèse de l’actif sous forme de nombre hexadécimal au lieu de BASE64 afin d’être en ligne avec des outils tels que sha256sum.
+- Correction du problème du mode sombre avec l'écran de lancement.
+- Texte créé "Appuyez sur les boutons ci-dessous pour ajouter des médias à votre projet." tappable lui-même.
+- Encode le résumé des actifs sous forme de nombre hexadécimal au lieu de BASE64 pour être en ligne avec des outils comme sha256sum.
+- Correction de problèmes avec le clavier logiciel sur les formulaires sur iPad.

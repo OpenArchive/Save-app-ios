@@ -5,6 +5,8 @@
 - Fixed dark mode issue with launch screen.
 - Made text "Tap buttons below to add media to your project." tappable itself.
 - Encode asset digest as hexadecimal number instead of BASE64 to be in line with tools like sha256sum.
+- Fixed issues with soft keyboard on forms on iPad.
+- Rephrased claim.
 
 ## 2.4.0
 - Fixed iOS 13 dark mode bugs.
