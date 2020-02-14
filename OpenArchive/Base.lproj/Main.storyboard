@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15702" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3f6-u4-WuB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3f6-u4-WuB">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15704"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -333,13 +333,13 @@
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ngh-Cz-JI0">
                                                     <rect key="frame" x="16" y="26" width="269" height="48.5"/>
                                                     <subviews>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Internet Archive" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f67-mu-fRV">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dropbox" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="f67-mu-fRV">
                                                             <rect key="frame" x="0.0" y="0.0" width="269" height="20"/>
                                                             <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="16"/>
                                                             <nil key="textColor"/>
                                                             <nil key="highlightedColor"/>
                                                         </label>
-                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Upload to the Internet Archive" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XDn-6z-nrG">
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Upload to Dropbox" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="XDn-6z-nrG">
                                                             <rect key="frame" x="0.0" y="28" width="269" height="20.5"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <nil key="textColor"/>
@@ -361,6 +361,47 @@
                                                 <constraint firstAttribute="trailingMargin" secondItem="ngh-Cz-JI0" secondAttribute="trailing" id="RcO-Rh-EMa"/>
                                                 <constraint firstItem="ngh-Cz-JI0" firstAttribute="leading" secondItem="lnO-Jc-IKY" secondAttribute="leadingMargin" id="p6L-S7-8id"/>
                                                 <constraint firstItem="ngh-Cz-JI0" firstAttribute="centerY" secondItem="lnO-Jc-IKY" secondAttribute="centerY" id="t4u-AY-kz1"/>
+                                            </constraints>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" id="lzf-2w-70u">
+                                        <rect key="frame" x="0.0" y="328" width="320" height="100"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="lzf-2w-70u" id="r5K-4f-IAs">
+                                            <rect key="frame" x="0.0" y="0.0" width="293" height="100"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                            <subviews>
+                                                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Frk-8x-t1J">
+                                                    <rect key="frame" x="16" y="26" width="269" height="48.5"/>
+                                                    <subviews>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Internet Archive" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1fK-0A-J4B">
+                                                            <rect key="frame" x="0.0" y="0.0" width="269" height="20"/>
+                                                            <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="16"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Upload to the Internet Archive" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="eAW-as-iMd">
+                                                            <rect key="frame" x="0.0" y="28" width="269" height="20.5"/>
+                                                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                                            <nil key="textColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <constraints>
+                                                        <constraint firstAttribute="bottom" secondItem="eAW-as-iMd" secondAttribute="bottom" id="HLD-zq-aVk"/>
+                                                        <constraint firstItem="1fK-0A-J4B" firstAttribute="leading" secondItem="Frk-8x-t1J" secondAttribute="leading" id="JtR-zE-Xf1"/>
+                                                        <constraint firstItem="eAW-as-iMd" firstAttribute="leading" secondItem="Frk-8x-t1J" secondAttribute="leading" id="KTK-f6-K5t"/>
+                                                        <constraint firstAttribute="trailing" secondItem="1fK-0A-J4B" secondAttribute="trailing" id="S8T-2c-8ON"/>
+                                                        <constraint firstItem="1fK-0A-J4B" firstAttribute="top" secondItem="Frk-8x-t1J" secondAttribute="top" id="ePC-bq-yFe"/>
+                                                        <constraint firstAttribute="trailing" secondItem="eAW-as-iMd" secondAttribute="trailing" id="ehW-9o-xPu"/>
+                                                        <constraint firstItem="eAW-as-iMd" firstAttribute="top" secondItem="1fK-0A-J4B" secondAttribute="bottom" constant="8" id="oXM-u5-W62"/>
+                                                    </constraints>
+                                                </view>
+                                            </subviews>
+                                            <constraints>
+                                                <constraint firstItem="Frk-8x-t1J" firstAttribute="centerY" secondItem="r5K-4f-IAs" secondAttribute="centerY" id="88K-Gm-3IQ"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="Frk-8x-t1J" secondAttribute="trailing" id="9Rh-Co-J8E"/>
+                                                <constraint firstItem="Frk-8x-t1J" firstAttribute="leading" secondItem="r5K-4f-IAs" secondAttribute="leadingMargin" id="Ztj-CW-KdF"/>
                                             </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>

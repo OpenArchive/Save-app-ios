@@ -78,6 +78,11 @@ class SpaceViewController: BaseTableViewController {
                 iavc.space = space
                 vc = iavc
             }
+            else if let space = SelectedSpace.space as? DropboxSpace {
+                let dvc = DropboxViewController()
+                dvc.space = space
+                vc = dvc
+            }
             else {
                 let psvc = PrivateServerViewController()
                 psvc.space = SelectedSpace.space

@@ -36,13 +36,10 @@ class Db {
 //        DDLog.add(DDTTYLogger.sharedInstance)
 
         Space.fixArchiverName() // Needed for screenshot testing.
-        shared?.setObjectPolicy(.copy, forCollection: Space.collection)
-
         WebDavSpace.fixArchiverName()
-        shared?.setObjectPolicy(.copy, forCollection: WebDavSpace.collection)
-
+        DropboxSpace.fixArchiverName()
         IaSpace.fixArchiverName()
-        shared?.setObjectPolicy(.copy, forCollection: IaSpace.collection)
+        shared?.setObjectPolicy(.copy, forCollection: Space.collection)
 
         Project.fixArchiverName()
         shared?.setObjectPolicy(.copy, forCollection: Project.collection)

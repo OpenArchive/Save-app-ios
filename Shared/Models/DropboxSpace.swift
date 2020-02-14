@@ -1,17 +1,17 @@
 //
-//  IaSpace.swift
+//  DropboxSpace.swift
 //  OpenArchive
 //
-//  Created by Benjamin Erhart on 08.02.19.
+//  Created by Benjamin Erhart on 14.02.20.
 //  Copyright © 2019 Open Archive. All rights reserved.
 //
 
 import UIKit
 
 /**
- A special space supporting the Internet Archive.
+ A special space supporting Dropbox.
  */
-class IaSpace: Space, Item {
+class DropboxSpace: Space, Item {
 
     static let baseUrl = "https://s3.us.archive.org"
 
@@ -19,22 +19,22 @@ class IaSpace: Space, Item {
     // MARK: Item
 
     override class func fixArchiverName() {
-        NSKeyedArchiver.setClassName("IaSpace", for: self)
-        NSKeyedUnarchiver.setClass(self, forClassName: "IaSpace")
+        NSKeyedArchiver.setClassName("DropboxSpace", for: self)
+        NSKeyedUnarchiver.setClass(self, forClassName: "DropboxSpace")
     }
 
-    func compare(_ rhs: IaSpace) -> ComparisonResult {
+    func compare(_ rhs: DropboxSpace) -> ComparisonResult {
         return super.compare(rhs)
     }
 
 
-    // MARK: IaSpace
+    // MARK: DropboxSpace
 
-    static let favIcon = UIImage(named: "InternetArchiveLogo")
+    static let favIcon = UIImage(named: "dropbox-icon")
 
 
     init(accessKey: String? = nil, secretKey: String? = nil) {
-        super.init(name: IaSpace.defaultPrettyName, url: URL(string: IaSpace.baseUrl),
+        super.init(name: DropboxSpace.defaultPrettyName, url: URL(string: DropboxSpace.baseUrl),
                    username: accessKey, password: secretKey)
     }
 
@@ -46,12 +46,12 @@ class IaSpace: Space, Item {
     // MARK: Space
 
     override class var defaultPrettyName: String {
-        return "Internet Archive"
+        return "Dropbox"
     }
 
     override var favIcon: UIImage? {
         get {
-            return IaSpace.favIcon
+            return DropboxSpace.favIcon
         }
         set {
             // This is effectively read-only.

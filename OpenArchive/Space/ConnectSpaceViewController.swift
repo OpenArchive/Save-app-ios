@@ -11,6 +11,7 @@ import UIKit
 class ConnectSpaceViewController: BaseTableViewController {
 
     var hasOneInternetArchive = false
+    var hasOneDropbox = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -26,6 +27,16 @@ class ConnectSpaceViewController: BaseTableViewController {
         }
 
         Db.bgRwConn?.asyncRead { transaction in
+            transaction.iterateKeysAndObjects(inCollection: Space.collection, using: { (key, object: DropboxSpace, stop) in
+                self.hasOneDropbox = true
+
+                DispatchQueue.main.async {
+                    self.tableView.reloadData()
+                }
+
+                stop = true
+            })
+
             transaction.iterateKeysAndObjects(inCollection: Space.collection, using: { (key, object: IaSpace, stop) in
                 self.hasOneInternetArchive = true
 
@@ -47,7 +58,7 @@ class ConnectSpaceViewController: BaseTableViewController {
     // MARK: UITableViewDataSource
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 2 + (hasOneInternetArchive ? 0 : 1)
+        return 2 + (hasOneDropbox ? 0 : 1) + (hasOneInternetArchive ? 0 : 1)
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -56,8 +67,13 @@ class ConnectSpaceViewController: BaseTableViewController {
         switch indexPath.row {
         case 1:
             vc = PrivateServerViewController()
+
         case 2:
+            vc = hasOneDropbox ? InternetArchiveViewController() : DropboxViewController()
+
+        case 3:
             vc = InternetArchiveViewController()
+
         default:
             vc = nil
         }

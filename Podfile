@@ -6,8 +6,9 @@ use_frameworks!
 
 def shared_pods
     pod 'YapDatabase', '~> 4.0'
-    pod 'Alamofire', '~> 4.9'
+    pod 'Alamofire', '~> 4.8'
     pod 'FilesProvider', '~> 0.26'
+    pod 'SwiftyDropbox', '~> 5.1'
     pod 'Localize', '~> 2.2'
     pod 'Eureka', '~> 5.1'
     pod 'ImageRow', '~> 4.0'

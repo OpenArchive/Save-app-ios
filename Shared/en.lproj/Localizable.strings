@@ -406,6 +406,9 @@
 "Send directly to a private server." = "Send directly to a private server.";
 
 /* Main.storyboard */
+"Upload to Dropbox" = "Upload to Dropbox";
+
+/* Main.storyboard */
 "Upload to the Internet Archive" = "Upload to the Internet Archive";
 
 /* Main.storyboard */

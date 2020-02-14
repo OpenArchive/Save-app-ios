@@ -11,11 +11,11 @@ import Foundation
 extension Constants {
 
     class var appGroup: String {
-        return self.__appGroup as String
+        return __appGroup as String
     }
 
     class var teamId: String {
-        return self.__teamId as String
+        return __teamId as String
     }
 
     /**
@@ -24,5 +24,9 @@ extension Constants {
      */
     class var suiteName: String {
         return  "\(teamId).\(appGroup)"
+    }
+
+    class var dropboxKey: String {
+        return __dropboxKey as String
     }
 }

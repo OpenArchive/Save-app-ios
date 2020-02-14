@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (4.9.1)
+  - Alamofire (4.8.2)
   - AlignedCollectionViewFlowLayout (1.1.2)
   - ARChromeActivity (1.0.6)
   - CrossroadRegex (1.2.0)
@@ -44,6 +44,8 @@ PODS:
   - MBProgressHUD (1.2.0)
   - ReachabilitySwift (4.3.1)
   - SDCAlertView (10.0)
+  - SwiftyDropbox (5.1.0):
+    - Alamofire (~> 4.8.2)
   - TLPhotoPicker (2.0.9)
   - TUSafariActivity (1.0.4)
   - UIImage-Resize (1.0.1)
@@ -156,7 +158,7 @@ PODS:
     - YapDatabase/Standard/Core
 
 DEPENDENCIES:
-  - Alamofire (~> 4.9)
+  - Alamofire (~> 4.8)
   - AlignedCollectionViewFlowLayout (~> 1.1)
   - ARChromeActivity (~> 1.0)
   - CrossroadRegex (from `https://github.com/crossroadlabs/Regex.git`, tag `1.2.0`)
@@ -171,6 +173,7 @@ DEPENDENCIES:
   - MBProgressHUD (~> 1.1)
   - ReachabilitySwift (~> 4.3)
   - SDCAlertView (~> 10.0)
+  - SwiftyDropbox (~> 5.1)
   - TLPhotoPicker (~> 2.0)
   - TUSafariActivity (~> 1.0)
   - UIImage-Resize (~> 1.0)
@@ -192,6 +195,7 @@ SPEC REPOS:
     - MBProgressHUD
     - ReachabilitySwift
     - SDCAlertView
+    - SwiftyDropbox
     - TLPhotoPicker
     - TUSafariActivity
     - UIImage-Resize
@@ -219,7 +223,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/mirego/UIImageViewAlignedSwift.git
 
 SPEC CHECKSUMS:
-  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
   AlignedCollectionViewFlowLayout: ee2ef451e741ec08f8e0967d828001e2f051c20a
   ARChromeActivity: 5dcf9b9f09323761f992aff3525cdd777f83609d
   CrossroadRegex: 9af32b4b4dc6ff404c87647ef1bc68ea711cc570
@@ -234,12 +238,13 @@ SPEC CHECKSUMS:
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
   SDCAlertView: 5fbc48cae6d7bf9781097e3f27883924ef3b922c
+  SwiftyDropbox: 7ca4961e0340c62c8d6d1ece91d67badfe4c0380
   TLPhotoPicker: a64994394b22067bcd972144950dad88f61d6185
   TUSafariActivity: afc55a00965377939107ce4fdc7f951f62454546
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   UIImageViewAlignedSwift: 2d082e1623c5121dec11b298d9066ae4ce704a58
   YapDatabase: 260b1b0b3e6ae6775383edc923e19813586615eb
 
-PODFILE CHECKSUM: 7ad90b73e9034168f81146414f1f0bfff47d52b3
+PODFILE CHECKSUM: 01382320869ab45a1db36e2adc530debdd900256
 
 COCOAPODS: 1.8.4

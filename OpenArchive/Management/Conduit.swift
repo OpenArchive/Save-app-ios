@@ -80,6 +80,10 @@ class Conduit {
                 return WebDavConduit(asset)
             }
 
+            if space is DropboxSpace {
+                return DropboxConduit(asset)
+            }
+
             if space is IaSpace {
                 return IaConduit(asset)
             }

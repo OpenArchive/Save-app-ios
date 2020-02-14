@@ -10,6 +10,7 @@ import UIKit
 import UserNotifications
 import Localize
 import FontBlaster
+import SwiftyDropbox
 
 class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
@@ -30,6 +31,8 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         uploadManager = UploadManager.shared
 
         setUp()
+
+        DropboxClientsManager.setupWithAppKey(Constants.dropboxKey)
 
         return true
     }
@@ -72,6 +75,52 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+    }
+
+    func application(_ app: UIApplication, open url: URL,
+                     options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+
+        if let authResult = DropboxClientsManager.handleRedirectURL(url) {
+            switch authResult {
+            case .success(let token):
+                print("[\(String(describing: type(of: self)))] dropbox auth success token=\(token)")
+
+                SelectedSpace.space = DropboxSpace()
+                SelectedSpace.space?.username = token.uid
+                SelectedSpace.space?.password = token.accessToken
+
+                Db.writeConn?.asyncReadWrite() { transaction in
+                    SelectedSpace.store(transaction)
+
+                    transaction.setObject(SelectedSpace.space, forKey: SelectedSpace.space!.id,
+                                          inCollection: Space.collection)
+                }
+
+                // TODO: Not working. Instead implement a search by MenuNavigationController!
+                let top = window?.rootViewController?.top
+                var navC: UINavigationController? = nil
+
+                if top is DropboxViewController {
+                    navC = top?.navigationController
+                }
+                else if top?.presentingViewController is DropboxViewController {
+                    navC = top?.presentingViewController?.navigationController
+                }
+
+                navC?.setViewControllers([AddProjectViewController()], animated: true)
+
+            case .cancel:
+                print("[\(String(describing: type(of: self)))] dropbox auth cancelled")
+                // Nothing to do. User cancelled. Dropbox authentication scene should close automatically.
+
+            case .error(let error, let description):
+                print("[\(String(describing: type(of: self)))] dropbox auth error=\(error), description=\(description)")
+                // Nothing to do. User bailed out after login.
+                // Dropbox authentication scene should close automatically.
+            }
+        }
+
+        return true
     }
 
     /**
