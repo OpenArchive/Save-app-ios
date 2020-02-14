@@ -92,6 +92,22 @@ class Formatters: NSObject {
     }
 
     /**
+     Formats a duration either as `MM:SS` or `H:MM:SS` (if duration is > 1 hour).
+     */
+    static func format(_ value: TimeInterval) -> String {
+        let seconds = lround(value)
+        let minute = seconds / 60
+        let second = seconds % 60
+
+        if minute > 59 {
+            return String(format: "%d:%02d:%02d", minute / 60, minute % 60, second)
+        }
+        else {
+            return String(format: "%d:%02d", minute, second)
+        }
+    }
+
+    /**
      A formatter for URLs usable in Eureka forms.
 
      Makes it easy to connect Nextcloud servers without having to know all the

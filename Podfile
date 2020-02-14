@@ -16,7 +16,6 @@ def shared_pods
     pod 'DownloadButton', '~> 0.1'
     pod 'MBProgressHUD', '~> 1.1'
     pod 'ReachabilitySwift', '~> 4.3'
-    pod 'TLPhotoPicker', '~> 2.0'
     pod 'FormatterKit', '~> 1.8'
     pod 'UIImageViewAlignedSwift', git: 'https://github.com/mirego/UIImageViewAlignedSwift.git'
     pod 'FontBlaster', '~> 5.1'
@@ -28,6 +27,7 @@ def app_only
     pod 'TUSafariActivity', '~> 1.0'
     pod 'ARChromeActivity', '~> 1.0'
     pod 'SDCAlertView', '~> 10.0'
+    pod 'TLPhotoPicker', '~> 2.0'
 end
 
 target 'OpenArchive' do

@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import TLPhotoPicker
 
 class MovieIndicator: UIView {
 
@@ -25,7 +24,7 @@ class MovieIndicator: UIView {
 
     public func set(duration: TimeInterval?) {
         if let duration = duration {
-            durationLb.text = TLPhotoCollectionViewCell().timeFormatted(timeInterval: duration)
+            durationLb.text = Formatters.format(duration)
             durationLb.isHidden = false
         }
         else {
@@ -51,7 +50,7 @@ class MovieIndicator: UIView {
     private var trailingInset: NSLayoutConstraint!
 
     private func setup() {
-        let icon = UIImageView(image: TLBundle.podBundleImage(named: "video"))
+        let icon = UIImageView(image: UIImage(named: "video"))
         icon.translatesAutoresizingMaskIntoConstraints = false
 
         addSubview(icon)
