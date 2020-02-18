@@ -30,4 +30,25 @@ class BigMenuItemCell: BaseCell {
             detailedDescription.allowsDefaultTighteningForTruncation = true
         }
     }
+
+    func setWebDav() -> BigMenuItemCell {
+        label.text = "Private (WebDAV) Server".localize()
+        detailedDescription.text = "Send directly to a private server.".localize()
+
+        return self
+    }
+
+    func setDropbox() -> BigMenuItemCell {
+        label.text = "Dropbox".localize()
+        detailedDescription.text = "Upload to Dropbox".localize()
+
+        return self
+    }
+
+    func setInternetArchive() -> BigMenuItemCell {
+        label.text = "Internet Archive".localize()
+        detailedDescription.text = "Upload to the Internet Archive".localize()
+
+        return self
+    }
 }

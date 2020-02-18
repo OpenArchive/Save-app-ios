@@ -47,6 +47,9 @@ class ConnectSpaceViewController: BaseTableViewController {
                 stop = true
             })
         }
+
+        tableView.register(TitleCell.nib, forCellReuseIdentifier: TitleCell.reuseId)
+        tableView.register(BigMenuItemCell.nib, forCellReuseIdentifier: BigMenuItemCell.reuseId)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -59,6 +62,31 @@ class ConnectSpaceViewController: BaseTableViewController {
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return 2 + (hasOneDropbox ? 0 : 1) + (hasOneInternetArchive ? 0 : 1)
+    }
+
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.row == 0,
+            let cell = tableView.dequeueReusableCell(withIdentifier: TitleCell.reuseId, for: indexPath) as? TitleCell {
+
+            return cell.set("Connect Your Space".localize(), "Set up where you want your media to be stored.".localize())
+        }
+
+        let cell = tableView.dequeueReusableCell(withIdentifier: BigMenuItemCell.reuseId, for: indexPath) as! BigMenuItemCell
+
+        if indexPath.row == 2 {
+            return hasOneDropbox ? cell.setInternetArchive() : cell.setDropbox()
+        }
+        else if indexPath.row == 3 {
+            return cell.setInternetArchive()
+        }
+
+        return cell.setWebDav()
+    }
+
+    // MARK: UITableViewDelegate
+
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return indexPath.row == 0 ? TitleCell.fullHeight : BigMenuItemCell.height
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
