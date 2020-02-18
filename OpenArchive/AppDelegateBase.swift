@@ -96,18 +96,22 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                                           inCollection: Space.collection)
                 }
 
-                // TODO: Not working. Instead implement a search by MenuNavigationController!
-                let top = window?.rootViewController?.top
-                var navC: UINavigationController? = nil
+                // Find the MenuNavigationController which currently should
+                // display DropboxViewController and replace that with the next step
+                // of AddProjectViewController.
+                var vc = window?.rootViewController
+                var menuNav: MenuNavigationController?
 
-                if top is DropboxViewController {
-                    navC = top?.navigationController
-                }
-                else if top?.presentingViewController is DropboxViewController {
-                    navC = top?.presentingViewController?.navigationController
+                while vc != nil {
+                    if vc is MenuNavigationController {
+                        menuNav = vc as? MenuNavigationController
+                        break
+                    }
+
+                    vc = vc?.subViewController
                 }
 
-                navC?.setViewControllers([AddProjectViewController()], animated: true)
+                menuNav?.setViewControllers([AddProjectViewController()], animated: true)
 
             case .cancel:
                 print("[\(String(describing: type(of: self)))] dropbox auth cancelled")

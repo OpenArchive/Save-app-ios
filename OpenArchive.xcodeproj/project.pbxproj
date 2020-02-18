@@ -73,9 +73,9 @@
 		A056555723F6D8A100DE0168 /* DropboxSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555623F6D67E00DE0168 /* DropboxSpace.swift */; };
 		A056555823F6D8A300DE0168 /* DropboxSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555623F6D67E00DE0168 /* DropboxSpace.swift */; };
 		A056555A23F6DA3100DE0168 /* DropboxConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555923F6D9D600DE0168 /* DropboxConduit.swift */; };
-		A056555C23F6F57B00DE0168 /* UIViewController+top.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555B23F6F57B00DE0168 /* UIViewController+top.swift */; };
-		A056555D23F6F57B00DE0168 /* UIViewController+top.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555B23F6F57B00DE0168 /* UIViewController+top.swift */; };
-		A056555E23F6F57B00DE0168 /* UIViewController+top.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555B23F6F57B00DE0168 /* UIViewController+top.swift */; };
+		A056555C23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */; };
+		A056555D23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */; };
+		A056555E23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */; };
 		A05768DA22E0B67D00B39FCE /* Screenshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05768D922E0B67D00B39FCE /* Screenshots.swift */; };
 		A05768E322E0B6F800B39FCE /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05768E122E0B6E600B39FCE /* SnapshotHelper.swift */; };
 		A059E647223AE9FB00ABC621 /* UploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A059E646223AE9FB00ABC621 /* UploadManager.swift */; };
@@ -498,7 +498,7 @@
 		A056555423F6D1C600DE0168 /* DropboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxViewController.swift; sourceTree = "<group>"; };
 		A056555623F6D67E00DE0168 /* DropboxSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSpace.swift; sourceTree = "<group>"; };
 		A056555923F6D9D600DE0168 /* DropboxConduit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxConduit.swift; sourceTree = "<group>"; };
-		A056555B23F6F57B00DE0168 /* UIViewController+top.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+top.swift"; sourceTree = "<group>"; };
+		A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Utils.swift"; sourceTree = "<group>"; };
 		A05768D722E0B67D00B39FCE /* Screenshots.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Screenshots.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A05768D922E0B67D00B39FCE /* Screenshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screenshots.swift; sourceTree = "<group>"; };
 		A05768DB22E0B67D00B39FCE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -780,7 +780,7 @@
 				A04255CD22944C1B0048E00C /* UIStoryboard+main.swift */,
 				A05471DA2296C8FD009FEA93 /* UITableView+separatorView.swift */,
 				A055204F222566CE00B9645F /* UIView+animateHideShow.swift */,
-				A056555B23F6F57B00DE0168 /* UIViewController+top.swift */,
+				A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */,
 				A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */,
 				A0BBEF8822846F310071EE93 /* Geocoder.swift */,
 			);
@@ -1688,7 +1688,7 @@
 				A0C475C021149B040012937E /* MainViewController.swift in Sources */,
 				A0FB4DB321F8799100B46099 /* SpacesView.swift in Sources */,
 				A056555823F6D8A300DE0168 /* DropboxSpace.swift in Sources */,
-				A056555D23F6F57B00DE0168 /* UIViewController+top.swift in Sources */,
+				A056555D23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */,
 				A071290C2111DE3C007A432A /* Asset.swift in Sources */,
 				A045D1FC224D02AA008FF8C1 /* TitleCell.swift in Sources */,
 				A04255CF22944C1B0048E00C /* UIStoryboard+main.swift in Sources */,
@@ -1729,7 +1729,7 @@
 				A09B538223266F02005266C2 /* Constants+Swift.swift in Sources */,
 				A09B538323266F02005266C2 /* ActiveProjectsView.swift in Sources */,
 				A09B5416232671D1005266C2 /* AppDelegate.swift in Sources */,
-				A056555E23F6F57B00DE0168 /* UIViewController+top.swift in Sources */,
+				A056555E23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */,
 				A09B538423266F02005266C2 /* SpacesView.swift in Sources */,
 				A09B538523266F02005266C2 /* RoundedImageView.swift in Sources */,
 				A09B538623266F02005266C2 /* Settings.swift in Sources */,
@@ -1940,7 +1940,7 @@
 				A0D1013E22CCF4140068D047 /* WebDavConduit.swift in Sources */,
 				A0AFCF0F22300E41005E57FD /* MultilineTitle.swift in Sources */,
 				A0A192DB21F1EE88009A8CF0 /* AlertHelper.swift in Sources */,
-				A056555C23F6F57B00DE0168 /* UIViewController+top.swift in Sources */,
+				A056555C23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */,
 				A0631B552203022100B3E90D /* BaseTableViewController.swift in Sources */,
 				A0E2720C224E33D000CB7113 /* EditProjectViewController.swift in Sources */,
 				A0457E6920EFB57C00B8FBCB /* RegexUtils.swift in Sources */,

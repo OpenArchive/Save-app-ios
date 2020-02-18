@@ -10,6 +10,9 @@ import UIKit
 import Eureka
 import SwiftyDropbox
 
+/**
+ https://github.com/dropbox/SwiftyDropbox
+ */
 class DropboxViewController: BaseServerViewController {
 
     override func viewDidLoad() {
@@ -43,6 +46,8 @@ class DropboxViewController: BaseServerViewController {
                     UIApplication.shared, controller: self) { url in
                         UIApplication.shared.open(url, options: [:])
                     }
+
+                    // Will continue in AppDelegateBase, where we receive a callback.
                 })
         }
     }
