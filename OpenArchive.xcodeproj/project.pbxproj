@@ -28,6 +28,9 @@
 		A026C34622C641EB007B1C5B /* IaScrapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */; };
 		A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029F6822118715700C4EF6D /* AssetFactory.swift */; };
 		A029F6842118715700C4EF6D /* AssetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029F6822118715700C4EF6D /* AssetFactory.swift */; };
+		A02BC66E2400195C007B05AB /* NSError+from.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02BC66D2400195C007B05AB /* NSError+from.swift */; };
+		A02BC66F2400195C007B05AB /* NSError+from.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02BC66D2400195C007B05AB /* NSError+from.swift */; };
+		A02BC6702400195C007B05AB /* NSError+from.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02BC66D2400195C007B05AB /* NSError+from.swift */; };
 		A0357D1122CF901800292077 /* BatchEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0357D1022CF901800292077 /* BatchEditViewController.swift */; };
 		A0362192220DA390003C21DC /* UIColor+accent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362191220DA390003C21DC /* UIColor+accent.swift */; };
 		A0362193220DA390003C21DC /* UIColor+accent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362191220DA390003C21DC /* UIColor+accent.swift */; };
@@ -445,6 +448,7 @@
 		A025171822C2126B00EEFBD9 /* DuplicateProjectAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateProjectAlert.swift; sourceTree = "<group>"; };
 		A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaScrapeViewController.swift; sourceTree = "<group>"; };
 		A029F6822118715700C4EF6D /* AssetFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFactory.swift; sourceTree = "<group>"; };
+		A02BC66D2400195C007B05AB /* NSError+from.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+from.swift"; sourceTree = "<group>"; };
 		A0357D1022CF901800292077 /* BatchEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchEditViewController.swift; sourceTree = "<group>"; };
 		A0362191220DA390003C21DC /* UIColor+accent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+accent.swift"; sourceTree = "<group>"; };
 		A0362194220DB2CA003C21DC /* IaSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaSpace.swift; sourceTree = "<group>"; };
@@ -771,6 +775,8 @@
 				A092C0EF223A8D4B003EB0AA /* DoneDelegate.swift */,
 				A0FE2C1D22E1E8D200C5443F /* Error+friendlyMessage.swift */,
 				A004E24B20EBCF1700A1D5F5 /* Formatters.swift */,
+				A0BBEF8822846F310071EE93 /* Geocoder.swift */,
+				A02BC66D2400195C007B05AB /* NSError+from.swift */,
 				A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */,
 				A070335A2119E7DF00BF1F33 /* Request+debug.swift */,
 				A05F79FD22EEFA9F003DBB74 /* RuleFilename.swift */,
@@ -782,7 +788,6 @@
 				A055204F222566CE00B9645F /* UIView+animateHideShow.swift */,
 				A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */,
 				A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */,
-				A0BBEF8822846F310071EE93 /* Geocoder.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1697,6 +1702,7 @@
 				A05275152211A91300BDB14B /* CollectionsView.swift in Sources */,
 				A0AFCF1022300E41005E57FD /* MultilineTitle.swift in Sources */,
 				A0E27200224E267800CB7113 /* BrowseViewController.swift in Sources */,
+				A02BC66F2400195C007B05AB /* NSError+from.swift in Sources */,
 				A0A192E121F23B61009A8CF0 /* Constants+Swift.swift in Sources */,
 				A0631B5C22034F0E00B3E90D /* Collection.swift in Sources */,
 				A0F7FDE822494E3E006610F0 /* RemoveProjectAlert.swift in Sources */,
@@ -1773,6 +1779,7 @@
 				A09B53AB23266F02005266C2 /* SlideViewController.swift in Sources */,
 				A09B53AC23266F02005266C2 /* NewProjectViewController.swift in Sources */,
 				A09B53AD23266F02005266C2 /* DarkroomHelper.swift in Sources */,
+				A02BC6702400195C007B05AB /* NSError+from.swift in Sources */,
 				A09B53AE23266F02005266C2 /* Conduit.swift in Sources */,
 				A09B53AF23266F02005266C2 /* UIView+animateHideShow.swift in Sources */,
 				A09B53B023266F02005266C2 /* FlagInfoAlert.swift in Sources */,
@@ -1929,6 +1936,7 @@
 				A0E1A68721EE834D00E4F6B7 /* BaseCell.swift in Sources */,
 				A0F7FDDC22491C6C006610F0 /* TintedButton.swift in Sources */,
 				A0E2BC722226AA10006D33E3 /* SelectedSpace.swift in Sources */,
+				A02BC66E2400195C007B05AB /* NSError+from.swift in Sources */,
 				A0631B5B22034F0700B3E90D /* Collection.swift in Sources */,
 				A0656AB821F9BC8500070C4B /* ConnectSpaceViewController.swift in Sources */,
 				A0FB4DBE21F8CC2300B46099 /* MainViewController.swift in Sources */,

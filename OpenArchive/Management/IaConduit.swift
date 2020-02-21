@@ -26,7 +26,7 @@ class IaConduit: Conduit {
             let url = url(for: asset)
             else {
                 DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
-                    self.done(uploadId, error: InvalidConfError())
+                    self.done(uploadId, error: UploadError.invalidConf)
                 }
 
                 return progress

@@ -327,11 +327,22 @@ class Conduit {
 
     // MARK: Errors
 
-    struct InvalidConfError: LocalizedError {
-        var errorDescription = "Configuration invalid.".localize()
-    }
+    enum UploadError: LocalizedError {
+        case invalidConf
+        case tooManyRetries
+        case fileTooBig
 
-    struct TooManyRetriesError: LocalizedError {
-        var errorDescription = "Failed after too many retries.".localize()
+        var errorDescription: String? {
+            switch self {
+            case .invalidConf:
+                return "Configuration invalid.".localize()
+
+            case .tooManyRetries:
+                return "Failed after too many retries.".localize()
+
+            case .fileTooBig:
+                return "Dropbox doesn't allow files bigger than 150 MByte.".localize()
+            }
+        }
     }
 }

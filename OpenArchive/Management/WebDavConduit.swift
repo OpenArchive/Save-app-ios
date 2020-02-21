@@ -39,7 +39,7 @@ class WebDavConduit: Conduit {
             let credential = credential
         else {
             DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
-                self.done(uploadId, error: InvalidConfError())
+                self.done(uploadId, error: UploadError.invalidConf)
             }
 
             return progress
@@ -155,7 +155,7 @@ class WebDavConduit: Conduit {
      */
     private func create(folder: URL, _ progress: Progress, _ provider: WebDAVFileProvider? = nil) -> Error? {
         guard let provider = provider ?? self.provider else {
-            return InvalidConfError()
+            return UploadError.invalidConf
         }
 
         var error: Error? = nil
@@ -310,7 +310,7 @@ class WebDavConduit: Conduit {
                                _ path: [String]) {
 
         guard let user = credential.user else {
-            return done(uploadId, error: InvalidConfError())
+            return done(uploadId, error: UploadError.invalidConf)
         }
 
         var urlc = URLComponents(url: url, resolvingAgainstBaseURL: true)
@@ -401,7 +401,7 @@ class WebDavConduit: Conduit {
             }
 
             if round > 9 {
-                error = InvalidConfError()
+                error = UploadError.invalidConf
                 break
             }
 

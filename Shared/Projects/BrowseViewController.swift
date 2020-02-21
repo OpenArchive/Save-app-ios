@@ -187,10 +187,7 @@ class BrowseViewController: BaseTableViewController {
         if let error = error {
             print("[\(String(describing: type(of: self)))] error=\(error)")
 
-            return self.endWork(NSError(
-                domain: String(describing: type(of: error)),
-                code: -1,
-                userInfo: [NSLocalizedDescriptionKey: error.description]))
+            return self.endWork(NSError.from(error))
         }
 
         for entry in result?.entries ?? [] {
