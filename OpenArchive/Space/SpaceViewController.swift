@@ -10,7 +10,7 @@ import UIKit
 import Eureka
 
 /**
- Shows a menu to either forward to `InternetArchiveViewController`,
+ Shows a menu to either forward to `InternetArchiveViewController`, `DropboxViewController`,
  `PrivateServerViewController` or `EditProfileViewController`.
  */
 class SpaceViewController: BaseTableViewController {
@@ -43,6 +43,8 @@ class SpaceViewController: BaseTableViewController {
             let cell = tableView.dequeueReusableCell(withIdentifier: SelectedSpaceCell.reuseId) as? SelectedSpaceCell {
 
             cell.space = SelectedSpace.space
+
+            cell.selectionStyle = .none
 
             return cell
         }
