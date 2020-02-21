@@ -8,18 +8,51 @@
 
 import UIKit
 import FilesProvider
+import SwiftyDropbox
 
 class BrowseViewController: BaseTableViewController {
 
+    class Folder {
+        let name: String
+
+        let modifiedDate: Date?
+
+        let original: Any?
+
+        init(_ original: FileObject) {
+            name = original.name
+            modifiedDate = original.modifiedDate ?? original.creationDate
+            self.original = original
+        }
+
+        init(_ original: Files.FolderMetadata) {
+            name = original.name
+            modifiedDate = nil
+            self.original = original
+        }
+    }
+
     private var provider: WebDAVFileProvider? {
         return (SelectedSpace.space as? WebDavSpace)?.provider
+    }
+
+    private var dropboxClient: DropboxClient? {
+        if let client = DropboxClientsManager.authorizedClient {
+            return client
+        }
+
+        if let accessToken = (SelectedSpace.space as? DropboxSpace)?.password {
+            return DropboxClient(accessToken: accessToken)
+        }
+
+        return nil
     }
 
     private var loading = true
 
     private var error: Error?
 
-    private var folders = [FileObject]()
+    private var folders = [Folder]()
 
     private var selected: Int?
 
@@ -97,6 +130,10 @@ class BrowseViewController: BaseTableViewController {
         return 0
     }
 
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return indexPath.section > 0 ? MenuItemCell.height : FolderCell.height
+    }
+
 
     // MARK: Private Methods
 
@@ -125,15 +162,49 @@ class BrowseViewController: BaseTableViewController {
         beginWork {
             folders.removeAll()
 
-            provider?.contentsOfDirectory(path: "") { files, error in
-                for file in files.sort(by: .modifiedDate, ascending: false, isDirectoriesFirst: true) {
-                    if file.isDirectory {
-                        self.folders.append(file)
+            if let provider = provider {
+                provider.contentsOfDirectory(path: "") { files, error in
+                    for file in files.sort(by: .modifiedDate, ascending: false, isDirectoriesFirst: true) {
+                        if file.isDirectory {
+                            self.folders.append(Folder(file))
+                        }
                     }
-                }
 
-                self.endWork(error)
+                    self.endWork(error)
+                }
             }
+            else if let client = dropboxClient {
+                client.files.listFolder(path: "", includeNonDownloadableFiles: false)
+                    .response(completionHandler: dropboxCompletionHandler)
+            }
+            else {
+                self.endWork(nil)
+            }
+        }
+    }
+
+    private func dropboxCompletionHandler<T: CustomStringConvertible>(_ result: Files.ListFolderResult?, _ error: CallError<T>?) {
+        if let error = error {
+            print("[\(String(describing: type(of: self)))] error=\(error)")
+
+            return self.endWork(NSError(
+                domain: String(describing: type(of: error)),
+                code: -1,
+                userInfo: [NSLocalizedDescriptionKey: error.description]))
+        }
+
+        for entry in result?.entries ?? [] {
+            if let entry = entry as? Files.FolderMetadata {
+                self.folders.append(Folder(entry))
+            }
+        }
+
+        if result?.hasMore ?? false {
+            dropboxClient?.files.listFolderContinue(cursor: result!.cursor)
+                .response(completionHandler: dropboxCompletionHandler)
+        }
+        else {
+            self.endWork(nil)
         }
     }
 

@@ -26,9 +26,11 @@ class MenuItemCell: BaseCell {
 
     @IBOutlet weak var label: UILabel!
 
+    @discardableResult
     func set(_ text: String = "", textColor: UIColor = .darkText, accessoryType: AccType = .none) -> MenuItemCell {
 
         label.text = text
+        label.numberOfLines = 1
 
         if #available(iOS 13.0, *),
             textColor == .darkText {
@@ -96,6 +98,10 @@ class MenuItemCell: BaseCell {
 
     @discardableResult
     func set(_ error: Error) -> MenuItemCell {
-        return set(error.friendlyMessage, textColor: .systemRed)
+        set(error.friendlyMessage, textColor: .systemRed)
+
+        label.numberOfLines = 0
+
+        return self
     }
 }

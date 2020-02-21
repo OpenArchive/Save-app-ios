@@ -12,17 +12,21 @@ import FilesProvider
 class FolderCell: BaseCell {
 
     @IBOutlet weak var nameLb: UILabel!
+    @IBOutlet weak var nameLbToCenterY: NSLayoutConstraint!
     @IBOutlet weak var modifiedLb: UILabel!
 
     @discardableResult
-    func set(folder: FileObject) -> FolderCell {
+    func set(folder: BrowseViewController.Folder) -> FolderCell {
         nameLb.text = folder.name
 
-        if let modified = folder.modifiedDate ?? folder.creationDate {
+        if let modified = folder.modifiedDate {
             modifiedLb.text = Formatters.date.string(from: modified)
+            modifiedLb.isHidden = false
+            nameLbToCenterY.constant = 0
         }
         else {
-            modifiedLb.text = ""
+            modifiedLb.isHidden = true
+            nameLbToCenterY.constant = 10
         }
 
         return self
