@@ -30,9 +30,9 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 
         uploadManager = UploadManager.shared
 
-        setUp()
+        setUpDropbox()
 
-        DropboxClientsManager.setupWithAppKey(Constants.dropboxKey)
+        setUpUi()
 
         return true
     }
@@ -138,6 +138,9 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         Db.setup()
 
         uploadManager = UploadManager(completionHandler)
+
+        setUpDropbox()
+        
         uploadManager?.uploadNext()
     }
 
@@ -194,7 +197,17 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         completionHandler()
     }
 
-    func setUp() {
+    func setUpDropbox() {
+        let client = DropboxTransportClient(
+            accessToken: "", baseHosts: nil, userAgent: nil, selectUser: nil,
+            sessionDelegate: uploadManager,
+            backgroundSessionDelegate: Conduit.backgroundSessionManager.delegate,
+            sharedContainerIdentifier: Constants.appGroup)
+
+        DropboxClientsManager.setupWithAppKey(Constants.dropboxKey, transportClient: client)
+    }
+
+    func setUpUi() {
         Localize.update(provider: .strings)
         Localize.update(bundle: Bundle(for: type(of: self)))
         Localize.update(fileName: "Localizable")

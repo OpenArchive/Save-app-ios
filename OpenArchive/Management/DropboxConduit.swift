@@ -103,9 +103,7 @@ class DropboxConduit: Conduit {
             progress.completedUnitCount = 10
 
             DispatchQueue.global(qos: .background).async {
-                self.upload(file, to: to, progress) { error in
-                    self.done(uploadId, error: error, url: to)
-                }
+                self.upload(file, to: to, progress)
             }
         }
 

@@ -85,18 +85,51 @@ class UploadManager: Alamofire.SessionDelegate {
     private lazy var taskCompletionHandler: (URLSession, URLSessionTask, Error?) -> Void = { session, task, error in
         self.debug("#taskCompletionHandler task=\(task), state=\(self.getTaskStateName(task.state)), url=\(task.originalRequest?.url?.absoluteString ?? "nil") error=\(String(describing: error))")
 
-        if task is URLSessionUploadTask,
-            task.state == .completed,
-            let url = task.originalRequest?.url {
+        // Ignore incomplete tasks.
+        guard task.state == .completed,
+            let url = task.originalRequest?.url else {
+            return
+        }
 
-            let filename = url.lastPathComponent
+        let filename = url.lastPathComponent
 
-            if filename.lowercased() !~ "\(WebDavConduit.metaFileExt)$"
-                && filename !~ "\\d{15}-\\d{15}"
-                && self.current?.filename == filename {
+        // Ignore Metadata files.
+        guard filename.lowercased() !~ "\(WebDavConduit.metaFileExt)$" else {
+            return
+        }
 
-                self.done(self.current?.id, nil, url)
+        // Dropbox upload
+        if String(describing: type(of: task)) == "__NSCFBackgroundUploadTask",
+            let host = url.host?.lowercased(),
+            host =~ "dropbox"
+            && filename.lowercased() == "upload"
+            && self.current?.asset?.space is DropboxSpace {
+
+            // Reconstruct path part of upload URL to store as Asset#publicUrl.
+            var path = [String]()
+
+            if let projectName = self.current?.asset?.project?.name {
+                path.append(projectName)
             }
+            if let collectionName = self.current?.asset?.collection?.name {
+                path.append(collectionName)
+            }
+            if self.current?.asset?.tags?.contains(Asset.flag) ?? false {
+                path.append(Asset.flag)
+            }
+            if let filename = self.current?.asset?.filename {
+                path.append(filename)
+            }
+
+            // Will show an error, when path couldn't be constructed.
+            self.done(self.current?.id, nil, path.count > 2 ? Conduit.construct(path) : nil)
+        }
+        // WebDAV upload
+        else if task is URLSessionUploadTask
+            && filename !~ "\\d{15}-\\d{15}" // Ignore chunks
+            && self.current?.filename == filename {
+
+            self.done(self.current?.id, nil, url)
         }
     }
 
