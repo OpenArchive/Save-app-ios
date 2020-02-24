@@ -354,7 +354,7 @@ class Conduit {
                 return "Failed after too many retries.".localize()
 
             case .fileTooBig:
-                return "Dropbox doesn't allow files bigger than 150 MByte.".localize()
+                return "The Dropbox support can't handle files bigger than 150 MByte.".localize()
             }
         }
     }

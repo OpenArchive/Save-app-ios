@@ -337,9 +337,6 @@
 "Incorrect username or password" = "Incorrect username or password";
 
 /* Space */
-"Configuration invalid." = "Configuration invalid.";
-
-/* Space */
 "Unnamed" = "Unnamed";
 
 /* Project */
@@ -422,3 +419,12 @@
 
 /* Main.storyboard */
 "Back" = " Back";
+
+/* Conduit */
+"Configuration invalid." = "Configuration invalid.";
+
+/* Conduit */
+"Failed after too many retries." = "Failed after too many retries.";
+
+/* Conduit */
+"The Dropbox support can't handle files bigger than 150 MByte." = "The Dropbox support can't handle files bigger than 150 MByte.";
