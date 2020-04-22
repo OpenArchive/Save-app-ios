@@ -4,7 +4,7 @@ PODS:
   - ARChromeActivity (1.0.6)
   - CrossroadRegex (1.2.0)
   - DownloadButton (0.1.0)
-  - Eureka (5.2.0)
+  - Eureka (5.2.1)
   - FavIcon (3.0.6)
   - FilesProvider (0.26.0)
   - FontBlaster (5.1.0)
@@ -46,7 +46,7 @@ PODS:
   - SDCAlertView (10.0)
   - SwiftyDropbox (5.1.0):
     - Alamofire (~> 4.8.2)
-  - TLPhotoPicker (2.0.9)
+  - TLPhotoPicker (2.0.11)
   - TUSafariActivity (1.0.4)
   - UIImage-Resize (1.0.1)
   - UIImageViewAlignedSwift (0.7.0)
@@ -228,7 +228,7 @@ SPEC CHECKSUMS:
   ARChromeActivity: 5dcf9b9f09323761f992aff3525cdd777f83609d
   CrossroadRegex: 9af32b4b4dc6ff404c87647ef1bc68ea711cc570
   DownloadButton: 49a21a89e0d7d1b42d9134f79aaa40e727cd57c3
-  Eureka: 820a761c700f6eaab3b60758f138e0d9b99072b3
+  Eureka: c883105488e05bc65539f583246ecf9657cabbfe
   FavIcon: 9fd386d96324ce0f6063732f8bf6c7f1d5bf17a3
   FilesProvider: 2a8ae17d8b9c23a6feadb1308ee638fa31d21065
   FontBlaster: 67017432ef1d187e038c353fd48ed8744a54484a
@@ -239,7 +239,7 @@ SPEC CHECKSUMS:
   ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
   SDCAlertView: 5fbc48cae6d7bf9781097e3f27883924ef3b922c
   SwiftyDropbox: 7ca4961e0340c62c8d6d1ece91d67badfe4c0380
-  TLPhotoPicker: a64994394b22067bcd972144950dad88f61d6185
+  TLPhotoPicker: a5c339732b8326bb16cbb4e00ed01a86f2bfbbb3
   TUSafariActivity: afc55a00965377939107ce4fdc7f951f62454546
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   UIImageViewAlignedSwift: 2d082e1623c5121dec11b298d9066ae4ce704a58
@@ -247,4 +247,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: 01382320869ab45a1db36e2adc530debdd900256
 
-COCOAPODS: 1.8.4
+COCOAPODS: 1.9.1
