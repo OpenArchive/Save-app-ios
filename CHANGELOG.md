@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.6.0
+- Added Dropbox support.
+- Updated dependency.
+
 ## 2.5.0
 - Updated dependencies: CocoaPods, Alamofire, CrossroadRegex, TLPhotoPicker, YapDatabase, FavIcon, FontBlaster, Fastlane
 - Fixed dark mode issue with launch screen.
