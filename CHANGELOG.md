@@ -2,7 +2,8 @@
 
 ## 2.6.0
 - Added Dropbox support.
-- Updated dependency.
+- Updated dependencies.
+- Fixed layouting issues.
 
 ## 2.5.0
 - Updated dependencies: CocoaPods, Alamofire, CrossroadRegex, TLPhotoPicker, YapDatabase, FavIcon, FontBlaster, Fastlane

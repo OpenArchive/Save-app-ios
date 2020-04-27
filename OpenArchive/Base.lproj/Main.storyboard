@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3f6-u4-WuB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3f6-u4-WuB">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16087"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -55,15 +55,18 @@
                                 <color key="textColor" red="0.0" green="0.70398116440000003" blue="0.64921339899999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Get Started" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Djp-bE-4X6">
-                                <rect key="frame" x="16" y="478" width="271.5" height="21"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Get Started" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Djp-bE-4X6">
+                                <rect key="frame" x="16" y="458" width="271.5" height="21"/>
                                 <accessibility key="accessibilityConfiguration" identifier="btGetStarted"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="OSB-qZ-Nj6"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.70398116440000003" blue="0.64921339899999997" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" ambiguous="YES" image="ic_next" translatesAutoresizingMaskIntoConstraints="NO" id="Reh-6z-n6M">
-                                <rect key="frame" x="295.5" y="482" width="8.5" height="13"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="252" verticalHuggingPriority="251" image="ic_next" translatesAutoresizingMaskIntoConstraints="NO" id="Reh-6z-n6M">
+                                <rect key="frame" x="295.5" y="462" width="8.5" height="13"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="13" id="g80-mU-fIt"/>
                                     <constraint firstAttribute="width" secondItem="Reh-6z-n6M" secondAttribute="height" multiplier="13:20" id="iHx-Z3-SFc"/>
@@ -85,8 +88,8 @@
                             <constraint firstItem="Djp-bE-4X6" firstAttribute="leading" secondItem="NIz-5Q-qaC" secondAttribute="leading" constant="16" id="V3b-rT-sdm"/>
                             <constraint firstItem="0gx-sd-QFe" firstAttribute="leading" secondItem="NIz-5Q-qaC" secondAttribute="leading" constant="16" id="XEv-2e-mOu"/>
                             <constraint firstItem="vWa-LF-bEs" firstAttribute="leading" secondItem="wM6-7q-rsJ" secondAttribute="trailing" constant="8" id="eQu-8O-r6z"/>
-                            <constraint firstItem="Djp-bE-4X6" firstAttribute="top" relation="lessThanOrEqual" secondItem="rik-2S-4lf" secondAttribute="bottom" priority="999" constant="48" id="fTc-3F-Fvy"/>
-                            <constraint firstItem="NIz-5Q-qaC" firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="Djp-bE-4X6" secondAttribute="bottom" constant="8" id="iAV-gX-FSx"/>
+                            <constraint firstItem="Djp-bE-4X6" firstAttribute="top" relation="lessThanOrEqual" secondItem="rik-2S-4lf" secondAttribute="bottom" constant="48" id="fTc-3F-Fvy"/>
+                            <constraint firstItem="NIz-5Q-qaC" firstAttribute="bottom" secondItem="Djp-bE-4X6" secondAttribute="bottom" priority="250" constant="8" id="iAV-gX-FSx"/>
                             <constraint firstItem="vWa-LF-bEs" firstAttribute="bottom" secondItem="wM6-7q-rsJ" secondAttribute="bottom" id="mcT-RH-geP"/>
                             <constraint firstItem="NIz-5Q-qaC" firstAttribute="trailing" secondItem="Reh-6z-n6M" secondAttribute="trailing" constant="16" id="nUl-Ch-xfd"/>
                             <constraint firstItem="Reh-6z-n6M" firstAttribute="centerY" secondItem="Djp-bE-4X6" secondAttribute="centerY" id="tkQ-xw-Iiu"/>
@@ -139,6 +142,9 @@
                             </label>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YVt-JP-CZ1" customClass="UIImageViewAligned" customModule="UIImageViewAlignedSwift">
                                 <rect key="frame" x="80" y="229.5" width="240" height="498.5"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="YVt-JP-CZ1" secondAttribute="height" multiplier="40:83" id="Zxw-RC-apF"/>
+                                </constraints>
                             </imageView>
                         </subviews>
                         <constraints>
@@ -261,7 +267,7 @@
             </objects>
             <point key="canvasLocation" x="619" y="-690"/>
         </scene>
-        <!--Delegate-->
+        <!--Main View Controller-->
         <scene sceneID="YPT-gf-YbB">
             <objects>
                 <viewController storyboardIdentifier="MainViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="wAB-WM-ZQl" customClass="MainViewController" customModule="OpenArchive" customModuleProvider="target" sceneMemberID="viewController">
@@ -1068,6 +1074,11 @@
             <point key="canvasLocation" x="4575" y="111.97183098591549"/>
         </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="XbN-st-9jm"/>
+        <segue reference="51p-Tu-idn"/>
+    </inferredMetricsTieBreakers>
+    <color key="tintColor" red="0.0" green="0.70398116438356162" blue="0.64921339897260277" alpha="1" colorSpace="calibratedRGB"/>
     <resources>
         <image name="ic_batchedit" width="24" height="24"/>
         <image name="ic_edit" width="13" height="13"/>
@@ -1079,9 +1090,4 @@
         <image name="logo" width="92" height="52"/>
         <image name="server" width="27" height="26"/>
     </resources>
-    <inferredMetricsTieBreakers>
-        <segue reference="XbN-st-9jm"/>
-        <segue reference="51p-Tu-idn"/>
-    </inferredMetricsTieBreakers>
-    <color key="tintColor" red="0.0" green="0.70398116438356162" blue="0.64921339897260277" alpha="1" colorSpace="calibratedRGB"/>
 </document>
