@@ -1,4 +1,1 @@
-- Başlatma ekranı ile ilgili karanlık mod sorunu düzeltildi.
-- Yapılan metin "Projenize medya eklemek için aşağıdaki düğmelere dokunun." kendini tıklatılabilir.
-- Varlık özetini sha256sum gibi araçlarla aynı hizada olmak için BASE64 yerine onaltılık sayı olarak kodlayın.
-- iPad'deki formlarda yumuşak klavye ile ilgili sorunlar düzeltildi.
+Dropbox desteği eklendi.

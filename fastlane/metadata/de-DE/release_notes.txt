@@ -1,4 +1,1 @@
-- Dark Mode Unterstützung beim Start gefixt.
-- Text "Die Buttons unten verwenden um Medien zu Deinem Projekt hinzuzufügen." berührbar gemacht.
-- Dateiprüfsumme wird jetzt als Hexadezimalzahl statt BASE64-kodiert ausgegeben.
-- Probleme mit dem Keyboard in Formularen auf iPad gefixt.
+Dropbox-Unterstützung hinzugefügt.
