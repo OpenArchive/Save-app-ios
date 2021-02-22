@@ -46,6 +46,9 @@ won't be acepted. Document the non-obvious!
 OpenArchive the non-revocable right to use your code for this project in any way OpenArchive 
 deems necessary. This includes, re-licensing under another license.
 
+## Code of Conduct
+[![Contributor Covenant](https://img.shields.io/badge/Contributor%20Covenant-2.0-4baaaa.svg)](https://openarchive.github.io/Code-of-Conduct/) 
+
 ## Dev Stuff
 
 ### Internet Archive S3 reference:
