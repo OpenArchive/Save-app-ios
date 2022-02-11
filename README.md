@@ -20,7 +20,7 @@ These people kindly donored their time and work to translate the app and surroun
 - Russian: palyanitsin
 - Turkish: kayazeren
 - Arabic: ahmedessamdev, mahmoud_th
-- Persian: arminoza
+- Persian: ahangarha, voxp
 - Italian: RickDeckard
 
 Thank you very much, folks!
