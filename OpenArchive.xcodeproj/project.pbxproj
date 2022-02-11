@@ -666,6 +666,13 @@
 		A0C475BF21149B040012937E /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		A0C797E5228061AC0009751A /* AbcFilteredByCollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbcFilteredByCollectionView.swift; sourceTree = "<group>"; };
 		A0C797E822807DF00009751A /* SelectedCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedCollection.swift; sourceTree = "<group>"; };
+		A0C7D8DF27B6B44A00E377FD /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A0C7D8E027B6B44A00E377FD /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A0C7D8E227B6B47F00E377FD /* subtitle.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = subtitle.txt; sourceTree = "<group>"; };
+		A0C7D8E327B6B47F00E377FD /* keywords.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = keywords.txt; sourceTree = "<group>"; };
+		A0C7D8E427B6B47F00E377FD /* promotional_text.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = promotional_text.txt; sourceTree = "<group>"; };
+		A0C7D8E527B6B47F00E377FD /* name.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = name.txt; sourceTree = "<group>"; };
+		A0C7D8E627B6B47F00E377FD /* description.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = description.txt; sourceTree = "<group>"; };
 		A0C7DC02224A40E5004B78FF /* ActiveProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveProjectsView.swift; sourceTree = "<group>"; };
 		A0D0B69B235BD41A00748950 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A0D0B69C235BD41A00748950 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -963,6 +970,7 @@
 				A0902BC922F0429900062F6E /* en-US */,
 				A04FA3F523462085001BBF15 /* es-MX */,
 				A07727672345FAB900366ADD /* fr-FR */,
+				A0C7D8E127B6B47F00E377FD /* it */,
 				A09DE5F6234F3AAF00CB3E4D /* ru */,
 				A09DE5EB234F384800CB3E4D /* tr */,
 			);
@@ -1136,6 +1144,18 @@
 				A010D39F22D4A3F200FAB433 /* BatchInfoAlert.swift */,
 			);
 			path = Preview;
+			sourceTree = "<group>";
+		};
+		A0C7D8E127B6B47F00E377FD /* it */ = {
+			isa = PBXGroup;
+			children = (
+				A0C7D8E527B6B47F00E377FD /* name.txt */,
+				A0C7D8E227B6B47F00E377FD /* subtitle.txt */,
+				A0C7D8E327B6B47F00E377FD /* keywords.txt */,
+				A0C7D8E427B6B47F00E377FD /* promotional_text.txt */,
+				A0C7D8E627B6B47F00E377FD /* description.txt */,
+			);
+			path = it;
 			sourceTree = "<group>";
 		};
 		A0D58DCC20E514F8005A2F34 /* Models */ = {
@@ -1432,6 +1452,7 @@
 				tr,
 				ar,
 				fa,
+				it,
 			);
 			mainGroup = A0E739CB20E4C85D00DB31E1;
 			productRefGroup = A0E739D520E4C85D00DB31E1 /* Products */;
@@ -2007,6 +2028,7 @@
 				A09DE5EA234F374400CB3E4D /* tr */,
 				A0D0B69C235BD41A00748950 /* ar */,
 				A0D0B69E235BD44500748950 /* fa */,
+				A0C7D8E027B6B44A00E377FD /* it */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -2022,6 +2044,7 @@
 				A09DE5E9234F374400CB3E4D /* tr */,
 				A0D0B69B235BD41A00748950 /* ar */,
 				A0D0B69D235BD44500748950 /* fa */,
+				A0C7D8DF27B6B44A00E377FD /* it */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";

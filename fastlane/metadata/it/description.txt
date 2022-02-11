@@ -1,0 +1,68 @@
+Save di OpenArchive ti permette in modo sicuro di preservare, organizzare e condividere i tuoi dati multimediali del cellulare.
+
+Progettato con e per le redazioni, i difensori dei diritti umani, e gli archivisti, Save ti permette il controllo dei tuoi dati multimediali in ogni momento. 
+
+========================
+
+//Caratteristiche
+
+- Carica ogni tipo di dato multimediale su server privato o direttamente su Internet Archive
+
+- Modifica i metadati dei documenti, incluse persone, luoghi e note aggiuntive
+
+- Segnale i documento come "significativi" per un'organizzazione e/o facile successivo recupero
+
+- Modifica programmata del dato — aggiorna i metadati di molteplici data files in un solo comando
+
+- Crea molteplici albums di progetto per mantenere i tuoi media organizzati (es. "Estate 2019," "Foto Lavoro,"  "Insurrezione Siria 2016," etc)
+
+- Condividi con Save da altre apps del tuo telefono, come ad esempio Foto o Memo Vocali
+
+-  Impostazione di carico dati "solo Wi-Fi", per quando il piano dati cellulare è inaffidabile o dispendioso
+
+- Opzione di licenza Creative Commons per i media che raccogli e condividi
+
+========================
+
+//Vantaggi
+
+Preserva
+Carica i tuoi importanti media mobili su un server privato di tua scelta (usando un piattaforma gratuita ed open source come Nextcluod oppure ownCloud).
+Diffondi pubblicamente i media su Internet Archive per una preservazione resiliente e robusta di terze parti.
+
+Organizza
+Crea Progetti dal nome personalizzato per mantenere i tuoi media ordinati in modo significativo per te.
+Aggiungi note d'aiuto, luoghi, e altre informazioni contestuali una ad una o in blocco.
+Consente la reperibilità e l'organizzazione con cartelle nell'app che corrispondono al tuo server privato.
+
+Condividi
+Collega a un progetto di albums esistente creato e gestito da collaboratori e colleghi 
+Invia media all' app Save dal tuo rullino fotografico ed altre applicazioni iOS.
+
+Sicuro
+Save fa sempre uso della cifratura TLS, criptando la connessione fra il tuo dispositivo mobile e la tua destinazione scelta, sia essa un server privato o l' Internet Archive.
+Save lavoro con software dei server quali Nextcloud permettendo una facile cifratura dei dati che tu hai raccolto.
+
+========================
+
+//Aiuto & Supporto
+OpenArchive FAQ - https://open-archive.org/faq/
+Contattaci a info[at]open-archive[dot]org
+
+========================
+
+//Riferimento
+
+OpenArchive è una collettività di tecnologisti dei diritti umani, etnografi e archivisti impegnati a proteggere la libertà di stampa. Le nostre tecnologie sono progettate per preservare, amplificare ed instradare in modo sicuro i mobile media alle raccolte mantenute della comunità, accessibili su archivi pubblici e privati, fuori dai giardini recintati delle corporazioni che dominano l'ecosistema dell'informazione online.
+
+A proposito di Save
+Save di OpenArchive è un'applicazione d'archiviazione gratuita ed open source per documentaristi e dicendosi dei diritti umani. Essa offre ai gruppi a rischio più azione sui documenti storici, offrendo loro autenticazione multimediale, pseudonimi, controllo di licenza e l'abilità di scegliere dove e come il dato sarà conservato ed accessibile e riutilizzato per lungo tempo.
+
+Save risolve le lacune nel corrente ecosistema online esistente in merito a) collezione etica di breve termine e b) preservazione a lungo termine dei dati mobili sensibili. Noi forniamo strumenti mobili incentrati, scalabili, a norme di settore, etici, intuitivi e facili da usare per le comunità a rischio, preservando ed autenticando i loro media con pseudonimi in modo da renderli accessibili, mantenendone la provenienza nel futuro. 
+
+========================
+
+//Collegamenti
+
+Termini di Servizio: https://open-archive.org/privacy/#terms-of-service
+Regolamento Privacy: https://open-archive.org/privacy/#privacy-policy

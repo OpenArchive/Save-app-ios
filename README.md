@@ -21,6 +21,7 @@ These people kindly donored their time and work to translate the app and surroun
 - Turkish: kayazeren
 - Arabic: ahmedessamdev, mahmoud_th
 - Persian: arminoza
+- Italian: RickDeckard
 
 Thank you very much, folks!
 
