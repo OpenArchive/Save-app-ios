@@ -39,13 +39,13 @@ Paylaşma
 Daha önce iş ortaklarınız ya da çalışma arkadaşlarınız tarafından oluşturulmuş ve güncellenen proje albümlerine bağlanabilirsiniz.
 Fotoğraflarınızdaki ve diğer iOS uygulamalarınızdaki ortamları Save uygulamasına gönderebilirsiniz.
 
-Güvenli Tutma
+Güvenli tutma
 Save her zaman mobil aygıtınız ile seçtiğiniz hedef sunucu arasında TLS şifrelemesini kullanır. Hedef sunucu özel bir sunucu olabileceği gibi Internet Archive sunucuları da olabilir.
 Save, Nextcloud gibi topladığınız verileri şifrelemeyi kolaylaştıran sunucu yazılımları ile birlikte çalışabilir.
 
 =============
 
-//Yardım ve Destek
+//Yardım ve destek
 OpenArchive SSS - https://open-archive.org/faq/
 Bize info[at]open-archive[dot]org adresinden yazabilirsiniz
 
@@ -55,7 +55,7 @@ Bize info[at]open-archive[dot]org adresinden yazabilirsiniz
 
 OpenArchive, basın özgürlüğünü korumaya adanmış insan hakları teknolojisi uzmanları, etnograflar ve arşivcilerden oluşan bir topluluktur. Teknolojilerimiz, şu anda çevrimiçi basın ekosistemine hâkim olan kurumsal duvarlı bahçelerin dışında kalarak, mobil medyayı herkese açık ya da özel arşivler üzerinden, topluluk tarafından güncellenen koleksiyonlarda saklamak, güçlendirmek ve güvenli bir şekilde aktarmak amacıyla tasarlanmıştır.
 
-Save Hakkında
+Save hakkında
 OpenArchive tarafından geliştirilen Save, belgesel yapımcıları ve insan hakları savunucuları için ücretsiz, açık kaynak kodlu bir mobil arşivleme uygulamasıdır. Risk altındaki gruplara, medya doğrulaması, taklitçiliğe karşı koruma, lisanslama denetimi,  uzun süreli erişim ve yeniden kullanım olanağı sağlamak için ortamların nerede ve nasıl saklanacağını seçme gibi özellikler sunarak, geçmiş kayıtlar üzerinde geniş bir aracılık sağlar.
 
 Save a) etik kısa süreli derleme ile b) hassas mobil ortamların uzun süreli korunması konusunda var olan çevrimiçi ekosistemdeki eksikleri doldurmaktadır. Risk altındaki topluluklar için, ortamların gelecekte erişilebilir olmasını sağlamak, taklit edilemeyecek bir şekilde kökenlerini korumak ve doğrulamak için mobil merkezli, ölçeklenebilir, endüstri standardında, etik, sezgisel, kullanımı kolay araçlar sunuyoruz.
@@ -64,5 +64,5 @@ Save a) etik kısa süreli derleme ile b) hassas mobil ortamların uzun süreli 
 
 //Bağlantılar
 
-Hizmet Koşulları: https://open-archive.org/privacy/#terms-of-service
-Gizlilk İlkesi: https://open-archive.org/privacy/#privacy-policy
+Hizmet koşulları: https://open-archive.org/privacy/#terms-of-service
+Gizlilik ilkesi: https://open-archive.org/privacy/#privacy-policy
