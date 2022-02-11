@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol HeaderViewDelegate: class {
+protocol HeaderViewDelegate: AnyObject {
     func showDetails(_ collection: Collection, section: Int?)
 }
 

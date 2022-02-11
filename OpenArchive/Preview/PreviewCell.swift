@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol PreviewCellDelegate: class {
+protocol PreviewCellDelegate: AnyObject {
     func edit(_ asset: Asset, _ directEdit: DarkroomViewController.DirectEdit?)
 }
 
