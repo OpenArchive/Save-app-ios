@@ -80,7 +80,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     func application(_ app: UIApplication, open url: URL,
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
 
-        if let authResult = DropboxClientsManager.handleRedirectURL(url) {
+        DropboxClientsManager.handleRedirectURL(url) { [weak self] authResult in
             switch authResult {
             case .success(let token):
                 print("[\(String(describing: type(of: self)))] dropbox auth success token=\(token)")
@@ -99,7 +99,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                 // Find the MenuNavigationController which currently should
                 // display DropboxViewController and replace that with the next step
                 // of AddProjectViewController.
-                var vc = window?.rootViewController
+                var vc = self?.window?.rootViewController
                 var menuNav: MenuNavigationController?
 
                 while vc != nil {
@@ -113,12 +113,12 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 
                 menuNav?.setViewControllers([AddProjectViewController()], animated: true)
 
-            case .cancel:
+            case .cancel, .none:
                 print("[\(String(describing: type(of: self)))] dropbox auth cancelled")
                 // Nothing to do. User cancelled. Dropbox authentication scene should close automatically.
 
             case .error(let error, let description):
-                print("[\(String(describing: type(of: self)))] dropbox auth error=\(error), description=\(description)")
+                print("[\(String(describing: type(of: self)))] dropbox auth error=\(error), description=\(description ?? "nil")")
                 // Nothing to do. User bailed out after login.
                 // Dropbox authentication scene should close automatically.
             }

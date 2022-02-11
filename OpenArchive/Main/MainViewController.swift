@@ -257,7 +257,7 @@ PKDownloadButtonDelegate {
         tlpp.configure = pickerConf
 
         switch PHPhotoLibrary.authorizationStatus() {
-        case .authorized:
+        case .authorized, .limited:
             present(tlpp, animated: true)
 
         case .notDetermined:
@@ -281,6 +281,7 @@ PKDownloadButtonDelegate {
                 message: "Please go to the Settings app to grant this app access to your photo library, if you want to upload photos or videos.".localize(),
                 title: "Access Denied".localize(),
                 actions: [AlertHelper.cancelAction()])
+
         @unknown default:
             break
         }

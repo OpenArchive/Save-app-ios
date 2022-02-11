@@ -58,7 +58,7 @@ class UploadManager: Alamofire.SessionDelegate {
     private var current: Upload?
 
     var reachability: Reachability? = {
-        var reachability = Reachability()
+        var reachability = try? Reachability()
         reachability?.allowsCellularConnection = !Settings.wifiOnly
 
         return reachability
@@ -442,9 +442,9 @@ class UploadManager: Alamofire.SessionDelegate {
      Network status changed.
      */
     @objc func reachabilityChanged(notification: Notification) {
-        debug("#reachabilityChanged connection=\(reachability?.connection ?? .none)")
+        debug("#reachabilityChanged connection=\(reachability?.connection ?? .unavailable)")
 
-        if reachability?.connection ?? .none != .none {
+        if reachability?.connection ?? .unavailable != .unavailable {
             uploadNext()
         }
     }
@@ -457,7 +457,7 @@ class UploadManager: Alamofire.SessionDelegate {
                 return self.debug("#uploadNext globally paused")
             }
 
-            if self.reachability?.connection ?? Reachability.Connection.none == .none {
+            if self.reachability?.connection ?? Reachability.Connection.unavailable == .unavailable {
                 self.singleCompletionHandler?(.noData)
 
                 return self.debug("#uploadNext no connection")

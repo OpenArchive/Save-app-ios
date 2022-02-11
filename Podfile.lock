@@ -1,13 +1,13 @@
 PODS:
-  - Alamofire (4.8.2)
+  - Alamofire (4.9.1)
   - AlignedCollectionViewFlowLayout (1.1.2)
   - ARChromeActivity (1.0.6)
   - CrossroadRegex (1.2.0)
   - DownloadButton (0.1.0)
-  - Eureka (5.2.1)
-  - FavIcon (3.0.6)
-  - FilesProvider (0.26.0)
-  - FontBlaster (5.1.0)
+  - Eureka (5.3.4)
+  - FavIcon (3.1.0)
+  - FilesProvider (0.26.1)
+  - FontBlaster (5.2.1)
   - FormatterKit (1.9.0):
     - FormatterKit/AddressFormatter (= 1.9.0)
     - FormatterKit/ArrayFormatter (= 1.9.0)
@@ -42,142 +42,142 @@ PODS:
     - Eureka (~> 5.0)
   - Localize (2.3.0)
   - MBProgressHUD (1.2.0)
-  - ReachabilitySwift (4.3.1)
-  - SDCAlertView (10.0)
-  - SwiftyDropbox (5.1.0):
-    - Alamofire (~> 4.8.2)
-  - TLPhotoPicker (2.0.11)
+  - ReachabilitySwift (5.0.0)
+  - SDCAlertView (12.0.2)
+  - SwiftyDropbox (7.0.1):
+    - Alamofire (~> 4.9.1)
+  - TLPhotoPicker (2.1.9)
   - TUSafariActivity (1.0.4)
   - UIImage-Resize (1.0.1)
-  - UIImageViewAlignedSwift (0.7.0)
-  - YapDatabase (4.0):
-    - YapDatabase/Standard (= 4.0)
-  - YapDatabase/Standard (4.0):
-    - YapDatabase/Standard/Core (= 4.0)
-    - YapDatabase/Standard/Extensions (= 4.0)
-  - YapDatabase/Standard-ObjC/Core (4.0)
-  - YapDatabase/Standard-ObjC/Extensions/ActionManager (4.0):
+  - UIImageViewAlignedSwift (0.8.2)
+  - YapDatabase (4.0.1):
+    - YapDatabase/Standard (= 4.0.1)
+  - YapDatabase/Standard (4.0.1):
+    - YapDatabase/Standard/Core (= 4.0.1)
+    - YapDatabase/Standard/Extensions (= 4.0.1)
+  - YapDatabase/Standard-ObjC/Core (4.0.1)
+  - YapDatabase/Standard-ObjC/Extensions/ActionManager (4.0.1):
     - YapDatabase/Standard-ObjC/Core
     - YapDatabase/Standard-ObjC/Extensions/AutoView
-  - YapDatabase/Standard-ObjC/Extensions/AutoView (4.0):
+  - YapDatabase/Standard-ObjC/Extensions/AutoView (4.0.1):
     - YapDatabase/Standard-ObjC/Core
     - YapDatabase/Standard-ObjC/Extensions/View
-  - YapDatabase/Standard-ObjC/Extensions/CloudCore (4.0):
+  - YapDatabase/Standard-ObjC/Extensions/CloudCore (4.0.1):
     - YapDatabase/Standard-ObjC/Core
-  - YapDatabase/Standard-ObjC/Extensions/CloudKit (4.0):
+  - YapDatabase/Standard-ObjC/Extensions/CloudKit (4.0.1):
     - YapDatabase/Standard-ObjC/Core
-  - YapDatabase/Standard-ObjC/Extensions/CrossProcessNotification (4.0):
+  - YapDatabase/Standard-ObjC/Extensions/CrossProcessNotification (4.0.1):
     - YapDatabase/Standard-ObjC/Core
-  - YapDatabase/Standard-ObjC/Extensions/FilteredView (4.0):
-    - YapDatabase/Standard-ObjC/Core
-    - YapDatabase/Standard-ObjC/Extensions/View
-  - YapDatabase/Standard-ObjC/Extensions/FullTextSearch (4.0):
-    - YapDatabase/Standard-ObjC/Core
-  - YapDatabase/Standard-ObjC/Extensions/Hooks (4.0):
-    - YapDatabase/Standard-ObjC/Core
-  - YapDatabase/Standard-ObjC/Extensions/ManualView (4.0):
+  - YapDatabase/Standard-ObjC/Extensions/FilteredView (4.0.1):
     - YapDatabase/Standard-ObjC/Core
     - YapDatabase/Standard-ObjC/Extensions/View
-  - YapDatabase/Standard-ObjC/Extensions/Relationships (4.0):
+  - YapDatabase/Standard-ObjC/Extensions/FullTextSearch (4.0.1):
     - YapDatabase/Standard-ObjC/Core
-  - YapDatabase/Standard-ObjC/Extensions/RTreeIndex (4.0):
+  - YapDatabase/Standard-ObjC/Extensions/Hooks (4.0.1):
     - YapDatabase/Standard-ObjC/Core
-  - YapDatabase/Standard-ObjC/Extensions/SearchResultsView (4.0):
+  - YapDatabase/Standard-ObjC/Extensions/ManualView (4.0.1):
+    - YapDatabase/Standard-ObjC/Core
+    - YapDatabase/Standard-ObjC/Extensions/View
+  - YapDatabase/Standard-ObjC/Extensions/Relationships (4.0.1):
+    - YapDatabase/Standard-ObjC/Core
+  - YapDatabase/Standard-ObjC/Extensions/RTreeIndex (4.0.1):
+    - YapDatabase/Standard-ObjC/Core
+  - YapDatabase/Standard-ObjC/Extensions/SearchResultsView (4.0.1):
     - YapDatabase/Standard-ObjC/Core
     - YapDatabase/Standard-ObjC/Extensions/AutoView
     - YapDatabase/Standard-ObjC/Extensions/FullTextSearch
-  - YapDatabase/Standard-ObjC/Extensions/SecondaryIndex (4.0):
+  - YapDatabase/Standard-ObjC/Extensions/SecondaryIndex (4.0.1):
     - YapDatabase/Standard-ObjC/Core
-  - YapDatabase/Standard-ObjC/Extensions/View (4.0):
+  - YapDatabase/Standard-ObjC/Extensions/View (4.0.1):
     - YapDatabase/Standard-ObjC/Core
-  - YapDatabase/Standard/Core (4.0):
+  - YapDatabase/Standard/Core (4.0.1):
     - YapDatabase/Standard-ObjC/Core
-  - YapDatabase/Standard/Extensions (4.0):
+  - YapDatabase/Standard/Extensions (4.0.1):
     - YapDatabase/Standard/Core
-    - YapDatabase/Standard/Extensions/ActionManager (= 4.0)
-    - YapDatabase/Standard/Extensions/AutoView (= 4.0)
-    - YapDatabase/Standard/Extensions/CloudCore (= 4.0)
-    - YapDatabase/Standard/Extensions/CloudKit (= 4.0)
-    - YapDatabase/Standard/Extensions/CrossProcessNotification (= 4.0)
-    - YapDatabase/Standard/Extensions/FilteredView (= 4.0)
-    - YapDatabase/Standard/Extensions/FullTextSearch (= 4.0)
-    - YapDatabase/Standard/Extensions/Hooks (= 4.0)
-    - YapDatabase/Standard/Extensions/ManualView (= 4.0)
-    - YapDatabase/Standard/Extensions/Relationships (= 4.0)
-    - YapDatabase/Standard/Extensions/RTreeIndex (= 4.0)
-    - YapDatabase/Standard/Extensions/SearchResultsView (= 4.0)
-    - YapDatabase/Standard/Extensions/SecondaryIndex (= 4.0)
-    - YapDatabase/Standard/Extensions/View (= 4.0)
-  - YapDatabase/Standard/Extensions/ActionManager (4.0):
+    - YapDatabase/Standard/Extensions/ActionManager (= 4.0.1)
+    - YapDatabase/Standard/Extensions/AutoView (= 4.0.1)
+    - YapDatabase/Standard/Extensions/CloudCore (= 4.0.1)
+    - YapDatabase/Standard/Extensions/CloudKit (= 4.0.1)
+    - YapDatabase/Standard/Extensions/CrossProcessNotification (= 4.0.1)
+    - YapDatabase/Standard/Extensions/FilteredView (= 4.0.1)
+    - YapDatabase/Standard/Extensions/FullTextSearch (= 4.0.1)
+    - YapDatabase/Standard/Extensions/Hooks (= 4.0.1)
+    - YapDatabase/Standard/Extensions/ManualView (= 4.0.1)
+    - YapDatabase/Standard/Extensions/Relationships (= 4.0.1)
+    - YapDatabase/Standard/Extensions/RTreeIndex (= 4.0.1)
+    - YapDatabase/Standard/Extensions/SearchResultsView (= 4.0.1)
+    - YapDatabase/Standard/Extensions/SecondaryIndex (= 4.0.1)
+    - YapDatabase/Standard/Extensions/View (= 4.0.1)
+  - YapDatabase/Standard/Extensions/ActionManager (4.0.1):
     - YapDatabase/Standard-ObjC/Extensions/ActionManager
     - YapDatabase/Standard/Core
     - YapDatabase/Standard/Extensions/AutoView
-  - YapDatabase/Standard/Extensions/AutoView (4.0):
+  - YapDatabase/Standard/Extensions/AutoView (4.0.1):
     - YapDatabase/Standard-ObjC/Extensions/AutoView
     - YapDatabase/Standard/Core
     - YapDatabase/Standard/Extensions/View
-  - YapDatabase/Standard/Extensions/CloudCore (4.0):
+  - YapDatabase/Standard/Extensions/CloudCore (4.0.1):
     - YapDatabase/Standard-ObjC/Extensions/CloudCore
     - YapDatabase/Standard/Core
-  - YapDatabase/Standard/Extensions/CloudKit (4.0):
+  - YapDatabase/Standard/Extensions/CloudKit (4.0.1):
     - YapDatabase/Standard-ObjC/Extensions/CloudKit
     - YapDatabase/Standard/Core
-  - YapDatabase/Standard/Extensions/CrossProcessNotification (4.0):
+  - YapDatabase/Standard/Extensions/CrossProcessNotification (4.0.1):
     - YapDatabase/Standard-ObjC/Extensions/CrossProcessNotification
     - YapDatabase/Standard/Core
-  - YapDatabase/Standard/Extensions/FilteredView (4.0):
+  - YapDatabase/Standard/Extensions/FilteredView (4.0.1):
     - YapDatabase/Standard-ObjC/Extensions/FilteredView
     - YapDatabase/Standard/Core
     - YapDatabase/Standard/Extensions/View
-  - YapDatabase/Standard/Extensions/FullTextSearch (4.0):
+  - YapDatabase/Standard/Extensions/FullTextSearch (4.0.1):
     - YapDatabase/Standard-ObjC/Extensions/FullTextSearch
     - YapDatabase/Standard/Core
-  - YapDatabase/Standard/Extensions/Hooks (4.0):
+  - YapDatabase/Standard/Extensions/Hooks (4.0.1):
     - YapDatabase/Standard-ObjC/Extensions/Hooks
     - YapDatabase/Standard/Core
-  - YapDatabase/Standard/Extensions/ManualView (4.0):
+  - YapDatabase/Standard/Extensions/ManualView (4.0.1):
     - YapDatabase/Standard-ObjC/Extensions/ManualView
     - YapDatabase/Standard/Core
     - YapDatabase/Standard/Extensions/View
-  - YapDatabase/Standard/Extensions/Relationships (4.0):
+  - YapDatabase/Standard/Extensions/Relationships (4.0.1):
     - YapDatabase/Standard-ObjC/Extensions/Relationships
     - YapDatabase/Standard/Core
-  - YapDatabase/Standard/Extensions/RTreeIndex (4.0):
+  - YapDatabase/Standard/Extensions/RTreeIndex (4.0.1):
     - YapDatabase/Standard-ObjC/Extensions/RTreeIndex
     - YapDatabase/Standard/Core
-  - YapDatabase/Standard/Extensions/SearchResultsView (4.0):
+  - YapDatabase/Standard/Extensions/SearchResultsView (4.0.1):
     - YapDatabase/Standard-ObjC/Extensions/SearchResultsView
     - YapDatabase/Standard/Core
     - YapDatabase/Standard/Extensions/AutoView
     - YapDatabase/Standard/Extensions/FullTextSearch
-  - YapDatabase/Standard/Extensions/SecondaryIndex (4.0):
+  - YapDatabase/Standard/Extensions/SecondaryIndex (4.0.1):
     - YapDatabase/Standard-ObjC/Extensions/SecondaryIndex
     - YapDatabase/Standard/Core
-  - YapDatabase/Standard/Extensions/View (4.0):
+  - YapDatabase/Standard/Extensions/View (4.0.1):
     - YapDatabase/Standard-ObjC/Extensions/View
     - YapDatabase/Standard/Core
 
 DEPENDENCIES:
-  - Alamofire (~> 4.8)
+  - Alamofire (~> 4.9)
   - AlignedCollectionViewFlowLayout (~> 1.1)
   - ARChromeActivity (~> 1.0)
   - CrossroadRegex (from `https://github.com/crossroadlabs/Regex.git`, tag `1.2.0`)
   - DownloadButton (~> 0.1)
-  - Eureka (~> 5.1)
+  - Eureka (~> 5.3)
   - FavIcon (from `https://github.com/tladesignz/FavIcon.git`, branch `swift-5`)
-  - FilesProvider (~> 0.26)
-  - FontBlaster (~> 5.1)
-  - FormatterKit (~> 1.8)
+  - FilesProvider (from `https://github.com/ayuzhin/FileProvider.git`)
+  - FontBlaster (~> 5.2)
+  - FormatterKit (~> 1.9)
   - ImageRow (~> 4.0)
-  - Localize (~> 2.2)
-  - MBProgressHUD (~> 1.1)
-  - ReachabilitySwift (~> 4.3)
-  - SDCAlertView (~> 10.0)
-  - SwiftyDropbox (~> 5.1)
-  - TLPhotoPicker (~> 2.0)
+  - Localize (~> 2.3)
+  - MBProgressHUD (~> 1.2)
+  - ReachabilitySwift (~> 5.0)
+  - SDCAlertView (~> 12.0)
+  - SwiftyDropbox (~> 7.0)
+  - TLPhotoPicker (~> 2.1)
   - TUSafariActivity (~> 1.0)
   - UIImage-Resize (~> 1.0)
-  - UIImageViewAlignedSwift (from `https://github.com/mirego/UIImageViewAlignedSwift.git`)
+  - UIImageViewAlignedSwift (~> 0.8)
   - YapDatabase (~> 4.0)
 
 SPEC REPOS:
@@ -187,7 +187,6 @@ SPEC REPOS:
     - ARChromeActivity
     - DownloadButton
     - Eureka
-    - FilesProvider
     - FontBlaster
     - FormatterKit
     - ImageRow
@@ -199,6 +198,7 @@ SPEC REPOS:
     - TLPhotoPicker
     - TUSafariActivity
     - UIImage-Resize
+    - UIImageViewAlignedSwift
     - YapDatabase
 
 EXTERNAL SOURCES:
@@ -208,43 +208,43 @@ EXTERNAL SOURCES:
   FavIcon:
     :branch: swift-5
     :git: https://github.com/tladesignz/FavIcon.git
-  UIImageViewAlignedSwift:
-    :git: https://github.com/mirego/UIImageViewAlignedSwift.git
+  FilesProvider:
+    :git: https://github.com/ayuzhin/FileProvider.git
 
 CHECKOUT OPTIONS:
   CrossroadRegex:
     :git: https://github.com/crossroadlabs/Regex.git
     :tag: 1.2.0
   FavIcon:
-    :commit: 91d67049226db70000488690311ea9fe1aed265c
+    :commit: 0717e03444aa6a1265418d405b8c4866ea02de9b
     :git: https://github.com/tladesignz/FavIcon.git
-  UIImageViewAlignedSwift:
-    :commit: 8d33fd1a153010bc437527d8b08c75ed86fc9ae1
-    :git: https://github.com/mirego/UIImageViewAlignedSwift.git
+  FilesProvider:
+    :commit: de4efd5df99c1d062edbfd3156c47c59cf08bbf7
+    :git: https://github.com/ayuzhin/FileProvider.git
 
 SPEC CHECKSUMS:
-  Alamofire: ae5c501addb7afdbb13687d7f2f722c78734c2d3
+  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlignedCollectionViewFlowLayout: ee2ef451e741ec08f8e0967d828001e2f051c20a
   ARChromeActivity: 5dcf9b9f09323761f992aff3525cdd777f83609d
   CrossroadRegex: 9af32b4b4dc6ff404c87647ef1bc68ea711cc570
   DownloadButton: 49a21a89e0d7d1b42d9134f79aaa40e727cd57c3
-  Eureka: c883105488e05bc65539f583246ecf9657cabbfe
-  FavIcon: 9fd386d96324ce0f6063732f8bf6c7f1d5bf17a3
-  FilesProvider: 2a8ae17d8b9c23a6feadb1308ee638fa31d21065
-  FontBlaster: 67017432ef1d187e038c353fd48ed8744a54484a
+  Eureka: 60cf058f86a8fb3ed26165ba5292b9850361b0a6
+  FavIcon: 21651b47d8f6b33517973859f85e2cb6f9fcfaee
+  FilesProvider: ffd7aff5bb3f87d33188ae79d37d9ef05934d3df
+  FontBlaster: 43136e99dc6b3c8d0ba31e29bc6fdbf378b724c6
   FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
   ImageRow: e65b2e1a33f89062bf2a553a2aad61d975eb7428
   Localize: cb1ae53ed73decaad0dce217806ed983091913f5
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
-  ReachabilitySwift: 4032e2f59586e11e3b0ebe15b167abdd587a388b
-  SDCAlertView: 5fbc48cae6d7bf9781097e3f27883924ef3b922c
-  SwiftyDropbox: 7ca4961e0340c62c8d6d1ece91d67badfe4c0380
-  TLPhotoPicker: a5c339732b8326bb16cbb4e00ed01a86f2bfbbb3
+  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
+  SDCAlertView: 1c0410de80548da3fed142ded0b97644d9848577
+  SwiftyDropbox: e38f83d00b189930edc645b3b955c18133c6a13d
+  TLPhotoPicker: 939c40eaad130b69f9571e61e021e8120fa76329
   TUSafariActivity: afc55a00965377939107ce4fdc7f951f62454546
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
-  UIImageViewAlignedSwift: 2d082e1623c5121dec11b298d9066ae4ce704a58
-  YapDatabase: 260b1b0b3e6ae6775383edc923e19813586615eb
+  UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
+  YapDatabase: 350ab72b61f9dcc32504594da1a52a93f5ef1476
 
-PODFILE CHECKSUM: 01382320869ab45a1db36e2adc530debdd900256
+PODFILE CHECKSUM: 4583d18ebcfe96a74ef158c55dad2599552cdf1b
 
-COCOAPODS: 1.9.1
+COCOAPODS: 1.11.2
