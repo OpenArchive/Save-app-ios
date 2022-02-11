@@ -19,7 +19,7 @@ These people kindly donored their time and work to translate the app and surroun
 - Spanish: yamilabadu,  josephdg18
 - Russian: palyanitsin
 - Turkish: kayazeren
-- Arabic: ahmedessamdev, mahmoud_th
+- Arabic: ahmedessamdev, mahmoud_th, Sammy_Adams
 - Persian: ahangarha, voxp
 - Italian: RickDeckard
 
