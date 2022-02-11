@@ -24,6 +24,18 @@ class TableHeader: UITableViewHeaderFooterView {
 
     static let reducedHeight: CGFloat = 24
 
+    override init(reuseIdentifier: String?) {
+        super.init(reuseIdentifier: reuseIdentifier)
+
+        setup()
+    }
+
+    required init?(coder: NSCoder) {
+        super.init(coder: coder)
+
+        setup()
+    }
+
     @IBOutlet weak var label: UILabel!
 
     override var textLabel: UILabel? {
@@ -33,5 +45,10 @@ class TableHeader: UITableViewHeaderFooterView {
         set {
             label = newValue
         }
+    }
+
+    private func setup() {
+        // Fixes iOS 15, which will draw a background in tint color, otherwise.
+        backgroundView = UIView(frame: .zero)
     }
 }

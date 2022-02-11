@@ -215,5 +215,13 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         FontBlaster.blast() /* { fonts in
             print(fonts)
         } */
+
+
+        if #available(iOS 13.0, *) {
+            let a = UINavigationBarAppearance()
+            a.configureWithOpaqueBackground()
+
+            UINavigationBar.appearance().scrollEdgeAppearance = a
+        }
     }
 }
