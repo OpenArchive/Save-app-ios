@@ -6,7 +6,7 @@
 //  Copyright © 2019 Open Archive. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import YapDatabase
 import Reachability
 import FilesProvider
@@ -141,6 +141,8 @@ class UploadManager: Alamofire.SessionDelegate {
 
     init(_ singleCompletionHandler: ((UIBackgroundFetchResult) -> Void)? = nil) {
         super.init()
+
+        UIApplication.shared.setMinimumBackgroundFetchInterval(15)
 
         self.singleCompletionHandler = singleCompletionHandler
 
