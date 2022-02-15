@@ -299,7 +299,7 @@ class Conduit {
     class func construct(url: URL? = nil, _ components: [String]) -> URL {
         if let first = components.first {
 
-            var url = url?.appendingPathComponent(first) ?? URL(fileURLWithPath: first)
+            var url = url?.appendingPathComponent(first) ?? URL(fileURLWithPath: "/\(first)")
 
             for component in components.dropFirst() {
                 url.appendPathComponent(component)
