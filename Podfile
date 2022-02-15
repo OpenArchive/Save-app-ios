@@ -29,6 +29,8 @@ def app_only
     pod 'ARChromeActivity', '~> 1.0'
     pod 'SDCAlertView', '~> 12.0'
     pod 'TLPhotoPicker', '~> 2.1'
+    pod 'Tor', '~> 406.9'
+    pod 'IPtProxyUI', '~> 1.7'
 end
 
 target 'OpenArchive' do

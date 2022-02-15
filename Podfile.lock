@@ -40,6 +40,13 @@ PODS:
     - FormatterKit/Resources
   - ImageRow (4.0.0):
     - Eureka (~> 5.0)
+  - IPtProxy (1.5.0)
+  - IPtProxyUI (1.7.0):
+    - Eureka (~> 5.3)
+    - ImageRow (~> 4.0)
+    - IPtProxy (~> 1.5)
+    - MBProgressHUD (~> 1.2)
+    - ReachabilitySwift (~> 5.0)
   - Localize (2.3.0)
   - MBProgressHUD (1.2.0)
   - ReachabilitySwift (5.0.0)
@@ -47,6 +54,9 @@ PODS:
   - SwiftyDropbox (7.0.1):
     - Alamofire (~> 4.9.1)
   - TLPhotoPicker (2.1.9)
+  - Tor (406.9.2):
+    - Tor/Core (= 406.9.2)
+  - Tor/Core (406.9.2)
   - TUSafariActivity (1.0.4)
   - UIImage-Resize (1.0.1)
   - UIImageViewAlignedSwift (0.8.2)
@@ -169,12 +179,14 @@ DEPENDENCIES:
   - FontBlaster (~> 5.2)
   - FormatterKit (~> 1.9)
   - ImageRow (~> 4.0)
+  - IPtProxyUI (~> 1.7)
   - Localize (~> 2.3)
   - MBProgressHUD (~> 1.2)
   - ReachabilitySwift (~> 5.0)
   - SDCAlertView (~> 12.0)
   - SwiftyDropbox (~> 7.0)
   - TLPhotoPicker (~> 2.1)
+  - Tor (~> 406.9)
   - TUSafariActivity (~> 1.0)
   - UIImage-Resize (~> 1.0)
   - UIImageViewAlignedSwift (~> 0.8)
@@ -190,12 +202,15 @@ SPEC REPOS:
     - FontBlaster
     - FormatterKit
     - ImageRow
+    - IPtProxy
+    - IPtProxyUI
     - Localize
     - MBProgressHUD
     - ReachabilitySwift
     - SDCAlertView
     - SwiftyDropbox
     - TLPhotoPicker
+    - Tor
     - TUSafariActivity
     - UIImage-Resize
     - UIImageViewAlignedSwift
@@ -234,17 +249,20 @@ SPEC CHECKSUMS:
   FontBlaster: 43136e99dc6b3c8d0ba31e29bc6fdbf378b724c6
   FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
   ImageRow: e65b2e1a33f89062bf2a553a2aad61d975eb7428
+  IPtProxy: 495462962af8a779365581dd5908118af3793e7b
+  IPtProxyUI: d62f08714bb925d2cf3f25967cec4d694e02d381
   Localize: cb1ae53ed73decaad0dce217806ed983091913f5
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDCAlertView: 1c0410de80548da3fed142ded0b97644d9848577
   SwiftyDropbox: e38f83d00b189930edc645b3b955c18133c6a13d
   TLPhotoPicker: 939c40eaad130b69f9571e61e021e8120fa76329
+  Tor: 628196f1e3d77ea26559e767ab091b784952bb8d
   TUSafariActivity: afc55a00965377939107ce4fdc7f951f62454546
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
   YapDatabase: 350ab72b61f9dcc32504594da1a52a93f5ef1476
 
-PODFILE CHECKSUM: 4583d18ebcfe96a74ef158c55dad2599552cdf1b
+PODFILE CHECKSUM: 039602ae48b11ff6de59787d996c8ace321da694
 
 COCOAPODS: 1.11.2

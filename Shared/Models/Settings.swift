@@ -12,6 +12,9 @@ class Settings {
 
     private static let kWifiOnly = "wifi_only"
     private static let kHighCompression = "high_compression"
+    private static let kUseTor = "use_tor"
+    private static let kTransport = "transport"
+    private static let kCustomBridges = "custom_bridges"
     private static let kFirstRunDone = "already_run"
     private static let kFirstFlaggedDone = "first_flagged_done"
     private static let kFirstBatchEditDone = "first_batch_edit_done"
@@ -35,6 +38,33 @@ class Settings {
         }
         set {
             UserDefaults(suiteName: Constants.suiteName)?.set(newValue, forKey: kHighCompression)
+        }
+    }
+
+    class var useTor: Bool {
+        get {
+            return UserDefaults(suiteName: Constants.suiteName)?.bool(forKey: kUseTor) ?? false
+        }
+        set {
+            UserDefaults(suiteName: Constants.suiteName)?.set(newValue, forKey: kUseTor)
+        }
+    }
+
+    class var transport: Int {
+        get {
+            return UserDefaults(suiteName: Constants.suiteName)?.integer(forKey: kTransport) ?? 0
+        }
+        set {
+            UserDefaults(suiteName: Constants.suiteName)?.set(newValue, forKey: kTransport)
+        }
+    }
+
+    class var customBridges: [String]? {
+        get {
+            return UserDefaults(suiteName: Constants.suiteName)?.stringArray(forKey: kCustomBridges)
+        }
+        set {
+            UserDefaults(suiteName: Constants.suiteName)?.set(newValue, forKey: kCustomBridges)
         }
     }
 
