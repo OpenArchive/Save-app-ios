@@ -9,19 +9,40 @@
 import NetworkExtension
 import Tor
 import IPtProxyUI
+import Alamofire
 
+extension Notification.Name {
+
+    static let torUseChanged = Notification.Name(rawValue: "\(Bundle.main.bundleIdentifier!).torUseChanged")
+    
+    static let torError = Notification.Name(rawValue: "\(Bundle.main.bundleIdentifier!).torError")
+
+    static let torStartProgress = Notification.Name(rawValue: "\(Bundle.main.bundleIdentifier!).torStartProgress")
+
+    static let torStarted = Notification.Name(rawValue: "\(Bundle.main.bundleIdentifier!).torStarted")
+
+    static let torStopped = Notification.Name(rawValue: "\(Bundle.main.bundleIdentifier!).torStopped")
+}
 
 class TorManager {
 
     private enum Errors: Error {
         case cookieUnreadable
         case noSocksAddr
-        case noDnsAddr
     }
 
     static let shared = TorManager()
 
-    static let localhost = "127.0.0.1"
+
+    public var connected: Bool {
+        (torThread?.isExecuting ?? false)
+        && (torConf?.isLocked ?? false)
+        && (torController?.isConnected ?? false)
+    }
+
+    public var started: Bool {
+        connected && port > 0
+    }
 
 
     private var torThread: TorThread?
@@ -30,18 +51,13 @@ class TorManager {
 
     private var torConf: TorConfiguration?
 
-    public var connected: Bool {
-        (torThread?.isExecuting ?? false)
-        && (torConf?.isLocked ?? false)
-        && (torController?.isConnected ?? false)
-    }
-
-
     private lazy var controllerQueue = DispatchQueue.global(qos: .userInitiated)
 
     private var transport = Transport.none
 
     private var ipStatus = IpSupport.Status.unavailable
+
+    private var port = 0
 
 
     private init() {
@@ -61,14 +77,12 @@ class TorManager {
         })
     }
 
-    func start(_ progressCallback: @escaping (Int) -> Void,
-               _ completion: @escaping (Error?, _ socksAddr: String?) -> Void)
-    {
+    func start() {
         guard !connected else {
             return
         }
 
-        transport = Transport(rawValue: Settings.transport) ?? .none
+        transport = Settings.transport
         transport.start()
 
         torConf = getTorConf()
@@ -78,6 +92,8 @@ class TorManager {
         torThread?.start()
 
         controllerQueue.asyncAfter(deadline: .now() + 0.65) {
+            let nc = NotificationCenter.default
+
             if self.torController == nil, let url = self.torConf?.controlPortFile {
                 self.torController = TorController(controlPortFile: url)
             }
@@ -89,21 +105,21 @@ class TorManager {
                 catch let error {
                     print("[\(String(describing: type(of: self)))] error=\(error)")
 
-                    return completion(error, nil)
+                    return nc.post(name: .torError, object: error)
                 }
             }
 
             guard let cookie = self.torConf?.cookie else {
                 print("[\(String(describing: type(of: self)))] cookie unreadable")
 
-                return completion(Errors.cookieUnreadable, nil)
+                return nc.post(name: .torError, object: Errors.cookieUnreadable)
             }
 
             self.torController?.authenticate(with: cookie) { success, error in
                 if let error = error {
                     print("[\(String(describing: type(of: self)))] error=\(error)")
 
-                    return completion(error, nil)
+                    return nc.post(name: .torError, object: error)
                 }
 
                 var progressObs: Any?
@@ -114,7 +130,7 @@ class TorManager {
                         let progress = Int(arguments!["PROGRESS"]!)!
                         print("[\(String(describing: type(of: self)))] progress=\(progress)")
 
-                        progressCallback(progress)
+                        nc.post(name: .torStartProgress, object: progress)
 
                         if progress >= 100 {
                             self.torController?.removeObserver(progressObs)
@@ -135,11 +151,19 @@ class TorManager {
                     self.torController?.removeObserver(observer)
 
                     self.torController?.getInfoForKeys(["net/listeners/socks"]) { response in
-                        guard let socksAddr = response.first, !socksAddr.isEmpty else {
-                            return completion(Errors.noSocksAddr, nil)
+                        guard let socksAddr = response.first,
+                                !socksAddr.isEmpty,
+                              let portStr = socksAddr.split(separator: ":").last,
+                              let port = Int(portStr)
+                        else {
+                            nc.post(name: .torError, object: Errors.noSocksAddr)
+
+                            return self.stop()
                         }
 
-                        completion(nil, socksAddr)
+                        self.port = port
+
+                        nc.post(name: .torStarted, object: nil)
                     }
                 })
             }
@@ -151,8 +175,8 @@ class TorManager {
 
      ATTENTION: If Tor is currently starting up, nothing will change.
      */
-    open func reconfigureBridges() {
-        transport = Transport(rawValue: Settings.transport) ?? .none
+    func reconfigureBridges() {
+        transport = Settings.transport
 
         guard connected else {
             return // Nothing can be done. Will get configured on (next) start.
@@ -213,7 +237,33 @@ class TorManager {
         }
     }
 
+    func sessionConf(_ conf: URLSessionConfiguration? = nil) -> URLSessionConfiguration {
+        let conf = conf ?? URLSessionConfiguration.default
+
+        conf.sharedContainerIdentifier = Constants.appGroup
+
+        // Fix error "CredStore - performQuery - Error copying matching creds."
+        conf.urlCredentialStorage = nil
+
+        conf.httpAdditionalHeaders = SessionManager.defaultHTTPHeaders
+
+        if Settings.useTor {
+            conf.connectionProxyDictionary = [
+                kCFProxyTypeKey: kCFProxyTypeSOCKS,
+                kCFStreamPropertySOCKSProxyHost: "localhost",
+                kCFStreamPropertySOCKSProxyPort: port,
+                kCFStreamPropertySOCKSVersion: kCFStreamSocketSOCKSVersion5,
+            ]
+        }
+
+//        print("[\(String(describing: type(of: self)))] sessionConf=[identifier=\(conf.identifier ?? "(nil)"), requestCachePolicy=\(conf.requestCachePolicy), timeoutIntervalForRequest=\(conf.timeoutIntervalForRequest), timeoutIntervalForResource=\(conf.timeoutIntervalForResource), networkServiceType=\(conf.networkServiceType), allowsCellularAccess=\(conf.allowsCellularAccess), waitsForConnectivity=\(conf.waitsForConnectivity), isDiscretionary=\(conf.isDiscretionary), sharedContainerIdentifier=\(conf.sharedContainerIdentifier ?? "(nil)"), sessionSendsLaunchEvents=\(conf.sessionSendsLaunchEvents), connectionProxyDictionary=\(conf.connectionProxyDictionary ?? [:]), tlsMinimumSupportedProtocol=\(conf.tlsMinimumSupportedProtocol), httpShouldUsePipelining=\(conf.httpShouldUsePipelining), httpShouldSetCookies=\(conf.httpShouldSetCookies), httpCookieAcceptPolicy=\(conf.httpCookieAcceptPolicy), httpAdditionalHeaders=\(conf.httpAdditionalHeaders ?? [:]), httpMaximumConnectionsPerHost=\(conf.httpMaximumConnectionsPerHost), httpCookieStorage=\(String(describing: conf.httpCookieStorage)), urlCredentialStorage=\(String(describing: conf.urlCredentialStorage)), urlCache=\(String(describing: conf.urlCache)), shouldUseExtendedBackgroundIdleMode=\(conf.shouldUseExtendedBackgroundIdleMode), protocolClasses=\(conf.protocolClasses ?? []), multipathServiceType=\(conf.multipathServiceType)]")
+
+        return conf
+    }
+
     func stop() {
+        port = 0
+
         transport.stop()
 
         torController?.disconnect()
@@ -223,6 +273,8 @@ class TorManager {
         torThread = nil
 
         torConf = nil
+
+        NotificationCenter.default.post(name: .torStopped, object: nil)
     }
 
     func getCircuits(_ completion: @escaping ([TorCircuit]) -> Void) {

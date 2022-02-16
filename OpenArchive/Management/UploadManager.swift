@@ -185,6 +185,12 @@ class UploadManager: Alamofire.SessionDelegate {
         nc.addObserver(self, selector: #selector(dataUsageChanged),
                        name: .uploadManagerDataUsageChange, object: nil)
 
+        nc.addObserver(self, selector: #selector(torUseChanged),
+                       name: .torUseChanged, object: nil)
+
+        nc.addObserver(self, selector: #selector(torUseChanged),
+                       name: .torStarted, object: nil)
+
         try? reachability?.startNotifier()
 
         progressTimer = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
@@ -439,6 +445,19 @@ class UploadManager: Alamofire.SessionDelegate {
     }
 
     /**
+     User changed Tor flag.
+
+     - parameter notification: A `torUseChanged` notification.
+     */
+    @objc func torUseChanged(notification: Notification) {
+        let useTor = notification.object as? Bool ?? Settings.useTor
+
+        debug("#torUseChanged useTor=\(useTor)")
+
+        Conduit.reconfigureSession()
+    }
+
+    /**
      Network status changed.
      */
     @objc func reachabilityChanged(notification: Notification) {
@@ -468,6 +487,12 @@ class UploadManager: Alamofire.SessionDelegate {
                 self.singleCompletionHandler?(.noData)
 
                 return self.debug("#uploadNext already one uploading")
+            }
+
+            if Settings.useTor && !TorManager.shared.started {
+                self.singleCompletionHandler?(.noData)
+
+                return self.debug("#uploadNext should use Tor, but Tor not started")
             }
 
             guard let upload = self.getNext(),

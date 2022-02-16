@@ -138,6 +138,9 @@ class PrivateServerViewController: BaseServerViewController {
     private func acquireFavIcon() {
         if let baseUrl = Formatters.URLFormatter.fix(url: urlRow.value, baseOnly: true) {
 
+            let conf = TorManager.shared.sessionConf()
+            FavIcon.downloadSession = URLSession(configuration: conf)
+
             try! FavIcon.downloadPreferred(baseUrl) { result in
                 if case let .success(image) = result {
                     self.favIconRow.value = image

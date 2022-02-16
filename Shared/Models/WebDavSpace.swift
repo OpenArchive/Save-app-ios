@@ -45,14 +45,10 @@ class WebDavSpace: Space, Item {
     static func createProvider(baseUrl: URL, credential: URLCredential) -> WebDAVFileProvider? {
         let provider = WebDAVFileProvider(baseURL: baseUrl, credential: credential)
 
-        let conf = provider?.session.configuration ?? URLSessionConfiguration.default
+        let conf = TorManager.shared.sessionConf()
 
-        conf.sharedContainerIdentifier = Constants.appGroup
         conf.urlCache = provider?.cache
         conf.requestCachePolicy = .returnCacheDataElseLoad
-
-        // Fix error "CredStore - performQuery - Error copying matching creds."
-        conf.urlCredentialStorage = nil
 
         provider?.session = URLSession(configuration: conf,
                                        delegate: provider?.session.delegate,

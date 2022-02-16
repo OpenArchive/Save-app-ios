@@ -24,37 +24,51 @@ class Conduit {
 
      See [Getting code=-999 using custom SessionManager](https://github.com/Alamofire/Alamofire/issues/1684)
      */
-    static var backgroundSessionManager: SessionManager = {
-        let conf = URLSessionConfiguration.background(withIdentifier:
-            "\(Bundle.main.bundleIdentifier ?? "").background")
-        conf.sharedContainerIdentifier = Constants.appGroup
+    class var backgroundSessionManager: SessionManager {
+        syncQueue.sync {
+            if _backgroundSessionManager == nil {
+                let conf = URLSessionConfiguration.background(withIdentifier:
+                    "\(Bundle.main.bundleIdentifier ?? "").background")
 
-        // Fix error "CredStore - performQuery - Error copying matching creds."
-        conf.urlCredentialStorage = nil
+                conf.isDiscretionary = false
+                conf.shouldUseExtendedBackgroundIdleMode = true
 
-        conf.httpAdditionalHeaders = SessionManager.defaultHTTPHeaders
+                _backgroundSessionManager = SessionManager(
+                    configuration: TorManager.shared.sessionConf(conf),
+                    delegate: UploadManager.shared)
 
-        conf.isDiscretionary = false
-        conf.shouldUseExtendedBackgroundIdleMode = true
+                _backgroundSessionManager?.backgroundCompletionHandler = backgroundCompletionHandler
 
-        return SessionManager(configuration: conf, delegate: UploadManager.shared)
-    }()
+//                print("[\(String(describing: self))] reconfigured backgroundSessionManager with proxy=\(conf.connectionProxyDictionary ?? [:])")
+            }
+
+            return _backgroundSessionManager!
+        }
+    }
+
+    static var backgroundCompletionHandler: (() -> Void)? {
+        didSet {
+            syncQueue.sync {
+                _backgroundSessionManager?.backgroundCompletionHandler = backgroundCompletionHandler
+            }
+        }
+    }
 
     /**
      A session manager wich is foreground-uploading only. This enables data
      chunks to get uploaded without the need for a file on disk.
     */
-    static var foregroundSessionManager: SessionManager = {
-        let conf = URLSessionConfiguration.default
-        conf.sharedContainerIdentifier = Constants.appGroup
+    class var foregroundSessionManager: SessionManager {
+        syncQueue.sync {
+            if _foregroundSessionManager == nil {
+                _foregroundSessionManager = SessionManager(
+                    configuration: TorManager.shared.sessionConf(),
+                    delegate: UploadManager.shared)
+            }
+        }
 
-        // Fix error "CredStore - performQuery - Error copying matching creds."
-        conf.urlCredentialStorage = nil
-
-        conf.httpAdditionalHeaders = SessionManager.defaultHTTPHeaders
-
-        return SessionManager(configuration: conf, delegate: UploadManager.shared)
-    }()
+        return _foregroundSessionManager!
+    }
 
     /**
      A pretty-printing JSON encoder using ISO8601 date formats.
@@ -66,6 +80,21 @@ class Conduit {
 
         return encoder
     }()
+
+
+    private static var _backgroundSessionManager: SessionManager?
+
+    private static var _foregroundSessionManager: SessionManager?
+
+    private static let syncQueue = DispatchQueue(label: "\(Bundle.main.bundleIdentifier!).\(String(describing: Conduit.self))")
+
+
+    class func reconfigureSession() {
+        syncQueue.sync {
+            _backgroundSessionManager = nil
+            _foregroundSessionManager = nil
+        }
+    }
 
 
     /**

@@ -52,17 +52,19 @@ class DataUsageViewController: FormViewController, BridgesConfDelegate {
             $0.value = Settings.useTor
         }
         .onChange { row in
-            Settings.useTor = row.value ?? false
+            let newValue = row.value ?? false
 
-            if Settings.useTor {
-                TorManager.shared.start { progress in
-                    print("[\(String(describing: type(of: self)))] progress=\(progress)")
-                } _: { error, socksAddr in
-                    print("[\(String(describing: type(of: self)))] error=\(String(describing: error)), socksAddr=\(String(describing: socksAddr))")
+            if newValue != Settings.useTor {
+                Settings.useTor = newValue
+
+                if newValue {
+                    TorManager.shared.start()
                 }
-            }
-            else {
-                TorManager.shared.stop()
+                else {
+                    TorManager.shared.stop()
+                }
+
+                NotificationCenter.default.post(name: .torUseChanged, object: newValue)
             }
         }
 

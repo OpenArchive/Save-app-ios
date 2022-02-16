@@ -28,6 +28,10 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 
         Db.setup()
 
+        if Settings.useTor {
+            TorManager.shared.start()
+        }
+
         uploadManager = UploadManager.shared
 
         setUpDropbox()
@@ -130,8 +134,11 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     /**
      Catches the uploads which finished, when the app was stopped.
     */
-    func application(_ application: UIApplication, handleEventsForBackgroundURLSession identifier: String, completionHandler: @escaping () -> Void) {
-        Conduit.backgroundSessionManager.backgroundCompletionHandler = completionHandler
+    func application(_ application: UIApplication,
+                     handleEventsForBackgroundURLSession identifier: String,
+                     completionHandler: @escaping () -> Void)
+    {
+        Conduit.backgroundCompletionHandler = completionHandler
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
