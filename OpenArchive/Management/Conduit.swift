@@ -372,7 +372,8 @@ class Conduit {
     enum UploadError: LocalizedError {
         case invalidConf
         case tooManyRetries
-        case fileTooBig
+        case dropboxFileTooBig
+        case dropboxNotOverTor
 
         var errorDescription: String? {
             switch self {
@@ -382,8 +383,11 @@ class Conduit {
             case .tooManyRetries:
                 return "Failed after too many retries.".localize()
 
-            case .fileTooBig:
+            case .dropboxFileTooBig:
                 return "The Dropbox support can't handle files bigger than 150 MByte.".localize()
+
+            case .dropboxNotOverTor:
+                return "The Dropbox support doesn't work over Tor.".localize()
             }
         }
     }

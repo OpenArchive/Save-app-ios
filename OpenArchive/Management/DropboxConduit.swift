@@ -16,12 +16,14 @@ class DropboxConduit: Conduit {
     // MARK: Conduit
 
     private var client: DropboxClient? {
-        if let client = DropboxClientsManager.authorizedClient {
-            return client
-        }
-
         if let accessToken = (SelectedSpace.space as? DropboxSpace)?.password {
-            return DropboxClient(accessToken: accessToken)
+            let client = DropboxTransportClient(
+                accessToken: accessToken, baseHosts: nil, userAgent: nil, selectUser: nil,
+                sessionDelegate: UploadManager.shared,
+                backgroundSessionDelegate: Conduit.backgroundSessionManager.delegate,
+                sharedContainerIdentifier: Constants.appGroup)
+
+            return DropboxClient(transportClient: client)
         }
 
         return nil
@@ -44,12 +46,20 @@ class DropboxConduit: Conduit {
             return progress
         }
 
+        if Settings.useTor {
+            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
+                self.done(uploadId, error: UploadError.dropboxNotOverTor)
+            }
+
+            return progress
+        }
+
         // As per docs, DropboxClient.files.upload only supports files up until
         // 150 MByte. To avoid, having the user find out after 150 MBytes,
         // we immediately stop this.
         if filesize > 150 * 1024 * 1024 {
             DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
-                self.done(uploadId, error: UploadError.fileTooBig)
+                self.done(uploadId, error: UploadError.dropboxFileTooBig)
             }
 
             return progress
