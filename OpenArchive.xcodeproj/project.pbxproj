@@ -339,6 +339,8 @@
 		A0E9069422CB7D16008CD81B /* SelectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E9069222CB7D16008CD81B /* SelectedView.swift */; };
 		A0F1364F227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */; };
 		A0F13650227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */; };
+		A0F3368827BC14B600826667 /* TorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C7D8ED27B6C13300E377FD /* TorManager.swift */; };
+		A0F3368927BC14CE00826667 /* TorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C7D8ED27B6C13300E377FD /* TorManager.swift */; };
 		A0F7FDDC22491C6C006610F0 /* TintedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDB22491C6C006610F0 /* TintedButton.swift */; };
 		A0F7FDDD22491C6C006610F0 /* TintedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDB22491C6C006610F0 /* TintedButton.swift */; };
 		A0F7FDDF224936C8006610F0 /* TintedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDE224936C8006610F0 /* TintedImageView.swift */; };
@@ -923,6 +925,7 @@
 				A0D58DCC20E514F8005A2F34 /* Models */,
 				A0E0307821EF6A0700A5E97F /* Views */,
 				A05471A02296B77D009FEA93 /* Montserrat */,
+				A0C7D8ED27B6C13300E377FD /* TorManager.swift */,
 				A0E739DE20E4C85E00DB31E1 /* Assets.xcassets */,
 				A08750A72112099700BFAFE4 /* Constants.h */,
 				A08750A82112099700BFAFE4 /* Constants.m */,
@@ -1317,7 +1320,6 @@
 				A09B5418232673E2005266C2 /* AppDelegateBase.swift */,
 				A052A490230D546F00E72594 /* InfoAlert.swift */,
 				A0656AB921F9BFB800070C4B /* MainNavigationController.swift */,
-				A0C7D8ED27B6C13300E377FD /* TorManager.swift */,
 				A0E739DB20E4C85D00DB31E1 /* Main.storyboard */,
 				A0E739E020E4C85E00DB31E1 /* LaunchScreen.storyboard */,
 				A09B537523266D69005266C2 /* Assets.xcassets */,
@@ -1370,6 +1372,7 @@
 				A07128F72111CC90007A432A /* Sources */,
 				A07128F82111CC90007A432A /* Frameworks */,
 				A07128F92111CC90007A432A /* Resources */,
+				846FCE2AA167F22AE488980F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1631,6 +1634,23 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OpenArchive/Pods-OpenArchive-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
+		846FCE2AA167F22AE488980F /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ShareExtension/Pods-ShareExtension-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-ShareExtension/Pods-ShareExtension-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ShareExtension/Pods-ShareExtension-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		D952DE378C28F0802B04CA2D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1795,6 +1815,7 @@
 				A05471DC2296C8FD009FEA93 /* UITableView+separatorView.swift in Sources */,
 				A092C0F1223A8D4B003EB0AA /* DoneDelegate.swift in Sources */,
 				A01A7B702200A05C00E18DE0 /* ProjectsTabBar.swift in Sources */,
+				A0F3368827BC14B600826667 /* TorManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1881,6 +1902,7 @@
 				A09B53C323266F02005266C2 /* UploadsView.swift in Sources */,
 				A09B53C423266F02005266C2 /* PreviewViewController.swift in Sources */,
 				A09B53C523266F02005266C2 /* StringUtils.swift in Sources */,
+				A0F3368927BC14CE00826667 /* TorManager.swift in Sources */,
 				A09B53C623266F02005266C2 /* BaseViewController.swift in Sources */,
 				A09B53C723266F02005266C2 /* SpacesListCell.swift in Sources */,
 				A09B53C823266F02005266C2 /* MainNavigationController.swift in Sources */,

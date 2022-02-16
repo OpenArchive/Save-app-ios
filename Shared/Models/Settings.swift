@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import IPtProxyUI
 
 class Settings {
 
@@ -20,51 +21,54 @@ class Settings {
     private static let kFirstBatchEditDone = "first_batch_edit_done"
     private static let kIaShownFirstTime = "ia_shown_first_time"
 
+    private class var defaults: UserDefaults? {
+        UserDefaults(suiteName: Constants.suiteName)
+    }
 
     // MARK: Operating Settings
 
     class var wifiOnly: Bool {
         get {
-            return UserDefaults(suiteName: Constants.suiteName)?.bool(forKey: kWifiOnly) ?? false
+            defaults?.bool(forKey: kWifiOnly) ?? false
         }
         set {
-            UserDefaults(suiteName: Constants.suiteName)?.set(newValue, forKey: kWifiOnly)
+            defaults?.set(newValue, forKey: kWifiOnly)
         }
     }
 
     class var highCompression: Bool {
         get {
-            return UserDefaults(suiteName: Constants.suiteName)?.bool(forKey: kHighCompression) ?? false
+            defaults?.bool(forKey: kHighCompression) ?? false
         }
         set {
-            UserDefaults(suiteName: Constants.suiteName)?.set(newValue, forKey: kHighCompression)
+            defaults?.set(newValue, forKey: kHighCompression)
         }
     }
 
     class var useTor: Bool {
         get {
-            return UserDefaults(suiteName: Constants.suiteName)?.bool(forKey: kUseTor) ?? false
+            defaults?.bool(forKey: kUseTor) ?? false
         }
         set {
-            UserDefaults(suiteName: Constants.suiteName)?.set(newValue, forKey: kUseTor)
+            defaults?.set(newValue, forKey: kUseTor)
         }
     }
 
-    class var transport: Int {
+    class var transport: Transport {
         get {
-            return UserDefaults(suiteName: Constants.suiteName)?.integer(forKey: kTransport) ?? 0
+            Transport(rawValue: defaults?.integer(forKey: kTransport) ?? 0) ?? .none
         }
         set {
-            UserDefaults(suiteName: Constants.suiteName)?.set(newValue, forKey: kTransport)
+            defaults?.set(newValue.rawValue, forKey: kTransport)
         }
     }
 
     class var customBridges: [String]? {
         get {
-            return UserDefaults(suiteName: Constants.suiteName)?.stringArray(forKey: kCustomBridges)
+            defaults?.stringArray(forKey: kCustomBridges)
         }
         set {
-            UserDefaults(suiteName: Constants.suiteName)?.set(newValue, forKey: kCustomBridges)
+            defaults?.set(newValue, forKey: kCustomBridges)
         }
     }
 
@@ -73,11 +77,10 @@ class Settings {
 
     class var firstRunDone: Bool {
         get {
-            return UserDefaults(suiteName: Constants.suiteName)?.bool(forKey: kFirstRunDone)
-                ?? false
+            defaults?.bool(forKey: kFirstRunDone) ?? false
         }
         set {
-            UserDefaults(suiteName: Constants.suiteName)?.set(newValue, forKey: kFirstRunDone)
+            defaults?.set(newValue, forKey: kFirstRunDone)
         }
     }
 
@@ -86,28 +89,28 @@ class Settings {
 
     class var firstFlaggedDone: Bool {
         get {
-            return UserDefaults(suiteName: Constants.suiteName)?.bool(forKey: kFirstFlaggedDone) ?? false
+            defaults?.bool(forKey: kFirstFlaggedDone) ?? false
         }
         set {
-            UserDefaults(suiteName: Constants.suiteName)?.set(newValue, forKey: kFirstFlaggedDone)
+            defaults?.set(newValue, forKey: kFirstFlaggedDone)
         }
     }
 
     class var firstBatchEditDone: Bool {
         get {
-            return UserDefaults(suiteName: Constants.suiteName)?.bool(forKey: kFirstBatchEditDone) ?? false
+            defaults?.bool(forKey: kFirstBatchEditDone) ?? false
         }
         set {
-            UserDefaults(suiteName: Constants.suiteName)?.set(newValue, forKey: kFirstBatchEditDone)
+            defaults?.set(newValue, forKey: kFirstBatchEditDone)
         }
     }
 
     class var iaShownFirstTime: Bool {
         get {
-            return UserDefaults(suiteName: Constants.suiteName)?.bool(forKey: kIaShownFirstTime) ?? false
+            defaults?.bool(forKey: kIaShownFirstTime) ?? false
         }
         set {
-            UserDefaults(suiteName: Constants.suiteName)?.set(newValue, forKey: kIaShownFirstTime)
+            defaults?.set(newValue, forKey: kIaShownFirstTime)
         }
     }
 }

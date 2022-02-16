@@ -83,10 +83,10 @@ class DataUsageViewController: FormViewController, BridgesConfDelegate {
 
     open var transport: Transport {
         get {
-            return Transport(rawValue: Settings.transport) ?? .none
+            return Settings.transport
         }
         set {
-            Settings.transport = newValue.rawValue
+            Settings.transport = newValue
         }
     }
 
