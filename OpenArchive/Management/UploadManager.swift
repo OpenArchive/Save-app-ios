@@ -592,28 +592,26 @@ class UploadManager: Alamofire.SessionDelegate {
                 if let upload = transaction.object(forKey: id, inCollection: Upload.collection) as? Upload {
                     self.heatCache(transaction, upload)
 
-                    if upload.paused != pause {
-                        if pause {
-                            upload.paused = true
-                        }
-                        else {
-                            upload.paused = false
-                            upload.error = nil
-                            upload.tries = 0
-                            upload.lastTry = nil
-                            upload.progress = 0
-
-                            // Also reset circuit-breaker. Otherwise users will get confused.
-                            if let space = upload.asset?.space {
-                                space.tries = 0
-                                space.lastTry = nil
-
-                                transaction.replace(space, forKey: space.id, inCollection: Space.collection)
-                            }
-                        }
-
-                        transaction.replace(upload, forKey: id, inCollection: Upload.collection)
+                    if pause {
+                        upload.paused = true
                     }
+                    else {
+                        upload.paused = false
+                        upload.error = nil
+                        upload.tries = 0
+                        upload.lastTry = nil
+                        upload.progress = 0
+
+                        // Also reset circuit-breaker. Otherwise users will get confused.
+                        if let space = upload.asset?.space {
+                            space.tries = 0
+                            space.lastTry = nil
+
+                            transaction.replace(space, forKey: space.id, inCollection: Space.collection)
+                        }
+                    }
+
+                    transaction.replace(upload, forKey: id, inCollection: Upload.collection)
                 }
             }
         }
