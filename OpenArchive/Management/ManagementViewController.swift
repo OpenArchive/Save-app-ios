@@ -9,8 +9,9 @@
 import UIKit
 import YapDatabase
 import DownloadButton
+import CleanInsightsSDK
 
-class ManagementViewController: BaseTableViewController, UploadCellDelegate {
+class ManagementViewController: BaseTableViewController, UploadCellDelegate, AnalyticsCellDelegate {
 
     var delegate: DoneDelegate?
 
@@ -76,6 +77,10 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
     // MARK: UITableViewDelegate
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if indexPath.section == 0 {
+            return AnalyticsCell.height
+        }
+
         return UploadCell.height
     }
 
@@ -87,14 +92,32 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
     // MARK: UITableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return 2
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if section == 0 {
+            switch CleanInsights.shared.consent(forCampaign: "upload_fails") {
+            case .unknown, .expired:
+                return 1
+
+            default:
+                return 0
+            }
+        }
+
         return count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if indexPath.section == 0 {
+            let cell = tableView.dequeueReusableCell(withIdentifier: AnalyticsCell.reuseId, for: indexPath) as! AnalyticsCell
+
+            cell.delegate = self
+
+            return cell
+        }
+
         let cell = tableView.dequeueReusableCell(withIdentifier: UploadCell.reuseId, for: indexPath) as! UploadCell
 
         cell.upload = getUpload(indexPath)
@@ -104,7 +127,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
     }
 
     override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        return [removeAction]
+        return indexPath.section == 0 ? [] : [removeAction]
     }
 
     override func setEditing(_ editing: Bool, animated: Bool) {
@@ -118,7 +141,19 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
         }
     }
 
+    override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
+        if indexPath.section == 0 {
+            return false
+        }
+
+        return true
+    }
+
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        if indexPath.section == 0 {
+            return false
+        }
+
         if let upload = getUpload(indexPath) {
             return upload.state == .pending || upload.state == .startDownload
         }
@@ -187,6 +222,17 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
     }
 
 
+    // MARK: AnalyticsCellDelegate
+
+    func analyticsReload() {
+        tableView.reloadSections([0], with: .automatic)
+    }
+
+    func analyticsPresent(_ viewController: UIViewController) {
+        navigationController?.pushViewController(viewController, animated: true)
+    }
+
+
     // MARK: Actions
 
     @IBAction func done() {
@@ -231,20 +277,20 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
                 switch change.type {
                 case .delete:
                     if let indexPath = change.indexPath, indexPath.section == 0 {
-                        tableView.deleteRows(at: [indexPath], with: .fade)
+                        tableView.deleteRows(at: [transform(indexPath)], with: .fade)
                     }
                 case .insert:
                     if let newIndexPath = change.newIndexPath, newIndexPath.section == 0 {
-                        tableView.insertRows(at: [newIndexPath], with: .fade)
+                        tableView.insertRows(at: [transform(newIndexPath)], with: .fade)
                     }
                 case .move:
                     if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath,
                         indexPath.section == 0 && newIndexPath.section == 0 {
-                        tableView.reloadRows(at: [indexPath, newIndexPath], with: .none)
+                        tableView.reloadRows(at: [transform(indexPath), transform(newIndexPath)], with: .none)
                     }
                 case .update:
                     if let indexPath = change.indexPath, indexPath.section == 0 {
-                        tableView.reloadRows(at: [indexPath], with: .none)
+                        tableView.reloadRows(at: [transform(indexPath)], with: .none)
                     }
                 @unknown default:
                     break
@@ -267,7 +313,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
         var uploading = false
 
         for row in 0 ... count {
-            if let cell = tableView.cellForRow(at: IndexPath(row: row, section: 0)) as? UploadCell,
+            if let cell = tableView.cellForRow(at: IndexPath(row: row, section: 1)) as? UploadCell,
                 let state = cell.upload?.state,
                 state == .pending || state == .downloading {
 
@@ -297,9 +343,13 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
 
         readConn?.read() { transaction in
             upload = (transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction)?
-                .object(at: indexPath, with: self.mappings) as? Upload
+                .object(atRow: UInt(indexPath.row), inSection: 0, with: self.mappings) as? Upload
         }
 
         return upload
+    }
+
+    private func transform(_ indexPath: IndexPath) -> IndexPath {
+        return IndexPath(row: indexPath.row, section: indexPath.section + 1)
     }
 }

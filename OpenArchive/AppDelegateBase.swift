@@ -11,6 +11,7 @@ import UserNotifications
 import Localize
 import FontBlaster
 import SwiftyDropbox
+import CleanInsightsSDK
 
 class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
@@ -49,6 +50,8 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+
+        CleanInsights.shared.persist()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -231,4 +234,10 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
             UINavigationBar.appearance().scrollEdgeAppearance = a
         }
     }
+}
+
+extension CleanInsights {
+
+    static var shared = try! CleanInsights(
+        jsonConfigurationFile: Bundle.main.url(forResource: "cleaninsights-dev", withExtension: "json")!)
 }

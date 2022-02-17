@@ -12,6 +12,7 @@ import Reachability
 import FilesProvider
 import Alamofire
 import Regex
+import CleanInsightsSDK
 
 extension Notification.Name {
     static let uploadManagerPause = Notification.Name("uploadManagerPause")
@@ -385,6 +386,23 @@ class UploadManager: Alamofire.SessionDelegate {
                     upload.lastTry = Date()
 
                     upload.error = error?.friendlyMessage ?? (url == nil ? "No URL provided.".localize() : "Unknown error.".localize())
+
+                    if upload.paused {
+                        let filesize = upload.asset?.filesize
+
+                        let data: [String: String?] = [
+                            "error": upload.error,
+                            "filesize": filesize != nil ? String(filesize!) : nil,
+                            "type": upload.asset?.uti,
+                            "retries": String(upload.tries),
+                            "network": self.reachability?.connection.description]
+
+                        if let json = try? JSONEncoder().encode(data) {
+                            CleanInsights.shared.measure(
+                                event: "upload", "upload_failed", forCampaign: "upload_fails",
+                                name: String(data: json, encoding: .utf8))
+                        }
+                    }
                 }
 
                 collection = nil

@@ -9,7 +9,7 @@
 import UIKit
 import DownloadButton
 
-protocol UploadCellDelegate {
+protocol UploadCellDelegate: AnyObject {
     func progressTapped(_ upload: Upload, _ button: PKDownloadButton)
 
     func showError(_ upload: Upload)
@@ -81,7 +81,7 @@ class UploadCell: BaseCell, PKDownloadButtonDelegate {
         }
     }
 
-    var delegate: UploadCellDelegate?
+    weak var delegate: UploadCellDelegate?
 
 
     // MARK: PKDownloadButtonDelegate
