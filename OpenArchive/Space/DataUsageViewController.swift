@@ -69,7 +69,7 @@ class DataUsageViewController: FormViewController, BridgesConfDelegate {
         }
 
         +++ ButtonRow() {
-            $0.title = "Tor Bridge Settings".localize()
+            $0.title = "Bridge Configuration".localize()
             $0.cell.textLabel?.numberOfLines = 0
         }
         .onCellSelection { [weak self] _, _ in

@@ -276,6 +276,12 @@
 /* DataUsageViewController */
 "Smaller Size" = "Smaller Size";
 
+/* DataUsageViewController */
+"Use Tor" = "Use Tor";
+
+/* DataUsageViewController */
+"Bridge Configuration" = "Bridge Configuration";
+
 /* ManagementViewController */
 "Multiple attempts with no success" = "Multiple attempts with no success";
 
