@@ -445,6 +445,7 @@
 		5FD7A7F483ADD21139D54407 /* Pods-ShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ShareExtension/Pods-ShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		9A0DA47842D4E38A056664EC /* Pods-OpenArchive Screenshots.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenArchive Screenshots.release.xcconfig"; path = "Pods/Target Support Files/Pods-OpenArchive Screenshots/Pods-OpenArchive Screenshots.release.xcconfig"; sourceTree = "<group>"; };
 		A004E24B20EBCF1700A1D5F5 /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
+		A0057A0527D25EEA00A14532 /* cleaninsights-prod.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "cleaninsights-prod.json"; sourceTree = "<group>"; };
 		A005B8B4234B57E1005611F5 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A005B8B5234B57E1005611F5 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A00A8D43220C63B20083F0CB /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
@@ -947,6 +948,7 @@
 				A0A192DF21F23B61009A8CF0 /* Constants+Swift.swift */,
 				A0BA76E52111FA130009801D /* Config.xcconfig */,
 				A07678F527BE7F0E00609630 /* cleaninsights-dev.json */,
+				A0057A0527D25EEA00A14532 /* cleaninsights-prod.json */,
 				A0FE2C2622E1FE7C00C5443F /* Localizable.strings */,
 			);
 			path = Shared;

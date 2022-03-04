@@ -1,0 +1,13 @@
+{
+  "server": "https://metrics.cleaninsights.org/ci/cleaninsights.php",
+  "siteId": 15,
+  "campaigns": {
+    "upload_fails": {
+      "start": "2022-02-01T00:00:00+00:00",
+      "end": "2030-12-31T23:59:59+00:00",
+      "aggregationPeriodLength": 7,
+      "numberOfPeriods": 8
+    }
+  },
+  "debug": true
+}
