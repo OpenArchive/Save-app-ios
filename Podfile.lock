@@ -2,7 +2,7 @@ PODS:
   - Alamofire (4.9.1)
   - AlignedCollectionViewFlowLayout (1.1.2)
   - ARChromeActivity (1.0.6)
-  - CleanInsightsSDK (2.5.0)
+  - CleanInsightsSDK (2.6.0)
   - CrossroadRegex (1.2.0)
   - DownloadButton (0.1.0)
   - Eureka (5.3.4)
@@ -42,7 +42,7 @@ PODS:
   - ImageRow (4.0.0):
     - Eureka (~> 5.0)
   - IPtProxy (1.5.0)
-  - IPtProxyUI (1.7.0):
+  - IPtProxyUI (1.7.1):
     - Eureka (~> 5.3)
     - ImageRow (~> 4.0)
     - IPtProxy (~> 1.5)
@@ -172,7 +172,7 @@ DEPENDENCIES:
   - Alamofire (~> 4.9)
   - AlignedCollectionViewFlowLayout (~> 1.1)
   - ARChromeActivity (~> 1.0)
-  - CleanInsightsSDK (from `https://gitlab.com/cleaninsights/clean-insights-apple-sdk.git`)
+  - CleanInsightsSDK (~> 2.6)
   - CrossroadRegex (from `https://github.com/crossroadlabs/Regex.git`, tag `1.2.0`)
   - DownloadButton (~> 0.1)
   - Eureka (~> 5.3)
@@ -199,6 +199,7 @@ SPEC REPOS:
     - Alamofire
     - AlignedCollectionViewFlowLayout
     - ARChromeActivity
+    - CleanInsightsSDK
     - DownloadButton
     - Eureka
     - FontBlaster
@@ -219,8 +220,6 @@ SPEC REPOS:
     - YapDatabase
 
 EXTERNAL SOURCES:
-  CleanInsightsSDK:
-    :git: https://gitlab.com/cleaninsights/clean-insights-apple-sdk.git
   CrossroadRegex:
     :git: https://github.com/crossroadlabs/Regex.git
     :tag: 1.2.0
@@ -231,9 +230,6 @@ EXTERNAL SOURCES:
     :git: https://github.com/ayuzhin/FileProvider.git
 
 CHECKOUT OPTIONS:
-  CleanInsightsSDK:
-    :commit: 26d539cce50ff7aeb24b1c7a9caaa9dbb7a1be0b
-    :git: https://gitlab.com/cleaninsights/clean-insights-apple-sdk.git
   CrossroadRegex:
     :git: https://github.com/crossroadlabs/Regex.git
     :tag: 1.2.0
@@ -248,7 +244,7 @@ SPEC CHECKSUMS:
   Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
   AlignedCollectionViewFlowLayout: ee2ef451e741ec08f8e0967d828001e2f051c20a
   ARChromeActivity: 5dcf9b9f09323761f992aff3525cdd777f83609d
-  CleanInsightsSDK: 02abb98acfbc549ddb74b395c3a56973fd3e71aa
+  CleanInsightsSDK: 41957828284408a969f4bf310ae4d378350bdbc2
   CrossroadRegex: 9af32b4b4dc6ff404c87647ef1bc68ea711cc570
   DownloadButton: 49a21a89e0d7d1b42d9134f79aaa40e727cd57c3
   Eureka: 60cf058f86a8fb3ed26165ba5292b9850361b0a6
@@ -258,7 +254,7 @@ SPEC CHECKSUMS:
   FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
   ImageRow: e65b2e1a33f89062bf2a553a2aad61d975eb7428
   IPtProxy: 495462962af8a779365581dd5908118af3793e7b
-  IPtProxyUI: d62f08714bb925d2cf3f25967cec4d694e02d381
+  IPtProxyUI: 74ee4021a6002461d18f134518840b972ad5c44a
   Localize: cb1ae53ed73decaad0dce217806ed983091913f5
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
@@ -271,6 +267,6 @@ SPEC CHECKSUMS:
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
   YapDatabase: 350ab72b61f9dcc32504594da1a52a93f5ef1476
 
-PODFILE CHECKSUM: 0ed0257195d5ad5c3a21a882845413b8f85569a2
+PODFILE CHECKSUM: c7a95569e08165d7a1d69b56cdb550b238faf774
 
 COCOAPODS: 1.11.2

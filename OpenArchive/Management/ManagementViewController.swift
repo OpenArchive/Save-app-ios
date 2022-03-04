@@ -97,7 +97,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if section == 0 {
-            switch CleanInsights.shared.consent(forCampaign: "upload_fails") {
+            switch CleanInsights.shared.state(ofCampaign: "upload_fails") {
             case .unknown, .expired:
                 return 1
 

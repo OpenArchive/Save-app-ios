@@ -23,7 +23,7 @@ def shared_pods
     pod 'CrossroadRegex', :git => 'https://github.com/crossroadlabs/Regex.git', tag: '1.2.0'
     pod 'Tor', '~> 406.9'
     pod 'IPtProxyUI', '~> 1.7'
-    pod 'CleanInsightsSDK', :git => 'https://gitlab.com/cleaninsights/clean-insights-apple-sdk.git' #:path => '../clean-insights-apple-sdk/' #'~> 2.5'
+    pod 'CleanInsightsSDK', '~> 2.6'
 end
 
 def app_only
