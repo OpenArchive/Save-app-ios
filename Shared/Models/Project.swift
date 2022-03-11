@@ -47,7 +47,7 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
      - returns: The given project's name or a default one.
     */
     class func getName(_ project: Project?) -> String {
-        return project?.name ?? "Unnamed Project".localize()
+        return project?.name ?? NSLocalizedString("Unnamed Project", comment: "")
     }
 
     var name: String?

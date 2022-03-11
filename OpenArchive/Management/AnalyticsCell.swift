@@ -30,19 +30,19 @@ class AnalyticsCell: BaseCell, ConsentRequestUi {
 
     @IBOutlet weak var textLb: UILabel! {
         didSet {
-            textLb.text = "Run health checks to help improve uploading.".localize()
+            textLb.text = NSLocalizedString("Run health checks to help improve uploading.", comment: "")
         }
     }
 
     @IBOutlet weak var okBt: UIButton! {
         didSet {
-            okBt.setTitle("OK".localize())
+            okBt.setTitle(NSLocalizedString("OK", comment: ""))
         }
     }
 
     @IBOutlet weak var declineBt: UIButton! {
         didSet {
-            declineBt.setTitle("No thanks".localize())
+            declineBt.setTitle(NSLocalizedString("No thanks", comment: ""))
         }
     }
 

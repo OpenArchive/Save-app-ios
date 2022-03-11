@@ -14,22 +14,24 @@ class InternetArchiveViewController: BaseServerViewController, ScrapeDelegate {
     static let keysUrl = URL(string: "https://archive.org/account/s3.php")!
 
     private let secretKeyRow = AccountRow() {
-        $0.title = "Secret Key".localize()
-        $0.placeholder = "Required".localize()
+        $0.title = NSLocalizedString("Secret Key", comment: "")
+        $0.placeholder = NSLocalizedString("Required", comment: "")
         $0.add(rule: RuleRequired())
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = "Internet Archive".localize()
+        navigationItem.title = NSLocalizedString("Internet Archive", comment: "")
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: space != nil ? "Done".localize() : "Connect".localize(),
+            title: space != nil
+                ? NSLocalizedString("Done", comment: "")
+                : NSLocalizedString("Connect", comment: ""),
             style: .done, target: self,
             action: #selector(connect))
 
         favIconRow.value = IaSpace.favIcon
-        userNameRow.title = "Access Key".localize()
+        userNameRow.title = NSLocalizedString("Access Key", comment: "")
         userNameRow.value = space?.username
         secretKeyRow.value = space?.password
 
@@ -48,14 +50,11 @@ class InternetArchiveViewController: BaseServerViewController, ScrapeDelegate {
 
                 let appName = Bundle.main.displayName
 
-                $0.title = "% needs your Internet Archive account's API keys to be able to upload to it."
-                    .localize(value: appName)
+                $0.title = String(format: NSLocalizedString("%@ needs your Internet Archive account's API keys to be able to upload to it.", comment: ""), appName)
                     + "\n\n"
-                    + "You can let % try to acquire these keys automatically, or you can tap this row which will send you to % in Safari from where you can copy-and-paste these keys manually."
-                        .localize(values: appName, InternetArchiveViewController.keysUrl.absoluteString)
+                    + String(format: NSLocalizedString("You can let %1$@ try to acquire these keys automatically, or you can tap this row which will send you to %2$@ in Safari from where you can copy-and-paste these keys manually.", comment: ""), appName, InternetArchiveViewController.keysUrl.absoluteString)
                     + "\n\n"
-                    + "When using the \"%\" feature, make sure to log in and then touch the \"Refresh\" button in the top right to let % have another try at automatically scraping the keys."
-                        .localize(values: "Acquire Keys".localize(), appName)
+                    + String(format: NSLocalizedString("When using the \"%1$@\" feature, make sure to log in and then touch the \"Refresh\" button in the top right to let %2$@ have another try at automatically scraping the keys.", comment: ""), NSLocalizedString("Acquire Keys", comment: ""), appName)
                 }
                 .onCellSelection() { _, _ in
                     UIApplication.shared.open(InternetArchiveViewController.keysUrl, options: [:])
@@ -64,7 +63,7 @@ class InternetArchiveViewController: BaseServerViewController, ScrapeDelegate {
             +++ actionSection
 
             <<< ButtonRow() {
-                $0.title = "Acquire Keys".localize()
+                $0.title = NSLocalizedString("Acquire Keys", comment: "")
             }
             .cellUpdate({ cell, _ in
                 cell.textLabel?.textColor = .accent

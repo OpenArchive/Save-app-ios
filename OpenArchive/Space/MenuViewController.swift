@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Localize
 import YapDatabase
 
 class MenuViewController: TableWithSpacesViewController {
@@ -27,7 +26,7 @@ class MenuViewController: TableWithSpacesViewController {
     private lazy var removeAction: UITableViewRowAction = {
         let action = UITableViewRowAction(
             style: .destructive,
-            title: "Remove".localize())
+            title: NSLocalizedString("Remove", comment: ""))
         { (action, indexPath) in
 
             if let project = self.getProject(indexPath) {
@@ -117,14 +116,14 @@ class MenuViewController: TableWithSpacesViewController {
             return cell.set(Project.getName(getProject(indexPath)), accessoryType: .disclosureIndicator)
 
         case 2:
-            return cell.set("Data Usage".localize(), accessoryType: .disclosureIndicator)
+            return cell.set(NSLocalizedString("Data Usage", comment: ""), accessoryType: .disclosureIndicator)
 
         case 3:
             switch indexPath.row {
             case 0:
-                return cell.set("About %".localize(value: Bundle.main.displayName), accessoryType: .disclosureIndicator)
+                return cell.set(String(format: NSLocalizedString("About %@", comment: ""), Bundle.main.displayName), accessoryType: .disclosureIndicator)
             default:
-                return cell.set("Privacy Policy".localize(), accessoryType: .disclosureIndicator)
+                return cell.set(NSLocalizedString("Privacy Policy", comment: ""), accessoryType: .disclosureIndicator)
             }
 
         default:
@@ -140,11 +139,11 @@ class MenuViewController: TableWithSpacesViewController {
 
         switch section {
         case 1:
-            header.label.text = "Project Settings".localize().localizedUppercase
+            header.label.text = NSLocalizedString("Project Settings", comment: "").localizedUppercase
         case 2:
-            header.label.text = "App Settings".localize().localizedUppercase
+            header.label.text = NSLocalizedString("App Settings", comment: "").localizedUppercase
         case 3:
-            header.label.text = "Info".localize().localizedUppercase
+            header.label.text = NSLocalizedString("Info", comment: "").localizedUppercase
         default:
             header.label.text = nil
         }

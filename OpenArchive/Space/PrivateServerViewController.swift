@@ -10,29 +10,30 @@ import UIKit
 import Eureka
 import FavIcon
 import YapDatabase
+import IPtProxyUI
 
 class PrivateServerViewController: BaseServerViewController {
 
     private let nameRow = TextRow() {
-        $0.title = "Server Name".localize()
-        $0.placeholder = "Optional".localize()
+        $0.title = NSLocalizedString("Server Name", comment: "")
+        $0.placeholder = NSLocalizedString("Optional", comment: "")
     }
 
     private let urlRow = URLRow() {
-        $0.title = "Server URL".localize()
-        $0.placeholder = "Required".localize()
+        $0.title = NSLocalizedString("Server URL", comment: "")
+        $0.placeholder = NSLocalizedString("Required", comment: "")
         $0.add(rule: RuleRequired())
         $0.formatter = Formatters.URLFormatter()
     }
 
     private let passwordRow = PasswordRow() {
-        $0.title = "Password".localize()
-        $0.placeholder = "Required".localize()
+        $0.title = NSLocalizedString("Password", comment: "")
+        $0.placeholder = NSLocalizedString("Required", comment: "")
         $0.add(rule: RuleRequired())
     }
 
     private let nextcloudRow = SwitchRow() {
-        $0.title = "Use Upload Chunking (Nextcloud only)".localize()
+        $0.title = NSLocalizedString("Use Upload Chunking (Nextcloud only)", comment: "")
         $0.cell.textLabel?.adjustsFontSizeToFitWidth = true
         $0.cell.switchControl.onTintColor = .accent
     }
@@ -40,9 +41,9 @@ class PrivateServerViewController: BaseServerViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = "Private (WebDAV) Server".localize()
+        navigationItem.title = NSLocalizedString("Private (WebDAV) Server", comment: "")
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: space != nil ? "Done".localize() : "Connect".localize(),
+            title: space != nil ? NSLocalizedString("Done", comment: "") : NSLocalizedString("Connect", comment: ""),
             style: .done, target: self,
             action: #selector(connect))
 
@@ -74,7 +75,7 @@ class PrivateServerViewController: BaseServerViewController {
             }
 
             <<< LabelRow() {
-                $0.title = "__webdav_description__".localize(value: Bundle.main.displayName)
+                $0.title = String(format: NSLocalizedString("__webdav_description__", comment: ""), Bundle.main.displayName)
                 $0.cell.textLabel?.numberOfLines = 0
                 $0.cell.textLabel?.font = .systemFont(ofSize: 12)
             }
@@ -82,7 +83,7 @@ class PrivateServerViewController: BaseServerViewController {
             +++ nextcloudRow
 
             <<< LabelRow() {
-                $0.title = "__upload_chunking_description__".localize()
+                $0.title = NSLocalizedString("__upload_chunking_description__", comment: "")
                 $0.cell.textLabel?.numberOfLines = 0
                 $0.cell.textLabel?.font = .systemFont(ofSize: 12)
             }

@@ -11,7 +11,6 @@ import UserNotifications
 import YapDatabase
 import MobileCoreServices
 import MBProgressHUD
-import Localize
 import FontBlaster
 
 @objc(MainViewController)
@@ -37,7 +36,7 @@ class MainViewController: TableWithSpacesViewController {
     private lazy var hud: MBProgressHUD = {
         let hud = MBProgressHUD.showAdded(to: view, animated: true)
         hud.minShowTime = 1
-        hud.label.text = "Adding…".localize()
+        hud.label.text = NSLocalizedString("Adding…", comment: "")
         hud.mode = .determinate
         hud.progressObject = progress
 
@@ -56,10 +55,6 @@ class MainViewController: TableWithSpacesViewController {
         projectsReadConn?.update(mappings: projectsMappings)
 
         view.tintColor = .accent
-
-        Localize.update(provider: .strings)
-        Localize.update(bundle: Bundle(for: type(of: self)))
-        Localize.update(fileName: "Localizable")
 
         FontBlaster.blast()
         
@@ -131,12 +126,12 @@ class MainViewController: TableWithSpacesViewController {
         else if indexPath.section == 2,
             let cell = tableView.dequeueReusableCell(withIdentifier: TitleCell.reuseId, for: indexPath) as? TitleCell {
 
-            return cell.set("Choose a Project".localize())
+            return cell.set(NSLocalizedString("Choose a Project", comment: ""))
         }
         else if indexPath.section == 4,
             let cell = tableView.dequeueReusableCell(withIdentifier: ButtonCell.reuseId, for: indexPath) as? ButtonCell {
 
-            cell.textLabel?.text = "Import".localize()
+            cell.textLabel?.text = NSLocalizedString("Import", comment: "")
 
             return cell
         }
@@ -149,7 +144,7 @@ class MainViewController: TableWithSpacesViewController {
                                 accessoryType: selectedRow == indexPath.row ? .checkmark : .none)
             }
             else {
-                return cell.set("New Project".localize(), isPlaceholder: true)
+                return cell.set(NSLocalizedString("New Project", comment: ""), isPlaceholder: true)
             }
         }
 
@@ -236,7 +231,7 @@ class MainViewController: TableWithSpacesViewController {
                             return self.onCompletion(error!)
                         }
 
-                        let error = "Couldn't import item!".localize()
+                        let error = NSLocalizedString("Couldn't import item!", comment: "")
 
                         guard let url = item as? URL else {
                             return self.onCompletion(error: error)
@@ -358,9 +353,10 @@ class MainViewController: TableWithSpacesViewController {
     private func showNotification() {
         if notificationsAllowed {
             let content = UNMutableNotificationContent()
-            content.body = "You have % items ready to upload to '%'."
-                .localize(values: Formatters.format(progress.totalUnitCount),
-                          Project.getName(project))
+            content.body = String(
+                format: NSLocalizedString("You have %$1@ items ready to upload to '%2$@'.", comment: ""),
+                Formatters.format(progress.totalUnitCount),
+                Project.getName(project))
             content.userInfo[Project.collection] = project?.id
 
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
@@ -372,7 +368,7 @@ class MainViewController: TableWithSpacesViewController {
         }
         else {
             DispatchQueue.main.async {
-                self.hud.label.text = "Go to the app to upload!".localize()
+                self.hud.label.text = NSLocalizedString("Go to the app to upload!", comment: "")
             }
         }
     }

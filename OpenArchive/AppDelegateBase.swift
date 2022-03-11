@@ -8,7 +8,6 @@
 
 import UIKit
 import UserNotifications
-import Localize
 import FontBlaster
 import SwiftyDropbox
 import CleanInsightsSDK
@@ -220,10 +219,6 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     }
 
     func setUpUi() {
-        Localize.update(provider: .strings)
-        Localize.update(bundle: Bundle(for: type(of: self)))
-        Localize.update(fileName: "Localizable")
-
         FontBlaster.blast() /* { fonts in
             print(fonts)
         } */

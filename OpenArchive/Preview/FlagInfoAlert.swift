@@ -6,6 +6,8 @@
 //  Copyright © 2019 Open Archive. All rights reserved.
 //
 
+import Foundation
+
 /**
  A special alert which informs the user about the flag feature.
  */
@@ -20,11 +22,11 @@ class FlagInfoAlert: InfoAlert {
     }
 
     override class var title: String {
-        return "Flag Significant Content".localize()
+        return NSLocalizedString("Flag Significant Content", comment: "")
     }
 
     override class var message: String {
-        return "When you flag an item, it is routed into a subfolder within the chosen project folder on the private server.".localize()
+        return NSLocalizedString("When you flag an item, it is routed into a subfolder within the chosen project folder on the private server.", comment: "")
     }
 
     override class var wasAlreadyShown: Bool {

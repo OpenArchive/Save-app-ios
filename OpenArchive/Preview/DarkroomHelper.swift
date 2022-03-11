@@ -10,10 +10,10 @@ import UIKit
 
 class DarkroomHelper {
 
-    private static let descPlaceholder = "Add People".localize()
-    private static let locPlaceholder = "Add Location".localize()
-    private static let notesPlaceholder = "Add Notes".localize()
-    private static let flagPlaceholder = "Tap to flag as significant content".localize()
+    private static let descPlaceholder = NSLocalizedString("Add People", comment: "")
+    private static let locPlaceholder = NSLocalizedString("Add Location", comment: "")
+    private static let notesPlaceholder = NSLocalizedString("Add Notes", comment: "")
+    private static let flagPlaceholder = NSLocalizedString("Tap to flag as significant content", comment: "")
 
     let delegate: InfoBoxDelegate
 
@@ -72,7 +72,7 @@ class DarkroomHelper {
         notes?.set(asset?.notes, with: defaults ? DarkroomHelper.notesPlaceholder : nil)
         notes?.textView.isEditable = isEditable
 
-        flag?.set(asset?.flagged ?? false ? Asset.flag.localize() : nil,
+        flag?.set(asset?.flagged ?? false ? NSLocalizedString(Asset.flag, comment: "") : nil,
                   with: defaults ? DarkroomHelper.flagPlaceholder : nil)
     }
 

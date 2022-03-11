@@ -8,6 +8,7 @@
 
 import UIKit
 import WebKit
+import IPtProxyUI
 
 protocol ScrapeDelegate {
     func scraped(accessKey: String, secretKey: String)
@@ -23,7 +24,7 @@ class IaScrapeViewController: UIViewController, WKUIDelegate, WKNavigationDelega
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = "Internet Archive".localize()
+        navigationItem.title = NSLocalizedString("Internet Archive", comment: "")
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .refresh, target: self, action: #selector(load))

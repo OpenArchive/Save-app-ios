@@ -13,17 +13,17 @@ import IPtProxyUI
 class DataUsageViewController: FormViewController, BridgesConfDelegate {
 
     private static let compressionOptions = [
-        "Better Quality".localize(),
-        "Smaller Size".localize()]
+        NSLocalizedString("Better Quality", comment: ""),
+        NSLocalizedString("Smaller Size", comment: "")]
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = "Data Usage".localize()
+        navigationItem.title = NSLocalizedString("Data Usage", comment: "")
 
         form
         +++ SwitchRow() {
-            $0.title = "Only upload media when you are connected to Wi-Fi".localize()
+            $0.title = NSLocalizedString("Only upload media when you are connected to Wi-Fi", comment: "")
             $0.cell.textLabel?.numberOfLines = 0
             $0.cell.switchControl.onTintColor = .accent
             $0.value = Settings.wifiOnly
@@ -35,7 +35,7 @@ class DataUsageViewController: FormViewController, BridgesConfDelegate {
         }
 
         +++ AlertRow<String>() {
-            $0.title = "Video/Image Compression".localize()
+            $0.title = NSLocalizedString("Video/Image Compression", comment: "")
             $0.cell.textLabel?.numberOfLines = 0
             $0.selectorTitle = $0.title
             $0.options = DataUsageViewController.compressionOptions
@@ -46,7 +46,7 @@ class DataUsageViewController: FormViewController, BridgesConfDelegate {
         }
 
         +++ SwitchRow() {
-            $0.title = "Use Tor".localize()
+            $0.title = NSLocalizedString("Use Tor", comment: "")
             $0.cell.textLabel?.numberOfLines = 0
             $0.cell.switchControl.onTintColor = .accent
             $0.value = Settings.useTor
@@ -69,7 +69,7 @@ class DataUsageViewController: FormViewController, BridgesConfDelegate {
         }
 
         +++ ButtonRow() {
-            $0.title = "Bridge Configuration".localize()
+            $0.title = NSLocalizedString("Bridge Configuration", comment: "")
             $0.cell.textLabel?.numberOfLines = 0
         }
         .onCellSelection { [weak self] _, _ in

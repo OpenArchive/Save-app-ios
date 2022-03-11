@@ -21,7 +21,7 @@ class ClaimViewController: UIViewController {
         //
         // Therefore we replace spaces between words with newlines and hope,
         // that translators don't translate one word with multiple words...
-        claimLb.text = "Share Archive Verify Encrypt".localize()
+        claimLb.text = NSLocalizedString("Share Archive Verify Encrypt", comment: "")
             .split(using: "\\s+".r).joined(separator: "\n")
     }
 }

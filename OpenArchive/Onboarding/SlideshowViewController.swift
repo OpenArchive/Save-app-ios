@@ -18,23 +18,23 @@ UIPageViewControllerDelegate {
 
     private static let data = [
     [
-        "heading": "Save to a safe place.".localize(),
-        "text": "Connect to a secure server or the Internet Archive to upload photos and videos from your phone.".localize(),
+        "heading": NSLocalizedString("Save to a safe place.", comment: ""),
+        "text": NSLocalizedString("Connect to a secure server or the Internet Archive to upload photos and videos from your phone.", comment: ""),
         "illustration": "safe-place-screen",
     ],
     [
-        "heading": "Stay organized.".localize(),
-        "text": "Organize your media into projects.".localize(),
+        "heading": NSLocalizedString("Stay organized.", comment: ""),
+        "text": NSLocalizedString("Organize your media into projects.", comment: ""),
         "illustration": "stay-organized-screen",
     ],
     [
-        "heading": "Store the facts.".localize(),
-        "text": "Capture notes, location and people with each piece of media.".localize(),
+        "heading": NSLocalizedString("Store the facts.", comment: ""),
+        "text": NSLocalizedString("Capture notes, location and people with each piece of media.", comment: ""),
         "illustration": "save-the-facts",
     ],
     [
-        "heading": "Ensure authenticity.".localize(),
-        "text": "Include your credentials while Save adds extra metadata to help with chain of custody and verification workflows.".localize(),
+        "heading": NSLocalizedString("Ensure authenticity.", comment: ""),
+        "text": NSLocalizedString("Include your credentials while Save adds extra metadata to help with chain of custody and verification workflows.", comment: ""),
         "illustration": "Ensure-Authenticity-screen",
     ],
     ]

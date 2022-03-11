@@ -20,7 +20,7 @@ class NewProjectViewController: BaseProjectViewController {
     }
 
     override func viewDidLoad() {
-        navigationItem.title = "New Project".localize()
+        navigationItem.title = NSLocalizedString("New Project", comment: "")
 
         if navigationController?.viewControllers.first == self {
             navigationItem.leftBarButtonItem = UIBarButtonItem(
@@ -44,7 +44,7 @@ class NewProjectViewController: BaseProjectViewController {
                     }
                 }
 
-                $0.title = "Add a project folder to the server that anyone can upload to.".localize()
+                $0.title = NSLocalizedString("Add a project folder to the server that anyone can upload to.", comment: "")
             }
 
             +++ nameRow.cellUpdate { cell, _ in

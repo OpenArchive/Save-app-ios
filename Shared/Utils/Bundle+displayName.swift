@@ -13,6 +13,6 @@ extension Bundle {
     var displayName: String {
         return object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
             ?? object(forInfoDictionaryKey: kCFBundleNameKey as String) as? String
-            ?? "OpenArchive".localize()
+            ?? NSLocalizedString("OpenArchive", comment: "")
     }
 }

@@ -20,11 +20,11 @@ class BatchInfoAlert: InfoAlert {
     }
 
     override class var title: String {
-        return "Edit Multiple Items".localize()
+        return NSLocalizedString("Edit Multiple Items", comment: "")
     }
 
     override class var message: String {
-        return "To edit multiple items, tap and hold each.".localize()
+        return NSLocalizedString("To edit multiple items, tap and hold each.", comment: "")
     }
 
     override class var wasAlreadyShown: Bool {

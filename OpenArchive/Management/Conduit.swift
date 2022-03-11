@@ -377,13 +377,13 @@ class Conduit {
         var errorDescription: String? {
             switch self {
             case .invalidConf:
-                return "Configuration invalid.".localize()
+                return NSLocalizedString("Configuration invalid.", comment: "")
 
             case .tooManyRetries:
-                return "Failed after too many retries.".localize()
+                return NSLocalizedString("Failed after too many retries.", comment: "")
 
             case .dropboxFileTooBig:
-                return "The Dropbox support can't handle files bigger than 150 MByte.".localize()
+                return NSLocalizedString("The Dropbox support can't handle files bigger than 150 MByte.", comment: "")
             }
         }
     }

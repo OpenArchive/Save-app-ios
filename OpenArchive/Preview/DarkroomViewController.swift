@@ -69,7 +69,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
 
         if !addMode {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
-                title: "Add Info".localize(), style: .plain, target: self, action: #selector(addInfo))
+                title: NSLocalizedString("Add Info", comment: ""), style: .plain, target: self, action: #selector(addInfo))
         }
 
         addChild(pageVc)
@@ -317,7 +317,9 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     @IBAction func addInfo() {
         addMode = !addMode
 
-        navigationItem.rightBarButtonItem?.title = addMode ? "Done".localize() : "Add Info".localize()
+        navigationItem.rightBarButtonItem?.title = addMode
+            ? NSLocalizedString("Done", comment: "")
+            : NSLocalizedString("Add Info", comment: "")
 
         if !addMode {
             dismissKeyboard() // Also stores newly entered texts.
@@ -337,7 +339,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         let asset = self.asset // Don't repeat asset#get all the time.
 
         let title = navigationItem.titleView as? MultilineTitle
-        title?.title.text = addMode ? "Add Info".localize() : asset?.filename
+        title?.title.text = addMode ? NSLocalizedString("Add Info", comment: "") : asset?.filename
         title?.subtitle.text = addMode ? asset?.filename : Formatters.formatByteCount(asset?.filesize)
 
         navigationItem.rightBarButtonItem?.isEnabled = asset != nil && !asset!.isUploaded && !asset!.isUploading

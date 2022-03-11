@@ -22,7 +22,7 @@ class ConnectSpaceViewController: BaseTableViewController {
         // All other times they can back out with a navigation back button.
         if !SelectedSpace.available {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
-                title: "Skip".localize(), style: .plain, target: self,
+                title: NSLocalizedString("Skip", comment: ""), style: .plain, target: self,
                 action: #selector(cancel))
         }
 
@@ -68,7 +68,8 @@ class ConnectSpaceViewController: BaseTableViewController {
         if indexPath.row == 0,
             let cell = tableView.dequeueReusableCell(withIdentifier: TitleCell.reuseId, for: indexPath) as? TitleCell {
 
-            return cell.set("Connect Your Space".localize(), "Set up where you want your media to be stored.".localize())
+            return cell.set(NSLocalizedString("Connect Your Space", comment: ""),
+                            NSLocalizedString("Set up where you want your media to be stored.", comment: ""))
         }
 
         let cell = tableView.dequeueReusableCell(withIdentifier: BigMenuItemCell.reuseId, for: indexPath) as! BigMenuItemCell

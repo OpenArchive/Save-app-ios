@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import IPtProxyUI
 
 class RemoveAssetAlert: UIAlertController {
 
@@ -14,17 +15,15 @@ class RemoveAssetAlert: UIAlertController {
         let appName = Bundle.main.displayName
 
         let message = assets.count == 1
-        ? "This item will be removed only from the % App.\nIt will remain on the server and in your camera roll."
-            .localize(value: appName)
-            : "These items will be removed only from the % App.\nThey will remain on the server and in your camera roll."
-                .localize(value: appName)
+        ? String(format: NSLocalizedString("This item will be removed only from the %@ App.\nIt will remain on the server and in your camera roll.", comment: ""), appName)
+            : String(format: NSLocalizedString("These items will be removed only from the %@ App.\nThey will remain on the server and in your camera roll.", comment: ""), appName)
 
-        self.init(title: "Remove Media from %".localize(value: appName),
+        self.init(title: String(format: NSLocalizedString("Remove Media from %@", comment: ""), appName),
                    message: message,
                    preferredStyle: .alert)
 
         addAction(AlertHelper.cancelAction())
-        addAction(AlertHelper.destructiveAction("Remove Media".localize(), handler: { _ in
+        addAction(AlertHelper.destructiveAction(NSLocalizedString("Remove Media", comment: ""), handler: { _ in
             for asset in assets {
                 if asset == assets.last {
                     asset.remove(onSuccess)

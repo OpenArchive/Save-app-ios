@@ -45,19 +45,20 @@ class AddProjectViewController: BaseTableViewController {
         if indexPath.row == 0,
             let cell = tableView.dequeueReusableCell(withIdentifier: TitleCell.reuseId, for: indexPath) as? TitleCell {
 
-            return cell.set("Add a Project".localize(), "Set up where you want your media to be stored.".localize())
+            return cell.set(NSLocalizedString("Add a Project", comment: ""),
+                            NSLocalizedString("Set up where you want your media to be stored.", comment: ""))
         }
 
         let cell = tableView.dequeueReusableCell(withIdentifier: BigMenuItemCell.reuseId, for: indexPath) as! BigMenuItemCell
 
         if indexPath.row == 1 {
             cell.accessibilityIdentifier = "cellCreateNewProject"
-            cell.label?.text = "Create New Project".localize()
-            cell.detailedDescription?.text = "Add a project folder to the server that anyone can upload to.".localize()
+            cell.label?.text = NSLocalizedString("Create New Project", comment: "")
+            cell.detailedDescription?.text = NSLocalizedString("Add a project folder to the server that anyone can upload to.", comment: "")
         }
         else {
-            cell.label?.text = "Browse Existing Projects".localize()
-            cell.detailedDescription?.text = "Choose a project folder from the server.".localize()
+            cell.label?.text = NSLocalizedString("Browse Existing Projects", comment: "")
+            cell.detailedDescription?.text = NSLocalizedString("Choose a project folder from the server.", comment: "")
         }
 
         return cell

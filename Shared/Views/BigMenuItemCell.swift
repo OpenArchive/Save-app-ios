@@ -32,22 +32,22 @@ class BigMenuItemCell: BaseCell {
     }
 
     func setWebDav() -> BigMenuItemCell {
-        label.text = "Private (WebDAV) Server".localize()
-        detailedDescription.text = "Send directly to a private server.".localize()
+        label.text = NSLocalizedString("Private (WebDAV) Server", comment: "")
+        detailedDescription.text = NSLocalizedString("Send directly to a private server.", comment: "")
 
         return self
     }
 
     func setDropbox() -> BigMenuItemCell {
-        label.text = "Dropbox".localize()
-        detailedDescription.text = "Upload to Dropbox".localize()
+        label.text = NSLocalizedString("Dropbox", comment: "")
+        detailedDescription.text = NSLocalizedString("Upload to Dropbox", comment: "")
 
         return self
     }
 
     func setInternetArchive() -> BigMenuItemCell {
-        label.text = "Internet Archive".localize()
-        detailedDescription.text = "Upload to the Internet Archive".localize()
+        label.text = NSLocalizedString("Internet Archive", comment: "")
+        detailedDescription.text = NSLocalizedString("Upload to the Internet Archive", comment: "")
 
         return self
     }

@@ -10,6 +10,7 @@ import UIKit
 import YapDatabase
 import DownloadButton
 import CleanInsightsSDK
+import IPtProxyUI
 
 class ManagementViewController: BaseTableViewController, UploadCellDelegate, AnalyticsCellDelegate {
 
@@ -30,7 +31,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
     private lazy var removeAction: UITableViewRowAction = {
         let action = UITableViewRowAction(
             style: .destructive,
-            title: "Remove".localize())
+            title: NSLocalizedString("Remove", comment: ""))
         { action, indexPath in
             guard let upload = self.getUpload(indexPath) else {
                 return
@@ -210,12 +211,12 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
     func showError(_ upload: Upload) {
         AlertHelper.present(
             self, message: upload.error,
-            title: "Multiple attempts with no success".localize(),
+            title: NSLocalizedString("Multiple attempts with no success", comment: ""),
             actions: [
-                AlertHelper.destructiveAction("Remove".localize(), handler: { _ in
+                AlertHelper.destructiveAction(NSLocalizedString("Remove", comment: ""), handler: { _ in
                     upload.remove()
                 }),
-                AlertHelper.defaultAction("Retry".localize(), handler: { _ in
+                AlertHelper.defaultAction(NSLocalizedString("Retry", comment: ""), handler: { _ in
                     NotificationCenter.default.post(name: .uploadManagerUnpause, object: upload.id)
                 }),
                 AlertHelper.cancelAction()])
@@ -322,8 +323,13 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
             }
         }
 
-        titleView.title.text = count == 0 ? "Done".localize() : (uploading ? "Uploading…".localize() : "Waiting…".localize())
-        titleView.subtitle.text = "% left".localize(value: Formatters.format(count))
+        titleView.title.text = count == 0
+            ? NSLocalizedString("Done", comment: "")
+            : (uploading
+               ? NSLocalizedString("Uploading…", comment: "")
+               : NSLocalizedString("Waiting…", comment: ""))
+        titleView.subtitle.text = String(format: NSLocalizedString("%@ left", comment: ""),
+                                         Formatters.format(count))
 
         navigationItem.titleView = titleView
     }

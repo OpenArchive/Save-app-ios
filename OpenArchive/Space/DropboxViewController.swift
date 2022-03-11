@@ -18,7 +18,7 @@ class DropboxViewController: BaseServerViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = "Dropbox".localize()
+        navigationItem.title = NSLocalizedString("Dropbox", comment: "")
 
         favIconRow.value = DropboxSpace.favIcon
 
@@ -36,7 +36,7 @@ class DropboxViewController: BaseServerViewController {
         else {
             actionSection
                 <<< ButtonRow() {
-                    $0.title = "Authenticate".localize()
+                    $0.title = NSLocalizedString("Authenticate", comment: "")
                 }
                 .cellUpdate({ cell, _ in
                     cell.textLabel?.textColor = .accent

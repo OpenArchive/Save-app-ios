@@ -60,7 +60,7 @@ class BrowseViewController: BaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = "Browse Projects".localize()
+        navigationItem.title = NSLocalizedString("Browse Projects", comment: "")
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
         navigationItem.rightBarButtonItem?.isEnabled = false
 

@@ -5,7 +5,7 @@ PODS:
   - CleanInsightsSDK (2.6.0)
   - CrossroadRegex (1.2.0)
   - DownloadButton (0.1.0)
-  - Eureka (5.3.4)
+  - Eureka (5.3.5)
   - FavIcon (3.1.0)
   - FilesProvider (0.26.1)
   - FontBlaster (5.2.1)
@@ -41,14 +41,13 @@ PODS:
     - FormatterKit/Resources
   - ImageRow (4.0.0):
     - Eureka (~> 5.0)
-  - IPtProxy (1.5.0)
-  - IPtProxyUI (1.7.1):
+  - IPtProxy (1.5.1)
+  - IPtProxyUI (1.7.2):
     - Eureka (~> 5.3)
     - ImageRow (~> 4.0)
     - IPtProxy (~> 1.5)
     - MBProgressHUD (~> 1.2)
     - ReachabilitySwift (~> 5.0)
-  - Localize (2.3.0)
   - MBProgressHUD (1.2.0)
   - ReachabilitySwift (5.0.0)
   - SDCAlertView (12.0.2)
@@ -182,7 +181,6 @@ DEPENDENCIES:
   - FormatterKit (~> 1.9)
   - ImageRow (~> 4.0)
   - IPtProxyUI (~> 1.7)
-  - Localize (~> 2.3)
   - MBProgressHUD (~> 1.2)
   - ReachabilitySwift (~> 5.0)
   - SDCAlertView (~> 12.0)
@@ -207,7 +205,6 @@ SPEC REPOS:
     - ImageRow
     - IPtProxy
     - IPtProxyUI
-    - Localize
     - MBProgressHUD
     - ReachabilitySwift
     - SDCAlertView
@@ -247,15 +244,14 @@ SPEC CHECKSUMS:
   CleanInsightsSDK: 41957828284408a969f4bf310ae4d378350bdbc2
   CrossroadRegex: 9af32b4b4dc6ff404c87647ef1bc68ea711cc570
   DownloadButton: 49a21a89e0d7d1b42d9134f79aaa40e727cd57c3
-  Eureka: 60cf058f86a8fb3ed26165ba5292b9850361b0a6
+  Eureka: 7b39a479d074620d43028a0e2bfc3e0d667724df
   FavIcon: 21651b47d8f6b33517973859f85e2cb6f9fcfaee
   FilesProvider: ffd7aff5bb3f87d33188ae79d37d9ef05934d3df
   FontBlaster: 43136e99dc6b3c8d0ba31e29bc6fdbf378b724c6
   FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
   ImageRow: e65b2e1a33f89062bf2a553a2aad61d975eb7428
-  IPtProxy: 495462962af8a779365581dd5908118af3793e7b
-  IPtProxyUI: 74ee4021a6002461d18f134518840b972ad5c44a
-  Localize: cb1ae53ed73decaad0dce217806ed983091913f5
+  IPtProxy: f9a94b705cdea8474d7fb995a43a2771aa1b7076
+  IPtProxyUI: a47da83b10fd5c00e75fb392b33f253d884559b7
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDCAlertView: 1c0410de80548da3fed142ded0b97644d9848577
@@ -267,6 +263,6 @@ SPEC CHECKSUMS:
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
   YapDatabase: 350ab72b61f9dcc32504594da1a52a93f5ef1476
 
-PODFILE CHECKSUM: c7a95569e08165d7a1d69b56cdb550b238faf774
+PODFILE CHECKSUM: ecbd058c5b511fd8e86d7a16925e8f5248f849bf
 
 COCOAPODS: 1.11.2

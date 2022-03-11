@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import IPtProxyUI
 
 class DuplicateProjectAlert: UIAlertController {
 
@@ -14,9 +15,9 @@ class DuplicateProjectAlert: UIAlertController {
      - parameter foo: Just there to avoid endless recursion.
     */
     convenience init(_ foo: String?) {
-        let message = "Please choose another name/project or use the existing one instead.".localize()
+        let message = NSLocalizedString("Please choose another name/project or use the existing one instead.", comment: "")
 
-        self.init(title: "Project Already Exists".localize(),
+        self.init(title: NSLocalizedString("Project Already Exists", comment: ""),
                    message: message,
                    preferredStyle: .alert)
 

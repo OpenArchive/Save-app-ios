@@ -8,6 +8,7 @@
 
 import UIKit
 import Eureka
+import IPtProxyUI
 
 class BaseServerViewController: FormViewController {
 
@@ -21,14 +22,14 @@ class BaseServerViewController: FormViewController {
     }
 
     let userNameRow = AccountRow() {
-        $0.title = "User Name".localize()
-        $0.placeholder = "Required".localize()
+        $0.title = NSLocalizedString("User Name", comment: "")
+        $0.placeholder = NSLocalizedString("Required", comment: "")
         $0.cell.textField.accessibilityIdentifier = "tfUsername"
         $0.add(rule: RuleRequired())
     }
 
     let removeRow = ButtonRow() {
-        $0.title = "Remove from App".localize()
+        $0.title = NSLocalizedString("Remove from App", comment: "")
     }
     .cellUpdate({ cell, _ in
         cell.textLabel?.textColor = .systemRed
@@ -76,12 +77,12 @@ class BaseServerViewController: FormViewController {
         }
 
         AlertHelper.present(
-            self, message: "This will remove the asset history for that space, too!".localize(),
-            title: "Remove Space".localize(),
+            self, message: NSLocalizedString("This will remove the asset history for that space, too!", comment: ""),
+            title: NSLocalizedString("Remove Space", comment: ""),
             actions: [
                 AlertHelper.cancelAction(),
                 AlertHelper.destructiveAction(
-                    "Remove Space".localize(),
+                    NSLocalizedString("Remove Space", comment: ""),
                     handler: { action in
                         Db.writeConn?.readWrite { transaction in
                             transaction.removeObject(forKey: space.id, inCollection: Space.collection)

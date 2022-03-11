@@ -7,16 +7,17 @@
 //
 
 import UIKit
+import IPtProxyUI
 
 class RemoveProjectAlert: UIAlertController {
 
     convenience init(_ project: Project, _ onSuccess: (() -> Void)? = nil) {
-        self.init(title: "Remove from App".localize(),
-                   message: "Are you sure you want to remove your project \"%\"?".localize(value: project.name ?? ""),
+        self.init(title: NSLocalizedString("Remove from App", comment: ""),
+                   message: String(format: NSLocalizedString("Are you sure you want to remove your project \"%@\"?", comment: ""), project.name ?? ""),
                    preferredStyle: .alert)
 
         addAction(AlertHelper.cancelAction())
-        addAction(AlertHelper.destructiveAction("Remove".localize(), handler: { _ in
+        addAction(AlertHelper.destructiveAction(NSLocalizedString("Remove", comment: ""), handler: { _ in
             Db.writeConn?.asyncReadWrite() { transaction in
                 transaction.removeObject(forKey: project.id, inCollection: Project.collection)
 

@@ -12,6 +12,7 @@ import Photos
 import YapDatabase
 import TLPhotoPicker
 import DownloadButton
+import IPtProxyUI
 
 class MainViewController: UIViewController, UICollectionViewDelegate,
 UICollectionViewDataSource, UINavigationControllerDelegate, UIDocumentPickerDelegate,
@@ -73,11 +74,11 @@ PKDownloadButtonDelegate {
 
     lazy var pickerConf: TLPhotosPickerConfigure = {
         var conf = TLPhotosPickerConfigure()
-        conf.customLocalizedTitle = ["Camera Roll": "Camera Roll".localize()]
-        conf.tapHereToChange = "Tap here to change".localize()
-        conf.cancelTitle = "Cancel".localize()
-        conf.doneTitle = "Done".localize()
-        conf.emptyMessage = "No albums".localize()
+        conf.customLocalizedTitle = ["Camera Roll": NSLocalizedString("Camera Roll", comment: "")]
+        conf.tapHereToChange = NSLocalizedString("Tap here to change", comment: "")
+        conf.cancelTitle = NSLocalizedString("Cancel", comment: "")
+        conf.doneTitle = NSLocalizedString("Done", comment: "")
+        conf.emptyMessage = NSLocalizedString("No albums", comment: "")
         conf.allowedAlbumCloudShared = true
         conf.recordingVideoQuality = .typeHigh
         conf.selectedColor = .accent
@@ -271,15 +272,15 @@ PKDownloadButtonDelegate {
 
         case .restricted:
             AlertHelper.present(
-                self, message: "Sorry, you are not allowed to view the camera roll.".localize(),
-                title: "Access Restricted".localize(),
+                self, message: NSLocalizedString("Sorry, you are not allowed to view the camera roll.", comment: ""),
+                title: NSLocalizedString("Access Restricted", comment: ""),
                 actions: [AlertHelper.cancelAction()])
 
         case .denied:
             AlertHelper.present(
                 self,
-                message: "Please go to the Settings app to grant this app access to your photo library, if you want to upload photos or videos.".localize(),
-                title: "Access Denied".localize(),
+                message: NSLocalizedString("Please go to the Settings app to grant this app access to your photo library, if you want to upload photos or videos.", comment: ""),
+                title: NSLocalizedString("Access Denied", comment: ""),
                 actions: [AlertHelper.cancelAction()])
 
         @unknown default:
@@ -684,8 +685,10 @@ PKDownloadButtonDelegate {
 
     private func headerButtonTitle(_ section: Int) -> String {
         return inEditMode
-            ? (collectionView.isSectionSelected(section) ? "Deselect".localize() : "Select".localize())
-            : "Next".localize()
+            ? (collectionView.isSectionSelected(section)
+               ? NSLocalizedString("Deselect", comment: "")
+               : NSLocalizedString("Select", comment: ""))
+            : NSLocalizedString("Next", comment: "")
     }
 
     private func getSelectedAssets() -> [Asset] {

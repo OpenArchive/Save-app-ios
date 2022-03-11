@@ -141,7 +141,7 @@ class InfoAlert {
         message.bottomAnchor.constraint(equalTo: cv.bottomAnchor, constant: -16).isActive = true
 
 
-        alert.addAction(AlertAction(title: "Got it".localize(), style: .normal))
+        alert.addAction(AlertAction(title: NSLocalizedString("Got it", comment: ""), style: .normal))
 
         let completion = {
             wasAlreadyShown = true

@@ -385,7 +385,9 @@ class UploadManager: Alamofire.SessionDelegate {
                     upload.paused = error is FileProviderHTTPError || UploadManager.maxRetries <= upload.tries
                     upload.lastTry = Date()
 
-                    upload.error = error?.friendlyMessage ?? (url == nil ? "No URL provided.".localize() : "Unknown error.".localize())
+                    upload.error = error?.friendlyMessage ?? (
+                        url == nil ? NSLocalizedString("No URL provided.", comment: "")
+                            : NSLocalizedString("Unknown error.", comment: ""))
 
                     if upload.paused {
                         let filesize = upload.asset?.filesize

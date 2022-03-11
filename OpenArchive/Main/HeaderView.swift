@@ -33,37 +33,37 @@ class HeaderView: UICollectionReusableView {
                 // hastle and at least this works well for English, German and many more
                 // languages.
                 infoLb.text = uploaded == 1
-                    ? "% Item Uploaded".localize(value: Formatters.format(uploaded))
-                    : "% Items Uploaded".localize(value: Formatters.format(uploaded))
+                    ? String(format: NSLocalizedString("%@ Item Uploaded", comment: ""), Formatters.format(uploaded))
+                    : String(format: NSLocalizedString("%@ Items Uploaded", comment: ""), Formatters.format(uploaded))
 
                 let fiveMinAgo = Date(timeIntervalSinceNow: -5 * 60)
 
                 subInfoLb.text = fiveMinAgo < uploadedTs
-                    ? "Just now".localize()
+                    ? NSLocalizedString("Just now", comment: "")
                     : Formatters.format(uploadedTs)
 
                 manageBt.isHidden = true
             }
             else if collection?.closed != nil {
-                infoLb.text = "Uploading".localize().localizedUppercase
+                infoLb.text = NSLocalizedString("Uploading", comment: "").localizedUppercase
 
                 let total = collection?.assets.count ?? 0
                 let uploaded = collection?.uploadedAssetsCount ?? 0
 
                 subInfoLb.text = total == 1
-                    ? "% of % item uploaded".localize(values: Formatters.format(uploaded), Formatters.format(total))
-                    : "% of % items uploaded".localize(values: Formatters.format(uploaded), Formatters.format(total))
+                    ? String(format: NSLocalizedString("%1$@ of %2$@ item uploaded", comment: ""), Formatters.format(uploaded), Formatters.format(total))
+                    : String(format: NSLocalizedString("%1$@ of %2$@ items uploaded", comment: ""), Formatters.format(uploaded), Formatters.format(total))
 
                 manageBt.isHidden = true
             }
             else {
-                infoLb.text = "Ready to upload".localize().localizedUppercase
+                infoLb.text = NSLocalizedString("Ready to upload", comment: "").localizedUppercase
 
                 let waiting = collection?.waitingAssetsCount ?? 0
 
                 subInfoLb.text = waiting == 1
-                    ? "% item".localize(value: Formatters.format(waiting))
-                    : "% items".localize(value: Formatters.format(waiting))
+                    ? String(format: NSLocalizedString("%@ item", comment: ""), Formatters.format(waiting))
+                    : String(format: NSLocalizedString("%@ items", comment: ""), Formatters.format(waiting))
 
                 manageBt.isHidden = false
             }

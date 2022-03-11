@@ -49,7 +49,7 @@ class Space: NSObject {
     // MARK: Space
 
     class var defaultPrettyName: String {
-        return "Unnamed".localize()
+        return NSLocalizedString("Unnamed", comment: "")
     }
 
 

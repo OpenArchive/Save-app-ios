@@ -14,7 +14,7 @@ class BaseProjectViewController: FormViewController {
     var project: Project
 
     let nameRow = TextRow() {
-        $0.placeholder = "Name your project".localize()
+        $0.placeholder = NSLocalizedString("Name your project", comment: "")
         $0.cell.textField.accessibilityIdentifier = "tfProjectName"
         $0.add(rule: RuleFilename())
         $0.validationOptions = .validatesAlways

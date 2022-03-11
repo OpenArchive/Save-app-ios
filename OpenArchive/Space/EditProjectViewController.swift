@@ -15,20 +15,20 @@ class EditProjectViewController: BaseProjectViewController {
     static let ccUrl = "https://%@/licenses/%@/4.0/"
 
     private let ccSw = SwitchRow("cc") {
-        $0.title = "Allow Creative Commons use for all media in this project".localize()
+        $0.title = NSLocalizedString("Allow Creative Commons use for all media in this project", comment: "")
         $0.cell.textLabel?.numberOfLines = 0
         $0.cell.switchControl.onTintColor = .accent
     }
 
     private let remixSw = SwitchRow("remixSw") {
-        $0.title = "Allow anyone to remix and share".localize()
+        $0.title = NSLocalizedString("Allow anyone to remix and share", comment: "")
         $0.cell.textLabel?.numberOfLines = 0
         $0.cell.switchControl.onTintColor = .accent
         $0.hidden = "$cc != true"
     }
 
     private let shareAlikeSw = SwitchRow() {
-        $0.title = "Require them to share like you have".localize()
+        $0.title = NSLocalizedString("Require them to share like you have", comment: "")
         $0.cell.textLabel?.numberOfLines = 0
         $0.cell.switchControl.onTintColor = .accent
         $0.disabled = "$remixSw != true"
@@ -36,7 +36,7 @@ class EditProjectViewController: BaseProjectViewController {
     }
 
     private let commercialSw = SwitchRow() {
-        $0.title = "Allow commercial use".localize()
+        $0.title = NSLocalizedString("Allow commercial use", comment: "")
         $0.cell.textLabel?.numberOfLines = 0
         $0.cell.switchControl.onTintColor = .accent
         $0.hidden = "$cc != true"
@@ -49,7 +49,7 @@ class EditProjectViewController: BaseProjectViewController {
 
 
     private var archiveLabel: String {
-        return project.active ? "Archive Project".localize() : "Unarchive Project".localize()
+        return project.active ? NSLocalizedString("Archive Project", comment: "") : NSLocalizedString("Unarchive Project", comment: "")
     }
 
     /**
@@ -78,7 +78,7 @@ class EditProjectViewController: BaseProjectViewController {
                 }
             }
 
-            +++ Section("Creative Commons".localize().localizedUppercase)
+            +++ Section(NSLocalizedString("Creative Commons", comment: "").localizedUppercase)
 
             <<< ccSw.onChange(ccLicenseChanged)
 
@@ -96,7 +96,7 @@ class EditProjectViewController: BaseProjectViewController {
             }
 
             +++ ButtonRow() {
-                $0.title = "Remove from App".localize()
+                $0.title = NSLocalizedString("Remove from App", comment: "")
                 $0.cell.tintColor = .systemRed
             }
             .onCellSelection { cell, row in

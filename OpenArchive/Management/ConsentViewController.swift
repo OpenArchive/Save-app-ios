@@ -23,79 +23,79 @@ class ConsentViewController: BaseViewController {
 
     @IBOutlet weak var headerLb: UILabel! {
         didSet {
-            headerLb.text = "Health checks help us understand why uploads fail.".localize()
+            headerLb.text = NSLocalizedString("Health checks help us understand why uploads fail.", comment: "")
         }
     }
 
     @IBOutlet weak var text1Lb: UILabel! {
         didSet {
-            text1Lb.text = "Contribute your data to be part of the solution.".localize()
+            text1Lb.text = NSLocalizedString("Contribute your data to be part of the solution.", comment: "")
         }
     }
 
     @IBOutlet weak var text2Lb: UILabel! {
         didSet {
-            text2Lb.text = "With your permission, we'll run a check each time you encounter an error while uploading.".localize()
+            text2Lb.text = NSLocalizedString("With your permission, we'll run a check each time you encounter an error while uploading.", comment: "")
         }
     }
 
     @IBOutlet weak var head2Lb: UILabel! {
         didSet {
-            head2Lb.text = "Health checks capture".localize()
+            head2Lb.text = NSLocalizedString("Health checks capture", comment: "")
         }
     }
 
     @IBOutlet weak var point1Lb: UILabel! {
         didSet {
-            point1Lb.text = "% Error description".localize(value: "–")
+            point1Lb.text = String(format: NSLocalizedString("%@ Error description", comment: ""), "–")
         }
     }
 
     @IBOutlet weak var point2Lb: UILabel! {
         didSet {
-            point2Lb.text = "% Size and type of media".localize(value: "–")
+            point2Lb.text = String(format: NSLocalizedString("%@ Size and type of media", comment: ""), "–")
         }
     }
 
     @IBOutlet weak var point3Lb: UILabel! {
         didSet {
-            point3Lb.text = "% Number of retries".localize(value: "–")
+            point3Lb.text = String(format: NSLocalizedString("%@ Number of retries", comment: ""), "–")
         }
     }
 
     @IBOutlet weak var point4Lb: UILabel! {
         didSet {
-            point4Lb.text = "% Network type".localize(value: "–")
+            point4Lb.text = String(format: NSLocalizedString("%@ Network type", comment: ""), "–")
         }
     }
 
     @IBOutlet weak var point5Lb: UILabel! {
         didSet {
-            point5Lb.text = "% Locale".localize(value: "–")
+            point5Lb.text = String(format: NSLocalizedString("%@ Locale", comment: ""), "–")
         }
     }
 
     @IBOutlet weak var head3Lb: UILabel! {
         didSet {
-            head3Lb.text = "Allow health checks?".localize()
+            head3Lb.text = NSLocalizedString("Allow health checks?", comment: "")
         }
     }
 
     @IBOutlet weak var text3Lb: UILabel! {
         didSet {
-            text3Lb.text = "By allowing health checks, you give permission for the app to securely send health check data to the % team.".localize(value: Bundle.main.displayName)
+            text3Lb.text = String(format: NSLocalizedString("By allowing health checks, you give permission for the app to securely send health check data to the %@ team.", comment: ""), Bundle.main.displayName)
         }
     }
 
     @IBOutlet weak var okBt: UIButton! {
         didSet {
-            okBt.setTitle("Yes".localize())
+            okBt.setTitle(NSLocalizedString("Yes", comment: ""))
         }
     }
 
     @IBOutlet weak var declineBt: UIButton! {
         didSet {
-            declineBt.setTitle("No thanks".localize())
+            declineBt.setTitle(NSLocalizedString("No thanks", comment: ""))
         }
     }
 

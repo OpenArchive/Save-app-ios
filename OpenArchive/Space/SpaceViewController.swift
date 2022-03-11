@@ -52,7 +52,7 @@ class SpaceViewController: BaseTableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: MenuItemCell.reuseId, for: indexPath) as! MenuItemCell
         cell.accessoryType = .disclosureIndicator
         cell.label.text = indexPath.row == 1
-            ? "Login Info".localize() : "Profile".localize()
+            ? NSLocalizedString("Login Info", comment: "") : NSLocalizedString("Profile", comment: "")
 
         return cell
     }

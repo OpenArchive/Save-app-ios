@@ -9,7 +9,6 @@ def shared_pods
     pod 'Alamofire', '~> 4.9'
     pod 'FilesProvider', :git => 'https://github.com/ayuzhin/FileProvider.git' # '~> 0.26'
     pod 'SwiftyDropbox', '~> 7.0'
-    pod 'Localize', '~> 2.3'
     pod 'Eureka', '~> 5.3'
     pod 'ImageRow', '~> 4.0'
     pod 'UIImage-Resize', '~> 1.0'

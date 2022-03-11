@@ -236,7 +236,6 @@
 		A09B53DB23266F02005266C2 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A098980C2236C23200022851 /* Upload.swift */; };
 		A09B53DC23266F02005266C2 /* WebDavConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D1013D22CCF4140068D047 /* WebDavConduit.swift */; };
 		A09B53DD23266F02005266C2 /* MultilineTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */; };
-		A09B53DE23266F02005266C2 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192D921F1EE88009A8CF0 /* AlertHelper.swift */; };
 		A09B53DF23266F02005266C2 /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0631B542203022100B3E90D /* BaseTableViewController.swift */; };
 		A09B53E023266F02005266C2 /* EditProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2720B224E33D000CB7113 /* EditProjectViewController.swift */; };
 		A09B53E123266F02005266C2 /* RegexUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */; };
@@ -266,8 +265,6 @@
 		A09B5416232671D1005266C2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09B5415232671D0005266C2 /* AppDelegate.swift */; };
 		A09B5419232673EE005266C2 /* AppDelegateBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09B5418232673E2005266C2 /* AppDelegateBase.swift */; };
 		A09B541A232673EF005266C2 /* AppDelegateBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09B5418232673E2005266C2 /* AppDelegateBase.swift */; };
-		A0A192DA21F1EE88009A8CF0 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192D921F1EE88009A8CF0 /* AlertHelper.swift */; };
-		A0A192DB21F1EE88009A8CF0 /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192D921F1EE88009A8CF0 /* AlertHelper.swift */; };
 		A0A192DD21F208DA009A8CF0 /* Space.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192DC21F208DA009A8CF0 /* Space.swift */; };
 		A0A192DE21F208DA009A8CF0 /* Space.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192DC21F208DA009A8CF0 /* Space.swift */; };
 		A0A192E021F23B61009A8CF0 /* Constants+Swift.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192DF21F23B61009A8CF0 /* Constants+Swift.swift */; };
@@ -653,7 +650,6 @@
 		A09DE5FE234F3AAF00CB3E4D /* name.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = name.txt; sourceTree = "<group>"; };
 		A09DE5FF234F3AAF00CB3E4D /* marketing_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = marketing_url.txt; sourceTree = "<group>"; };
 		A09DE600234F3AAF00CB3E4D /* description.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = description.txt; sourceTree = "<group>"; };
-		A0A192D921F1EE88009A8CF0 /* AlertHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
 		A0A192DC21F208DA009A8CF0 /* Space.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Space.swift; sourceTree = "<group>"; };
 		A0A192DF21F23B61009A8CF0 /* Constants+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Constants+Swift.swift"; sourceTree = "<group>"; };
 		A0A3D9C62226D8DB00BB5A19 /* SpaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceCell.swift; sourceTree = "<group>"; };
@@ -800,7 +796,6 @@
 		A004E24620EBC89200A1D5F5 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
-				A0A192D921F1EE88009A8CF0 /* AlertHelper.swift */,
 				A0FA93402277387D0086D276 /* Bundle+displayName.swift */,
 				A092C0EF223A8D4B003EB0AA /* DoneDelegate.swift */,
 				A0FE2C1D22E1E8D200C5443F /* Error+friendlyMessage.swift */,
@@ -1807,7 +1802,6 @@
 				A0212FCF22D374CA009079DC /* UICollectionView+selection.swift in Sources */,
 				A0631B562203022100B3E90D /* BaseTableViewController.swift in Sources */,
 				A071290A2111DC6A007A432A /* StringUtils.swift in Sources */,
-				A0A192DA21F1EE88009A8CF0 /* AlertHelper.swift in Sources */,
 				A029F6842118715700C4EF6D /* AssetFactory.swift in Sources */,
 				A0B24C6421F0CD94006C0CC6 /* AvatarRow.swift in Sources */,
 				A0C475C021149B040012937E /* MainViewController.swift in Sources */,
@@ -1955,7 +1949,6 @@
 				A09B53DB23266F02005266C2 /* Upload.swift in Sources */,
 				A09B53DC23266F02005266C2 /* WebDavConduit.swift in Sources */,
 				A09B53DD23266F02005266C2 /* MultilineTitle.swift in Sources */,
-				A09B53DE23266F02005266C2 /* AlertHelper.swift in Sources */,
 				A09B53DF23266F02005266C2 /* BaseTableViewController.swift in Sources */,
 				A09B53E023266F02005266C2 /* EditProjectViewController.swift in Sources */,
 				A09B53E123266F02005266C2 /* RegexUtils.swift in Sources */,
@@ -2076,7 +2069,6 @@
 				A09B5419232673EE005266C2 /* AppDelegateBase.swift in Sources */,
 				A0D1013E22CCF4140068D047 /* WebDavConduit.swift in Sources */,
 				A0AFCF0F22300E41005E57FD /* MultilineTitle.swift in Sources */,
-				A0A192DB21F1EE88009A8CF0 /* AlertHelper.swift in Sources */,
 				A056555C23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */,
 				A0631B552203022100B3E90D /* BaseTableViewController.swift in Sources */,
 				A0E2720C224E33D000CB7113 /* EditProjectViewController.swift in Sources */,

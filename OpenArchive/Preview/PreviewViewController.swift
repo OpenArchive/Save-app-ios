@@ -22,7 +22,7 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
     private lazy var removeAction: UITableViewRowAction = {
         let action = UITableViewRowAction(
             style: .destructive,
-            title: "Remove".localize())
+            title: NSLocalizedString("Remove", comment: ""))
         { (action, indexPath) in
             if let asset = self.sc.getAsset(indexPath) {
                 self.present(RemoveAssetAlert([asset]), animated: true)
@@ -39,7 +39,7 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
         super.viewDidLoad()
 
         let title = MultilineTitle()
-        title.title.text = "Preview".localize()
+        title.title.text = NSLocalizedString("Preview", comment: "")
         navigationItem.titleView = title
 
         navigationItem.rightBarButtonItem?.accessibilityIdentifier = "btUpload"
@@ -303,7 +303,7 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     private func updateTitle() {
         let projectName = sc.collection?.project.name
-        (navigationItem.titleView as? MultilineTitle)?.subtitle.text = projectName == nil ? nil : "Upload to %".localize(value: projectName!)
+        (navigationItem.titleView as? MultilineTitle)?.subtitle.text = projectName == nil ? nil : String(format: NSLocalizedString("Upload to %@", comment: ""), projectName!)
     }
 
     /**
