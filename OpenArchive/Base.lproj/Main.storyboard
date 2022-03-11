@@ -628,7 +628,7 @@
                                     <rect key="frame" x="0.0" y="0.0" width="320" height="104"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="app_icon.png" translatesAutoresizingMaskIntoConstraints="NO" id="Xe9-1V-dIV">
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Xe9-1V-dIV">
                                             <rect key="frame" x="16" y="11" width="82" height="82"/>
                                             <constraints>
                                                 <constraint firstAttribute="width" secondItem="Xe9-1V-dIV" secondAttribute="height" multiplier="1:1" id="jM7-NX-pIl"/>
@@ -1217,7 +1217,6 @@
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.70398116438356162" blue="0.64921339897260277" alpha="1" colorSpace="calibratedRGB"/>
     <resources>
-        <image name="app_icon.png" width="1024" height="1024"/>
         <image name="ic_batchedit" width="24" height="24"/>
         <image name="ic_edit" width="13" height="13"/>
         <image name="ic_error" width="24" height="24"/>
