@@ -41,11 +41,13 @@ class DropboxViewController: BaseServerViewController {
                 .cellUpdate({ cell, _ in
                     cell.textLabel?.textColor = .accent
                 })
-                .onCellSelection({ cell, row in
-                    DropboxClientsManager.authorizeFromController(
-                    UIApplication.shared, controller: self) { url in
-                        UIApplication.shared.open(url, options: [:])
-                    }
+                .onCellSelection({ _, _ in
+                    DropboxClientsManager.authorizeFromControllerV2(
+                        UIApplication.shared,
+                        controller: self,
+                        loadingStatusDelegate: nil,
+                        openURL: { UIApplication.shared.open($0, options: [:]) },
+                        scopeRequest: ScopeRequest(scopeType: .user, scopes: [], includeGrantedScopes: false))
 
                     // Will continue in AppDelegateBase, where we receive a callback.
                 })

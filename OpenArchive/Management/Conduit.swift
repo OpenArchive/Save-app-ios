@@ -373,7 +373,6 @@ class Conduit {
         case invalidConf
         case tooManyRetries
         case dropboxFileTooBig
-        case dropboxNotOverTor
 
         var errorDescription: String? {
             switch self {
@@ -385,9 +384,6 @@ class Conduit {
 
             case .dropboxFileTooBig:
                 return "The Dropbox support can't handle files bigger than 150 MByte.".localize()
-
-            case .dropboxNotOverTor:
-                return "The Dropbox support doesn't work over Tor.".localize()
             }
         }
     }

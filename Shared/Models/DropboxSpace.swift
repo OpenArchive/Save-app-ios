@@ -32,10 +32,28 @@ class DropboxSpace: Space, Item {
 
     static let favIcon = UIImage(named: "dropbox-icon")
 
+    // Dropbox doesn't support parallel access to different accounts,
+    // so there's only ever going to be one DropboxSpace, which this
+    // getter will find, if it exists.
+    class var space: DropboxSpace? {
+        var dropboxSpace: DropboxSpace?
 
-    init(accessKey: String? = nil, secretKey: String? = nil) {
+        Db.bgRwConn?.read { transaction in
+            transaction.iterateKeysAndObjects(inCollection: Space.collection) { (key, space: Space, stop) in
+                if let space = space as? DropboxSpace {
+                    dropboxSpace = space
+                    stop = true
+                }
+            }
+        }
+
+        return dropboxSpace
+    }
+
+
+    init(uid: String? = nil, accessToken: String? = nil) {
         super.init(name: DropboxSpace.defaultPrettyName, url: URL(string: DropboxSpace.baseUrl),
-                   username: accessKey, password: secretKey)
+                   username: uid, password: accessToken)
     }
 
     required init?(coder decoder: NSCoder) {

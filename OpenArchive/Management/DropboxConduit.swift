@@ -13,17 +13,29 @@ import MobileCoreServices
 
 class DropboxConduit: Conduit {
 
+    class func transportClient(unauthorized: Bool) -> DropboxTransportClient? {
+        let accessToken = DropboxSpace.space?.password ?? (unauthorized ? "" : nil)
+
+        guard accessToken != nil else {
+            return nil
+        }
+
+        return DropboxTransportClient(
+            accessToken: accessToken!, baseHosts: nil, userAgent: nil, selectUser: nil,
+            sessionDelegate: (UIApplication.shared.delegate as? AppDelegate)?.uploadManager,
+            backgroundSessionDelegate: Conduit.backgroundSessionManager.delegate,
+            sharedContainerIdentifier: Constants.appGroup)
+    }
+
     // MARK: Conduit
 
     private var client: DropboxClient? {
-        if let accessToken = (SelectedSpace.space as? DropboxSpace)?.password {
-            let client = DropboxTransportClient(
-                accessToken: accessToken, baseHosts: nil, userAgent: nil, selectUser: nil,
-                sessionDelegate: UploadManager.shared,
-                backgroundSessionDelegate: Conduit.backgroundSessionManager.delegate,
-                sharedContainerIdentifier: Constants.appGroup)
+        if let client = DropboxClientsManager.authorizedClient {
+            return client
+        }
 
-            return DropboxClient(transportClient: client)
+        if let transportClient = Self.transportClient(unauthorized: false) {
+            return DropboxClient(transportClient: transportClient)
         }
 
         return nil
@@ -41,14 +53,6 @@ class DropboxConduit: Conduit {
         else {
             DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
                 self.done(uploadId, error: UploadError.invalidConf)
-            }
-
-            return progress
-        }
-
-        if Settings.useTor {
-            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
-                self.done(uploadId, error: UploadError.dropboxNotOverTor)
             }
 
             return progress

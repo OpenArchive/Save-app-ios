@@ -144,13 +144,19 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         Conduit.backgroundCompletionHandler = completionHandler
     }
 
-    func application(_ application: UIApplication, performFetchWithCompletionHandler completionHandler: @escaping (UIBackgroundFetchResult) -> Void) {
+    func application(_ application: UIApplication, performFetchWithCompletionHandler
+                     completionHandler: @escaping (UIBackgroundFetchResult) -> Void)
+    {
+        if Settings.useTor {
+            return completionHandler(.noData)
+        }
+
         Db.setup()
 
         uploadManager = UploadManager(completionHandler)
 
         setUpDropbox()
-        
+
         uploadManager?.uploadNext()
     }
 
@@ -208,13 +214,9 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     }
 
     func setUpDropbox() {
-        let client = DropboxTransportClient(
-            accessToken: "", baseHosts: nil, userAgent: nil, selectUser: nil,
-            sessionDelegate: uploadManager,
-            backgroundSessionDelegate: Conduit.backgroundSessionManager.delegate,
-            sharedContainerIdentifier: Constants.appGroup)
-
-        DropboxClientsManager.setupWithAppKey(Constants.dropboxKey, transportClient: client)
+        DropboxClientsManager.setupWithAppKey(
+            Constants.dropboxKey,
+            transportClient: DropboxConduit.transportClient(unauthorized: true))
     }
 
     func setUpUi() {

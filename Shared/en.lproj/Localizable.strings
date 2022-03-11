@@ -434,6 +434,3 @@
 
 /* Conduit */
 "The Dropbox support can't handle files bigger than 150 MByte." = "The Dropbox support can't handle files bigger than 150 MByte.";
-
-/* Conduit */
-"The Dropbox support doesn't work over Tor." = "The Dropbox support doesn't work over Tor.";
