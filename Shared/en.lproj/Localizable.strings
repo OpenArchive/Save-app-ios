@@ -1,112 +1,74 @@
-/* 
-  Localizable.strings
-  OpenArchive
+/* HeaderView */
+"%1$@ of %2$@ item uploaded" = "%1$@ of %2$@ item uploaded";
 
-  Created by Benjamin Erhart on 19.07.19.
-  Copyright © 2019 Open Archive. All rights reserved.
-*/
+/* HeaderView */
+"%1$@ of %2$@ items uploaded" = "%1$@ of %2$@ items uploaded";
 
-/* SlideshowViewController */
-"Save to a safe place." = "Save to a safe place.";
+/* ConsentViewController */
+"%@ Error description" = "%@ Error description";
 
-/* SlideshowViewController */
-"Connect to a secure server or the Internet Archive to upload photos and videos from your phone." = "Connect to a secure server or the Internet Archive to upload photos and videos from your phone.";
+/* HeaderView */
+"%@ item" = "%@ item";
 
-/* SlideshowViewController */
-"Stay organized." = "Stay organized.";
+/* HeaderView */
+"%@ Item Uploaded" = "%@ Item Uploaded";
 
-/* SlideshowViewController */
-"Organize your media into projects." = "Organize your media into projects.";
+/* HeaderView */
+"%@ items" = "%@ items";
 
-/* SlideshowViewController */
-"Store the facts." = "Store the facts.";
+/* BatchEditViewController */
+"%@ Items Selected" = "%@ Items Selected";
 
-/* SlideshowViewController */
-"Capture notes, location and people with each piece of media." = "Capture notes, location and people with each piece of media.";
+/* HeaderView */
+"%@ Items Uploaded" = "%@ Items Uploaded";
 
-/* SlideshowViewController */
-"Ensure authenticity." = "Ensure authenticity.";
+/* ManagementViewController */
+"%@ left" = "%@ left";
 
-/* SlideshowViewController */
-"Include your credentials while Save adds extra metadata to help with chain of custody and verification workflows." = "Include your credentials while Save adds extra metadata to help with chain of custody and verification workflows.";
+/* ConsentViewController */
+"%@ Locale" = "%@ Locale";
 
-/* MainViewController */
-"Camera Roll" = "Camera Roll";
+/* InternetArchiveViewController */
+"%@ needs your Internet Archive account's API keys to be able to upload to it." = "%@ needs your Internet Archive account's API keys to be able to upload to it.";
 
-/* MainViewController */
-"Tap here to change" = "Tap here to change";
+/* ConsentViewController */
+"%@ Network type" = "%@ Network type";
 
-/* MainViewController, AlertHelper */
-"Cancel" = "Cancel";
+/* ConsentViewController */
+"%@ Number of retries" = "%@ Number of retries";
 
-/* MainViewController, DarkroomViewController, PrivateServerViewController, InternetArchiveViewController, ManagementViewController, Main.storyboard */
-"Done" = "Done";
+/* ConsentViewController */
+"%@ Size and type of media" = "%@ Size and type of media";
 
-/* MainViewController */
-"No albums" = "No albums";
+/* PrivateServerViewController */
+"__upload_chunking_description__" = "Only tested with latest Nextcloud! Increases reliability on bad networks. Will only upload as long as the device stays on and the app in the foreground. (Short excursions to other apps are ok, though.)";
 
-/* MainViewController */
-"Sorry, you are not allowed to view the camera roll." = "Sorry, you are not allowed to view the camera roll.";
+/* PrivateServerViewController */
+"__webdav_description__" = "% connects to WebDAV-compatible servers only. (For example Nextcloud and ownCloud.)";
 
-/* MainViewController */
-"Access Restricted" = "Access Restricted";
-
-/* MainViewController */
-"Please go to the Settings app to grant this app access to your photo library, if you want to upload photos or videos." = "Please go to the Settings app to grant this app access to your photo library, if you want to upload photos or videos.";
+/* MenuViewController */
+"About %@" = "About %@";
 
 /* MainViewController */
 "Access Denied" = "Access Denied";
 
-/* MainViewController */
-"Deselect" = "Deselect";
+/* InternetArchiveViewController */
+"Access Key" = "Access Key";
 
 /* MainViewController */
-"Select" = "Select";
+"Access Restricted" = "Access Restricted";
 
-/* MainViewController */
-"Next" = "Next";
+/* InternetArchiveViewController */
+"Acquire Keys" = "Acquire Keys";
 
-/* HeaderView */
-"% Item Uploaded" = "% Item Uploaded";
+/* AddProjectViewController */
+"Add a Project" = "Add a Project";
 
-/* HeaderView */
-"% Items Uploaded" = "% Items Uploaded";
-
-/* HeaderView */
-"Just now" = "Just now";
-
-/* HeaderView */
-"Uploading" = "Uploading";
-
-/* HeaderView */
-"% of % item uploaded" = "% of % item uploaded";
-
-/* HeaderView */
-"% of % items uploaded" = "% of % items uploaded";
-
-/* HeaderView */
-"Ready to upload" = "Ready to upload";
-
-/* HeaderView */
-"% item" = "% item";
-
-/* HeaderView */
-"% items" = "% items";
-
-/* PreviewViewController, MenuViewController, ManagementViewController, RemoveProjectAlert */
-"Remove" = "Remove";
-
-/* PreviewViewController */
-"Preview" = "Preview";
-
-/* PreviewViewController */
-"Upload to %" = "Upload to %";
+/* AddProjectViewController, NewProjectViewController */
+"Add a project folder to the server that anyone can upload to." = "Add a project folder to the server that anyone can upload to.";
 
 /* DarkroomViewController */
 "Add Info" = "Add Info";
-
-/* DarkroomHelper */
-"Add People" = "Add People";
 
 /* DarkroomHelper */
 "Add Location" = "Add Location";
@@ -115,211 +77,154 @@
 "Add Notes" = "Add Notes";
 
 /* DarkroomHelper */
-"Tap to flag as significant content" = "Tap to flag as significant content";
+"Add People" = "Add People";
 
-/* DarkroomHelper */
-"Significant Content" = "Significant Content";
-
-/* BatchEditViewController, Main.storyboard */
-"Batch Edit" = "Batch Edit";
-
-/* BatchEditViewController */
-"% Items Selected" = "% Items Selected";
-
-/* FlagInfoAlert */
-"Flag Significant Content" = "Flag Significant Content";
-
-/* FlagInfoAlert */
-"When you flag an item, it is routed into a subfolder within the chosen project folder on the private server." = "When you flag an item, it is routed into a subfolder within the chosen project folder on the private server.";
-
-/* FlagInfoAlert, BatchInfoAlert */
-"Got it" = "Got it";
-
-/* BatchInfoAlert */
-"Edit Multiple Items" = "Edit Multiple Items";
-
-/* BatchInfoAlert */
-"To edit multiple items, tap and hold each." = "To edit multiple items, tap and hold each.";
-
-/* ConnectSpaceViewController */
-"Skip" = "Skip";
-
-/* MenuViewController, DataUsageViewController */
-"Data Usage" = "Data Usage";
-
-/* MenuViewController */
-"About %" = "About %";
-
-/* MenuViewController */
-"Privacy Policy" = "Privacy Policy";
-
-/* MenuViewController */
-"Project Settings" = "Project Settings";
-
-/* MenuViewController */
-"App Settings" = "App Settings";
-
-/* MenuViewController */
-"Info" = "Info";
-
-/* SpaceViewController */
-"Login Info" = "Login Info";
-
-/* SpaceViewController, EditProfileViewController */
-"Profile" = "Profile";
-
-/* EditProfileViewController */
-"Name" = "Name";
-
-/* EditProfileViewController, PrivateServerViewController */
-"Optional" = "Optional";
-
-/* EditProfileViewController */
-"Role" = "Role";
-
-/* EditProfileViewController */
-"Other Info" = "Other Info";
-
-/* BaseServerViewController */
-"User Name" = "User Name";
-
-/* BaseServerViewController, PrivateServerViewController, InternetArchiveViewController */
-"Required" = "Required";
-
-/* BaseServerViewController, EditProjectViewController, RemoveProjectAlert */
-"Remove from App" = "Remove from App";
-
-/* BaseServerViewController */
-"This will remove the asset history for that space, too!" = "This will remove the asset history for that space, too!";
-
-/* BaseServerViewController */
-"Remove Space" = "Remove Space";
-
-/* PrivateServerViewController */
-"Server Name" = "Server Name";
-
-/* PrivateServerViewController */
-"Server URL" = "Server URL";
-
-/* PrivateServerViewController */
-"Password" = "Password";
-
-/* PrivateServerViewController */
-"Use Upload Chunking (Nextcloud only)" = "Use Upload Chunking (Nextcloud only)";
-
-/* PrivateServerViewController, Main.storyboard */
-"Private (WebDAV) Server" = "Private (WebDAV) Server";
-
-/* PrivateServerViewController, InternetArchiveViewController */
-"Connect" = "Connect";
-
-/* PrivateServerViewController */
-"__webdav_description__" = "% connects to WebDAV-compatible servers only. (For example Nextcloud and ownCloud.)";
-
-/* PrivateServerViewController */
-"__upload_chunking_description__" = "Only tested with latest Nextcloud! Increases reliability on bad networks. Will only upload as long as the device stays on and the app in the foreground. (Short excursions to other apps are ok, though.)";
-
-/* InternetArchiveViewController */
-"Secret Key" = "Secret Key";
-
-/* InternetArchiveViewController, IaInfoAlert, IaScrapeViewController, Main.storyboard */
-"Internet Archive" = "Internet Archive";
-
-/* InternetArchiveViewController */
-"Access Key" = "Access Key";
-
-/* InternetArchiveViewController */
-"% needs your Internet Archive account's API keys to be able to upload to it." = "% needs your Internet Archive account's API keys to be able to upload to it.";
-
-/* InternetArchiveViewController */
-"You can let % try to acquire these keys automatically, or you can tap this row which will send you to % in Safari from where you can copy-and-paste these keys manually." = "You can let % try to acquire these keys automatically, or you can tap this row which will send you to % in Safari from where you can copy-and-paste these keys manually.";
-
-/* InternetArchiveViewController */
-"When using the \"%\" feature, make sure to log in and then touch the \"Refresh\" button in the top right to let % have another try at automatically scraping the keys." = "When using the \"%\" feature, make sure to log in and then touch the \"Refresh\" button in the top right to let % have another try at automatically scraping the keys.";
-
-/* InternetArchiveViewController */
-"Acquire Keys" = "Acquire Keys";
-
-/* IaInfoAlert */
-"You will need to log in to or create an Internet Archive account in order to send and preserve Save media at the Internet Archive." = "You will need to log in to or create an Internet Archive account in order to send and preserve Save media at the Internet Archive.";
-
-/* EditProjectViewController */
-"Allow Creative Commons use for all media in this project" = "Allow Creative Commons use for all media in this project";
+/* ShareExtension.MainViewController */
+"Adding…" = "Adding…";
 
 /* EditProjectViewController */
 "Allow anyone to remix and share" = "Allow anyone to remix and share";
 
 /* EditProjectViewController */
-"Require them to share like you have" = "Require them to share like you have";
+"Allow commercial use" = "Allow commercial use";
 
 /* EditProjectViewController */
-"Allow commercial use" = "Allow commercial use";
+"Allow Creative Commons use for all media in this project" = "Allow Creative Commons use for all media in this project";
+
+/* ConsentViewController */
+"Allow health checks?" = "Allow health checks?";
+
+/* MenuViewController */
+"App Settings" = "App Settings";
 
 /* EditProjectViewController */
 "Archive Project" = "Archive Project";
 
-/* EditProjectViewController */
-"Unarchive Project" = "Unarchive Project";
+/* RemoveProjectAlert */
+"Are you sure you want to remove your project \"%@\"?" = "Are you sure you want to remove your project \"%@\"?";
 
-/* EditProjectViewController */
-"Creative Commons" = "Creative Commons";
+/* DropboxViewController */
+"Authenticate" = "Authenticate";
 
-/* DataUsageViewController */
-"Only upload media when you are connected to Wi-Fi" = "Only upload media when you are connected to Wi-Fi";
-
-/* DataUsageViewController */
-"Video/Image Compression" = "Video/Image Compression";
+/* BatchEditViewController, Main.storyboard */
+"Batch Edit" = "Batch Edit";
 
 /* DataUsageViewController */
 "Better Quality" = "Better Quality";
 
 /* DataUsageViewController */
-"Smaller Size" = "Smaller Size";
-
-/* DataUsageViewController */
-"Use Tor" = "Use Tor";
-
-/* DataUsageViewController */
 "Bridge Configuration" = "Bridge Configuration";
-
-/* ManagementViewController */
-"Multiple attempts with no success" = "Multiple attempts with no success";
-
-/* ManagementViewController */
-"Retry" = "Retry";
-
-/* ManagementViewController */
-"Uploading…" = "Uploading…";
-
-/* ManagementViewController */
-"Waiting…" = "Waiting…";
-
-/* ManagementViewController */
-"% left" = "% left";
-
-/* UploadManager */
-"No URL provided." = "No URL provided.";
-
-/* UploadManager */
-"Unknown error." = "Unknown error.";
-
-/* AddProjectViewController */
-"Add a Project" = "Add a Project";
-
-/* AddProjectViewController, Main.storyboard */
-"Set up where you want your media to be stored." = "Set up where you want your media to be stored.";
-
-/* AddProjectViewController */
-"Create New Project" = "Create New Project";
-
-/* AddProjectViewController, NewProjectViewController */
-"Add a project folder to the server that anyone can upload to." = "Add a project folder to the server that anyone can upload to.";
 
 /* AddProjectViewController */
 "Browse Existing Projects" = "Browse Existing Projects";
 
+/* BrowseViewController */
+"Browse Projects" = "Browse Projects";
+
+/* ConsentViewController */
+"By allowing health checks, you give permission for the app to securely send health check data to the %@ team." = "By allowing health checks, you give permission for the app to securely send health check data to the %@ team.";
+
+/* MainViewController */
+"Camera Roll" = "Camera Roll";
+
+/* MainViewController, AlertHelper */
+"Cancel" = "Cancel";
+
+/* SlideshowViewController */
+"Capture notes, location and people with each piece of media." = "Capture notes, location and people with each piece of media.";
+
+/* ShareExtension.MainViewController */
+"Choose a Project" = "Choose a Project";
+
 /* AddProjectViewController */
 "Choose a project folder from the server." = "Choose a project folder from the server.";
+
+/* Conduit */
+"Configuration invalid." = "Configuration invalid.";
+
+/* PrivateServerViewController, InternetArchiveViewController */
+"Connect" = "Connect";
+
+/* SlideshowViewController */
+"Connect to a secure server or the Internet Archive to upload photos and videos from your phone." = "Connect to a secure server or the Internet Archive to upload photos and videos from your phone.";
+
+/* ConnectSpaceViewController */
+"Connect Your Space" = "Connect Your Space";
+
+/* ConsentViewController */
+"Contribute your data to be part of the solution." = "Contribute your data to be part of the solution.";
+
+/* ShareExtension.MainViewController */
+"Couldn't import item!" = "Couldn't import item!";
+
+/* AddProjectViewController */
+"Create New Project" = "Create New Project";
+
+/* EditProjectViewController */
+"Creative Commons" = "Creative Commons";
+
+/* MenuViewController, DataUsageViewController */
+"Data Usage" = "Data Usage";
+
+/* MainViewController */
+"Deselect" = "Deselect";
+
+/* MainViewController, DarkroomViewController, PrivateServerViewController, InternetArchiveViewController, ManagementViewController, Main.storyboard */
+"Done" = "Done";
+
+/* DropboxViewController */
+"Dropbox" = "Dropbox";
+
+/* BatchInfoAlert */
+"Edit Multiple Items" = "Edit Multiple Items";
+
+/* SlideshowViewController */
+"Ensure authenticity." = "Ensure authenticity.";
+
+/* Conduit */
+"Failed after too many retries." = "Failed after too many retries.";
+
+/* FlagInfoAlert */
+"Flag Significant Content" = "Flag Significant Content";
+
+/* ShareExtension.MainViewController */
+"Go to the app to upload!" = "Go to the app to upload!";
+
+/* FlagInfoAlert, BatchInfoAlert */
+"Got it" = "Got it";
+
+/* ConsentViewController */
+"Health checks capture" = "Health checks capture";
+
+/* ConsentViewController */
+"Health checks help us understand why uploads fail." = "Health checks help us understand why uploads fail.";
+
+/* ShareExtension.MainViewController */
+"Import" = "Import";
+
+/* No comment provided by engineer. */
+"Include your credentials while %@ adds extra metadata to help with chain of custody and verification workflows." = "Include your credentials while %@ adds extra metadata to help with chain of custody and verification workflows.";
+
+/* Error+friendlyMessage */
+"Incorrect username or password" = "Incorrect username or password";
+
+/* MenuViewController */
+"Info" = "Info";
+
+/* InternetArchiveViewController, IaInfoAlert, IaScrapeViewController, Main.storyboard */
+"Internet Archive" = "Internet Archive";
+
+/* HeaderView */
+"Just now" = "Just now";
+
+/* SpaceViewController */
+"Login Info" = "Login Info";
+
+/* ManagementViewController */
+"Multiple attempts with no success" = "Multiple attempts with no success";
+
+/* EditProfileViewController */
+"Name" = "Name";
 
 /* BaseProjectViewController */
 "Name your project" = "Name your project";
@@ -327,20 +232,161 @@
 /* NewProjectViewController, ShareExtension.MainViewController */
 "New Project" = "New Project";
 
-/* BrowseViewController */
-"Browse Projects" = "Browse Projects";
+/* MainViewController */
+"Next" = "Next";
 
-/* AlertHelper */
-"Error" = "Error";
+/* MainViewController */
+"No albums" = "No albums";
 
-/* AlertHelper */
+/* ConsentViewController */
+"No thanks" = "No thanks";
+
+/* UploadManager */
+"No URL provided." = "No URL provided.";
+
+/* AnalyticsCell */
 "OK" = "OK";
+
+/* DataUsageViewController */
+"Only upload media when you are connected to Wi-Fi" = "Only upload media when you are connected to Wi-Fi";
 
 /* Bundle+displayName */
 "OpenArchive" = "OpenArchive";
 
-/* Error+friendlyMessage */
-"Incorrect username or password" = "Incorrect username or password";
+/* EditProfileViewController, PrivateServerViewController */
+"Optional" = "Optional";
+
+/* SlideshowViewController */
+"Organize your media into projects." = "Organize your media into projects.";
+
+/* EditProfileViewController */
+"Other Info" = "Other Info";
+
+/* PrivateServerViewController */
+"Password" = "Password";
+
+/* DuplicateProjectAlert */
+"Please choose another name/project or use the existing one instead." = "Please choose another name/project or use the existing one instead.";
+
+/* MainViewController */
+"Please go to the Settings app to grant this app access to your photo library, if you want to upload photos or videos." = "Please go to the Settings app to grant this app access to your photo library, if you want to upload photos or videos.";
+
+/* PreviewViewController */
+"Preview" = "Preview";
+
+/* MenuViewController */
+"Privacy Policy" = "Privacy Policy";
+
+/* PrivateServerViewController, Main.storyboard */
+"Private (WebDAV) Server" = "Private (WebDAV) Server";
+
+/* SpaceViewController, EditProfileViewController */
+"Profile" = "Profile";
+
+/* DuplicateProjectAlert */
+"Project Already Exists" = "Project Already Exists";
+
+/* MenuViewController */
+"Project Settings" = "Project Settings";
+
+/* HeaderView */
+"Ready to upload" = "Ready to upload";
+
+/* PreviewViewController, MenuViewController, ManagementViewController, RemoveProjectAlert */
+"Remove" = "Remove";
+
+/* BaseServerViewController, EditProjectViewController, RemoveProjectAlert */
+"Remove from App" = "Remove from App";
+
+/* RemoveAssetAlert */
+"Remove Media" = "Remove Media";
+
+/* RemoveAssetAlert */
+"Remove Media from %@" = "Remove Media from %@";
+
+/* BaseServerViewController */
+"Remove Space" = "Remove Space";
+
+/* EditProjectViewController */
+"Require them to share like you have" = "Require them to share like you have";
+
+/* BaseServerViewController, PrivateServerViewController, InternetArchiveViewController */
+"Required" = "Required";
+
+/* ManagementViewController */
+"Retry" = "Retry";
+
+/* EditProfileViewController */
+"Role" = "Role";
+
+/* AnalyticsCell */
+"Run health checks to help improve uploading." = "Run health checks to help improve uploading.";
+
+/* SlideshowViewController */
+"Save to a safe place." = "Save to a safe place.";
+
+/* InternetArchiveViewController */
+"Secret Key" = "Secret Key";
+
+/* MainViewController */
+"Select" = "Select";
+
+/* BigMenuItemCell */
+"Send directly to a private server." = "Send directly to a private server.";
+
+/* PrivateServerViewController */
+"Server Name" = "Server Name";
+
+/* PrivateServerViewController */
+"Server URL" = "Server URL";
+
+/* AddProjectViewController, Main.storyboard */
+"Set up where you want your media to be stored." = "Set up where you want your media to be stored.";
+
+/* ClaimViewController */
+"Share Archive Verify Encrypt" = "Share Archive Verify Encrypt";
+
+/* ConnectSpaceViewController */
+"Skip" = "Skip";
+
+/* DataUsageViewController */
+"Smaller Size" = "Smaller Size";
+
+/* MainViewController */
+"Sorry, you are not allowed to view the camera roll." = "Sorry, you are not allowed to view the camera roll.";
+
+/* SlideshowViewController */
+"Stay organized." = "Stay organized.";
+
+/* SlideshowViewController */
+"Store the facts." = "Store the facts.";
+
+/* MainViewController */
+"Tap here to change" = "Tap here to change";
+
+/* DarkroomHelper */
+"Tap to flag as significant content" = "Tap to flag as significant content";
+
+/* Conduit */
+"The Dropbox support can't handle files bigger than 150 MByte." = "The Dropbox support can't handle files bigger than 150 MByte.";
+
+/* RemoveAssetAlert */
+"These items will be removed only from the %@ App.\nThey will remain on the server and in your camera roll." = "These items will be removed only from the %@ App.\nThey will remain on the server and in your camera roll.";
+
+/* RemoveAssetAlert */
+"This item will be removed only from the %@ App.\nIt will remain on the server and in your camera roll." = "This item will be removed only from the %@ App.\nIt will remain on the server and in your camera roll.";
+
+/* BaseServerViewController */
+"This will remove the asset history for that space, too!" = "This will remove the asset history for that space, too!";
+
+/* BatchInfoAlert */
+"To edit multiple items, tap and hold each." = "To edit multiple items, tap and hold each.";
+
+/* EditProjectViewController */
+"Unarchive Project" = "Unarchive Project";
+
+/* UploadManager */
+"Unknown error." = "Unknown error.";
 
 /* Space */
 "Unnamed" = "Unnamed";
@@ -348,89 +394,50 @@
 /* Project */
 "Unnamed Project" = "Unnamed Project";
 
-/* ProjectsTabBar */
-"New" = "New";
+/* PreviewViewController */
+"Upload to %@" = "Upload to %@";
 
-/* RemoveAssetAlert */
-"This item will be removed only from the % App.\nIt will remain on the server and in your camera roll." = "This item will be removed only from the % App.\nIt will remain on the server and in your camera roll.";
-
-/* RemoveAssetAlert */
-"These items will be removed only from the % App.\nThey will remain on the server and in your camera roll." = "These items will be removed only from the % App.\nThey will remain on the server and in your camera roll.";
-
-/* RemoveAssetAlert */
-"Remove Media from %" = "Remove Media from %";
-
-/* RemoveAssetAlert */
-"Remove Media" = "Remove Media";
-
-/* DuplicateProjectAlert */
-"Please choose another name/project or use the existing one instead." = "Please choose another name/project or use the existing one instead.";
-
-/* DuplicateProjectAlert */
-"Project Already Exists" = "Project Already Exists";
-
-/* RemoveProjectAlert */
-"Are you sure you want to remove your project \"%\"?" = "Are you sure you want to remove your project \"%\"?";
-
-/* ShareExtension.MainViewController */
-"Adding…" = "Adding…";
-
-/* ShareExtension.MainViewController */
-"Choose a Project" = "Choose a Project";
-
-/* ShareExtension.MainViewController */
-"Import" = "Import";
-
-/* ShareExtension.MainViewController */
-"Couldn't import item!" = "Couldn't import item!";
-
-/* ShareExtension.MainViewController */
-"You have % items ready to upload to '%'." = "You have % items ready to upload to '%'.";
-
-/* ShareExtension.MainViewController */
-"Go to the app to upload!" = "Go to the app to upload!";
-
-/* Main.storyboard */
-"by OpenArchive" = "by OpenArchive";
-
-/* ClaimViewController */
-"Share Archive Verify Encrypt" = "Share Archive Verify Encrypt";
-
-/* Main.storyboard */
-"Secure Mobile Media Preservation" = "Secure Mobile Media Preservation";
-
-/* Main.storyboard */
-"Get Started" = "Get Started";
-
-/* Main.storyboard */
-"Connect Your Space" = "Connect Your Space";
-
-/* Main.storyboard */
-"Send directly to a private server." = "Send directly to a private server.";
-
-/* Main.storyboard */
+/* BigMenuItemCell */
 "Upload to Dropbox" = "Upload to Dropbox";
 
-/* Main.storyboard */
+/* BigMenuItemCell */
 "Upload to the Internet Archive" = "Upload to the Internet Archive";
 
-/* Main.storyboard */
-"Menu" = "Menu";
+/* HeaderView */
+"Uploading" = "Uploading";
 
-/* Main.storyboard */
-"Tap buttons below to add media to your project." = "Tap buttons below to add media to your project.";
+/* ManagementViewController */
+"Uploading…" = "Uploading…";
 
-/* Main.storyboard */
-"Upload" = "Upload";
+/* DataUsageViewController */
+"Use Tor" = "Use Tor";
 
-/* Main.storyboard */
-"Back" = " Back";
+/* PrivateServerViewController */
+"Use Upload Chunking (Nextcloud only)" = "Use Upload Chunking (Nextcloud only)";
 
-/* Conduit */
-"Configuration invalid." = "Configuration invalid.";
+/* BaseServerViewController */
+"User Name" = "User Name";
 
-/* Conduit */
-"Failed after too many retries." = "Failed after too many retries.";
+/* DataUsageViewController */
+"Video/Image Compression" = "Video/Image Compression";
 
-/* Conduit */
-"The Dropbox support can't handle files bigger than 150 MByte." = "The Dropbox support can't handle files bigger than 150 MByte.";
+/* ManagementViewController */
+"Waiting…" = "Waiting…";
+
+/* InternetArchiveViewController */
+"When using the \"%1$@\" feature, make sure to log in and then touch the \"Refresh\" button in the top right to let %2$@ have another try at automatically scraping the keys." = "When using the \"%1$@\" feature, make sure to log in and then touch the \"Refresh\" button in the top right to let %2$@ have another try at automatically scraping the keys.";
+
+/* FlagInfoAlert */
+"When you flag an item, it is routed into a subfolder within the chosen project folder on the private server." = "When you flag an item, it is routed into a subfolder within the chosen project folder on the private server.";
+
+/* ConsentViewController */
+"With your permission, we'll run a check each time you encounter an error while uploading." = "With your permission, we'll run a check each time you encounter an error while uploading.";
+
+/* InternetArchiveViewController */
+"You can let %1$@ try to acquire these keys automatically, or you can tap this row which will send you to %2$@ in Safari from where you can copy-and-paste these keys manually." = "You can let %1$@ try to acquire these keys automatically, or you can tap this row which will send you to %2$@ in Safari from where you can copy-and-paste these keys manually.";
+
+/* MainViewController */
+"You have %1$@ items ready to upload to '%2$@'." = "You have %1$@ items ready to upload to '%2$@'.";
+
+/* IaInfoAlert */
+"You will need to log in to or create an Internet Archive account in order to send and preserve %@ media at the Internet Archive." = "You will need to log in to or create an Internet Archive account in order to send and preserve %@ media at the Internet Archive.";
