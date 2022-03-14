@@ -354,7 +354,7 @@ class MainViewController: TableWithSpacesViewController {
         if notificationsAllowed {
             let content = UNMutableNotificationContent()
             content.body = String(
-                format: NSLocalizedString("You have %$1@ items ready to upload to '%2$@'.", comment: ""),
+                format: NSLocalizedString("You have %1$@ items ready to upload to '%2$@'.", comment: ""),
                 Formatters.format(progress.totalUnitCount),
                 Project.getName(project))
             content.userInfo[Project.collection] = project?.id
