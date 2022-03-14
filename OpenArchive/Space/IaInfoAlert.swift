@@ -20,7 +20,7 @@ class IaInfoAlert: InfoAlert {
     }
 
     override class var message: String {
-        return NSLocalizedString("You will need to log in to or create an Internet Archive account in order to send and preserve Save media at the Internet Archive.", comment: "")
+        return String(format: NSLocalizedString("You will need to log in to or create an Internet Archive account in order to send and preserve %@ media at the Internet Archive.", comment: ""), Bundle.main.displayName)
     }
 
     override class var wasAlreadyShown: Bool {

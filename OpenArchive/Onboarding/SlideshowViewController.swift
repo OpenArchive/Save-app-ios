@@ -34,7 +34,7 @@ UIPageViewControllerDelegate {
     ],
     [
         "heading": NSLocalizedString("Ensure authenticity.", comment: ""),
-        "text": NSLocalizedString("Include your credentials while Save adds extra metadata to help with chain of custody and verification workflows.", comment: ""),
+        "text": String(format: NSLocalizedString("Include your credentials while %@ adds extra metadata to help with chain of custody and verification workflows.", comment: ""), Bundle.main.displayName),
         "illustration": "Ensure-Authenticity-screen",
     ],
     ]

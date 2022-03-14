@@ -89,7 +89,7 @@ class ConsentViewController: BaseViewController {
 
     @IBOutlet weak var okBt: UIButton! {
         didSet {
-            okBt.setTitle(NSLocalizedString("Yes", comment: ""))
+            okBt.setTitle(NSLocalizedString("OK", comment: ""))
         }
     }
 
