@@ -11,6 +11,11 @@ import YapDatabase
 
 class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, PreviewCellDelegate, DoneDelegate {
 
+    @IBOutlet weak var uploadBt: UIBarButtonItem! {
+        didSet {
+            uploadBt.title = NSLocalizedString("Upload", comment: "")
+        }
+    }
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var toolbar: UIToolbar!
 

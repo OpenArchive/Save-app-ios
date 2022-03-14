@@ -72,7 +72,7 @@ class DarkroomHelper {
         notes?.set(asset?.notes, with: defaults ? DarkroomHelper.notesPlaceholder : nil)
         notes?.textView.isEditable = isEditable
 
-        flag?.set(asset?.flagged ?? false ? NSLocalizedString(Asset.flag, comment: "") : nil,
+        flag?.set(asset?.flagged ?? false ? NSLocalizedString("Significant Content", comment: "") : nil,
                   with: defaults ? DarkroomHelper.flagPlaceholder : nil)
     }
 

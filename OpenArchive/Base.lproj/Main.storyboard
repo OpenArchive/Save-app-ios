@@ -494,6 +494,7 @@
                     <connections>
                         <outlet property="collectionView" destination="cdB-Ih-Rhb" id="nAx-Db-2Xa"/>
                         <outlet property="editAssetsBt" destination="VSL-EX-jb4" id="DsF-mF-k7V"/>
+                        <outlet property="hintLb" destination="dIV-uA-I3m" id="kTY-Ec-y7W"/>
                         <outlet property="manageBt" destination="XfW-o7-R6f" id="OnK-vA-KRC"/>
                         <outlet property="removeAssetsBt" destination="Ua2-8a-Ofg" id="yhb-HF-4lO"/>
                         <outlet property="spaceFavIcon" destination="hpS-2l-dcc" id="f3r-5D-oXV"/>
@@ -540,14 +541,14 @@
             <objects>
                 <viewController id="VxB-Su-waJ" customClass="DarkroomViewController" customModule="OpenArchive" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="zjA-cH-Clo">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="p3T-VI-YwW">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="480"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cpd-AK-jKO">
-                                <rect key="frame" x="0.0" y="524" width="320" height="0.0"/>
+                                <rect key="frame" x="0.0" y="480" width="320" height="0.0"/>
                                 <subviews>
                                     <view alpha="0.69999999999999996" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PDk-Rp-dFQ">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="0.0"/>
@@ -563,7 +564,7 @@
                                 </constraints>
                             </view>
                             <toolbar opaque="NO" clearsContextBeforeDrawing="NO" contentMode="scaleToFill" translucent="NO" translatesAutoresizingMaskIntoConstraints="NO" id="JX4-tp-20k">
-                                <rect key="frame" x="0.0" y="524" width="320" height="44"/>
+                                <rect key="frame" x="0.0" y="480" width="320" height="44"/>
                                 <items>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="ng0-sf-nFd"/>
                                     <barButtonItem systemItem="trash" id="Nye-iD-iDg">
@@ -1118,6 +1119,7 @@
                     <connections>
                         <outlet property="tableView" destination="fzS-xy-6ni" id="2ed-fc-HmQ"/>
                         <outlet property="toolbar" destination="mTG-ZC-ss8" id="mlv-rR-0D5"/>
+                        <outlet property="uploadBt" destination="zEj-JW-dy7" id="T4J-Qi-NZg"/>
                         <segue destination="VxB-Su-waJ" kind="show" identifier="showDarkroomSegue" id="51p-Tu-idn"/>
                         <segue destination="q39-It-YtO" kind="show" identifier="showBatchEditSegue" id="XbN-st-9jm"/>
                     </connections>
@@ -1256,14 +1258,14 @@
             <objects>
                 <viewController id="q39-It-YtO" customClass="BatchEditViewController" customModule="OpenArchive" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Wih-v9-FC8">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="524"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="cl7-oc-Mh0">
-                                <rect key="frame" x="0.0" y="0.0" width="320" height="284"/>
+                                <rect key="frame" x="0.0" y="0.0" width="320" height="262"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hFB-7y-b3z">
-                                        <rect key="frame" x="0.0" y="0.0" width="200" height="284"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="200" height="262"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="200" id="iYN-9s-Esf"/>
                                         </constraints>
@@ -1278,7 +1280,7 @@
                                 </constraints>
                             </scrollView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="IWH-Xl-QPN">
-                                <rect key="frame" x="0.0" y="328" width="320" height="240"/>
+                                <rect key="frame" x="0.0" y="284" width="320" height="240"/>
                                 <subviews>
                                     <view alpha="0.69999998807907104" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WFI-2z-wjh">
                                         <rect key="frame" x="0.0" y="0.0" width="320" height="240"/>
@@ -1322,8 +1324,8 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="ugS-VU-bdp"/>
-        <segue reference="tKg-5v-fna"/>
+        <segue reference="XbN-st-9jm"/>
+        <segue reference="51p-Tu-idn"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" red="0.0" green="0.70398116438356162" blue="0.64921339897260277" alpha="1" colorSpace="calibratedRGB"/>
     <resources>

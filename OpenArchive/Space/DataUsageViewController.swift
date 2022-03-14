@@ -69,7 +69,7 @@ class DataUsageViewController: FormViewController, BridgesConfDelegate {
         }
 
         +++ ButtonRow() {
-            $0.title = NSLocalizedString("Bridge Configuration", comment: "")
+            $0.title = NSLocalizedString("Bridge Configuration", bundle: Bundle.iPtProxyUI, comment: "#bc-ignore!")
             $0.cell.textLabel?.numberOfLines = 0
         }
         .onCellSelection { [weak self] _, _ in

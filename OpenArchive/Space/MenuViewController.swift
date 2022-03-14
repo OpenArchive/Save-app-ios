@@ -42,6 +42,8 @@ class MenuViewController: TableWithSpacesViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationItem.title = NSLocalizedString("Menu", comment: "")
+
         projectsReadConn?.update(mappings: projectsMappings)
 
         allowAdd = true

@@ -44,7 +44,7 @@
 "__upload_chunking_description__" = "Only tested with latest Nextcloud! Increases reliability on bad networks. Will only upload as long as the device stays on and the app in the foreground. (Short excursions to other apps are ok, though.)";
 
 /* PrivateServerViewController */
-"__webdav_description__" = "% connects to WebDAV-compatible servers only. (For example Nextcloud and ownCloud.)";
+"__webdav_description__" = "%@ connects to WebDAV-compatible servers only. (For example Nextcloud and ownCloud.)";
 
 /* MenuViewController */
 "About %@" = "About %@";
@@ -111,9 +111,6 @@
 
 /* DataUsageViewController */
 "Better Quality" = "Better Quality";
-
-/* DataUsageViewController */
-"Bridge Configuration" = "Bridge Configuration";
 
 /* AddProjectViewController */
 "Browse Existing Projects" = "Browse Existing Projects";
@@ -228,6 +225,9 @@
 
 /* SpaceViewController */
 "Login Info" = "Login Info";
+
+/* MenuViewController */
+"Menu" = "Menu";
 
 /* ManagementViewController */
 "Multiple attempts with no success" = "Multiple attempts with no success";
@@ -355,6 +355,9 @@
 /* ClaimViewController */
 "Share Archive Verify Encrypt" = "Share Archive Verify Encrypt";
 
+/* DarkroomHelper */
+"Significant Content" = "Significant Content";
+
 /* ConnectSpaceViewController */
 "Skip" = "Skip";
 
@@ -369,6 +372,9 @@
 
 /* SlideshowViewController */
 "Store the facts." = "Store the facts.";
+
+/* MainViewController */
+"Tap buttons below to add media to your project." = "Tap buttons below to add media to your project.";
 
 /* MainViewController */
 "Tap here to change" = "Tap here to change";
@@ -402,6 +408,9 @@
 
 /* Project */
 "Unnamed Project" = "Unnamed Project";
+
+/* PreviewViewController */
+"Upload" = "Upload";
 
 /* PreviewViewController */
 "Upload to %@" = "Upload to %@";

@@ -16,6 +16,12 @@ import FontBlaster
 @objc(MainViewController)
 class MainViewController: TableWithSpacesViewController {
 
+    @IBOutlet weak var hintLb: UILabel! {
+        didSet {
+            hintLb.text = NSLocalizedString("Tap buttons below to add media to your project.", comment: "")
+        }
+    }
+
     private static let projectSection = 3
 
     private lazy var projectsReadConn = Db.newLongLivedReadConn()
