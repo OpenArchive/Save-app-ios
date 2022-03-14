@@ -50,6 +50,10 @@ class AnalyticsCell: BaseCell, ConsentRequestUi {
 
     @IBAction func ok() {
         CleanInsights.shared.requestConsent(forCampaign: "upload_fails", self) { [weak self] granted in
+            if granted {
+                CleanInsights.shared.grant(feature: .lang)
+            }
+
             self?.delegate?.analyticsReload()
         }
     }

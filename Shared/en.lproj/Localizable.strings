@@ -151,6 +151,9 @@
 /* ConnectSpaceViewController */
 "Connect Your Space" = "Connect Your Space";
 
+/* HealthCheckViewController */
+"Consent expires on %@." = "Consent expires on %@.";
+
 /* ConsentViewController */
 "Contribute your data to be part of the solution." = "Contribute your data to be part of the solution.";
 
@@ -193,11 +196,17 @@
 /* FlagInfoAlert, BatchInfoAlert */
 "Got it" = "Got it";
 
+/* MenuViewController, HealthCheckViewController */
+"Health Checks" = "Health Checks";
+
 /* ConsentViewController */
 "Health checks capture" = "Health checks capture";
 
 /* ConsentViewController */
 "Health checks help us understand why uploads fail." = "Health checks help us understand why uploads fail.";
+
+/* HealthCheckViewController */
+"Help improve the app by running health checks when uploads fail." = "Help improve the app by running health checks when uploads fail.";
 
 /* ShareExtension.MainViewController */
 "Import" = "Import";

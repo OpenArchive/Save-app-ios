@@ -73,7 +73,7 @@ class MenuViewController: TableWithSpacesViewController {
         case 1:
             return projectsCount
         case 2:
-            return 1
+            return 2
         case 3:
             return 2
         default:
@@ -116,7 +116,12 @@ class MenuViewController: TableWithSpacesViewController {
             return cell.set(Project.getName(getProject(indexPath)), accessoryType: .disclosureIndicator)
 
         case 2:
-            return cell.set(NSLocalizedString("Data Usage", comment: ""), accessoryType: .disclosureIndicator)
+            switch indexPath.row {
+            case 0:
+                return cell.set(NSLocalizedString("Data Usage", comment: ""), accessoryType: .disclosureIndicator)
+            default:
+                return cell.set(NSLocalizedString("Health Checks", comment: ""), accessoryType: .disclosureIndicator)
+            }
 
         case 3:
             switch indexPath.row {
@@ -178,7 +183,13 @@ class MenuViewController: TableWithSpacesViewController {
             }
 
         case 2:
-            vc = DataUsageViewController()
+            switch indexPath.row {
+            case 0:
+                vc = DataUsageViewController()
+
+            default:
+                vc = HealthCheckViewController()
+            }
 
         case 3:
             if indexPath.row == 0 {
