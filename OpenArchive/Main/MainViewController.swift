@@ -47,6 +47,13 @@ PKDownloadButtonDelegate {
             tabBar.load()
         }
     }
+
+    @IBOutlet weak var hintLb: UILabel! {
+        didSet {
+            hintLb.text = NSLocalizedString("Tap buttons below to add media to your project.", comment: "")
+        }
+    }
+
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var toolbar: UIToolbar!
     @IBOutlet weak var editAssetsBt: UIBarButtonItem!
