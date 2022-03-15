@@ -27,7 +27,7 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
 
         let title = MultilineTitle()
         title.title.text = NSLocalizedString("Batch Edit", comment: "")
-        title.subtitle.text = String(format: NSLocalizedString("%@ Items Selected", comment: ""), Formatters.format(assets?.count))
+        title.subtitle.text = String.localizedStringWithFormat(NSLocalizedString("%u Item(s) Selected", comment: "#bc-ignore!"), assets?.count ?? 0)
         navigationItem.titleView = title
 
         var lastIv: UIImageView?

@@ -1,29 +1,5 @@
-/* HeaderView */
-"%1$@ of %2$@ item uploaded" = "%1$@ of %2$@ item uploaded";
-
-/* HeaderView */
-"%1$@ of %2$@ items uploaded" = "%1$@ of %2$@ items uploaded";
-
 /* ConsentViewController */
 "%@ Error description" = "%@ Error description";
-
-/* HeaderView */
-"%@ item" = "%@ item";
-
-/* HeaderView */
-"%@ Item Uploaded" = "%@ Item Uploaded";
-
-/* HeaderView */
-"%@ items" = "%@ items";
-
-/* BatchEditViewController */
-"%@ Items Selected" = "%@ Items Selected";
-
-/* HeaderView */
-"%@ Items Uploaded" = "%@ Items Uploaded";
-
-/* ManagementViewController */
-"%@ left" = "%@ left";
 
 /* ConsentViewController */
 "%@ Locale" = "%@ Locale";

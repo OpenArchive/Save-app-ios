@@ -328,8 +328,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
             : (uploading
                ? NSLocalizedString("Uploading…", comment: "")
                : NSLocalizedString("Waiting…", comment: ""))
-        titleView.subtitle.text = String(format: NSLocalizedString("%@ left", comment: ""),
-                                         Formatters.format(count))
+        titleView.subtitle.text = String.localizedStringWithFormat(NSLocalizedString("%u left", comment: "#bc-ignore!"), count)
 
         navigationItem.titleView = titleView
     }

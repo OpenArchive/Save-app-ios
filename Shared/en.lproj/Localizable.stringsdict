@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>%u item(s)</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@items@</string>
+		<key>items</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%u item</string>
+			<key>other</key>
+			<string>%u items</string>
+		</dict>
+	</dict>
+	<key>%1$u of %2$u item(s) uploaded</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@of@ %#@items@ uploaded</string>
+		<key>of</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%1$u of</string>
+			<key>other</key>
+			<string>%1$u of</string>
+		</dict>
+		<key>items</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%2$u item</string>
+			<key>other</key>
+			<string>%2$u items</string>
+		</dict>
+	</dict>
+	<key>%u Item(s) Uploaded</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Items@ Uploaded</string>
+		<key>Items</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%u Item</string>
+			<key>other</key>
+			<string>%u Items</string>
+		</dict>
+	</dict>
+	<key>%u Item(s) Selected</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@Items@ Selected</string>
+		<key>Items</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%u Item</string>
+			<key>other</key>
+			<string>%u Items</string>
+		</dict>
+	</dict>
+	<key>%u left</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@left@</string>
+		<key>left</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%u left</string>
+			<key>other</key>
+			<string>%u left</string>
+		</dict>
+	</dict>
+</dict>
+</plist>

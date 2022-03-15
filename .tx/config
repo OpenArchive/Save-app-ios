@@ -20,47 +20,54 @@ file_filter = fastlane/metadata/<lang>/name.txt
 minimum_perc = 100
 source_file = fastlane/metadata/en-US/name.txt
 source_lang = en
-type = TXT
 trans.de = fastlane/metadata/de-DE/name.txt
 trans.es = fastlane/metadata/es-MX/name.txt
 trans.fr = fastlane/metadata/fr-FR/name.txt
+type = TXT
 
 [SAVE.subtitle]
 file_filter = fastlane/metadata/<lang>/subtitle.txt
 minimum_perc = 100
 source_file = fastlane/metadata/en-US/subtitle.txt
 source_lang = en
-type = TXT
 trans.de = fastlane/metadata/de-DE/subtitle.txt
 trans.es = fastlane/metadata/es-MX/subtitle.txt
 trans.fr = fastlane/metadata/fr-FR/subtitle.txt
+type = TXT
 
 [SAVE.keywords]
 file_filter = fastlane/metadata/<lang>/keywords.txt
 minimum_perc = 75
 source_file = fastlane/metadata/en-US/keywords.txt
 source_lang = en
-type = TXT
 trans.de = fastlane/metadata/de-DE/keywords.txt
 trans.es = fastlane/metadata/es-MX/keywords.txt
 trans.fr = fastlane/metadata/fr-FR/keywords.txt
+type = TXT
 
 [SAVE.promotional_text]
 file_filter = fastlane/metadata/<lang>/promotional_text.txt
 minimum_perc = 75
 source_file = fastlane/metadata/en-US/promotional_text.txt
 source_lang = en
-type = TXT
 trans.de = fastlane/metadata/de-DE/promotional_text.txt
 trans.es = fastlane/metadata/es-MX/promotional_text.txt
 trans.fr = fastlane/metadata/fr-FR/promotional_text.txt
+type = TXT
 
 [SAVE.description]
 file_filter = fastlane/metadata/<lang>/description.txt
 minimum_perc = 50
 source_file = fastlane/metadata/en-US/description.txt
 source_lang = en
-type = TXT
 trans.de = fastlane/metadata/de-DE/description.txt
 trans.es = fastlane/metadata/es-MX/description.txt
 trans.fr = fastlane/metadata/fr-FR/description.txt
+type = TXT
+
+[SAVE.localizable-stringsdict]
+file_filter = Shared/<lang>.lproj/Localizable.stringsdict
+minimum_perc = 20
+source_file = Shared/en.lproj/Localizable.stringsdict
+source_lang = en
+type = STRINGSDICT

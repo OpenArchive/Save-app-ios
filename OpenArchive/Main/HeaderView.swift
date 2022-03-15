@@ -32,9 +32,7 @@ class HeaderView: UICollectionReusableView {
                 // I know this is really wrong, but using stringsdict is just a fucking
                 // hastle and at least this works well for English, German and many more
                 // languages.
-                infoLb.text = uploaded == 1
-                    ? String(format: NSLocalizedString("%@ Item Uploaded", comment: ""), Formatters.format(uploaded))
-                    : String(format: NSLocalizedString("%@ Items Uploaded", comment: ""), Formatters.format(uploaded))
+                infoLb.text = String.localizedStringWithFormat(NSLocalizedString("%u Item(s) Uploaded", comment: "#bc-ignore!"), uploaded)
 
                 let fiveMinAgo = Date(timeIntervalSinceNow: -5 * 60)
 
@@ -50,9 +48,12 @@ class HeaderView: UICollectionReusableView {
                 let total = collection?.assets.count ?? 0
                 let uploaded = collection?.uploadedAssetsCount ?? 0
 
-                subInfoLb.text = total == 1
-                    ? String(format: NSLocalizedString("%1$@ of %2$@ item uploaded", comment: ""), Formatters.format(uploaded), Formatters.format(total))
-                    : String(format: NSLocalizedString("%1$@ of %2$@ items uploaded", comment: ""), Formatters.format(uploaded), Formatters.format(total))
+                let format = NSLocalizedString("%1$u of %2$u item(s) uploaded", comment: "#bc-ignore!")
+                let result = String.localizedStringWithFormat(format, uploaded, total)
+
+                print("[\(String(describing: type(of: self)))] format=\(format), result=\(result)")
+
+                subInfoLb.text = String.localizedStringWithFormat(NSLocalizedString("%1$u of %2$u item(s) uploaded", comment: "#bc-ignore!"), uploaded, total)
 
                 manageBt.isHidden = true
             }
@@ -61,9 +62,12 @@ class HeaderView: UICollectionReusableView {
 
                 let waiting = collection?.waitingAssetsCount ?? 0
 
-                subInfoLb.text = waiting == 1
-                    ? String(format: NSLocalizedString("%@ item", comment: ""), Formatters.format(waiting))
-                    : String(format: NSLocalizedString("%@ items", comment: ""), Formatters.format(waiting))
+                let format = NSLocalizedString("%u item(s)", comment: "#bc-ignore!")
+                let result = String.localizedStringWithFormat(format, waiting)
+
+                print("[\(String(describing: type(of: self)))] format=\(format), result=\(result)")
+
+                subInfoLb.text = String.localizedStringWithFormat(NSLocalizedString("%u item(s)", comment: "#bc-ignore!"), waiting)
 
                 manageBt.isHidden = false
             }
