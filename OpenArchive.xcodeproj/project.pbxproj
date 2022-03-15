@@ -1455,7 +1455,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1020;
-				LastUpgradeCheck = 1320;
+				LastUpgradeCheck = 1330;
 				ORGANIZATIONNAME = "Open Archive";
 				TargetAttributes = {
 					A05768D622E0B67D00B39FCE = {
