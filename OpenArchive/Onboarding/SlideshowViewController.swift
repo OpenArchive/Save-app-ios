@@ -12,7 +12,13 @@ class SlideshowViewController: UIViewController, UIPageViewControllerDataSource,
 UIPageViewControllerDelegate {
 
     @IBOutlet weak var container: UIView!
-    @IBOutlet weak var doneBt: UIButton!
+
+    @IBOutlet weak var doneBt: UIButton! {
+        didSet {
+            doneBt.setTitle(NSLocalizedString("Done", comment: ""))
+        }
+    }
+
     @IBOutlet weak var doneIcon: UIImageView!
     @IBOutlet weak var pageControl: UIPageControl!
 

@@ -13,15 +13,15 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%u item</string>
+			<string>%u öge</string>
 			<key>other</key>
-			<string>%u items</string>
+			<string>%u öge</string>
 		</dict>
 	</dict>
 	<key>%1$u of %2$u item(s) uploaded</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@of@ %#@items@ uploaded</string>
+		<string>%#@of@</string>
 		<key>of</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
@@ -29,9 +29,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%1$u of</string>
+			<string>%1$u / %#@items@ öge yüklendi</string>
 			<key>other</key>
-			<string>%1$u of</string>
+			<string>%1$u / %#@items@ öge yüklendi</string>
 		</dict>
 		<key>items</key>
 		<dict>
@@ -40,42 +40,20 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%2$u item</string>
+			<string>%2$u öge</string>
 			<key>other</key>
-			<string>%2$u items</string>
+			<string>%2$u öge</string>
 		</dict>
 	</dict>
 	<key>%u Item(s) Uploaded</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@items_uploaded@</string>
-		<key>items_uploaded</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%u Item Uploaded</string>
-			<key>other</key>
-			<string>%u Items Uploaded</string>
-		</dict>
 	</dict>
 	<key>%u Item(s) Selected</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@items_selected@</string>
-		<key>items_selected</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%u Item Selected</string>
-			<key>other</key>
-			<string>%u Items Selected</string>
-		</dict>
 	</dict>
 	<key>%u left</key>
 	<dict>
@@ -88,58 +66,25 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%u left</string>
+			<string>%u kaldı</string>
 			<key>other</key>
-			<string>%u left</string>
+			<string>%u kaldı</string>
 		</dict>
 	</dict>
 	<key>You have %1$u item(s) ready to upload to &quot;%2$@&quot;.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@items@</string>
-		<key>items</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>You have %1$u item ready to upload to &quot;%2$@&quot;.</string>
-			<key>other</key>
-			<string>You have %1$u items ready to upload to &quot;%2$@&quot;.</string>
-		</dict>
 	</dict>
 	<key>This item/These items will be removed from the App only.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@text@</string>
-		<key>text</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>This item will be removed from the %2$@ App only.</string>
-			<key>other</key>
-			<string>These items will be removed from the %2$@ App only.</string>
-		</dict>
 	</dict>
 	<key>It/They will remain on the server and in your Photos app.</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@text@</string>
-		<key>text</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>It will remain on the server and in your Photos app.</string>
-			<key>other</key>
-			<string>They will remain on the server and in your Photos app.</string>
-		</dict>
 	</dict>
 </dict>
 </plist>

@@ -48,11 +48,6 @@ class HeaderView: UICollectionReusableView {
                 let total = collection?.assets.count ?? 0
                 let uploaded = collection?.uploadedAssetsCount ?? 0
 
-                let format = NSLocalizedString("%1$u of %2$u item(s) uploaded", comment: "#bc-ignore!")
-                let result = String.localizedStringWithFormat(format, uploaded, total)
-
-                print("[\(String(describing: type(of: self)))] format=\(format), result=\(result)")
-
                 subInfoLb.text = String.localizedStringWithFormat(NSLocalizedString("%1$u of %2$u item(s) uploaded", comment: "#bc-ignore!"), uploaded, total)
 
                 manageBt.isHidden = true
@@ -61,11 +56,6 @@ class HeaderView: UICollectionReusableView {
                 infoLb.text = NSLocalizedString("Ready to upload", comment: "").localizedUppercase
 
                 let waiting = collection?.waitingAssetsCount ?? 0
-
-                let format = NSLocalizedString("%u item(s)", comment: "#bc-ignore!")
-                let result = String.localizedStringWithFormat(format, waiting)
-
-                print("[\(String(describing: type(of: self)))] format=\(format), result=\(result)")
 
                 subInfoLb.text = String.localizedStringWithFormat(NSLocalizedString("%u item(s)", comment: "#bc-ignore!"), waiting)
 

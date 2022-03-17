@@ -284,11 +284,19 @@ PKDownloadButtonDelegate {
                 actions: [AlertHelper.cancelAction()])
 
         case .denied:
+            var actions = [AlertHelper.cancelAction()]
+
+            if let url = URL(string: UIApplication.openSettingsURLString) {
+                actions.append(AlertHelper.defaultAction(NSLocalizedString("Settings", comment: ""), handler: { _ in
+                    UIApplication.shared.open(url)
+                }))
+            }
+
             AlertHelper.present(
                 self,
                 message: NSLocalizedString("Please go to the Settings app to grant this app access to your photo library, if you want to upload photos or videos.", comment: ""),
                 title: NSLocalizedString("Access Denied", comment: ""),
-                actions: [AlertHelper.cancelAction()])
+                actions: actions)
 
         @unknown default:
             break

@@ -14,12 +14,16 @@ class RemoveAssetAlert: UIAlertController {
     convenience init(_ assets: [Asset], _ onSuccess: (() -> Void)? = nil) {
         let appName = Bundle.main.displayName
 
-        let message = assets.count == 1
-        ? String(format: NSLocalizedString("This item will be removed only from the %@ App.\nIt will remain on the server and in your camera roll.", comment: ""), appName)
-            : String(format: NSLocalizedString("These items will be removed only from the %@ App.\nThey will remain on the server and in your camera roll.", comment: ""), appName)
+        let text = [
+            String.localizedStringWithFormat(
+                NSLocalizedString("This item/These items will be removed from the App only.", comment: "#bc-ignore!"),
+                assets.count, appName),
+            String.localizedStringWithFormat(
+                NSLocalizedString("It/They will remain on the server and in your Photos app.", comment: "#bc-ignore!"),
+                assets.count)]
 
         self.init(title: String(format: NSLocalizedString("Remove Media from %@", comment: ""), appName),
-                   message: message,
+                  message: text.joined(separator: "\n"),
                    preferredStyle: .alert)
 
         addAction(AlertHelper.cancelAction())

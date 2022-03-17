@@ -163,6 +163,9 @@
 /* FlagInfoAlert */
 "Flag Significant Content" = "Flag Significant Content";
 
+/* ClaimViewController */
+"Get Started" = "Get Started";
+
 /* ShareExtension.MainViewController */
 "Go to the app to upload!" = "Go to the app to upload!";
 
@@ -313,6 +316,9 @@
 /* InternetArchiveViewController */
 "Secret Key" = "Secret Key";
 
+/* ClaimViewController */
+"Secure Mobile Media Preservation" = "Secure Mobile Media Preservation";
+
 /* MainViewController */
 "Select" = "Select";
 
@@ -328,8 +334,11 @@
 /* AddProjectViewController, Main.storyboard */
 "Set up where you want your media to be stored." = "Set up where you want your media to be stored.";
 
-/* ClaimViewController */
-"Share Archive Verify Encrypt" = "Share Archive Verify Encrypt";
+/* MainViewController */
+"Settings" = "Settings";
+
+/* Placeholders will be replaced by newline - ClaimViewController */
+"Share%1$@Archive%1$@Verify%1$@Encrypt" = "Share%1$@Archive%1$@Verify%1$@Encrypt";
 
 /* DarkroomHelper */
 "Significant Content" = "Significant Content";
@@ -360,12 +369,6 @@
 
 /* Conduit */
 "The Dropbox support can't handle files bigger than 150 MByte." = "The Dropbox support can't handle files bigger than 150 MByte.";
-
-/* RemoveAssetAlert */
-"These items will be removed only from the %@ App.\nThey will remain on the server and in your camera roll." = "These items will be removed only from the %@ App.\nThey will remain on the server and in your camera roll.";
-
-/* RemoveAssetAlert */
-"This item will be removed only from the %@ App.\nIt will remain on the server and in your camera roll." = "This item will be removed only from the %@ App.\nIt will remain on the server and in your camera roll.";
 
 /* BaseServerViewController */
 "This will remove the asset history for that space, too!" = "This will remove the asset history for that space, too!";
@@ -429,9 +432,6 @@
 
 /* InternetArchiveViewController */
 "You can let %1$@ try to acquire these keys automatically, or you can tap this row which will send you to %2$@ in Safari from where you can copy-and-paste these keys manually." = "You can let %1$@ try to acquire these keys automatically, or you can tap this row which will send you to %2$@ in Safari from where you can copy-and-paste these keys manually.";
-
-/* MainViewController */
-"You have %1$@ items ready to upload to '%2$@'." = "You have %1$@ items ready to upload to '%2$@'.";
 
 /* IaInfoAlert */
 "You will need to log in to or create an Internet Archive account in order to send and preserve %@ media at the Internet Archive." = "You will need to log in to or create an Internet Archive account in order to send and preserve %@ media at the Internet Archive.";

@@ -10,18 +10,23 @@ import UIKit
 
 class ClaimViewController: UIViewController {
 
-    @IBOutlet weak var claimLb: UILabel!
+    @IBOutlet weak var claimLb: UILabel? {
+        didSet {
+            claimLb?.text = String(
+                format: NSLocalizedString("Share%1$@Archive%1$@Verify%1$@Encrypt", comment: "Placeholders will be replaced by newline"),
+                "\n")
+        }
+    }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    @IBOutlet weak var subtitleLb: UILabel? {
+        didSet {
+            subtitleLb?.text = NSLocalizedString("Secure Mobile Media Preservation", comment: "")
+        }
+    }
 
-        // Don't use Localize's single percent-sign placeholder (%), Transifex
-        // will see the following characters as qualifiers to that and won't
-        // allow translators to save their translation, if e.g. it doesn't contain "%E".
-        //
-        // Therefore we replace spaces between words with newlines and hope,
-        // that translators don't translate one word with multiple words...
-        claimLb.text = NSLocalizedString("Share Archive Verify Encrypt", comment: "")
-            .split(using: "\\s+".r).joined(separator: "\n")
+    @IBOutlet weak var nextBt: UILabel? {
+        didSet {
+            nextBt?.text = NSLocalizedString("Get Started", comment: "")
+        }
     }
 }

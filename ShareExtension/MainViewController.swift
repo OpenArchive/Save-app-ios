@@ -353,10 +353,11 @@ class MainViewController: TableWithSpacesViewController {
     private func showNotification() {
         if notificationsAllowed {
             let content = UNMutableNotificationContent()
-            content.body = String(
-                format: NSLocalizedString("You have %1$@ items ready to upload to '%2$@'.", comment: ""),
-                Formatters.format(progress.totalUnitCount),
-                Project.getName(project))
+
+            content.body = String.localizedStringWithFormat(
+                NSLocalizedString("You have %1$u item(s) ready to upload to \"%2$@\".", comment: "#bc-ignore!"),
+                progress.totalUnitCount, Project.getName(project))
+
             content.userInfo[Project.collection] = project?.id
 
             let trigger = UNTimeIntervalNotificationTrigger(timeInterval: 2, repeats: false)
