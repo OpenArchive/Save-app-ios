@@ -82,6 +82,9 @@
 /* DropboxViewController */
 "Authenticate" = "Authenticate";
 
+/* ManagementViewController */
+"Back" = "Back";
+
 /* BatchEditViewController, Main.storyboard */
 "Batch Edit" = "Batch Edit";
 

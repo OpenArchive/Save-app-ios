@@ -16,6 +16,13 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
 
     var delegate: DoneDelegate?
 
+    @IBOutlet weak var backBt: UIBarButtonItem? {
+        didSet {
+            backBt?.title = NSLocalizedString("Back", comment: "")
+        }
+    }
+
+
     private lazy var readConn = Db.newLongLivedReadConn()
 
     private lazy var mappings = YapDatabaseViewMappings(

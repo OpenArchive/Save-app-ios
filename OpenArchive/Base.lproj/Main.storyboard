@@ -771,6 +771,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
+                        <outlet property="backBt" destination="oDa-l2-fbr" id="SwN-CQ-sM9"/>
                         <segue destination="nHZ-hH-Rfk" kind="show" identifier="_unusedSegue" id="5Ya-Tw-1n4"/>
                     </connections>
                 </tableViewController>
