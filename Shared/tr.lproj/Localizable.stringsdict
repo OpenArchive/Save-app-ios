@@ -18,42 +18,53 @@
 			<string>%u öge</string>
 		</dict>
 	</dict>
-	<key>%1$u of %2$u item(s) uploaded</key>
+	<key>%2$u of %1$u item(s) uploaded</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@of@</string>
-		<key>of</key>
+		<string>%#@text@</string>
+		<key>text</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%1$u / %#@items@ öge yüklendi</string>
+			<string>%2$u / %1$u öge yüklendi</string>
 			<key>other</key>
-			<string>%1$u / %#@items@ öge yüklendi</string>
-		</dict>
-		<key>items</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%2$u öge</string>
-			<key>other</key>
-			<string>%2$u öge</string>
+			<string>%2$u / %1$u öge yüklendi</string>
 		</dict>
 	</dict>
 	<key>%u Item(s) Uploaded</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@items_uploaded@</string>
+		<key>items_uploaded</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%u öge yüklendi</string>
+			<key>other</key>
+			<string>%u öge yüklendi</string>
+		</dict>
 	</dict>
 	<key>%u Item(s) Selected</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@items_selected@</string>
+		<key>items_selected</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%u öge seçildi</string>
+			<key>other</key>
+			<string>%u öge seçildi</string>
+		</dict>
 	</dict>
 	<key>%u left</key>
 	<dict>
@@ -75,6 +86,17 @@
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
 		<string>%#@items@</string>
+		<key>items</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%1$u öge &quot;%2$@&quot; üzerine yüklenmeye hazır.</string>
+			<key>other</key>
+			<string>%1$u öge &quot;%2$@&quot; üzerine yüklenmeye hazır.</string>
+		</dict>
 	</dict>
 	<key>This item/These items will be removed from the App only.</key>
 	<dict>

@@ -48,7 +48,9 @@ class HeaderView: UICollectionReusableView {
                 let total = collection?.assets.count ?? 0
                 let uploaded = collection?.uploadedAssetsCount ?? 0
 
-                subInfoLb.text = String.localizedStringWithFormat(NSLocalizedString("%1$u of %2$u item(s) uploaded", comment: "#bc-ignore!"), uploaded, total)
+                subInfoLb.text = String.localizedStringWithFormat(
+                    NSLocalizedString("%2$u of %1$u item(s) uploaded", comment: "#bc-ignore!"),
+                    total, uploaded)
 
                 manageBt.isHidden = true
             }

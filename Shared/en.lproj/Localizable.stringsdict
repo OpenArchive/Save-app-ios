@@ -18,31 +18,20 @@
 			<string>%u items</string>
 		</dict>
 	</dict>
-	<key>%1$u of %2$u item(s) uploaded</key>
+	<key>%2$u of %1$u item(s) uploaded</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@of@ %#@items@ uploaded</string>
-		<key>of</key>
+		<string>%#@text@</string>
+		<key>text</key>
 		<dict>
 			<key>NSStringFormatSpecTypeKey</key>
 			<string>NSStringPluralRuleType</string>
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%1$u of</string>
+			<string>%2$u of %1$u item uploaded</string>
 			<key>other</key>
-			<string>%1$u of</string>
-		</dict>
-		<key>items</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%2$u item</string>
-			<key>other</key>
-			<string>%2$u items</string>
+			<string>%2$u of %1$u items uploaded</string>
 		</dict>
 	</dict>
 	<key>%u Item(s) Uploaded</key>
