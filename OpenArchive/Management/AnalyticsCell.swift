@@ -26,8 +26,6 @@ class AnalyticsCell: BaseCell, ConsentRequestUi {
         return 104
     }
 
-    @IBOutlet weak var thumbnail: UIImageView!
-
     @IBOutlet weak var textLb: UILabel! {
         didSet {
             textLb.text = NSLocalizedString("Run health checks to help improve uploading.", comment: "")
