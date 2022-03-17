@@ -154,7 +154,8 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 
         uploadManager = UploadManager(completionHandler)
 
-        setUpDropbox()
+        // Do not set up Dropbox here!
+        // It's constantly crashing, so doesn't seem to work when run from the background.
 
         uploadManager?.uploadNext()
     }
