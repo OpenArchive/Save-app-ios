@@ -13,9 +13,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%u öge</string>
+			<string>%u élément</string>
 			<key>other</key>
-			<string>%u öge</string>
+			<string>%u éléments</string>
 		</dict>
 	</dict>
 	<key>%2$u of %1$u item(s) uploaded</key>
@@ -29,9 +29,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%2$u / %1$u öge yüklendi</string>
+			<string>%2$u élément sur %1$u a été téléversé</string>
 			<key>other</key>
-			<string>%2$u / %1$u öge yüklendi</string>
+			<string>%2$u éléments sur %1$u ont été téléversés</string>
 		</dict>
 	</dict>
 	<key>%u Item(s) Uploaded</key>
@@ -45,9 +45,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%u öge yüklendi</string>
+			<string>%u élément a été téléversé</string>
 			<key>other</key>
-			<string>%u öge yüklendi</string>
+			<string>%u éléments ont été téléversés</string>
 		</dict>
 	</dict>
 	<key>%u Item(s) Selected</key>
@@ -61,9 +61,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%u öge seçildi</string>
+			<string>%u élément a été sélectionné</string>
 			<key>other</key>
-			<string>%u öge seçildi</string>
+			<string>%u éléments ont été sélectionnés</string>
 		</dict>
 	</dict>
 	<key>%u left</key>
@@ -77,9 +77,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%u kaldı</string>
+			<string>Il en reste %u</string>
 			<key>other</key>
-			<string>%u kaldı</string>
+			<string>Il en reste %u</string>
 		</dict>
 	</dict>
 	<key>You have %1$u item(s) ready to upload to &quot;%2$@&quot;.</key>
@@ -93,9 +93,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>%1$u öge &quot;%2$@&quot; üzerine yüklenmeye hazır.</string>
+			<string>Vous avez %1$u élément prêt à téléverser vers « %2$@ ».</string>
 			<key>other</key>
-			<string>%1$u öge &quot;%2$@&quot; üzerine yüklenmeye hazır.</string>
+			<string>Vous avez %1$u éléments prêts à téléverser vers « %2$@ ».</string>
 		</dict>
 	</dict>
 	<key>This item/These items will be removed from the App only.</key>
@@ -109,9 +109,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Bu öge yalnızca %2$@ uygulamasından kaldırılacak.</string>
+			<string>Cet élément ne sera supprimé que de l’appli %2$@.</string>
 			<key>other</key>
-			<string>Bu ögeler yalnızca %2$@ uygulamasından kaldırılacak.</string>
+			<string>Ces éléments ne seront supprimés que de l’appli %2$@.</string>
 		</dict>
 	</dict>
 	<key>It/They will remain on the server and in your Photos app.</key>
@@ -125,9 +125,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>Sunucu üzerinde ve Fotoğraflar uygulamasında durmaya devam edecek.</string>
+			<string>Il restera sur le serveur et dans votre appli Photos.</string>
 			<key>other</key>
-			<string>Sunucu üzerinde ve Fotoğraflar uygulamasında durmaya devam edecekler.</string>
+			<string>Ils resteront sur le serveur et dans votre appli Photos.</string>
 		</dict>
 	</dict>
 </dict>

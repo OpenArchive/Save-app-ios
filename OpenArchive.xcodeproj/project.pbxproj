@@ -455,6 +455,7 @@
 		A010D39F22D4A3F200FAB433 /* BatchInfoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchInfoAlert.swift; sourceTree = "<group>"; };
 		A011D558233A160D0032304A /* config */ = {isa = PBXFileReference; lastKnownFileType = text; path = config; sourceTree = "<group>"; };
 		A011D559233A1F630032304A /* PreviewViewController+Screenshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PreviewViewController+Screenshots.swift"; sourceTree = "<group>"; };
+		A012B09A27E49ECE002C2A1A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = fr; path = fr.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		A01A7B6E2200A05C00E18DE0 /* ProjectsTabBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsTabBar.swift; sourceTree = "<group>"; };
 		A01A7B712200F2D700E18DE0 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		A020C12223C602A700F219DA /* ClaimViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimViewController.swift; sourceTree = "<group>"; };
@@ -2141,6 +2142,7 @@
 			children = (
 				A09CC28F27E0B16500D6415D /* en */,
 				A09CC29127E0B16C00D6415D /* de */,
+				A012B09A27E49ECE002C2A1A /* fr */,
 			);
 			name = Localizable.stringsdict;
 			sourceTree = "<group>";
