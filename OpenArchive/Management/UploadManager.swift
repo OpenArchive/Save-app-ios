@@ -219,12 +219,6 @@ class UploadManager: Alamofire.SessionDelegate {
         // Schedule a timer, which calls #uploadNext every 10 seconds beginning
         // in 5 seconds.
         RunLoop.main.add(scheduler!, forMode: .common)
-
-        if backgroundTask == .invalid {
-            backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
-                self?.stop()
-            }
-        }
     }
 
 
@@ -350,9 +344,7 @@ class UploadManager: Alamofire.SessionDelegate {
         debug("#done")
 
         guard let id = id else {
-            singleCompletionHandler?(.failed)
-
-            return
+            return endBackgroundTask(.failed)
         }
 
         debug("#done id=\(id), error=\(String(describing: error)), url=\(url?.absoluteString ?? "nil")")
@@ -361,9 +353,7 @@ class UploadManager: Alamofire.SessionDelegate {
             guard id == self.current?.id,
                 let upload = self.current,
                 let asset = upload.asset else {
-                    self.singleCompletionHandler?(.failed)
-
-                    return
+                    return self.endBackgroundTask(.failed)
             }
 
             let collection: Collection?
@@ -439,11 +429,10 @@ class UploadManager: Alamofire.SessionDelegate {
 
             self.current = nil
 
-            if let singleCompletionHandler = self.singleCompletionHandler {
-                // Background upload. We're good here.
-                singleCompletionHandler(asset.isUploaded ? .newData : .failed)
-            }
-            else {
+            self.endBackgroundTask(asset.isUploaded ? .newData : .failed)
+
+            // Only do next, if this is not a background upload.
+            if self.singleCompletionHandler == nil {
                 self.uploadNext()
             }
         }
@@ -489,37 +478,46 @@ class UploadManager: Alamofire.SessionDelegate {
     }
 
     @objc func uploadNext() {
+        if backgroundTask == .invalid {
+            backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
+                self?.endBackgroundTask(.failed)
+            }
+        }
+
         queue.async {
             self.debug("#uploadNext")
 
             if self.globalPause {
-                return self.debug("#uploadNext globally paused")
+                self.debug("#uploadNext globally paused")
+
+                return self.endBackgroundTask(.noData)
             }
 
             if self.reachability?.connection ?? Reachability.Connection.unavailable == .unavailable {
-                self.singleCompletionHandler?(.noData)
+                self.debug("#uploadNext no connection")
 
-                return self.debug("#uploadNext no connection")
+                return self.endBackgroundTask(.noData)
             }
 
             // Check if there's currently an item uploading.
             if self.current != nil {
-                self.singleCompletionHandler?(.noData)
+                self.debug("#uploadNext already one uploading")
 
-                return self.debug("#uploadNext already one uploading")
+                return self.endBackgroundTask(.noData)
             }
 
             if Settings.useTor && !TorManager.shared.started {
-                self.singleCompletionHandler?(.noData)
+                self.debug("#uploadNext should use Tor, but Tor not started")
 
-                return self.debug("#uploadNext should use Tor, but Tor not started")
+                return self.endBackgroundTask(.noData)
             }
 
             guard let upload = self.getNext(),
-                let asset = upload.asset else {
-                    self.singleCompletionHandler?(.noData)
+                  let asset = upload.asset
+            else {
+                self.debug("#uploadNext nothing to upload")
 
-                    return self.debug("#uploadNext nothing to upload")
+                return self.endBackgroundTask(.noData)
             }
 
             self.debug("#uploadNext try upload=\(upload)")
@@ -706,8 +704,22 @@ class UploadManager: Alamofire.SessionDelegate {
         }
     }
 
-    private func stop() {
-        debug("#stop")
+    private func endBackgroundTask(_ result: UIBackgroundFetchResult) {
+        if backgroundTask != .invalid {
+            if singleCompletionHandler != nil {
+                debug("#endBackgroundTask - end background upload")
+            }
+            else {
+                debug("#endBackgroundTask")
+            }
+        }
+
+        UIApplication.shared.endBackgroundTask(backgroundTask)
+        backgroundTask = .invalid
+
+        guard let singleCompletionHandler = singleCompletionHandler else {
+            return
+        }
 
         scheduler?.invalidate()
         scheduler = nil
@@ -719,7 +731,6 @@ class UploadManager: Alamofire.SessionDelegate {
 
         NotificationCenter.default.removeObserver(self)
 
-        UIApplication.shared.endBackgroundTask(backgroundTask)
-        backgroundTask = .invalid
+        singleCompletionHandler(result)
     }
 }

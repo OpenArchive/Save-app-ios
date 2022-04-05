@@ -227,8 +227,8 @@ class MainViewController: TableWithSpacesViewController {
                 provider.loadPreviewImage(options: providerOptions) { thumbnail, error in
                     provider.loadItem(forTypeIdentifier: kUTTypeData as String, options: nil) { item, error in
 
-                        if error != nil {
-                            return self.onCompletion(error!)
+                        if let error = error {
+                            return self.onCompletion(error)
                         }
 
                         let error = NSLocalizedString("Couldn't import item!", comment: "")
