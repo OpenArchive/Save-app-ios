@@ -449,6 +449,7 @@
 		A0057A0527D25EEA00A14532 /* cleaninsights-prod.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "cleaninsights-prod.json"; sourceTree = "<group>"; };
 		A005B8B4234B57E1005611F5 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A005B8B5234B57E1005611F5 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A006AF2E28193E0F007637DD /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docs; sourceTree = "<group>"; };
 		A00A8D43220C63B20083F0CB /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
 		A00A8D46220C7EDD0083F0CB /* AbcFilteredByProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbcFilteredByProjectView.swift; sourceTree = "<group>"; };
 		A00DC98922315D4F004F07E0 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
@@ -621,7 +622,6 @@
 		A0902BF822F0429900062F6E /* demo_password.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = demo_password.txt; sourceTree = "<group>"; };
 		A0902BF922F0429900062F6E /* primary_first_sub_category.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = primary_first_sub_category.txt; sourceTree = "<group>"; };
 		A0902BFA22F0429900062F6E /* primary_category.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = primary_category.txt; sourceTree = "<group>"; };
-		A0902BFB22F05EA200062F6E /* Internet_Archive_Logo.svg */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = Internet_Archive_Logo.svg; sourceTree = "<group>"; };
 		A0902BFD22F05F0400062F6E /* app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon.png; sourceTree = "<group>"; };
 		A092C0EF223A8D4B003EB0AA /* DoneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneDelegate.swift; sourceTree = "<group>"; };
 		A098980522369F8100022851 /* ManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementViewController.swift; sourceTree = "<group>"; };
@@ -666,8 +666,6 @@
 		A0AC0579224CDE9C008B9249 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		A0AC057C224CDF4F008B9249 /* Gemfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Gemfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A0AC057E224CE8C7008B9249 /* TableWithSpacesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableWithSpacesViewController.swift; sourceTree = "<group>"; };
-		A0AC06A52201B94500BD5FBA /* ERM.dia */ = {isa = PBXFileReference; lastKnownFileType = file; path = ERM.dia; sourceTree = "<group>"; };
-		A0AC06A72201B98400BD5FBA /* ERM.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ERM.png; sourceTree = "<group>"; };
 		A0AC06A92201CFD800BD5FBA /* BrowseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewController.swift; sourceTree = "<group>"; };
 		A0AC06AB2201D00100BD5FBA /* FolderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCell.swift; sourceTree = "<group>"; };
 		A0AC06AF2201E30E00BD5FBA /* WorkingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkingOverlay.swift; sourceTree = "<group>"; };
@@ -901,7 +899,7 @@
 			isa = PBXGroup;
 			children = (
 				A011D557233A160D0032304A /* .tx */,
-				A0AC06A42201B94500BD5FBA /* docs */,
+				A006AF2E28193E0F007637DD /* docs */,
 				A0C475B6211481710012937E /* .gitignore */,
 				A058628320E4FC5A00EE2F14 /* Podfile */,
 				A058628520E4FDBF00EE2F14 /* Podfile.lock */,
@@ -1140,16 +1138,6 @@
 				A09DE5F9234F3AAF00CB3E4D /* support_url.txt */,
 			);
 			path = ru;
-			sourceTree = "<group>";
-		};
-		A0AC06A42201B94500BD5FBA /* docs */ = {
-			isa = PBXGroup;
-			children = (
-				A0AC06A72201B98400BD5FBA /* ERM.png */,
-				A0AC06A52201B94500BD5FBA /* ERM.dia */,
-				A0902BFB22F05EA200062F6E /* Internet_Archive_Logo.svg */,
-			);
-			path = docs;
 			sourceTree = "<group>";
 		};
 		A0ACF214224CD8D1008B9249 /* fastlane */ = {
