@@ -247,7 +247,9 @@ class MenuViewController: TableWithSpacesViewController {
 
         let (_, changes) = viewConn.getChanges(forNotifications: notifications, withMappings: projectsMappings)
 
-        if changes.count > 0 {
+        // Don't update table if it's not currently in the view hierarchy.
+        if changes.count > 0 && tableView.window != nil {
+
             tableView.beginUpdates()
 
             for change in changes {
