@@ -487,7 +487,8 @@ PKDownloadButtonDelegate {
         if let notifications = projectsReadConn?.beginLongLivedReadTransaction(),
             let viewConn = projectsReadConn?.ext(ActiveProjectsView.name) as? YapDatabaseViewConnection {
 
-            if viewConn.hasChanges(for: notifications) {
+            // Fix crash by checking, if the snapshots are in sync.
+            if projectsMappings.isNextSnapshot(notifications) && viewConn.hasChanges(for: notifications) {
                 updateSpace() // Needed on iPad, where MainViewController is not reloaded,
                 // because config changes happen in popovers.
 

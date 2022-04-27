@@ -9,6 +9,9 @@
 /* Begin PBXBuildFile section */
 		33E6B43CCAFD4EBCA6FAA8C7 /* Pods_OpenArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B70E96222AA75803A61BDC /* Pods_OpenArchive.framework */; };
 		A004E24C20EBCF1700A1D5F5 /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A004E24B20EBCF1700A1D5F5 /* Formatters.swift */; };
+		A006AF30281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */; };
+		A006AF31281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */; };
+		A006AF32281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */; };
 		A00A8D44220C63B20083F0CB /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00A8D43220C63B20083F0CB /* ProjectsView.swift */; };
 		A00A8D45220C63B20083F0CB /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00A8D43220C63B20083F0CB /* ProjectsView.swift */; };
 		A00A8D47220C7EDD0083F0CB /* AbcFilteredByProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00A8D46220C7EDD0083F0CB /* AbcFilteredByProjectView.swift */; };
@@ -450,6 +453,7 @@
 		A005B8B4234B57E1005611F5 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A005B8B5234B57E1005611F5 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A006AF2E28193E0F007637DD /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docs; sourceTree = "<group>"; };
+		A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YapDatabaseViewMappings+isNextSnapshot.swift"; sourceTree = "<group>"; };
 		A00A8D43220C63B20083F0CB /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
 		A00A8D46220C7EDD0083F0CB /* AbcFilteredByProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbcFilteredByProjectView.swift; sourceTree = "<group>"; };
 		A00DC98922315D4F004F07E0 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
@@ -821,6 +825,7 @@
 				A055204F222566CE00B9645F /* UIView+animateHideShow.swift */,
 				A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */,
 				A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */,
+				A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1814,6 +1819,7 @@
 				A0552051222566CE00B9645F /* UIView+animateHideShow.swift in Sources */,
 				A0C475B4211474A50012937E /* Formatters.swift in Sources */,
 				A0362196220DB2CA003C21DC /* IaSpace.swift in Sources */,
+				A006AF31281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */,
 				A05F79FF22EEFA9F003DBB74 /* RuleFilename.swift in Sources */,
 				A0E9069422CB7D16008CD81B /* SelectedView.swift in Sources */,
 				A045D1F5224CFFB4008FF8C1 /* SelectedSpaceCell.swift in Sources */,
@@ -1944,6 +1950,7 @@
 				A09B53C423266F02005266C2 /* PreviewViewController.swift in Sources */,
 				A09B53C523266F02005266C2 /* StringUtils.swift in Sources */,
 				A0F3368927BC14CE00826667 /* TorManager.swift in Sources */,
+				A006AF32281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */,
 				A09B53C623266F02005266C2 /* BaseViewController.swift in Sources */,
 				A09B53C723266F02005266C2 /* SpacesListCell.swift in Sources */,
 				A09B53C823266F02005266C2 /* MainNavigationController.swift in Sources */,
@@ -2079,6 +2086,7 @@
 				A0E1A68721EE834D00E4F6B7 /* BaseCell.swift in Sources */,
 				A0F7FDDC22491C6C006610F0 /* TintedButton.swift in Sources */,
 				A0E2BC722226AA10006D33E3 /* SelectedSpace.swift in Sources */,
+				A006AF30281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */,
 				A02BC66E2400195C007B05AB /* NSError+from.swift in Sources */,
 				A0631B5B22034F0700B3E90D /* Collection.swift in Sources */,
 				A0656AB821F9BC8500070C4B /* ConnectSpaceViewController.swift in Sources */,
