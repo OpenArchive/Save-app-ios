@@ -20,8 +20,8 @@ def shared_pods
     pod 'UIImageViewAlignedSwift', '~> 0.8' #:git => 'https://github.com/mirego/UIImageViewAlignedSwift.git'
     pod 'FontBlaster', '~> 5.2'
     pod 'CrossroadRegex', :git => 'https://github.com/crossroadlabs/Regex.git', tag: '1.2.0'
-    pod 'Tor', '~> 406.9'
-    pod 'IPtProxyUI', '~> 1.7'
+#    pod 'Tor', '~> 406.9'
+#    pod 'IPtProxyUI', '~> 1.7'
     pod 'CleanInsightsSDK', '~> 2.6'
 end
 

@@ -186,11 +186,13 @@ class UploadManager: Alamofire.SessionDelegate {
         nc.addObserver(self, selector: #selector(dataUsageChanged),
                        name: .uploadManagerDataUsageChange, object: nil)
 
+#if canImport(Tor)
         nc.addObserver(self, selector: #selector(torUseChanged),
                        name: .torUseChanged, object: nil)
 
         nc.addObserver(self, selector: #selector(torUseChanged),
                        name: .torStarted, object: nil)
+#endif
 
         try? reachability?.startNotifier()
 
@@ -453,6 +455,7 @@ class UploadManager: Alamofire.SessionDelegate {
         reachabilityChanged(notification: Notification(name: .reachabilityChanged))
     }
 
+#if canImport(Tor)
     /**
      User changed Tor flag.
 
@@ -465,6 +468,7 @@ class UploadManager: Alamofire.SessionDelegate {
 
         Conduit.reconfigureSession()
     }
+#endif
 
     /**
      Network status changed.
@@ -506,11 +510,13 @@ class UploadManager: Alamofire.SessionDelegate {
                 return self.endBackgroundTask(.noData)
             }
 
+#if canImport(Tor)
             if Settings.useTor && !TorManager.shared.started {
                 self.debug("#uploadNext should use Tor, but Tor not started")
 
                 return self.endBackgroundTask(.noData)
             }
+#endif
 
             guard let upload = self.getNext(),
                   let asset = upload.asset

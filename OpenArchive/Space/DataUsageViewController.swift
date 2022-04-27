@@ -8,9 +8,12 @@
 
 import UIKit
 import Eureka
-import IPtProxyUI
 
-class DataUsageViewController: FormViewController, BridgesConfDelegate {
+#if canImport(IPtProxyUI)
+import IPtProxyUI
+#endif
+
+class DataUsageViewController: FormViewController {
 
     private static let compressionOptions = [
         NSLocalizedString("Better Quality", comment: ""),
@@ -45,6 +48,8 @@ class DataUsageViewController: FormViewController, BridgesConfDelegate {
             Settings.highCompression = row.value == DataUsageViewController.compressionOptions[1]
         }
 
+#if canImport(Tor)
+        form
         +++ SwitchRow() {
             $0.title = NSLocalizedString("Use Tor", comment: "")
             $0.cell.textLabel?.numberOfLines = 0
@@ -68,6 +73,8 @@ class DataUsageViewController: FormViewController, BridgesConfDelegate {
             }
         }
 
+#if canImport(IPtProxyUI)
+        form
         +++ ButtonRow() {
             $0.title = NSLocalizedString("Bridge Configuration", bundle: Bundle.iPtProxyUI, comment: "#bc-ignore!")
             $0.cell.textLabel?.numberOfLines = 0
@@ -78,10 +85,15 @@ class DataUsageViewController: FormViewController, BridgesConfDelegate {
 
             self?.present(UINavigationController(rootViewController: vc), animated: true)
         }
+#endif
+#endif
     }
+}
 
+// MARK: BridgesConfDelegate
 
-    // MARK: BridgesConfDelegate
+#if canImport(IPtProxyUI)
+extension DataUsageViewController: BridgesConfDelegate {
 
     open var transport: Transport {
         get {
@@ -105,3 +117,4 @@ class DataUsageViewController: FormViewController, BridgesConfDelegate {
         TorManager.shared.reconfigureBridges()
     }
 }
+#endif

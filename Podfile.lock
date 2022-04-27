@@ -41,22 +41,12 @@ PODS:
     - FormatterKit/Resources
   - ImageRow (4.1.0):
     - Eureka (~> 5.3.5)
-  - IPtProxy (1.5.1)
-  - IPtProxyUI (1.7.5):
-    - Eureka (~> 5.3)
-    - ImageRow (~> 4.0)
-    - IPtProxy (~> 1.5)
-    - MBProgressHUD (~> 1.2)
-    - ReachabilitySwift (~> 5.0)
   - MBProgressHUD (1.2.0)
   - ReachabilitySwift (5.0.0)
   - SDCAlertView (12.0.2)
   - SwiftyDropbox (7.0.1):
     - Alamofire (~> 4.9.1)
   - TLPhotoPicker (2.1.9)
-  - Tor (406.10.1):
-    - Tor/Core (= 406.10.1)
-  - Tor/Core (406.10.1)
   - TUSafariActivity (1.0.4)
   - UIImage-Resize (1.0.1)
   - UIImageViewAlignedSwift (0.8.2)
@@ -180,13 +170,11 @@ DEPENDENCIES:
   - FontBlaster (~> 5.2)
   - FormatterKit (~> 1.9)
   - ImageRow (~> 4.0)
-  - IPtProxyUI (~> 1.7)
   - MBProgressHUD (~> 1.2)
   - ReachabilitySwift (~> 5.0)
   - SDCAlertView (~> 12.0)
   - SwiftyDropbox (~> 7.0)
   - TLPhotoPicker (~> 2.1)
-  - Tor (~> 406.9)
   - TUSafariActivity (~> 1.0)
   - UIImage-Resize (~> 1.0)
   - UIImageViewAlignedSwift (~> 0.8)
@@ -203,14 +191,11 @@ SPEC REPOS:
     - FontBlaster
     - FormatterKit
     - ImageRow
-    - IPtProxy
-    - IPtProxyUI
     - MBProgressHUD
     - ReachabilitySwift
     - SDCAlertView
     - SwiftyDropbox
     - TLPhotoPicker
-    - Tor
     - TUSafariActivity
     - UIImage-Resize
     - UIImageViewAlignedSwift
@@ -254,19 +239,16 @@ SPEC CHECKSUMS:
   FontBlaster: 43136e99dc6b3c8d0ba31e29bc6fdbf378b724c6
   FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
   ImageRow: 880c0f052c5a89c80521b485c86ccf723a124e99
-  IPtProxy: f9a94b705cdea8474d7fb995a43a2771aa1b7076
-  IPtProxyUI: 29a43bcd7678cf605c3b8d0efc56d6aca559b955
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDCAlertView: 1c0410de80548da3fed142ded0b97644d9848577
   SwiftyDropbox: e38f83d00b189930edc645b3b955c18133c6a13d
   TLPhotoPicker: 939c40eaad130b69f9571e61e021e8120fa76329
-  Tor: d68f73a29612bc5b9d79f15853eccebb60c8ef86
   TUSafariActivity: afc55a00965377939107ce4fdc7f951f62454546
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
   YapDatabase: 260b1b0b3e6ae6775383edc923e19813586615eb
 
-PODFILE CHECKSUM: a806033e3bae853a6b264eb2e09a35bb96cd6c2c
+PODFILE CHECKSUM: 97729f371a9ed81cedfe52df7bae9302f5028907
 
 COCOAPODS: 1.11.3

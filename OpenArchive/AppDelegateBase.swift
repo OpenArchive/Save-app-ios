@@ -28,9 +28,11 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 
         Db.setup()
 
+#if canImport(Tor)
         if Settings.useTor {
             TorManager.shared.start()
         }
+#endif
 
         uploadManager = UploadManager.shared
 
@@ -146,9 +148,11 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     func application(_ application: UIApplication, performFetchWithCompletionHandler
                      completionHandler: @escaping (UIBackgroundFetchResult) -> Void)
     {
+#if canImport(Tor)
         if Settings.useTor {
             return completionHandler(.noData)
         }
+#endif
 
         Db.setup()
 

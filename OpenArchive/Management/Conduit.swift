@@ -33,9 +33,8 @@ class Conduit {
                 conf.isDiscretionary = false
                 conf.shouldUseExtendedBackgroundIdleMode = true
 
-                _backgroundSessionManager = SessionManager(
-                    configuration: TorManager.shared.sessionConf(conf),
-                    delegate: UploadManager.shared)
+                _backgroundSessionManager = SessionManager.withImprovedConf(
+                    configuration: conf, delegate: UploadManager.shared)
 
                 _backgroundSessionManager?.backgroundCompletionHandler = backgroundCompletionHandler
 
@@ -61,9 +60,7 @@ class Conduit {
     class var foregroundSessionManager: SessionManager {
         syncQueue.sync {
             if _foregroundSessionManager == nil {
-                _foregroundSessionManager = SessionManager(
-                    configuration: TorManager.shared.sessionConf(),
-                    delegate: UploadManager.shared)
+                _foregroundSessionManager = SessionManager.withImprovedConf(delegate: UploadManager.shared)
             }
         }
 

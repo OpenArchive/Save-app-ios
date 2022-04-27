@@ -15,6 +15,9 @@
 		A006AF3428198752007637DD /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3328198752007637DD /* AlertHelper.swift */; };
 		A006AF3528198752007637DD /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3328198752007637DD /* AlertHelper.swift */; };
 		A006AF3628198752007637DD /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3328198752007637DD /* AlertHelper.swift */; };
+		A006AF3828199687007637DD /* SessionManager+improvedConf.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3728199687007637DD /* SessionManager+improvedConf.swift */; };
+		A006AF3928199687007637DD /* SessionManager+improvedConf.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3728199687007637DD /* SessionManager+improvedConf.swift */; };
+		A006AF3A28199687007637DD /* SessionManager+improvedConf.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3728199687007637DD /* SessionManager+improvedConf.swift */; };
 		A00A8D44220C63B20083F0CB /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00A8D43220C63B20083F0CB /* ProjectsView.swift */; };
 		A00A8D45220C63B20083F0CB /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00A8D43220C63B20083F0CB /* ProjectsView.swift */; };
 		A00A8D47220C7EDD0083F0CB /* AbcFilteredByProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00A8D46220C7EDD0083F0CB /* AbcFilteredByProjectView.swift */; };
@@ -458,6 +461,7 @@
 		A006AF2E28193E0F007637DD /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docs; sourceTree = "<group>"; };
 		A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YapDatabaseViewMappings+isNextSnapshot.swift"; sourceTree = "<group>"; };
 		A006AF3328198752007637DD /* AlertHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
+		A006AF3728199687007637DD /* SessionManager+improvedConf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionManager+improvedConf.swift"; sourceTree = "<group>"; };
 		A00A8D43220C63B20083F0CB /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
 		A00A8D46220C7EDD0083F0CB /* AbcFilteredByProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbcFilteredByProjectView.swift; sourceTree = "<group>"; };
 		A00DC98922315D4F004F07E0 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
@@ -831,6 +835,7 @@
 				A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */,
 				A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */,
 				A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */,
+				A006AF3728199687007637DD /* SessionManager+improvedConf.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1778,6 +1783,7 @@
 				A070335C2119E7DF00BF1F33 /* Request+debug.swift in Sources */,
 				A0AC0582224CEC1C008B9249 /* SpaceCell.swift in Sources */,
 				A0212FCF22D374CA009079DC /* UICollectionView+selection.swift in Sources */,
+				A006AF3928199687007637DD /* SessionManager+improvedConf.swift in Sources */,
 				A0631B562203022100B3E90D /* BaseTableViewController.swift in Sources */,
 				A071290A2111DC6A007A432A /* StringUtils.swift in Sources */,
 				A029F6842118715700C4EF6D /* AssetFactory.swift in Sources */,
@@ -1861,6 +1867,7 @@
 				A09B539F23266F02005266C2 /* SelectedView.swift in Sources */,
 				A09B53A023266F02005266C2 /* UIStoryboard+main.swift in Sources */,
 				A09B53A123266F02005266C2 /* DarkroomViewController.swift in Sources */,
+				A006AF3A28199687007637DD /* SessionManager+improvedConf.swift in Sources */,
 				A09B53A223266F02005266C2 /* RuleFilename.swift in Sources */,
 				A09B53A323266F02005266C2 /* Request+debug.swift in Sources */,
 				A09B53A423266F02005266C2 /* SelectedSpaceCell.swift in Sources */,
@@ -1941,6 +1948,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A006AF3828199687007637DD /* SessionManager+improvedConf.swift in Sources */,
 				A0E739D820E4C85D00DB31E1 /* AppDelegate.swift in Sources */,
 				A0BBEF8922846F310071EE93 /* Geocoder.swift in Sources */,
 				A0362195220DB2CA003C21DC /* IaSpace.swift in Sources */,

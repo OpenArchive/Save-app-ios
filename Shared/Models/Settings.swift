@@ -7,7 +7,10 @@
 //
 
 import UIKit
+
+#if canImport(IPtProxyUI)
 import IPtProxyUI
+#endif
 
 class Settings {
 
@@ -45,6 +48,7 @@ class Settings {
         }
     }
 
+#if canImport(Tor)
     class var useTor: Bool {
         get {
             defaults?.bool(forKey: kUseTor) ?? false
@@ -54,6 +58,7 @@ class Settings {
         }
     }
 
+#if canImport(IPtProxyUI)
     class var transport: Transport {
         get {
             Transport(rawValue: defaults?.integer(forKey: kTransport) ?? 0) ?? .none
@@ -62,6 +67,8 @@ class Settings {
             defaults?.set(newValue.rawValue, forKey: kTransport)
         }
     }
+#endif
+#endif
 
     class var customBridges: [String]? {
         get {

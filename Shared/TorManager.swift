@@ -7,9 +7,13 @@
 //
 
 import NetworkExtension
+
+#if canImport(Tor)
 import Tor
+
+#if canImport(IPtProxyUI)
 import IPtProxyUI
-import Alamofire
+#endif
 
 extension Notification.Name {
 
@@ -44,6 +48,7 @@ class TorManager {
         connected && port > 0
     }
 
+    public var port = 0
 
     private var torThread: TorThread?
 
@@ -53,11 +58,10 @@ class TorManager {
 
     private lazy var controllerQueue = DispatchQueue.global(qos: .userInitiated)
 
+#if canImport(IPtProxyUI)
     private var transport = Transport.none
 
     private var ipStatus = IpSupport.Status.unavailable
-
-    private var port = 0
 
 
     private init() {
@@ -76,14 +80,17 @@ class TorManager {
             }
         })
     }
+#endif
 
     func start() {
         guard !connected else {
             return
         }
 
+#if canImport(IPtProxyUI)
         transport = Settings.transport
         transport.start()
+#endif
 
         torConf = getTorConf()
 
@@ -170,6 +177,7 @@ class TorManager {
         }
     }
 
+#if canImport(IPtProxyUI)
     /**
      Will reconfigure Tor with changed bridge configuration, if it is already running.
 
@@ -236,35 +244,14 @@ class TorManager {
             }
         }
     }
-
-    func sessionConf(_ conf: URLSessionConfiguration? = nil) -> URLSessionConfiguration {
-        let conf = conf ?? URLSessionConfiguration.default
-
-        conf.sharedContainerIdentifier = Constants.appGroup
-
-        // Fix error "CredStore - performQuery - Error copying matching creds."
-        conf.urlCredentialStorage = nil
-
-        conf.httpAdditionalHeaders = SessionManager.defaultHTTPHeaders
-
-        if Settings.useTor {
-            conf.connectionProxyDictionary = [
-                kCFProxyTypeKey: kCFProxyTypeSOCKS,
-                kCFStreamPropertySOCKSProxyHost: "localhost",
-                kCFStreamPropertySOCKSProxyPort: port,
-                kCFStreamPropertySOCKSVersion: kCFStreamSocketSOCKSVersion5,
-            ]
-        }
-
-//        print("[\(String(describing: type(of: self)))] sessionConf=[identifier=\(conf.identifier ?? "(nil)"), requestCachePolicy=\(conf.requestCachePolicy), timeoutIntervalForRequest=\(conf.timeoutIntervalForRequest), timeoutIntervalForResource=\(conf.timeoutIntervalForResource), networkServiceType=\(conf.networkServiceType), allowsCellularAccess=\(conf.allowsCellularAccess), waitsForConnectivity=\(conf.waitsForConnectivity), isDiscretionary=\(conf.isDiscretionary), sharedContainerIdentifier=\(conf.sharedContainerIdentifier ?? "(nil)"), sessionSendsLaunchEvents=\(conf.sessionSendsLaunchEvents), connectionProxyDictionary=\(conf.connectionProxyDictionary ?? [:]), tlsMinimumSupportedProtocol=\(conf.tlsMinimumSupportedProtocol), httpShouldUsePipelining=\(conf.httpShouldUsePipelining), httpShouldSetCookies=\(conf.httpShouldSetCookies), httpCookieAcceptPolicy=\(conf.httpCookieAcceptPolicy), httpAdditionalHeaders=\(conf.httpAdditionalHeaders ?? [:]), httpMaximumConnectionsPerHost=\(conf.httpMaximumConnectionsPerHost), httpCookieStorage=\(String(describing: conf.httpCookieStorage)), urlCredentialStorage=\(String(describing: conf.urlCredentialStorage)), urlCache=\(String(describing: conf.urlCache)), shouldUseExtendedBackgroundIdleMode=\(conf.shouldUseExtendedBackgroundIdleMode), protocolClasses=\(conf.protocolClasses ?? []), multipathServiceType=\(conf.multipathServiceType)]")
-
-        return conf
-    }
+#endif
 
     func stop() {
         port = 0
 
+#if canImport(IPtProxyUI)
         transport.stop()
+#endif
 
         torController?.disconnect()
         torController = nil
@@ -300,9 +287,11 @@ class TorManager {
             .urls(for: .cachesDirectory, in: .userDomainMask)
             .first?.appendingPathComponent("tor", isDirectory: true)
 
+#if canImport(IPtProxyUI)
         conf.arguments += transportConf(Transport.asArguments).joined()
 
         conf.arguments += ipStatus.torConf(transport, Transport.asArguments).joined()
+#endif
 
         conf.options = [
             // Log
@@ -316,6 +305,7 @@ class TorManager {
         return conf
     }
 
+#if canImport(IPtProxyUI)
     private func transportConf<T>(_ cv: (String, String) -> T) -> [T] {
 
         var arguments = transport.torConf(cv)
@@ -328,4 +318,6 @@ class TorManager {
 
         return arguments
     }
+#endif
 }
+#endif
