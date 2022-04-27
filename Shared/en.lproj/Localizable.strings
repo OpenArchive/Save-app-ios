@@ -160,6 +160,9 @@
 /* SlideshowViewController */
 "Ensure authenticity." = "Ensure authenticity.";
 
+/* AlertHelper */
+"Error" = "Error";
+
 /* Conduit */
 "Failed after too many retries." = "Failed after too many retries.";
 

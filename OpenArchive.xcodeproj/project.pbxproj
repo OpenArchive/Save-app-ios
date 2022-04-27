@@ -12,6 +12,9 @@
 		A006AF30281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */; };
 		A006AF31281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */; };
 		A006AF32281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */; };
+		A006AF3428198752007637DD /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3328198752007637DD /* AlertHelper.swift */; };
+		A006AF3528198752007637DD /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3328198752007637DD /* AlertHelper.swift */; };
+		A006AF3628198752007637DD /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3328198752007637DD /* AlertHelper.swift */; };
 		A00A8D44220C63B20083F0CB /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00A8D43220C63B20083F0CB /* ProjectsView.swift */; };
 		A00A8D45220C63B20083F0CB /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00A8D43220C63B20083F0CB /* ProjectsView.swift */; };
 		A00A8D47220C7EDD0083F0CB /* AbcFilteredByProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00A8D46220C7EDD0083F0CB /* AbcFilteredByProjectView.swift */; };
@@ -454,6 +457,7 @@
 		A005B8B5234B57E1005611F5 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A006AF2E28193E0F007637DD /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docs; sourceTree = "<group>"; };
 		A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YapDatabaseViewMappings+isNextSnapshot.swift"; sourceTree = "<group>"; };
+		A006AF3328198752007637DD /* AlertHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
 		A00A8D43220C63B20083F0CB /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
 		A00A8D46220C7EDD0083F0CB /* AbcFilteredByProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbcFilteredByProjectView.swift; sourceTree = "<group>"; };
 		A00DC98922315D4F004F07E0 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
@@ -807,6 +811,7 @@
 		A004E24620EBC89200A1D5F5 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				A006AF3328198752007637DD /* AlertHelper.swift */,
 				A0FA93402277387D0086D276 /* Bundle+displayName.swift */,
 				A092C0EF223A8D4B003EB0AA /* DoneDelegate.swift */,
 				A0FE2C1D22E1E8D200C5443F /* Error+friendlyMessage.swift */,
@@ -1393,7 +1398,6 @@
 				A07128F72111CC90007A432A /* Sources */,
 				A07128F82111CC90007A432A /* Frameworks */,
 				A07128F92111CC90007A432A /* Resources */,
-				846FCE2AA167F22AE488980F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1414,7 +1418,6 @@
 				A09B53E523266F02005266C2 /* Resources */,
 				A09B540923266F02005266C2 /* Embed App Extensions */,
 				E7FE597BB1863CFAF2EAA147 /* [CP] Embed Pods Frameworks */,
-				66CFE7CFB44DA202BAF0901F /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1436,7 +1439,6 @@
 				A0E739D220E4C85D00DB31E1 /* Resources */,
 				6BCC37D718DDB7E1EEBC22C9 /* [CP] Embed Pods Frameworks */,
 				A07129092111CC90007A432A /* Embed App Extensions */,
-				FC9286BA774C0CEDDE812024 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1627,23 +1629,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		66CFE7CFB44DA202BAF0901F /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-OpenArchive Screenshots/Pods-OpenArchive Screenshots-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-OpenArchive Screenshots/Pods-OpenArchive Screenshots-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OpenArchive Screenshots/Pods-OpenArchive Screenshots-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		6BCC37D718DDB7E1EEBC22C9 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1659,23 +1644,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OpenArchive/Pods-OpenArchive-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		846FCE2AA167F22AE488980F /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ShareExtension/Pods-ShareExtension-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-ShareExtension/Pods-ShareExtension-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-ShareExtension/Pods-ShareExtension-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A08CA2CE27DBB78200F23100 /* ShellScript */ = {
@@ -1732,23 +1700,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OpenArchive Screenshots/Pods-OpenArchive Screenshots-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FC9286BA774C0CEDDE812024 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-OpenArchive/Pods-OpenArchive-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-OpenArchive/Pods-OpenArchive-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OpenArchive/Pods-OpenArchive-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		FF11D95E5AC7DA852AB008A3 /* [CP] Check Pods Manifest.lock */ = {
@@ -1852,6 +1803,7 @@
 				A0C475B5211474A70012937E /* RegexUtils.swift in Sources */,
 				A0631B572203068900B3E90D /* MenuItemCell.swift in Sources */,
 				A0362193220DA390003C21DC /* UIColor+accent.swift in Sources */,
+				A006AF3528198752007637DD /* AlertHelper.swift in Sources */,
 				A0C797E7228063280009751A /* AbcFilteredByCollectionView.swift in Sources */,
 				A0DE78B021F76D2200B6B68B /* Project.swift in Sources */,
 				A0FB4DB621F89FD500B46099 /* AssetsByCollectionView.swift in Sources */,
@@ -1934,6 +1886,7 @@
 				A09B53B623266F02005266C2 /* ProjectsView.swift in Sources */,
 				A09B541A232673EF005266C2 /* AppDelegateBase.swift in Sources */,
 				A09B53B723266F02005266C2 /* BatchInfoAlert.swift in Sources */,
+				A006AF3628198752007637DD /* AlertHelper.swift in Sources */,
 				A09B53B823266F02005266C2 /* ManagementViewController.swift in Sources */,
 				A09B53B923266F02005266C2 /* TitleCell.swift in Sources */,
 				A09B53BA23266F02005266C2 /* DoneDelegate.swift in Sources */,
@@ -2066,6 +2019,7 @@
 				A0AFCF0D22300279005E57FD /* PreviewViewController.swift in Sources */,
 				A056555523F6D1C600DE0168 /* DropboxViewController.swift in Sources */,
 				A0457E6720EF96FB00B8FBCB /* StringUtils.swift in Sources */,
+				A006AF3428198752007637DD /* AlertHelper.swift in Sources */,
 				A05C582A21EF94FC00141633 /* BaseViewController.swift in Sources */,
 				A050AA492225DF4000AE5D15 /* SpacesListCell.swift in Sources */,
 				A0656ABA21F9BFB800070C4B /* MainNavigationController.swift in Sources */,

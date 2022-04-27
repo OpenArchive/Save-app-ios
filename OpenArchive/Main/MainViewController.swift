@@ -12,7 +12,6 @@ import Photos
 import YapDatabase
 import TLPhotoPicker
 import DownloadButton
-import IPtProxyUI
 
 class MainViewController: UIViewController, UICollectionViewDelegate,
 UICollectionViewDataSource, UINavigationControllerDelegate, UIDocumentPickerDelegate,

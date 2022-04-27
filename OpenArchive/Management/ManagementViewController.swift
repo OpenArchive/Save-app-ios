@@ -10,7 +10,6 @@ import UIKit
 import YapDatabase
 import DownloadButton
 import CleanInsightsSDK
-import IPtProxyUI
 
 class ManagementViewController: BaseTableViewController, UploadCellDelegate, AnalyticsCellDelegate {
 

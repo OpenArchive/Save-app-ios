@@ -10,7 +10,6 @@ import UIKit
 import Eureka
 import FavIcon
 import YapDatabase
-import IPtProxyUI
 
 class PrivateServerViewController: BaseServerViewController {
 

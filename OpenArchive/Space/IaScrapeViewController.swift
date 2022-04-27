@@ -8,7 +8,6 @@
 
 import UIKit
 import WebKit
-import IPtProxyUI
 
 protocol ScrapeDelegate {
     func scraped(accessKey: String, secretKey: String)

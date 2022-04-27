@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import IPtProxyUI
 
 class DuplicateProjectAlert: UIAlertController {
 
