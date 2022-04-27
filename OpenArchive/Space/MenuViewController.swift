@@ -239,8 +239,10 @@ class MenuViewController: TableWithSpacesViewController {
                 return
         }
 
-        if !viewConn.hasChanges(for: notifications) {
+        if !projectsMappings.isNextSnapshot(notifications) || !viewConn.hasChanges(for: notifications) {
             projectsReadConn?.update(mappings: projectsMappings)
+
+            tableView.reloadSections([1], with: .automatic)
 
             return
         }

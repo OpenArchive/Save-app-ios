@@ -5,7 +5,7 @@ platform :ios, '11.0'
 use_frameworks!
 
 def shared_pods
-    pod 'YapDatabase', '~> 4.0'
+    pod 'YapDatabase', :git => 'https://github.com/difftim/YapDatabase.git' #'~> 4.0'
     pod 'Alamofire', '~> 4.9'
     pod 'FilesProvider', :git => 'https://github.com/ayuzhin/FileProvider.git' # '~> 0.26'
     pod 'SwiftyDropbox', '~> 7.0'

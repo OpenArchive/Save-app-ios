@@ -222,7 +222,15 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
      Will be called, when something changed the database.
      */
     @objc func yapDatabaseModified(notification: Notification) {
-        let (sectionChanges, rowChanges) = sc.yapDatabaseModified()
+        let (forceFull, sectionChanges, rowChanges) = sc.yapDatabaseModified()
+
+        if forceFull {
+            DispatchQueue.main.async {
+                self.refresh(direction: .forward)
+            }
+
+            return
+        }
 
         if sectionChanges.count < 1 && rowChanges.count < 1 {
             return

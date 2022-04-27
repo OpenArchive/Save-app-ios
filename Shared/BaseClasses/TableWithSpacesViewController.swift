@@ -101,8 +101,10 @@ class TableWithSpacesViewController: BaseTableViewController, UICollectionViewDe
             return
         }
 
-        if !viewConn.hasChanges(for: notifications) {
+        if !spacesMappings.isNextSnapshot(notifications) || !viewConn.hasChanges(for: notifications) {
             spacesReadConn?.update(mappings: spacesMappings)
+
+            collectionView?.reloadData()
 
             return
         }

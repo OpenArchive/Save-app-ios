@@ -136,12 +136,6 @@ PKDownloadButtonDelegate {
     func updateFilter() {
         ProjectsView.updateGrouping()
 
-        tabBar.load()
-
-        // Reset collection, otherwise an inconsistent changeset will be applied
-        // in #yapDatabaseModified.
-        collectionView.reloadData()
-
         AbcFilteredByProjectView.updateFilter(tabBar.selectedProject?.id)
     }
 
@@ -501,17 +495,19 @@ PKDownloadButtonDelegate {
             }
             else {
                 projectsReadConn?.update(mappings: projectsMappings)
+                tabBar.load()
             }
         }
 
         var toDelete = IndexSet()
         var toInsert = IndexSet()
         var toReload = IndexSet()
+        var forceFull = false
 
         if let notifications = collectionsReadConn?.beginLongLivedReadTransaction(),
             let viewConn = collectionsReadConn?.ext(CollectionsView.name) as? YapDatabaseViewConnection {
 
-            if viewConn.hasChanges(for: notifications) {
+            if collectionsMappings.isNextSnapshot(notifications) && viewConn.hasChanges(for: notifications) {
                 let (_, collectionChanges) = viewConn.getChanges(forNotifications: notifications,
                                                                  withMappings: collectionsMappings)
 
@@ -532,13 +528,14 @@ PKDownloadButtonDelegate {
             }
             else {
                 collectionsReadConn?.update(mappings: collectionsMappings)
+                forceFull = true
             }
         }
 
         if let notifications = assetsReadConn?.beginLongLivedReadTransaction(),
             let viewConn = assetsReadConn?.ext(AbcFilteredByProjectView.name) as? YapDatabaseViewConnection {
 
-            if viewConn.hasChanges(for: notifications) {
+            if assetsMappings.isNextSnapshot(notifications) && viewConn.hasChanges(for: notifications) {
                 let (sectionChanges, rowChanges) = viewConn.getChanges(forNotifications: notifications,
                                                                        withMappings: assetsMappings)
 
@@ -581,6 +578,7 @@ PKDownloadButtonDelegate {
             }
             else {
                 assetsReadConn?.update(mappings: assetsMappings)
+                forceFull = true
             }
         }
 
@@ -588,15 +586,18 @@ PKDownloadButtonDelegate {
         toReload.subtract(toDelete)
         toReload.subtract(toInsert)
 
-        if toDelete.count > 0 || toInsert.count > 0 || toReload.count > 0 {
+        if forceFull {
+            collectionView.reloadData()
+        }
+        else if !toDelete.isEmpty || !toInsert.isEmpty || !toReload.isEmpty {
             collectionView.performBatchUpdates({
                 collectionView.deleteSections(toDelete)
                 collectionView.insertSections(toInsert)
                 collectionView.reloadSections(toReload)
             })
-
-            collectionView.toggle(numberOfSections(in: collectionView) != 0, animated: true)
         }
+
+        collectionView.toggle(numberOfSections(in: collectionView) != 0, animated: true)
     }
 
 

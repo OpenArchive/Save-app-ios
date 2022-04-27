@@ -247,9 +247,15 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
      Will be called, when something changed the database.
      */
     @objc func yapDatabaseModified(notification: Notification) {
-        let (sectionChanges, rowChanges) = sc.yapDatabaseModified()
+        let (forceFull, sectionChanges, rowChanges) = sc.yapDatabaseModified()
 
         updateTitle()
+
+        if forceFull {
+            tableView.reloadData()
+
+            return
+        }
 
         if sectionChanges.count < 1 && rowChanges.count < 1 {
             return

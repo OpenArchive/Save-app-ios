@@ -95,18 +95,20 @@ class SelectedCollection {
         return indexPath
     }
 
-    func yapDatabaseModified() -> ([YapDatabaseViewSectionChange], [YapDatabaseViewRowChange]) {
+    func yapDatabaseModified() -> (forceFull: Bool, sectionChanges: [YapDatabaseViewSectionChange], rowChanges: [YapDatabaseViewRowChange]) {
         guard let notifications = readConn?.beginLongLivedReadTransaction(),
             let viewConn = readConn?.ext(AbcFilteredByCollectionView.name) as? YapDatabaseViewConnection else {
-                return ([], [])
+                return (false, [], [])
         }
 
-        if !viewConn.hasChanges(for: notifications) {
+        if !mappings.isNextSnapshot(notifications) || !viewConn.hasChanges(for: notifications) {
             readConn?.update(mappings: mappings)
 
-            return ([], [])
+            return (true, [], [])
         }
 
-        return viewConn.getChanges(forNotifications: notifications, withMappings: mappings)
+        let changes = viewConn.getChanges(forNotifications: notifications, withMappings: mappings)
+
+        return (false, changes.sectionChanges, changes.rowChanges)
     }
 }

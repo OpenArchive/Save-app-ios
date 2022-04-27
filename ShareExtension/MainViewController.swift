@@ -263,7 +263,7 @@ class MainViewController: TableWithSpacesViewController {
         projectsReadConn?.beginLongLivedReadTransaction()
         projectsReadConn?.update(mappings: projectsMappings)
 
-        tableView.reloadSections(IndexSet(integer: MainViewController.projectSection), with: .automatic)
+        tableView.reloadSections([MainViewController.projectSection], with: .automatic)
     }
 
 

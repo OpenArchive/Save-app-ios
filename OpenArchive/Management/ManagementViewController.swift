@@ -265,8 +265,10 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
                 return
         }
 
-        if !viewConn.hasChanges(for: notifications) {
+        if !mappings.isNextSnapshot(notifications) || !viewConn.hasChanges(for: notifications) {
             readConn?.update(mappings: mappings)
+
+            tableView.reloadSections([1], with: .automatic)
 
             return
         }
