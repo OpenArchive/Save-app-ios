@@ -33,6 +33,8 @@ class MainViewController: TableWithSpacesViewController {
 
     private var progress = Progress()
 
+    private var successfulItems = 0
+
     private lazy var hud: MBProgressHUD = {
         let hud = MBProgressHUD.showAdded(to: view, animated: true)
         hud.minShowTime = 1
@@ -334,6 +336,9 @@ class MainViewController: TableWithSpacesViewController {
                 self.hud.detailsLabel.text = error
             }
         }
+        else {
+            successfulItems += 1
+        }
 
         progress.completedUnitCount += 1
 
@@ -351,12 +356,18 @@ class MainViewController: TableWithSpacesViewController {
     }
 
     private func showNotification() {
+        guard successfulItems > 0 else {
+            // If only errors happened, the HUD will currently show an error, anyway.
+            // So no need to display a notification.
+            return
+        }
+
         if notificationsAllowed {
             let content = UNMutableNotificationContent()
 
             content.body = String.localizedStringWithFormat(
                 NSLocalizedString("You have %1$u item(s) ready to upload to \"%2$@\".", comment: "#bc-ignore!"),
-                progress.totalUnitCount, Project.getName(project))
+                successfulItems, Project.getName(project))
 
             content.userInfo[Project.collection] = project?.id
 
