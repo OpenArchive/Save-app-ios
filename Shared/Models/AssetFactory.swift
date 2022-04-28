@@ -300,6 +300,61 @@ class AssetFactory {
     }
 
     /**
+     Create an `Asset` object from given `Data` and store it in the database.
+
+     Will try to generate a thumbnail from the asset's file, if `thumbnail` is `nil` or could not
+     be written to the proper location for whatever reason.
+
+     If an error happened, your `resultHandler` will receive nil as `asset`.
+
+     - parameter data: The `Data` content.
+     - parameter uti: The UTI of the data.
+     - parameter name: An optional filename.
+     - parameter thumbnail: A `UIImage` which represents a thumbnail of this asset.
+     - parameter collection: The collection the asset will belong to.
+     - parameter resultHandler: Callback with the created `Asset` object.
+     */
+    class func create(from data: Data, uti: String, name: String? = nil, thumbnail: UIImage? = nil,
+                      _ collection: Collection, _ resultHandler: ResultHandler? = nil) {
+        let asset = Asset(collection, uti: uti)
+
+        if let name = name {
+            if let ext = Asset.getFileExt(uti: asset.uti) {
+                let url = URL(fileURLWithPath: name).deletingPathExtension().appendingPathExtension(ext)
+                asset.filename = url.lastPathComponent
+            }
+            else {
+                asset.filename = name
+            }
+        }
+
+        if  let file = asset.file, createParentDir(file: file)
+                && (try? data.write(to: file)) != nil {
+
+            self.fetchLocation(asset)
+
+            if let thumb = asset.thumb,
+                createParentDir(file: thumb) {
+
+                if let thumbnail = thumbnail {
+                    try? thumbnail.jpegData(compressionQuality: thumbnailCompressionQuality)?.write(to: thumb)
+                }
+
+                if !FileManager.default.fileExists(atPath: thumb.path) {
+                    self.createThumb(asset)
+                }
+            }
+
+            asset.isReady = true
+
+            store(asset, resultHandler)
+        }
+        else {
+            resultHandler?(nil)
+        }
+    }
+
+    /**
      Create an `Asset` object from an XCAsset with the given `name` and return it.
 
      Will try to generate a thumbnail from the asset's file.

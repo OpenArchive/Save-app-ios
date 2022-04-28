@@ -235,16 +235,45 @@ class MainViewController: TableWithSpacesViewController {
 
                         let error = NSLocalizedString("Couldn't import item!", comment: "")
 
-                        guard let url = item as? URL else {
-                            return self.onCompletion(error: error)
+                        if let url = item as? URL {
+                            AssetFactory.create(fromFileUrl: url,
+                                                thumbnail: thumbnail as? UIImage,
+                                                collection)
+                            { asset in
+                                self.onCompletion(error: asset == nil ? error : nil)
+                            }
+
+                            return
                         }
 
-                        AssetFactory.create(fromFileUrl: url,
-                                            thumbnail: thumbnail as? UIImage,
-                                            collection)
-                        { asset in
-                            self.onCompletion(error: asset == nil ? error : nil)
+                        if let image = (item as? UIImage)?.jpegData(compressionQuality: 1) {
+                            AssetFactory.create(from: image,
+                                                uti: kUTTypeJPEG as String,
+                                                name: provider.suggestedName,
+                                                thumbnail: thumbnail as? UIImage,
+                                                collection)
+                            { asset in
+                                self.onCompletion(error: asset == nil ? error : nil)
+                            }
+
+                            return
                         }
+
+                        if let data = item as? Data {
+                            AssetFactory.create(from: data,
+                                                uti: kUTTypeData as String,
+                                                name: provider.suggestedName,
+                                                thumbnail: thumbnail as? UIImage,
+                                                collection)
+                            { asset in
+                                print("[\(String(describing: type(of: self)))] asset=\(asset?.description ?? "(nil)")")
+                                self.onCompletion(error: asset == nil ? error : nil)
+                            }
+
+                            return
+                        }
+
+                        return self.onCompletion(error: error)
                     }
                 }
             }
