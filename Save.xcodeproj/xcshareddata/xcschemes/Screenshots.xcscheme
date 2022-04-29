@@ -17,7 +17,7 @@
                BlueprintIdentifier = "A05768D622E0B67D00B39FCE"
                BuildableName = "Screenshots.xctest"
                BlueprintName = "Screenshots"
-               ReferencedContainer = "container:OpenArchive.xcodeproj">
+               ReferencedContainer = "container:Save.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -35,7 +35,7 @@
                BlueprintIdentifier = "A05768D622E0B67D00B39FCE"
                BuildableName = "Screenshots.xctest"
                BlueprintName = "Screenshots"
-               ReferencedContainer = "container:OpenArchive.xcodeproj">
+               ReferencedContainer = "container:Save.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
@@ -56,7 +56,7 @@
             BlueprintIdentifier = "A05768D622E0B67D00B39FCE"
             BuildableName = "Screenshots.xctest"
             BlueprintName = "Screenshots"
-            ReferencedContainer = "container:OpenArchive.xcodeproj">
+            ReferencedContainer = "container:Save.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </LaunchAction>
@@ -72,7 +72,7 @@
             BlueprintIdentifier = "A05768D622E0B67D00B39FCE"
             BuildableName = "Screenshots.xctest"
             BlueprintName = "Screenshots"
-            ReferencedContainer = "container:OpenArchive.xcodeproj">
+            ReferencedContainer = "container:Save.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>

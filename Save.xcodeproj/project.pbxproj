@@ -7,7 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		33E6B43CCAFD4EBCA6FAA8C7 /* Pods_OpenArchive.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 43B70E96222AA75803A61BDC /* Pods_OpenArchive.framework */; };
+		6C7C2C3525A4B8B8BC2F0728 /* Pods_ShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8795B24EAF01D5B012DD8C /* Pods_ShareExtension.framework */; };
+		83983C39A73BA40904C637BF /* Pods_Save_Screenshots.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAF278D72999D4B24346F09C /* Pods_Save_Screenshots.framework */; };
 		A004E24C20EBCF1700A1D5F5 /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A004E24B20EBCF1700A1D5F5 /* Formatters.swift */; };
 		A006AF30281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */; };
 		A006AF31281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */; };
@@ -386,8 +387,7 @@
 		A0FE2C2322E1FE7C00C5443F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0FE2C2622E1FE7C00C5443F /* Localizable.strings */; };
 		A0FE2C2422E1FE7C00C5443F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0FE2C2622E1FE7C00C5443F /* Localizable.strings */; };
 		A0FE2C2A22E20C5A00C5443F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0FE2C2C22E20C5A00C5443F /* InfoPlist.strings */; };
-		B9657E705266F73AE15D3269 /* Pods_OpenArchive_Screenshots.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3256CEC8658B5572FC9C5A6A /* Pods_OpenArchive_Screenshots.framework */; };
-		E3237719CED5D0E5FB3A9540 /* Pods_ShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA57E87D37FC97CE551149A6 /* Pods_ShareExtension.framework */; };
+		DC04FCF6E9ABDAA58A07B9B0 /* Pods_Save.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 850EC262E1F87BDADC4D0989 /* Pods_Save.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -447,13 +447,12 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		00BB052414C5B8DF89BF092F /* Pods-OpenArchive.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenArchive.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OpenArchive/Pods-OpenArchive.debug.xcconfig"; sourceTree = "<group>"; };
-		274ACB8FFE4344F16E59B8A9 /* Pods-OpenArchive Screenshots.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenArchive Screenshots.debug.xcconfig"; path = "Pods/Target Support Files/Pods-OpenArchive Screenshots/Pods-OpenArchive Screenshots.debug.xcconfig"; sourceTree = "<group>"; };
-		2946CD89A7C904C6188D6C41 /* Pods-ShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareExtension.release.xcconfig"; path = "Pods/Target Support Files/Pods-ShareExtension/Pods-ShareExtension.release.xcconfig"; sourceTree = "<group>"; };
-		3256CEC8658B5572FC9C5A6A /* Pods_OpenArchive_Screenshots.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OpenArchive_Screenshots.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		43B70E96222AA75803A61BDC /* Pods_OpenArchive.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_OpenArchive.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		5FD7A7F483ADD21139D54407 /* Pods-ShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareExtension.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ShareExtension/Pods-ShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
-		9A0DA47842D4E38A056664EC /* Pods-OpenArchive Screenshots.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenArchive Screenshots.release.xcconfig"; path = "Pods/Target Support Files/Pods-OpenArchive Screenshots/Pods-OpenArchive Screenshots.release.xcconfig"; sourceTree = "<group>"; };
+		111D2AAAE2FA0338F269EF4B /* Pods-Save Screenshots.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Save Screenshots.release.xcconfig"; path = "Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots.release.xcconfig"; sourceTree = "<group>"; };
+		3C52C8B3B068B3B1ABDB9D97 /* Pods-Save.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Save.release.xcconfig"; path = "Target Support Files/Pods-Save/Pods-Save.release.xcconfig"; sourceTree = "<group>"; };
+		41B2D02800773CFB7DC01B8D /* Pods-Save.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Save.debug.xcconfig"; path = "Target Support Files/Pods-Save/Pods-Save.debug.xcconfig"; sourceTree = "<group>"; };
+		44AFA989BDA3869A70BB7E55 /* Pods-Save Screenshots.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Save Screenshots.debug.xcconfig"; path = "Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots.debug.xcconfig"; sourceTree = "<group>"; };
+		55755FCDBFC0E37C3412516C /* Pods-ShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareExtension.debug.xcconfig"; path = "Target Support Files/Pods-ShareExtension/Pods-ShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
+		850EC262E1F87BDADC4D0989 /* Pods_Save.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Save.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A004E24B20EBCF1700A1D5F5 /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
 		A0057A0527D25EEA00A14532 /* cleaninsights-prod.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "cleaninsights-prod.json"; sourceTree = "<group>"; };
 		A005B8B4234B57E1005611F5 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -551,7 +550,7 @@
 		A07128FB2111CC90007A432A /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
 		A07129022111CC90007A432A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A071290F2111E4F1007A432A /* Db.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Db.swift; sourceTree = "<group>"; };
-		A07129122111F4D5007A432A /* OpenArchive.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = OpenArchive.entitlements; sourceTree = "<group>"; };
+		A07129122111F4D5007A432A /* Save.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Save.entitlements; sourceTree = "<group>"; };
 		A07129132111F4F8007A432A /* ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExtension.entitlements; sourceTree = "<group>"; };
 		A072C4D5227C8B3C0022BC58 /* SpaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceViewController.swift; sourceTree = "<group>"; };
 		A07678F527BE7F0E00609630 /* cleaninsights-dev.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "cleaninsights-dev.json"; sourceTree = "<group>"; };
@@ -579,7 +578,7 @@
 		A080539322E87F320031D4B5 /* Deliverfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Deliverfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A08750A72112099700BFAFE4 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		A08750A82112099700BFAFE4 /* Constants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
-		A08750AF21120EBF00BFAFE4 /* OpenArchive-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenArchive-Bridging-Header.h"; sourceTree = "<group>"; };
+		A08750AF21120EBF00BFAFE4 /* Save-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Save-Bridging-Header.h"; sourceTree = "<group>"; };
 		A08C2CE121F09B3F008ACA3E /* InternetArchiveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveViewController.swift; sourceTree = "<group>"; };
 		A08C2CE321F0A98C008ACA3E /* PrivateServerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateServerViewController.swift; sourceTree = "<group>"; };
 		A08C2CE521F0B46C008ACA3E /* FormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormViewController.swift; sourceTree = "<group>"; };
@@ -641,7 +640,7 @@
 		A09898092236A9E800022851 /* UploadsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadsView.swift; sourceTree = "<group>"; };
 		A098980C2236C23200022851 /* Upload.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Upload.swift; sourceTree = "<group>"; };
 		A09B537523266D69005266C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
-		A09B540E23266F02005266C2 /* OpenArchive Screenshots.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "OpenArchive Screenshots.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A09B540E23266F02005266C2 /* Save Screenshots.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Save Screenshots.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A09B540F23266F03005266C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "/Users/berhart/workspace/gp/openarchive-ios/Info.plist"; sourceTree = "<absolute>"; };
 		A09B541323267119005266C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A09B5415232671D0005266C2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -737,7 +736,7 @@
 		A0E321F8228EDBE900F2E9BD /* DarkroomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkroomViewController.swift; sourceTree = "<group>"; };
 		A0E321FA228EFA8800F2E9BD /* InfoBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBox.swift; sourceTree = "<group>"; };
 		A0E321FC228EFDA200F2E9BD /* InfoBox.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InfoBox.xib; sourceTree = "<group>"; };
-		A0E739D420E4C85D00DB31E1 /* OpenArchive.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenArchive.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A0E739D420E4C85D00DB31E1 /* Save.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Save.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0E739D720E4C85D00DB31E1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A0E739DC20E4C85D00DB31E1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		A0E739DE20E4C85E00DB31E1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -745,7 +744,7 @@
 		A0E739E320E4C85E00DB31E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0E9069222CB7D16008CD81B /* SelectedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedView.swift; sourceTree = "<group>"; };
 		A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YapDatabaseConnection+updateMappings.swift"; sourceTree = "<group>"; };
-		A0F5BD612136E4B500691E34 /* OpenArchive-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "OpenArchive-Bridging-Header.h"; sourceTree = "<group>"; };
+		A0F5BD612136E4B500691E34 /* Save-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Save-Bridging-Header.h"; sourceTree = "<group>"; };
 		A0F7FDDB22491C6C006610F0 /* TintedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintedButton.swift; sourceTree = "<group>"; };
 		A0F7FDDE224936C8006610F0 /* TintedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintedImageView.swift; sourceTree = "<group>"; };
 		A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveProjectAlert.swift; sourceTree = "<group>"; };
@@ -763,8 +762,9 @@
 		A0FE2C2722E1FECF00C5443F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A0FE2C2B22E20C5A00C5443F /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A0FE2C2D22E20C6200C5443F /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		B21EE440C93F62093098B516 /* Pods-OpenArchive.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-OpenArchive.release.xcconfig"; path = "Pods/Target Support Files/Pods-OpenArchive/Pods-OpenArchive.release.xcconfig"; sourceTree = "<group>"; };
-		DA57E87D37FC97CE551149A6 /* Pods_ShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		AAF278D72999D4B24346F09C /* Pods_Save_Screenshots.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Save_Screenshots.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		BB8795B24EAF01D5B012DD8C /* Pods_ShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CA30E05DD5BF148755E45BAB /* Pods-ShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareExtension.release.xcconfig"; path = "Target Support Files/Pods-ShareExtension/Pods-ShareExtension.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -779,7 +779,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				E3237719CED5D0E5FB3A9540 /* Pods_ShareExtension.framework in Frameworks */,
+				6C7C2C3525A4B8B8BC2F0728 /* Pods_ShareExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -787,7 +787,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9657E705266F73AE15D3269 /* Pods_OpenArchive_Screenshots.framework in Frameworks */,
+				83983C39A73BA40904C637BF /* Pods_Save_Screenshots.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -795,21 +795,24 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				33E6B43CCAFD4EBCA6FAA8C7 /* Pods_OpenArchive.framework in Frameworks */,
+				DC04FCF6E9ABDAA58A07B9B0 /* Pods_Save.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		47E32D1C59FF6EA304E114E2 /* Frameworks */ = {
+		6AAB53639208069CBC173B87 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				43B70E96222AA75803A61BDC /* Pods_OpenArchive.framework */,
-				DA57E87D37FC97CE551149A6 /* Pods_ShareExtension.framework */,
-				3256CEC8658B5572FC9C5A6A /* Pods_OpenArchive_Screenshots.framework */,
+				41B2D02800773CFB7DC01B8D /* Pods-Save.debug.xcconfig */,
+				3C52C8B3B068B3B1ABDB9D97 /* Pods-Save.release.xcconfig */,
+				44AFA989BDA3869A70BB7E55 /* Pods-Save Screenshots.debug.xcconfig */,
+				111D2AAAE2FA0338F269EF4B /* Pods-Save Screenshots.release.xcconfig */,
+				55755FCDBFC0E37C3412516C /* Pods-ShareExtension.debug.xcconfig */,
+				CA30E05DD5BF148755E45BAB /* Pods-ShareExtension.release.xcconfig */,
 			);
-			name = Frameworks;
+			path = Pods;
 			sourceTree = "<group>";
 		};
 		A004E24620EBC89200A1D5F5 /* Utils */ = {
@@ -943,7 +946,7 @@
 			isa = PBXGroup;
 			children = (
 				A07129132111F4F8007A432A /* ShareExtension.entitlements */,
-				A0F5BD612136E4B500691E34 /* OpenArchive-Bridging-Header.h */,
+				A0F5BD612136E4B500691E34 /* Save-Bridging-Header.h */,
 				A0C475BF21149B040012937E /* MainViewController.swift */,
 				A07129022111CC90007A432A /* Info.plist */,
 			);
@@ -1109,7 +1112,7 @@
 			path = Management;
 			sourceTree = "<group>";
 		};
-		A09B541023266FAC005266C2 /* OpenArchive Screenshots */ = {
+		A09B541023266FAC005266C2 /* Save Screenshots */ = {
 			isa = PBXGroup;
 			children = (
 				A09B5415232671D0005266C2 /* AppDelegate.swift */,
@@ -1118,7 +1121,7 @@
 				A09B541323267119005266C2 /* Assets.xcassets */,
 				A09B540F23266F03005266C2 /* Info.plist */,
 			);
-			path = "OpenArchive Screenshots";
+			path = "Save Screenshots";
 			sourceTree = "<group>";
 		};
 		A09DE5EB234F384800CB3E4D /* tr */ = {
@@ -1314,29 +1317,29 @@
 			isa = PBXGroup;
 			children = (
 				A058628220E4FC4700EE2F14 /* Build */,
-				A0E739D620E4C85D00DB31E1 /* OpenArchive */,
+				A0E739D620E4C85D00DB31E1 /* Save */,
 				A07129142111F991007A432A /* Shared */,
 				A07128FC2111CC90007A432A /* ShareExtension */,
 				A05768D822E0B67D00B39FCE /* Screenshots */,
-				A09B541023266FAC005266C2 /* OpenArchive Screenshots */,
+				A09B541023266FAC005266C2 /* Save Screenshots */,
 				A0E739D520E4C85D00DB31E1 /* Products */,
-				C1EED73E4FA2E0C967B7B68F /* Pods */,
-				47E32D1C59FF6EA304E114E2 /* Frameworks */,
+				6AAB53639208069CBC173B87 /* Pods */,
+				B93B8DF006DA0A82FE954AEC /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
 		A0E739D520E4C85D00DB31E1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A0E739D420E4C85D00DB31E1 /* OpenArchive.app */,
+				A0E739D420E4C85D00DB31E1 /* Save.app */,
 				A07128FB2111CC90007A432A /* ShareExtension.appex */,
 				A05768D722E0B67D00B39FCE /* Screenshots.xctest */,
-				A09B540E23266F02005266C2 /* OpenArchive Screenshots.app */,
+				A09B540E23266F02005266C2 /* Save Screenshots.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A0E739D620E4C85D00DB31E1 /* OpenArchive */ = {
+		A0E739D620E4C85D00DB31E1 /* Save */ = {
 			isa = PBXGroup;
 			children = (
 				A07E8A3E2295759D00E9FFAA /* Onboarding */,
@@ -1344,8 +1347,8 @@
 				A0AFCF0B223001AE005E57FD /* Preview */,
 				A0E1A67D21EE7B3200E4F6B7 /* Space */,
 				A098980422369F5700022851 /* Management */,
-				A07129122111F4D5007A432A /* OpenArchive.entitlements */,
-				A08750AF21120EBF00BFAFE4 /* OpenArchive-Bridging-Header.h */,
+				A07129122111F4D5007A432A /* Save.entitlements */,
+				A08750AF21120EBF00BFAFE4 /* Save-Bridging-Header.h */,
 				A0E739D720E4C85D00DB31E1 /* AppDelegate.swift */,
 				A09B5418232673E2005266C2 /* AppDelegateBase.swift */,
 				A052A490230D546F00E72594 /* InfoAlert.swift */,
@@ -1356,20 +1359,17 @@
 				A0E739E320E4C85E00DB31E1 /* Info.plist */,
 				A0FE2C2C22E20C5A00C5443F /* InfoPlist.strings */,
 			);
-			path = OpenArchive;
+			path = Save;
 			sourceTree = "<group>";
 		};
-		C1EED73E4FA2E0C967B7B68F /* Pods */ = {
+		B93B8DF006DA0A82FE954AEC /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				5FD7A7F483ADD21139D54407 /* Pods-ShareExtension.debug.xcconfig */,
-				2946CD89A7C904C6188D6C41 /* Pods-ShareExtension.release.xcconfig */,
-				00BB052414C5B8DF89BF092F /* Pods-OpenArchive.debug.xcconfig */,
-				B21EE440C93F62093098B516 /* Pods-OpenArchive.release.xcconfig */,
-				274ACB8FFE4344F16E59B8A9 /* Pods-OpenArchive Screenshots.debug.xcconfig */,
-				9A0DA47842D4E38A056664EC /* Pods-OpenArchive Screenshots.release.xcconfig */,
+				850EC262E1F87BDADC4D0989 /* Pods_Save.framework */,
+				AAF278D72999D4B24346F09C /* Pods_Save_Screenshots.framework */,
+				BB8795B24EAF01D5B012DD8C /* Pods_ShareExtension.framework */,
 			);
-			name = Pods;
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1398,7 +1398,7 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A07129082111CC90007A432A /* Build configuration list for PBXNativeTarget "ShareExtension" */;
 			buildPhases = (
-				FF11D95E5AC7DA852AB008A3 /* [CP] Check Pods Manifest.lock */,
+				FEA09B9C1F7CC57B0CC534DC /* [CP] Check Pods Manifest.lock */,
 				A08CA2CE27DBB78200F23100 /* ShellScript */,
 				A07128F72111CC90007A432A /* Sources */,
 				A07128F82111CC90007A432A /* Frameworks */,
@@ -1413,46 +1413,46 @@
 			productReference = A07128FB2111CC90007A432A /* ShareExtension.appex */;
 			productType = "com.apple.product-type.app-extension";
 		};
-		A09B537723266F02005266C2 /* OpenArchive Screenshots */ = {
+		A09B537723266F02005266C2 /* Save Screenshots */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A09B540B23266F02005266C2 /* Build configuration list for PBXNativeTarget "OpenArchive Screenshots" */;
+			buildConfigurationList = A09B540B23266F02005266C2 /* Build configuration list for PBXNativeTarget "Save Screenshots" */;
 			buildPhases = (
-				D952DE378C28F0802B04CA2D /* [CP] Check Pods Manifest.lock */,
+				2C2CC73ED7E31DD78998CD0B /* [CP] Check Pods Manifest.lock */,
 				A09B537B23266F02005266C2 /* Sources */,
 				A09B53E323266F02005266C2 /* Frameworks */,
 				A09B53E523266F02005266C2 /* Resources */,
 				A09B540923266F02005266C2 /* Embed App Extensions */,
-				E7FE597BB1863CFAF2EAA147 /* [CP] Embed Pods Frameworks */,
+				45127F73FD3506FD4EAB3F78 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				A09B537823266F02005266C2 /* PBXTargetDependency */,
 			);
-			name = "OpenArchive Screenshots";
+			name = "Save Screenshots";
 			productName = OpenArchive;
-			productReference = A09B540E23266F02005266C2 /* OpenArchive Screenshots.app */;
+			productReference = A09B540E23266F02005266C2 /* Save Screenshots.app */;
 			productType = "com.apple.product-type.application";
 		};
-		A0E739D320E4C85D00DB31E1 /* OpenArchive */ = {
+		A0E739D320E4C85D00DB31E1 /* Save */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A0E739E620E4C85E00DB31E1 /* Build configuration list for PBXNativeTarget "OpenArchive" */;
+			buildConfigurationList = A0E739E620E4C85E00DB31E1 /* Build configuration list for PBXNativeTarget "Save" */;
 			buildPhases = (
-				35CC5BD4779C5592CB8BF2C6 /* [CP] Check Pods Manifest.lock */,
+				D6A3A718864CF65AD33110B1 /* [CP] Check Pods Manifest.lock */,
 				A0E739D020E4C85D00DB31E1 /* Sources */,
 				A0E739D120E4C85D00DB31E1 /* Frameworks */,
 				A0E739D220E4C85D00DB31E1 /* Resources */,
-				6BCC37D718DDB7E1EEBC22C9 /* [CP] Embed Pods Frameworks */,
 				A07129092111CC90007A432A /* Embed App Extensions */,
+				BB3D751BA726F0626F98ECB5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 				A07129042111CC90007A432A /* PBXTargetDependency */,
 			);
-			name = OpenArchive;
+			name = Save;
 			productName = OpenArchive;
-			productReference = A0E739D420E4C85D00DB31E1 /* OpenArchive.app */;
+			productReference = A0E739D420E4C85D00DB31E1 /* Save.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -1492,7 +1492,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A0E739CF20E4C85D00DB31E1 /* Build configuration list for PBXProject "OpenArchive" */;
+			buildConfigurationList = A0E739CF20E4C85D00DB31E1 /* Build configuration list for PBXProject "Save" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -1513,9 +1513,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A0E739D320E4C85D00DB31E1 /* OpenArchive */,
+				A0E739D320E4C85D00DB31E1 /* Save */,
 				A07128FA2111CC90007A432A /* ShareExtension */,
-				A09B537723266F02005266C2 /* OpenArchive Screenshots */,
+				A09B537723266F02005266C2 /* Save Screenshots */,
 				A05768D622E0B67D00B39FCE /* Screenshots */,
 			);
 		};
@@ -1616,39 +1616,43 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		35CC5BD4779C5592CB8BF2C6 /* [CP] Check Pods Manifest.lock */ = {
+		2C2CC73ED7E31DD78998CD0B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+			);
+			inputFileListPaths = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-OpenArchive-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Save Screenshots-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6BCC37D718DDB7E1EEBC22C9 /* [CP] Embed Pods Frameworks */ = {
+		45127F73FD3506FD4EAB3F78 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-OpenArchive/Pods-OpenArchive-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-OpenArchive/Pods-OpenArchive-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OpenArchive/Pods-OpenArchive-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A08CA2CE27DBB78200F23100 /* ShellScript */ = {
@@ -1668,7 +1672,24 @@
 			shellPath = /bin/sh;
 			shellScript = "if [ -f /opt/homebrew/bin/bartycrouch ]; then\n    /opt/homebrew/bin/bartycrouch update -x\n    /opt/homebrew/bin/bartycrouch lint -x\nelse\n    echo \"warning: BartyCrouch not installed. Download it form https://github.com/Flinesoft/BartyCrouch\"\nfi\n";
 		};
-		D952DE378C28F0802B04CA2D /* [CP] Check Pods Manifest.lock */ = {
+		BB3D751BA726F0626F98ECB5 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Save/Pods-Save-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Save/Pods-Save-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Save/Pods-Save-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D6A3A718864CF65AD33110B1 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -1683,40 +1704,27 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-OpenArchive Screenshots-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-Save-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		E7FE597BB1863CFAF2EAA147 /* [CP] Embed Pods Frameworks */ = {
+		FEA09B9C1F7CC57B0CC534DC /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-OpenArchive Screenshots/Pods-OpenArchive Screenshots-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-OpenArchive Screenshots/Pods-OpenArchive Screenshots-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-OpenArchive Screenshots/Pods-OpenArchive Screenshots-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		FF11D95E5AC7DA852AB008A3 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			inputPaths = (
 				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
 				"${PODS_ROOT}/Manifest.lock",
 			);
 			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
 			outputPaths = (
 				"$(DERIVED_FILE_DIR)/Pods-ShareExtension-checkManifestLockResult.txt",
 			);
@@ -2074,7 +2082,7 @@
 /* Begin PBXTargetDependency section */
 		A05768DD22E0B67D00B39FCE /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A0E739D320E4C85D00DB31E1 /* OpenArchive */;
+			target = A0E739D320E4C85D00DB31E1 /* Save */;
 			targetProxy = A05768DC22E0B67D00B39FCE /* PBXContainerItemProxy */;
 		};
 		A07129042111CC90007A432A /* PBXTargetDependency */ = {
@@ -2089,7 +2097,7 @@
 		};
 		A09B541223266FDF005266C2 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = A09B537723266F02005266C2 /* OpenArchive Screenshots */;
+			target = A09B537723266F02005266C2 /* Save Screenshots */;
 			targetProxy = A09B541123266FDF005266C2 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -2175,7 +2183,7 @@
 				PROVISIONING_PROFILE_SPECIFIER = "$(PROVISIONING_PROFILE_SPECIFIER_SCREENSHOTS)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "OpenArchive Screenshots";
+				TEST_TARGET_NAME = "Save Screenshots";
 			};
 			name = Debug;
 		};
@@ -2197,13 +2205,13 @@
 				PROVISIONING_PROFILE_SPECIFIER = "$(PROVISIONING_PROFILE_SPECIFIER_SCREENSHOTS)";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = "OpenArchive Screenshots";
+				TEST_TARGET_NAME = "Save Screenshots";
 			};
 			name = Release;
 		};
 		A07129062111CC90007A432A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 5FD7A7F483ADD21139D54407 /* Pods-ShareExtension.debug.xcconfig */;
+			baseConfigurationReference = 55755FCDBFC0E37C3412516C /* Pods-ShareExtension.debug.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = ShareExtension/ShareExtension.entitlements;
@@ -2220,7 +2228,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "$(PROVISIONING_PROFILE_SPECIFIER_SHARE_EXTENSION)";
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "ShareExtension/OpenArchive-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "ShareExtension/Save-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2228,7 +2236,7 @@
 		};
 		A07129072111CC90007A432A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2946CD89A7C904C6188D6C41 /* Pods-ShareExtension.release.xcconfig */;
+			baseConfigurationReference = CA30E05DD5BF148755E45BAB /* Pods-ShareExtension.release.xcconfig */;
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = ShareExtension/ShareExtension.entitlements;
@@ -2246,7 +2254,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "$(PROVISIONING_PROFILE_SPECIFIER_SHARE_EXTENSION)";
 				SKIP_INSTALL = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "ShareExtension/OpenArchive-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "ShareExtension/Save-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2254,12 +2262,12 @@
 		};
 		A09B540C23266F02005266C2 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 274ACB8FFE4344F16E59B8A9 /* Pods-OpenArchive Screenshots.debug.xcconfig */;
+			baseConfigurationReference = 44AFA989BDA3869A70BB7E55 /* Pods-Save Screenshots.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = OpenArchive/OpenArchive.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Save/Save.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
@@ -2272,7 +2280,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "$(OA_APP_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "$(PROVISIONING_PROFILE_SPECIFIER_MAIN)";
-				SWIFT_OBJC_BRIDGING_HEADER = "OpenArchive/OpenArchive-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Save/Save-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2280,12 +2288,12 @@
 		};
 		A09B540D23266F02005266C2 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9A0DA47842D4E38A056664EC /* Pods-OpenArchive Screenshots.release.xcconfig */;
+			baseConfigurationReference = 111D2AAAE2FA0338F269EF4B /* Pods-Save Screenshots.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = OpenArchive/OpenArchive.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Save/Save.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
@@ -2298,7 +2306,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "$(OA_APP_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "$(PROVISIONING_PROFILE_SPECIFIER_MAIN)";
-				SWIFT_OBJC_BRIDGING_HEADER = "OpenArchive/OpenArchive-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Save/Save-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2426,16 +2434,16 @@
 		};
 		A0E739E720E4C85E00DB31E1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 00BB052414C5B8DF89BF092F /* Pods-OpenArchive.debug.xcconfig */;
+			baseConfigurationReference = 41B2D02800773CFB7DC01B8D /* Pods-Save.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = OpenArchive/OpenArchive.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Save/Save.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
-				INFOPLIST_FILE = OpenArchive/Info.plist;
+				INFOPLIST_FILE = Save/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2444,7 +2452,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "$(OA_APP_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "$(PROVISIONING_PROFILE_SPECIFIER_MAIN)";
-				SWIFT_OBJC_BRIDGING_HEADER = "OpenArchive/OpenArchive-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Save/Save-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2452,16 +2460,16 @@
 		};
 		A0E739E820E4C85E00DB31E1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B21EE440C93F62093098B516 /* Pods-OpenArchive.release.xcconfig */;
+			baseConfigurationReference = 3C52C8B3B068B3B1ABDB9D97 /* Pods-Save.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = "$(inherited)";
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = OpenArchive/OpenArchive.entitlements;
+				CODE_SIGN_ENTITLEMENTS = Save/Save.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
-				INFOPLIST_FILE = OpenArchive/Info.plist;
+				INFOPLIST_FILE = Save/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2470,7 +2478,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "$(OA_APP_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "$(PROVISIONING_PROFILE_SPECIFIER_MAIN)";
-				SWIFT_OBJC_BRIDGING_HEADER = "OpenArchive/OpenArchive-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "Save/Save-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -2497,7 +2505,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A09B540B23266F02005266C2 /* Build configuration list for PBXNativeTarget "OpenArchive Screenshots" */ = {
+		A09B540B23266F02005266C2 /* Build configuration list for PBXNativeTarget "Save Screenshots" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A09B540C23266F02005266C2 /* Debug */,
@@ -2506,7 +2514,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A0E739CF20E4C85D00DB31E1 /* Build configuration list for PBXProject "OpenArchive" */ = {
+		A0E739CF20E4C85D00DB31E1 /* Build configuration list for PBXProject "Save" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A0E739E420E4C85E00DB31E1 /* Debug */,
@@ -2515,7 +2523,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A0E739E620E4C85E00DB31E1 /* Build configuration list for PBXNativeTarget "OpenArchive" */ = {
+		A0E739E620E4C85E00DB31E1 /* Build configuration list for PBXNativeTarget "Save" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A0E739E720E4C85E00DB31E1 /* Debug */,

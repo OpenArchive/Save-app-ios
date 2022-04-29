@@ -33,7 +33,7 @@ def app_only
     pod 'TLPhotoPicker', '~> 2.1'
 end
 
-target 'OpenArchive' do
+target 'Save' do
     shared_pods
     app_only
 end
@@ -42,7 +42,7 @@ target 'ShareExtension' do
     shared_pods
 end
 
-target 'OpenArchive Screenshots' do
+target 'Save Screenshots' do
     shared_pods
     app_only
 end

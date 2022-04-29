@@ -15,9 +15,9 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A09B537723266F02005266C2"
-               BuildableName = "OpenArchive Screenshots.app"
-               BlueprintName = "OpenArchive Screenshots"
-               ReferencedContainer = "container:OpenArchive.xcodeproj">
+               BuildableName = "Save Screenshots.app"
+               BlueprintName = "Save Screenshots"
+               ReferencedContainer = "container:Save.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -31,9 +31,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A09B537723266F02005266C2"
-            BuildableName = "OpenArchive Screenshots.app"
-            BlueprintName = "OpenArchive Screenshots"
-            ReferencedContainer = "container:OpenArchive.xcodeproj">
+            BuildableName = "Save Screenshots.app"
+            BlueprintName = "Save Screenshots"
+            ReferencedContainer = "container:Save.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -54,9 +54,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A09B537723266F02005266C2"
-            BuildableName = "OpenArchive Screenshots.app"
-            BlueprintName = "OpenArchive Screenshots"
-            ReferencedContainer = "container:OpenArchive.xcodeproj">
+            BuildableName = "Save Screenshots.app"
+            BlueprintName = "Save Screenshots"
+            ReferencedContainer = "container:Save.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -71,9 +71,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A09B537723266F02005266C2"
-            BuildableName = "OpenArchive Screenshots.app"
-            BlueprintName = "OpenArchive Screenshots"
-            ReferencedContainer = "container:OpenArchive.xcodeproj">
+            BuildableName = "Save Screenshots.app"
+            BlueprintName = "Save Screenshots"
+            ReferencedContainer = "container:Save.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

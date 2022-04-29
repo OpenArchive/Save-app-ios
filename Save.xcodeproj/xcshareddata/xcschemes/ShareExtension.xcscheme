@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
    LastUpgradeVersion = "1330"
-   version = "1.3">
+   wasCreatedForAppExtension = "YES"
+   version = "2.0">
    <BuildAction
       parallelizeBuildables = "YES"
       buildImplicitDependencies = "YES">
@@ -14,10 +15,24 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
+               BlueprintIdentifier = "A07128FA2111CC90007A432A"
+               BuildableName = "ShareExtension.appex"
+               BlueprintName = "ShareExtension"
+               ReferencedContainer = "container:Save.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
                BlueprintIdentifier = "A0E739D320E4C85D00DB31E1"
-               BuildableName = "OpenArchive.app"
-               BlueprintName = "OpenArchive"
-               ReferencedContainer = "container:OpenArchive.xcodeproj">
+               BuildableName = "Save.app"
+               BlueprintName = "Save"
+               ReferencedContainer = "container:Save.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -31,9 +46,9 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A0E739D320E4C85D00DB31E1"
-            BuildableName = "OpenArchive.app"
-            BlueprintName = "OpenArchive"
-            ReferencedContainer = "container:OpenArchive.xcodeproj">
+            BuildableName = "Save.app"
+            BlueprintName = "Save"
+            ReferencedContainer = "container:Save.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
@@ -44,29 +59,31 @@
                BlueprintIdentifier = "A05768D622E0B67D00B39FCE"
                BuildableName = "Screenshots.xctest"
                BlueprintName = "Screenshots"
-               ReferencedContainer = "container:OpenArchive.xcodeproj">
+               ReferencedContainer = "container:Save.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
       buildConfiguration = "Debug"
-      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
-      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      selectedDebuggerIdentifier = ""
+      selectedLauncherIdentifier = "Xcode.IDEFoundation.Launcher.PosixSpawn"
       launchStyle = "0"
+      askForAppToLaunch = "Yes"
       useCustomWorkingDirectory = "NO"
       ignoresPersistentStateOnLaunch = "NO"
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
-      allowLocationSimulation = "YES">
+      allowLocationSimulation = "YES"
+      launchAutomaticallySubstyle = "2">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A0E739D320E4C85D00DB31E1"
-            BuildableName = "OpenArchive.app"
-            BlueprintName = "OpenArchive"
-            ReferencedContainer = "container:OpenArchive.xcodeproj">
+            BuildableName = "Save.app"
+            BlueprintName = "Save"
+            ReferencedContainer = "container:Save.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -75,15 +92,17 @@
       shouldUseLaunchSchemeArgsEnv = "YES"
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
-      debugDocumentVersioning = "YES">
+      debugDocumentVersioning = "YES"
+      askForAppToLaunch = "Yes"
+      launchAutomaticallySubstyle = "2">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A0E739D320E4C85D00DB31E1"
-            BuildableName = "OpenArchive.app"
-            BlueprintName = "OpenArchive"
-            ReferencedContainer = "container:OpenArchive.xcodeproj">
+            BuildableName = "Save.app"
+            BlueprintName = "Save"
+            ReferencedContainer = "container:Save.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>
