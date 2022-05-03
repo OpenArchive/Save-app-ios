@@ -1,1 +1,4 @@
-Se agregó soporte de Dropbox.
+- Traducciones añadidas: italiano.
+- Traducciones actualizadas.
+- Se agregó verificación de estado de carga.
+- Se corrigieron varios errores y fallas.

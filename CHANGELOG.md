@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.7.0
+- Added translations: Italian.  
+- Updated translations.
+- Support iOS 15.
+- Added CleanInsights for upload health check.
+- Fixed various bugs and crashes. 
+
 ## 2.6.0
 - Added Dropbox support.
 - Updated dependencies.

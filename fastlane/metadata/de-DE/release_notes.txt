@@ -1,1 +1,4 @@
-Dropbox-Unterstützung hinzugefügt.
+- Übersetzungen hinzugefügt: Italienisch.
+- Übersetzungen aktualisiert.
+- Upload-Gesundheitsprüfung hinzugefügt.
+- Verschiedene Fehler und Abstürze behoben.

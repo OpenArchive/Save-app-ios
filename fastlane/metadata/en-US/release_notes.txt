@@ -1,1 +1,4 @@
-Added Dropbox support.
+- Added translations: Italian.
+- Updated translations.
+- Added upload health check.
+- Fixed various bugs and crashes.

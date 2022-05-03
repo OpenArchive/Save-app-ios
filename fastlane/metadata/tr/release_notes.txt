@@ -1,1 +1,4 @@
-Dropbox desteği eklendi.
+- Eklenen çeviriler: İtalyanca.
+- Çeviriler güncellendi.
+- Yükleme durumu kontrolü eklendi.
+- Çeşitli hatalar ve çökmeler düzeltildi.

@@ -90,7 +90,6 @@
 		A056555D23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */; };
 		A056555E23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */; };
 		A05768DA22E0B67D00B39FCE /* Screenshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05768D922E0B67D00B39FCE /* Screenshots.swift */; };
-		A05768E322E0B6F800B39FCE /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05768E122E0B6E600B39FCE /* SnapshotHelper.swift */; };
 		A059E647223AE9FB00ABC621 /* UploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A059E646223AE9FB00ABC621 /* UploadManager.swift */; };
 		A05C582A21EF94FC00141633 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05C582921EF94FC00141633 /* BaseViewController.swift */; };
 		A05C582B21EF95A800141633 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05C582921EF94FC00141633 /* BaseViewController.swift */; };
@@ -322,6 +321,8 @@
 		A0C7D8EE27B6C13300E377FD /* TorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C7D8ED27B6C13300E377FD /* TorManager.swift */; };
 		A0C7DC03224A40E5004B78FF /* ActiveProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C7DC02224A40E5004B78FF /* ActiveProjectsView.swift */; };
 		A0C7DC04224A40E5004B78FF /* ActiveProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C7DC02224A40E5004B78FF /* ActiveProjectsView.swift */; };
+		A0CA19C52821849D0082BD7C /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CA1948282184700082BD7C /* SnapshotHelper.swift */; };
+		A0CA19C62821849D0082BD7C /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CA1948282184700082BD7C /* SnapshotHelper.swift */; };
 		A0D1013C22CCF2DA0068D047 /* Conduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D1013B22CCF2DA0068D047 /* Conduit.swift */; };
 		A0D1013E22CCF4140068D047 /* WebDavConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D1013D22CCF4140068D047 /* WebDavConduit.swift */; };
 		A0D1014022CCFA1B0068D047 /* IaConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D1013F22CCFA1B0068D047 /* IaConduit.swift */; };
@@ -490,16 +491,6 @@
 		A045D1F8224D02AA008FF8C1 /* TitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleCell.swift; sourceTree = "<group>"; };
 		A045D200224D07C3008FF8C1 /* ButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCell.swift; sourceTree = "<group>"; };
 		A0485C2422AAF0CD00D5B176 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		A04FA3F623462085001BBF15 /* privacy_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = privacy_url.txt; sourceTree = "<group>"; };
-		A04FA3F723462085001BBF15 /* subtitle.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = subtitle.txt; sourceTree = "<group>"; };
-		A04FA3F823462085001BBF15 /* support_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = support_url.txt; sourceTree = "<group>"; };
-		A04FA3F923462085001BBF15 /* keywords.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = keywords.txt; sourceTree = "<group>"; };
-		A04FA3FA23462085001BBF15 /* apple_tv_privacy_policy.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = apple_tv_privacy_policy.txt; sourceTree = "<group>"; };
-		A04FA3FB23462085001BBF15 /* promotional_text.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = promotional_text.txt; sourceTree = "<group>"; };
-		A04FA3FC23462085001BBF15 /* release_notes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = release_notes.txt; sourceTree = "<group>"; };
-		A04FA3FD23462085001BBF15 /* name.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = name.txt; sourceTree = "<group>"; };
-		A04FA3FE23462085001BBF15 /* marketing_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = marketing_url.txt; sourceTree = "<group>"; };
-		A04FA3FF23462085001BBF15 /* description.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = description.txt; sourceTree = "<group>"; };
 		A050147E2228209E0056ED95 /* BaseServerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseServerViewController.swift; sourceTree = "<group>"; };
 		A050AA482225DF4000AE5D15 /* SpacesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacesListCell.swift; sourceTree = "<group>"; };
 		A05275132211A91300BDB14B /* CollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsView.swift; sourceTree = "<group>"; };
@@ -534,8 +525,6 @@
 		A05768D722E0B67D00B39FCE /* Screenshots.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Screenshots.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A05768D922E0B67D00B39FCE /* Screenshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screenshots.swift; sourceTree = "<group>"; };
 		A05768DB22E0B67D00B39FCE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		A05768E122E0B6E600B39FCE /* SnapshotHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
-		A05768E222E0B6E600B39FCE /* Snapfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Snapfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A058628320E4FC5A00EE2F14 /* Podfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A058628520E4FDBF00EE2F14 /* Podfile.lock */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile.lock; sourceTree = "<group>"; };
 		A059E646223AE9FB00ABC621 /* UploadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadManager.swift; sourceTree = "<group>"; };
@@ -559,23 +548,12 @@
 		A076790527BEA31200609630 /* ConsentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentViewController.swift; sourceTree = "<group>"; };
 		A07727442345FA7C00366ADD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A07727452345FA7C00366ADD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		A07727682345FAB900366ADD /* subtitle.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = subtitle.txt; sourceTree = "<group>"; };
-		A07727692345FAB900366ADD /* keywords.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = keywords.txt; sourceTree = "<group>"; };
-		A077276A2345FAB900366ADD /* promotional_text.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = promotional_text.txt; sourceTree = "<group>"; };
-		A077276B2345FAB900366ADD /* name.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = name.txt; sourceTree = "<group>"; };
-		A07727772346074400366ADD /* release_notes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = release_notes.txt; sourceTree = "<group>"; };
-		A07727782346074400366ADD /* apple_tv_privacy_policy.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = apple_tv_privacy_policy.txt; sourceTree = "<group>"; };
-		A07727792346074500366ADD /* privacy_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = privacy_url.txt; sourceTree = "<group>"; };
-		A077277A2346074500366ADD /* support_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = support_url.txt; sourceTree = "<group>"; };
-		A077277B2346074500366ADD /* marketing_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = marketing_url.txt; sourceTree = "<group>"; };
-		A077277C2346079D00366ADD /* description.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = description.txt; sourceTree = "<group>"; };
 		A077277D2346203A00366ADD /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A077277E2346203A00366ADD /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A077732922786BCA00291F5D /* RemoveAssetAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAssetAlert.swift; sourceTree = "<group>"; };
 		A07E8A3F229575B600E9FFAA /* SlideshowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideshowViewController.swift; sourceTree = "<group>"; };
 		A07E8A4122958D0600E9FFAA /* SlideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideViewController.swift; sourceTree = "<group>"; };
 		A080538E22E85C460031D4B5 /* Screenshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screenshots.swift; sourceTree = "<group>"; };
-		A080539322E87F320031D4B5 /* Deliverfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Deliverfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A08750A72112099700BFAFE4 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		A08750A82112099700BFAFE4 /* Constants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		A08750AF21120EBF00BFAFE4 /* Save-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Save-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -586,54 +564,6 @@
 		A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarRow.swift; sourceTree = "<group>"; };
 		A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AvatarCell.xib; sourceTree = "<group>"; };
 		A08CA2CF27DBB7BB00F23100 /* .bartycrouch.toml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .bartycrouch.toml; sourceTree = "<group>"; };
-		A0902BC722F0429900062F6E /* copyright.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = copyright.txt; sourceTree = "<group>"; };
-		A0902BCA22F0429900062F6E /* privacy_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = privacy_url.txt; sourceTree = "<group>"; };
-		A0902BCB22F0429900062F6E /* subtitle.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = subtitle.txt; sourceTree = "<group>"; };
-		A0902BCC22F0429900062F6E /* support_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = support_url.txt; sourceTree = "<group>"; };
-		A0902BCD22F0429900062F6E /* keywords.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = keywords.txt; sourceTree = "<group>"; };
-		A0902BCE22F0429900062F6E /* apple_tv_privacy_policy.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = apple_tv_privacy_policy.txt; sourceTree = "<group>"; };
-		A0902BCF22F0429900062F6E /* promotional_text.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = promotional_text.txt; sourceTree = "<group>"; };
-		A0902BD022F0429900062F6E /* release_notes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = release_notes.txt; sourceTree = "<group>"; };
-		A0902BD122F0429900062F6E /* name.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = name.txt; sourceTree = "<group>"; };
-		A0902BD222F0429900062F6E /* marketing_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = marketing_url.txt; sourceTree = "<group>"; };
-		A0902BD322F0429900062F6E /* description.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = description.txt; sourceTree = "<group>"; };
-		A0902BD522F0429900062F6E /* phone_number.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = phone_number.txt; sourceTree = "<group>"; };
-		A0902BD622F0429900062F6E /* address_line1.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = address_line1.txt; sourceTree = "<group>"; };
-		A0902BD722F0429900062F6E /* country.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = country.txt; sourceTree = "<group>"; };
-		A0902BD822F0429900062F6E /* city_name.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = city_name.txt; sourceTree = "<group>"; };
-		A0902BD922F0429900062F6E /* address_line3.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = address_line3.txt; sourceTree = "<group>"; };
-		A0902BDA22F0429900062F6E /* address_line2.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = address_line2.txt; sourceTree = "<group>"; };
-		A0902BDB22F0429900062F6E /* trade_name.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = trade_name.txt; sourceTree = "<group>"; };
-		A0902BDC22F0429900062F6E /* email_address.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = email_address.txt; sourceTree = "<group>"; };
-		A0902BDD22F0429900062F6E /* is_displayed_on_app_store.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = is_displayed_on_app_store.txt; sourceTree = "<group>"; };
-		A0902BDE22F0429900062F6E /* last_name.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = last_name.txt; sourceTree = "<group>"; };
-		A0902BDF22F0429900062F6E /* postal_code.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = postal_code.txt; sourceTree = "<group>"; };
-		A0902BE022F0429900062F6E /* first_name.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = first_name.txt; sourceTree = "<group>"; };
-		A0902BE122F0429900062F6E /* state.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = state.txt; sourceTree = "<group>"; };
-		A0902BE222F0429900062F6E /* secondary_first_sub_category.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = secondary_first_sub_category.txt; sourceTree = "<group>"; };
-		A0902BE322F0429900062F6E /* secondary_category.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = secondary_category.txt; sourceTree = "<group>"; };
-		A0902BE422F0429900062F6E /* secondary_second_sub_category.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = secondary_second_sub_category.txt; sourceTree = "<group>"; };
-		A0902BE622F0429900062F6E /* privacy_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = privacy_url.txt; sourceTree = "<group>"; };
-		A0902BE722F0429900062F6E /* subtitle.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = subtitle.txt; sourceTree = "<group>"; };
-		A0902BE822F0429900062F6E /* support_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = support_url.txt; sourceTree = "<group>"; };
-		A0902BE922F0429900062F6E /* keywords.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = keywords.txt; sourceTree = "<group>"; };
-		A0902BEA22F0429900062F6E /* apple_tv_privacy_policy.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = apple_tv_privacy_policy.txt; sourceTree = "<group>"; };
-		A0902BEB22F0429900062F6E /* promotional_text.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = promotional_text.txt; sourceTree = "<group>"; };
-		A0902BEC22F0429900062F6E /* release_notes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = release_notes.txt; sourceTree = "<group>"; };
-		A0902BED22F0429900062F6E /* name.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = name.txt; sourceTree = "<group>"; };
-		A0902BEE22F0429900062F6E /* marketing_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = marketing_url.txt; sourceTree = "<group>"; };
-		A0902BEF22F0429900062F6E /* description.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = description.txt; sourceTree = "<group>"; };
-		A0902BF022F0429900062F6E /* primary_second_sub_category.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = primary_second_sub_category.txt; sourceTree = "<group>"; };
-		A0902BF222F0429900062F6E /* phone_number.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = phone_number.txt; sourceTree = "<group>"; };
-		A0902BF322F0429900062F6E /* demo_user.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = demo_user.txt; sourceTree = "<group>"; };
-		A0902BF422F0429900062F6E /* notes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = notes.txt; sourceTree = "<group>"; };
-		A0902BF522F0429900062F6E /* email_address.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = email_address.txt; sourceTree = "<group>"; };
-		A0902BF622F0429900062F6E /* last_name.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = last_name.txt; sourceTree = "<group>"; };
-		A0902BF722F0429900062F6E /* first_name.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = first_name.txt; sourceTree = "<group>"; };
-		A0902BF822F0429900062F6E /* demo_password.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = demo_password.txt; sourceTree = "<group>"; };
-		A0902BF922F0429900062F6E /* primary_first_sub_category.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = primary_first_sub_category.txt; sourceTree = "<group>"; };
-		A0902BFA22F0429900062F6E /* primary_category.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = primary_category.txt; sourceTree = "<group>"; };
-		A0902BFD22F05F0400062F6E /* app_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = app_icon.png; sourceTree = "<group>"; };
 		A092C0EF223A8D4B003EB0AA /* DoneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneDelegate.swift; sourceTree = "<group>"; };
 		A098980522369F8100022851 /* ManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementViewController.swift; sourceTree = "<group>"; };
 		A09898072236A7B100022851 /* UploadCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadCell.swift; sourceTree = "<group>"; };
@@ -649,40 +579,15 @@
 		A09CC29127E0B16C00D6415D /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = de; path = de.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		A09DE5E9234F374400CB3E4D /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A09DE5EA234F374400CB3E4D /* tr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = tr; path = tr.lproj/Localizable.strings; sourceTree = "<group>"; };
-		A09DE5EC234F38A000CB3E4D /* description.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = description.txt; sourceTree = "<group>"; };
-		A09DE5ED234F38A000CB3E4D /* release_notes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = release_notes.txt; sourceTree = "<group>"; };
-		A09DE5EE234F38A000CB3E4D /* keywords.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = keywords.txt; sourceTree = "<group>"; };
-		A09DE5EF234F38A000CB3E4D /* support_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = support_url.txt; sourceTree = "<group>"; };
-		A09DE5F0234F38A000CB3E4D /* subtitle.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = subtitle.txt; sourceTree = "<group>"; };
-		A09DE5F1234F38A000CB3E4D /* privacy_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = privacy_url.txt; sourceTree = "<group>"; };
-		A09DE5F2234F38A000CB3E4D /* promotional_text.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = promotional_text.txt; sourceTree = "<group>"; };
-		A09DE5F3234F38A000CB3E4D /* marketing_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = marketing_url.txt; sourceTree = "<group>"; };
-		A09DE5F4234F38A000CB3E4D /* name.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = name.txt; sourceTree = "<group>"; };
-		A09DE5F5234F38A000CB3E4D /* apple_tv_privacy_policy.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = apple_tv_privacy_policy.txt; sourceTree = "<group>"; };
-		A09DE5F7234F3AAF00CB3E4D /* privacy_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = privacy_url.txt; sourceTree = "<group>"; };
-		A09DE5F8234F3AAF00CB3E4D /* subtitle.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = subtitle.txt; sourceTree = "<group>"; };
-		A09DE5F9234F3AAF00CB3E4D /* support_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = support_url.txt; sourceTree = "<group>"; };
-		A09DE5FA234F3AAF00CB3E4D /* keywords.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = keywords.txt; sourceTree = "<group>"; };
-		A09DE5FB234F3AAF00CB3E4D /* apple_tv_privacy_policy.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = apple_tv_privacy_policy.txt; sourceTree = "<group>"; };
-		A09DE5FC234F3AAF00CB3E4D /* promotional_text.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = promotional_text.txt; sourceTree = "<group>"; };
-		A09DE5FD234F3AAF00CB3E4D /* release_notes.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = release_notes.txt; sourceTree = "<group>"; };
-		A09DE5FE234F3AAF00CB3E4D /* name.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = name.txt; sourceTree = "<group>"; };
-		A09DE5FF234F3AAF00CB3E4D /* marketing_url.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = marketing_url.txt; sourceTree = "<group>"; };
-		A09DE600234F3AAF00CB3E4D /* description.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = description.txt; sourceTree = "<group>"; };
 		A0A192DC21F208DA009A8CF0 /* Space.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Space.swift; sourceTree = "<group>"; };
 		A0A192DF21F23B61009A8CF0 /* Constants+Swift.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Constants+Swift.swift"; sourceTree = "<group>"; };
 		A0A3D9C62226D8DB00BB5A19 /* SpaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceCell.swift; sourceTree = "<group>"; };
 		A0A98AEB22428A9300596B74 /* TableHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableHeader.xib; sourceTree = "<group>"; };
-		A0AC0569224CD8D5008B9249 /* Fastfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Fastfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		A0AC0579224CDE9C008B9249 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		A0AC057C224CDF4F008B9249 /* Gemfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Gemfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A0AC057E224CE8C7008B9249 /* TableWithSpacesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableWithSpacesViewController.swift; sourceTree = "<group>"; };
 		A0AC06A92201CFD800BD5FBA /* BrowseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewController.swift; sourceTree = "<group>"; };
 		A0AC06AB2201D00100BD5FBA /* FolderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCell.swift; sourceTree = "<group>"; };
 		A0AC06AF2201E30E00BD5FBA /* WorkingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkingOverlay.swift; sourceTree = "<group>"; };
 		A0AC06B32201E94000BD5FBA /* MenuItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuItemCell.xib; sourceTree = "<group>"; };
-		A0ACF215224CD8D1008B9249 /* Appfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Appfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
-		A0ACF216224CD8D1008B9249 /* Pluginfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Pluginfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A0AFCF0C22300279005E57FD /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineTitle.swift; sourceTree = "<group>"; };
 		A0AFCF1122302054005E57FD /* PreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewCell.swift; sourceTree = "<group>"; };
@@ -700,18 +605,16 @@
 		A0C797E822807DF00009751A /* SelectedCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedCollection.swift; sourceTree = "<group>"; };
 		A0C7D8DF27B6B44A00E377FD /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A0C7D8E027B6B44A00E377FD /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
-		A0C7D8E227B6B47F00E377FD /* subtitle.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = subtitle.txt; sourceTree = "<group>"; };
-		A0C7D8E327B6B47F00E377FD /* keywords.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = keywords.txt; sourceTree = "<group>"; };
-		A0C7D8E427B6B47F00E377FD /* promotional_text.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = promotional_text.txt; sourceTree = "<group>"; };
-		A0C7D8E527B6B47F00E377FD /* name.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = name.txt; sourceTree = "<group>"; };
-		A0C7D8E627B6B47F00E377FD /* description.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = description.txt; sourceTree = "<group>"; };
-		A0C7D8E827B6B69100E377FD /* subtitle.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = subtitle.txt; sourceTree = "<group>"; };
-		A0C7D8E927B6B69100E377FD /* keywords.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = keywords.txt; sourceTree = "<group>"; };
-		A0C7D8EA27B6B69100E377FD /* promotional_text.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = promotional_text.txt; sourceTree = "<group>"; };
-		A0C7D8EB27B6B69100E377FD /* name.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = name.txt; sourceTree = "<group>"; };
-		A0C7D8EC27B6B69100E377FD /* description.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = description.txt; sourceTree = "<group>"; };
 		A0C7D8ED27B6C13300E377FD /* TorManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TorManager.swift; sourceTree = "<group>"; };
 		A0C7DC02224A40E5004B78FF /* ActiveProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveProjectsView.swift; sourceTree = "<group>"; };
+		A0CA1946282184700082BD7C /* Appfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Appfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A0CA1947282184700082BD7C /* Pluginfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Pluginfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A0CA1948282184700082BD7C /* SnapshotHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnapshotHelper.swift; sourceTree = "<group>"; };
+		A0CA1949282184700082BD7C /* Snapfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Snapfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A0CA194B282184700082BD7C /* Deliverfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Deliverfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A0CA19C4282184700082BD7C /* Fastfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Fastfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		A0CA19C7282184DC0082BD7C /* screenshots */ = {isa = PBXFileReference; lastKnownFileType = folder; path = screenshots; sourceTree = "<group>"; };
+		A0CA19C8282184DC0082BD7C /* metadata */ = {isa = PBXFileReference; lastKnownFileType = folder; path = metadata; sourceTree = "<group>"; };
 		A0D0B69B235BD41A00748950 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A0D0B69C235BD41A00748950 /* ar */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ar; path = ar.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A0D0B69D235BD44500748950 /* fa */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fa; path = fa.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -861,23 +764,6 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
-		A04FA3F523462085001BBF15 /* es-MX */ = {
-			isa = PBXGroup;
-			children = (
-				A04FA3FD23462085001BBF15 /* name.txt */,
-				A04FA3F723462085001BBF15 /* subtitle.txt */,
-				A04FA3F923462085001BBF15 /* keywords.txt */,
-				A04FA3FB23462085001BBF15 /* promotional_text.txt */,
-				A04FA3FF23462085001BBF15 /* description.txt */,
-				A04FA3FC23462085001BBF15 /* release_notes.txt */,
-				A04FA3FA23462085001BBF15 /* apple_tv_privacy_policy.txt */,
-				A04FA3FE23462085001BBF15 /* marketing_url.txt */,
-				A04FA3F623462085001BBF15 /* privacy_url.txt */,
-				A04FA3F823462085001BBF15 /* support_url.txt */,
-			);
-			path = "es-MX";
-			sourceTree = "<group>";
-		};
 		A05471A02296B77D009FEA93 /* Montserrat */ = {
 			isa = PBXGroup;
 			children = (
@@ -918,6 +804,7 @@
 			children = (
 				A011D557233A160D0032304A /* .tx */,
 				A006AF2E28193E0F007637DD /* docs */,
+				A0CA18C4282184700082BD7C /* fastlane */,
 				A0C475B6211481710012937E /* .gitignore */,
 				A058628320E4FC5A00EE2F14 /* Podfile */,
 				A058628520E4FDBF00EE2F14 /* Podfile.lock */,
@@ -925,7 +812,6 @@
 				A052A493230D810300E72594 /* CHANGELOG.md */,
 				A0485C2422AAF0CD00D5B176 /* LICENSE */,
 				A08CA2CF27DBB7BB00F23100 /* .bartycrouch.toml */,
-				A0ACF214224CD8D1008B9249 /* fastlane */,
 			);
 			name = Build;
 			sourceTree = "<group>";
@@ -976,23 +862,6 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
-		A07727672345FAB900366ADD /* fr-FR */ = {
-			isa = PBXGroup;
-			children = (
-				A077276B2345FAB900366ADD /* name.txt */,
-				A07727682345FAB900366ADD /* subtitle.txt */,
-				A07727692345FAB900366ADD /* keywords.txt */,
-				A077276A2345FAB900366ADD /* promotional_text.txt */,
-				A077277C2346079D00366ADD /* description.txt */,
-				A07727772346074400366ADD /* release_notes.txt */,
-				A07727782346074400366ADD /* apple_tv_privacy_policy.txt */,
-				A077277B2346074500366ADD /* marketing_url.txt */,
-				A07727792346074500366ADD /* privacy_url.txt */,
-				A077277A2346074500366ADD /* support_url.txt */,
-			);
-			path = "fr-FR";
-			sourceTree = "<group>";
-		};
 		A07E8A3E2295759D00E9FFAA /* Onboarding */ = {
 			isa = PBXGroup;
 			children = (
@@ -1001,99 +870,6 @@
 				A07E8A4122958D0600E9FFAA /* SlideViewController.swift */,
 			);
 			path = Onboarding;
-			sourceTree = "<group>";
-		};
-		A0902BC622F0429900062F6E /* metadata */ = {
-			isa = PBXGroup;
-			children = (
-				A0902BFD22F05F0400062F6E /* app_icon.png */,
-				A0902BC722F0429900062F6E /* copyright.txt */,
-				A0902BFA22F0429900062F6E /* primary_category.txt */,
-				A0902BF922F0429900062F6E /* primary_first_sub_category.txt */,
-				A0902BF022F0429900062F6E /* primary_second_sub_category.txt */,
-				A0902BF122F0429900062F6E /* review_information */,
-				A0902BE322F0429900062F6E /* secondary_category.txt */,
-				A0902BE222F0429900062F6E /* secondary_first_sub_category.txt */,
-				A0902BE422F0429900062F6E /* secondary_second_sub_category.txt */,
-				A0902BD422F0429900062F6E /* trade_representative_contact_information */,
-				A0C7D8E727B6B69100E377FD /* ar */,
-				A0902BE522F0429900062F6E /* de-DE */,
-				A0902BC922F0429900062F6E /* en-US */,
-				A04FA3F523462085001BBF15 /* es-MX */,
-				A07727672345FAB900366ADD /* fr-FR */,
-				A0C7D8E127B6B47F00E377FD /* it */,
-				A09DE5F6234F3AAF00CB3E4D /* ru */,
-				A09DE5EB234F384800CB3E4D /* tr */,
-			);
-			path = metadata;
-			sourceTree = "<group>";
-		};
-		A0902BC922F0429900062F6E /* en-US */ = {
-			isa = PBXGroup;
-			children = (
-				A0902BD122F0429900062F6E /* name.txt */,
-				A0902BCB22F0429900062F6E /* subtitle.txt */,
-				A0902BCD22F0429900062F6E /* keywords.txt */,
-				A0902BCF22F0429900062F6E /* promotional_text.txt */,
-				A0902BD322F0429900062F6E /* description.txt */,
-				A0902BD022F0429900062F6E /* release_notes.txt */,
-				A0902BCE22F0429900062F6E /* apple_tv_privacy_policy.txt */,
-				A0902BD222F0429900062F6E /* marketing_url.txt */,
-				A0902BCA22F0429900062F6E /* privacy_url.txt */,
-				A0902BCC22F0429900062F6E /* support_url.txt */,
-			);
-			path = "en-US";
-			sourceTree = "<group>";
-		};
-		A0902BD422F0429900062F6E /* trade_representative_contact_information */ = {
-			isa = PBXGroup;
-			children = (
-				A0902BE022F0429900062F6E /* first_name.txt */,
-				A0902BDE22F0429900062F6E /* last_name.txt */,
-				A0902BD622F0429900062F6E /* address_line1.txt */,
-				A0902BD922F0429900062F6E /* address_line3.txt */,
-				A0902BDA22F0429900062F6E /* address_line2.txt */,
-				A0902BDF22F0429900062F6E /* postal_code.txt */,
-				A0902BD822F0429900062F6E /* city_name.txt */,
-				A0902BE122F0429900062F6E /* state.txt */,
-				A0902BD722F0429900062F6E /* country.txt */,
-				A0902BDC22F0429900062F6E /* email_address.txt */,
-				A0902BD522F0429900062F6E /* phone_number.txt */,
-				A0902BDB22F0429900062F6E /* trade_name.txt */,
-				A0902BDD22F0429900062F6E /* is_displayed_on_app_store.txt */,
-			);
-			path = trade_representative_contact_information;
-			sourceTree = "<group>";
-		};
-		A0902BE522F0429900062F6E /* de-DE */ = {
-			isa = PBXGroup;
-			children = (
-				A0902BED22F0429900062F6E /* name.txt */,
-				A0902BE722F0429900062F6E /* subtitle.txt */,
-				A0902BE922F0429900062F6E /* keywords.txt */,
-				A0902BEB22F0429900062F6E /* promotional_text.txt */,
-				A0902BEF22F0429900062F6E /* description.txt */,
-				A0902BEC22F0429900062F6E /* release_notes.txt */,
-				A0902BEA22F0429900062F6E /* apple_tv_privacy_policy.txt */,
-				A0902BEE22F0429900062F6E /* marketing_url.txt */,
-				A0902BE622F0429900062F6E /* privacy_url.txt */,
-				A0902BE822F0429900062F6E /* support_url.txt */,
-			);
-			path = "de-DE";
-			sourceTree = "<group>";
-		};
-		A0902BF122F0429900062F6E /* review_information */ = {
-			isa = PBXGroup;
-			children = (
-				A0902BF322F0429900062F6E /* demo_user.txt */,
-				A0902BF822F0429900062F6E /* demo_password.txt */,
-				A0902BF522F0429900062F6E /* email_address.txt */,
-				A0902BF722F0429900062F6E /* first_name.txt */,
-				A0902BF622F0429900062F6E /* last_name.txt */,
-				A0902BF422F0429900062F6E /* notes.txt */,
-				A0902BF222F0429900062F6E /* phone_number.txt */,
-			);
-			path = review_information;
 			sourceTree = "<group>";
 		};
 		A098980422369F5700022851 /* Management */ = {
@@ -1124,56 +900,6 @@
 			path = "Save Screenshots";
 			sourceTree = "<group>";
 		};
-		A09DE5EB234F384800CB3E4D /* tr */ = {
-			isa = PBXGroup;
-			children = (
-				A09DE5F4234F38A000CB3E4D /* name.txt */,
-				A09DE5F0234F38A000CB3E4D /* subtitle.txt */,
-				A09DE5EE234F38A000CB3E4D /* keywords.txt */,
-				A09DE5F2234F38A000CB3E4D /* promotional_text.txt */,
-				A09DE5EC234F38A000CB3E4D /* description.txt */,
-				A09DE5ED234F38A000CB3E4D /* release_notes.txt */,
-				A09DE5F5234F38A000CB3E4D /* apple_tv_privacy_policy.txt */,
-				A09DE5F3234F38A000CB3E4D /* marketing_url.txt */,
-				A09DE5F1234F38A000CB3E4D /* privacy_url.txt */,
-				A09DE5EF234F38A000CB3E4D /* support_url.txt */,
-			);
-			path = tr;
-			sourceTree = "<group>";
-		};
-		A09DE5F6234F3AAF00CB3E4D /* ru */ = {
-			isa = PBXGroup;
-			children = (
-				A09DE5FE234F3AAF00CB3E4D /* name.txt */,
-				A09DE5F8234F3AAF00CB3E4D /* subtitle.txt */,
-				A09DE5FA234F3AAF00CB3E4D /* keywords.txt */,
-				A09DE5FC234F3AAF00CB3E4D /* promotional_text.txt */,
-				A09DE600234F3AAF00CB3E4D /* description.txt */,
-				A09DE5FD234F3AAF00CB3E4D /* release_notes.txt */,
-				A09DE5FB234F3AAF00CB3E4D /* apple_tv_privacy_policy.txt */,
-				A09DE5FF234F3AAF00CB3E4D /* marketing_url.txt */,
-				A09DE5F7234F3AAF00CB3E4D /* privacy_url.txt */,
-				A09DE5F9234F3AAF00CB3E4D /* support_url.txt */,
-			);
-			path = ru;
-			sourceTree = "<group>";
-		};
-		A0ACF214224CD8D1008B9249 /* fastlane */ = {
-			isa = PBXGroup;
-			children = (
-				A0902BC622F0429900062F6E /* metadata */,
-				A0ACF215224CD8D1008B9249 /* Appfile */,
-				A080539322E87F320031D4B5 /* Deliverfile */,
-				A0AC0569224CD8D5008B9249 /* Fastfile */,
-				A0AC057C224CDF4F008B9249 /* Gemfile */,
-				A0ACF216224CD8D1008B9249 /* Pluginfile */,
-				A0AC0579224CDE9C008B9249 /* README.md */,
-				A05768E222E0B6E600B39FCE /* Snapfile */,
-				A05768E122E0B6E600B39FCE /* SnapshotHelper.swift */,
-			);
-			path = fastlane;
-			sourceTree = "<group>";
-		};
 		A0AFCF0B223001AE005E57FD /* Preview */ = {
 			isa = PBXGroup;
 			children = (
@@ -1189,28 +915,19 @@
 			path = Preview;
 			sourceTree = "<group>";
 		};
-		A0C7D8E127B6B47F00E377FD /* it */ = {
+		A0CA18C4282184700082BD7C /* fastlane */ = {
 			isa = PBXGroup;
 			children = (
-				A0C7D8E527B6B47F00E377FD /* name.txt */,
-				A0C7D8E227B6B47F00E377FD /* subtitle.txt */,
-				A0C7D8E327B6B47F00E377FD /* keywords.txt */,
-				A0C7D8E427B6B47F00E377FD /* promotional_text.txt */,
-				A0C7D8E627B6B47F00E377FD /* description.txt */,
+				A0CA19C8282184DC0082BD7C /* metadata */,
+				A0CA19C7282184DC0082BD7C /* screenshots */,
+				A0CA1946282184700082BD7C /* Appfile */,
+				A0CA194B282184700082BD7C /* Deliverfile */,
+				A0CA19C4282184700082BD7C /* Fastfile */,
+				A0CA1947282184700082BD7C /* Pluginfile */,
+				A0CA1949282184700082BD7C /* Snapfile */,
+				A0CA1948282184700082BD7C /* SnapshotHelper.swift */,
 			);
-			path = it;
-			sourceTree = "<group>";
-		};
-		A0C7D8E727B6B69100E377FD /* ar */ = {
-			isa = PBXGroup;
-			children = (
-				A0C7D8EB27B6B69100E377FD /* name.txt */,
-				A0C7D8E827B6B69100E377FD /* subtitle.txt */,
-				A0C7D8E927B6B69100E377FD /* keywords.txt */,
-				A0C7D8EA27B6B69100E377FD /* promotional_text.txt */,
-				A0C7D8EC27B6B69100E377FD /* description.txt */,
-			);
-			path = ar;
+			path = fastlane;
 			sourceTree = "<group>";
 		};
 		A0D58DCC20E514F8005A2F34 /* Models */ = {
@@ -1741,7 +1458,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A05768DA22E0B67D00B39FCE /* Screenshots.swift in Sources */,
-				A05768E322E0B6F800B39FCE /* SnapshotHelper.swift in Sources */,
+				A0CA19C62821849D0082BD7C /* SnapshotHelper.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1889,6 +1606,7 @@
 				A09B53AB23266F02005266C2 /* SlideViewController.swift in Sources */,
 				A09B53AC23266F02005266C2 /* NewProjectViewController.swift in Sources */,
 				A09B53AD23266F02005266C2 /* DarkroomHelper.swift in Sources */,
+				A0CA19C52821849D0082BD7C /* SnapshotHelper.swift in Sources */,
 				A02BC6702400195C007B05AB /* NSError+from.swift in Sources */,
 				A09B53AE23266F02005266C2 /* Conduit.swift in Sources */,
 				A09B53AF23266F02005266C2 /* UIView+animateHideShow.swift in Sources */,

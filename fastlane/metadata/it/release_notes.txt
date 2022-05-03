@@ -1,0 +1,4 @@
+- Aggiunte traduzioni: italiano.
+- Traduzioni aggiornate.
+- Aggiunto controllo dello stato di caricamento.
+- Risolti vari bug e arresti anomali.
