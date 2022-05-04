@@ -263,6 +263,9 @@
 "Please choose another name/project or use the existing one instead." = "Please choose another name/project or use the existing one instead.";
 
 /* MainViewController */
+"Please go to the Settings app to grant this app access to your camera, if you want to upload photos or videos." = "Please go to the Settings app to grant this app access to your camera, if you want to upload photos or videos.";
+
+/* MainViewController */
 "Please go to the Settings app to grant this app access to your photo library, if you want to upload photos or videos." = "Please go to the Settings app to grant this app access to your photo library, if you want to upload photos or videos.";
 
 /* PreviewViewController */
