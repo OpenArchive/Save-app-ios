@@ -484,6 +484,8 @@ class UploadManager: Alamofire.SessionDelegate {
     @objc func uploadNext() {
         if backgroundTask == .invalid {
             backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
+                self?.current?.cancel()
+
                 self?.endBackgroundTask(.failed)
             }
         }
