@@ -36,17 +36,21 @@ class BrowseViewController: BaseTableViewController {
         return (SelectedSpace.space as? WebDavSpace)?.provider
     }
 
-    private var dropboxClient: DropboxClient? {
+    private lazy var dropboxClient: DropboxClient? = {
         if let client = DropboxClientsManager.authorizedClient {
             return client
         }
 
         if let accessToken = (SelectedSpace.space as? DropboxSpace)?.password {
-            return DropboxClient(accessToken: accessToken)
+            return DropboxClient(transportClient: DropboxTransportClient(
+                accessToken: accessToken, baseHosts: nil, userAgent: nil, selectUser: nil,
+                sessionDelegate: nil,
+                backgroundSessionDelegate: nil,
+                sharedContainerIdentifier: Constants.appGroup))
         }
 
         return nil
-    }
+    }()
 
     private var loading = true
 
