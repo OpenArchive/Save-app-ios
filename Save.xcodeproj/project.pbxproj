@@ -10,15 +10,18 @@
 		6C7C2C3525A4B8B8BC2F0728 /* Pods_ShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8795B24EAF01D5B012DD8C /* Pods_ShareExtension.framework */; };
 		83983C39A73BA40904C637BF /* Pods_Save_Screenshots.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAF278D72999D4B24346F09C /* Pods_Save_Screenshots.framework */; };
 		A004E24C20EBCF1700A1D5F5 /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A004E24B20EBCF1700A1D5F5 /* Formatters.swift */; };
+		A006A6A8282950D00029E49B /* UIBackgroundFetchResult+description.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006A6A7282950D00029E49B /* UIBackgroundFetchResult+description.swift */; };
+		A006A6A9282950D00029E49B /* UIBackgroundFetchResult+description.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006A6A7282950D00029E49B /* UIBackgroundFetchResult+description.swift */; };
+		A006A6AA282950D00029E49B /* UIBackgroundFetchResult+description.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006A6A7282950D00029E49B /* UIBackgroundFetchResult+description.swift */; };
+		A006A6AC282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006A6AB282973C10029E49B /* DispatchGroup+waitSignal.swift */; };
+		A006A6AD282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006A6AB282973C10029E49B /* DispatchGroup+waitSignal.swift */; };
+		A006A6AE282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006A6AB282973C10029E49B /* DispatchGroup+waitSignal.swift */; };
 		A006AF30281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */; };
 		A006AF31281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */; };
 		A006AF32281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */; };
 		A006AF3428198752007637DD /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3328198752007637DD /* AlertHelper.swift */; };
 		A006AF3528198752007637DD /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3328198752007637DD /* AlertHelper.swift */; };
 		A006AF3628198752007637DD /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3328198752007637DD /* AlertHelper.swift */; };
-		A006AF3828199687007637DD /* SessionManager+improvedConf.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3728199687007637DD /* SessionManager+improvedConf.swift */; };
-		A006AF3928199687007637DD /* SessionManager+improvedConf.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3728199687007637DD /* SessionManager+improvedConf.swift */; };
-		A006AF3A28199687007637DD /* SessionManager+improvedConf.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3728199687007637DD /* SessionManager+improvedConf.swift */; };
 		A00A8D44220C63B20083F0CB /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00A8D43220C63B20083F0CB /* ProjectsView.swift */; };
 		A00A8D45220C63B20083F0CB /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00A8D43220C63B20083F0CB /* ProjectsView.swift */; };
 		A00A8D47220C7EDD0083F0CB /* AbcFilteredByProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00A8D46220C7EDD0083F0CB /* AbcFilteredByProjectView.swift */; };
@@ -38,9 +41,6 @@
 		A026C34622C641EB007B1C5B /* IaScrapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */; };
 		A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029F6822118715700C4EF6D /* AssetFactory.swift */; };
 		A029F6842118715700C4EF6D /* AssetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029F6822118715700C4EF6D /* AssetFactory.swift */; };
-		A02BC66E2400195C007B05AB /* NSError+from.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02BC66D2400195C007B05AB /* NSError+from.swift */; };
-		A02BC66F2400195C007B05AB /* NSError+from.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02BC66D2400195C007B05AB /* NSError+from.swift */; };
-		A02BC6702400195C007B05AB /* NSError+from.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02BC66D2400195C007B05AB /* NSError+from.swift */; };
 		A0357D1122CF901800292077 /* BatchEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0357D1022CF901800292077 /* BatchEditViewController.swift */; };
 		A0362192220DA390003C21DC /* UIColor+accent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362191220DA390003C21DC /* UIColor+accent.swift */; };
 		A0362193220DA390003C21DC /* UIColor+accent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362191220DA390003C21DC /* UIColor+accent.swift */; };
@@ -85,7 +85,6 @@
 		A056555523F6D1C600DE0168 /* DropboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555423F6D1C600DE0168 /* DropboxViewController.swift */; };
 		A056555723F6D8A100DE0168 /* DropboxSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555623F6D67E00DE0168 /* DropboxSpace.swift */; };
 		A056555823F6D8A300DE0168 /* DropboxSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555623F6D67E00DE0168 /* DropboxSpace.swift */; };
-		A056555A23F6DA3100DE0168 /* DropboxConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555923F6D9D600DE0168 /* DropboxConduit.swift */; };
 		A056555C23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */; };
 		A056555D23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */; };
 		A056555E23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */; };
@@ -106,8 +105,6 @@
 		A06D935C233B854D006B2EA3 /* ProjectTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06D935B233B854D006B2EA3 /* ProjectTab.swift */; };
 		A06D935D233B854D006B2EA3 /* ProjectTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06D935B233B854D006B2EA3 /* ProjectTab.swift */; };
 		A06D935E233B854D006B2EA3 /* ProjectTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06D935B233B854D006B2EA3 /* ProjectTab.swift */; };
-		A070335B2119E7DF00BF1F33 /* Request+debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = A070335A2119E7DF00BF1F33 /* Request+debug.swift */; };
-		A070335C2119E7DF00BF1F33 /* Request+debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = A070335A2119E7DF00BF1F33 /* Request+debug.swift */; };
 		A07129052111CC90007A432A /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A07128FB2111CC90007A432A /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A071290A2111DC6A007A432A /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6620EF96FB00B8FBCB /* StringUtils.swift */; };
 		A071290C2111DE3C007A432A /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D58DCD20E51517005A2F34 /* Asset.swift */; };
@@ -141,6 +138,14 @@
 		A08C2CEF21F0C757008ACA3E /* AvatarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */; };
 		A092C0F0223A8D4B003EB0AA /* DoneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A092C0EF223A8D4B003EB0AA /* DoneDelegate.swift */; };
 		A092C0F1223A8D4B003EB0AA /* DoneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A092C0EF223A8D4B003EB0AA /* DoneDelegate.swift */; };
+		A094EA48282A8C24006CE059 /* URLSession+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3728199687007637DD /* URLSession+Utils.swift */; };
+		A094EA49282A8C25006CE059 /* URLSession+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3728199687007637DD /* URLSession+Utils.swift */; };
+		A094EA4A282A8C25006CE059 /* URLSession+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3728199687007637DD /* URLSession+Utils.swift */; };
+		A094EA4B282AD110006CE059 /* DropboxConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555923F6D9D600DE0168 /* DropboxConduit.swift */; };
+		A094EA4C282AD115006CE059 /* DropboxConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555923F6D9D600DE0168 /* DropboxConduit.swift */; };
+		A094EA4D282AD23D006CE059 /* NSError+from.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02BC66D2400195C007B05AB /* NSError+from.swift */; };
+		A094EA4E282AD23D006CE059 /* NSError+from.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02BC66D2400195C007B05AB /* NSError+from.swift */; };
+		A094EA4F282AD23E006CE059 /* NSError+from.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02BC66D2400195C007B05AB /* NSError+from.swift */; };
 		A098980622369F8100022851 /* ManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A098980522369F8100022851 /* ManagementViewController.swift */; };
 		A09898082236A7B100022851 /* UploadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09898072236A7B100022851 /* UploadCell.swift */; };
 		A098980A2236A9E800022851 /* UploadsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09898092236A9E800022851 /* UploadsView.swift */; };
@@ -186,7 +191,6 @@
 		A09B53A023266F02005266C2 /* UIStoryboard+main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04255CD22944C1B0048E00C /* UIStoryboard+main.swift */; };
 		A09B53A123266F02005266C2 /* DarkroomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E321F8228EDBE900F2E9BD /* DarkroomViewController.swift */; };
 		A09B53A223266F02005266C2 /* RuleFilename.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05F79FD22EEFA9F003DBB74 /* RuleFilename.swift */; };
-		A09B53A323266F02005266C2 /* Request+debug.swift in Sources */ = {isa = PBXBuildFile; fileRef = A070335A2119E7DF00BF1F33 /* Request+debug.swift */; };
 		A09B53A423266F02005266C2 /* SelectedSpaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68321EE831300E4F6B7 /* SelectedSpaceCell.swift */; };
 		A09B53A523266F02005266C2 /* RemoveAssetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A077732922786BCA00291F5D /* RemoveAssetAlert.swift */; };
 		A09B53A623266F02005266C2 /* BatchEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0357D1022CF901800292077 /* BatchEditViewController.swift */; };
@@ -458,10 +462,12 @@
 		A0057A0527D25EEA00A14532 /* cleaninsights-prod.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "cleaninsights-prod.json"; sourceTree = "<group>"; };
 		A005B8B4234B57E1005611F5 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A005B8B5234B57E1005611F5 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A006A6A7282950D00029E49B /* UIBackgroundFetchResult+description.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBackgroundFetchResult+description.swift"; sourceTree = "<group>"; };
+		A006A6AB282973C10029E49B /* DispatchGroup+waitSignal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchGroup+waitSignal.swift"; sourceTree = "<group>"; };
 		A006AF2E28193E0F007637DD /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docs; sourceTree = "<group>"; };
 		A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YapDatabaseViewMappings+isNextSnapshot.swift"; sourceTree = "<group>"; };
 		A006AF3328198752007637DD /* AlertHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
-		A006AF3728199687007637DD /* SessionManager+improvedConf.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SessionManager+improvedConf.swift"; sourceTree = "<group>"; };
+		A006AF3728199687007637DD /* URLSession+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Utils.swift"; sourceTree = "<group>"; };
 		A00A8D43220C63B20083F0CB /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
 		A00A8D46220C7EDD0083F0CB /* AbcFilteredByProjectView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AbcFilteredByProjectView.swift; sourceTree = "<group>"; };
 		A00DC98922315D4F004F07E0 /* ImageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageViewController.swift; sourceTree = "<group>"; };
@@ -741,7 +747,9 @@
 				A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */,
 				A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */,
 				A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */,
-				A006AF3728199687007637DD /* SessionManager+improvedConf.swift */,
+				A006AF3728199687007637DD /* URLSession+Utils.swift */,
+				A006A6A7282950D00029E49B /* UIBackgroundFetchResult+description.swift */,
+				A006A6AB282973C10029E49B /* DispatchGroup+waitSignal.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1472,6 +1480,7 @@
 				A0E321FF228EFE7100F2E9BD /* InfoBox.swift in Sources */,
 				A0A192DE21F208DA009A8CF0 /* Space.swift in Sources */,
 				A0E2720A224E335400CB7113 /* NewProjectViewController.swift in Sources */,
+				A094EA4E282AD23D006CE059 /* NSError+from.swift in Sources */,
 				A08C2CE821F0B613008ACA3E /* BaseCell.swift in Sources */,
 				A08C2CE921F0B617008ACA3E /* TableHeader.swift in Sources */,
 				A0AC06B22201E5B900BD5FBA /* WorkingOverlay.swift in Sources */,
@@ -1502,13 +1511,13 @@
 				A0362196220DB2CA003C21DC /* IaSpace.swift in Sources */,
 				A006AF31281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */,
 				A05F79FF22EEFA9F003DBB74 /* RuleFilename.swift in Sources */,
+				A006A6AD282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */,
 				A0E9069422CB7D16008CD81B /* SelectedView.swift in Sources */,
 				A045D1F5224CFFB4008FF8C1 /* SelectedSpaceCell.swift in Sources */,
 				A0E2BC732226AA10006D33E3 /* SelectedSpace.swift in Sources */,
-				A070335C2119E7DF00BF1F33 /* Request+debug.swift in Sources */,
 				A0AC0582224CEC1C008B9249 /* SpaceCell.swift in Sources */,
 				A0212FCF22D374CA009079DC /* UICollectionView+selection.swift in Sources */,
-				A006AF3928199687007637DD /* SessionManager+improvedConf.swift in Sources */,
+				A094EA49282A8C25006CE059 /* URLSession+Utils.swift in Sources */,
 				A0631B562203022100B3E90D /* BaseTableViewController.swift in Sources */,
 				A071290A2111DC6A007A432A /* StringUtils.swift in Sources */,
 				A029F6842118715700C4EF6D /* AssetFactory.swift in Sources */,
@@ -1525,7 +1534,6 @@
 				A05275152211A91300BDB14B /* CollectionsView.swift in Sources */,
 				A0AFCF1022300E41005E57FD /* MultilineTitle.swift in Sources */,
 				A0E27200224E267800CB7113 /* BrowseViewController.swift in Sources */,
-				A02BC66F2400195C007B05AB /* NSError+from.swift in Sources */,
 				A0A192E121F23B61009A8CF0 /* Constants+Swift.swift in Sources */,
 				A0631B5C22034F0E00B3E90D /* Collection.swift in Sources */,
 				A0F7FDE822494E3E006610F0 /* RemoveProjectAlert.swift in Sources */,
@@ -1538,6 +1546,7 @@
 				A0C797E7228063280009751A /* AbcFilteredByCollectionView.swift in Sources */,
 				A0DE78B021F76D2200B6B68B /* Project.swift in Sources */,
 				A0FB4DB621F89FD500B46099 /* AssetsByCollectionView.swift in Sources */,
+				A006A6A9282950D00029E49B /* UIBackgroundFetchResult+description.swift in Sources */,
 				A045D202224D07C3008FF8C1 /* ButtonCell.swift in Sources */,
 				A0FB4DBC21F8C9B600B46099 /* RoundedImageView.swift in Sources */,
 				A05471DC2296C8FD009FEA93 /* UITableView+separatorView.swift in Sources */,
@@ -1561,6 +1570,7 @@
 				A09B538323266F02005266C2 /* ActiveProjectsView.swift in Sources */,
 				A09B5416232671D1005266C2 /* AppDelegate.swift in Sources */,
 				A056555E23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */,
+				A094EA4A282A8C25006CE059 /* URLSession+Utils.swift in Sources */,
 				A09B538423266F02005266C2 /* SpacesView.swift in Sources */,
 				A09B538523266F02005266C2 /* RoundedImageView.swift in Sources */,
 				A09B538623266F02005266C2 /* Settings.swift in Sources */,
@@ -1577,11 +1587,13 @@
 				A09B539023266F02005266C2 /* ProjectsTabBar.swift in Sources */,
 				A09B539123266F02005266C2 /* Screenshots.swift in Sources */,
 				A09B539223266F02005266C2 /* FormViewController.swift in Sources */,
+				A006A6AE282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */,
 				A09B539323266F02005266C2 /* RemoveProjectAlert.swift in Sources */,
 				A09B539423266F02005266C2 /* YapDatabaseConnection+updateMappings.swift in Sources */,
 				A09B539523266F02005266C2 /* BaseProjectViewController.swift in Sources */,
 				A09B539623266F02005266C2 /* AvatarRow.swift in Sources */,
 				A09B539723266F02005266C2 /* InfoAlert.swift in Sources */,
+				A094EA4F282AD23E006CE059 /* NSError+from.swift in Sources */,
 				A09B539823266F02005266C2 /* ImageViewController.swift in Sources */,
 				A09B539923266F02005266C2 /* HeaderView.swift in Sources */,
 				A09B539A23266F02005266C2 /* BaseServerViewController.swift in Sources */,
@@ -1592,9 +1604,7 @@
 				A09B539F23266F02005266C2 /* SelectedView.swift in Sources */,
 				A09B53A023266F02005266C2 /* UIStoryboard+main.swift in Sources */,
 				A09B53A123266F02005266C2 /* DarkroomViewController.swift in Sources */,
-				A006AF3A28199687007637DD /* SessionManager+improvedConf.swift in Sources */,
 				A09B53A223266F02005266C2 /* RuleFilename.swift in Sources */,
-				A09B53A323266F02005266C2 /* Request+debug.swift in Sources */,
 				A09B53A423266F02005266C2 /* SelectedSpaceCell.swift in Sources */,
 				A09B53A523266F02005266C2 /* RemoveAssetAlert.swift in Sources */,
 				A09B53A623266F02005266C2 /* BatchEditViewController.swift in Sources */,
@@ -1606,9 +1616,10 @@
 				A09B53AB23266F02005266C2 /* SlideViewController.swift in Sources */,
 				A09B53AC23266F02005266C2 /* NewProjectViewController.swift in Sources */,
 				A09B53AD23266F02005266C2 /* DarkroomHelper.swift in Sources */,
+				A094EA4C282AD115006CE059 /* DropboxConduit.swift in Sources */,
 				A0CA19C52821849D0082BD7C /* SnapshotHelper.swift in Sources */,
-				A02BC6702400195C007B05AB /* NSError+from.swift in Sources */,
 				A09B53AE23266F02005266C2 /* Conduit.swift in Sources */,
+				A006A6AA282950D00029E49B /* UIBackgroundFetchResult+description.swift in Sources */,
 				A09B53AF23266F02005266C2 /* UIView+animateHideShow.swift in Sources */,
 				A09B53B023266F02005266C2 /* FlagInfoAlert.swift in Sources */,
 				A09B53B123266F02005266C2 /* UICollectionView+selection.swift in Sources */,
@@ -1674,7 +1685,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A006AF3828199687007637DD /* SessionManager+improvedConf.swift in Sources */,
+				A094EA4D282AD23D006CE059 /* NSError+from.swift in Sources */,
 				A0E739D820E4C85D00DB31E1 /* AppDelegate.swift in Sources */,
 				A0BBEF8922846F310071EE93 /* Geocoder.swift in Sources */,
 				A0362195220DB2CA003C21DC /* IaSpace.swift in Sources */,
@@ -1696,9 +1707,11 @@
 				A045D201224D07C3008FF8C1 /* ButtonCell.swift in Sources */,
 				A0FA93412277387D0086D276 /* Bundle+displayName.swift in Sources */,
 				A025171922C2126C00EEFBD9 /* DuplicateProjectAlert.swift in Sources */,
+				A006A6A8282950D00029E49B /* UIBackgroundFetchResult+description.swift in Sources */,
 				A01A7B6F2200A05C00E18DE0 /* ProjectsTabBar.swift in Sources */,
 				A08C2CE621F0B46C008ACA3E /* FormViewController.swift in Sources */,
 				A0F7FDE722494E2F006610F0 /* RemoveProjectAlert.swift in Sources */,
+				A094EA4B282AD110006CE059 /* DropboxConduit.swift in Sources */,
 				A0F1364F227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift in Sources */,
 				A0BF451A27DF5EE800DBB629 /* HealthCheckViewController.swift in Sources */,
 				A0DE78B221F771A700B6B68B /* BaseProjectViewController.swift in Sources */,
@@ -1715,7 +1728,6 @@
 				A04255CE22944C1B0048E00C /* UIStoryboard+main.swift in Sources */,
 				A0E321F9228EDBE900F2E9BD /* DarkroomViewController.swift in Sources */,
 				A05F79FE22EEFA9F003DBB74 /* RuleFilename.swift in Sources */,
-				A070335B2119E7DF00BF1F33 /* Request+debug.swift in Sources */,
 				A045D1F6224CFFB4008FF8C1 /* SelectedSpaceCell.swift in Sources */,
 				A077732A22786BF500291F5D /* RemoveAssetAlert.swift in Sources */,
 				A0357D1122CF901800292077 /* BatchEditViewController.swift in Sources */,
@@ -1749,6 +1761,7 @@
 				A0F7FDDF224936C8006610F0 /* TintedImageView.swift in Sources */,
 				A0AC06AC2201D00100BD5FBA /* FolderCell.swift in Sources */,
 				A07E8A40229575B600E9FFAA /* SlideshowViewController.swift in Sources */,
+				A006A6AC282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */,
 				A098980A2236A9E800022851 /* UploadsView.swift in Sources */,
 				A0AFCF0D22300279005E57FD /* PreviewViewController.swift in Sources */,
 				A056555523F6D1C600DE0168 /* DropboxViewController.swift in Sources */,
@@ -1762,7 +1775,6 @@
 				A05471DB2296C8FD009FEA93 /* UITableView+separatorView.swift in Sources */,
 				A052A48F230D53D800E72594 /* IaInfoAlert.swift in Sources */,
 				A0FE2C1E22E1E8D200C5443F /* Error+friendlyMessage.swift in Sources */,
-				A056555A23F6DA3100DE0168 /* DropboxConduit.swift in Sources */,
 				A056555723F6D8A100DE0168 /* DropboxSpace.swift in Sources */,
 				A09898082236A7B100022851 /* UploadCell.swift in Sources */,
 				A0C797E6228063280009751A /* AbcFilteredByCollectionView.swift in Sources */,
@@ -1775,7 +1787,6 @@
 				A0F7FDDC22491C6C006610F0 /* TintedButton.swift in Sources */,
 				A0E2BC722226AA10006D33E3 /* SelectedSpace.swift in Sources */,
 				A006AF30281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */,
-				A02BC66E2400195C007B05AB /* NSError+from.swift in Sources */,
 				A0631B5B22034F0700B3E90D /* Collection.swift in Sources */,
 				A0656AB821F9BC8500070C4B /* ConnectSpaceViewController.swift in Sources */,
 				A0FB4DBE21F8CC2300B46099 /* MainViewController.swift in Sources */,
@@ -1791,6 +1802,7 @@
 				A0631B552203022100B3E90D /* BaseTableViewController.swift in Sources */,
 				A0E2720C224E33D000CB7113 /* EditProjectViewController.swift in Sources */,
 				A0457E6920EFB57C00B8FBCB /* RegexUtils.swift in Sources */,
+				A094EA48282A8C24006CE059 /* URLSession+Utils.swift in Sources */,
 				A0B645CA22B7AEBB00BBE3FF /* BigMenuItemCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

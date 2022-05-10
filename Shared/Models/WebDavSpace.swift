@@ -8,7 +8,6 @@
 
 import UIKit
 import FilesProvider
-import Alamofire
 
 /**
  A space supporting WebDAV servers such as Nextcloud/Owncloud.
@@ -46,7 +45,7 @@ class WebDavSpace: Space, Item {
     static func createProvider(baseUrl: URL, credential: URLCredential) -> WebDAVFileProvider? {
         let provider = WebDAVFileProvider(baseURL: baseUrl, credential: credential)
 
-        let conf = SessionManager.improvedConf()
+        let conf = URLSession.improvedConf(provider?.session.configuration)
 
         conf.urlCache = provider?.cache
         conf.requestCachePolicy = .returnCacheDataElseLoad

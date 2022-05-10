@@ -8,7 +8,6 @@
 
 import UIKit
 import YapDatabase
-import Alamofire
 import FilesProvider
 
 /**

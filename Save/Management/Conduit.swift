@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import Alamofire
 import FilesProvider
 
 /**
@@ -15,57 +14,6 @@ import FilesProvider
  type of `Space`.
  */
 class Conduit {
-
-    /**
-     A session manager, which is enabled for background uploading.
-
-     This needs to be tied to an object, otherwise the SessionManager will get
-     destroyed during the request and the request will break with error -999.
-
-     See [Getting code=-999 using custom SessionManager](https://github.com/Alamofire/Alamofire/issues/1684)
-     */
-    class var backgroundSessionManager: SessionManager {
-        syncQueue.sync {
-            if _backgroundSessionManager == nil {
-                let conf = URLSessionConfiguration.background(withIdentifier:
-                    "\(Bundle.main.bundleIdentifier ?? "").background")
-
-                conf.isDiscretionary = false
-                conf.shouldUseExtendedBackgroundIdleMode = true
-
-                _backgroundSessionManager = SessionManager.withImprovedConf(
-                    configuration: conf, delegate: UploadManager.shared)
-
-                _backgroundSessionManager?.backgroundCompletionHandler = backgroundCompletionHandler
-
-//                print("[\(String(describing: self))] reconfigured backgroundSessionManager with proxy=\(conf.connectionProxyDictionary ?? [:])")
-            }
-
-            return _backgroundSessionManager!
-        }
-    }
-
-    static var backgroundCompletionHandler: (() -> Void)? {
-        didSet {
-            syncQueue.sync {
-                _backgroundSessionManager?.backgroundCompletionHandler = backgroundCompletionHandler
-            }
-        }
-    }
-
-    /**
-     A session manager wich is foreground-uploading only. This enables data
-     chunks to get uploaded without the need for a file on disk.
-    */
-    class var foregroundSessionManager: SessionManager {
-        syncQueue.sync {
-            if _foregroundSessionManager == nil {
-                _foregroundSessionManager = SessionManager.withImprovedConf(delegate: UploadManager.shared)
-            }
-        }
-
-        return _foregroundSessionManager!
-    }
 
     /**
      A pretty-printing JSON encoder using ISO8601 date formats.
@@ -78,40 +26,24 @@ class Conduit {
         return encoder
     }()
 
-
-    private static var _backgroundSessionManager: SessionManager?
-
-    private static var _foregroundSessionManager: SessionManager?
-
-    private static let syncQueue = DispatchQueue(label: "\(Bundle.main.bundleIdentifier!).\(String(describing: Conduit.self))")
-
-
-    class func reconfigureSession() {
-        syncQueue.sync {
-            _backgroundSessionManager = nil
-            _foregroundSessionManager = nil
-        }
-    }
-
-
     /**
      Evaluate the given `Asset`s `Space` and return the correct type of `Conduit`,
      if any available.
 
      - parameter asset: The `Asset` the `Conduit` is for.
     */
-    class func get(for asset: Asset) -> Conduit? {
+    class func get(for asset: Asset, _ backgroundSession: URLSession, _ foregroundSession: URLSession) -> Conduit? {
         if let space = asset.space {
             if space is WebDavSpace {
-                return WebDavConduit(asset)
+                return WebDavConduit(asset, backgroundSession, foregroundSession)
             }
 
             if space is DropboxSpace {
-                return DropboxConduit(asset)
+                return nil //DropboxConduit(asset, backgroundSession, foregroundSession)
             }
 
             if space is IaSpace {
-                return IaConduit(asset)
+                return IaConduit(asset, backgroundSession, foregroundSession)
             }
         }
 
@@ -129,8 +61,13 @@ class Conduit {
 
     var asset: Asset
 
-    init(_ asset: Asset) {
+    let backgroundSession: URLSession
+    let foregroundSession: URLSession
+
+    init(_ asset: Asset, _ backgroundSession: URLSession, _ foregroundSession: URLSession) {
         self.asset = asset
+        self.backgroundSession = backgroundSession
+        self.foregroundSession = foregroundSession
     }
 
 
@@ -164,82 +101,44 @@ class Conduit {
     /**
      Uploads a file to a destination.
 
-     This method deliberatly doesn't use the FilesProvider library, but Alamofire
+     This method deliberatly doesn't use the FilesProvider library, but URLSession
      instead, since FilesProvider's latest version fails on uploading the
      metadata for an unkown reason. Addtionally, it's easier with the background
-     upload, when using Alamofire directly.
+     upload, when using URLSession directly.
 
      - parameter file: The file on the local file system.
      - parameter to: The destination on the WebDAV server.
      - parameter credential: The credentials to authenticate with.
      - parameter headers: Addtitional request headers.
      - parameter progress: The main progress to report on.
-     - parameter completionHandler: The callback to call when the copy is done,
-     or when an error happened.
      */
     func upload(_ file: URL, to: URL, _ progress: Progress, credential: URLCredential? = nil,
-                headers: HTTPHeaders? = nil, _ completionHandler: SimpleCompletionHandler = nil) {
-
-        let start = progress.completedUnitCount
-        let share = progress.totalUnitCount - start
-
+                headers: [String: String]? = nil)
+    {
         // We do basic auth ourselves, to avoid double sending of files.
         // URLSession tends to forget to send it without a challenge,
         // which is especially annoying with big files.
         let headers = addBasicAuth(headers, credential)
 
-        let req = Conduit.backgroundSessionManager.upload(file, to: to, method: .put, headers: headers)
-            .validate(statusCode: 200..<300)
-            .uploadProgress {
-                if progress.isCancelled {
-                    $0.cancel()
-                }
+        let task = backgroundSession.upload(file, to: to, method: "PUT", headers: headers)
 
-                progress.completedUnitCount = start + $0.completedUnitCount * share / $0.totalUnitCount
-            }
-            .responseData { response in
-                completionHandler?(response.error)
-        }
+        progress.addChild(task.progress, withPendingUnitCount: progress.totalUnitCount - progress.completedUnitCount)
 
-        if let credential = credential {
-            req.authenticate(usingCredential: credential)
-        }
-
-        #if DEBUG
-        _ = req.debug()
-        #endif
     }
 
     func upload(_ data: Data, to: URL, _ progress: Progress, _ share: Int64, credential: URLCredential? = nil,
-                headers: HTTPHeaders? = nil, _ completionHandler: SimpleCompletionHandler = nil) {
-
-        let start = progress.completedUnitCount
-
+                headers: [String: String]? = nil, _ completionHandler: SimpleCompletionHandler = nil)
+    {
         // We do basic auth ourselves, to avoid double sending of files.
         // URLSession tends to forget to send it without a challenge,
         // which is especially annoying with big files.
         let headers = addBasicAuth(headers, credential)
 
-        let req = Conduit.foregroundSessionManager.upload(data, to: to, method: .put, headers: headers)
-            .validate(statusCode: 200..<300)
-            .uploadProgress {
-                if progress.isCancelled {
-                    $0.cancel()
-                }
+        let task = foregroundSession.upload(
+            data, to: to, method: "PUT", headers: headers,
+            completionHandler: completionHandler)
 
-                progress.completedUnitCount = start + $0.completedUnitCount * share / $0.totalUnitCount
-            }
-            .responseData { response in
-                completionHandler?(response.error)
-        }
-
-        if let credential = credential {
-            req.authenticate(usingCredential: credential)
-        }
-
-        #if DEBUG
-        _ = req.debug()
-        #endif
+        progress.addChild(task.progress, withPendingUnitCount: share)
     }
 
     /**
@@ -345,7 +244,7 @@ class Conduit {
      - returns: nil, if headers was nil and no valid credential, otherwise a header
         dictionary with an added (potentially overwritten) "Authorization" header.
     */
-    func addBasicAuth(_ headers: HTTPHeaders?, _ credential: URLCredential?) -> HTTPHeaders? {
+    func addBasicAuth(_ headers: [String: String]?, _ credential: URLCredential?) -> [String: String]? {
         var headers = headers
 
         if let user = credential?.user, let password = credential?.password {

@@ -22,8 +22,6 @@ class DropboxConduit: Conduit {
 
         return DropboxTransportClient(
             accessToken: accessToken!, baseHosts: nil, userAgent: nil, selectUser: nil,
-            sessionDelegate: (UIApplication.shared.delegate as? AppDelegate)?.uploadManager,
-            backgroundSessionDelegate: Conduit.backgroundSessionManager.delegate,
             sharedContainerIdentifier: Constants.appGroup)
     }
 

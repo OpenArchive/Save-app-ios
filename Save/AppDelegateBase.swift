@@ -142,7 +142,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                      handleEventsForBackgroundURLSession identifier: String,
                      completionHandler: @escaping () -> Void)
     {
-        Conduit.backgroundCompletionHandler = completionHandler
+        UploadManager.backgroundCompletionHandler = completionHandler
     }
 
     func application(_ application: UIApplication, performFetchWithCompletionHandler

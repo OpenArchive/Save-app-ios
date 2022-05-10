@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import Alamofire
 import MobileCoreServices
 
 class IaConduit: Conduit {
@@ -32,7 +31,7 @@ class IaConduit: Conduit {
                 return progress
         }
 
-        var headers: HTTPHeaders = [
+        var headers: [String: String] = [
             "Accept": "*/*",
             "authorization": "LOW \(accessKey):\(secretKey)",
             "x-amz-auto-make-bucket": "1",
@@ -96,26 +95,19 @@ class IaConduit: Conduit {
             let secretKey = asset.space?.password,
             let url = asset.publicUrl {
 
-            let headers: HTTPHeaders = [
+            let headers: [String: String] = [
                 "Accept": "*/*",
                 "authorization": "LOW \(accessKey):\(secretKey)",
                 "x-archive-cascade-delete": "1",
                 "x-archive-keep-old-version": "0",
             ]
 
-            Conduit.backgroundSessionManager.request(url, method: .delete, headers: headers)
-                .debug()
-                .validate(statusCode: 200..<300)
-                .responseData() { response in
+            backgroundSession.delete(url, headers: headers) { error in
+                if error == nil {
+                    self.asset.setUploaded(nil)
+                }
 
-                    switch response.result {
-                    case .success:
-                        self.asset.setUploaded(nil)
-                    default:
-                        break
-                    }
-
-                    done(self.asset)
+                done(self.asset)
             }
         }
         else {

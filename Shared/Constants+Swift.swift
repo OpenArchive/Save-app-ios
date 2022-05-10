@@ -29,4 +29,12 @@ extension Constants {
     class var dropboxKey: String {
         return __dropboxKey as String
     }
+
+    class var testBackgroundUpload: Bool {
+        #if DEBUG
+            return true
+        #else
+            return false
+        #endif
+    }
 }

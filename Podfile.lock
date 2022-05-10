@@ -158,7 +158,6 @@ PODS:
     - YapDatabase/Standard/Core
 
 DEPENDENCIES:
-  - Alamofire (~> 4.9)
   - AlignedCollectionViewFlowLayout (~> 1.1)
   - ARChromeActivity (~> 1.0)
   - CleanInsightsSDK (~> 2.6)
@@ -249,6 +248,6 @@ SPEC CHECKSUMS:
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
   YapDatabase: 260b1b0b3e6ae6775383edc923e19813586615eb
 
-PODFILE CHECKSUM: 049b44e42e970dc5a775d85ff3d814c82c0153b3
+PODFILE CHECKSUM: dccfb5fd6319c403b6f13caa659b8a601c8e7043
 
 COCOAPODS: 1.11.3

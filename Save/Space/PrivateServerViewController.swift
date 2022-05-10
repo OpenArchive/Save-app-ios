@@ -10,7 +10,6 @@ import UIKit
 import Eureka
 import FavIcon
 import YapDatabase
-import Alamofire
 
 class PrivateServerViewController: BaseServerViewController {
 
@@ -138,7 +137,7 @@ class PrivateServerViewController: BaseServerViewController {
 
     private func acquireFavIcon() {
         if let baseUrl = Formatters.URLFormatter.fix(url: urlRow.value, baseOnly: true) {
-            FavIcon.downloadSession = URLSession(configuration: SessionManager.improvedConf())
+            FavIcon.downloadSession = URLSession.withImprovedConf()
 
             try! FavIcon.downloadPreferred(baseUrl) { result in
                 if case let .success(image) = result {

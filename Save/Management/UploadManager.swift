@@ -13,6 +13,7 @@ import FilesProvider
 import Alamofire
 import Regex
 import CleanInsightsSDK
+import BackgroundTasks
 
 extension Notification.Name {
     static let uploadManagerPause = Notification.Name("uploadManagerPause")
@@ -47,9 +48,11 @@ extension AnyHashable {
 
  User can pause and unpause a scheduled upload any time to reset counters and have a retry immediately.
  */
-class UploadManager: Alamofire.SessionDelegate {
+class UploadManager: NSObject, URLSessionTaskDelegate {
 
     static let shared = UploadManager()
+
+    static var backgroundCompletionHandler: (() -> Void)?
 
     /**
      Maximum number of upload retries per upload item before giving up.
@@ -74,80 +77,63 @@ class UploadManager: Alamofire.SessionDelegate {
     */
     var progressTimer: DispatchSourceTimer?
 
-    private var singleCompletionHandler: ((UIBackgroundFetchResult) -> Void)?
+    private let singleCompletionHandler: ((UIBackgroundFetchResult) -> Void)?
 
     private var scheduler: Timer?
 
-    private var backgroundTask = UIBackgroundTaskIdentifier.invalid
+    private var oldBackgroundTaskId = UIBackgroundTaskIdentifier.invalid
+    private let useNewBackgroundTask: Bool
+
+    private var _backgroundSession: URLSession?
+    private var _foregroundSession: URLSession?
 
     /**
-     This handles a finished file upload task, but ignores metadata files and file chunks.
+     A session, which is enabled for background uploading.
+
+     This needs to be tied to an object, otherwise the `URLSession` will get
+     destroyed during the request and the request will break with error -999.
+     */
+    private var backgroundSession: URLSession {
+        if _backgroundSession == nil {
+            let conf = URLSessionConfiguration.background(withIdentifier:
+                "\(Bundle.main.bundleIdentifier ?? "").background")
+
+            conf.isDiscretionary = false
+            conf.shouldUseExtendedBackgroundIdleMode = true
+
+            _backgroundSession = URLSession.withImprovedConf(configuration: conf, delegate: self)
+        }
+
+        return _backgroundSession!
+    }
+
+    /**
+     A session wich is foreground-uploading only. This enables data
+     chunks to get uploaded without the need for a file on disk.
     */
-    private lazy var taskCompletionHandler: (URLSession, URLSessionTask, Error?) -> Void = { session, task, error in
-        self.debug("#taskCompletionHandler task=\(task), state=\(self.getTaskStateName(task.state)), url=\(task.originalRequest?.url?.absoluteString ?? "nil") error=\(String(describing: error))")
-
-        // Ignore incomplete tasks.
-        guard task.state == .completed,
-            let url = task.originalRequest?.url else {
-            return
+    private var foregroundSession: URLSession {
+        if _foregroundSession == nil {
+            _foregroundSession = URLSession.withImprovedConf(delegate: self)
         }
 
-        let filename = url.lastPathComponent
-
-        // Ignore Metadata files.
-        guard filename.lowercased() !~ "\(WebDavConduit.metaFileExt)$" else {
-            return
-        }
-
-        // Dropbox upload
-        if String(describing: type(of: task)) == "__NSCFBackgroundUploadTask",
-            let host = url.host?.lowercased(),
-            host =~ "dropbox"
-            && filename.lowercased() == "upload"
-            && self.current?.asset?.space is DropboxSpace {
-
-            // Reconstruct path part of upload URL to store as Asset#publicUrl.
-            var path = [String]()
-
-            if let projectName = self.current?.asset?.project?.name {
-                path.append(projectName)
-            }
-            if let collectionName = self.current?.asset?.collection?.name {
-                path.append(collectionName)
-            }
-            if self.current?.asset?.tags?.contains(Asset.flag) ?? false {
-                path.append(Asset.flag)
-            }
-            if let filename = self.current?.asset?.filename {
-                path.append(filename)
-            }
-
-            // Will show an error, when path couldn't be constructed.
-            self.done(self.current?.id, nil, path.count > 2 ? Conduit.construct(path) : nil)
-        }
-        // WebDAV upload
-        else if task is URLSessionUploadTask
-            && filename !~ "\\d{15}-\\d{15}" // Ignore chunks
-            && self.current?.filename == filename {
-
-            self.done(self.current?.id, nil, url)
-        }
+        return _foregroundSession!
     }
 
-    override func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        self.debug("#didCompleteWithError task=\(task), state=\(getTaskStateName(task.state)), url=\(task.originalRequest?.url?.absoluteString ?? "nil") error=\(String(describing: error))")
 
-        super.urlSession(session, task: task, didCompleteWithError: error)
-    }
-
-    init(_ singleCompletionHandler: ((UIBackgroundFetchResult) -> Void)? = nil) {
-        super.init()
-
-        UIApplication.shared.setMinimumBackgroundFetchInterval(15)
+    init(useNewBackgroundTask: Bool = false, _ singleCompletionHandler: ((UIBackgroundFetchResult) -> Void)? = nil) {
+        self.useNewBackgroundTask = useNewBackgroundTask
 
         self.singleCompletionHandler = singleCompletionHandler
 
-        taskDidComplete = taskCompletionHandler
+        super.init()
+
+        AppDelegateBase.scheduleBackgroundTask()
+
+        if Constants.testBackgroundUpload && singleCompletionHandler == nil {
+            debug("Foreground manager stopped due to background testing")
+
+            return
+        }
 
         restart()
     }
@@ -221,6 +207,67 @@ class UploadManager: Alamofire.SessionDelegate {
         // Schedule a timer, which calls #uploadNext every 10 seconds beginning
         // in 5 seconds.
         RunLoop.main.add(scheduler!, forMode: .common)
+    }
+
+
+    // MARK: URLSessionDelegate
+
+    func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
+        Self.backgroundCompletionHandler?()
+    }
+
+    /**
+     This handles a finished file upload task, but ignores metadata files and file chunks.
+    */
+    func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
+        debug("#task:didCompleteWithError task=\(task), state=\(self.getTaskStateName(task.state)), url=\(task.originalRequest?.url?.absoluteString ?? "nil") error=\(String(describing: error))")
+
+        // Ignore incomplete tasks.
+        guard task.state == .completed,
+            let url = task.originalRequest?.url else {
+            return
+        }
+
+        let filename = url.lastPathComponent
+
+        // Ignore Metadata files.
+        guard filename.lowercased() !~ "\(WebDavConduit.metaFileExt)$" else {
+            return
+        }
+
+        // Dropbox upload
+        if String(describing: type(of: task)) == "__NSCFBackgroundUploadTask",
+            let host = url.host?.lowercased(),
+            host =~ "dropbox"
+            && filename.lowercased() == "upload"
+            && current?.asset?.space is DropboxSpace {
+
+            // Reconstruct path part of upload URL to store as Asset#publicUrl.
+            var path = [String]()
+
+            if let projectName = self.current?.asset?.project?.name {
+                path.append(projectName)
+            }
+            if let collectionName = self.current?.asset?.collection?.name {
+                path.append(collectionName)
+            }
+            if self.current?.asset?.tags?.contains(Asset.flag) ?? false {
+                path.append(Asset.flag)
+            }
+            if let filename = self.current?.asset?.filename {
+                path.append(filename)
+            }
+
+            // Will show an error, when path couldn't be constructed.
+            done(current?.id, nil, path.count > 2 ? Conduit.construct(path) : nil)
+        }
+        // WebDAV upload
+        else if task is URLSessionUploadTask
+            && filename !~ "\\d{15}-\\d{15}" // Ignore chunks
+            && current?.filename == filename {
+
+            done(current?.id, error, url)
+        }
     }
 
 
@@ -466,7 +513,8 @@ class UploadManager: Alamofire.SessionDelegate {
 
         debug("#torUseChanged useTor=\(useTor)")
 
-        Conduit.reconfigureSession()
+        backgroundSession = nil
+        foregroundSession = nil
     }
 #endif
 
@@ -505,8 +553,8 @@ class UploadManager: Alamofire.SessionDelegate {
                 return self.endBackgroundTask(.noData)
             }
 
-            // Check if there's currently an item uploading.
-            if self.current != nil {
+            // Check if there's currently an item uploading which is not paused.
+            if !(self.current?.paused ?? true) {
                 self.debug("#uploadNext already one uploading")
 
                 return self.endBackgroundTask(.noData)
@@ -530,7 +578,10 @@ class UploadManager: Alamofire.SessionDelegate {
 
             self.debug("#uploadNext try upload=\(upload)")
 
-            upload.liveProgress = Conduit.get(for: asset)?.upload(uploadId: upload.id)
+            upload.liveProgress = Conduit
+                .get(for: asset, self.backgroundSession, self.foregroundSession)?
+                .upload(uploadId: upload.id)
+
             upload.error = nil
 
             Db.writeConn?.readWrite { transaction in
