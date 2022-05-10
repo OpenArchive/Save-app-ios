@@ -163,7 +163,7 @@ class WebDavConduit: Conduit {
         let p = Progress(totalUnitCount: 2)
         progress.addChild(p, withPendingUnitCount: 2)
 
-        var done = false
+        let group = DispatchGroup.enter()
 
         provider.attributesOfItem(path: folder.path) { attributes, e in
             if !progress.isCancelled && attributes == nil {
@@ -172,20 +172,18 @@ class WebDavConduit: Conduit {
                 provider.create(folder: folder.lastPathComponent, at: folder.deletingLastPathComponent().path) { e in
                     p.completedUnitCount = 2
                     error = e
-                    done = true
+                    group.leave()
                 }
             }
             else {
                 p.completedUnitCount = 2
 
                 // Does already exist: return.
-                done = true
+                group.leave()
             }
         }
 
-        while !done && !progress.isCancelled {
-            Thread.sleep(forTimeInterval: 0.2)
-        }
+        group.wait(signal: progress)
 
         return error
     }
@@ -202,16 +200,14 @@ class WebDavConduit: Conduit {
         var exists = false
 
         if let provider = provider ?? self.provider {
-            var done = false
+            let group = DispatchGroup.enter()
 
             provider.attributesOfItem(path: path.path) { attributes, error in
                 exists = attributes != nil && attributes!.size == expectedSize
-                done = true
+                group.leave()
             }
 
-            while !done {
-                Thread.sleep(forTimeInterval: 0.2)
-            }
+            group.wait()
         }
 
         return exists
@@ -235,16 +231,14 @@ class WebDavConduit: Conduit {
         }
 
         var error: Error? = nil
-        var done = false
+        let group = DispatchGroup.enter()
 
         upload(json, to: to, progress, 2, credential: credential) { e in
             error = e
-            done = true
+            group.leave()
         }
 
-        while !done && !progress.isCancelled {
-            Thread.sleep(forTimeInterval: 0.2)
-        }
+        group.wait(signal: progress)
 
         return error
     }
@@ -378,17 +372,15 @@ class WebDavConduit: Conduit {
 
                     let chunk = fh.readData(ofLength: Int(expectedSize))
 
-                    var done = false
+                    let group = DispatchGroup.enter()
 
                     upload(chunk, to: construct(url: baseUrl, dest), progress, progressPerChunk, credential: credential) { e in
                         error = e
-                        done = true
+                        group.leave()
                     }
 
                     // Synchronize asynchronous call.
-                    while !done && !progress.isCancelled {
-                        Thread.sleep(forTimeInterval: 0.2)
-                    }
+                    group.wait(signal: progress)
 
                     if progress.isCancelled || error != nil {
                         break
