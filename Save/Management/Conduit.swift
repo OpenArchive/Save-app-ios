@@ -38,7 +38,7 @@ class Conduit {
             }
 
             if space is DropboxSpace {
-                return nil //DropboxConduit(asset, backgroundSession, foregroundSession)
+                return DropboxConduit(asset, backgroundSession, foregroundSession)
             }
 
             if space is IaSpace {

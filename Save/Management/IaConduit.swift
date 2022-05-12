@@ -84,7 +84,7 @@ class IaConduit: Conduit {
         progress.completedUnitCount = 10
 
         // No callback, handling of the finished upload will be done in
-        // `UploadManager#taskCompletionHandler`.
+        // ``UploadManager.urlSession(:task:didCompleteWithError:)``.
         upload(file, to: url, progress, headers: headers)
 
         return progress
@@ -102,7 +102,7 @@ class IaConduit: Conduit {
                 "x-archive-keep-old-version": "0",
             ]
 
-            backgroundSession.delete(url, headers: headers) { error in
+            foregroundSession.delete(url, headers: headers) { error in
                 if error == nil {
                     self.asset.setUploaded(nil)
                 }

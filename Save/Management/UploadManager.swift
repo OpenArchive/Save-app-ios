@@ -75,18 +75,17 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     */
     var progressTimer: DispatchSourceTimer?
 
-    private let singleCompletionHandler: ((UIBackgroundFetchResult) -> Void)?
-
     private var scheduler: Timer?
 
-    private var oldBackgroundTaskId = UIBackgroundTaskIdentifier.invalid
-    private let useNewBackgroundTask: Bool
+    private var backgroundTask = UIBackgroundTaskIdentifier.invalid
 
     private var _backgroundSession: URLSession?
     private var _foregroundSession: URLSession?
 
     /**
      A session, which is enabled for background uploading.
+
+     Only use this to upload the main file of an asset. All other usages will break, latest when the app goes into background!
 
      This needs to be tied to an object, otherwise the `URLSession` will get
      destroyed during the request and the request will break with error -999.
@@ -118,22 +117,18 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     }
 
 
-    init(useNewBackgroundTask: Bool = false, _ singleCompletionHandler: ((UIBackgroundFetchResult) -> Void)? = nil) {
-        self.useNewBackgroundTask = useNewBackgroundTask
-
-        self.singleCompletionHandler = singleCompletionHandler
-
+    private override init() {
         super.init()
 
-        AppDelegateBase.scheduleBackgroundTask()
-
-        if Constants.testBackgroundUpload && singleCompletionHandler == nil {
-            debug("Foreground manager stopped due to background testing")
-
-            return
+        // We were only initialized to handle the uploads which finished in the background.
+        if Self.backgroundCompletionHandler != nil {
+            // Trigger recreation of the background session, so it can handle
+            // the finished uploads.
+            _ = backgroundSession
         }
-
-        restart()
+        else {
+            restart()
+        }
     }
 
     /**
@@ -208,7 +203,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     }
 
 
-    // MARK: URLSessionDelegate
+    // MARK: URLSessionTaskDelegate
 
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
         Self.backgroundCompletionHandler?()
@@ -260,11 +255,46 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             done(current?.id, nil, path.count > 2 ? Conduit.construct(path) : nil)
         }
         // WebDAV upload
-        else if task is URLSessionUploadTask
-            && filename !~ "\\d{15}-\\d{15}" // Ignore chunks
-            && current?.filename == filename {
+        else if task is URLSessionUploadTask && filename !~ "\\d{15}-\\d{15}" /* ignore chunks */ {
+            if current?.filename == filename {
+                done(current?.id, error, url, synchronous: true)
+            }
+            else {
+                var found: Upload? = nil
 
-            done(current?.id, error, url)
+                Db.bgRwConn?.read { transaction in
+                    let viewTransaction = transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction
+
+                    viewTransaction?.iterateKeysAndObjects(inGroup: UploadsView.groups[0])
+                    { collection, key, object, index, stop in
+
+                        // Look at next, if it's paused or delayed.
+                        guard let upload = object as? Upload,
+                              !upload.paused
+                        else {
+                            return
+                        }
+
+                        // First attach object chain to upload before next call,
+                        // otherwise, that will trigger more DB reads and with that
+                        // a deadlock.
+                        self.heatCache(transaction, upload)
+
+                        // Look at next, if it's not ready, yet.
+                        guard  upload.filename == filename && upload.isReady else {
+                            return
+                        }
+
+                        found = upload
+                        stop = true
+                    }
+                }
+
+                if let found = found {
+                    current = found // Otherwise next call will do nothing.
+                    done(found.id, error, url, synchronous: true)
+                }
+            }
         }
     }
 
@@ -387,7 +417,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
      - parameter error: An eventual error that happened.
      - parameter url: The URL the file was saved to.
      */
-    private func done(_ id: String?, _ error: Error?, _ url: URL? = nil) {
+    private func done(_ id: String?, _ error: Error?, _ url: URL? = nil, synchronous: Bool = false) {
         debug("#done")
 
         guard let id = id else {
@@ -396,7 +426,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
         debug("#done id=\(id), error=\(String(describing: error)), url=\(url?.absoluteString ?? "nil")")
 
-        queue.async {
+        let work: () -> Void = {
             guard id == self.current?.id,
                 let upload = self.current,
                 let asset = upload.asset else {
@@ -478,10 +508,14 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
             self.endBackgroundTask(asset.isUploaded ? .newData : .failed)
 
-            // Only do next, if this is not a background upload.
-            if self.singleCompletionHandler == nil {
-                self.uploadNext()
-            }
+            self.uploadNext()
+        }
+
+        if synchronous {
+            work()
+        }
+        else {
+            queue.async(execute: work)
         }
     }
 
@@ -596,7 +630,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         }
     }
 
-    
+
     // MARK: Private Methods
 
     private func debug(_ text: String) {
@@ -762,32 +796,11 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     }
 
     private func endBackgroundTask(_ result: UIBackgroundFetchResult) {
+        debug("#endBackgroundTask result=\(result)")
+
         if backgroundTask != .invalid {
-            if singleCompletionHandler != nil {
-                debug("#endBackgroundTask - end background upload")
-            }
-            else {
-                debug("#endBackgroundTask")
-            }
+            UIApplication.shared.endBackgroundTask(backgroundTask)
+            backgroundTask = .invalid
         }
-
-        UIApplication.shared.endBackgroundTask(backgroundTask)
-        backgroundTask = .invalid
-
-        guard let singleCompletionHandler = singleCompletionHandler else {
-            return
-        }
-
-        scheduler?.invalidate()
-        scheduler = nil
-
-        reachability?.stopNotifier()
-
-        progressTimer?.cancel()
-        progressTimer = nil
-
-        NotificationCenter.default.removeObserver(self)
-
-        singleCompletionHandler(result)
     }
 }

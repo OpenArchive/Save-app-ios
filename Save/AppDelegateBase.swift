@@ -143,26 +143,12 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                      completionHandler: @escaping () -> Void)
     {
         UploadManager.backgroundCompletionHandler = completionHandler
-    }
 
-    func application(_ application: UIApplication, performFetchWithCompletionHandler
-                     completionHandler: @escaping (UIBackgroundFetchResult) -> Void)
-    {
-#if canImport(Tor)
-        if Settings.useTor {
-            return completionHandler(.noData)
+        if uploadManager == nil {
+            uploadManager = UploadManager.shared
         }
-#endif
-
-        Db.setup()
-
-        uploadManager = UploadManager(completionHandler)
-
-        // Do not set up Dropbox here!
-        // It's constantly crashing, so doesn't seem to work when run from the background.
-
-        uploadManager?.uploadNext()
     }
+
 
     // MARK: UNUserNotificationCenterDelegate
 
