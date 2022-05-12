@@ -12,31 +12,10 @@ import MobileCoreServices
 
 class DropboxConduit: Conduit {
 
-    class func transportClient(unauthorized: Bool) -> DropboxTransportClient? {
-        let accessToken = DropboxSpace.space?.password ?? (unauthorized ? "" : nil)
+    private lazy var client = DropboxSpace.client
 
-        guard accessToken != nil else {
-            return nil
-        }
-
-        return DropboxTransportClient(
-            accessToken: accessToken!, baseHosts: nil, userAgent: nil, selectUser: nil,
-            sharedContainerIdentifier: Constants.appGroup)
-    }
 
     // MARK: Conduit
-
-    private var client: DropboxClient? {
-        if let client = DropboxClientsManager.authorizedClient {
-            return client
-        }
-
-        if let transportClient = Self.transportClient(unauthorized: false) {
-            return DropboxClient(transportClient: transportClient)
-        }
-
-        return nil
-    }
 
     /**
      */

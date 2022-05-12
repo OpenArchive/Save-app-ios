@@ -22,7 +22,16 @@ class SelectedSpaceCell: BaseCell {
         didSet {
             favIcon.image = space?.favIcon
             serverNameLb.text = space?.prettyName
-            userNameLb.text = space?.authorName ?? space?.username
+
+            if let name = space?.authorName, !name.isEmpty {
+                userNameLb.text = name
+            }
+            else if space is DropboxSpace, let email = DropboxSpace.email, !email.isEmpty {
+                userNameLb.text = email
+            }
+            else {
+                userNameLb.text = space?.username
+            }
         }
     }
 }

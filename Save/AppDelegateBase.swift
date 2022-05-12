@@ -206,7 +206,9 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     func setUpDropbox() {
         DropboxClientsManager.setupWithAppKey(
             Constants.dropboxKey,
-            transportClient: DropboxConduit.transportClient(unauthorized: true))
+            transportClient: DropboxSpace.transportClient(unauthorized: true))
+
+        DropboxSpace.fetchEmail()
     }
 
     func setUpUi() {
