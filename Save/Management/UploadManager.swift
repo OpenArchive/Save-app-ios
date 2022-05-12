@@ -9,8 +9,6 @@
 import UIKit
 import YapDatabase
 import Reachability
-import FilesProvider
-import Alamofire
 import Regex
 import CleanInsightsSDK
 import BackgroundTasks
@@ -421,7 +419,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
                     upload.tries += 1
                     // We stop retrying, if the server denies us, or as soon as we hit the maximum number of retries.
-                    upload.paused = error is FileProviderHTTPError || UploadManager.maxRetries <= upload.tries
+                    upload.paused = error is SaveError || UploadManager.maxRetries <= upload.tries
                     upload.lastTry = Date()
 
                     upload.error = error?.friendlyMessage ?? (

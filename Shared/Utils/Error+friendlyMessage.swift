@@ -7,14 +7,13 @@
 //
 
 import Foundation
-import FilesProvider
 
 extension Error {
 
     var friendlyMessage: String {
-        if let error = self as? FileProviderWebDavError {
-            switch error.code {
-            case .unauthorized:
+        if let error = self as? SaveError {
+            switch error {
+            case .http(let status) where status == 401:
                 return NSLocalizedString("Incorrect username or password", comment: "")
 
             default:

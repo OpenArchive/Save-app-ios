@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import FilesProvider
 import SwiftyDropbox
 
 class BrowseViewController: BaseTableViewController {
@@ -19,7 +18,7 @@ class BrowseViewController: BaseTableViewController {
 
         let original: Any?
 
-        init(_ original: FileObject) {
+        init(_ original: FileInfo) {
             name = original.name
             modifiedDate = original.modifiedDate ?? original.creationDate
             self.original = original
@@ -30,10 +29,6 @@ class BrowseViewController: BaseTableViewController {
             modifiedDate = nil
             self.original = original
         }
-    }
-
-    private var provider: WebDAVFileProvider? {
-        return (SelectedSpace.space as? WebDavSpace)?.provider
     }
 
     private lazy var dropboxClient: DropboxClient? = {
@@ -166,10 +161,15 @@ class BrowseViewController: BaseTableViewController {
         beginWork {
             folders.removeAll()
 
-            if let provider = provider {
-                provider.contentsOfDirectory(path: "") { files, error in
-                    for file in files.sort(by: .modifiedDate, ascending: false, isDirectoriesFirst: true) {
-                        if file.isDirectory {
+            if let space = SelectedSpace.space as? WebDavSpace, let url = space.url {
+                space.session.info(url) { info, error in
+                    let files = info.dropFirst().sorted(by: {
+                        $0.modifiedDate ?? $0.creationDate ?? Date(timeIntervalSince1970: 0)
+                        > $1.modifiedDate ?? $1.creationDate ?? Date(timeIntervalSince1970: 0)
+                    })
+
+                    for file in files {
+                        if file.type == .directory && !file.isHidden {
                             self.folders.append(Folder(file))
                         }
                     }

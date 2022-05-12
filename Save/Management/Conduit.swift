@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import FilesProvider
 
 /**
  A conduit implements #upload and #remove methods to interact with a certain
@@ -101,11 +100,6 @@ class Conduit {
     /**
      Uploads a file to a destination.
 
-     This method deliberatly doesn't use the FilesProvider library, but URLSession
-     instead, since FilesProvider's latest version fails on uploading the
-     metadata for an unkown reason. Addtionally, it's easier with the background
-     upload, when using URLSession directly.
-
      - parameter file: The file on the local file system.
      - parameter to: The destination on the WebDAV server.
      - parameter credential: The credentials to authenticate with.
@@ -115,27 +109,17 @@ class Conduit {
     func upload(_ file: URL, to: URL, _ progress: Progress, credential: URLCredential? = nil,
                 headers: [String: String]? = nil)
     {
-        // We do basic auth ourselves, to avoid double sending of files.
-        // URLSession tends to forget to send it without a challenge,
-        // which is especially annoying with big files.
-        let headers = addBasicAuth(headers, credential)
-
-        let task = backgroundSession.upload(file, to: to, method: "PUT", headers: headers)
+        let task = backgroundSession.upload(file, to: to, headers: headers, credential: credential)
 
         progress.addChild(task.progress, withPendingUnitCount: progress.totalUnitCount - progress.completedUnitCount)
 
     }
 
     func upload(_ data: Data, to: URL, _ progress: Progress, _ share: Int64, credential: URLCredential? = nil,
-                headers: [String: String]? = nil, _ completionHandler: SimpleCompletionHandler = nil)
+                headers: [String: String]? = nil, _ completionHandler: URLSession.SimpleCompletionHandler? = nil)
     {
-        // We do basic auth ourselves, to avoid double sending of files.
-        // URLSession tends to forget to send it without a challenge,
-        // which is especially annoying with big files.
-        let headers = addBasicAuth(headers, credential)
-
         let task = foregroundSession.upload(
-            data, to: to, method: "PUT", headers: headers,
+            data, to: to, headers: headers, credential: credential,
             completionHandler: completionHandler)
 
         progress.addChild(task.progress, withPendingUnitCount: share)
@@ -234,32 +218,6 @@ class Conduit {
         }
 
         return url ?? URL(fileURLWithPath: "")
-    }
-
-    /**
-     Create a HTTP Basic Auth header from the provided credentials, if valid.
-
-     - parameter headers: A headers dictionary where to add our auth header to.
-     - parameter credential: Credential to use.
-     - returns: nil, if headers was nil and no valid credential, otherwise a header
-        dictionary with an added (potentially overwritten) "Authorization" header.
-    */
-    func addBasicAuth(_ headers: [String: String]?, _ credential: URLCredential?) -> [String: String]? {
-        var headers = headers
-
-        if let user = credential?.user, let password = credential?.password {
-            let authorization = "\(user):\(password)".data(using: .utf8)?.base64EncodedString()
-
-            if let authorization = authorization {
-                if headers == nil {
-                    headers = [:]
-                }
-
-                headers!["Authorization"] = "Basic \(authorization)"
-            }
-        }
-
-        return headers
     }
 
 

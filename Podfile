@@ -6,7 +6,6 @@ use_frameworks!
 
 def shared_pods
     pod 'YapDatabase', :git => 'https://github.com/difftim/YapDatabase.git' #'~> 4.0'
-    pod 'FilesProvider', :git => 'https://github.com/ayuzhin/FileProvider.git' # '~> 0.26'
     pod 'SwiftyDropbox', '~> 7.0'
     pod 'Eureka', '~> 5.3'
     pod 'ImageRow', '~> 4.0'

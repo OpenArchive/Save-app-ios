@@ -12,17 +12,32 @@ import Foundation
 import Tor
 #endif
 
-enum SaveError: Error {
+enum SaveError: Error, LocalizedError {
 
-    case invalidResponse
+    case strangeResponse
 
     case http(status: Int)
+
+    var errorDescription: String? {
+        switch self {
+        case .strangeResponse:
+            return "Strange response from server."
+
+        case .http(let status):
+            return "HTTP error: \(status) \(HTTPURLResponse.localizedString(forStatusCode: status))"
+        }
+    }
 }
 
 extension URLSession {
 
-    class func withImprovedConf(configuration: URLSessionConfiguration? = nil, delegate: URLSessionDelegate? = nil) -> URLSession {
-        URLSession(configuration: improvedConf(configuration), delegate: delegate, delegateQueue: nil)
+    typealias SimpleCompletionHandler = (_ error: Error?) -> Void
+
+    class func withImprovedConf(configuration: URLSessionConfiguration? = nil,
+                                delegate: URLSessionDelegate? = nil,
+                                delegateQueue: OperationQueue? = nil) -> URLSession
+    {
+        URLSession(configuration: improvedConf(configuration), delegate: delegate, delegateQueue: delegateQueue)
     }
 
     class func improvedConf(_ conf: URLSessionConfiguration? = nil) -> URLSessionConfiguration {
@@ -50,10 +65,11 @@ extension URLSession {
     }
 
     @discardableResult
-    func upload(_ file: URL, to: URL, method: String? = "POST", headers: [String: String]? = nil,
-                completionHandler: ((_ error: Error?) -> Void)? = nil) -> URLSessionUploadTask
+    func upload(_ file: URL, to: URL, method: String? = "PUT", headers: [String: String]? = nil,
+                credential: URLCredential? = nil,
+                completionHandler: SimpleCompletionHandler? = nil) -> URLSessionUploadTask
     {
-        let request = request(to, method, headers)
+        let request = request(to, method, addBasicAuth(headers, credential))
         let task: URLSessionUploadTask
 
         if let completionHandler = completion(completionHandler) {
@@ -70,10 +86,11 @@ extension URLSession {
     }
 
     @discardableResult
-    func upload(_ data: Data, to: URL, method: String? = "POST", headers: [String: String]? = nil,
-                completionHandler: ((_ error: Error?) -> Void)? = nil) -> URLSessionUploadTask
+    func upload(_ data: Data, to: URL, method: String? = "PUT", headers: [String: String]? = nil,
+                credential: URLCredential? = nil,
+                completionHandler: SimpleCompletionHandler? = nil) -> URLSessionUploadTask
     {
-        let request = request(to, method, headers)
+        let request = request(to, method, addBasicAuth(headers, credential))
         let task: URLSessionUploadTask
 
         if let completionHandler = completion(completionHandler) {
@@ -90,9 +107,9 @@ extension URLSession {
     }
 
     @discardableResult
-    func delete(_ url: URL, headers: [String: String]? = nil, completionHandler: ((_ error: Error?) -> Void)?) -> URLSessionDataTask
+    func request(_ url: URL, method: String, headers: [String: String]? = nil, completionHandler: SimpleCompletionHandler? = nil) -> URLSessionDataTask
     {
-        let request = request(url, "DELETE", headers)
+        let request = request(url, method, headers)
         let task: URLSessionDataTask
 
         if let completionHandler = completion(completionHandler) {
@@ -107,6 +124,68 @@ extension URLSession {
         return task
     }
 
+    @discardableResult
+    func delete(_ url: URL, headers: [String: String]? = nil, credential: URLCredential? = nil,
+                completionHandler: SimpleCompletionHandler? = nil) -> URLSessionDataTask
+    {
+        return request(url, method: "DELETE", headers: addBasicAuth(headers, credential), completionHandler: completionHandler)
+    }
+
+    @discardableResult
+    func mkDir(_ url: URL, credential: URLCredential? = nil, completionHandler: SimpleCompletionHandler? = nil) -> URLSessionDataTask
+    {
+        return request(url, method: "MKCOL", headers: addBasicAuth(nil, credential), completionHandler: completionHandler)
+    }
+
+    @discardableResult
+    func move(_ url: URL, to: URL, credential: URLCredential? = nil, completionHandler: SimpleCompletionHandler? = nil) -> URLSessionDataTask
+    {
+        return request(url, method: "MOVE", headers: addBasicAuth(["Destination": to.absoluteString], credential), completionHandler: completionHandler)
+    }
+
+    @discardableResult
+    func info(_ url: URL, credential: URLCredential? = nil, completionHandler: ((_ info: [FileInfo], _ error: Error?) -> Void)?) -> URLSessionDataTask {
+        let request = request(url, "PROPFIND", addBasicAuth(["Depth": "1"], credential))
+
+        let task: URLSessionDataTask
+
+        if let handler = completionHandler {
+            task = dataTask(with: request) { data, response, error in
+                var info = [FileInfo]()
+
+                if let data = data, !data.isEmpty {
+                    info = DavResponse.parse(xmlResponse: data, baseURL: nil).map { FileInfo($0) }
+                }
+
+                if let error = error {
+                    handler(info, error)
+
+                    return
+                }
+
+                guard let response = response as? HTTPURLResponse else {
+                    handler(info, SaveError.strangeResponse)
+
+                    return
+                }
+
+                if response.statusCode < 200 || response.statusCode >= 300 {
+                    handler(info, SaveError.http(status: response.statusCode))
+
+                    return
+                }
+
+                handler(info, nil)
+            }
+        }
+        else {
+            task = dataTask(with: request)
+        }
+
+        task.resume()
+
+        return task
+    }
 
     // MARK: Private Methods
 
@@ -134,16 +213,57 @@ extension URLSession {
             }
 
             guard let response = response as? HTTPURLResponse else {
-                handler(SaveError.invalidResponse)
+                handler(SaveError.strangeResponse)
 
                 return
             }
 
             if response.statusCode < 200 || response.statusCode >= 300 {
                 handler(SaveError.http(status: response.statusCode))
+
+                return
             }
 
             handler(nil)
         }
+    }
+
+    /**
+     Create a HTTP Basic Auth header from the provided credentials, if valid.
+
+     - parameter headers: A headers dictionary where to add our auth header to.
+     - parameter credential: Credential to use.
+     - returns: nil, if headers was nil and no valid credential, otherwise a header
+        dictionary with an added (potentially overwritten) "Authorization" header.
+    */
+    private func addBasicAuth(_ headers: [String: String]?, _ credential: URLCredential?) -> [String: String]? {
+        var headers = headers
+
+        if let basicAuth = credential?.basicAuth {
+            if headers == nil {
+                headers = [:]
+            }
+
+            headers!["Authorization"] = basicAuth
+        }
+
+        return headers
+    }
+}
+
+extension URLCredential {
+
+    /**
+     Returns an HTTP basic authentication string.
+     */
+    var basicAuth: String? {
+        guard let user = user, !user.isEmpty,
+              let password = password, !password.isEmpty,
+              let authorization = "\(user):\(password)".data(using: .utf8)?.base64EncodedString()
+        else {
+            return nil
+        }
+
+        return "Basic \(authorization)"
     }
 }

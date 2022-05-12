@@ -21,7 +21,6 @@ extension DispatchGroup {
     func wait(signal: Progress) -> DispatchTimeoutResult {
         var result: DispatchTimeoutResult
 
-//        result = wait(timeout: .now() + 2)
         repeat {
             result = wait(timeout: .now() + 0.2)
         }

@@ -32,7 +32,7 @@ extension Constants {
 
     class var testBackgroundUpload: Bool {
         #if DEBUG
-            return true
+            return false
         #else
             return false
         #endif

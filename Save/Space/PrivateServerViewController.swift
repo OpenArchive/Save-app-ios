@@ -118,17 +118,24 @@ class PrivateServerViewController: BaseServerViewController {
         space?.isNextcloud = nextcloudRow.value ?? false
 
         // Do a test request to check validity of space configuration.
-        (space as? WebDavSpace)?.provider?.attributesOfItem(path: "") { file, error in
-            DispatchQueue.main.async {
-                self.workingOverlay.isHidden = true
+        if let space = space as? WebDavSpace, let url = space.url {
+            space.session.info(url) { info, error in
+                DispatchQueue.main.async {
+                    self.workingOverlay.isHidden = true
 
-                if let error = error {
-                    AlertHelper.present(self, message: error.friendlyMessage)
-                }
-                else {
-                    super.connect()
+                    if let error = error {
+                        AlertHelper.present(self, message: error.friendlyMessage)
+                    }
+                    else {
+                        super.connect()
+                    }
                 }
             }
+        }
+        else {
+            workingOverlay.isHidden = true
+
+            AlertHelper.present(self, message: NSLocalizedString("Unknown error.", comment: ""))
         }
     }
 

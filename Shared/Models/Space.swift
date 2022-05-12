@@ -8,7 +8,6 @@
 
 import UIKit
 import YapDatabase
-import FilesProvider
 
 /**
  A `Space` represents the root folder of an upload destination on a WebDAV server.

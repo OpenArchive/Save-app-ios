@@ -8,7 +8,6 @@
 
 import UIKit
 import SwiftyDropbox
-import FilesProvider
 import MobileCoreServices
 
 class DropboxConduit: Conduit {
@@ -206,10 +205,9 @@ class DropboxConduit: Conduit {
 
      - parameter path: The path to the file on the server.
      - parameter expectedSize: The expected size of this file.
-     - parameter provider: A `WebDavFileProvider`. Optional. Defaults to `self.provider`.
      - returns: true, if file exists and size is the same as the asset file.
      */
-    private func isUploaded(_ path: URL, _ expectedSize: Int64, provider: WebDAVFileProvider? = nil) -> Bool {
+    private func isUploaded(_ path: URL, _ expectedSize: Int64) -> Bool {
         var exists = false
 
         var done = false
@@ -241,7 +239,7 @@ class DropboxConduit: Conduit {
      - parameter completionHandler: The callback to call when the copy is done,
      or when an error happened.
      */
-    func upload(_ file: URL, to: URL, _ progress: Progress, _ completionHandler: SimpleCompletionHandler = nil) {
+    func upload(_ file: URL, to: URL, _ progress: Progress, _ completionHandler: URLSession.SimpleCompletionHandler? = nil) {
 
         let start = progress.completedUnitCount
         let share = progress.totalUnitCount - start
@@ -259,7 +257,7 @@ class DropboxConduit: Conduit {
             }
     }
 
-    func upload(_ data: Data, to: URL, _ progress: Progress, _ share: Int64, _ completionHandler: SimpleCompletionHandler = nil) {
+    func upload(_ data: Data, to: URL, _ progress: Progress, _ share: Int64, _ completionHandler: URLSession.SimpleCompletionHandler? = nil) {
 
         let start = progress.completedUnitCount
 

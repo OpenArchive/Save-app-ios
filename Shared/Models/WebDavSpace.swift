@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import FilesProvider
 
 /**
  A space supporting WebDAV servers such as Nextcloud/Owncloud.
@@ -27,8 +26,8 @@ class WebDavSpace: Space, Item {
 
     var credential: URLCredential? {
         if let username = username,
-            let password = password {
-
+            let password = password
+        {
             return URLCredential(user: username, password: password, persistence: .forSession)
         }
 
@@ -36,40 +35,26 @@ class WebDavSpace: Space, Item {
     }
 
     /**
-     Create a `WebDAVFileProvider`.
+     Creates an ephemeral foreground session without caching and which already contains BASIC auth credentials.
 
-     - parameter baseURL: The base URL of the WebDAV server.
-     - parameter credential: The credential to authenticate with.
-     - returns: a `WebDAVFileProvider` for this space.
+     Don't use this for uploads. This is only useful for foreground UI interaction!
      */
-    static func createProvider(baseUrl: URL, credential: URLCredential) -> WebDAVFileProvider? {
-        let provider = WebDAVFileProvider(baseURL: baseUrl, credential: credential)
+    var session: URLSession {
+        if _session == nil {
+            let conf = URLSessionConfiguration.ephemeral
+            conf.urlCache = nil
+            conf.requestCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
 
-        let conf = URLSession.improvedConf(provider?.session.configuration)
+            if let basicAuth = credential?.basicAuth {
+                conf.httpAdditionalHeaders = ["Authorization": basicAuth]
+            }
 
-        conf.urlCache = provider?.cache
-        conf.requestCachePolicy = .returnCacheDataElseLoad
-
-        provider?.session = URLSession(configuration: conf,
-                                       delegate: provider?.session.delegate,
-                                       delegateQueue: provider?.session.delegateQueue)
-
-        return provider
-    }
-
-    /**
-     Create a `WebDAVFileProvider`, if credentials are available and the `url` is a valid
-     WebDAV URL.
-
-     - returns: a `WebDAVFileProvider` for this space.
-     */
-    var provider: WebDAVFileProvider? {
-        if let baseUrl = url, let credential = credential {
-            return WebDavSpace.createProvider(baseUrl: baseUrl, credential: credential)
+            _session = URLSession.withImprovedConf(configuration: conf)
         }
 
-        return nil
+        return _session!
     }
+    private var _session: URLSession?
 
 
     override init(name: String? = nil, url: URL? = nil, favIcon: UIImage? = nil,

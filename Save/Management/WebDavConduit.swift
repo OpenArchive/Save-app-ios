@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import FilesProvider
 
 class WebDavConduit: Conduit {
 
@@ -19,10 +18,6 @@ class WebDavConduit: Conduit {
 
     private var credential: URLCredential? {
         return (asset.space as? WebDavSpace)?.credential
-    }
-
-    private var provider: WebDAVFileProvider? {
-        return (asset.space as? WebDavSpace)?.provider
     }
 
     // MARK: Conduit
@@ -46,24 +41,26 @@ class WebDavConduit: Conduit {
         }
 
         DispatchQueue.global(qos: .background).async {
-            var error = self.create(folder: self.construct(projectName), progress)
+            var path = [projectName]
+
+            var error = self.create(folder: self.construct(url: url, path), progress)
 
             if error != nil || progress.isCancelled {
                 return self.done(uploadId, error: error)
             }
 
-            error = self.create(folder: self.construct(projectName, collectionName), progress)
+            path.append(collectionName)
+
+            error = self.create(folder: self.construct(url: url, path), progress)
 
             if error != nil || progress.isCancelled {
                 return self.done(uploadId, error: error)
             }
-
-            var path = [projectName, collectionName]
 
             if self.asset.tags?.contains(Asset.flag) ?? false {
                 path.append(Asset.flag)
 
-                error = self.create(folder: self.construct(path), progress)
+                error = self.create(folder: self.construct(url: url, path), progress)
 
                 if error != nil || progress.isCancelled {
                     return self.done(uploadId, error: error)
@@ -80,7 +77,7 @@ class WebDavConduit: Conduit {
                 return self.done(uploadId, error: error)
             }
 
-            if self.isUploaded(self.construct(path), filesize) {
+            if self.isUploaded(self.construct(url: url, path), filesize) {
                 return self.done(uploadId, url: to)
             }
 
@@ -112,19 +109,16 @@ class WebDavConduit: Conduit {
     }
 
     override func remove(done: @escaping DoneHandler) {
-        if let provider = provider,
-            let basePath = asset.space?.url?.path,
-            let filepath = asset.publicUrl?.path.replacingOccurrences(of: basePath, with: "") {
-
-            provider.removeItem(path: filepath) { error in
+        if let publicUrl = asset.publicUrl {
+            foregroundSession.delete(publicUrl, credential: credential) { error in
                 if error == nil {
                     self.asset.setUploaded(nil)
                 }
 
-                provider.removeItem(path: "\(filepath).\(WebDavConduit.metaFileExt)") { error in
+                self.foregroundSession.delete(publicUrl.appendingPathExtension(WebDavConduit.metaFileExt), credential: self.credential) { error in
 
                     // Try to delete containing folders until root.
-                    self.delete(folder: self.construct(filepath).deletingLastPathComponent().path) { error in
+                    self.delete(folder: publicUrl.deletingLastPathComponent()) { error in
                         DispatchQueue.main.async {
                             done(self.asset)
                         }
@@ -146,42 +140,29 @@ class WebDavConduit: Conduit {
     // MARK: Private Methods
 
     /**
-     Tests, if a folder exists and if not, creates it.
+     Creates folder, if it doesn't exist, yet.
 
      - parameter folder: Folder with path relative to WebDav endpoint.
      - parameter progress: The overall progress object.
-     - parameter provider: A `WebDavFileProvider`. Optional. Defaults to `self.provider`.
-     If an error was returned, it is from the creation attempt.
+     - returns: An error or `nil` on success.
      */
-    private func create(folder: URL, _ progress: Progress, _ provider: WebDAVFileProvider? = nil) -> Error? {
-        guard let provider = provider ?? self.provider else {
-            return UploadError.invalidConf
-        }
-
+    private func create(folder: URL, _ progress: Progress) -> Error? {
         var error: Error? = nil
-
-        let p = Progress(totalUnitCount: 2)
-        progress.addChild(p, withPendingUnitCount: 2)
 
         let group = DispatchGroup.enter()
 
-        provider.attributesOfItem(path: folder.path) { attributes, e in
-            if !progress.isCancelled && attributes == nil {
-                p.completedUnitCount = 1
-
-                provider.create(folder: folder.lastPathComponent, at: folder.deletingLastPathComponent().path) { e in
-                    p.completedUnitCount = 2
-                    error = e
-                    group.leave()
-                }
+        let task = foregroundSession.mkDir(folder, credential: credential) { e in
+            if case SaveError.http(let status)? = e, status == 405 {
+                // That's ok, that just means that the folder already exists.
             }
             else {
-                p.completedUnitCount = 2
-
-                // Does already exist: return.
-                group.leave()
+                error = e
             }
+
+            group.leave()
         }
+
+        progress.addChild(task.progress, withPendingUnitCount: 2)
 
         group.wait(signal: progress)
 
@@ -193,22 +174,19 @@ class WebDavConduit: Conduit {
 
      - parameter path: The path to the file on the server.
      - parameter expectedSize: The expected size of this file.
-     - parameter provider: A `WebDavFileProvider`. Optional. Defaults to `self.provider`.
      - returns: true, if file exists and size is the same as the asset file.
      */
-    private func isUploaded(_ path: URL, _ expectedSize: Int64, provider: WebDAVFileProvider? = nil) -> Bool {
+    private func isUploaded(_ path: URL, _ expectedSize: Int64) -> Bool {
         var exists = false
 
-        if let provider = provider ?? self.provider {
-            let group = DispatchGroup.enter()
+        let group = DispatchGroup.enter()
 
-            provider.attributesOfItem(path: path.path) { attributes, error in
-                exists = attributes != nil && attributes!.size == expectedSize
-                group.leave()
-            }
-
-            group.wait()
+        foregroundSession.info(path, credential: credential) { info, error in
+            exists = info.first != nil && info.first!.size == expectedSize
+            group.leave()
         }
+
+        group.wait()
 
         return exists
     }
@@ -250,12 +228,12 @@ class WebDavConduit: Conduit {
      - parameter completionHandler: Callback, when done.
         If an error was returned, it is from the deletion attempt.
      */
-    private func delete(folder: String, _ completionHandler: SimpleCompletionHandler) {
-        provider?.contentsOfDirectory(path: folder) { files, error in
-            if files.count < 1 {
+    private func delete(folder: URL, _ completionHandler: URLSession.SimpleCompletionHandler?) {
+        foregroundSession.info(folder, credential: credential) { info, error in
+            if info.count < 2 {
 
                 // Folder is empty - remove it.
-                self.provider?.removeItem(path: folder) { error in
+                self.foregroundSession.delete(folder, credential: self.credential) { error in
 
                     // We got an error, stop recursing, return the error.
                     if error != nil {
@@ -264,13 +242,13 @@ class WebDavConduit: Conduit {
                     else {
 
                         // Go up one higher, try to delete that, too.
-                        let parent = self.construct(folder).deletingLastPathComponent().path
+                        let parent = folder.deletingLastPathComponent()
 
-                        if parent != "" && parent != "/" {
+                        if parent.path != "" && parent.path != "/" {
                             self.delete(folder: parent, completionHandler)
                         }
                         else {
-                            // Stop here, we're can't delete the root.
+                            // Stop here, we can't delete the root.
                             completionHandler?(nil)
                         }
                     }
@@ -312,12 +290,9 @@ class WebDavConduit: Conduit {
 
         let baseUrl = construct(url: urlc?.url, "remote.php", "dav")
 
-        let provider = WebDavSpace.createProvider(
-            baseUrl: baseUrl, credential: credential)
-
         let folder = ["uploads", user, asset.filename]
 
-        var error = create(folder: construct(folder), progress, provider)
+        var error = create(folder: construct(url: baseUrl, folder), progress)
 
         if progress.isCancelled || error != nil {
             return done(uploadId, error: error)
@@ -344,7 +319,7 @@ class WebDavConduit: Conduit {
                 var dest = folder
                 dest.append(String(format: "%015d-%015d", offset, offset + expectedSize - 1))
 
-                let exists = isUploaded(construct(dest), expectedSize, provider: provider)
+                let exists = isUploaded(construct(url: baseUrl, dest), expectedSize)
 
                 if progress.isCancelled {
                     return done(uploadId)
@@ -411,9 +386,11 @@ class WebDavConduit: Conduit {
         var dest = ["files", user]
         dest.append(contentsOf: path)
 
-        provider?.moveItem(path: construct(source).path, to: construct(dest).path) { error in
-            progress.completedUnitCount = progress.totalUnitCount
-            self.done(uploadId, url: self.construct(url: url, path))
+        let task = foregroundSession.move(construct(url: baseUrl, source), to: construct(url: baseUrl, dest), credential: credential)
+        { error in
+                self.done(uploadId, url: self.construct(url: url, path))
         }
+
+        progress.addChild(task.progress, withPendingUnitCount: progress.totalUnitCount - progress.completedUnitCount)
     }
 }

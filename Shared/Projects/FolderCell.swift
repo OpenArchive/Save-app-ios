@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import FilesProvider
 
 class FolderCell: BaseCell {
 

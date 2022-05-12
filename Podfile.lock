@@ -7,7 +7,6 @@ PODS:
   - DownloadButton (0.1.0)
   - Eureka (5.3.6)
   - FavIcon (3.1.0)
-  - FilesProvider (0.26.1)
   - FontBlaster (5.2.1)
   - FormatterKit (1.9.0):
     - FormatterKit/AddressFormatter (= 1.9.0)
@@ -165,7 +164,6 @@ DEPENDENCIES:
   - DownloadButton (~> 0.1)
   - Eureka (~> 5.3)
   - FavIcon (from `https://github.com/tladesignz/FavIcon.git`, branch `swift-5`)
-  - FilesProvider (from `https://github.com/ayuzhin/FileProvider.git`)
   - FontBlaster (~> 5.2)
   - FormatterKit (~> 1.9)
   - ImageRow (~> 4.0)
@@ -206,8 +204,6 @@ EXTERNAL SOURCES:
   FavIcon:
     :branch: swift-5
     :git: https://github.com/tladesignz/FavIcon.git
-  FilesProvider:
-    :git: https://github.com/ayuzhin/FileProvider.git
   YapDatabase:
     :git: https://github.com/difftim/YapDatabase.git
 
@@ -218,9 +214,6 @@ CHECKOUT OPTIONS:
   FavIcon:
     :commit: 0717e03444aa6a1265418d405b8c4866ea02de9b
     :git: https://github.com/tladesignz/FavIcon.git
-  FilesProvider:
-    :commit: de4efd5df99c1d062edbfd3156c47c59cf08bbf7
-    :git: https://github.com/ayuzhin/FileProvider.git
   YapDatabase:
     :commit: 083135efcd832c68a3738ddc9d5711897760eb9c
     :git: https://github.com/difftim/YapDatabase.git
@@ -234,7 +227,6 @@ SPEC CHECKSUMS:
   DownloadButton: 49a21a89e0d7d1b42d9134f79aaa40e727cd57c3
   Eureka: 28ad9dec6286cd7cd601fdf8e8df39bb7356a8f4
   FavIcon: 21651b47d8f6b33517973859f85e2cb6f9fcfaee
-  FilesProvider: ffd7aff5bb3f87d33188ae79d37d9ef05934d3df
   FontBlaster: 43136e99dc6b3c8d0ba31e29bc6fdbf378b724c6
   FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
   ImageRow: 880c0f052c5a89c80521b485c86ccf723a124e99
@@ -248,6 +240,6 @@ SPEC CHECKSUMS:
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
   YapDatabase: 260b1b0b3e6ae6775383edc923e19813586615eb
 
-PODFILE CHECKSUM: dccfb5fd6319c403b6f13caa659b8a601c8e7043
+PODFILE CHECKSUM: 534fc78c3a8e0572bcb4f318c9d3c710b708651f
 
 COCOAPODS: 1.11.3
