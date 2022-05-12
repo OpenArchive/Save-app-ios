@@ -72,12 +72,18 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
         super.viewWillAppear(animated)
 
         navigationController?.setNavigationBarHidden(false, animated: animated)
+
+        UIApplication.shared.isIdleTimerDisabled = true
+        UIDevice.current.isProximityMonitoringEnabled = true
     }
 
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
         delegate?.done()
+
+        UIApplication.shared.isIdleTimerDisabled = false
+        UIDevice.current.isProximityMonitoringEnabled = false
     }
 
 
