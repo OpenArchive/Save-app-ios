@@ -347,7 +347,11 @@ PKDownloadButtonDelegate {
         }
 
         for asset in assets {
-            AssetFactory.create(fromPhasset: asset, collection)
+            let id = UIApplication.shared.beginBackgroundTask()
+
+            AssetFactory.create(fromPhasset: asset, collection) { asset in
+                UIApplication.shared.endBackgroundTask(id)
+            }
         }
 
         AbcFilteredByCollectionView.updateFilter(collection.id)
@@ -378,7 +382,11 @@ PKDownloadButtonDelegate {
         }
 
         for url in urls {
-            AssetFactory.create(fromFileUrl: url, collection)
+            let id = UIApplication.shared.beginBackgroundTask()
+
+            AssetFactory.create(fromFileUrl: url, collection) { asset in
+                UIApplication.shared.endBackgroundTask(id)
+            }
         }
 
         AbcFilteredByCollectionView.updateFilter(collection.id)

@@ -87,9 +87,10 @@ class AssetFactory {
 
      - parameter phasset: The `PHAsset`.
      - parameter collection: The collection the asset will belong to.
+     - parameter resultHandler: Callback with the created `Asset` object.
      */
-    class func create(fromPhasset phasset: PHAsset, _ collection: Collection) {
-        load(from: phasset, into: Asset(collection))
+    class func create(fromPhasset phasset: PHAsset, _ collection: Collection, _ resultHandler: ResultHandler? = nil) {
+        load(from: phasset, into: Asset(collection), resultHandler)
     }
 
     /**
@@ -113,8 +114,9 @@ class AssetFactory {
 
      - parameter phasset: The `PHAsset` to read from.
      - parameter asset: The `Asset` to write to.
+     - parameter resultHandler: Callback with the created `Asset` object.
     */
-    class func load(from phasset: PHAsset, into asset: Asset) {
+    class func load(from phasset: PHAsset, into asset: Asset, _ resultHandler: ResultHandler? = nil) {
 
         // Try to acquire a proper address from metadata.
         Geocoder.shared.fetchAddress(from: phasset) { address in
@@ -146,9 +148,11 @@ class AssetFactory {
 
                         asset.isReady = true
 
-                        store(asset) // asynchronous
+                        return store(asset, resultHandler) // asynchronous
                     }
                 }
+
+                handleResult(nil, resultHandler)
             }
         }
         else if phasset.mediaType == .video || phasset.mediaType == .audio {
@@ -158,7 +162,7 @@ class AssetFactory {
                 avAsset, audioMix, info in
 
                 guard let avAsset = avAsset else {
-                    return
+                    return handleResult(nil, resultHandler)
                 }
 
                 let presets = AVAssetExportSession.exportPresets(compatibleWith: avAsset)
@@ -180,7 +184,7 @@ class AssetFactory {
                 }
 
                 if preset == nil {
-                    return
+                    return handleResult(nil, resultHandler)
                 }
 
                 imageManager.requestExportSession(forVideo: phasset,
@@ -198,8 +202,8 @@ class AssetFactory {
                     store(asset) // asynchronous
 
                     if let exportSession = exportSession,
-                        createParentDir(file: asset.file) {
-
+                        createParentDir(file: asset.file)
+                    {
                         exportSession.outputURL = asset.file
                         exportSession.outputFileType = uti
 
@@ -217,7 +221,7 @@ class AssetFactory {
 
                                 asset.isReady = true
 
-                                store(asset)
+                                return store(asset, resultHandler)
 
                             case .failed, .cancelled:
                                 asset.remove()
@@ -225,7 +229,12 @@ class AssetFactory {
                             @unknown default:
                                 break
                             }
+
+                            handleResult(nil, resultHandler)
                         }
+                    }
+                    else {
+                        handleResult(nil, resultHandler)
                     }
                 }
             }
@@ -264,14 +273,15 @@ class AssetFactory {
      */
     class func create(fromFileUrl url: URL, thumbnail: UIImage? = nil,
                       _ collection: Collection, _ resultHandler: ResultHandler? = nil) {
-        if let uti = (try? url.resourceValues(forKeys: [.typeIdentifierKey]))?.typeIdentifier {
+        if let uti = (try? url.resourceValues(forKeys: [.typeIdentifierKey]))?.typeIdentifier
+        {
             let asset = Asset(collection, uti: uti)
             asset.filename = url.lastPathComponent
 
             if  let file = asset.file, createParentDir(file: file)
                 // BEWARE: Using move in the ShareExtension will only work in the simulator!
-                && (try? FileManager.default.copyItem(at: url, to: file)) != nil {
-
+                && (try? FileManager.default.copyItem(at: url, to: file)) != nil
+            {
                 self.fetchLocation(asset)
 
                 if let thumb = asset.thumb,
@@ -288,15 +298,11 @@ class AssetFactory {
 
                 asset.isReady = true
 
-                store(asset, resultHandler)
-            }
-            else {
-                resultHandler?(nil)
+                return store(asset, resultHandler)
             }
         }
-        else {
-            resultHandler?(nil)
-        }
+
+        handleResult(nil, resultHandler)
     }
 
     /**
@@ -492,10 +498,14 @@ class AssetFactory {
         Db.writeConn?.asyncReadWrite { transaction in
             transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
 
-            if let resultHandler = resultHandler {
-                DispatchQueue.main.async {
-                    resultHandler(asset)
-                }
+            handleResult(asset, resultHandler)
+        }
+    }
+
+    private class func handleResult(_ asset: Asset?, _ resultHandler: ResultHandler?) {
+        if let resultHandler = resultHandler {
+            DispatchQueue.main.async {
+                resultHandler(asset)
             }
         }
     }
