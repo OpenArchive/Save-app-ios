@@ -94,22 +94,6 @@ class AssetFactory {
     }
 
     /**
-     Reloads the `PHAsset` for a given `Asset`.
-
-     - returns: true, if possible, false if not.
-    */
-    class func reload(for asset: Asset) -> Bool {
-        guard let phassetId = asset.phassetId,
-            let phasset = PHAsset.fetchAssets(withLocalIdentifiers: [phassetId], options: nil).firstObject else {
-            return false
-        }
-
-        load(from: phasset, into: asset)
-
-        return true
-    }
-
-    /**
      Load the content of a `PHAsset` and store it with the given `Asset`.
 
      - parameter phasset: The `PHAsset` to read from.
@@ -130,8 +114,10 @@ class AssetFactory {
             // Fetch non-resized version first. We need the UTI, the filename and the original
             // image data.
 
-            imageManager.requestImageData(for: phasset, options: Settings.highCompression ? loResImageOptions : hiResImageOptions) {
-                data, uti, orientation, info in
+            let options = Settings.highCompression ? loResImageOptions : hiResImageOptions
+
+            asset.phImageRequestId = imageManager.requestImageData(for: phasset, options: options)
+            { data, uti, orientation, info in
 
                 if let data = data, let uti = uti {
                     asset.uti = uti
@@ -154,6 +140,8 @@ class AssetFactory {
 
                 handleResult(nil, resultHandler)
             }
+
+            store(asset)
         }
         else if phasset.mediaType == .video || phasset.mediaType == .audio {
             let options = Settings.highCompression ? loResAvOptions : hiResAvOptions
@@ -187,9 +175,8 @@ class AssetFactory {
                     return handleResult(nil, resultHandler)
                 }
 
-                imageManager.requestExportSession(forVideo: phasset,
-                                                  options: options,
-                                                  exportPreset: preset!)
+                asset.phImageRequestId = imageManager.requestExportSession(
+                    forVideo: phasset, options: options, exportPreset: preset!)
                 { exportSession, info in
                     let uti: AVFileType = phasset.mediaType == .audio ? .mp3 : .mp4
 
@@ -209,9 +196,6 @@ class AssetFactory {
 
                         exportSession.exportAsynchronously {
                             switch exportSession.status {
-                            case .unknown, .waiting, .exporting:
-                                break
-
                             case .completed:
                                 if let thumb = asset.thumb?.path,
                                     !FileManager.default.fileExists(atPath: thumb) {
@@ -223,10 +207,23 @@ class AssetFactory {
 
                                 return store(asset, resultHandler)
 
-                            case .failed, .cancelled:
+                            case .failed:
+                                // The export can be triggered again before upload.
+                                // Make this situation clear, by invalidating that ID,
+                                // and leave `isReady` at `false`.
+                                asset.phImageRequestId = PHInvalidImageRequestID
+
+                                return store(asset, resultHandler)
+
+                            case .cancelled:
                                 asset.remove()
 
+                            case .unknown, .waiting, .exporting:
+                                // This should not happen, as this callback is only called on success or failure.
+                                break
+
                             @unknown default:
+                                // This should not happen, as this callback is only called on success or failure.
                                 break
                             }
 

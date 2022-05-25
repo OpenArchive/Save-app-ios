@@ -12,6 +12,7 @@ import YapDatabase
 import CommonCrypto
 import AVFoundation
 import CoreMedia
+import Photos
 
 /**
  Representation of a file asset in the database.
@@ -51,8 +52,15 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     var tags: [String]?
     var notes: String?
     var phassetId: String?
+    var phImageRequestId: PHImageRequestID
     private(set) var publicUrl: URL?
-    var isReady = false
+    var isReady = false {
+        didSet {
+            if isReady {
+                phImageRequestId = PHInvalidImageRequestID
+            }
+        }
+    }
     private(set) var isUploaded = false
     private(set) var collectionId: String?
 
@@ -304,13 +312,31 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         return _duration
     }
 
-    init(_ collection: Collection, uti: String = kUTTypeData as String,
-         id: String = UUID().uuidString, created: Date = Date()) {
+    /**
+     The `PHAsset` this `Asset` was created from, if any.
+     */
+    var phAsset: PHAsset? {
+        guard let phassetId = phassetId else {
+            return nil
+        }
 
+        return PHAsset.fetchAssets(withLocalIdentifiers: [phassetId], options: nil).firstObject
+    }
+
+    var isImporting: Bool {
+        !isReady && phImageRequestId != PHInvalidImageRequestID
+    }
+
+
+    init(_ collection: Collection, uti: String = kUTTypeData as String,
+         id: String = UUID().uuidString, created: Date = Date())
+    {
         self.id = id
         self.created = created
         self.uti = uti
         self.collectionId = collection.id
+
+        phImageRequestId = PHInvalidImageRequestID
     }
 
 
@@ -327,6 +353,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         notes = decoder.decodeObject(forKey: "notes") as? String
         tags = decoder.decodeObject(forKey: "tags") as? [String]
         phassetId = decoder.decodeObject(forKey: "phassetId") as? String
+        phImageRequestId = decoder.decodeInt32(forKey: "phImageRequestId")
         publicUrl = decoder.decodeObject(forKey: "publicUrl") as? URL
         isReady = decoder.decodeBool(forKey: "isReady")
         isUploaded = decoder.decodeBool(forKey: "isUploaded")
@@ -347,6 +374,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         coder.encode(notes, forKey: "notes")
         coder.encode(tags, forKey: "tags")
         coder.encode(phassetId, forKey: "phassetId")
+        coder.encode(phImageRequestId, forKey: "phImageRequestId")
         coder.encode(publicUrl, forKey: "publicUrl")
         coder.encode(isReady, forKey: "isReady")
         coder.encode(isUploaded, forKey: "isUploaded")
@@ -510,6 +538,10 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     */
     @discardableResult
     func remove(_ callback: (() -> Void)? = nil) -> Asset {
+        if isImporting {
+            AssetFactory.imageManager.cancelImageRequest(phImageRequestId)
+        }
+
         Db.writeConn?.asyncReadWrite { transaction in
             transaction.removeObject(forKey: self.id, inCollection: Asset.collection)
 

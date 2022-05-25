@@ -12,6 +12,7 @@ import Reachability
 import Regex
 import CleanInsightsSDK
 import BackgroundTasks
+import Photos
 
 extension Notification.Name {
     static let uploadManagerPause = Notification.Name("uploadManagerPause")
@@ -662,7 +663,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
      - returns: `current` for convenience or `nil` if none found.
      */
     private func getNext() -> Upload? {
-        Db.bgRwConn?.read { transaction in
+        Db.bgRwConn?.readWrite { transaction in
             let viewTransaction = transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction
 
             var next: Upload? = nil
@@ -684,6 +685,26 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
                 // Look at next, if it's not ready, yet.
                 guard upload.isReady else {
+                    // Trigger PHAsset export again, in case it failed the first time.
+                    if let asset = upload.asset, !asset.isImporting {
+                        if let phAsset = asset.phAsset {
+                            queue.async {
+                                let id = UIApplication.shared.beginBackgroundTask()
+
+                                AssetFactory.load(from: phAsset, into: asset) { asset in
+                                    UIApplication.shared.endBackgroundTask(id)
+                                }
+                            }
+                        }
+                        else {
+                            upload.error = NSLocalizedString("Couldn't import item!", comment: "")
+                            upload.cancel()
+                            upload.paused = true
+
+                            transaction.replace(upload, forKey: upload.id, inCollection: Upload.collection)
+                        }
+                    }
+
                     return
                 }
 
