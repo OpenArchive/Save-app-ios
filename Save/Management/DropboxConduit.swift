@@ -93,7 +93,9 @@ class DropboxConduit: Conduit {
             progress.completedUnitCount = 10
 
             DispatchQueue.global(qos: .background).async {
-                self.upload(file, to: to, progress)
+                self.upload(file, to: to, progress) { error in
+                    self.done(uploadId, error: error, url: to)
+                }
             }
         }
 
@@ -120,7 +122,7 @@ class DropboxConduit: Conduit {
         let p = Progress(totalUnitCount: 2)
         progress.addChild(p, withPendingUnitCount: 2)
 
-        var done = false
+        let group = DispatchGroup.enter()
 
         client?.files.getMetadata(path: folder.path).response { metadata, e in
             if !progress.isCancelled && metadata == nil {
@@ -129,20 +131,18 @@ class DropboxConduit: Conduit {
                 self.client?.files.createFolderV2(path: folder.path).response { result, e in
                     p.completedUnitCount = 2
                     error = NSError.from(e)
-                    done = true
+                    group.leave()
                 }
             }
             else {
                 p.completedUnitCount = 2
 
                 // Does already exist: return.
-                done = true
+                group.leave()
             }
         }
 
-        while !done && !progress.isCancelled {
-            Thread.sleep(forTimeInterval: 0.2)
-        }
+        group.wait(signal: progress)
 
         return error
     }
@@ -165,16 +165,14 @@ class DropboxConduit: Conduit {
         }
 
         var error: Error? = nil
-        var done = false
+        let group = DispatchGroup.enter()
 
         upload(json, to: to, progress, 2) { e in
             error = e
-            done = true
+            group.leave()
         }
 
-        while !done && !progress.isCancelled {
-            Thread.sleep(forTimeInterval: 0.2)
-        }
+        group.wait(signal: progress)
 
         return error
     }
@@ -189,7 +187,7 @@ class DropboxConduit: Conduit {
     private func isUploaded(_ path: URL, _ expectedSize: Int64) -> Bool {
         var exists = false
 
-        var done = false
+        let group = DispatchGroup.enter()
 
         client?.files.getMetadata(path: path.path).response { metadata, e in
             if let metadata = metadata as? Files.FileMetadata {
@@ -199,12 +197,10 @@ class DropboxConduit: Conduit {
                 exists = false
             }
 
-            done = true
+            group.leave()
         }
 
-        while !done {
-            Thread.sleep(forTimeInterval: 0.2)
-        }
+        group.wait()
 
         return exists
     }

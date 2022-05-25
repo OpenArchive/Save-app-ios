@@ -229,34 +229,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             return
         }
 
-        // Dropbox upload
-        if String(describing: type(of: task)) == "__NSCFBackgroundUploadTask",
-            let host = url.host?.lowercased(),
-            host =~ "dropbox"
-            && filename.lowercased() == "upload"
-            && current?.asset?.space is DropboxSpace {
-
-            // Reconstruct path part of upload URL to store as Asset#publicUrl.
-            var path = [String]()
-
-            if let projectName = self.current?.asset?.project?.name {
-                path.append(projectName)
-            }
-            if let collectionName = self.current?.asset?.collection?.name {
-                path.append(collectionName)
-            }
-            if self.current?.asset?.tags?.contains(Asset.flag) ?? false {
-                path.append(Asset.flag)
-            }
-            if let filename = self.current?.asset?.filename {
-                path.append(filename)
-            }
-
-            // Will show an error, when path couldn't be constructed.
-            done(current?.id, nil, path.count > 2 ? Conduit.construct(path) : nil)
-        }
-        // WebDAV upload
-        else if task is URLSessionUploadTask && filename !~ "\\d{15}-\\d{15}" /* ignore chunks */ {
+        if task is URLSessionUploadTask && filename !~ "\\d{15}-\\d{15}" /* ignore chunks */ {
             if current?.filename == filename {
                 done(current?.id, error, url, synchronous: true)
             }

@@ -1,5 +1,5 @@
 PODS:
-  - Alamofire (4.9.1)
+  - Alamofire (5.4.4)
   - AlignedCollectionViewFlowLayout (1.1.2)
   - ARChromeActivity (1.0.6)
   - CleanInsightsSDK (2.6.0)
@@ -7,7 +7,7 @@ PODS:
   - DownloadButton (0.1.0)
   - Eureka (5.3.6)
   - FavIcon (3.1.0)
-  - FontBlaster (5.2.1)
+  - FontBlaster (5.3.0)
   - FormatterKit (1.9.0):
     - FormatterKit/AddressFormatter (= 1.9.0)
     - FormatterKit/ArrayFormatter (= 1.9.0)
@@ -43,8 +43,8 @@ PODS:
   - MBProgressHUD (1.2.0)
   - ReachabilitySwift (5.0.0)
   - SDCAlertView (12.0.2)
-  - SwiftyDropbox (7.0.1):
-    - Alamofire (~> 4.9.1)
+  - SwiftyDropbox (8.3.0):
+    - Alamofire (~> 5.4.3)
   - TLPhotoPicker (2.1.9)
   - TUSafariActivity (1.0.4)
   - UIImage-Resize (1.0.1)
@@ -170,7 +170,7 @@ DEPENDENCIES:
   - MBProgressHUD (~> 1.2)
   - ReachabilitySwift (~> 5.0)
   - SDCAlertView (~> 12.0)
-  - SwiftyDropbox (~> 7.0)
+  - SwiftyDropbox (~> 8.3)
   - TLPhotoPicker (~> 2.1)
   - TUSafariActivity (~> 1.0)
   - UIImage-Resize (~> 1.0)
@@ -219,7 +219,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/difftim/YapDatabase.git
 
 SPEC CHECKSUMS:
-  Alamofire: 85e8a02c69d6020a0d734f6054870d7ecb75cf18
+  Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
   AlignedCollectionViewFlowLayout: ee2ef451e741ec08f8e0967d828001e2f051c20a
   ARChromeActivity: 5dcf9b9f09323761f992aff3525cdd777f83609d
   CleanInsightsSDK: 41957828284408a969f4bf310ae4d378350bdbc2
@@ -227,19 +227,19 @@ SPEC CHECKSUMS:
   DownloadButton: 49a21a89e0d7d1b42d9134f79aaa40e727cd57c3
   Eureka: 28ad9dec6286cd7cd601fdf8e8df39bb7356a8f4
   FavIcon: 21651b47d8f6b33517973859f85e2cb6f9fcfaee
-  FontBlaster: 43136e99dc6b3c8d0ba31e29bc6fdbf378b724c6
+  FontBlaster: 941f89d735a29e1c7d24e7a90d3e16939ef1609a
   FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
   ImageRow: 880c0f052c5a89c80521b485c86ccf723a124e99
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDCAlertView: 1c0410de80548da3fed142ded0b97644d9848577
-  SwiftyDropbox: e38f83d00b189930edc645b3b955c18133c6a13d
+  SwiftyDropbox: 1f2dc98c211cb80b70ce0cd58064abe8528d9c78
   TLPhotoPicker: 939c40eaad130b69f9571e61e021e8120fa76329
   TUSafariActivity: afc55a00965377939107ce4fdc7f951f62454546
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
   YapDatabase: 260b1b0b3e6ae6775383edc923e19813586615eb
 
-PODFILE CHECKSUM: 534fc78c3a8e0572bcb4f318c9d3c710b708651f
+PODFILE CHECKSUM: 9a55a1e9579c11b21da92d094f3c52f73e3cebc9
 
 COCOAPODS: 1.11.3
