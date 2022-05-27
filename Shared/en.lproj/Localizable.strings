@@ -157,6 +157,9 @@
 /* BatchInfoAlert */
 "Edit Multiple Items" = "Edit Multiple Items";
 
+/* UploadCell */
+"Encoding file…" = "Encoding file…";
+
 /* SlideshowViewController */
 "Ensure authenticity." = "Ensure authenticity.";
 
