@@ -105,9 +105,21 @@ PKDownloadButtonDelegate {
 
         Db.add(observer: self, #selector(yapDatabaseModified))
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
+        // This needs to be re-done on appear, otherwise a first-run bug will happen:
+        // This class will be initialized on the first run, then the onboarding scenes
+        // happen, while this class is removed. Then it will reappear.
+        // If we don't do this here again, the DB state will be out of sync,
+        // after the user added a server.
+        // Then this scene will not show the collection, after images are added.
+        // No idea, why exactly, but this is what fixes it.
+        uploadsReadConn?.update(mappings: uploadsMappings)
+        projectsReadConn?.update(mappings: projectsMappings)
+        collectionsReadConn?.update(mappings: collectionsMappings)
+        assetsReadConn?.update(mappings: assetsMappings)
 
         updateSpace()
 
@@ -476,8 +488,8 @@ PKDownloadButtonDelegate {
      */
     @objc func yapDatabaseModified(notification: Notification) {
         if let notifications = uploadsReadConn?.beginLongLivedReadTransaction(),
-            let viewConn = uploadsReadConn?.ext(UploadsView.name) as? YapDatabaseViewConnection {
-
+            let viewConn = uploadsReadConn?.ext(UploadsView.name) as? YapDatabaseViewConnection
+        {
             uploadsReadConn?.update(mappings: uploadsMappings)
 
             if viewConn.hasChanges(for: notifications) {
@@ -486,18 +498,21 @@ PKDownloadButtonDelegate {
         }
 
         if let notifications = projectsReadConn?.beginLongLivedReadTransaction(),
-            let viewConn = projectsReadConn?.ext(ActiveProjectsView.name) as? YapDatabaseViewConnection {
-
+            let viewConn = projectsReadConn?.ext(ActiveProjectsView.name) as? YapDatabaseViewConnection
+        {
             // Fix crash by checking, if the snapshots are in sync.
-            if projectsMappings.isNextSnapshot(notifications) && viewConn.hasChanges(for: notifications) {
-                updateSpace() // Needed on iPad, where MainViewController is not reloaded,
-                // because config changes happen in popovers.
+            if projectsMappings.isNextSnapshot(notifications)
+            {
+                if viewConn.hasChanges(for: notifications) {
+                    updateSpace() // Needed on iPad, where MainViewController is not reloaded,
+                    // because config changes happen in popovers.
 
-                let (_, rowChanges) = viewConn.getChanges(forNotifications: notifications,
-                                                          withMappings: projectsMappings)
+                    let (_, rowChanges) = viewConn.getChanges(forNotifications: notifications,
+                                                              withMappings: projectsMappings)
 
-                for change in rowChanges {
-                    tabBar.handle(change)
+                    for change in rowChanges {
+                        tabBar.handle(change)
+                    }
                 }
             }
             else {
@@ -506,105 +521,65 @@ PKDownloadButtonDelegate {
             }
         }
 
-        var toDelete = IndexSet()
-        var toInsert = IndexSet()
-        var toReload = IndexSet()
-        var forceFull = false
+        var reload = false
 
         if let notifications = collectionsReadConn?.beginLongLivedReadTransaction(),
-            let viewConn = collectionsReadConn?.ext(CollectionsView.name) as? YapDatabaseViewConnection {
+            let viewConn = collectionsReadConn?.ext(CollectionsView.name) as? YapDatabaseViewConnection
+        {
+            if collectionsMappings.isNextSnapshot(notifications)
+            {
+                if viewConn.hasChanges(for: notifications)
+                {
+                    let (_, collectionChanges) = viewConn.getChanges(forNotifications: notifications,
+                                                                     withMappings: collectionsMappings)
 
-            if collectionsMappings.isNextSnapshot(notifications) && viewConn.hasChanges(for: notifications) {
-                let (_, collectionChanges) = viewConn.getChanges(forNotifications: notifications,
-                                                                 withMappings: collectionsMappings)
-
-                // We need to recognize changes in `Collection` objects used in the
-                // section headers.
-                for change in collectionChanges {
-                    switch change.type {
-                    case .update:
-                        if let indexPath = change.indexPath,
-                            change.finalGroup == tabBar.selectedProject?.id {
-
-                            toReload.insert(indexPath.row)
-                        }
-                    default:
-                        break
-                    }
+                    // We need to recognize changes in `Collection` objects used in the
+                    // section headers.
+                    reload = collectionChanges.contains { $0.type == .update && $0.finalGroup == tabBar.selectedProject?.id }
                 }
             }
             else {
-                collectionsReadConn?.update(mappings: collectionsMappings)
-                forceFull = true
+                reload = true
             }
         }
 
-        if let notifications = assetsReadConn?.beginLongLivedReadTransaction(),
-            let viewConn = assetsReadConn?.ext(AbcFilteredByProjectView.name) as? YapDatabaseViewConnection {
+        collectionsReadConn?.update(mappings: collectionsMappings)
 
-            if assetsMappings.isNextSnapshot(notifications) && viewConn.hasChanges(for: notifications) {
-                let (sectionChanges, rowChanges) = viewConn.getChanges(forNotifications: notifications,
-                                                                       withMappings: assetsMappings)
+        if !reload {
+            if let notifications = assetsReadConn?.beginLongLivedReadTransaction(),
+                let viewConn = assetsReadConn?.ext(AbcFilteredByProjectView.name) as? YapDatabaseViewConnection {
 
-                for change in sectionChanges {
-                    switch change.type {
-                    case .delete:
-                        toDelete.insert(Int(change.index))
-                    case .insert:
-                        toInsert.insert(Int(change.index))
-                    default:
-                        break
+                if assetsMappings.isNextSnapshot(notifications)
+                {
+                    if viewConn.hasChanges(for: notifications)
+                    {
+                        let (sectionChanges, rowChanges) = viewConn.getChanges(forNotifications: notifications,
+                                                                               withMappings: assetsMappings)
+
+                        reload = sectionChanges.contains(where: { $0.type == .delete || $0.type == .insert })
+
+                        if !reload {
+                            reload = rowChanges.contains(where: {
+                                $0.type == .delete || $0.type == .insert || $0.type == .move || $0.type == .update
+                            })
+                        }
                     }
                 }
-
-                // We need to reload the complete section, so the section header
-                // gets updated, too, and the `Collection.assets` array along with it.
-                for change in rowChanges {
-                    switch change.type {
-                    case .delete:
-                        if let indexPath = change.indexPath {
-                            toReload.insert(indexPath.section)
-                        }
-                    case .insert:
-                        if let newIndexPath = change.newIndexPath {
-                            toReload.insert(newIndexPath.section)
-                        }
-                    case .move:
-                        if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
-                            toReload.insert(indexPath.section)
-                            toReload.insert(newIndexPath.section)
-                        }
-                    case .update:
-                        if let indexPath = change.indexPath {
-                            toReload.insert(indexPath.section)
-                        }
-                    @unknown default:
-                        break
-                    }
+                else {
+                    reload = true
                 }
-            }
-            else {
-                assetsReadConn?.update(mappings: assetsMappings)
-                forceFull = true
             }
         }
 
-        // Don't reload sections, which are about to be deleted or inserted.
-        toReload.subtract(toDelete)
-        toReload.subtract(toInsert)
+        assetsReadConn?.update(mappings: assetsMappings)
 
-        if forceFull {
+        if reload {
             collectionView.reloadData()
         }
-        else if !toDelete.isEmpty || !toInsert.isEmpty || !toReload.isEmpty {
-            collectionView.performBatchUpdates({
-                collectionView.deleteSections(toDelete)
-                collectionView.insertSections(toInsert)
-                collectionView.reloadSections(toReload)
-            })
-        }
 
-        collectionView.toggle(numberOfSections(in: collectionView) != 0, animated: true)
+        if collectionView.isHidden != (numberOfSections(in: collectionView) < 1) {
+            collectionView.toggle(collectionView.isHidden, animated: true)
+        }
     }
 
 
