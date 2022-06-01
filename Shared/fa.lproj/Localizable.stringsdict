@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>%u item(s)</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@items@</string>
+		<key>items</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%u مورد</string>
+			<key>other</key>
+			<string>%u مورد</string>
+		</dict>
+	</dict>
+	<key>%2$u of %1$u item(s) uploaded</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@text@</string>
+		<key>text</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%2$u از %1$u مورد بارگذاری شد</string>
+			<key>other</key>
+			<string>%2$u از %1$u مورد بارگذاری شد</string>
+		</dict>
+	</dict>
+	<key>%u Item(s) Uploaded</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@items_uploaded@</string>
+		<key>items_uploaded</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%u مورد بارگذاری شد</string>
+			<key>other</key>
+			<string>%u مورد بارگذاری شد</string>
+		</dict>
+	</dict>
+	<key>%u Item(s) Selected</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@items_selected@</string>
+		<key>items_selected</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%u مورد انتخاب شد</string>
+			<key>other</key>
+			<string>%u مورد انتخاب شد</string>
+		</dict>
+	</dict>
+	<key>%u left</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@left@</string>
+		<key>left</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>%u مانده</string>
+			<key>other</key>
+			<string>%u مانده</string>
+		</dict>
+	</dict>
+	<key>You have %1$u item(s) ready to upload to &quot;%2$@&quot;.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@items@</string>
+		<key>items</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>شما %1$u مورد آماده به بارگذاری به “%2$@“ دارید.</string>
+			<key>other</key>
+			<string>شما %1$u مورد آماده به بارگذاری به “%2$@“ دارید.</string>
+		</dict>
+	</dict>
+	<key>This item/These items will be removed from the App only.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@text@</string>
+		<key>text</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>این مورد فقط از برنامه %2$@ حذف خواهد شد.</string>
+			<key>other</key>
+			<string>این موارد فقط از برنامه %2$@ حذف خواهند شد.</string>
+		</dict>
+	</dict>
+	<key>It/They will remain on the server and in your Photos app.</key>
+	<dict>
+		<key>NSStringLocalizedFormatKey</key>
+		<string>%#@text@</string>
+		<key>text</key>
+		<dict>
+			<key>NSStringFormatSpecTypeKey</key>
+			<string>NSStringPluralRuleType</string>
+			<key>NSStringFormatValueTypeKey</key>
+			<string>u</string>
+			<key>one</key>
+			<string>آن در سرور و در برنامه Photos شما باقی خواهد ماند.</string>
+			<key>other</key>
+			<string>آن‌ها در سرور و در برنامه Photos شما باقی خواهند ماند.</string>
+		</dict>
+	</dict>
+</dict>
+</plist>
