@@ -25,7 +25,7 @@ class MainNavigationController: UINavigationController {
         }
         else {
             setViewControllers(
-                [UIStoryboard.main.instantiateViewController(withIdentifier: "OnboardingViewController")],
+                [UIStoryboard.main.instantiate(ClaimViewController.self)],
                 animated: true)
         }
     }
