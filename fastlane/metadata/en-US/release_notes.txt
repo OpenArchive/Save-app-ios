@@ -1,4 +1,6 @@
-- Added translations: Italian.
+- Improved stability of uploads.
+- Fixed issues with Dropbox.
+- Improved handling of large videos.
+- Keep the screen on in the upload scene, so users can finish their huge uploads without attending to the app all the time.
+- Fixed UI issues.
 - Updated translations.
-- Added upload health check.
-- Fixed various bugs and crashes.

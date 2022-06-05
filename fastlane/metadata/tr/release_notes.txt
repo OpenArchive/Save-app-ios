@@ -1,4 +1,6 @@
-- Eklenen çeviriler: İtalyanca.
+- Yüklemelerin kararlılığı iyileştirildi.
+- Dropbox ile ilgili sorunlar düzeltildi.
+- Büyük videoların işlenmesi iyileştirildi.
+- Yükleme sahnesinde ekranı açık tutun, böylece kullanıcılar her zaman uygulamaya katılmadan büyük yüklemelerini tamamlayabilirler.
+- Sabit kullanıcı arayüzü sorunları.
 - Çeviriler güncellendi.
-- Yükleme durumu kontrolü eklendi.
-- Çeşitli hatalar ve çökmeler düzeltildi.

@@ -1,4 +1,6 @@
-- Übersetzungen hinzugefügt: Italienisch.
+- Stabilität der Uploads verbessert.
+- Probleme mit Dropbox behoben.
+- Handhabung großer Videos verbessert.
+- Bildschirm bleibt jetzt in der Upload-Szene eingeschaltet, damit Benutzer ihre riesigen Uploads abschließen können, ohne sich ständig um die App kümmern zu müssen.
+- Probleme mit der Benutzeroberfläche behoben.
 - Übersetzungen aktualisiert.
-- Upload-Gesundheitsprüfung hinzugefügt.
-- Verschiedene Fehler und Abstürze behoben.

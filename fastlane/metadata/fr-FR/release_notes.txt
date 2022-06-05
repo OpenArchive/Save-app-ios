@@ -1,4 +1,6 @@
-- Traductions ajoutées : italien.
+- Amélioration de la stabilité des téléchargements.
+- Correction de problèmes avec Dropbox.
+- Amélioration de la gestion des grandes vidéos.
+- Gardez l'écran allumé dans la scène de téléchargement, afin que les utilisateurs puissent terminer leurs énormes téléchargements sans s'occuper de l'application tout le temps.
+- Correction des problèmes d'interface utilisateur.
 - Traductions mises à jour.
-- Ajout de la vérification de l'état de téléchargement.
-- Correction de divers bugs et plantages.

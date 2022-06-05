@@ -1,4 +1,6 @@
-- Traducciones añadidas: italiano.
+- Mejora de la estabilidad de las subidas.
+- Problemas resueltos con Dropbox.
+- Manejo mejorado de videos grandes.
+- Mantenga la pantalla encendida en la escena de carga, para que los usuarios puedan terminar sus grandes cargas sin estar atentos a la aplicación todo el tiempo.
+- Problemas de interfaz de usuario fijos.
 - Traducciones actualizadas.
-- Se agregó verificación de estado de carga.
-- Se corrigieron varios errores y fallas.

@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.7.1
+- Improved stability of uploads.
+- Fixed issues with Dropbox.
+- Improved handling of large videos.
+- Keep the screen on in the upload scene, so users can finish their huge uploads without attending to the app all the time.
+- Fixed UI issues.
+- Updated translations.
+
 ## 2.7.0
 - Added translations: Italian.  
 - Updated translations.

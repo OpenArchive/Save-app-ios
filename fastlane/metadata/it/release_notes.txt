@@ -1,4 +1,6 @@
-- Aggiunte traduzioni: italiano.
+- Migliorata la stabilità dei caricamenti.
+- Risolti problemi con Dropbox.
+- Gestione migliorata di video di grandi dimensioni.
+- Mantieni lo schermo acceso nella scena di caricamento, in modo che gli utenti possano completare i loro enormi caricamenti senza dover accedere continuamente all'app.
+- Risolti problemi con l'interfaccia utente.
 - Traduzioni aggiornate.
-- Aggiunto controllo dello stato di caricamento.
-- Risolti vari bug e arresti anomali.
