@@ -22,7 +22,7 @@ class ProjectsTabBar: UIScrollView {
 
     weak var mappings: YapDatabaseViewMappings?
 
-    var projectTabs = [ProjectTab]()
+    private var projectTabs = [ProjectTab]()
 
     var selectedProject: Project? {
         get {
@@ -103,18 +103,32 @@ class ProjectsTabBar: UIScrollView {
     }
 
     func load() {
+        var newProjects = [Project]()
+
         read { transaction in
             transaction.iterateKeysAndObjects(inGroup: Project.collection) {
                 collection, key, object, index, stop in
 
                 if let project = object as? Project {
-                    if !self.projectTabs.contains(where: { $0.project == project }) {
-                        self.insert(project, at: Int(index))
+                    newProjects.append(project)
+                }
+            }
+        }
 
-                        if self.selectedProject == nil {
-                            self.selectedProject = project
-                        }
-                    }
+        for i in (0..<projectTabs.count).reversed() {
+            if !newProjects.contains(projectTabs[i].project) {
+                remove(at: i)
+            }
+        }
+
+        for i in 0..<newProjects.count {
+            let project = newProjects[i]
+
+            if !projectTabs.contains(where: { $0.project == project }) {
+                insert(project, at: i)
+
+                if selectedProject == nil {
+                    selectedProject = project
                 }
             }
         }
