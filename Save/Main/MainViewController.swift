@@ -517,6 +517,7 @@ PKDownloadButtonDelegate {
                 }
             }
             else {
+                updateSpace()
                 projectsReadConn?.update(mappings: projectsMappings)
                 tabBar.load()
             }
