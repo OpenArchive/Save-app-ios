@@ -16,20 +16,11 @@ class BigMenuItemCell: BaseCell {
 
     @IBOutlet weak var label: UILabel! {
         didSet {
-            label.minimumScaleFactor = 0.5
-            label.adjustsFontSizeToFitWidth = true
-            label.allowsDefaultTighteningForTruncation = true
+            label.font = .montserrat(forTextStyle: .headline)
         }
     }
 
-    @IBOutlet weak var detailedDescription: UILabel! {
-        didSet {
-            detailedDescription.numberOfLines = 2
-            detailedDescription.minimumScaleFactor = 0.5
-            detailedDescription.adjustsFontSizeToFitWidth = true
-            detailedDescription.allowsDefaultTighteningForTruncation = true
-        }
-    }
+    @IBOutlet weak var detailedDescription: UILabel!
 
     func setWebDav() -> BigMenuItemCell {
         label.text = NSLocalizedString("Private (WebDAV) Server", comment: "")

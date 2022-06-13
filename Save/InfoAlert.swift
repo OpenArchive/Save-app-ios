@@ -92,7 +92,8 @@ class InfoAlert {
             title = UILabel()
             title?.translatesAutoresizingMaskIntoConstraints = false
             title?.text = self.title
-            title?.font = .boldSystemFont(ofSize: 17)
+            title?.font = .preferredFont(forTextStyle: .title2).bold()
+            title?.adjustsFontForContentSizeCategory = true
             title?.textAlignment = .center
             title?.adjustsFontSizeToFitWidth = true
         }
@@ -103,7 +104,8 @@ class InfoAlert {
         let message = UILabel()
         message.translatesAutoresizingMaskIntoConstraints = false
         message.text = self.message
-        message.font = .systemFont(ofSize: 13)
+        message.font = .preferredFont(forTextStyle: .footnote)
+        message.adjustsFontForContentSizeCategory = true
         message.textAlignment = .center
         message.numberOfLines = 0
 

@@ -55,7 +55,13 @@ class UploadCell: BaseCell, PKDownloadButtonDelegate {
     
     @IBOutlet weak var errorBt: UIButton!
     @IBOutlet weak var thumbnail: UIImageView!
-    @IBOutlet weak var nameLb: UILabel!
+
+    @IBOutlet weak var nameLb: UILabel! {
+        didSet {
+            nameLb.font = nameLb.font.bold()
+        }
+    }
+
     @IBOutlet weak var sizeLb: UILabel!
     
     weak var upload: Upload? {

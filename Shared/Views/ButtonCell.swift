@@ -38,7 +38,8 @@ class ButtonCell: BaseCell {
         selectionStyle = .none
 
         label.textColor = .accent
-        label.font = UIFont.boldSystemFont(ofSize: 14)
+        label.font = .preferredFont(forTextStyle: .body).bold()
+        label.adjustsFontForContentSizeCategory = true
         label.textAlignment = .center
         label.layer.borderWidth = 2
         label.layer.borderColor = UIColor.accent.cgColor

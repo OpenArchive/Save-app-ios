@@ -46,7 +46,8 @@ class InternetArchiveViewController: BaseServerViewController, ScrapeDelegate {
 
             <<< LabelRow() {
                 $0.cell.textLabel?.numberOfLines = 0
-                $0.cell.textLabel?.font = .systemFont(ofSize: 11)
+                $0.cell.textLabel?.font = .preferredFont(forTextStyle: .footnote)
+                $0.cell.textLabel?.adjustsFontForContentSizeCategory = true
 
                 let appName = Bundle.main.displayName
 

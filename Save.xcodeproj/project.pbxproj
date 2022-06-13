@@ -88,6 +88,9 @@
 		A056555C23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */; };
 		A056555D23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */; };
 		A056555E23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */; };
+		A056BE1C2857457E00F354B6 /* UIFont+Montserrat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056BE1B2857457E00F354B6 /* UIFont+Montserrat.swift */; };
+		A056BE1D2857457E00F354B6 /* UIFont+Montserrat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056BE1B2857457E00F354B6 /* UIFont+Montserrat.swift */; };
+		A056BE1E2857457E00F354B6 /* UIFont+Montserrat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056BE1B2857457E00F354B6 /* UIFont+Montserrat.swift */; };
 		A05768DA22E0B67D00B39FCE /* Screenshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05768D922E0B67D00B39FCE /* Screenshots.swift */; };
 		A059E647223AE9FB00ABC621 /* UploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A059E646223AE9FB00ABC621 /* UploadManager.swift */; };
 		A05C582A21EF94FC00141633 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05C582921EF94FC00141633 /* BaseViewController.swift */; };
@@ -552,6 +555,7 @@
 		A056555623F6D67E00DE0168 /* DropboxSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSpace.swift; sourceTree = "<group>"; };
 		A056555923F6D9D600DE0168 /* DropboxConduit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxConduit.swift; sourceTree = "<group>"; };
 		A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Utils.swift"; sourceTree = "<group>"; };
+		A056BE1B2857457E00F354B6 /* UIFont+Montserrat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Montserrat.swift"; sourceTree = "<group>"; };
 		A05768D722E0B67D00B39FCE /* Screenshots.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Screenshots.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A05768D922E0B67D00B39FCE /* Screenshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screenshots.swift; sourceTree = "<group>"; };
 		A05768DB22E0B67D00B39FCE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -773,6 +777,7 @@
 				A076790127BE89E900609630 /* UIButton+setTitle.swift */,
 				A0212FCD22D374CA009079DC /* UICollectionView+selection.swift */,
 				A0362191220DA390003C21DC /* UIColor+accent.swift */,
+				A056BE1B2857457E00F354B6 /* UIFont+Montserrat.swift */,
 				A04255CD22944C1B0048E00C /* UIStoryboard+main.swift */,
 				A05471DA2296C8FD009FEA93 /* UITableView+separatorView.swift */,
 				A055204F222566CE00B9645F /* UIView+animateHideShow.swift */,
@@ -1057,9 +1062,9 @@
 				A056555423F6D1C600DE0168 /* DropboxViewController.swift */,
 				A08C2CE121F09B3F008ACA3E /* InternetArchiveViewController.swift */,
 				A052A48E230D53D800E72594 /* IaInfoAlert.swift */,
-				A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */,
 				A0E2720B224E33D000CB7113 /* EditProjectViewController.swift */,
 				A0FA93432277557D0086D276 /* DataUsageViewController.swift */,
+				A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */,
 				A0BF451927DF5EE800DBB629 /* HealthCheckViewController.swift */,
 			);
 			path = Space;
@@ -1523,6 +1528,7 @@
 				A0E2720A224E335400CB7113 /* NewProjectViewController.swift in Sources */,
 				A094EA4E282AD23D006CE059 /* NSError+from.swift in Sources */,
 				A08C2CE821F0B613008ACA3E /* BaseCell.swift in Sources */,
+				A056BE1D2857457E00F354B6 /* UIFont+Montserrat.swift in Sources */,
 				A08C2CE921F0B617008ACA3E /* TableHeader.swift in Sources */,
 				A0AC06B22201E5B900BD5FBA /* WorkingOverlay.swift in Sources */,
 				A0F7FDDD22491C6C006610F0 /* TintedButton.swift in Sources */,
@@ -1686,6 +1692,7 @@
 				A09B53B823266F02005266C2 /* ManagementViewController.swift in Sources */,
 				A09B53B923266F02005266C2 /* TitleCell.swift in Sources */,
 				A05DF982282C0F48003FADA2 /* AEXMLOptions.swift in Sources */,
+				A056BE1E2857457E00F354B6 /* UIFont+Montserrat.swift in Sources */,
 				A09B53BA23266F02005266C2 /* DoneDelegate.swift in Sources */,
 				A09B53BB23266F02005266C2 /* Space.swift in Sources */,
 				A09B53BC23266F02005266C2 /* InternetArchiveViewController.swift in Sources */,
@@ -1742,6 +1749,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A094EA4D282AD23D006CE059 /* NSError+from.swift in Sources */,
+				A056BE1C2857457E00F354B6 /* UIFont+Montserrat.swift in Sources */,
 				A0E739D820E4C85D00DB31E1 /* AppDelegate.swift in Sources */,
 				A0BBEF8922846F310071EE93 /* Geocoder.swift in Sources */,
 				A0362195220DB2CA003C21DC /* IaSpace.swift in Sources */,

@@ -18,9 +18,15 @@ class InfoBox: UIView, UITextViewDelegate {
 
     // MARK: Class
 
-    private static let fontSize: CGFloat = 13
-    private static let normalFont = UIFont.systemFont(ofSize: fontSize)
-    private static let placeholderFont = UIFont.italicSystemFont(ofSize: fontSize)
+    // Don't store, otherwise font won't be recalculated after size change.
+    private class var normalFont: UIFont {
+        UIFont.preferredFont(forTextStyle: .caption1)
+    }
+
+    // Don't store, otherwise font won't be recalculated after size change.
+    private class var placeholderFont: UIFont? {
+        UIFont.preferredFont(forTextStyle: .caption1).italic()
+    }
 
     class func instantiate(_ icon: String? = nil, _ superview: UIView? = nil) -> InfoBox? {
         let info = UINib(nibName: String(describing: self), bundle: Bundle(for: self))

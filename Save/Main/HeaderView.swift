@@ -16,7 +16,12 @@ class HeaderView: UICollectionReusableView {
 
     static let reuseId = "headerView"
 
-    @IBOutlet weak var infoLb: UILabel!
+    @IBOutlet weak var infoLb: UILabel! {
+        didSet {
+            infoLb.font = infoLb.font.bold()
+        }
+    }
+
     @IBOutlet weak var subInfoLb: UILabel!
     @IBOutlet weak var manageBt: UIButton!
 

@@ -14,7 +14,12 @@ class TitleCell: BaseCell {
         return 100
     }
 
-    @IBOutlet weak var title: UILabel!
+    @IBOutlet weak var title: UILabel! {
+        didSet {
+            title.font = .montserrat(forTextStyle: .title1)
+        }
+    }
+
     @IBOutlet weak var detailedDescription: UILabel!
 
     func set(_ title: String, _ desc: String? = nil) -> TitleCell {

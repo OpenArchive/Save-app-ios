@@ -76,7 +76,8 @@ class PrivateServerViewController: BaseServerViewController {
             <<< LabelRow() {
                 $0.title = String(format: NSLocalizedString("__webdav_description__", comment: ""), Bundle.main.displayName)
                 $0.cell.textLabel?.numberOfLines = 0
-                $0.cell.textLabel?.font = .systemFont(ofSize: 12)
+                $0.cell.textLabel?.font = .preferredFont(forTextStyle: .footnote)
+                $0.cell.textLabel?.adjustsFontForContentSizeCategory = true
             }
 
             +++ nextcloudRow
@@ -84,7 +85,8 @@ class PrivateServerViewController: BaseServerViewController {
             <<< LabelRow() {
                 $0.title = NSLocalizedString("__upload_chunking_description__", comment: "")
                 $0.cell.textLabel?.numberOfLines = 0
-                $0.cell.textLabel?.font = .systemFont(ofSize: 12)
+                $0.cell.textLabel?.font = .preferredFont(forTextStyle: .footnote)
+                $0.cell.textLabel?.adjustsFontForContentSizeCategory = true
             }
 
         if space != nil {

@@ -36,7 +36,11 @@ class TableHeader: UITableViewHeaderFooterView {
         setup()
     }
 
-    @IBOutlet weak var label: UILabel!
+    @IBOutlet weak var label: UILabel! {
+        didSet {
+            label.font = label.font.bold()
+        }
+    }
 
     override var textLabel: UILabel? {
         get {

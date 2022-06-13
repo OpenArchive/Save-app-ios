@@ -15,7 +15,13 @@ class SelectedSpaceCell: BaseCell {
     }
 
     @IBOutlet weak var favIcon: UIImageView!
-    @IBOutlet weak var serverNameLb: UILabel!
+
+    @IBOutlet weak var serverNameLb: UILabel! {
+        didSet {
+            serverNameLb.font = serverNameLb.font.bold()
+        }
+    }
+
     @IBOutlet weak var userNameLb: UILabel!
 
     var space: Space? {

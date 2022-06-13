@@ -49,6 +49,7 @@ PKDownloadButtonDelegate {
 
     @IBOutlet weak var hintLb: UILabel! {
         didSet {
+            hintLb.font = hintLb.font.bold()
             hintLb.text = NSLocalizedString("Tap buttons below to add media to your project.", comment: "")
         }
     }
