@@ -225,7 +225,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         let filename = url.lastPathComponent
 
         // Ignore Metadata files.
-        guard filename.lowercased() !~ "\(WebDavConduit.metaFileExt)$" else {
+        guard filename.lowercased() !~ "\(Conduit.metaFileExt)$" else {
             return
         }
 

@@ -34,17 +34,6 @@ class DropboxConduit: Conduit {
             return progress
         }
 
-        // As per docs, DropboxClient.files.upload only supports files up until
-        // 150 MByte. To avoid, having the user find out after 150 MBytes,
-        // we immediately stop this.
-        if filesize > 150 * 1024 * 1024 {
-            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
-                self.done(uploadId, error: UploadError.dropboxFileTooBig)
-            }
-
-            return progress
-        }
-
         DispatchQueue.global(qos: .background).async {
             var error = self.create(folder: self.construct(projectName), progress)
 
@@ -74,7 +63,7 @@ class DropboxConduit: Conduit {
 
             let to = self.construct(path)
 
-            error = self.copyMetadata(self.asset, to: to.appendingPathExtension(WebDavConduit.metaFileExt), progress)
+            error = self.copyMetadata(self.asset, to: to.appendingPathExtension(Conduit.metaFileExt), progress)
 
             if error != nil || progress.isCancelled {
                 return self.done(uploadId, error: error)
@@ -93,7 +82,7 @@ class DropboxConduit: Conduit {
             progress.completedUnitCount = 10
 
             DispatchQueue.global(qos: .background).async {
-                self.upload(file, to: to, progress) { error in
+                self.upload(file, of: filesize, to: to, progress) { error in
                     self.done(uploadId, error: error, url: to)
                 }
             }
@@ -209,43 +198,111 @@ class DropboxConduit: Conduit {
      Uploads a file to a destination.
 
      - parameter file: The file on the local file system.
+     - parameter filesize: The total size of the file.
      - parameter to: The destination on the Dropbox server.
      - parameter progress: The main progress to report on.
      - parameter completionHandler: The callback to call when the copy is done,
      or when an error happened.
      */
-    func upload(_ file: URL, to: URL, _ progress: Progress, _ completionHandler: URLSession.SimpleCompletionHandler? = nil) {
+    func upload(_ file: URL, of filesize: Int64, to: URL, _ progress: Progress, _ completionHandler: URLSession.SimpleCompletionHandler? = nil)
+    {
+        if filesize > Conduit.chunkFileSizeThreshold {
+            let expectedSize = min(Conduit.chunkSize, filesize)
+            let chunk: Data
 
-        let start = progress.completedUnitCount
-        let share = progress.totalUnitCount - start
-
-        client?.files.upload(path: to.path, input: file)
-            .progress {
-                if progress.isCancelled {
-                    $0.cancel()
-                }
-
-                progress.completedUnitCount = start + $0.completedUnitCount * share / $0.totalUnitCount
+            do {
+                chunk = try Conduit.readChunk(file, offset: 0, length: expectedSize)
             }
+            catch {
+                completionHandler?(error)
+
+                return
+            }
+
+            let progressPerChunk = (progress.totalUnitCount - progress.completedUnitCount) / (filesize / Conduit.chunkSize + 1)
+
+            client?.files.uploadSessionStart(input: chunk)
+                .progress(progressHandler(progress: progress, addWithCount: progressPerChunk))
+                .response { [weak self] result, error in
+                    if let result = result {
+                        self?.uploadNextChunk(file, of: filesize, to: to, result.sessionId,
+                                              UInt64(expectedSize), progress, progressPerChunk, completionHandler)
+
+                        return
+                    }
+
+                    completionHandler?(NSError.from(error))
+                }
+        }
+        else {
+            client?.files.upload(path: to.path, input: file)
+                .progress(progressHandler(progress: progress, addWithCount: progress.totalUnitCount - progress.completedUnitCount))
+                .response { metadata, error in
+                    completionHandler?(NSError.from(error))
+                }
+            }
+    }
+
+    func upload(_ data: Data, to: URL, _ progress: Progress, _ share: Int64, _ completionHandler: URLSession.SimpleCompletionHandler? = nil) {
+        client?.files.upload(path: to.path, input: data)
+            .progress(progressHandler(progress: progress, addWithCount: share))
             .response { metadata, error in
                 completionHandler?(NSError.from(error))
             }
     }
 
-    func upload(_ data: Data, to: URL, _ progress: Progress, _ share: Int64, _ completionHandler: URLSession.SimpleCompletionHandler? = nil) {
 
-        let start = progress.completedUnitCount
+    // MARK: Private Methods
 
-        client?.files.upload(path: to.path, input: data)
-            .progress {
-                if progress.isCancelled {
-                    $0.cancel()
+    private func uploadNextChunk(_ file: URL, of filesize: Int64, to: URL, _ sessionId: String, _ offset: UInt64, _ progress: Progress, _ progressPerChunk: Int64, _ completionHandler: URLSession.SimpleCompletionHandler?) {
+
+        let expectedSize = min(Conduit.chunkSize, filesize - Int64(offset))
+        let chunk: Data
+
+        do {
+            chunk = try Conduit.readChunk(file, offset: offset, length: expectedSize)
+        }
+        catch {
+            completionHandler?(error)
+
+            return
+        }
+
+        let cursor = Files.UploadSessionCursor(sessionId: sessionId, offset: offset)
+
+        if Int64(offset) + expectedSize >= filesize {
+            client?.files.uploadSessionFinish(cursor: cursor, commit: Files.CommitInfo(path: to.path), input: chunk)
+                .progress(progressHandler(progress: progress, addWithCount: progressPerChunk))
+                .response { metadata, error in
+                    completionHandler?(NSError.from(error))
                 }
+        }
+        else {
+            client?.files.uploadSessionAppendV2(cursor: cursor, input: chunk)
+                .progress(progressHandler(progress: progress, addWithCount: progressPerChunk))
+                .response { [weak self] _, error in
+                    if let error = error {
+                        completionHandler?(NSError.from(error))
+                    }
+                    else {
+                        self?.uploadNextChunk(file, of: filesize, to: to, sessionId, offset + UInt64(expectedSize), progress, progressPerChunk, completionHandler)
+                    }
+                }
+        }
+    }
 
-                progress.completedUnitCount = start + $0.completedUnitCount * share / $0.totalUnitCount
+    private func progressHandler(progress: Progress, addWithCount count: Int64) -> ((Progress) -> Void) {
+        var progressAdded = false
+
+        return {
+            if progress.isCancelled {
+                $0.cancel()
             }
-            .response { metadata, error in
-                completionHandler?(NSError.from(error))
+
+            if !progressAdded {
+                progress.addChild($0, withPendingUnitCount: count)
+                progressAdded = true
             }
+        }
     }
 }

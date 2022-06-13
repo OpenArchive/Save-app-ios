@@ -14,6 +14,10 @@ import Foundation
  */
 class Conduit {
 
+    static let metaFileExt = "meta.json"
+    static let chunkSize: Int64 = 2 * 1024 * 1024 // 2 MByte
+    static let chunkFileSizeThreshold: Int64 = 10 * 1024 * 1024 // 10 MByte
+
     /**
      A pretty-printing JSON encoder using ISO8601 date formats.
      */
@@ -221,12 +225,34 @@ class Conduit {
     }
 
 
+    class func readChunk(_ file: URL, offset: UInt64, length: Int64) throws -> Data {
+        let fh = try FileHandle(forReadingFrom: file)
+
+        if #available(iOS 13.0, *) {
+            try fh.seek(toOffset: offset)
+        }
+        else {
+            fh.seek(toFileOffset: offset)
+        }
+
+
+        let chunk = fh.readData(ofLength: Int(length))
+
+        if #available(iOS 13.0, *) {
+            try fh.close()
+        }
+        else {
+            fh.closeFile()
+        }
+
+        return chunk
+    }
+
     // MARK: Errors
 
     enum UploadError: LocalizedError {
         case invalidConf
         case tooManyRetries
-        case dropboxFileTooBig
 
         var errorDescription: String? {
             switch self {
@@ -235,9 +261,6 @@ class Conduit {
 
             case .tooManyRetries:
                 return NSLocalizedString("Failed after too many retries.", comment: "")
-
-            case .dropboxFileTooBig:
-                return NSLocalizedString("The Dropbox support can't handle files bigger than 150 MByte.", comment: "")
             }
         }
     }

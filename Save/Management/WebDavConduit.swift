@@ -12,10 +12,6 @@ class WebDavConduit: Conduit {
 
     // MARK: WebDavConduit
 
-    static let metaFileExt = "meta.json"
-    static let chunkSize: Int64 = 2 * 1024 * 1024 // 2 MByte
-    static let chunkFileSizeThreshold: Int64 = 10 * 1024 * 1024 // 10 MByte
-
     private var credential: URLCredential? {
         return (asset.space as? WebDavSpace)?.credential
     }
@@ -71,7 +67,7 @@ class WebDavConduit: Conduit {
 
             let to = self.construct(url: url, path)
 
-            error = self.copyMetadata(self.asset, to: to.appendingPathExtension(WebDavConduit.metaFileExt), progress)
+            error = self.copyMetadata(self.asset, to: to.appendingPathExtension(Conduit.metaFileExt), progress)
 
             if error != nil || progress.isCancelled {
                 return self.done(uploadId, error: error)
@@ -91,12 +87,9 @@ class WebDavConduit: Conduit {
 
             // Use Nextcloud chunking if enabled and file bigger than 10 MByte.
             if self.asset.space?.isNextcloud ?? false,
-                let fh = try? FileHandle(forReadingFrom: file),
-                filesize > WebDavConduit.chunkFileSizeThreshold {
-
-                self.chunkedUpload(url, credential, uploadId, progress, filesize, fh, path)
-
-                fh.closeFile()
+                filesize > Conduit.chunkFileSizeThreshold
+            {
+                self.chunkedUpload(url, credential, uploadId, progress, file, of: filesize, path)
             }
             else {
                 DispatchQueue.global(qos: .background).async {
@@ -115,7 +108,7 @@ class WebDavConduit: Conduit {
                     self.asset.setUploaded(nil)
                 }
 
-                self.foregroundSession.delete(publicUrl.appendingPathExtension(WebDavConduit.metaFileExt), credential: self.credential) { error in
+                self.foregroundSession.delete(publicUrl.appendingPathExtension(Conduit.metaFileExt), credential: self.credential) { error in
 
                     // Try to delete containing folders until root.
                     self.delete(folder: publicUrl.deletingLastPathComponent()) { error in
@@ -278,9 +271,9 @@ class WebDavConduit: Conduit {
      - parameter path: The destination path.
     */
     private func chunkedUpload(_ url: URL, _ credential: URLCredential, _ uploadId: String,
-                               _ progress: Progress, _ filesize: Int64, _ fh: FileHandle,
-                               _ path: [String]) {
-
+                               _ progress: Progress, _ file: URL, of filesize: Int64,
+                               _ path: [String])
+    {
         guard let user = credential.user else {
             return done(uploadId, error: UploadError.invalidConf)
         }
@@ -299,7 +292,7 @@ class WebDavConduit: Conduit {
         }
 
         error = nil
-        let progressPerChunk = (progress.totalUnitCount - progress.completedUnitCount) / (filesize / WebDavConduit.chunkSize + 1)
+        let progressPerChunk = (progress.totalUnitCount - progress.completedUnitCount) / (filesize / Conduit.chunkSize + 1)
         var allThere = false
         var round = 1
 
@@ -314,7 +307,7 @@ class WebDavConduit: Conduit {
             var offset: Int64 = 0
 
             while offset < filesize {
-                let expectedSize = min(WebDavConduit.chunkSize, filesize - offset)
+                let expectedSize = min(Conduit.chunkSize, filesize - offset)
 
                 var dest = folder
                 dest.append(String(format: "%015d-%015d", offset, offset + expectedSize - 1))
@@ -328,8 +321,6 @@ class WebDavConduit: Conduit {
                 offset += expectedSize
 
                 if exists {
-                    fh.seek(toFileOffset: UInt64(offset))
-
                     // Only increase the first time, otherwise we would exceed 100%.
                     // (First time could be after an app restart.)
                     if round == 1 {
@@ -345,7 +336,15 @@ class WebDavConduit: Conduit {
                         progress.completedUnitCount -= progressPerChunk
                     }
 
-                    let chunk = fh.readData(ofLength: Int(expectedSize))
+                    let chunk: Data
+
+                    do {
+                        chunk = try Conduit.readChunk(file, offset: UInt64(offset), length: expectedSize)
+                    }
+                    catch let e {
+                        error = e
+                        break
+                    }
 
                     let group = DispatchGroup.enter()
 

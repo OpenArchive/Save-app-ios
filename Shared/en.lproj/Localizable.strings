@@ -379,9 +379,6 @@
 /* DarkroomHelper */
 "Tap to flag as significant content" = "Tap to flag as significant content";
 
-/* Conduit */
-"The Dropbox support can't handle files bigger than 150 MByte." = "The Dropbox support can't handle files bigger than 150 MByte.";
-
 /* BaseServerViewController */
 "This will remove the asset history for that space, too!" = "This will remove the asset history for that space, too!";
 
