@@ -63,9 +63,10 @@ class InfoAlert {
 
      - parameter viewController: The viewController to present on. Can be nil,
         in which case the top view controller will be taken.
+     - parameter additionalCondition: Only if this condition is *also* met, will this alert be shown. Defaults to `true`.
     */
-    class func presentIfNeeded(_ viewController: UIViewController? = nil) {
-        if wasAlreadyShown {
+    class func presentIfNeeded(_ viewController: UIViewController? = nil, additionalCondition: Bool = true) {
+        if !additionalCondition || wasAlreadyShown {
             return
         }
 

@@ -12,24 +12,24 @@
 class BatchInfoAlert: InfoAlert {
 
     override class var image: UIImage? {
-        return UIImage(named: "ic_compose")
+        UIImage(named: "ic_compose")
     }
 
     override class var tintColor: UIColor {
-        return .warning
+        .warning
     }
 
     override class var title: String {
-        return NSLocalizedString("Edit Multiple Items", comment: "")
+        NSLocalizedString("Edit Multiple Items", comment: "")
     }
 
     override class var message: String {
-        return NSLocalizedString("To edit multiple items, tap and hold each.", comment: "")
+        NSLocalizedString("To edit multiple items, tap and hold each.", comment: "")
     }
 
     override class var wasAlreadyShown: Bool {
         get {
-            return Settings.firstBatchEditDone
+            Settings.firstBatchEditDone
         }
         set {
             Settings.firstBatchEditDone = newValue

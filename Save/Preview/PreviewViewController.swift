@@ -61,7 +61,7 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
 
         updateTitle()
 
-        BatchInfoAlert.presentIfNeeded(self)
+        BatchInfoAlert.presentIfNeeded(self, additionalCondition: sc.count > 1)
     }
 
 

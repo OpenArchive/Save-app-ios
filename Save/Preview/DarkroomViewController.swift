@@ -93,7 +93,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
 
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
-        BatchInfoAlert.presentIfNeeded(self)
+        BatchInfoAlert.presentIfNeeded(self, additionalCondition: sc.count > 1)
     }
 
     override func viewDidAppear(_ animated: Bool) {
