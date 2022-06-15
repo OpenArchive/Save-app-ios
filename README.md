@@ -52,6 +52,29 @@ deems necessary. This includes, re-licensing under another license.
 
 ## Dev Stuff
 
+### Build
+
+You'll need to have [CocoaPods](https://cocoapods.org) and Xcode installed.
+We recommend to install CocoaPods via [Homebrew](https://brew.sh):
+
+```sh
+brew install cocoapods
+```
+
+Prepare the workspace like this:
+
+```sh
+git clone https://github.com/OpenArchive/Save-app-ios.git
+cd Save-app-ios
+pod install
+open Save.xcworkspace
+```
+
+Then fill in the missing build configuration in [Shared/Config.xcconfig](Shared/Config.xcconfig)!
+
+Now you should be able to build.
+
+
 ### Internet Archive S3 reference:
 https://archive.org/help/abouts3.txt
 https://github.com/vmbrasseur/IAS3API
