@@ -72,7 +72,7 @@ class UploadsView: YapDatabaseAutoView {
 
         var count = 0
 
-        viewTx.iterateKeysAndObjects(inGroup: Upload.collection) { _, _, object, _, stop in
+        viewTx.iterateKeysAndObjects(inGroup: groups[0]) { _, _, object, _, stop in
             if let upload = object as? Upload,
                upload.state == .pending || upload.state == .downloading
             {

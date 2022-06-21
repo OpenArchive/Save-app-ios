@@ -55,6 +55,8 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
 
         readConn?.update(mappings: mappings)
 
+        removeDone(async: false)
+
         updateTitle()
         setButton()
 
@@ -70,8 +72,6 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-
-        removeDone()
 
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
@@ -147,17 +147,6 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
         return indexPath.section == 0 ? [] : [removeAction]
     }
 
-    override func setEditing(_ editing: Bool, animated: Bool) {
-        super.setEditing(editing, animated: animated)
-
-        if editing {
-            NotificationCenter.default.post(name: .uploadManagerPause, object: nil)
-        }
-        else {
-            NotificationCenter.default.post(name: .uploadManagerUnpause, object: nil)
-        }
-    }
-
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         if indexPath.section == 0 {
             return false
@@ -171,11 +160,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
             return false
         }
 
-        if let upload = getUpload(indexPath) {
-            return upload.state == .pending || upload.state == .startDownload
-        }
-
-        return false
+        return getUpload(indexPath)?.state != .downloading
     }
 
     /**
@@ -253,10 +238,6 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
     // MARK: Actions
 
     @IBAction func done() {
-        if isEditing {
-            NotificationCenter.default.post(name: .uploadManagerUnpause, object: nil)
-        }
-
         dismiss(animated: true)
     }
 
@@ -274,50 +255,61 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
                 return
         }
 
-        if !mappings.isNextSnapshot(notifications) || !viewConn.hasChanges(for: notifications) {
+        var needsUpdate = false
+
+
+        if mappings.isNextSnapshot(notifications) {
+            let (_, changes) = viewConn.getChanges(forNotifications: notifications, withMappings: mappings)
+
+            if changes.count > 0 {
+                tableView.beginUpdates()
+
+                // NOTE: Sections other than 0 are ignored, because `UploadsView`
+                // also tracks changes in `Asset`s, so `UploadManager` can update
+                // its referenced assets, when their status changes.
+                // (Needed, when movie import takes longer as the user hits upload.)
+
+                for change in changes {
+                    switch change.type {
+                    case .delete:
+                        if let indexPath = change.indexPath, indexPath.section == 0 {
+                            tableView.deleteRows(at: [transform(indexPath)], with: .fade)
+                        }
+                    case .insert:
+                        if let newIndexPath = change.newIndexPath, newIndexPath.section == 0 {
+                            tableView.insertRows(at: [transform(newIndexPath)], with: .fade)
+                        }
+                    case .move:
+                        if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath,
+                            indexPath.section == 0 && newIndexPath.section == 0 {
+                            tableView.reloadRows(at: [transform(indexPath), transform(newIndexPath)], with: .none)
+                        }
+                    case .update:
+                        if let indexPath = change.indexPath, indexPath.section == 0 {
+                            tableView.reloadRows(at: [transform(indexPath)], with: .none)
+                        }
+                    @unknown default:
+                        break
+                    }
+                }
+
+                tableView.endUpdates()
+
+                needsUpdate = true
+            }
+        }
+        else {
             readConn?.update(mappings: mappings)
 
-            tableView.reloadSections([1], with: .automatic)
+            // No animation. Otherwise this can happen:
+            // NSInternalInconsistencyException, reason: 'Cannot animate reordering cell because it already has an animation'
+            tableView.reloadSections([1], with: .none)
 
-            return
+            needsUpdate = true
         }
 
-        let (_, changes) = viewConn.getChanges(forNotifications: notifications, withMappings: mappings)
 
-        if changes.count > 0 {
-            tableView.beginUpdates()
-
-            // NOTE: Sections other than 0 are ignored, because `UploadsView`
-            // also tracks changes in `Asset`s, so `UploadManager` can update
-            // its referenced assets, when their status changes.
-            // (Needed, when movie import takes longer as the user hits upload.)
-
-            for change in changes {
-                switch change.type {
-                case .delete:
-                    if let indexPath = change.indexPath, indexPath.section == 0 {
-                        tableView.deleteRows(at: [transform(indexPath)], with: .fade)
-                    }
-                case .insert:
-                    if let newIndexPath = change.newIndexPath, newIndexPath.section == 0 {
-                        tableView.insertRows(at: [transform(newIndexPath)], with: .fade)
-                    }
-                case .move:
-                    if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath,
-                        indexPath.section == 0 && newIndexPath.section == 0 {
-                        tableView.reloadRows(at: [transform(indexPath), transform(newIndexPath)], with: .none)
-                    }
-                case .update:
-                    if let indexPath = change.indexPath, indexPath.section == 0 {
-                        tableView.reloadRows(at: [transform(indexPath)], with: .none)
-                    }
-                @unknown default:
-                    break
-                }
-            }
-
-            tableView.endUpdates()
-
+        if needsUpdate {
             updateTitle()
             setButton()
         }
@@ -373,8 +365,8 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
     /*
      Will delete the done uploads.
      */
-    private func removeDone() {
-        Db.writeConn?.asyncReadWrite { transaction in
+    private func removeDone(async: Bool = true) {
+        let block = { (transaction: YapDatabaseReadWriteTransaction) in
             var keys = [String]()
 
             transaction.iterateKeysAndObjects(inCollection: Upload.collection) { (key, upload: Upload, stop) in
@@ -384,6 +376,13 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
             }
 
             transaction.removeObjects(forKeys: keys, inCollection: Upload.collection)
+        }
+
+        if async {
+            Db.writeConn?.asyncReadWrite(block)
+        }
+        else {
+            Db.writeConn?.readWrite(block)
         }
     }
 }
