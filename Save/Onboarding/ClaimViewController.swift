@@ -21,6 +21,7 @@ class ClaimViewController: UIViewController {
     @IBOutlet weak var subtitleLb: UILabel? {
         didSet {
             subtitleLb?.font = .montserrat(forTextStyle: .headline)
+            subtitleLb?.adjustsFontSizeToFitWidth = true
             subtitleLb?.text = NSLocalizedString("Secure Mobile Media Preservation", comment: "")
         }
     }
@@ -28,6 +29,7 @@ class ClaimViewController: UIViewController {
     @IBOutlet weak var nextBt: UILabel? {
         didSet {
             nextBt?.font = .montserrat(forTextStyle: .headline)
+            nextBt?.adjustsFontSizeToFitWidth = true
             nextBt?.text = NSLocalizedString("Get Started", comment: "")
         }
     }
