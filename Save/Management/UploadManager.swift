@@ -462,13 +462,10 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             }
 
             Db.writeConn?.readWrite { transaction in
-                if asset.isUploaded {
-                    transaction.removeObject(forKey: id, inCollection: Upload.collection)
+                transaction.replace(upload, forKey: id, inCollection: Upload.collection)
 
-                    transaction.replace(collection, forKey: collection!.id, inCollection: Collection.collection)
-                }
-                else {
-                    transaction.replace(upload, forKey: id, inCollection: Upload.collection)
+                if let collection = collection {
+                    transaction.replace(collection, forKey: collection.id, inCollection: Collection.collection)
                 }
 
                 if let space = space {
@@ -559,8 +556,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 return self.endBackgroundTask(.noData)
             }
 
-            // Check if there's currently an item uploading which is not paused.
-            if !(self.current?.paused ?? true) {
+            // Check if there's currently an item uploading which is not paused and not already uploaded.
+            if !(self.current?.paused ?? true) && self.current?.state != .downloaded {
                 self.debug("#uploadNext already one uploading")
 
                 return self.endBackgroundTask(.noData)
@@ -647,6 +644,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 // Look at next, if it's paused or delayed.
                 guard let upload = object as? Upload,
                     !upload.paused
+                    && upload.state != .downloaded
                     && upload.nextTry.compare(Date()) == .orderedAscending else {
                     return
                 }

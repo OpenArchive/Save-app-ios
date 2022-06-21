@@ -80,6 +80,19 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
+        // Finally delete the done uploads.
+        Db.writeConn?.asyncReadWrite { transaction in
+            var keys = [String]()
+
+            transaction.iterateKeysAndObjects(inCollection: Upload.collection) { (key, upload: Upload, stop) in
+                if upload.state == .downloaded {
+                    keys.append(key)
+                }
+            }
+
+            transaction.removeObjects(forKeys: keys, inCollection: Upload.collection)
+        }
+
         delegate?.done()
 
         UIApplication.shared.isIdleTimerDisabled = false
@@ -323,28 +336,22 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
     // MARK: Private Methods
 
     private func updateTitle() {
-        let titleView = navigationItem.titleView as? MultilineTitle ?? MultilineTitle()
-        let count = self.count
-        var uploading = false
+        readConn?.asyncRead { [weak self] transaction in
+            let left = UploadsView.countUploading(transaction)
 
-        for row in 0 ... count {
-            if let cell = tableView.cellForRow(at: IndexPath(row: row, section: 1)) as? UploadCell,
-                let state = cell.upload?.state,
-                state == .pending || state == .downloading {
+            DispatchQueue.main.async {
+                let titleView = self?.navigationItem.titleView as? MultilineTitle ?? MultilineTitle()
 
-                uploading = true
-                break
+                titleView.title.text = self?.count == 0
+                    ? NSLocalizedString("Done", comment: "")
+                    : (left > 0
+                       ? NSLocalizedString("Uploading…", comment: "")
+                       : NSLocalizedString("Waiting…", comment: ""))
+                titleView.subtitle.text = String.localizedStringWithFormat(NSLocalizedString("%u left", comment: "#bc-ignore!"), left)
+
+                self?.navigationItem.titleView = titleView
             }
         }
-
-        titleView.title.text = count == 0
-            ? NSLocalizedString("Done", comment: "")
-            : (uploading
-               ? NSLocalizedString("Uploading…", comment: "")
-               : NSLocalizedString("Waiting…", comment: ""))
-        titleView.subtitle.text = String.localizedStringWithFormat(NSLocalizedString("%u left", comment: "#bc-ignore!"), count)
-
-        navigationItem.titleView = titleView
     }
 
     private func setButton() {
@@ -360,7 +367,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
     private func getUpload(_ indexPath: IndexPath) -> Upload? {
         var upload: Upload?
 
-        readConn?.read() { transaction in
+        readConn?.read { transaction in
             upload = (transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction)?
                 .object(atRow: UInt(indexPath.row), inSection: 0, with: self.mappings) as? Upload
         }

@@ -591,17 +591,16 @@ PKDownloadButtonDelegate {
      Shows/hides the upload manager button. Sets the number of currently queued items.
      */
     private func updateManageBt() {
-        uploadsReadConn?.asyncRead { transaction in
-            let count = (transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction)?
-                .numberOfItems(inGroup: Upload.collection) ?? 0
+        uploadsReadConn?.asyncRead { [weak self] transaction in
+            let count = UploadsView.countUploading(transaction)
 
             DispatchQueue.main.async {
                 if count > 0 {
-                    self.manageBt.stopDownloadButton.stopButton.setTitle(Formatters.format(count), for: .normal)
-                    self.manageBt.show2(animated: true)
+                    self?.manageBt.stopDownloadButton.stopButton.setTitle(Formatters.format(count), for: .normal)
+                    self?.manageBt.show2(animated: true)
                 }
                 else {
-                    self.manageBt.hide(animated: true)
+                    self?.manageBt.hide(animated: true)
                 }
             }
         }

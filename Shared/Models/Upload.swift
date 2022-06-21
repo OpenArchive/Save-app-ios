@@ -103,6 +103,10 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
             return .startDownload
         }
 
+        if progress >= 1 {
+            return .downloaded
+        }
+
         if progress > 0 {
             return .downloading
         }

@@ -60,4 +60,26 @@ class UploadsView: YapDatabaseAutoView {
 
         super.init(grouping: grouping, sorting: sorting, versionTag: nil, options: nil)
     }
+
+    /**
+     - returns: the number of pending and currently uploading items.
+     */
+    class func countUploading(_ readTx: YapDatabaseReadTransaction) -> Int {
+        guard let viewTx = readTx.ext(Self.name) as? YapDatabaseViewTransaction
+        else {
+            return 0
+        }
+
+        var count = 0
+
+        viewTx.iterateKeysAndObjects(inGroup: Upload.collection) { _, _, object, _, stop in
+            if let upload = object as? Upload,
+               upload.state == .pending || upload.state == .downloading
+            {
+                count += 1
+            }
+        }
+
+        return count
+    }
 }

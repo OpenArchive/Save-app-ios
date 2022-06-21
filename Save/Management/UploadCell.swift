@@ -54,6 +54,9 @@ class UploadCell: BaseCell, PKDownloadButtonDelegate {
     }
     
     @IBOutlet weak var errorBt: UIButton!
+
+    @IBOutlet weak var done: UIImageView!
+
     @IBOutlet weak var thumbnail: UIImageView!
 
     @IBOutlet weak var nameLb: UILabel! {
@@ -68,17 +71,18 @@ class UploadCell: BaseCell, PKDownloadButtonDelegate {
         didSet {
             let progressValue = upload?.progress ?? 0
 
-            progress.isHidden = upload?.error != nil
+            progress.isHidden = upload?.error != nil || upload?.state == .downloaded
             progress.state = upload?.state ?? .pending
             progress.stopDownloadButton.progress = CGFloat(progressValue)
 
             errorBt.isHidden = upload?.error == nil
+            done.isHidden = upload?.state != .downloaded
 
             thumbnail.image = upload?.thumbnail
 
             nameLb.text = upload?.filename
 
-            if !(upload?.isReady ?? false) {
+            if !(upload?.isReady ?? false) && upload?.state != .downloaded {
                 sizeLb.text = NSLocalizedString("Encoding file…", comment: "")
             }
             else {
