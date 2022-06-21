@@ -17,6 +17,7 @@ class TitleCell: BaseCell {
     @IBOutlet weak var title: UILabel! {
         didSet {
             title.font = .montserrat(forTextStyle: .title1)
+            title.adjustsFontSizeToFitWidth = true
         }
     }
 

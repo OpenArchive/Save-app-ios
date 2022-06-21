@@ -17,6 +17,7 @@ class BigMenuItemCell: BaseCell {
     @IBOutlet weak var label: UILabel! {
         didSet {
             label.font = .montserrat(forTextStyle: .headline)
+            label.adjustsFontSizeToFitWidth = true
         }
     }
 
