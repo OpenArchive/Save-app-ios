@@ -71,6 +71,8 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        removeDone()
+
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
         UIApplication.shared.isIdleTimerDisabled = true
@@ -80,18 +82,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
     override func viewDidDisappear(_ animated: Bool) {
         super.viewDidDisappear(animated)
 
-        // Finally delete the done uploads.
-        Db.writeConn?.asyncReadWrite { transaction in
-            var keys = [String]()
-
-            transaction.iterateKeysAndObjects(inCollection: Upload.collection) { (key, upload: Upload, stop) in
-                if upload.state == .downloaded {
-                    keys.append(key)
-                }
-            }
-
-            transaction.removeObjects(forKeys: keys, inCollection: Upload.collection)
-        }
+        removeDone()
 
         delegate?.done()
 
@@ -377,5 +368,22 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
 
     private func transform(_ indexPath: IndexPath) -> IndexPath {
         return IndexPath(row: indexPath.row, section: indexPath.section + 1)
+    }
+
+    /*
+     Will delete the done uploads.
+     */
+    private func removeDone() {
+        Db.writeConn?.asyncReadWrite { transaction in
+            var keys = [String]()
+
+            transaction.iterateKeysAndObjects(inCollection: Upload.collection) { (key, upload: Upload, stop) in
+                if upload.state == .downloaded {
+                    keys.append(key)
+                }
+            }
+
+            transaction.removeObjects(forKeys: keys, inCollection: Upload.collection)
+        }
     }
 }
