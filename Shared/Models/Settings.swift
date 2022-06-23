@@ -8,10 +8,6 @@
 
 import UIKit
 
-#if canImport(IPtProxyUI)
-import IPtProxyUI
-#endif
-
 class Settings {
 
     private static let kWifiOnly = "wifi_only"
@@ -48,8 +44,7 @@ class Settings {
         }
     }
 
-#if canImport(Tor)
-    class var useTor: Bool {
+    class var useOrbot: Bool {
         get {
             defaults?.bool(forKey: kUseTor) ?? false
         }
@@ -58,17 +53,14 @@ class Settings {
         }
     }
 
-#if canImport(IPtProxyUI)
-    class var transport: Transport {
+    class var orbotApiToken: String {
         get {
-            Transport(rawValue: defaults?.integer(forKey: kTransport) ?? 0) ?? .none
+            defaults?.string(forKey: "orbotApiToken") ?? ""
         }
         set {
-            defaults?.set(newValue.rawValue, forKey: kTransport)
+            defaults?.set(newValue, forKey: "orbotApiToken")
         }
     }
-#endif
-#endif
 
     class var customBridges: [String]? {
         get {

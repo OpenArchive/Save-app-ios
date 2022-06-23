@@ -34,6 +34,9 @@
 /* MainViewController */
 "Access Restricted" = "Erişim engeli";
 
+/* No comment provided by engineer. */
+"Access Token" = "Access Token";
+
 /* InternetArchiveViewController */
 "Acquire Keys" = "Anahtarları al";
 
@@ -72,6 +75,9 @@
 
 /* MenuViewController */
 "App Settings" = "Uygulama ayarları";
+
+/* No comment provided by engineer. */
+"App Store" = "App Store";
 
 /* EditProjectViewController */
 "Archive Project" = "Projeyi arşive kaldır";
@@ -197,6 +203,9 @@
 "Import" = "İçe aktar";
 
 /* No comment provided by engineer. */
+"In order to use Orbot, you will first need to install it!" = "In order to use Orbot, you will first need to install it!";
+
+/* No comment provided by engineer. */
 "Include your credentials while %@ adds extra metadata to help with chain of custody and verification workflows." = "Kimlik doğrulama bilgilerinizi ekleyerek %@ tarafından ek üst veriler kaydedilmesini sağlayabilirsiniz. Bu veriler daha sonra gözetim zincirleri ve doğrulama iş akışlarına yardımcı olur.";
 
 /* Error+friendlyMessage */
@@ -253,6 +262,15 @@
 /* EditProfileViewController, PrivateServerViewController */
 "Optional" = "İsteğe bağlı";
 
+/* No comment provided by engineer. */
+"Orbot could not be opened!" = "Orbot could not be opened!";
+
+/* No comment provided by engineer. */
+"Orbot installed" = "Orbot installed";
+
+/* No comment provided by engineer. */
+"Orbot not installed" = "Orbot not installed";
+
 /* SlideshowViewController */
 "Organize your media into projects." = "Ortamlarınızı projeler içinde tutun.";
 
@@ -261,6 +279,9 @@
 
 /* PrivateServerViewController */
 "Password" = "Parola";
+
+/* No comment provided by engineer. */
+"Paste API token here" = "Paste API token here";
 
 /* DuplicateProjectAlert */
 "Please choose another name/project or use the existing one instead." = "Lütfen başka bir ad ya da proje seçin ya da var olan bir tanesini kullanın.";
@@ -306,6 +327,9 @@
 
 /* BaseServerViewController */
 "Remove Space" = "Alanı sil";
+
+/* No comment provided by engineer. */
+"Request API Access" = "Request API Access";
 
 /* EditProjectViewController */
 "Require them to share like you have" = "Onlardan da senin gibi paylaşmasını iste";
@@ -385,6 +409,9 @@
 /* BatchInfoAlert */
 "To edit multiple items, tap and hold each." = "Birden çok ögeyi düzenlemek için her birine dokunup tutun.";
 
+/* No comment provided by engineer. */
+"Transfer via Orbot only" = "Transfer via Orbot only";
+
 /* EditProjectViewController */
 "Unarchive Project" = "Projeyi arşivden çıkar";
 
@@ -415,9 +442,6 @@
 /* ManagementViewController */
 "Uploading…" = "Yükleniyor…";
 
-/* DataUsageViewController */
-"Use Tor" = "Tor Kullan";
-
 /* PrivateServerViewController */
 "Use Upload Chunking (Nextcloud only)" = "Yükleme paketleri kullanılsın (Nextcloud için)";
 
@@ -441,6 +465,9 @@
 
 /* InternetArchiveViewController */
 "You can let %1$@ try to acquire these keys automatically, or you can tap this row which will send you to %2$@ in Safari from where you can copy-and-paste these keys manually." = "Bu anahtarları %1$@ ile otomatik olarak almayı deneyebilir ya da bu satıra dokunarak açılacak Safari ile %2$@ üzerine bağlandıktan sonra anahtarları el ile kopyalayıp yapıştırabilirsiniz.";
+
+/* No comment provided by engineer. */
+"You neeed to request API access with Orbot, in order for %@ to ensure that Orbot is running." = "You neeed to request API access with Orbot, in order for %@ to ensure that Orbot is running.";
 
 /* IaInfoAlert */
 "You will need to log in to or create an Internet Archive account in order to send and preserve %@ media at the Internet Archive." = "%@ ortamlarını Internet Archive üzerine göndermek ve kaydetmek için bir Internet Archive hesabı ile oturum açmalı ya da yeni bir hesap edinmelisiniz. ";

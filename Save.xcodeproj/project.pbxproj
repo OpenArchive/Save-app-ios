@@ -126,6 +126,7 @@
 		A0631B5C22034F0E00B3E90D /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0631B5A22034F0700B3E90D /* Collection.swift */; };
 		A0656AB821F9BC8500070C4B /* ConnectSpaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0656AB721F9BC8500070C4B /* ConnectSpaceViewController.swift */; };
 		A0656ABA21F9BFB800070C4B /* MainNavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0656AB921F9BFB800070C4B /* MainNavigationController.swift */; };
+		A065AE732864885C00FCFB4A /* OrbotManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A065AE722864885C00FCFB4A /* OrbotManager.swift */; };
 		A06D935C233B854D006B2EA3 /* ProjectTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06D935B233B854D006B2EA3 /* ProjectTab.swift */; };
 		A06D935D233B854D006B2EA3 /* ProjectTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06D935B233B854D006B2EA3 /* ProjectTab.swift */; };
 		A06D935E233B854D006B2EA3 /* ProjectTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06D935B233B854D006B2EA3 /* ProjectTab.swift */; };
@@ -346,7 +347,6 @@
 		A0C797E7228063280009751A /* AbcFilteredByCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C797E5228061AC0009751A /* AbcFilteredByCollectionView.swift */; };
 		A0C797E922807DF00009751A /* SelectedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C797E822807DF00009751A /* SelectedCollection.swift */; };
 		A0C797EA22807DF00009751A /* SelectedCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C797E822807DF00009751A /* SelectedCollection.swift */; };
-		A0C7D8EE27B6C13300E377FD /* TorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C7D8ED27B6C13300E377FD /* TorManager.swift */; };
 		A0C7DC03224A40E5004B78FF /* ActiveProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C7DC02224A40E5004B78FF /* ActiveProjectsView.swift */; };
 		A0C7DC04224A40E5004B78FF /* ActiveProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C7DC02224A40E5004B78FF /* ActiveProjectsView.swift */; };
 		A0CA19C52821849D0082BD7C /* SnapshotHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CA1948282184700082BD7C /* SnapshotHelper.swift */; };
@@ -392,8 +392,6 @@
 		A0E9069422CB7D16008CD81B /* SelectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E9069222CB7D16008CD81B /* SelectedView.swift */; };
 		A0F1364F227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */; };
 		A0F13650227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */; };
-		A0F3368827BC14B600826667 /* TorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C7D8ED27B6C13300E377FD /* TorManager.swift */; };
-		A0F3368927BC14CE00826667 /* TorManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C7D8ED27B6C13300E377FD /* TorManager.swift */; };
 		A0F7FDDC22491C6C006610F0 /* TintedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDB22491C6C006610F0 /* TintedButton.swift */; };
 		A0F7FDDD22491C6C006610F0 /* TintedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDB22491C6C006610F0 /* TintedButton.swift */; };
 		A0F7FDDF224936C8006610F0 /* TintedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDE224936C8006610F0 /* TintedImageView.swift */; };
@@ -575,6 +573,7 @@
 		A0631B5A22034F0700B3E90D /* Collection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Collection.swift; sourceTree = "<group>"; };
 		A0656AB721F9BC8500070C4B /* ConnectSpaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConnectSpaceViewController.swift; sourceTree = "<group>"; };
 		A0656AB921F9BFB800070C4B /* MainNavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainNavigationController.swift; sourceTree = "<group>"; };
+		A065AE722864885C00FCFB4A /* OrbotManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrbotManager.swift; sourceTree = "<group>"; };
 		A06D935B233B854D006B2EA3 /* ProjectTab.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectTab.swift; sourceTree = "<group>"; };
 		A070335A2119E7DF00BF1F33 /* Request+debug.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Request+debug.swift"; sourceTree = "<group>"; };
 		A07128FB2111CC90007A432A /* ShareExtension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = ShareExtension.appex; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -646,7 +645,6 @@
 		A0C797E822807DF00009751A /* SelectedCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedCollection.swift; sourceTree = "<group>"; };
 		A0C7D8DF27B6B44A00E377FD /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A0C7D8E027B6B44A00E377FD /* it */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = it; path = it.lproj/Localizable.strings; sourceTree = "<group>"; };
-		A0C7D8ED27B6C13300E377FD /* TorManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TorManager.swift; sourceTree = "<group>"; };
 		A0C7DC02224A40E5004B78FF /* ActiveProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActiveProjectsView.swift; sourceTree = "<group>"; };
 		A0CA1946282184700082BD7C /* Appfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Appfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
 		A0CA1947282184700082BD7C /* Pluginfile */ = {isa = PBXFileReference; lastKnownFileType = text; path = Pluginfile; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
@@ -901,7 +899,6 @@
 				A0D58DCC20E514F8005A2F34 /* Models */,
 				A0E0307821EF6A0700A5E97F /* Views */,
 				A05471A02296B77D009FEA93 /* Montserrat */,
-				A0C7D8ED27B6C13300E377FD /* TorManager.swift */,
 				A0E739DE20E4C85E00DB31E1 /* Assets.xcassets */,
 				A08750A72112099700BFAFE4 /* Constants.h */,
 				A08750A82112099700BFAFE4 /* Constants.m */,
@@ -1121,6 +1118,7 @@
 				A08750AF21120EBF00BFAFE4 /* Save-Bridging-Header.h */,
 				A0E739D720E4C85D00DB31E1 /* AppDelegate.swift */,
 				A09B5418232673E2005266C2 /* AppDelegateBase.swift */,
+				A065AE722864885C00FCFB4A /* OrbotManager.swift */,
 				A052A490230D546F00E72594 /* InfoAlert.swift */,
 				A0656AB921F9BFB800070C4B /* MainNavigationController.swift */,
 				A0E739DB20E4C85D00DB31E1 /* Main.storyboard */,
@@ -1606,7 +1604,6 @@
 				A05471DC2296C8FD009FEA93 /* UITableView+separatorView.swift in Sources */,
 				A092C0F1223A8D4B003EB0AA /* DoneDelegate.swift in Sources */,
 				A01A7B702200A05C00E18DE0 /* ProjectsTabBar.swift in Sources */,
-				A0F3368827BC14B600826667 /* TorManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1707,7 +1704,6 @@
 				A09B53C323266F02005266C2 /* UploadsView.swift in Sources */,
 				A09B53C423266F02005266C2 /* PreviewViewController.swift in Sources */,
 				A09B53C523266F02005266C2 /* StringUtils.swift in Sources */,
-				A0F3368927BC14CE00826667 /* TorManager.swift in Sources */,
 				A006AF32281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */,
 				A09B53C623266F02005266C2 /* BaseViewController.swift in Sources */,
 				A09B53C723266F02005266C2 /* SpacesListCell.swift in Sources */,
@@ -1810,12 +1806,12 @@
 				A0E321F6228EBE6A00F2E9BD /* FlagInfoAlert.swift in Sources */,
 				A05DF97C282C0E7C003FADA2 /* AEXMLElement.swift in Sources */,
 				A0212FCE22D374CA009079DC /* UICollectionView+selection.swift in Sources */,
+				A065AE732864885C00FCFB4A /* OrbotManager.swift in Sources */,
 				A05275142211A91300BDB14B /* CollectionsView.swift in Sources */,
 				A07129102111E4F1007A432A /* Db.swift in Sources */,
 				A059E647223AE9FB00ABC621 /* UploadManager.swift in Sources */,
 				A0E1A68121EE7BE900E4F6B7 /* MenuItemCell.swift in Sources */,
 				A00A8D45220C63B20083F0CB /* ProjectsView.swift in Sources */,
-				A0C7D8EE27B6C13300E377FD /* TorManager.swift in Sources */,
 				A010D3A022D4A3F200FAB433 /* BatchInfoAlert.swift in Sources */,
 				A098980622369F8100022851 /* ManagementViewController.swift in Sources */,
 				A045D1FB224D02AA008FF8C1 /* TitleCell.swift in Sources */,

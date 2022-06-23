@@ -1,3 +1,5 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
 # Uncomment the next line to define a global platform for your project
 platform :ios, '11.0'
 
@@ -18,8 +20,6 @@ def shared_pods
     pod 'UIImageViewAlignedSwift', '~> 0.8' #:git => 'https://github.com/mirego/UIImageViewAlignedSwift.git'
     pod 'FontBlaster', '~> 5.2'
     pod 'CrossroadRegex', :git => 'https://github.com/crossroadlabs/Regex.git', tag: '1.2.0'
-#    pod 'Tor', '~> 406.9'
-#    pod 'IPtProxyUI', '~> 1.7'
     pod 'CleanInsightsSDK', '~> 2.6'
 end
 
@@ -29,6 +29,7 @@ def app_only
     pod 'ARChromeActivity', '~> 1.0'
     pod 'SDCAlertView', '~> 12.0'
     pod 'TLPhotoPicker', '~> 2.1'
+    pod 'OrbotKit', '~> 0.2'
 end
 
 target 'Save' do

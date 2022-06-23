@@ -41,6 +41,7 @@ PODS:
   - ImageRow (4.1.0):
     - Eureka (~> 5.3.5)
   - MBProgressHUD (1.2.0)
+  - OrbotKit (0.2.0)
   - ReachabilitySwift (5.0.0)
   - SDCAlertView (12.0.2)
   - SwiftyDropbox (8.3.0):
@@ -168,6 +169,7 @@ DEPENDENCIES:
   - FormatterKit (~> 1.9)
   - ImageRow (~> 4.0)
   - MBProgressHUD (~> 1.2)
+  - OrbotKit (~> 0.2)
   - ReachabilitySwift (~> 5.0)
   - SDCAlertView (~> 12.0)
   - SwiftyDropbox (~> 8.3)
@@ -178,7 +180,7 @@ DEPENDENCIES:
   - YapDatabase (from `https://github.com/difftim/YapDatabase.git`)
 
 SPEC REPOS:
-  trunk:
+  https://github.com/CocoaPods/Specs.git:
     - Alamofire
     - AlignedCollectionViewFlowLayout
     - ARChromeActivity
@@ -189,6 +191,7 @@ SPEC REPOS:
     - FormatterKit
     - ImageRow
     - MBProgressHUD
+    - OrbotKit
     - ReachabilitySwift
     - SDCAlertView
     - SwiftyDropbox
@@ -231,6 +234,7 @@ SPEC CHECKSUMS:
   FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
   ImageRow: 880c0f052c5a89c80521b485c86ccf723a124e99
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
+  OrbotKit: 8d6d5ef092a0dd7feb6038a455311ff37766e14a
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDCAlertView: 1c0410de80548da3fed142ded0b97644d9848577
   SwiftyDropbox: 1f2dc98c211cb80b70ce0cd58064abe8528d9c78
@@ -240,6 +244,6 @@ SPEC CHECKSUMS:
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
   YapDatabase: 260b1b0b3e6ae6775383edc923e19813586615eb
 
-PODFILE CHECKSUM: 9a55a1e9579c11b21da92d094f3c52f73e3cebc9
+PODFILE CHECKSUM: 4229df52beb1e994e3953526573c99ef35863dc9
 
 COCOAPODS: 1.11.3

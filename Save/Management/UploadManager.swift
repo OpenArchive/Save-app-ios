@@ -166,14 +166,6 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         nc.addObserver(self, selector: #selector(dataUsageChanged),
                        name: .uploadManagerDataUsageChange, object: nil)
 
-#if canImport(Tor)
-        nc.addObserver(self, selector: #selector(torUseChanged),
-                       name: .torUseChanged, object: nil)
-
-        nc.addObserver(self, selector: #selector(torUseChanged),
-                       name: .torStarted, object: nil)
-#endif
-
         try? reachability?.startNotifier()
 
         progressTimer = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
@@ -494,22 +486,6 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         reachabilityChanged(notification: Notification(name: .reachabilityChanged))
     }
 
-#if canImport(Tor)
-    /**
-     User changed Tor flag.
-
-     - parameter notification: A `torUseChanged` notification.
-     */
-    @objc func torUseChanged(notification: Notification) {
-        let useTor = notification.object as? Bool ?? Settings.useTor
-
-        debug("#torUseChanged useTor=\(useTor)")
-
-        backgroundSession = nil
-        foregroundSession = nil
-    }
-#endif
-
     /**
      Network status changed.
      */
@@ -552,13 +528,11 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 return self.endBackgroundTask(.noData)
             }
 
-#if canImport(Tor)
-            if Settings.useTor && !TorManager.shared.started {
-                self.debug("#uploadNext should use Tor, but Tor not started")
+            if Settings.useOrbot && OrbotManager.shared.status == .stopped {
+                self.debug("#uploadNext should use Orbot, but Orbot not started")
 
                 return self.endBackgroundTask(.noData)
             }
-#endif
 
             guard let upload = self.getNext(),
                   let asset = upload.asset

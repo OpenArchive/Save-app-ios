@@ -34,6 +34,9 @@
 /* MainViewController */
 "Access Restricted" = "دسترسی محدود شد";
 
+/* No comment provided by engineer. */
+"Access Token" = "Access Token";
+
 /* InternetArchiveViewController */
 "Acquire Keys" = "به دست آوردن کلیدها";
 
@@ -72,6 +75,9 @@
 
 /* MenuViewController */
 "App Settings" = "تنظیمات برنامه";
+
+/* No comment provided by engineer. */
+"App Store" = "App Store";
 
 /* EditProjectViewController */
 "Archive Project" = "بایگانی کردن پروژه";
@@ -197,6 +203,9 @@
 "Import" = "وارد کردن";
 
 /* No comment provided by engineer. */
+"In order to use Orbot, you will first need to install it!" = "In order to use Orbot, you will first need to install it!";
+
+/* No comment provided by engineer. */
 "Include your credentials while %@ adds extra metadata to help with chain of custody and verification workflows." = "اعتبارنامه‌های خود را وارد کنید و %@ با افزودن فراداده به زنجیر تایید و حفاظت کمک می‌کند.";
 
 /* Error+friendlyMessage */
@@ -253,6 +262,15 @@
 /* EditProfileViewController, PrivateServerViewController */
 "Optional" = "اختیاری";
 
+/* No comment provided by engineer. */
+"Orbot could not be opened!" = "Orbot could not be opened!";
+
+/* No comment provided by engineer. */
+"Orbot installed" = "Orbot installed";
+
+/* No comment provided by engineer. */
+"Orbot not installed" = "Orbot not installed";
+
 /* SlideshowViewController */
 "Organize your media into projects." = "رسانه‌های خود را در قالب پروژه سازماندهی کنید.";
 
@@ -261,6 +279,9 @@
 
 /* PrivateServerViewController */
 "Password" = "گذرواژه";
+
+/* No comment provided by engineer. */
+"Paste API token here" = "Paste API token here";
 
 /* DuplicateProjectAlert */
 "Please choose another name/project or use the existing one instead." = "لطفا از نام/پروژه دیگری استفاده کرده و یا از پروژه موجود استفاده کنید.";
@@ -306,6 +327,9 @@
 
 /* BaseServerViewController */
 "Remove Space" = "حذف فضا";
+
+/* No comment provided by engineer. */
+"Request API Access" = "Request API Access";
 
 /* EditProjectViewController */
 "Require them to share like you have" = "نیازمند اجازه‌ی اشتراک مانند شما";
@@ -385,6 +409,9 @@
 /* BatchInfoAlert */
 "To edit multiple items, tap and hold each." = "برای ویرایش چند انتخاب، روی هرکدام ضربه زده و نگه دارید.";
 
+/* No comment provided by engineer. */
+"Transfer via Orbot only" = "Transfer via Orbot only";
+
 /* EditProjectViewController */
 "Unarchive Project" = "خروج پروژه از بایگانی";
 
@@ -415,9 +442,6 @@
 /* ManagementViewController */
 "Uploading…" = "بارگذاری.......";
 
-/* DataUsageViewController */
-"Use Tor" = "از Tor استفاده کنید. ";
-
 /* PrivateServerViewController */
 "Use Upload Chunking (Nextcloud only)" = "استفاده از بارگذاری چند تکه (فقط برای Nextcloud)";
 
@@ -441,6 +465,9 @@
 
 /* InternetArchiveViewController */
 "You can let %1$@ try to acquire these keys automatically, or you can tap this row which will send you to %2$@ in Safari from where you can copy-and-paste these keys manually." = "شما می‌توانید به %1$@ اجازه دهید تا این کلیدها را به صورت خودکار به دست آورد و یا می‌توانید روی این ردیف بزنید تا به %2$@ در Safari منتقل شوید و بتوانید این کلیدها را به صورت دستی کپی و پیست کنید.";
+
+/* No comment provided by engineer. */
+"You neeed to request API access with Orbot, in order for %@ to ensure that Orbot is running." = "You neeed to request API access with Orbot, in order for %@ to ensure that Orbot is running.";
 
 /* IaInfoAlert */
 "You will need to log in to or create an Internet Archive account in order to send and preserve %@ media at the Internet Archive." = "برای ارسال و حفظ رسانه‌های %@ بر روی بایگانی اینترنت باید وارد شده و یا یک حساب بایگانی اینترنت بسازید.";

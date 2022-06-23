@@ -28,17 +28,13 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 
         Db.setup()
 
-#if canImport(Tor)
-        if Settings.useTor {
-            TorManager.shared.start()
-        }
-#endif
-
         uploadManager = UploadManager.shared
 
         setUpDropbox()
 
         setUpUi()
+
+        setUpOrbot()
 
         return true
     }
@@ -86,7 +82,17 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     }
 
     func application(_ app: UIApplication, open url: URL,
-                     options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+                     options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool
+    {
+        if let urlc = URLComponents(url: url, resolvingAgainstBaseURL: true),
+            urlc.path == "token-callback"
+        {
+            if let token = urlc.queryItems?.first(where: { $0.name == "token" })?.value {
+                OrbotManager.shared.received(token: token)
+            }
+
+            return true
+        }
 
         DropboxClientsManager.handleRedirectURL(url) { [weak self] authResult in
             switch authResult {
@@ -222,6 +228,12 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
             a.configureWithOpaqueBackground()
 
             UINavigationBar.appearance().scrollEdgeAppearance = a
+        }
+    }
+
+    func setUpOrbot() {
+        if Settings.useOrbot {
+            OrbotManager.shared.start()
         }
     }
 }

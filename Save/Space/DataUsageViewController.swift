@@ -9,10 +9,6 @@
 import UIKit
 import Eureka
 
-#if canImport(IPtProxyUI)
-import IPtProxyUI
-#endif
-
 class DataUsageViewController: FormViewController {
 
     private static let compressionOptions = [
@@ -48,73 +44,44 @@ class DataUsageViewController: FormViewController {
             Settings.highCompression = row.value == DataUsageViewController.compressionOptions[1]
         }
 
-#if canImport(Tor)
-        form
         +++ SwitchRow() {
-            $0.title = NSLocalizedString("Use Tor", comment: "")
+            $0.title = NSLocalizedString("Transfer via Orbot only", comment: "")
             $0.cell.textLabel?.numberOfLines = 0
             $0.cell.switchControl.onTintColor = .accent
-            $0.value = Settings.useTor
+            $0.value = Settings.useOrbot
         }
         .onChange { row in
             let newValue = row.value ?? false
 
-            if newValue != Settings.useTor {
-                Settings.useTor = newValue
+            if newValue != Settings.useOrbot {
+                Settings.useOrbot = newValue
 
                 if newValue {
-                    TorManager.shared.start()
+                    if !OrbotManager.shared.installed {
+                        row.value = false
+                        row.updateCell()
+
+                        OrbotManager.shared.alertOrbotNotInstalled()
+                    }
+                    else if Settings.orbotApiToken.isEmpty {
+                        row.value = false
+                        row.updateCell()
+
+                        OrbotManager.shared.alertToken {
+                            row.value = true
+                            row.updateCell()
+
+                            OrbotManager.shared.start()
+                        }
+                    }
+                    else {
+                        OrbotManager.shared.start()
+                    }
                 }
                 else {
-                    TorManager.shared.stop()
+                    OrbotManager.shared.stop()
                 }
-
-                NotificationCenter.default.post(name: .torUseChanged, object: newValue)
             }
         }
-
-#if canImport(IPtProxyUI)
-        form
-        +++ ButtonRow() {
-            $0.title = NSLocalizedString("Bridge Configuration", bundle: Bundle.iPtProxyUI, comment: "#bc-ignore!")
-            $0.cell.textLabel?.numberOfLines = 0
-        }
-        .onCellSelection { [weak self] _, _ in
-            let vc = BridgesConfViewController()
-            vc.delegate = self
-
-            self?.present(UINavigationController(rootViewController: vc), animated: true)
-        }
-#endif
-#endif
     }
 }
-
-// MARK: BridgesConfDelegate
-
-#if canImport(IPtProxyUI)
-extension DataUsageViewController: BridgesConfDelegate {
-
-    open var transport: Transport {
-        get {
-            return Settings.transport
-        }
-        set {
-            Settings.transport = newValue
-        }
-    }
-
-    open var customBridges: [String]? {
-        get {
-            Settings.customBridges
-        }
-        set {
-            Settings.customBridges = newValue
-        }
-    }
-
-    open func save() {
-        TorManager.shared.reconfigureBridges()
-    }
-}
-#endif
