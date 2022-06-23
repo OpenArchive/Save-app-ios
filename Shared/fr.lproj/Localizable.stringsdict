@@ -14,6 +14,8 @@
 			<string>u</string>
 			<key>one</key>
 			<string>%u élément</string>
+			<key>many</key>
+			<string>%u éléments</string>
 			<key>other</key>
 			<string>%u éléments</string>
 		</dict>
@@ -30,6 +32,8 @@
 			<string>u</string>
 			<key>one</key>
 			<string>%2$u élément sur %1$u a été téléversé</string>
+			<key>many</key>
+			<string>%2$u éléments sur %1$u ont été téléversés</string>
 			<key>other</key>
 			<string>%2$u éléments sur %1$u ont été téléversés</string>
 		</dict>
@@ -46,6 +50,8 @@
 			<string>u</string>
 			<key>one</key>
 			<string>%u élément a été téléversé</string>
+			<key>many</key>
+			<string>%u éléments ont été téléversés</string>
 			<key>other</key>
 			<string>%u éléments ont été téléversés</string>
 		</dict>
@@ -62,6 +68,8 @@
 			<string>u</string>
 			<key>one</key>
 			<string>%u élément a été sélectionné</string>
+			<key>many</key>
+			<string>%u éléments ont été sélectionnés</string>
 			<key>other</key>
 			<string>%u éléments ont été sélectionnés</string>
 		</dict>
@@ -77,6 +85,8 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
+			<string>Il en reste %u</string>
+			<key>many</key>
 			<string>Il en reste %u</string>
 			<key>other</key>
 			<string>Il en reste %u</string>
@@ -94,6 +104,8 @@
 			<string>u</string>
 			<key>one</key>
 			<string>Vous avez %1$u élément prêt à téléverser vers « %2$@ ».</string>
+			<key>many</key>
+			<string>Vous avez %1$u éléments prêts à téléverser vers « %2$@ ».</string>
 			<key>other</key>
 			<string>Vous avez %1$u éléments prêts à téléverser vers « %2$@ ».</string>
 		</dict>
@@ -110,6 +122,8 @@
 			<string>u</string>
 			<key>one</key>
 			<string>Cet élément ne sera supprimé que de l’appli %2$@.</string>
+			<key>many</key>
+			<string>Ces éléments ne seront supprimés que de l’appli %2$@.</string>
 			<key>other</key>
 			<string>Ces éléments ne seront supprimés que de l’appli %2$@.</string>
 		</dict>
@@ -126,6 +140,8 @@
 			<string>u</string>
 			<key>one</key>
 			<string>Il restera sur le serveur et dans votre appli Photos.</string>
+			<key>many</key>
+			<string>Ils resteront sur le serveur et dans votre appli Photos.</string>
 			<key>other</key>
 			<string>Ils resteront sur le serveur et dans votre appli Photos.</string>
 		</dict>
