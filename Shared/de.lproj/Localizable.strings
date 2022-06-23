@@ -73,6 +73,9 @@
 /* ConsentViewController */
 "Allow health checks?" = "Erlaube Gesundheitschecks?";
 
+/* No comment provided by engineer. */
+"Allow without Orbot" = "Ohne Orbot erlauben";
+
 /* MenuViewController */
 "App Settings" = "App-Einstellungen";
 
@@ -271,6 +274,9 @@
 /* No comment provided by engineer. */
 "Orbot not installed" = "Orbot nicht installiert";
 
+/* No comment provided by engineer. */
+"Orbot not running" = "Orbot läuft nicht";
+
 /* SlideshowViewController */
 "Organize your media into projects." = "Ordne Deine Medien nach Projekten.";
 
@@ -388,6 +394,9 @@
 /* MainViewController */
 "Sorry, you are not allowed to view the camera roll." = "Entschuldigung, Du hast leider keine Erlaubnis die Aufnahmen zu betrachten.";
 
+/* No comment provided by engineer. */
+"Start Orbot" = "Starte Orbot";
+
 /* SlideshowViewController */
 "Stay organized." = "Alles beeinander.";
 
@@ -441,6 +450,9 @@
 
 /* ManagementViewController */
 "Uploading…" = "Hochladen…";
+
+/* No comment provided by engineer. */
+"Uploads are blocked until you start Orbot or allow uploads without Orbot again." = "Hochladen ist blockiert bis Du Orbot startest oder Hochladen ohne Orbot wieder erlaubst.";
 
 /* PrivateServerViewController */
 "Use Upload Chunking (Nextcloud only)" = "Upload stückeln (nur Nextcloud)";

@@ -234,6 +234,10 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     func setUpOrbot() {
         if Settings.useOrbot {
             OrbotManager.shared.start()
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+                OrbotManager.shared.alertOrbotStopped()
+            }
         }
     }
 }

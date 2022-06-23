@@ -161,6 +161,10 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
     // MARK: Actions
 
     @IBAction func upload() {
+        OrbotManager.shared.alertOrbotStopped() { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
+
         Db.writeConn?.asyncReadWrite { transaction in
             var order = 0
 
@@ -193,8 +197,6 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
                     }
             }
         }
-
-        navigationController?.popViewController(animated: true)
     }
 
     @IBAction func longPressCell(_ sender: UILongPressGestureRecognizer) {

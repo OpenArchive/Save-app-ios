@@ -7,6 +7,7 @@
 //
 
 import OrbotKit
+import YapDatabase
 
 extension Notification.Name {
 
@@ -149,8 +150,50 @@ class OrbotManager: OrbotStatusChangeListener {
                 })])
     }
 
-    open func received(token: String) {
+    func received(token: String) {
         tokenAlert?.textFields?.first?.text = token
+    }
+
+    func alertOrbotStopped(_ completed: (() -> Void)? = nil) {
+        guard let topVc = UIApplication.shared.delegate?.window??.rootViewController?.top else {
+            completed?()
+
+            return
+        }
+
+        var count: UInt = 0
+
+        Db.newLongLivedReadConn()?.read({ transaction in
+            count = (transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction)?
+                .numberOfItems(inGroup: UploadsView.groups[0]) ?? 0
+        })
+
+        if status == .stopped && count > 0 {
+            AlertHelper.present(
+                topVc,
+                message: NSLocalizedString("Uploads are blocked until you start Orbot or allow uploads without Orbot again.", comment: ""),
+                title: NSLocalizedString("Orbot not running", comment: ""),
+                actions: [
+                    AlertHelper.cancelAction(handler: { _ in
+                        completed?()
+                    }),
+                    AlertHelper.defaultAction(NSLocalizedString("Start Orbot", comment: ""), handler: { _ in
+                        OrbotKit.shared.open(.start)
+
+                        completed?()
+                    }),
+                    AlertHelper.destructiveAction(NSLocalizedString("Allow without Orbot", comment: ""), handler: { [weak self] _ in
+                        Settings.useOrbot = false
+
+                        self?.stop()
+
+                        completed?()
+                    })
+                ])
+        }
+        else {
+            completed?()
+        }
     }
 
 

@@ -73,6 +73,9 @@
 /* ConsentViewController */
 "Allow health checks?" = "Allow health checks?";
 
+/* No comment provided by engineer. */
+"Allow without Orbot" = "Allow without Orbot";
+
 /* MenuViewController */
 "App Settings" = "App Settings";
 
@@ -271,6 +274,9 @@
 /* No comment provided by engineer. */
 "Orbot not installed" = "Orbot not installed";
 
+/* No comment provided by engineer. */
+"Orbot not running" = "Orbot not running";
+
 /* SlideshowViewController */
 "Organize your media into projects." = "Organize your media into projects.";
 
@@ -388,6 +394,9 @@
 /* MainViewController */
 "Sorry, you are not allowed to view the camera roll." = "Sorry, you are not allowed to view the camera roll.";
 
+/* No comment provided by engineer. */
+"Start Orbot" = "Start Orbot";
+
 /* SlideshowViewController */
 "Stay organized." = "Stay organized.";
 
@@ -441,6 +450,9 @@
 
 /* ManagementViewController */
 "Uploading…" = "Uploading…";
+
+/* No comment provided by engineer. */
+"Uploads are blocked until you start Orbot or allow uploads without Orbot again." = "Uploads are blocked until you start Orbot or allow uploads without Orbot again.";
 
 /* PrivateServerViewController */
 "Use Upload Chunking (Nextcloud only)" = "Use Upload Chunking (Nextcloud only)";
