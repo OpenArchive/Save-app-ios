@@ -147,6 +147,17 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
         return indexPath.section == 0 ? [] : [removeAction]
     }
 
+    override func setEditing(_ editing: Bool, animated: Bool) {
+        super.setEditing(editing, animated: animated)
+
+        if editing {
+            NotificationCenter.default.post(name: .uploadManagerPause, object: nil)
+        }
+        else {
+            NotificationCenter.default.post(name: .uploadManagerUnpause, object: nil)
+        }
+    }
+
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         if indexPath.section == 0 {
             return false
@@ -238,6 +249,10 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
     // MARK: Actions
 
     @IBAction func done() {
+        if isEditing {
+            NotificationCenter.default.post(name: .uploadManagerUnpause, object: nil)
+        }
+
         dismiss(animated: true)
     }
 

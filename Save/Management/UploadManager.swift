@@ -331,17 +331,6 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             }
             else {
                 self.globalPause = true
-
-                // We also need to stop the current upload. Otherwise we could
-                // earn a race condition, where the upload gets finished, while
-                // at the same time the user tries to reorder the uploads.
-                // Then an assertion will kill the app, if two different
-                // animations for a row will happen at the same time.
-                self.current?.cancel()
-
-                self.storeCurrent()
-
-                self.current = nil
             }
 
             self.uploadNext()
