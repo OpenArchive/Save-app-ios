@@ -166,6 +166,9 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         nc.addObserver(self, selector: #selector(dataUsageChanged),
                        name: .uploadManagerDataUsageChange, object: nil)
 
+        nc.addObserver(self, selector: #selector(orbotStopped),
+                       name: .orbotStopped, object: nil)
+
         try? reachability?.startNotifier()
 
         progressTimer = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
@@ -208,9 +211,11 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         debug("#task:didCompleteWithError task=\(task), state=\(self.getTaskStateName(task.state)), url=\(task.originalRequest?.url?.absoluteString ?? "nil") error=\(String(describing: error))")
 
-        // Ignore incomplete tasks.
+        // Ignore incomplete tasks. Ignore canceled tasks.
         guard task.state == .completed,
-            let url = task.originalRequest?.url else {
+              let url = task.originalRequest?.url,
+              (error as? NSError)?.code != -999 /* cancelled */
+        else {
             return
         }
 
@@ -495,6 +500,16 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         if reachability?.connection ?? .unavailable != .unavailable {
             uploadNext()
         }
+    }
+
+    @objc func orbotStopped(notification: Notification) {
+        debug("#orbotStopped")
+
+        current?.cancel()
+
+        storeCurrent()
+
+        current = nil
     }
 
     @objc func uploadNext() {

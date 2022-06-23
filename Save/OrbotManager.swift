@@ -8,6 +8,11 @@
 
 import OrbotKit
 
+extension Notification.Name {
+
+    static let orbotStopped = Notification.Name("\(Bundle.main.bundleIdentifier!).orbotStopped")
+}
+
 class OrbotManager: OrbotStatusChangeListener {
 
     static let shared = OrbotManager()
@@ -153,6 +158,10 @@ class OrbotManager: OrbotStatusChangeListener {
 
     func orbotStatusChanged(info: OrbotKit.Info) {
         lastOrbotInfo = info
+
+        if status == .stopped {
+            NotificationCenter.default.post(name: .orbotStopped, object: nil)
+        }
     }
 
     func statusChangeListeningStopped(error: Error) {
