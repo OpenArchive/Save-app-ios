@@ -34,7 +34,7 @@
 /* MainViewController */
 "Access Restricted" = "Access Restricted";
 
-/* No comment provided by engineer. */
+/* OrbotManager */
 "Access Token" = "Access Token";
 
 /* InternetArchiveViewController */
@@ -73,13 +73,13 @@
 /* ConsentViewController */
 "Allow health checks?" = "Allow health checks?";
 
-/* No comment provided by engineer. */
+/* OrbotManager */
 "Allow without Orbot" = "Allow without Orbot";
 
 /* MenuViewController */
 "App Settings" = "App Settings";
 
-/* No comment provided by engineer. */
+/* OrbotManager */
 "App Store" = "App Store";
 
 /* EditProjectViewController */
@@ -208,10 +208,10 @@
 /* ShareExtension.MainViewController */
 "Import" = "Import";
 
-/* No comment provided by engineer. */
+/* OrbotManager */
 "In order to use Orbot, you will first need to install it!" = "In order to use Orbot, you will first need to install it!";
 
-/* No comment provided by engineer. */
+/* SlideshowViewController */
 "Include your credentials while %@ adds extra metadata to help with chain of custody and verification workflows." = "Include your credentials while %@ adds extra metadata to help with chain of custody and verification workflows.";
 
 /* Error+friendlyMessage */
@@ -271,16 +271,16 @@
 /* EditProfileViewController, PrivateServerViewController */
 "Optional" = "Optional";
 
-/* No comment provided by engineer. */
+/* OrbotManager */
 "Orbot could not be opened!" = "Orbot could not be opened!";
 
-/* No comment provided by engineer. */
+/* OrbotManager */
 "Orbot installed" = "Orbot installed";
 
-/* No comment provided by engineer. */
+/* OrbotManager */
 "Orbot not installed" = "Orbot not installed";
 
-/* No comment provided by engineer. */
+/* OrbotManager */
 "Orbot not running" = "Orbot not running";
 
 /* SlideshowViewController */
@@ -292,7 +292,7 @@
 /* PrivateServerViewController */
 "Password" = "Password";
 
-/* No comment provided by engineer. */
+/* OrbotManager */
 "Paste API token here" = "Paste API token here";
 
 /* DuplicateProjectAlert */
@@ -340,7 +340,7 @@
 /* BaseServerViewController */
 "Remove Space" = "Remove Space";
 
-/* No comment provided by engineer. */
+/* OrbotManager */
 "Request API Access" = "Request API Access";
 
 /* EditProjectViewController */
@@ -403,7 +403,7 @@
 /* MainViewController */
 "Sorry, you are not allowed to view the camera roll." = "Sorry, you are not allowed to view the camera roll.";
 
-/* No comment provided by engineer. */
+/* OrbotManager */
 "Start Orbot" = "Start Orbot";
 
 /* SlideshowViewController */
@@ -466,7 +466,7 @@
 /* ManagementViewController */
 "Uploading…" = "Uploading…";
 
-/* No comment provided by engineer. */
+/* OrbotManager */
 "Uploads are blocked until you start Orbot or allow uploads without Orbot again." = "Uploads are blocked until you start Orbot or allow uploads without Orbot again.";
 
 /* PrivateServerViewController */
@@ -493,7 +493,7 @@
 /* InternetArchiveViewController */
 "You can let %1$@ try to acquire these keys automatically, or you can tap this row which will send you to %2$@ in Safari from where you can copy-and-paste these keys manually." = "You can let %1$@ try to acquire these keys automatically, or you can tap this row which will send you to %2$@ in Safari from where you can copy-and-paste these keys manually.";
 
-/* No comment provided by engineer. */
+/* OrbotManager */
 "You neeed to request API access with Orbot, in order for %@ to ensure that Orbot is running." = "You neeed to request API access with Orbot, in order for %@ to ensure that Orbot is running.";
 
 /* IaInfoAlert */
