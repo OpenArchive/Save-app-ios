@@ -7,9 +7,11 @@
 //
 
 import UIKit
+import OrbotKit
 
 class SlideshowViewController: UIViewController, UIPageViewControllerDataSource,
-UIPageViewControllerDelegate {
+                               UIPageViewControllerDelegate, SlideViewControllerDelegate
+{
 
     @IBOutlet weak var container: UIView!
 
@@ -20,29 +22,46 @@ UIPageViewControllerDelegate {
     }
 
     @IBOutlet weak var doneIcon: UIImageView!
-    @IBOutlet weak var pageControl: UIPageControl!
+    @IBOutlet weak var pageControl: UIPageControl! {
+        didSet {
+            pageControl.numberOfPages = Self.slides.count
+        }
+    }
 
-    private static let data = [
-    [
-        "heading": NSLocalizedString("Save to a safe place.", comment: ""),
-        "text": NSLocalizedString("Connect to a secure server or the Internet Archive to upload photos and videos from your phone.", comment: ""),
-        "illustration": "safe-place-screen",
-    ],
-    [
-        "heading": NSLocalizedString("Stay organized.", comment: ""),
-        "text": NSLocalizedString("Organize your media into projects.", comment: ""),
-        "illustration": "stay-organized-screen",
-    ],
-    [
-        "heading": NSLocalizedString("Store the facts.", comment: ""),
-        "text": NSLocalizedString("Capture notes, location and people with each piece of media.", comment: ""),
-        "illustration": "save-the-facts",
-    ],
-    [
-        "heading": NSLocalizedString("Ensure authenticity.", comment: ""),
-        "text": String(format: NSLocalizedString("Include your credentials while %@ adds extra metadata to help with chain of custody and verification workflows.", comment: ""), Bundle.main.displayName),
-        "illustration": "Ensure-Authenticity-screen",
-    ],
+    private static let slides = [
+        Slide(
+            heading: NSLocalizedString("Save to a safe place.", comment: ""),
+            text: NSLocalizedString("Connect to a secure server or the Internet Archive to upload photos and videos from your phone.", comment: ""),
+            illustration: "safe-place-screen"),
+
+        Slide(
+            heading: NSLocalizedString("Stay organized.", comment: ""),
+            text: NSLocalizedString("Organize your media into projects.", comment: ""),
+            illustration: "stay-organized-screen"),
+
+        Slide(
+            heading: NSLocalizedString("Store the facts.", comment: ""),
+            text: NSLocalizedString("Capture notes, location and people with each piece of media.", comment: ""),
+            illustration: "save-the-facts"),
+
+        Slide(
+            heading: NSLocalizedString("Ensure authenticity.", comment: ""),
+            text: String(format: NSLocalizedString("Include your credentials while %@ adds extra metadata to help with chain of custody and verification workflows.", comment: ""), Bundle.main.displayName),
+            illustration: "Ensure-Authenticity-screen"),
+
+        Slide(
+            heading: NSLocalizedString("Save over Tor.", comment: ""),
+            text: {
+                OrbotKit.shared.installed
+                ? NSLocalizedString("To enable advanced network security, you should enable the \"Transfer via Orbot only\" option now or later in settings.", comment: "")
+                : NSLocalizedString("To enable advanced network security, please install Orbot iOS.", comment: "")
+            },
+            buttonText: {
+                OrbotKit.shared.installed
+                ? NSLocalizedString("Enable", comment: "")
+                : NSLocalizedString("Install", comment: "")
+            },
+            illustration: "save-over-tor-screen")
     ]
 
     private var page = 0
@@ -66,9 +85,23 @@ UIPageViewControllerDelegate {
         container.addSubview(pageVc.view)
         pageVc.view.frame = container.bounds
         pageVc.didMove(toParent: self)
-        pageVc.setViewControllers([getSlide(0)], direction: .forward, animated: false)
+    }
 
-        refresh(animate: false)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        reload()
+
+        NotificationCenter.default.addObserver(
+            self, selector: #selector(reload),
+            name: UIApplication.willEnterForegroundNotification,
+            object: UIApplication.shared)
+    }
+
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        NotificationCenter.default.removeObserver(self)
     }
 
 
@@ -91,7 +124,7 @@ UIPageViewControllerDelegate {
 
         let index = (viewController as? SlideViewController)?.index ?? Int.max
 
-        if index >= SlideshowViewController.data.count - 1 {
+        if index >= Self.slides.count - 1 {
             return nil
         }
 
@@ -138,7 +171,7 @@ UIPageViewControllerDelegate {
     }
 
     @IBAction func forward() {
-        let newPage = min(page + 1, SlideshowViewController.data.count - 1)
+        let newPage = min(page + 1, Self.slides.count - 1)
 
         if page != newPage {
             page = newPage
@@ -150,8 +183,15 @@ UIPageViewControllerDelegate {
 
     // MARK: Private Methods
 
+    @objc
+    private func reload() {
+        pageVc.setViewControllers([getSlide(page)], direction: .forward, animated: false)
+
+        refresh(animate: false)
+    }
+
     private func refresh(animate: Bool = true) {
-        doneBt.isHidden = page < SlideshowViewController.data.count - 1
+        doneBt.isHidden = page < Self.slides.count - 1
         doneIcon.isHidden = doneBt.isHidden
 
         pageControl.currentPage = page
@@ -164,17 +204,42 @@ UIPageViewControllerDelegate {
     }
 
     private func getSlide(_ index: Int) -> SlideViewController {
-        let data = SlideshowViewController.data[index]
+        let slide = Self.slides[index]
 
         let vc = UIStoryboard.main.instantiate(SlideViewController.self)
 
-        vc.heading = data["heading"]
-        vc.text = data["text"]
-        vc.illustration = data["illustration"] != nil ? UIImage(named: data["illustration"]!) : nil
+        vc.slide = slide
+        vc.delegate = self
         vc.index = index
 
         return vc
     }
+
+
+    // MARK: SlideViewControllerDelegate
+
+    func buttonPressed() {
+        // Button should only appear on last page, therefore ignore all other presses,
+        // which might happen, even though the height of that button should be 0.
+        guard page >= Self.slides.count - 1 else {
+            return
+        }
+
+        if !OrbotKit.shared.installed {
+            UIApplication.shared.open(OrbotManager.appStoreLink)
+        }
+        else {
+            OrbotManager.shared.alertToken { [weak self] in
+                Settings.useOrbot = true
+                OrbotManager.shared.start()
+
+                self?.done()
+            }
+        }
+    }
+
+
+    // MARK: Private Methods
 
     /**
      Fixes right-to-left direction missmatch.

@@ -54,8 +54,6 @@ class DataUsageViewController: FormViewController {
             let newValue = row.value ?? false
 
             if newValue != Settings.useOrbot {
-                Settings.useOrbot = newValue
-
                 if newValue {
                     if !OrbotManager.shared.installed {
                         row.value = false
@@ -71,14 +69,17 @@ class DataUsageViewController: FormViewController {
                             row.value = true
                             row.updateCell()
 
+                            Settings.useOrbot = true
                             OrbotManager.shared.start()
                         }
                     }
                     else {
+                        Settings.useOrbot = true
                         OrbotManager.shared.start()
                     }
                 }
                 else {
+                    Settings.useOrbot = false
                     OrbotManager.shared.stop()
                 }
             }

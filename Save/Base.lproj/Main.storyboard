@@ -143,8 +143,22 @@
                                 <color key="textColor" systemColor="systemBackgroundColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Bhc-Lx-MT2">
+                                <rect key="frame" x="16" y="232" width="56" height="31"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Start"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
+                                        <integer key="value" value="5"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                                <connections>
+                                    <action selector="buttonPressed" destination="mA8-rJ-Bvc" eventType="touchUpInside" id="L67-nd-fzt"/>
+                                </connections>
+                            </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="YVt-JP-CZ1" customClass="UIImageViewAligned" customModule="UIImageViewAlignedSwift">
-                                <rect key="frame" x="80" y="232" width="240" height="498"/>
+                                <rect key="frame" x="80" y="271" width="240" height="498"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="YVt-JP-CZ1" secondAttribute="height" multiplier="40:83" id="Zxw-RC-apF"/>
                                 </constraints>
@@ -157,14 +171,18 @@
                             <constraint firstItem="mX4-L9-fca" firstAttribute="leading" secondItem="8oJ-xp-FPn" secondAttribute="leading" constant="16" id="OHn-K9-6d7"/>
                             <constraint firstItem="Xtc-qd-Hr6" firstAttribute="top" secondItem="8oJ-xp-FPn" secondAttribute="top" constant="80" id="QHv-iP-whV"/>
                             <constraint firstItem="YVt-JP-CZ1" firstAttribute="width" secondItem="QfH-dc-X3C" secondAttribute="width" multiplier="0.75" id="VKM-Oz-Bwx"/>
-                            <constraint firstItem="YVt-JP-CZ1" firstAttribute="top" secondItem="mX4-L9-fca" secondAttribute="bottom" constant="8" id="VbK-6n-f2R"/>
+                            <constraint firstItem="YVt-JP-CZ1" firstAttribute="top" secondItem="Bhc-Lx-MT2" secondAttribute="bottom" constant="8" id="VbK-6n-f2R"/>
                             <constraint firstItem="mX4-L9-fca" firstAttribute="top" secondItem="Xtc-qd-Hr6" secondAttribute="bottom" constant="8" id="WVY-fm-6rA"/>
                             <constraint firstItem="Xtc-qd-Hr6" firstAttribute="leading" secondItem="8oJ-xp-FPn" secondAttribute="leading" constant="16" id="XQ8-rQ-CQe"/>
+                            <constraint firstItem="Bhc-Lx-MT2" firstAttribute="leading" secondItem="8oJ-xp-FPn" secondAttribute="leading" constant="16" id="awM-hn-tcj"/>
+                            <constraint firstItem="8oJ-xp-FPn" firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="Bhc-Lx-MT2" secondAttribute="trailing" constant="16" id="g06-bN-ZV1"/>
                             <constraint firstItem="8oJ-xp-FPn" firstAttribute="trailing" secondItem="Xtc-qd-Hr6" secondAttribute="trailing" constant="16" id="ldM-Qd-Yj9"/>
                             <constraint firstItem="8oJ-xp-FPn" firstAttribute="trailing" secondItem="mX4-L9-fca" secondAttribute="trailing" constant="16" id="uO8-A0-Urj"/>
+                            <constraint firstItem="Bhc-Lx-MT2" firstAttribute="top" secondItem="mX4-L9-fca" secondAttribute="bottom" constant="8" id="udI-as-wPd"/>
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="button" destination="Bhc-Lx-MT2" id="rAr-YS-PN0"/>
                         <outlet property="headingLb" destination="Xtc-qd-Hr6" id="i0n-L9-Mc0"/>
                         <outlet property="illustrationImg" destination="YVt-JP-CZ1" id="VNc-nw-j9X"/>
                         <outlet property="textLb" destination="mX4-L9-fca" id="4fn-ED-y0D"/>

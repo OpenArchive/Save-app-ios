@@ -166,6 +166,9 @@
 /* BatchInfoAlert */
 "Edit Multiple Items" = "Edit Multiple Items";
 
+/* SlideshowViewController */
+"Enable" = "Enable";
+
 /* UploadCell */
 "Encoding file…" = "Encoding file…";
 
@@ -216,6 +219,9 @@
 
 /* MenuViewController */
 "Info" = "Info";
+
+/* SlideshowViewController */
+"Install" = "Install";
 
 /* InternetArchiveViewController, IaInfoAlert, IaScrapeViewController, Main.storyboard */
 "Internet Archive" = "Internet Archive";
@@ -353,6 +359,9 @@
 "Run health checks to help improve uploading." = "Run health checks to help improve uploading.";
 
 /* SlideshowViewController */
+"Save over Tor." = "Save over Tor.";
+
+/* SlideshowViewController */
 "Save to a safe place." = "Save to a safe place.";
 
 /* InternetArchiveViewController */
@@ -418,7 +427,13 @@
 /* BatchInfoAlert */
 "To edit multiple items, tap and hold each." = "To edit multiple items, tap and hold each.";
 
-/* No comment provided by engineer. */
+/* SlideshowViewController */
+"To enable advanced network security, please install Orbot iOS." = "To enable advanced network security, please install Orbot iOS.";
+
+/* SlideshowViewController */
+"To enable advanced network security, you should enable the \"Transfer via Orbot only\" option now or later in settings." = "To enable advanced network security, you should enable the \"Transfer via Orbot only\" option now or later in settings.";
+
+/* DataUsageViewController */
 "Transfer via Orbot only" = "Transfer via Orbot only";
 
 /* EditProjectViewController */
