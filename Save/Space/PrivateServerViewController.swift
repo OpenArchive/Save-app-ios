@@ -34,6 +34,7 @@ class PrivateServerViewController: BaseServerViewController {
     private let nextcloudRow = SwitchRow() {
         $0.title = NSLocalizedString("Use Upload Chunking (Nextcloud only)", comment: "")
         $0.cell.textLabel?.adjustsFontSizeToFitWidth = true
+        $0.cell.textLabel?.numberOfLines = 0
         $0.cell.switchControl.onTintColor = .accent
     }
 
