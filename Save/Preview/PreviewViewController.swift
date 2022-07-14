@@ -61,7 +61,11 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
 
         updateTitle()
 
-        BatchInfoAlert.presentIfNeeded(self, additionalCondition: sc.count > 1)
+        // Delay. Otherwise, the alert would be shown before the view controller,
+        // which effectively hides it.
+        DispatchQueue.main.async {
+            BatchInfoAlert.presentIfNeeded(self, additionalCondition: self.sc.count > 1)
+        }
     }
 
 
