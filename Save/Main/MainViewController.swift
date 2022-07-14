@@ -647,8 +647,8 @@ PKDownloadButtonDelegate {
             editEnabled = true
             removeEnabled = true
 
-            for asset in getSelectedAssets() {
-                if asset.isUploaded {
+            for asset in getSelectedAssets(preheat: true) {
+                if asset.collection?.closed != nil {
                     editEnabled = false
                     break
                 }
@@ -695,7 +695,7 @@ PKDownloadButtonDelegate {
             : NSLocalizedString("Next", comment: "")
     }
 
-    private func getSelectedAssets() -> [Asset] {
+    private func getSelectedAssets(preheat: Bool = false) -> [Asset] {
         var assets = [Asset]()
 
         assetsReadConn?.read() { transaction in
@@ -703,6 +703,13 @@ PKDownloadButtonDelegate {
                 if let asset = (transaction.ext(AbcFilteredByProjectView.name) as? YapDatabaseViewTransaction)?
                     .object(at: indexPath, with: self.assetsMappings) as? Asset
                 {
+                    if preheat,
+                        let collectionId = asset.collectionId,
+                        let collection = transaction.object(forKey: collectionId, inCollection: Collection.collection) as? Collection
+                    {
+                        asset.collection = collection
+                    }
+
                     assets.append(asset)
                 }
             }
