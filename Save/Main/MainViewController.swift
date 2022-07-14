@@ -514,12 +514,16 @@ PKDownloadButtonDelegate {
                     for change in rowChanges {
                         tabBar.handle(change)
                     }
+
+                    AbcFilteredByProjectView.updateFilter(tabBar.selectedProject?.id)
                 }
             }
             else {
                 updateSpace()
                 projectsReadConn?.update(mappings: projectsMappings)
                 tabBar.load()
+
+                AbcFilteredByProjectView.updateFilter(tabBar.selectedProject?.id)
             }
         }
 
