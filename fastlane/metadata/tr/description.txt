@@ -18,7 +18,7 @@ Haber merkezleri, insan hakları savunucuları ve aktivistler tarafından onlar 
 
 - Telefonunuzdaki Fotoğraflar ve Notlar gibi diğer uygulamaların Save üzerinden paylaşım yapmasını sağlar
 
-- Hücresel veri ağlarının sorunlu ya da pahalı olduğu yerlerde yükleme için "Yalnız Wi-Fi" seçeneği sunar
+- Hücresel veri ağlarının sorunlu ya da pahalı olduğu yerlerde yükleme için "Yalnızca Wi-Fi" seçeneği sunar
 
 - Toplayıp paylaştığınız ortamlar için creative Commons lisansı kullanma seçeneği sunar
 
