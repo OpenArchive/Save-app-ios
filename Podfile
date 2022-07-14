@@ -28,7 +28,7 @@ def app_only
     pod 'TUSafariActivity', '~> 1.0'
     pod 'ARChromeActivity', '~> 1.0'
     pod 'SDCAlertView', '~> 12.0'
-    pod 'TLPhotoPicker', '~> 2.1'
+    pod 'TLPhotoPicker', :git => 'https://github.com/tladesignz/TLPhotoPicker.git' # '~> 2.1'
     pod 'OrbotKit', '~> 0.2'
 end
 
