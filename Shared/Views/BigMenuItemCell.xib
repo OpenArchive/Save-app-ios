@@ -22,14 +22,14 @@
                 <rect key="frame" x="0.0" y="0.0" width="295.5" height="100"/>
                 <autoresizingMask key="autoresizingMask"/>
                 <subviews>
-                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mLV-x9-Uhr">
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="252" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mLV-x9-Uhr">
                         <rect key="frame" x="16" y="19" width="271.5" height="21"/>
                         <fontDescription key="fontDescription" name="Montserrat-Bold" family="Montserrat" pointSize="17"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
                     </label>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Detailed description." lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="psU-rl-VdF">
-                        <rect key="frame" x="16" y="48" width="271.5" height="17"/>
+                        <rect key="frame" x="16" y="48" width="271.5" height="33"/>
                         <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                         <nil key="textColor"/>
                         <nil key="highlightedColor"/>
@@ -38,6 +38,7 @@
                 <constraints>
                     <constraint firstAttribute="trailingMargin" secondItem="mLV-x9-Uhr" secondAttribute="trailing" id="4q0-3C-aYW"/>
                     <constraint firstItem="psU-rl-VdF" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="DBf-rx-r2e"/>
+                    <constraint firstAttribute="bottomMargin" secondItem="psU-rl-VdF" secondAttribute="bottom" constant="8" id="W2p-Um-7xb"/>
                     <constraint firstItem="mLV-x9-Uhr" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leadingMargin" id="Xnj-he-LSg"/>
                     <constraint firstItem="psU-rl-VdF" firstAttribute="top" secondItem="mLV-x9-Uhr" secondAttribute="bottom" constant="8" id="dXU-G2-EY9"/>
                     <constraint firstItem="psU-rl-VdF" firstAttribute="trailing" secondItem="H2p-sc-9uM" secondAttribute="trailingMargin" id="r37-Oo-jsr"/>
