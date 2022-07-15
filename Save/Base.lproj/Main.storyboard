@@ -369,13 +369,13 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="3" minimumInteritemSpacing="3" id="21E-IJ-odh">
                                     <size key="itemSize" width="80" height="80"/>
-                                    <size key="headerReferenceSize" width="50" height="50"/>
+                                    <size key="headerReferenceSize" width="50" height="48"/>
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="imageCell" id="3TG-dv-3xE" customClass="ImageCell" customModule="Save" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="50" width="80" height="80"/>
+                                        <rect key="frame" x="0.0" y="48" width="80" height="80"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
@@ -409,24 +409,26 @@
                                     </collectionViewCell>
                                 </cells>
                                 <collectionReusableView key="sectionHeaderView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" reuseIdentifier="headerView" id="Ugg-64-EGN" customClass="HeaderView" customModule="Save" customModuleProvider="target">
-                                    <rect key="frame" x="0.0" y="0.0" width="288" height="50"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="288" height="48"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" text="Uploading" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PNO-3V-865">
-                                            <rect key="frame" x="8" y="8" width="226" height="13.5"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" text="Uploading" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="PNO-3V-865">
+                                            <rect key="frame" x="8" y="8" width="224" height="13.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="249" verticalHuggingPriority="249" text="0 of 2 items uploaded" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LqD-hD-tvG">
-                                            <rect key="frame" x="8" y="28.5" width="226" height="13.5"/>
+                                            <rect key="frame" x="8" y="25.5" width="224" height="14.5"/>
                                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption2"/>
                                             <nil key="textColor"/>
                                             <nil key="highlightedColor"/>
                                         </label>
-                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="trailing" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gDn-sm-fFy">
-                                            <rect key="frame" x="242" y="8" width="38" height="34"/>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gDn-sm-fFy">
+                                            <rect key="frame" x="240" y="6.5" width="40" height="35"/>
                                             <accessibility key="accessibilityConfiguration" identifier="btManageCollection"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                             <state key="normal" title="Next">
                                                 <color key="titleColor" red="0.0" green="0.70398116440000003" blue="0.64921339899999997" alpha="1" colorSpace="calibratedRGB"/>
                                             </state>
@@ -442,6 +444,7 @@
                                         <constraint firstItem="PNO-3V-865" firstAttribute="leading" secondItem="Ugg-64-EGN" secondAttribute="leadingMargin" id="YHR-Ai-vTd"/>
                                         <constraint firstItem="gDn-sm-fFy" firstAttribute="trailing" secondItem="Ugg-64-EGN" secondAttribute="trailingMargin" id="hLQ-gc-bgo"/>
                                         <constraint firstItem="PNO-3V-865" firstAttribute="top" secondItem="Ugg-64-EGN" secondAttribute="topMargin" id="uQY-2c-dhL"/>
+                                        <constraint firstItem="LqD-hD-tvG" firstAttribute="top" secondItem="PNO-3V-865" secondAttribute="bottom" constant="4" id="ubp-R4-k9l"/>
                                         <constraint firstItem="gDn-sm-fFy" firstAttribute="leading" secondItem="PNO-3V-865" secondAttribute="trailing" constant="8" id="vSP-Nb-3Pw"/>
                                         <constraint firstItem="LqD-hD-tvG" firstAttribute="bottom" secondItem="Ugg-64-EGN" secondAttribute="bottomMargin" id="wNI-Db-a3C"/>
                                     </constraints>

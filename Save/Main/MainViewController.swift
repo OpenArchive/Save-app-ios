@@ -13,10 +13,11 @@ import YapDatabase
 import TLPhotoPicker
 import DownloadButton
 
-class MainViewController: UIViewController, UICollectionViewDelegate,
-UICollectionViewDataSource, UINavigationControllerDelegate, UIDocumentPickerDelegate,
-ProjectsTabBarDelegate, HeaderViewDelegate, TLPhotosPickerViewControllerDelegate,
-PKDownloadButtonDelegate {
+class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,
+                          UINavigationControllerDelegate,
+                          UIDocumentPickerDelegate, ProjectsTabBarDelegate, HeaderViewDelegate,
+                          TLPhotosPickerViewControllerDelegate, PKDownloadButtonDelegate
+{
 
     static let segueShowMenu = "showMenuSegue"
     private static let segueShowPreview = "showPreviewSegue"
@@ -195,6 +196,17 @@ PKDownloadButtonDelegate {
         view.manageBt.setTitle(title, for: .highlighted)
 
         return view
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout: UICollectionViewLayout, referenceSizeForHeaderInSection section: Int) -> CGSize {
+        let view = self.collectionView(
+            collectionView,
+            viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader,
+            at: IndexPath(row: 0, section: section))
+
+        return view.systemLayoutSizeFitting(
+            CGSize(width: collectionView.frame.width, height: UIView.layoutFittingExpandedSize.height),
+            withHorizontalFittingPriority: .required, verticalFittingPriority: .fittingSizeLevel)
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
