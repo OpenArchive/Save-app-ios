@@ -89,7 +89,8 @@ class ProjectTab: UIButton {
     private func setup() {
         translatesAutoresizingMaskIntoConstraints = false
 
-        titleLabel?.font = .systemFont(ofSize: 13, weight: .medium)
+        titleLabel?.font = .preferredFont(forTextStyle: .body)
+        titleLabel?.adjustsFontForContentSizeCategory = true
 
         if #available(iOS 13.0, *) {
             setTitleColor(.systemGray, for: .normal)
