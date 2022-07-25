@@ -219,7 +219,7 @@ CHECKOUT OPTIONS:
     :commit: 0717e03444aa6a1265418d405b8c4866ea02de9b
     :git: https://github.com/tladesignz/FavIcon.git
   TLPhotoPicker:
-    :commit: 192e2791ed8940c70642548821c36166a2c55626
+    :commit: 91abdc52e241936bbad850736af7dcb9adcd389d
     :git: https://github.com/tladesignz/TLPhotoPicker.git
   YapDatabase:
     :commit: 083135efcd832c68a3738ddc9d5711897760eb9c
@@ -242,7 +242,7 @@ SPEC CHECKSUMS:
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDCAlertView: 1c0410de80548da3fed142ded0b97644d9848577
   SwiftyDropbox: 1f2dc98c211cb80b70ce0cd58064abe8528d9c78
-  TLPhotoPicker: 939c40eaad130b69f9571e61e021e8120fa76329
+  TLPhotoPicker: 2e7caa72ec0cb29d1c85543b252a02d56aeede01
   TUSafariActivity: afc55a00965377939107ce4fdc7f951f62454546
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848

@@ -33,18 +33,8 @@ class NewProjectViewController: BaseProjectViewController {
 
         form
             +++ LabelRow() {
-                if let label = $0.cell.textLabel {
-                    label.numberOfLines = 0
-
-                    // Fix failed autoresizing mask constraints manually.
-                    if let superview = label.superview {
-                        label.translatesAutoresizingMaskIntoConstraints = false
-                        label.leftAnchor.constraint(equalTo: superview.leftAnchor, constant: 16).isActive = true
-                        label.rightAnchor.constraint(equalTo: superview.rightAnchor, constant: 16).isActive = true
-                    }
-                }
-
                 $0.title = NSLocalizedString("Add a project folder to the server that anyone can upload to.", comment: "")
+                $0.cell.textLabel?.numberOfLines = 0
             }
 
             +++ nameRow.cellUpdate { cell, _ in
