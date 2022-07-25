@@ -531,8 +531,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 }
             }
             else {
-                updateSpace()
                 projectsReadConn?.update(mappings: projectsMappings)
+
+                updateSpace()
                 tabBar.load()
 
                 AbcFilteredByProjectView.updateFilter(tabBar.selectedProject?.id)
@@ -557,11 +558,11 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 }
             }
             else {
+                collectionsReadConn?.update(mappings: collectionsMappings)
+
                 reload = true
             }
         }
-
-        collectionsReadConn?.update(mappings: collectionsMappings)
 
         if !reload {
             if let notifications = assetsReadConn?.beginLongLivedReadTransaction(),
@@ -584,12 +585,12 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                     }
                 }
                 else {
+                    assetsReadConn?.update(mappings: assetsMappings)
+
                     reload = true
                 }
             }
         }
-
-        assetsReadConn?.update(mappings: assetsMappings)
 
         if reload {
             collectionView.reloadData()
