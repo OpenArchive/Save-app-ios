@@ -60,6 +60,10 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
         updateTitle()
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
 
         // Delay. Otherwise, the alert would be shown before the view controller,
         // which effectively hides it.
