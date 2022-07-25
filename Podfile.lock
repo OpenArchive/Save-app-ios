@@ -41,7 +41,7 @@ PODS:
   - ImageRow (4.1.0):
     - Eureka (~> 5.3.5)
   - MBProgressHUD (1.2.0)
-  - OrbotKit (0.2.0)
+  - OrbotKit (0.2.1)
   - ReachabilitySwift (5.0.0)
   - SDCAlertView (12.0.2)
   - SwiftyDropbox (8.3.0):
@@ -219,7 +219,7 @@ CHECKOUT OPTIONS:
     :commit: 0717e03444aa6a1265418d405b8c4866ea02de9b
     :git: https://github.com/tladesignz/FavIcon.git
   TLPhotoPicker:
-    :commit: a9681b0ab378ee0c44c4aa75141390f25e26a760
+    :commit: 192e2791ed8940c70642548821c36166a2c55626
     :git: https://github.com/tladesignz/TLPhotoPicker.git
   YapDatabase:
     :commit: 083135efcd832c68a3738ddc9d5711897760eb9c
@@ -238,7 +238,7 @@ SPEC CHECKSUMS:
   FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
   ImageRow: 880c0f052c5a89c80521b485c86ccf723a124e99
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
-  OrbotKit: 8d6d5ef092a0dd7feb6038a455311ff37766e14a
+  OrbotKit: 777a774df8551613a41efe402cee59a355545fb6
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDCAlertView: 1c0410de80548da3fed142ded0b97644d9848577
   SwiftyDropbox: 1f2dc98c211cb80b70ce0cd58064abe8528d9c78
