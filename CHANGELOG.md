@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.8.0
+- Improved support for bigger fonts for accessibility.
+- Fixed problem, where main scene showed the wrong state.
+- Dropbox support now allows files bigger than 150 MByte.
+- Reworked upload management scene: 
+  - Current upload will now continue while reordering others.
+  - Finished uploads will be displayed until user leaves.
+- Added support for Orbot iOS.
+- Updated translations.
+
 ## 2.7.1
 - Improved stability of uploads.
 - Fixed issues with Dropbox.
