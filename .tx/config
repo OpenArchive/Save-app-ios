@@ -69,6 +69,17 @@ trans.es = fastlane/metadata/es-MX/description.txt
 trans.fr = fastlane/metadata/fr-FR/description.txt
 type = TXT
 
+[SAVE.release_notes]
+file_filter = fastlane/metadata/<lang>/release_notes.txt
+minimum_perc = 10
+source_file = fastlane/metadata/en-US/release_notes.txt
+source_lang = en
+trans.ar = fastlane/metadata/ar-SA/release_notes.txt
+trans.de = fastlane/metadata/de-DE/release_notes.txt
+trans.es = fastlane/metadata/es-MX/release_notes.txt
+trans.fr = fastlane/metadata/fr-FR/release_notes.txt
+type = TXT
+
 [SAVE.localizable-stringsdict]
 file_filter = Shared/<lang>.lproj/Localizable.stringsdict
 minimum_perc = 20
