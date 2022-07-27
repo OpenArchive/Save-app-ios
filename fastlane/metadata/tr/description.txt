@@ -58,8 +58,6 @@ OpenArchive, basın özgürlüğünü korumaya adanmış insan hakları teknoloj
 Save hakkında
 OpenArchive tarafından geliştirilen Save, belgesel yapımcıları ve insan hakları savunucuları için ücretsiz, açık kaynak kodlu bir mobil arşivleme uygulamasıdır. Risk altındaki gruplara, medya doğrulaması, taklitçiliğe karşı koruma, lisanslama denetimi,  uzun süreli erişim ve yeniden kullanım olanağı sağlamak için ortamların nerede ve nasıl saklanacağını seçme gibi özellikler sunarak, geçmiş kayıtlar üzerinde geniş bir aracılık sağlar.
 
-Save a) etik kısa süreli derleme ile b) hassas mobil ortamların uzun süreli korunması konusunda var olan çevrimiçi ekosistemdeki eksikleri doldurmaktadır. Risk altındaki topluluklar için, ortamların gelecekte erişilebilir olmasını sağlamak, taklit edilemeyecek bir şekilde kökenlerini korumak ve doğrulamak için mobil merkezli, ölçeklenebilir, endüstri standardında, etik, sezgisel, kullanımı kolay araçlar sunuyoruz.
-
 =============
 
 //Bağlantılar

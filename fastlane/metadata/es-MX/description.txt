@@ -58,8 +58,6 @@ OpenArchive es un colectivo de tecnólogos, etnógrafos y archiveros de derechos
 acerca de Save
 Save by OpenArchive es una aplicación de archivo móvil gratuita y de código abierto para documentalistas y defensores de los derechos humanos. Ofrece a los grupos en riesgo más control sobre su registro histórico al proporcionarles autenticación de medios, seudónimo, controles de licencia y la capacidad de elegir dónde y cómo se almacenarán los medios para acceso y reutilización a largo plazo.
 
-Save aborda las brechas en el ecosistema en línea actual existente en torno a a) la recopilación ética a corto plazo y b) la preservación a largo plazo de los medios móviles sensibles. Proporcionamos herramientas móviles, escalables, estándares de la industria, éticas, intuitivas y fáciles de usar para que las comunidades en riesgo conserven y autentiquen de forma anonima sus medios, para que sean accesibles y mantengan su procedencia en el futuro.
-
 =====================
 
 //Enlaces
