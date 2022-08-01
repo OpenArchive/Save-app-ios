@@ -1,5 +1,5 @@
 - Unterstützung für größere Schriftarten für Barrierefreiheit verbessert.
-- Problem behoben, durch das die Hauptseite einen falschen Zustand anzgeeigt hatte.
+- Problem behoben, durch das die Hauptseite einen falschen Zustand angezeigt hatte.
 - Die Dropbox-Unterstützung erlaubt jetzt Dateien, die größer als 150 MByte sind.
 - Überarbeitete Upload-Management-Seite:
    - Der aktuelle Upload wird nun fortgesetzt, während andere neu angeordnet werden.
