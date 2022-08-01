@@ -1,6 +1,8 @@
-- Yüklemelerin kararlılığı iyileştirildi.
-- Dropbox ile ilgili sorunlar düzeltildi.
-- Büyük videoların işlenmesi iyileştirildi.
-- Yükleme sahnesinde ekranı açık tutun, böylece kullanıcılar her zaman uygulamaya katılmadan büyük yüklemelerini tamamlayabilirler.
-- Sabit kullanıcı arayüzü sorunları.
+- Erişilebilirliği artırmak için daha büyük yazı tipleri desteği geliştirildi.
+- Ana sayfanın hatalı durum göstermesi sorunu çözüldü.
+- Dropbox desteğinin 150 MBayt boyutundan büyük dosyalara izin vermesi sağlandı.
+- Yükleme yönetimi sayfası üzerinde yeniden çalışıldı.
+- Diğer yüklemelerin sıralaması düzenlenirken geçerli yüklemenin sürdürülmesi sağlandı.
+- Tamamlanmış yüklemelerin kullanıcı ayrılana kadar görüntülenmesi sağlandı.
+- iOS için Orbot desteği eklendi.
 - Çeviriler güncellendi.

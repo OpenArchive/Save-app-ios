@@ -1,6 +1,8 @@
-- Amélioration de la stabilité des téléchargements.
-- Correction de problèmes avec Dropbox.
-- Amélioration de la gestion des grandes vidéos.
-- Gardez l'écran allumé dans la scène de téléchargement, afin que les utilisateurs puissent terminer leurs énormes téléchargements sans s'occuper de l'application tout le temps.
-- Correction des problèmes d'interface utilisateur.
-- Traductions mises à jour.
+– Prise en charge améliorée de polices plus grosses pour l’accessibilité.
+–  Correctif d’un problème entraînant l’affichage d’un un mauvais état pour la scène principale.
+– La prise en charge de Dropbox permet maintenant les fichiers supérieurs à 150 Mo.
+– Refonte de la scène de gestion des téléversements.
+–  Le téléversement courant se poursuivra désormais pendant la réorganisation des autres.
+– Les téléversements terminés seront affichés jusqu’au départ de l’utilisateur.
+– Ajout de la prise en charge d’Orbot iOS.
+– Mise à jour des traductions.

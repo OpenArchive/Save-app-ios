@@ -1,6 +1,8 @@
-- Mejora de la estabilidad de las subidas.
-- Problemas resueltos con Dropbox.
-- Manejo mejorado de videos grandes.
-- Mantenga la pantalla encendida en la escena de carga, para que los usuarios puedan terminar sus grandes cargas sin estar atentos a la aplicación todo el tiempo.
-- Problemas de interfaz de usuario fijos.
+- Soporte mejorado para fuentes más grandes para accesibilidad.
+- Solucionado el problema, donde la escena principal mostraba un estado incorrecto.
+- El soporte de Dropbox ahora permite archivos de más de 150 MByte.
+- Escena de gestión de carga reelaborada:
+   - La carga actual ahora continuará mientras se reordenan otros.
+   - Las cargas finalizadas se mostrarán hasta que el usuario se vaya.
+- Se agregó soporte para Orbot iOS.
 - Traducciones actualizadas.

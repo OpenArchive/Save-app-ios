@@ -1,6 +1,8 @@
-- Migliorata la stabilità dei caricamenti.
-- Risolti problemi con Dropbox.
-- Gestione migliorata di video di grandi dimensioni.
-- Mantieni lo schermo acceso nella scena di caricamento, in modo che gli utenti possano completare i loro enormi caricamenti senza dover accedere continuamente all'app.
-- Risolti problemi con l'interfaccia utente.
+- Supporto migliorato per caratteri più grandi per l'accessibilità.
+- Risolto il problema, per cui la scena principale mostrava lo stato sbagliato.
+- Il supporto di Dropbox ora consente file di dimensioni superiori a 150 MByte.
+- Scena di gestione del caricamento rielaborata:
+   - Il caricamento corrente ora continuerà mentre riordini gli altri.
+   - I caricamenti completati verranno visualizzati fino a quando l'utente non esce.
+- Aggiunto supporto per Orbot iOS.
 - Traduzioni aggiornate.
