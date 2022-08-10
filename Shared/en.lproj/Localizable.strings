@@ -205,6 +205,9 @@
 /* HealthCheckViewController */
 "Help improve the app by running health checks when uploads fail." = "Help improve the app by running health checks when uploads fail.";
 
+/* OrbotManager */
+"Ignore" = "Ignore";
+
 /* ShareExtension.MainViewController */
 "Import" = "Import";
 

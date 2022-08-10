@@ -169,10 +169,6 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
     // MARK: Actions
 
     @IBAction func upload() {
-        OrbotManager.shared.alertOrbotStopped() { [weak self] in
-            self?.navigationController?.popViewController(animated: true)
-        }
-
         Db.writeConn?.asyncReadWrite { transaction in
             var order = 0
 
@@ -203,6 +199,12 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
                         transaction.setObject(upload, forKey: upload.id, inCollection: Upload.collection)
                         order += 1
                     }
+            }
+
+            DispatchQueue.main.async {
+                OrbotManager.shared.alertOrbotStopped() { [weak self] in
+                    self?.navigationController?.popViewController(animated: true)
+                }
             }
         }
     }

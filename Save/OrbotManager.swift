@@ -155,7 +155,9 @@ class OrbotManager: OrbotStatusChangeListener {
     }
 
     func alertOrbotStopped(_ completed: (() -> Void)? = nil) {
-        guard let topVc = UIApplication.shared.delegate?.window??.rootViewController?.top else {
+        guard Settings.useOrbot && status == .stopped,
+              let topVc = UIApplication.shared.delegate?.window??.rootViewController?.top
+        else {
             completed?()
 
             return
@@ -163,37 +165,37 @@ class OrbotManager: OrbotStatusChangeListener {
 
         var count: UInt = 0
 
-        Db.newLongLivedReadConn()?.read({ transaction in
-            count = (transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction)?
-                .numberOfItems(inGroup: UploadsView.groups[0]) ?? 0
+        Db.bgRwConn?.read({ transaction in
+            count = transaction.numberOfKeys(inCollection: Upload.collection)
         })
 
-        if status == .stopped && count > 0 {
-            AlertHelper.present(
-                topVc,
-                message: NSLocalizedString("Uploads are blocked until you start Orbot or allow uploads without Orbot again.", comment: ""),
-                title: NSLocalizedString("Orbot not running", comment: ""),
-                actions: [
-                    AlertHelper.cancelAction(handler: { _ in
-                        completed?()
-                    }),
-                    AlertHelper.defaultAction(NSLocalizedString("Start Orbot", comment: ""), handler: { _ in
-                        OrbotKit.shared.open(.start)
-
-                        completed?()
-                    }),
-                    AlertHelper.destructiveAction(NSLocalizedString("Allow without Orbot", comment: ""), handler: { [weak self] _ in
-                        Settings.useOrbot = false
-
-                        self?.stop()
-
-                        completed?()
-                    })
-                ])
-        }
-        else {
+        guard count > 0 else {
             completed?()
+
+            return
         }
+
+        AlertHelper.present(
+            topVc,
+            message: NSLocalizedString("Uploads are blocked until you start Orbot or allow uploads without Orbot again.", comment: ""),
+            title: NSLocalizedString("Orbot not running", comment: ""),
+            actions: [
+                AlertHelper.cancelAction(NSLocalizedString("Ignore", comment: ""), handler: { _ in
+                    completed?()
+                }),
+                AlertHelper.defaultAction(NSLocalizedString("Start Orbot", comment: ""), handler: { _ in
+                    OrbotKit.shared.open(.start)
+
+                    completed?()
+                }),
+                AlertHelper.destructiveAction(NSLocalizedString("Allow without Orbot", comment: ""), handler: { [weak self] _ in
+                    Settings.useOrbot = false
+
+                    self?.stop()
+
+                    completed?()
+                })
+            ])
     }
 
 
