@@ -141,9 +141,9 @@
 		A07678F827BE7F0E00609630 /* cleaninsights-dev.json in Resources */ = {isa = PBXBuildFile; fileRef = A07678F527BE7F0E00609630 /* cleaninsights-dev.json */; };
 		A07678FE27BE854D00609630 /* AnalyticsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07678FD27BE84AC00609630 /* AnalyticsCell.swift */; };
 		A07678FF27BE855200609630 /* AnalyticsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07678FD27BE84AC00609630 /* AnalyticsCell.swift */; };
-		A076790227BE89E900609630 /* UIButton+setTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A076790127BE89E900609630 /* UIButton+setTitle.swift */; };
-		A076790327BE89E900609630 /* UIButton+setTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A076790127BE89E900609630 /* UIButton+setTitle.swift */; };
-		A076790427BE89E900609630 /* UIButton+setTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A076790127BE89E900609630 /* UIButton+setTitle.swift */; };
+		A076790227BE89E900609630 /* UIButton+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A076790127BE89E900609630 /* UIButton+Utils.swift */; };
+		A076790327BE89E900609630 /* UIButton+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A076790127BE89E900609630 /* UIButton+Utils.swift */; };
+		A076790427BE89E900609630 /* UIButton+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A076790127BE89E900609630 /* UIButton+Utils.swift */; };
 		A076790627BEA31200609630 /* ConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A076790527BEA31200609630 /* ConsentViewController.swift */; };
 		A076790727BEA31200609630 /* ConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A076790527BEA31200609630 /* ConsentViewController.swift */; };
 		A077732A22786BF500291F5D /* RemoveAssetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A077732922786BCA00291F5D /* RemoveAssetAlert.swift */; };
@@ -584,7 +584,7 @@
 		A072C4D5227C8B3C0022BC58 /* SpaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceViewController.swift; sourceTree = "<group>"; };
 		A07678F527BE7F0E00609630 /* cleaninsights-dev.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "cleaninsights-dev.json"; sourceTree = "<group>"; };
 		A07678FD27BE84AC00609630 /* AnalyticsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsCell.swift; sourceTree = "<group>"; };
-		A076790127BE89E900609630 /* UIButton+setTitle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+setTitle.swift"; sourceTree = "<group>"; };
+		A076790127BE89E900609630 /* UIButton+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Utils.swift"; sourceTree = "<group>"; };
 		A076790527BEA31200609630 /* ConsentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentViewController.swift; sourceTree = "<group>"; };
 		A07727442345FA7C00366ADD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A07727452345FA7C00366ADD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
@@ -772,7 +772,7 @@
 				A070335A2119E7DF00BF1F33 /* Request+debug.swift */,
 				A05F79FD22EEFA9F003DBB74 /* RuleFilename.swift */,
 				A0457E6620EF96FB00B8FBCB /* StringUtils.swift */,
-				A076790127BE89E900609630 /* UIButton+setTitle.swift */,
+				A076790127BE89E900609630 /* UIButton+Utils.swift */,
 				A0212FCD22D374CA009079DC /* UICollectionView+selection.swift */,
 				A0362191220DA390003C21DC /* UIColor+accent.swift */,
 				A056BE1B2857457E00F354B6 /* UIFont+Montserrat.swift */,
@@ -1542,7 +1542,7 @@
 				A077732B22786BF500291F5D /* RemoveAssetAlert.swift in Sources */,
 				A0B645CB22B7AEBB00BBE3FF /* BigMenuItemCell.swift in Sources */,
 				A00A8D48220C7EDD0083F0CB /* AbcFilteredByProjectView.swift in Sources */,
-				A076790327BE89E900609630 /* UIButton+setTitle.swift in Sources */,
+				A076790327BE89E900609630 /* UIButton+Utils.swift in Sources */,
 				A098980B2236A9E800022851 /* UploadsView.swift in Sources */,
 				A098980E2236C23200022851 /* Upload.swift in Sources */,
 				A08C2CE721F0B5FA008ACA3E /* FormViewController.swift in Sources */,
@@ -1720,7 +1720,7 @@
 				A0DC0FAE233914BD00C4969A /* MovieIndicator.swift in Sources */,
 				A09B53D123266F02005266C2 /* UIColor+accent.swift in Sources */,
 				A09B53D223266F02005266C2 /* BaseCell.swift in Sources */,
-				A076790427BE89E900609630 /* UIButton+setTitle.swift in Sources */,
+				A076790427BE89E900609630 /* UIButton+Utils.swift in Sources */,
 				A05DF97A282C0E54003FADA2 /* AEXMLDocument.swift in Sources */,
 				A09B53D323266F02005266C2 /* TintedButton.swift in Sources */,
 				A09B53D423266F02005266C2 /* SelectedSpace.swift in Sources */,
@@ -1835,7 +1835,7 @@
 				A050AA492225DF4000AE5D15 /* SpacesListCell.swift in Sources */,
 				A05DF98C282C118A003FADA2 /* FileInfo.swift in Sources */,
 				A0656ABA21F9BFB800070C4B /* MainNavigationController.swift in Sources */,
-				A076790227BE89E900609630 /* UIButton+setTitle.swift in Sources */,
+				A076790227BE89E900609630 /* UIButton+Utils.swift in Sources */,
 				A0DC0FAC233914BD00C4969A /* MovieIndicator.swift in Sources */,
 				A05471DB2296C8FD009FEA93 /* UITableView+separatorView.swift in Sources */,
 				A052A48F230D53D800E72594 /* IaInfoAlert.swift in Sources */,

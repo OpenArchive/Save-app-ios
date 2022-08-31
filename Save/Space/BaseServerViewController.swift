@@ -34,6 +34,18 @@ class BaseServerViewController: FormViewController {
         cell.textLabel?.textColor = .systemRed
     })
 
+    var discloseButton: UIButton {
+        let image = UIImage(named: "eye")
+
+        let button = UIButton(type: .custom)
+        button.setImage(image)
+        button.frame = CGRect(origin: .zero, size: image?.size ?? CGSize(width: 21, height: 21))
+        button.addTarget(self, action: #selector(discloseButtonTapped), for: .touchUpInside)
+
+        return button
+    }
+
+
     override init() {
         super.init()
 
@@ -43,6 +55,7 @@ class BaseServerViewController: FormViewController {
     required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
     }
+
 
     @objc func connect() {
         SelectedSpace.space = self.space
@@ -66,6 +79,17 @@ class BaseServerViewController: FormViewController {
 
 
     // MARK: Private Methods
+
+    @objc
+    private func discloseButtonTapped(_ sender: UIButton) {
+        if let cell = sender.superview as? PasswordCell {
+            let wasSecure = cell.textField?.isSecureTextEntry ?? true
+
+            cell.textField?.isSecureTextEntry = !wasSecure
+
+            sender.setImage(UIImage(named: wasSecure ? "eye.slash" : "eye"))
+        }
+    }
 
     /**
      Shows an alert and removes this space from the database, if user says so.

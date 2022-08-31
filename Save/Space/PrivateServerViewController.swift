@@ -73,6 +73,9 @@ class PrivateServerViewController: BaseServerViewController {
             <<< passwordRow.cellUpdate() { _, _ in
                 self.enableConnect()
             }
+            .cellSetup() { [weak self] cell, _ in
+                cell.accessoryView = self?.discloseButton
+            }
 
             <<< LabelRow() {
                 $0.title = String(format: NSLocalizedString("__webdav_description__", comment: ""), Bundle.main.displayName)
