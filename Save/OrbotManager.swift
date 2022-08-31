@@ -154,7 +154,17 @@ class OrbotManager: OrbotStatusChangeListener {
         tokenAlert?.textFields?.first?.text = token
     }
 
-    func alertOrbotStopped(_ completed: (() -> Void)? = nil) {
+    /**
+     Shows an alert, if
+
+     - app is set up to only use Orbot,
+     - Orbot is *not* running,
+     - there are uploads in the queue.
+
+     - parameter count: Number of uploads in the queue. If `nil`, method will try find out itself. Beware of database issues when crossing threads!
+     - parameter completed: Callback after user interaction or immediately, when no alert is shown.
+     */
+    func alertOrbotStopped(count: UInt? = nil, _ completed: (() -> Void)? = nil) {
         guard Settings.useOrbot && status == .stopped,
               let topVc = UIApplication.shared.delegate?.window??.rootViewController?.top
         else {
@@ -163,13 +173,15 @@ class OrbotManager: OrbotStatusChangeListener {
             return
         }
 
-        var count: UInt = 0
+        var ownCount = count ?? 0
 
-        Db.bgRwConn?.read({ transaction in
-            count = transaction.numberOfKeys(inCollection: Upload.collection)
-        })
+        if count == nil {
+            Db.bgRwConn?.read { transaction in
+                ownCount = transaction.numberOfKeys(inCollection: Upload.collection)
+            }
+        }
 
-        guard count > 0 else {
+        guard ownCount > 0 else {
             completed?()
 
             return

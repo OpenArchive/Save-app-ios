@@ -201,8 +201,10 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
                     }
             }
 
+            let count = transaction.numberOfKeys(inCollection: Upload.collection)
+
             DispatchQueue.main.async {
-                OrbotManager.shared.alertOrbotStopped() { [weak self] in
+                OrbotManager.shared.alertOrbotStopped(count: count) { [weak self] in
                     self?.navigationController?.popViewController(animated: true)
                 }
             }
