@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.8.1
+- Improved "Orbot not running" warnings.
+- Fixed unresponsiveness/crash on first run.
+- Added disclose button to password field.
+
 ## 2.8.0
 - Improved support for bigger fonts for accessibility.
 - Fixed problem, where main scene showed the wrong state.
