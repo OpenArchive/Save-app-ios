@@ -35,15 +35,17 @@ class BaseServerViewController: FormViewController {
     })
 
     var discloseButton: UIButton {
-        let image = UIImage(named: "eye")
-
         let button = UIButton(type: .custom)
-        button.setImage(image)
-        button.frame = CGRect(origin: .zero, size: image?.size ?? CGSize(width: 21, height: 21))
+        button.setImage(pwdSecureImg)
+        button.frame = CGRect(origin: .zero, size: pwdSecureImg?.size ?? CGSize(width: 21, height: 21))
         button.addTarget(self, action: #selector(discloseButtonTapped), for: .touchUpInside)
 
         return button
     }
+
+
+    private lazy var pwdInsecureImg = UIImage(named: "eye")
+    private lazy var pwdSecureImg = UIImage(named: "eye.slash")
 
 
     override init() {
@@ -87,7 +89,7 @@ class BaseServerViewController: FormViewController {
 
             cell.textField?.isSecureTextEntry = !wasSecure
 
-            sender.setImage(UIImage(named: wasSecure ? "eye.slash" : "eye"))
+            sender.setImage(wasSecure ? pwdInsecureImg : pwdSecureImg)
         }
     }
 
