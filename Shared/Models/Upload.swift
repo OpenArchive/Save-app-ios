@@ -129,17 +129,19 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
     }
 
 
-    // MARK: NSCoding
+    // MARK: NSSecureCoding
+
+    static var supportsSecureCoding = true
 
     required init?(coder decoder: NSCoder) {
-        id = decoder.decodeObject(forKey: "id") as? String ?? UUID().uuidString
+        id = decoder.decodeObject(of: NSString.self, forKey: "id") as? String ?? UUID().uuidString
         order = decoder.decodeInteger(forKey: "order")
         _progress = decoder.decodeDouble(forKey: "progress")
         paused = decoder.decodeBool(forKey: "paused")
         tries = decoder.decodeInteger(forKey: "tries")
-        lastTry = decoder.decodeObject(forKey: "lastTry") as? Date
-        error = decoder.decodeObject(forKey: "error") as? String
-        assetId = decoder.decodeObject(forKey: "assetId") as? String
+        lastTry = decoder.decodeObject(of: NSDate.self, forKey: "lastTry") as? Date
+        error = decoder.decodeObject(of: NSString.self, forKey: "error") as? String
+        assetId = decoder.decodeObject(of: NSString.self, forKey: "assetId") as? String
     }
 
     func encode(with coder: NSCoder) {
@@ -157,8 +159,9 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
     // MARK: NSCopying
 
     func copy(with zone: NSZone? = nil) -> Any {
-        return NSKeyedUnarchiver.unarchiveObject(with:
-            NSKeyedArchiver.archivedData(withRootObject: self))!
+        return (try! NSKeyedUnarchiver.unarchivedObject(
+            ofClass: type(of: self),
+            from: try! NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: true)))!
     }
 
 

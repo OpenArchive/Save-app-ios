@@ -128,14 +128,16 @@ class Collection: NSObject, Item, YapDatabaseRelationshipNode {
     }
 
 
-    // MARK: NSCoding
+    // MARK: NSSecureCoding
+
+    static var supportsSecureCoding = true
 
     required init?(coder: NSCoder) {
-        id = coder.decodeObject(forKey: "id") as? String ?? UUID().uuidString
-        projectId = coder.decodeObject(forKey: "projectId") as! String
-        created = coder.decodeObject(forKey: "created") as? Date ?? Date()
-        closed = coder.decodeObject(forKey: "closed") as? Date
-        uploaded = coder.decodeObject(forKey: "uploaded") as? Date
+        id = coder.decodeObject(of: NSString.self, forKey: "id") as? String ?? UUID().uuidString
+        projectId = coder.decodeObject(of: NSString.self, forKey: "projectId")! as String
+        created = coder.decodeObject(of: NSDate.self, forKey: "created") as? Date ?? Date()
+        closed = coder.decodeObject(of: NSDate.self, forKey: "closed") as? Date
+        uploaded = coder.decodeObject(of: NSDate.self, forKey: "uploaded") as? Date
     }
 
     func encode(with coder: NSCoder) {
@@ -150,8 +152,9 @@ class Collection: NSObject, Item, YapDatabaseRelationshipNode {
     // MARK: NSCopying
 
     func copy(with zone: NSZone? = nil) -> Any {
-        return NSKeyedUnarchiver.unarchiveObject(with:
-            NSKeyedArchiver.archivedData(withRootObject: self))!
+        return (try! NSKeyedUnarchiver.unarchivedObject(
+            ofClass: type(of: self),
+            from: try! NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: true)))!
     }
 
 

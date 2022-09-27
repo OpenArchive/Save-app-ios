@@ -147,7 +147,7 @@ class Db {
  The app crashed once, because YapDatabase tried to call NSCopying protocol.
  Not sure, why but better implement it...
  */
-protocol Item: NSCoding, NSCopying {
+protocol Item: NSSecureCoding, NSCopying {
 
     static var collection: String { get }
 

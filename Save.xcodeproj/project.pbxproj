@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 51;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -130,7 +130,7 @@
 		A06D935C233B854D006B2EA3 /* ProjectTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06D935B233B854D006B2EA3 /* ProjectTab.swift */; };
 		A06D935D233B854D006B2EA3 /* ProjectTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06D935B233B854D006B2EA3 /* ProjectTab.swift */; };
 		A06D935E233B854D006B2EA3 /* ProjectTab.swift in Sources */ = {isa = PBXBuildFile; fileRef = A06D935B233B854D006B2EA3 /* ProjectTab.swift */; };
-		A07129052111CC90007A432A /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A07128FB2111CC90007A432A /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A07129052111CC90007A432A /* ShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A07128FB2111CC90007A432A /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A071290A2111DC6A007A432A /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6620EF96FB00B8FBCB /* StringUtils.swift */; };
 		A071290C2111DE3C007A432A /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D58DCD20E51517005A2F34 /* Asset.swift */; };
 		A07129102111E4F1007A432A /* Db.swift in Sources */ = {isa = PBXBuildFile; fileRef = A071290F2111E4F1007A432A /* Db.swift */; };
@@ -298,7 +298,7 @@
 		A09B540123266F02005266C2 /* SelectedSpaceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A045D1EF224CFB96008FF8C1 /* SelectedSpaceCell.xib */; };
 		A09B540223266F02005266C2 /* Montserrat-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A05471B22296B77D009FEA93 /* Montserrat-Regular.ttf */; };
 		A09B540623266F02005266C2 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0FE2C2C22E20C5A00C5443F /* InfoPlist.strings */; };
-		A09B540A23266F02005266C2 /* ShareExtension.appex in Embed App Extensions */ = {isa = PBXBuildFile; fileRef = A07128FB2111CC90007A432A /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		A09B540A23266F02005266C2 /* ShareExtension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = A07128FB2111CC90007A432A /* ShareExtension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		A09B541423267119005266C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A09B541323267119005266C2 /* Assets.xcassets */; };
 		A09B5416232671D1005266C2 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09B5415232671D0005266C2 /* AppDelegate.swift */; };
 		A09B5419232673EE005266C2 /* AppDelegateBase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09B5418232673E2005266C2 /* AppDelegateBase.swift */; };
@@ -452,26 +452,26 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		A07129092111CC90007A432A /* Embed App Extensions */ = {
+		A07129092111CC90007A432A /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				A07129052111CC90007A432A /* ShareExtension.appex in Embed App Extensions */,
+				A07129052111CC90007A432A /* ShareExtension.appex in Embed Foundation Extensions */,
 			);
-			name = "Embed App Extensions";
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		A09B540923266F02005266C2 /* Embed App Extensions */ = {
+		A09B540923266F02005266C2 /* Embed Foundation Extensions */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 13;
 			files = (
-				A09B540A23266F02005266C2 /* ShareExtension.appex in Embed App Extensions */,
+				A09B540A23266F02005266C2 /* ShareExtension.appex in Embed Foundation Extensions */,
 			);
-			name = "Embed App Extensions";
+			name = "Embed Foundation Extensions";
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXCopyFilesBuildPhase section */
@@ -1167,7 +1167,7 @@
 			buildConfigurationList = A07129082111CC90007A432A /* Build configuration list for PBXNativeTarget "ShareExtension" */;
 			buildPhases = (
 				FEA09B9C1F7CC57B0CC534DC /* [CP] Check Pods Manifest.lock */,
-				A08CA2CE27DBB78200F23100 /* ShellScript */,
+				A08CA2CE27DBB78200F23100 /* BartyCrouch */,
 				A07128F72111CC90007A432A /* Sources */,
 				A07128F82111CC90007A432A /* Frameworks */,
 				A07128F92111CC90007A432A /* Resources */,
@@ -1189,7 +1189,7 @@
 				A09B537B23266F02005266C2 /* Sources */,
 				A09B53E323266F02005266C2 /* Frameworks */,
 				A09B53E523266F02005266C2 /* Resources */,
-				A09B540923266F02005266C2 /* Embed App Extensions */,
+				A09B540923266F02005266C2 /* Embed Foundation Extensions */,
 				45127F73FD3506FD4EAB3F78 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -1210,7 +1210,7 @@
 				A0E739D020E4C85D00DB31E1 /* Sources */,
 				A0E739D120E4C85D00DB31E1 /* Frameworks */,
 				A0E739D220E4C85D00DB31E1 /* Resources */,
-				A07129092111CC90007A432A /* Embed App Extensions */,
+				A07129092111CC90007A432A /* Embed Foundation Extensions */,
 				BB3D751BA726F0626F98ECB5 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
@@ -1230,7 +1230,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1020;
-				LastUpgradeCheck = 1340;
+				LastUpgradeCheck = 1400;
 				ORGANIZATIONNAME = "Open Archive";
 				TargetAttributes = {
 					A05768D622E0B67D00B39FCE = {
@@ -1423,8 +1423,9 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		A08CA2CE27DBB78200F23100 /* ShellScript */ = {
+		A08CA2CE27DBB78200F23100 /* BartyCrouch */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);
@@ -1432,6 +1433,7 @@
 			);
 			inputPaths = (
 			);
+			name = BartyCrouch;
 			outputFileListPaths = (
 			);
 			outputPaths = (
@@ -1968,7 +1970,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
 				INFOPLIST_FILE = Screenshots/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1991,7 +1993,7 @@
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = "$(DEVELOPMENT_TEAM)";
 				INFOPLIST_FILE = Screenshots/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2164,7 +2166,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -2221,7 +2223,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;

@@ -26,7 +26,7 @@ class WebDavSpace: Space, Item {
 
     var credential: URLCredential? {
         if let username = username,
-            let password = password
+           let password = password
         {
             return URLCredential(user: username, password: password, persistence: .forSession)
         }
@@ -69,5 +69,19 @@ class WebDavSpace: Space, Item {
 
     required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
+    }
+
+
+    // MARK: NSSecureCoding
+
+    static var supportsSecureCoding = true
+
+
+    // MARK: NSCopying
+
+    @objc(copyWithZone:) func copy(with zone: NSZone? = nil) -> Any {
+        return (try! NSKeyedUnarchiver.unarchivedObject(
+            ofClass: type(of: self),
+            from: try! NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: true)))!
     }
 }

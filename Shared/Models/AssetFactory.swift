@@ -239,23 +239,6 @@ class AssetFactory {
     }
 
     /**
-     Create an `Asset` object from a given `AIAssetUrl` as returned by
-     `imagePickerController:didFinishPickingMediaWithInfo` and store it in the database.
-
-     [PHImageManager](https://developer.apple.com/documentation/photokit/phimagemanager)
-
-     [How to get Original Image and media type from PHAsset?](https://stackoverflow.com/questions/35264023/how-to-get-original-image-and-media-type-from-phasset)
-
-     - parameter url: The URL as received in `UIImagePickerControllerReferenceURL`
-     - parameter collection: The collection the asset will belong to.
-     */
-    class func create(fromAlAssetUrl url: URL, _ collection: Collection) {
-        if let phasset = PHAsset.fetchAssets(withALAssetURLs: [url], options: nil).firstObject {
-            create(fromPhasset: phasset, collection)
-        }
-    }
-
-    /**
      Create an `Asset` object from a given file `URL` and store it in the database.
 
      Will try to generate a thumbnail from the asset's file, if `thumbnail` is `nil` or could not

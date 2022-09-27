@@ -108,16 +108,18 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
     }
 
 
-    // MARK: NSCoding
+    // MARK: NSSecureCoding
+
+    static var supportsSecureCoding = true
 
     required init?(coder decoder: NSCoder) {
-        id = decoder.decodeObject(forKey: "id") as? String ?? UUID().uuidString
-        created = decoder.decodeObject(forKey: "created") as? Date ?? Date()
-        name = decoder.decodeObject(forKey: "name") as? String
-        license = decoder.decodeObject(forKey: "license") as? String
+        id = decoder.decodeObject(of: NSString.self, forKey: "id") as? String ?? UUID().uuidString
+        created = decoder.decodeObject(of: NSDate.self, forKey: "created") as? Date ?? Date()
+        name = decoder.decodeObject(of: NSString.self, forKey: "name") as? String
+        license = decoder.decodeObject(of: NSString.self, forKey: "license") as? String
         active = decoder.decodeBool(forKey: "active")
-        spaceId = decoder.decodeObject(forKey: "spaceId") as? String
-        collectionId = decoder.decodeObject(forKey: "collectionId") as? String
+        spaceId = decoder.decodeObject(of: NSString.self, forKey: "spaceId") as? String
+        collectionId = decoder.decodeObject(of: NSString.self, forKey: "collectionId") as? String
     }
 
     func encode(with coder: NSCoder) {
@@ -134,8 +136,9 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
     // MARK: NSCopying
 
     func copy(with zone: NSZone? = nil) -> Any {
-        return NSKeyedUnarchiver.unarchiveObject(with:
-            NSKeyedArchiver.archivedData(withRootObject: self))!
+        return (try! NSKeyedUnarchiver.unarchivedObject(
+            ofClass: type(of: self),
+            from: try! NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: true)))!
     }
 
 

@@ -92,22 +92,22 @@ class Space: NSObject {
     }
 
 
-    // MARK: NSCoding
+    // MARK: NSSecureCoding
 
     @objc(initWithCoder:)
     required init?(coder decoder: NSCoder) {
-        id = decoder.decodeObject(forKey: "id") as? String ?? UUID().uuidString
-        name = decoder.decodeObject(forKey: "name") as? String
-        url = decoder.decodeObject(forKey: "url") as? URL
-        favIcon = decoder.decodeObject(forKey: "favIcon") as? UIImage
-        username = decoder.decodeObject(forKey: "username") as? String
-        password = decoder.decodeObject(forKey: "password") as? String
+        id = decoder.decodeObject(of: NSString.self, forKey: "id") as? String ?? UUID().uuidString
+        name = decoder.decodeObject(of: NSString.self, forKey: "name") as? String
+        url = decoder.decodeObject(of: NSURL.self, forKey: "url") as? URL
+        favIcon = decoder.decodeObject(of: UIImage.self, forKey: "favIcon")
+        username = decoder.decodeObject(of: NSString.self, forKey: "username") as? String
+        password = decoder.decodeObject(of: NSString.self, forKey: "password") as? String
         isNextcloud = decoder.decodeBool(forKey: "nextcloud")
-        authorName = decoder.decodeObject(forKey: "authorName") as? String
-        authorRole = decoder.decodeObject(forKey: "authorRole") as? String
-        authorOther = decoder.decodeObject(forKey: "authorOther") as? String
+        authorName = decoder.decodeObject(of: NSString.self, forKey: "authorName") as? String
+        authorRole = decoder.decodeObject(of: NSString.self, forKey: "authorRole") as? String
+        authorOther = decoder.decodeObject(of: NSString.self, forKey: "authorOther") as? String
         tries = decoder.decodeInteger(forKey: "tries")
-        lastTry = decoder.decodeObject(forKey: "lastTry") as? Date
+        lastTry = decoder.decodeObject(of: NSDate.self, forKey: "lastTry") as? Date
     }
 
     @objc(encodeWithCoder:) func encode(with coder: NSCoder) {
@@ -123,14 +123,6 @@ class Space: NSObject {
         coder.encode(authorOther, forKey: "authorOther")
         coder.encode(tries, forKey: "tries")
         coder.encode(lastTry, forKey: "lastTry")
-    }
-
-
-    // MARK: NSCopying
-
-    @objc(copyWithZone:) func copy(with zone: NSZone? = nil) -> Any {
-        return NSKeyedUnarchiver.unarchiveObject(with:
-            NSKeyedArchiver.archivedData(withRootObject: self))!
     }
 
 

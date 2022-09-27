@@ -338,27 +338,29 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     }
 
 
-    // MARK: NSCoding
+    // MARK: NSSecureCoding
+
+    static var supportsSecureCoding = true
 
     required init(coder decoder: NSCoder) {
-        id = decoder.decodeObject(forKey: "id") as? String ?? UUID().uuidString
-        created = decoder.decodeObject(forKey: "created") as? Date ?? Date()
-        uti = decoder.decodeObject(forKey: "uti") as! String
-        _filename = decoder.decodeObject(forKey: "filename") as? String
-        title = decoder.decodeObject(forKey: "title") as? String
-        desc = decoder.decodeObject(forKey: "desc") as? String
-        location = decoder.decodeObject(forKey: "location") as? String
-        notes = decoder.decodeObject(forKey: "notes") as? String
-        tags = decoder.decodeObject(forKey: "tags") as? [String]
-        phassetId = decoder.decodeObject(forKey: "phassetId") as? String
+        id = decoder.decodeObject(of: NSString.self, forKey: "id") as? String ?? UUID().uuidString
+        created = decoder.decodeObject(of: NSDate.self, forKey: "created") as? Date ?? Date()
+        uti = decoder.decodeObject(of: NSString.self, forKey: "uti")! as String
+        _filename = decoder.decodeObject(of: NSString.self, forKey: "filename") as? String
+        title = decoder.decodeObject(of: NSString.self, forKey: "title") as? String
+        desc = decoder.decodeObject(of: NSString.self, forKey: "desc") as? String
+        location = decoder.decodeObject(of: NSString.self, forKey: "location") as? String
+        notes = decoder.decodeObject(of: NSString.self, forKey: "notes") as? String
+        tags = decoder.decodeObject(of: [NSString.self], forKey: "tags") as? [String]
+        phassetId = decoder.decodeObject(of: NSString.self, forKey: "phassetId") as? String
         phImageRequestId = decoder.decodeInt32(forKey: "phImageRequestId")
-        publicUrl = decoder.decodeObject(forKey: "publicUrl") as? URL
+        publicUrl = decoder.decodeObject(of: NSURL.self, forKey: "publicUrl") as? URL
         isReady = decoder.decodeBool(forKey: "isReady")
         isUploaded = decoder.decodeBool(forKey: "isUploaded")
-        collectionId = decoder.decodeObject(forKey: "collectionId") as? String
+        collectionId = decoder.decodeObject(of: NSString.self, forKey: "collectionId") as? String
         _filesize = decoder.decodeInt64(forKey: "filesize")
         _digest = decoder.decodeObject(forKey: "digest") as? Data
-        _duration = decoder.decodeObject(forKey: "duration") as? TimeInterval
+        _duration = decoder.decodeObject(of: NSNumber.self, forKey: "duration") as? TimeInterval
     }
 
     func encode(with coder: NSCoder) {
@@ -386,8 +388,9 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     // MARK: NSCopying
 
     func copy(with zone: NSZone? = nil) -> Any {
-        return NSKeyedUnarchiver.unarchiveObject(with:
-            NSKeyedArchiver.archivedData(withRootObject: self))!
+        return (try! NSKeyedUnarchiver.unarchivedObject(
+            ofClass: type(of: self),
+            from: try! NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: true)))!
     }
 
 

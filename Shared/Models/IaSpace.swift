@@ -74,4 +74,18 @@ class IaSpace: Space, Item {
         coder.encode(tries, forKey: "tries")
         coder.encode(lastTry, forKey: "lastTry")
     }
+
+
+    // MARK: NSSecureCoding
+
+    static var supportsSecureCoding = true
+
+
+    // MARK: NSCopying
+
+    @objc(copyWithZone:) func copy(with zone: NSZone? = nil) -> Any {
+        return (try! NSKeyedUnarchiver.unarchivedObject(
+            ofClass: type(of: self),
+            from: try! NSKeyedArchiver.archivedData(withRootObject: self, requiringSecureCoding: true)))!
+    }
 }
