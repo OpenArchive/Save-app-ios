@@ -1,8 +1,3 @@
-- Soporte mejorado para fuentes más grandes para accesibilidad.
-- Solucionado el problema, donde la escena principal mostraba un estado incorrecto.
-- El soporte de Dropbox ahora permite archivos de más de 150 MByte.
-- Escena de gestión de carga reelaborada:
-   - La carga actual ahora continuará mientras se reordenan otros.
-   - Las cargas finalizadas se mostrarán hasta que el usuario se vaya.
-- Se agregó soporte para Orbot iOS.
-- Traducciones actualizadas.
+- Se mejoraron las advertencias de "Orbot no se está ejecutando".
+- Se corrigió la falta de respuesta/bloqueo en la primera ejecución.
+- Se agregó el botón de divulgación al campo de contraseña.

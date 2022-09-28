@@ -1,8 +1,3 @@
-- Erişilebilirliği artırmak için daha büyük yazı tipleri desteği geliştirildi.
-- Ana sayfanın hatalı durum göstermesi sorunu çözüldü.
-- Dropbox desteğinin 150 MBayt boyutundan büyük dosyalara izin vermesi sağlandı.
-- Yükleme yönetimi sayfası üzerinde yeniden çalışıldı.
-- Diğer yüklemelerin sıralaması düzenlenirken geçerli yüklemenin sürdürülmesi sağlandı.
-- Tamamlanmış yüklemelerin kullanıcı ayrılana kadar görüntülenmesi sağlandı.
-- iOS için Orbot desteği eklendi.
-- Çeviriler güncellendi.
+- "Orbot çalışmıyor" uyarıları geliştirildi.
+- İlk çalıştırmada yaşanan yanıt vermeme ya da çökme sorunu düzeltildi.
+- Parola alanına parolayı görüntüle düğmesi eklendi
