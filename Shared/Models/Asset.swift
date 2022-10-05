@@ -351,7 +351,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         desc = decoder.decodeObject(of: NSString.self, forKey: "desc") as? String
         location = decoder.decodeObject(of: NSString.self, forKey: "location") as? String
         notes = decoder.decodeObject(of: NSString.self, forKey: "notes") as? String
-        tags = decoder.decodeObject(of: [NSString.self], forKey: "tags") as? [String]
+        tags = decoder.decodeObject(of: [NSArray.self, NSString.self], forKey: "tags") as? [String]
         phassetId = decoder.decodeObject(of: NSString.self, forKey: "phassetId") as? String
         phImageRequestId = decoder.decodeInt32(forKey: "phImageRequestId")
         publicUrl = decoder.decodeObject(of: NSURL.self, forKey: "publicUrl") as? URL
