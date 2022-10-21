@@ -195,12 +195,12 @@ class MenuViewController: TableWithSpacesViewController {
 
         case 3:
             if indexPath.row == 0 {
-                if let url = URL(string: "https://open-archive.org/about/") {
+                if let url = URL(string: "https://open-archive.org/about") {
                     UIApplication.shared.open(url, options: [:])
                 }
             }
             if indexPath.row == 1 {
-                if let url = URL(string: "https://open-archive.org/privacy/") {
+                if let url = URL(string: "https://open-archive.org/privacy") {
                     UIApplication.shared.open(url, options: [:])
                 }
             }
