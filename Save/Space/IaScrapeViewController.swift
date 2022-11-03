@@ -28,7 +28,10 @@ class IaScrapeViewController: UIViewController, WKUIDelegate, WKNavigationDelega
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .refresh, target: self, action: #selector(load))
 
-        let webView = WKWebView(frame: .zero, configuration: WKWebViewConfiguration())
+        let configuration = WKWebViewConfiguration()
+        configuration.websiteDataStore = .nonPersistent()
+
+        let webView = WKWebView(frame: .zero, configuration: configuration)
         webView.uiDelegate = self
         webView.navigationDelegate = self
 
@@ -82,9 +85,9 @@ class IaScrapeViewController: UIViewController, WKUIDelegate, WKNavigationDelega
     // MARK: Private Methods
 
     private func callDelegateIfReady() {
-        if let accessKey = accessKey,
-            let secretKey = secretKey {
-
+        if let accessKey = accessKey, !accessKey.isEmpty,
+           let secretKey = secretKey, !secretKey.isEmpty
+        {
             self.delegate?.scraped(accessKey: accessKey, secretKey: secretKey)
         }
     }
