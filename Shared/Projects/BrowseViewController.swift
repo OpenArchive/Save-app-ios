@@ -175,7 +175,7 @@ class BrowseViewController: BaseTableViewController {
 
     private func dropboxCompletionHandler<T: CustomStringConvertible>(_ result: Files.ListFolderResult?, _ error: CallError<T>?) {
         if let error = error {
-            print("[\(String(describing: type(of: self)))] error=\(error)")
+            debugPrint("[\(String(describing: type(of: self)))] error=\(error)")
 
             return self.endWork(NSError.from(error))
         }

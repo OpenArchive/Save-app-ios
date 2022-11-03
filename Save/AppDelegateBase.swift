@@ -97,7 +97,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         DropboxClientsManager.handleRedirectURL(url) { [weak self] authResult in
             switch authResult {
             case .success(let token):
-                print("[\(String(describing: type(of: self)))] dropbox auth success token=\(token)")
+                debugPrint("[\(String(describing: type(of: self)))] dropbox auth success token=\(token)")
 
                 SelectedSpace.space = DropboxSpace()
                 SelectedSpace.space?.username = token.uid
@@ -128,11 +128,11 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                 menuNav?.setViewControllers([AddProjectViewController()], animated: true)
 
             case .cancel, .none:
-                print("[\(String(describing: type(of: self)))] dropbox auth cancelled")
+                debugPrint("[\(String(describing: type(of: self)))] dropbox auth cancelled")
                 // Nothing to do. User cancelled. Dropbox authentication scene should close automatically.
 
             case .error(let error, let description):
-                print("[\(String(describing: type(of: self)))] dropbox auth error=\(error), description=\(description ?? "nil")")
+                debugPrint("[\(String(describing: type(of: self)))] dropbox auth error=\(error), description=\(description ?? "nil")")
                 // Nothing to do. User bailed out after login.
                 // Dropbox authentication scene should close automatically.
             }

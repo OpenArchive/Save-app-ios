@@ -76,7 +76,7 @@ class HeaderView: UICollectionReusableView {
             delegate?.showDetails(collection, section: section)
         }
         else {
-            print("[\(String(describing: type(of: self)))]#manage - no collection! That should not happen!")
+            debugPrint("[\(String(describing: type(of: self)))]#manage - no collection! That should not happen!")
         }
     }
 }
