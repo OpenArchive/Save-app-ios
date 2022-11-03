@@ -97,7 +97,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         DropboxClientsManager.handleRedirectURL(url) { [weak self] authResult in
             switch authResult {
             case .success(let token):
-                debugPrint("[\(String(describing: type(of: self)))] dropbox auth success token=\(token)")
+                debugPrint("[\(String(describing: type(of: self)))] dropbox auth success")
 
                 SelectedSpace.space = DropboxSpace()
                 SelectedSpace.space?.username = token.uid
