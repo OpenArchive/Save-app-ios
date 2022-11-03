@@ -31,6 +31,12 @@ class IaScrapeViewController: UIViewController, WKUIDelegate, WKNavigationDelega
         let configuration = WKWebViewConfiguration()
         configuration.websiteDataStore = .nonPersistent()
 
+        // Increase security: Although it currently seems like archive.org doesn't link away to any other site,
+        // set this, so users don't accidentally go astray and catch themselves an ugly script.
+        if #available(iOS 14.0, *) {
+            configuration.limitsNavigationsToAppBoundDomains = true
+        }
+
         let webView = WKWebView(frame: .zero, configuration: configuration)
         webView.uiDelegate = self
         webView.navigationDelegate = self

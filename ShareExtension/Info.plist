@@ -39,5 +39,9 @@
 		<key>NSExtensionPrincipalClass</key>
 		<string>MainViewController</string>
 	</dict>
+	<key>WKAppBoundDomains</key>
+	<array>
+		<string>archive.org</string>
+	</array>
 </dict>
 </plist>
