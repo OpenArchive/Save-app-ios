@@ -19,6 +19,7 @@ class Settings {
     private static let kFirstFlaggedDone = "first_flagged_done"
     private static let kFirstBatchEditDone = "first_batch_edit_done"
     private static let kIaShownFirstTime = "ia_shown_first_time"
+    private static let kThirdPartyKeyboards = "third_party_keyboards"
 
     private class var defaults: UserDefaults? {
         UserDefaults(suiteName: Constants.suiteName)
@@ -110,6 +111,15 @@ class Settings {
         }
         set {
             defaults?.set(newValue, forKey: kIaShownFirstTime)
+        }
+    }
+
+    class var thirdPartyKeyboards: Bool {
+        get {
+            defaults?.bool(forKey: kThirdPartyKeyboards) ?? false
+        }
+        set {
+            defaults?.set(newValue, forKey: kThirdPartyKeyboards)
         }
     }
 }

@@ -338,7 +338,7 @@
 		A0B645CB22B7AEBB00BBE3FF /* BigMenuItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B645C622B7ADAA00BBE3FF /* BigMenuItemCell.swift */; };
 		A0BBEF8922846F310071EE93 /* Geocoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BBEF8822846F310071EE93 /* Geocoder.swift */; };
 		A0BBEF8A22846F310071EE93 /* Geocoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BBEF8822846F310071EE93 /* Geocoder.swift */; };
-		A0BF451A27DF5EE800DBB629 /* HealthCheckViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BF451927DF5EE800DBB629 /* HealthCheckViewController.swift */; };
+		A0BF451A27DF5EE800DBB629 /* MiscSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BF451927DF5EE800DBB629 /* MiscSettingsViewController.swift */; };
 		A0C475B4211474A50012937E /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A004E24B20EBCF1700A1D5F5 /* Formatters.swift */; };
 		A0C475B5211474A70012937E /* RegexUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */; };
 		A0C475B7211488BF0012937E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DE20E4C85E00DB31E1 /* Assets.xcassets */; };
@@ -637,7 +637,7 @@
 		A0B645C722B7ADAB00BBE3FF /* BigMenuItemCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BigMenuItemCell.xib; sourceTree = "<group>"; };
 		A0BA76E52111FA130009801D /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A0BBEF8822846F310071EE93 /* Geocoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geocoder.swift; sourceTree = "<group>"; };
-		A0BF451927DF5EE800DBB629 /* HealthCheckViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HealthCheckViewController.swift; sourceTree = "<group>"; };
+		A0BF451927DF5EE800DBB629 /* MiscSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MiscSettingsViewController.swift; sourceTree = "<group>"; };
 		A0C0732B20EE7AB600EA48F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		A0C475B6211481710012937E /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		A0C475BF21149B040012937E /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
@@ -1062,7 +1062,7 @@
 				A0E2720B224E33D000CB7113 /* EditProjectViewController.swift */,
 				A0FA93432277557D0086D276 /* DataUsageViewController.swift */,
 				A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */,
-				A0BF451927DF5EE800DBB629 /* HealthCheckViewController.swift */,
+				A0BF451927DF5EE800DBB629 /* MiscSettingsViewController.swift */,
 			);
 			path = Space;
 			sourceTree = "<group>";
@@ -1776,7 +1776,7 @@
 				A0F7FDE722494E2F006610F0 /* RemoveProjectAlert.swift in Sources */,
 				A094EA4B282AD110006CE059 /* DropboxConduit.swift in Sources */,
 				A0F1364F227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift in Sources */,
-				A0BF451A27DF5EE800DBB629 /* HealthCheckViewController.swift in Sources */,
+				A0BF451A27DF5EE800DBB629 /* MiscSettingsViewController.swift in Sources */,
 				A0DE78B221F771A700B6B68B /* BaseProjectViewController.swift in Sources */,
 				A08C2CED21F0C634008ACA3E /* AvatarRow.swift in Sources */,
 				A052A492230D546F00E72594 /* InfoAlert.swift in Sources */,

@@ -122,7 +122,7 @@ class MenuViewController: TableWithSpacesViewController {
             case 0:
                 return cell.set(NSLocalizedString("Data Usage", comment: ""), accessoryType: .disclosureIndicator)
             default:
-                return cell.set(NSLocalizedString("Health Checks", comment: ""), accessoryType: .disclosureIndicator)
+                return cell.set(NSLocalizedString("Miscellaneous", comment: ""), accessoryType: .disclosureIndicator)
             }
 
         case 3:
@@ -190,7 +190,7 @@ class MenuViewController: TableWithSpacesViewController {
                 vc = DataUsageViewController()
 
             default:
-                vc = HealthCheckViewController()
+                vc = MiscSettingsViewController()
             }
 
         case 3:

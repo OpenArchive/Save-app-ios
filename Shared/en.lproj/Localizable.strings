@@ -61,6 +61,9 @@
 /* ShareExtension.MainViewController */
 "Adding…" = "Adding…";
 
+/* MiscSettingsViewController */
+"Allow 3rd-Party Keyboards" = "Allow 3rd-Party Keyboards";
+
 /* EditProjectViewController */
 "Allow anyone to remix and share" = "Allow anyone to remix and share";
 
@@ -237,6 +240,9 @@
 
 /* MenuViewController */
 "Menu" = "Menu";
+
+/* MiscSettingsViewController */
+"Miscellaneous" = "Miscellaneous";
 
 /* ManagementViewController */
 "Multiple attempts with no success" = "Multiple attempts with no success";

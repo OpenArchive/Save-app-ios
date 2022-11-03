@@ -1,5 +1,5 @@
 //
-//  HealthCheckViewController.swift
+//  MiscSettingsViewController.swift
 //  OpenArchive
 //
 //  Created by Benjamin Erhart on 14.03.22.
@@ -10,7 +10,7 @@ import UIKit
 import Eureka
 import CleanInsightsSDK
 
-class HealthCheckViewController: FormViewController {
+class MiscSettingsViewController: FormViewController {
 
     private static let campaignId = "upload_fails"
 
@@ -28,7 +28,7 @@ class HealthCheckViewController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = NSLocalizedString("Health Checks", comment: "")
+        navigationItem.title = NSLocalizedString("Miscellaneous", comment: "")
 
         form
         +++ uploadFailsRow
@@ -63,6 +63,14 @@ class HealthCheckViewController: FormViewController {
                 self?.uploadFailsRow.updateCell()
             }
         }
+
+        +++ SwitchRow() {
+            $0.title = NSLocalizedString("Allow 3rd-Party Keyboards", comment: "")
+            $0.value = Settings.thirdPartyKeyboards
+        }
+        .onChange({ row in
+            Settings.thirdPartyKeyboards = row.value ?? false
+        })
     }
 
     override func viewWillAppear(_ animated: Bool) {

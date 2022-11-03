@@ -155,6 +155,17 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         }
     }
 
+    func application(_ application: UIApplication, shouldAllowExtensionPointIdentifier
+                     extensionPointIdentifier: UIApplication.ExtensionPointIdentifier) -> Bool
+    {
+        // Potential security issue: Only allow custom keyboards, if user explicitly said so.
+        if extensionPointIdentifier == .keyboard {
+            return Settings.thirdPartyKeyboards
+        }
+
+        return true
+    }
+
 
     // MARK: UNUserNotificationCenterDelegate
 
