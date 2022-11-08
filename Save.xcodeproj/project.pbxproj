@@ -171,6 +171,7 @@
 		A094EA4D282AD23D006CE059 /* NSError+from.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02BC66D2400195C007B05AB /* NSError+from.swift */; };
 		A094EA4E282AD23D006CE059 /* NSError+from.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02BC66D2400195C007B05AB /* NSError+from.swift */; };
 		A094EA4F282AD23E006CE059 /* NSError+from.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02BC66D2400195C007B05AB /* NSError+from.swift */; };
+		A0958DEE291AA37700D917C0 /* SecureEnclave.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0958DED291AA37700D917C0 /* SecureEnclave.swift */; };
 		A098980622369F8100022851 /* ManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A098980522369F8100022851 /* ManagementViewController.swift */; };
 		A09898082236A7B100022851 /* UploadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09898072236A7B100022851 /* UploadCell.swift */; };
 		A098980A2236A9E800022851 /* UploadsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09898092236A9E800022851 /* UploadsView.swift */; };
@@ -605,6 +606,7 @@
 		A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AvatarCell.xib; sourceTree = "<group>"; };
 		A08CA2CF27DBB7BB00F23100 /* .bartycrouch.toml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .bartycrouch.toml; sourceTree = "<group>"; };
 		A092C0EF223A8D4B003EB0AA /* DoneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneDelegate.swift; sourceTree = "<group>"; };
+		A0958DED291AA37700D917C0 /* SecureEnclave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureEnclave.swift; sourceTree = "<group>"; };
 		A098980522369F8100022851 /* ManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementViewController.swift; sourceTree = "<group>"; };
 		A09898072236A7B100022851 /* UploadCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadCell.swift; sourceTree = "<group>"; };
 		A09898092236A9E800022851 /* UploadsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadsView.swift; sourceTree = "<group>"; };
@@ -763,6 +765,7 @@
 			children = (
 				A006AF3328198752007637DD /* AlertHelper.swift */,
 				A0FA93402277387D0086D276 /* Bundle+displayName.swift */,
+				A006A6AB282973C10029E49B /* DispatchGroup+waitSignal.swift */,
 				A092C0EF223A8D4B003EB0AA /* DoneDelegate.swift */,
 				A0FE2C1D22E1E8D200C5443F /* Error+friendlyMessage.swift */,
 				A004E24B20EBCF1700A1D5F5 /* Formatters.swift */,
@@ -771,7 +774,9 @@
 				A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */,
 				A070335A2119E7DF00BF1F33 /* Request+debug.swift */,
 				A05F79FD22EEFA9F003DBB74 /* RuleFilename.swift */,
+				A0958DED291AA37700D917C0 /* SecureEnclave.swift */,
 				A0457E6620EF96FB00B8FBCB /* StringUtils.swift */,
+				A006A6A7282950D00029E49B /* UIBackgroundFetchResult+description.swift */,
 				A076790127BE89E900609630 /* UIButton+Utils.swift */,
 				A0212FCD22D374CA009079DC /* UICollectionView+selection.swift */,
 				A0362191220DA390003C21DC /* UIColor+accent.swift */,
@@ -780,11 +785,9 @@
 				A05471DA2296C8FD009FEA93 /* UITableView+separatorView.swift */,
 				A055204F222566CE00B9645F /* UIView+animateHideShow.swift */,
 				A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */,
+				A006AF3728199687007637DD /* URLSession+Utils.swift */,
 				A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */,
 				A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */,
-				A006AF3728199687007637DD /* URLSession+Utils.swift */,
-				A006A6A7282950D00029E49B /* UIBackgroundFetchResult+description.swift */,
-				A006A6AB282973C10029E49B /* DispatchGroup+waitSignal.swift */,
 				A05DF973282C0E13003FADA2 /* DavResponse.swift */,
 				A05DF98B282C118A003FADA2 /* FileInfo.swift */,
 				A0DA7626282D0F300039438A /* Date+rfcString.swift */,
@@ -1762,6 +1765,7 @@
 				A05DF984282C0F6E003FADA2 /* AEXMLError.swift in Sources */,
 				A0C797E922807DF00009751A /* SelectedCollection.swift in Sources */,
 				A00A8D47220C7EDD0083F0CB /* AbcFilteredByProjectView.swift in Sources */,
+				A0958DEE291AA37700D917C0 /* SecureEnclave.swift in Sources */,
 				A0F889EB228DA3440033A74D /* MenuNavigationController.swift in Sources */,
 				A0A3D9C72226D8DB00BB5A19 /* SpaceCell.swift in Sources */,
 				A08750A92112099700BFAFE4 /* Constants.m in Sources */,

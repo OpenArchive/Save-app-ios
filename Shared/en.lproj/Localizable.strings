@@ -235,6 +235,15 @@
 /* HeaderView */
 "Just now" = "Just now";
 
+/* MiscSettingsViewController */
+"Lock App with Device Passcode" = "Lock App with Device Passcode";
+
+/* MiscSettingsViewController */
+"Lock App with Face ID or Device Passcode" = "Lock App with Face ID or Device Passcode";
+
+/* MiscSettingsViewController */
+"Lock App with Touch ID or Device Passcode" = "Lock App with Touch ID or Device Passcode";
+
 /* SpaceViewController */
 "Login Info" = "Login Info";
 

@@ -71,6 +71,50 @@ class MiscSettingsViewController: FormViewController {
         .onChange({ row in
             Settings.thirdPartyKeyboards = row.value ?? false
         })
+
+        if SecureEnclave.deviceSecured() {
+            form
+            +++ SwitchRow() {
+                switch SecureEnclave.biometryType() {
+                case .touchID:
+                    $0.title = NSLocalizedString("Lock App with Touch ID or Device Passcode", comment: "")
+
+                case .faceID:
+                    $0.title = NSLocalizedString("Lock App with Face ID or Device Passcode", comment: "")
+
+                default:
+                    $0.title = NSLocalizedString("Lock App with Device Passcode", comment: "")
+                }
+
+                $0.value = SecureEnclave.loadKey() != nil
+                $0.cell.switchControl.onTintColor = .accent
+                $0.cell.textLabel?.numberOfLines = 0
+            }
+            .onChange { [weak self] row in
+                let newValue: Bool
+
+                if row.value ?? false {
+                    newValue = SecureEnclave.createKey() != nil
+                }
+                else {
+                    newValue = !SecureEnclave.removeKey()
+                }
+
+                // Seems, we can't create a key. Maybe running on a simulator?
+                if newValue != row.value {
+                    // Quirky way of disabling the onChange callback to avoid an endless loop.
+                    self?.form.delegate = nil
+
+                    row.value = newValue
+                    row.updateCell()
+
+                    row.disabled = true
+                    row.evaluateDisabled()
+
+                    self?.form.delegate = self // Enable callback again.
+                }
+            }
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

@@ -19,6 +19,14 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     var uploadManager: UploadManager?
 
 
+    /**
+    Flag, if biometric/password authentication after activation was successful.
+
+    Return to false immediately after positive check, otherwise, security issues will arise!
+    */
+    private var verified = false
+
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
 
@@ -74,7 +82,40 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
-        // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+
+        // Note: If restart is slow (and even crashes), it could be, that
+        // #applicationDidEnterBackground isn't finished, yet!
+
+        if !verified, let privateKey = SecureEnclave.loadKey() {
+            var counter = 0
+
+            repeat {
+                let nonce = SecureEnclave.getNonce()
+
+                verified = SecureEnclave.verify(
+                    nonce, signature: SecureEnclave.sign(nonce, with: privateKey),
+                    with: SecureEnclave.getPublicKey(privateKey))
+
+                counter += 1
+            } while !verified && counter < 3
+
+            if !verified {
+                applicationWillResignActive(application)
+                applicationDidEnterBackground(application)
+                applicationWillTerminate(application)
+
+                exit(0)
+            }
+
+            // Always return here, as the SecureEnclave operations will always
+            // trigger a user identification and therefore the app becomes inactive
+            // and then active again. So #applicationDidBecomeActive will be
+            // called again. Therefore, we store the result of the verification
+            // in an object property and check that on re-entry.
+            return
+        }
+
+        verified = false
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

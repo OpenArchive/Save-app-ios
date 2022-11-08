@@ -45,6 +45,8 @@
 	<true/>
 	<key>NSCameraUsageDescription</key>
 	<string>Please grant this app access to your camera, if you directly want to take photos or videos.</string>
+	<key>NSFaceIDUsageDescription</key>
+	<string>Needed, if you want to unlock the app with Face ID.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Please grant this app access to your microphone, if you directly want to take videos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
