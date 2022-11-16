@@ -21,6 +21,8 @@ class MiscSettingsViewController: FormViewController {
     private var uploadFailsRow = SwitchRow() {
         $0.title = NSLocalizedString("Health Checks", comment: "")
         $0.cellStyle = .subtitle
+        $0.cell.switchControl.onTintColor = .accent
+        $0.cell.textLabel?.numberOfLines = 0
         $0.cell.detailTextLabel?.numberOfLines = 0
     }
 
@@ -67,9 +69,21 @@ class MiscSettingsViewController: FormViewController {
         +++ SwitchRow() {
             $0.title = NSLocalizedString("Allow 3rd-Party Keyboards", comment: "")
             $0.value = Settings.thirdPartyKeyboards
+            $0.cell.switchControl.onTintColor = .accent
+            $0.cell.textLabel?.numberOfLines = 0
         }
         .onChange({ row in
             Settings.thirdPartyKeyboards = row.value ?? false
+        })
+
+        +++ SwitchRow() {
+            $0.title = NSLocalizedString("Hide App Content when in Background", comment: "")
+            $0.value = Settings.hideContent
+            $0.cell.switchControl.onTintColor = .accent
+            $0.cell.textLabel?.numberOfLines = 0
+        }
+        .onChange({ row in
+            Settings.hideContent = row.value ?? false
         })
 
         if SecureEnclave.deviceSecured() {

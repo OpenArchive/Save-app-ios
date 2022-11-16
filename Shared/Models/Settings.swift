@@ -20,6 +20,7 @@ class Settings {
     private static let kFirstBatchEditDone = "first_batch_edit_done"
     private static let kIaShownFirstTime = "ia_shown_first_time"
     private static let kThirdPartyKeyboards = "third_party_keyboards"
+    private static let kHideContent = "hide_content"
 
     private class var defaults: UserDefaults? {
         UserDefaults(suiteName: Constants.suiteName)
@@ -120,6 +121,15 @@ class Settings {
         }
         set {
             defaults?.set(newValue, forKey: kThirdPartyKeyboards)
+        }
+    }
+
+    class var hideContent: Bool {
+        get {
+            defaults?.bool(forKey: kHideContent) ?? false
+        }
+        set {
+            defaults?.set(newValue, forKey: kHideContent)
         }
     }
 }

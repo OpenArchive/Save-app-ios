@@ -208,6 +208,9 @@
 /* HealthCheckViewController */
 "Help improve the app by running health checks when uploads fail." = "Help improve the app by running health checks when uploads fail.";
 
+/* MiscSettingsViewController */
+"Hide App Content when in Background" = "Hide App Content when in Background";
+
 /* OrbotManager */
 "Ignore" = "Ignore";
 

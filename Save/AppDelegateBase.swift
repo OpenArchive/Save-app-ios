@@ -18,6 +18,25 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 
     var uploadManager: UploadManager?
 
+    lazy var curtain: UIWindow = {
+        let screen: UIScreen
+
+        if #available(iOS 13.0, *) {
+            screen = window?.windowScene?.screen ?? UIScreen.main
+        } else {
+            screen = UIScreen.main
+        }
+
+        let window = UIWindow(frame: screen.bounds)
+        window.screen = screen
+        window.rootViewController = UIStoryboard.main.instantiate(ClaimViewController.self)
+        window.windowLevel = .alert
+
+        return window
+    }()
+
+    private var hadResigned = false
+
 
     /**
     Flag, if biometric/password authentication after activation was successful.
@@ -50,6 +69,11 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+
+        if Settings.hideContent {
+            curtain.isHidden = false
+            hadResigned = true
+        }
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
@@ -82,6 +106,10 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     }
 
     func applicationDidBecomeActive(_ application: UIApplication) {
+
+        if Settings.hideContent && hadResigned {
+            curtain.isHidden = true
+        }
 
         // Note: If restart is slow (and even crashes), it could be, that
         // #applicationDidEnterBackground isn't finished, yet!
