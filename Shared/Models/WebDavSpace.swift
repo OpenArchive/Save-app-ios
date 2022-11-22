@@ -42,8 +42,6 @@ class WebDavSpace: Space, Item {
     var session: URLSession {
         if _session == nil {
             let conf = URLSessionConfiguration.ephemeral
-            conf.urlCache = nil
-            conf.requestCachePolicy = .reloadIgnoringLocalAndRemoteCacheData
 
             if let basicAuth = credential?.basicAuth {
                 conf.httpAdditionalHeaders = ["Authorization": basicAuth]
