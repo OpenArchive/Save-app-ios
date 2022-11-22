@@ -258,7 +258,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         toggleMode(newMode: false)
 
         if SelectedSpace.available {
-            let vc = UINavigationController(rootViewController: AddProjectViewController())
+            let vc = UINavigationController(rootViewController: AppAddProjectViewController())
             vc.modalPresentationStyle = .popover
             vc.popoverPresentationController?.sourceView = tabBar
             vc.popoverPresentationController?.sourceRect = tabBar.frame

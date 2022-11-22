@@ -10,14 +10,19 @@ import UIKit
 
 class AddProjectViewController: BaseTableViewController {
 
+    var noBrowse: Bool {
+        SelectedSpace.space is IaSpace || SelectedSpace.space is DropboxSpace
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        // We cannot browse the Internet Archive, so show NewProjectViewController
-        // immediately instead of this scene.
-        if SelectedSpace.space is IaSpace,
-            var stack = navigationController?.viewControllers {
-
+        // We cannot browse the Internet Archive.
+        // We cannot browse Dropbox in the app extension.
+        // So show NewProjectViewController immediately instead of this scene.
+        if noBrowse,
+           var stack = navigationController?.viewControllers
+        {
             stack.removeAll { $0 is AddProjectViewController }
             stack.append(NewProjectViewController())
             navigationController?.setViewControllers(stack, animated: false)

@@ -44,7 +44,7 @@ PODS:
   - OrbotKit (0.2.2)
   - ReachabilitySwift (5.0.0)
   - SDCAlertView (12.0.2)
-  - SwiftyDropbox (8.3.0):
+  - SwiftyDropbox (9.1.0):
     - Alamofire (~> 5.4.3)
   - TLPhotoPicker (2.1.9)
   - TUSafariActivity (1.0.4)
@@ -167,12 +167,12 @@ DEPENDENCIES:
   - FavIcon (from `https://github.com/tladesignz/FavIcon.git`, branch `swift-5`)
   - FontBlaster (~> 5.2)
   - FormatterKit (~> 1.9)
-  - ImageRow (~> 4.0)
+  - ImageRow (~> 4.1)
   - MBProgressHUD (~> 1.2)
   - OrbotKit (~> 0.2)
   - ReachabilitySwift (~> 5.0)
   - SDCAlertView (~> 12.0)
-  - SwiftyDropbox (~> 8.3)
+  - SwiftyDropbox (~> 9.1)
   - TLPhotoPicker (from `https://github.com/tladesignz/TLPhotoPicker.git`)
   - TUSafariActivity (~> 1.0)
   - UIImage-Resize (~> 1.0)
@@ -216,7 +216,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/crossroadlabs/Regex.git
     :tag: 1.2.0
   FavIcon:
-    :commit: 0717e03444aa6a1265418d405b8c4866ea02de9b
+    :commit: ad3139c820078d3fe8ad6beac486846a82e66b81
     :git: https://github.com/tladesignz/FavIcon.git
   TLPhotoPicker:
     :commit: 91abdc52e241936bbad850736af7dcb9adcd389d
@@ -233,7 +233,7 @@ SPEC CHECKSUMS:
   CrossroadRegex: 9af32b4b4dc6ff404c87647ef1bc68ea711cc570
   DownloadButton: 49a21a89e0d7d1b42d9134f79aaa40e727cd57c3
   Eureka: 28ad9dec6286cd7cd601fdf8e8df39bb7356a8f4
-  FavIcon: 21651b47d8f6b33517973859f85e2cb6f9fcfaee
+  FavIcon: 57f172cc9880265915c1aba226a2538b722c83fd
   FontBlaster: 941f89d735a29e1c7d24e7a90d3e16939ef1609a
   FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
   ImageRow: 880c0f052c5a89c80521b485c86ccf723a124e99
@@ -241,13 +241,13 @@ SPEC CHECKSUMS:
   OrbotKit: 33dd047aa0d14812d7a08618f68ab1f0874e97f2
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDCAlertView: 1c0410de80548da3fed142ded0b97644d9848577
-  SwiftyDropbox: 1f2dc98c211cb80b70ce0cd58064abe8528d9c78
+  SwiftyDropbox: 9d4bf6ccc0989b0c567004e425972d59993fdac5
   TLPhotoPicker: 2e7caa72ec0cb29d1c85543b252a02d56aeede01
   TUSafariActivity: afc55a00965377939107ce4fdc7f951f62454546
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
   YapDatabase: 19c4e6ffb2e4bfab4de4d2511b92020208eecab6
 
-PODFILE CHECKSUM: 2325c0ed6f7942e38dd7c18c9f96ea08b2731b09
+PODFILE CHECKSUM: b82246176749b0abbb235da3cd34f6f0ba4434f4
 
 COCOAPODS: 1.11.3

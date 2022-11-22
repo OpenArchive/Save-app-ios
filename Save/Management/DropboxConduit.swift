@@ -12,7 +12,35 @@ import MobileCoreServices
 
 class DropboxConduit: Conduit {
 
-    private lazy var client = DropboxSpace.client
+    class func transportClient(unauthorized: Bool) -> DropboxTransportClient? {
+        guard let accessToken = DropboxSpace.space?.password ?? (unauthorized ? "" : nil) else {
+            return nil
+        }
+
+        return DropboxTransportClient(
+            accessToken: accessToken, baseHosts: nil, userAgent: nil, selectUser: nil,
+            sharedContainerIdentifier: Constants.appGroup)
+    }
+
+    class var client: DropboxClient? {
+        if let client = DropboxClientsManager.authorizedClient {
+            return client
+        }
+
+        if let transportClient = transportClient(unauthorized: false) {
+            return DropboxClient(transportClient: transportClient)
+        }
+
+        return nil
+    }
+
+    class func fetchEmail() {
+        if DropboxSpace.email == nil {
+            client?.users?.getCurrentAccount().response(completionHandler: { account, error in
+                DropboxSpace.email = account?.email
+            })
+        }
+    }
 
 
     // MARK: Conduit
@@ -113,11 +141,11 @@ class DropboxConduit: Conduit {
 
         let group = DispatchGroup.enter()
 
-        client?.files.getMetadata(path: folder.path).response { metadata, e in
+        Self.client?.files.getMetadata(path: folder.path).response { metadata, e in
             if !progress.isCancelled && metadata == nil {
                 p.completedUnitCount = 1
 
-                self.client?.files.createFolderV2(path: folder.path).response { result, e in
+                Self.client?.files.createFolderV2(path: folder.path).response { result, e in
                     p.completedUnitCount = 2
                     error = NSError.from(e)
                     group.leave()
@@ -178,7 +206,7 @@ class DropboxConduit: Conduit {
 
         let group = DispatchGroup.enter()
 
-        client?.files.getMetadata(path: path.path).response { metadata, e in
+        Self.client?.files.getMetadata(path: path.path).response { metadata, e in
             if let metadata = metadata as? Files.FileMetadata {
                 exists = metadata.size == expectedSize
             }
@@ -221,7 +249,7 @@ class DropboxConduit: Conduit {
 
             let progressPerChunk = (progress.totalUnitCount - progress.completedUnitCount) / (filesize / Conduit.chunkSize + 1)
 
-            client?.files.uploadSessionStart(input: chunk)
+            Self.client?.files.uploadSessionStart(input: chunk)
                 .progress(progressHandler(progress: progress, addWithCount: progressPerChunk))
                 .response { [weak self] result, error in
                     if let result = result {
@@ -235,7 +263,7 @@ class DropboxConduit: Conduit {
                 }
         }
         else {
-            client?.files.upload(path: to.path, input: file)
+            Self.client?.files.upload(path: to.path, input: file)
                 .progress(progressHandler(progress: progress, addWithCount: progress.totalUnitCount - progress.completedUnitCount))
                 .response { metadata, error in
                     completionHandler?(NSError.from(error))
@@ -244,7 +272,7 @@ class DropboxConduit: Conduit {
     }
 
     func upload(_ data: Data, to: URL, _ progress: Progress, _ share: Int64, _ completionHandler: URLSession.SimpleCompletionHandler? = nil) {
-        client?.files.upload(path: to.path, input: data)
+        Self.client?.files.upload(path: to.path, input: data)
             .progress(progressHandler(progress: progress, addWithCount: share))
             .response { metadata, error in
                 completionHandler?(NSError.from(error))
@@ -271,14 +299,14 @@ class DropboxConduit: Conduit {
         let cursor = Files.UploadSessionCursor(sessionId: sessionId, offset: offset)
 
         if Int64(offset) + expectedSize >= filesize {
-            client?.files.uploadSessionFinish(cursor: cursor, commit: Files.CommitInfo(path: to.path), input: chunk)
+            Self.client?.files.uploadSessionFinish(cursor: cursor, commit: Files.CommitInfo(path: to.path), input: chunk)
                 .progress(progressHandler(progress: progress, addWithCount: progressPerChunk))
                 .response { metadata, error in
                     completionHandler?(NSError.from(error))
                 }
         }
         else {
-            client?.files.uploadSessionAppendV2(cursor: cursor, input: chunk)
+            Self.client?.files.uploadSessionAppendV2(cursor: cursor, input: chunk)
                 .progress(progressHandler(progress: progress, addWithCount: progressPerChunk))
                 .response { [weak self] _, error in
                     if let error = error {

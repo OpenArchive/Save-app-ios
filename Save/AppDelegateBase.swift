@@ -194,7 +194,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                     vc = vc?.subViewController
                 }
 
-                menuNav?.setViewControllers([AddProjectViewController()], animated: true)
+                menuNav?.setViewControllers([AppAddProjectViewController()], animated: true)
 
             case .cancel, .none:
                 debugPrint("[\(String(describing: type(of: self)))] dropbox auth cancelled")
@@ -292,9 +292,9 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     func setUpDropbox() {
         DropboxClientsManager.setupWithAppKey(
             Constants.dropboxKey,
-            transportClient: DropboxSpace.transportClient(unauthorized: true))
+            transportClient: DropboxConduit.transportClient(unauthorized: true))
 
-        DropboxSpace.fetchEmail()
+        DropboxConduit.fetchEmail()
     }
 
     func setUpUi() {

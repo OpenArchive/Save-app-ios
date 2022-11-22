@@ -95,6 +95,8 @@
 		A059E647223AE9FB00ABC621 /* UploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A059E646223AE9FB00ABC621 /* UploadManager.swift */; };
 		A05C582A21EF94FC00141633 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05C582921EF94FC00141633 /* BaseViewController.swift */; };
 		A05C582B21EF95A800141633 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05C582921EF94FC00141633 /* BaseViewController.swift */; };
+		A05CFCCA292D2DA40045991A /* BrowseDropboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05CFCC9292D2C6E0045991A /* BrowseDropboxViewController.swift */; };
+		A05CFCCC292D30D70045991A /* AppAddProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05CFCCB292D30D70045991A /* AppAddProjectViewController.swift */; };
 		A05DF974282C0E13003FADA2 /* DavResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05DF973282C0E13003FADA2 /* DavResponse.swift */; };
 		A05DF975282C0E13003FADA2 /* DavResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05DF973282C0E13003FADA2 /* DavResponse.swift */; };
 		A05DF976282C0E13003FADA2 /* DavResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05DF973282C0E13003FADA2 /* DavResponse.swift */; };
@@ -169,8 +171,6 @@
 		A094EA4B282AD110006CE059 /* DropboxConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555923F6D9D600DE0168 /* DropboxConduit.swift */; };
 		A094EA4C282AD115006CE059 /* DropboxConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555923F6D9D600DE0168 /* DropboxConduit.swift */; };
 		A094EA4D282AD23D006CE059 /* NSError+from.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02BC66D2400195C007B05AB /* NSError+from.swift */; };
-		A094EA4E282AD23D006CE059 /* NSError+from.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02BC66D2400195C007B05AB /* NSError+from.swift */; };
-		A094EA4F282AD23E006CE059 /* NSError+from.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02BC66D2400195C007B05AB /* NSError+from.swift */; };
 		A0958DEE291AA37700D917C0 /* SecureEnclave.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0958DED291AA37700D917C0 /* SecureEnclave.swift */; };
 		A098980622369F8100022851 /* ManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A098980522369F8100022851 /* ManagementViewController.swift */; };
 		A09898082236A7B100022851 /* UploadCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09898072236A7B100022851 /* UploadCell.swift */; };
@@ -562,6 +562,8 @@
 		A058628520E4FDBF00EE2F14 /* Podfile.lock */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile.lock; sourceTree = "<group>"; };
 		A059E646223AE9FB00ABC621 /* UploadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadManager.swift; sourceTree = "<group>"; };
 		A05C582921EF94FC00141633 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
+		A05CFCC9292D2C6E0045991A /* BrowseDropboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseDropboxViewController.swift; sourceTree = "<group>"; };
+		A05CFCCB292D30D70045991A /* AppAddProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppAddProjectViewController.swift; sourceTree = "<group>"; };
 		A05DF973282C0E13003FADA2 /* DavResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DavResponse.swift; sourceTree = "<group>"; };
 		A05DF977282C0E54003FADA2 /* AEXMLDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AEXMLDocument.swift; sourceTree = "<group>"; };
 		A05DF97B282C0E7C003FADA2 /* AEXMLElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AEXMLElement.swift; sourceTree = "<group>"; };
@@ -882,6 +884,15 @@
 			path = BaseClasses;
 			sourceTree = "<group>";
 		};
+		A05CFCC8292D2C630045991A /* Projects */ = {
+			isa = PBXGroup;
+			children = (
+				A05CFCCB292D30D70045991A /* AppAddProjectViewController.swift */,
+				A05CFCC9292D2C6E0045991A /* BrowseDropboxViewController.swift */,
+			);
+			path = Projects;
+			sourceTree = "<group>";
+		};
 		A07128FC2111CC90007A432A /* ShareExtension */ = {
 			isa = PBXGroup;
 			children = (
@@ -1114,6 +1125,7 @@
 			children = (
 				A07E8A3E2295759D00E9FFAA /* Onboarding */,
 				A01A7B732200FF2500E18DE0 /* Main */,
+				A05CFCC8292D2C630045991A /* Projects */,
 				A0AFCF0B223001AE005E57FD /* Preview */,
 				A0E1A67D21EE7B3200E4F6B7 /* Space */,
 				A098980422369F5700022851 /* Management */,
@@ -1529,7 +1541,6 @@
 				A0E321FF228EFE7100F2E9BD /* InfoBox.swift in Sources */,
 				A0A192DE21F208DA009A8CF0 /* Space.swift in Sources */,
 				A0E2720A224E335400CB7113 /* NewProjectViewController.swift in Sources */,
-				A094EA4E282AD23D006CE059 /* NSError+from.swift in Sources */,
 				A08C2CE821F0B613008ACA3E /* BaseCell.swift in Sources */,
 				A056BE1D2857457E00F354B6 /* UIFont+Montserrat.swift in Sources */,
 				A08C2CE921F0B617008ACA3E /* TableHeader.swift in Sources */,
@@ -1651,7 +1662,6 @@
 				A09B539523266F02005266C2 /* BaseProjectViewController.swift in Sources */,
 				A09B539623266F02005266C2 /* AvatarRow.swift in Sources */,
 				A09B539723266F02005266C2 /* InfoAlert.swift in Sources */,
-				A094EA4F282AD23E006CE059 /* NSError+from.swift in Sources */,
 				A09B539823266F02005266C2 /* ImageViewController.swift in Sources */,
 				A09B539923266F02005266C2 /* HeaderView.swift in Sources */,
 				A09B539A23266F02005266C2 /* BaseServerViewController.swift in Sources */,
@@ -1805,6 +1815,7 @@
 				A08C2CEB21F0B71B008ACA3E /* EditProfileViewController.swift in Sources */,
 				A07E8A4222958D0600E9FFAA /* SlideViewController.swift in Sources */,
 				A0E27209224E335400CB7113 /* NewProjectViewController.swift in Sources */,
+				A05CFCCC292D30D70045991A /* AppAddProjectViewController.swift in Sources */,
 				A05DF980282C0F48003FADA2 /* AEXMLOptions.swift in Sources */,
 				A0212FCC22D35ADC009079DC /* DarkroomHelper.swift in Sources */,
 				A0D1013C22CCF2DA0068D047 /* Conduit.swift in Sources */,
@@ -1846,6 +1857,7 @@
 				A05471DB2296C8FD009FEA93 /* UITableView+separatorView.swift in Sources */,
 				A052A48F230D53D800E72594 /* IaInfoAlert.swift in Sources */,
 				A0FE2C1E22E1E8D200C5443F /* Error+friendlyMessage.swift in Sources */,
+				A05CFCCA292D2DA40045991A /* BrowseDropboxViewController.swift in Sources */,
 				A056555723F6D8A100DE0168 /* DropboxSpace.swift in Sources */,
 				A09898082236A7B100022851 /* UploadCell.swift in Sources */,
 				A0C797E6228063280009751A /* AbcFilteredByCollectionView.swift in Sources */,

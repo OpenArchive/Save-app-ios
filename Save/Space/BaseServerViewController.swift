@@ -75,7 +75,7 @@ class BaseServerViewController: FormViewController {
             }
         }
         else {
-            navigationController?.setViewControllers([AddProjectViewController()], animated: true)
+            navigationController?.setViewControllers([AppAddProjectViewController()], animated: true)
         }
     }
 

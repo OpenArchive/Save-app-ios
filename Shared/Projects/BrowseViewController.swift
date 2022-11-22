@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftyDropbox
 
 class BrowseViewController: BaseTableViewController {
 
@@ -18,26 +17,22 @@ class BrowseViewController: BaseTableViewController {
 
         let original: Any?
 
-        init(_ original: FileInfo) {
-            name = original.name
-            modifiedDate = original.modifiedDate ?? original.creationDate
+        init(_ name: String, _ modifiedDate: Date?, _ original: Any?) {
+            self.name = name
+            self.modifiedDate = modifiedDate
             self.original = original
         }
 
-        init(_ original: Files.FolderMetadata) {
-            name = original.name
-            modifiedDate = nil
-            self.original = original
+        convenience init(_ original: FileInfo) {
+            self.init(original.name, original.modifiedDate ?? original.creationDate, original)
         }
     }
-
-    private lazy var dropboxClient = DropboxSpace.client
 
     private var loading = true
 
     private var error: Error?
 
-    private var folders = [Folder]()
+    var folders = [Folder]()
 
     private var selected: Int?
 
@@ -99,7 +94,7 @@ class BrowseViewController: BaseTableViewController {
         var rows = [indexPath]
 
         if let selected = selected {
-            rows.append(IndexPath.init(row: selected, section: indexPath.section))
+            rows.append(IndexPath(row: selected, section: indexPath.section))
         }
 
         selected = indexPath.row
@@ -120,9 +115,9 @@ class BrowseViewController: BaseTableViewController {
     }
 
 
-    // MARK: Private Methods
+    // MARK: Public Methods
 
-    private func beginWork(_ block: () -> Void) {
+    func beginWork(_ block: () -> Void) {
         loading = true
         error = nil
 
@@ -133,7 +128,7 @@ class BrowseViewController: BaseTableViewController {
         block()
     }
 
-    private func endWork(_ error: Error?) {
+    func endWork(_ error: Error?) {
         self.loading = false
         self.error = error
 
@@ -143,7 +138,7 @@ class BrowseViewController: BaseTableViewController {
         }
     }
 
-    private func loadFolders() {
+    func loadFolders() {
         beginWork {
             folders.removeAll()
 
@@ -163,37 +158,14 @@ class BrowseViewController: BaseTableViewController {
                     self.endWork(error)
                 }
             }
-            else if let client = dropboxClient {
-                client.files.listFolder(path: "", includeNonDownloadableFiles: false)
-                    .response(completionHandler: dropboxCompletionHandler)
-            }
             else {
                 self.endWork(nil)
             }
         }
     }
 
-    private func dropboxCompletionHandler<T: CustomStringConvertible>(_ result: Files.ListFolderResult?, _ error: CallError<T>?) {
-        if let error = error {
-            debugPrint("[\(String(describing: type(of: self)))] error=\(error)")
 
-            return self.endWork(NSError.from(error))
-        }
-
-        for entry in result?.entries ?? [] {
-            if let entry = entry as? Files.FolderMetadata {
-                self.folders.append(Folder(entry))
-            }
-        }
-
-        if result?.hasMore ?? false {
-            dropboxClient?.files.listFolderContinue(cursor: result!.cursor)
-                .response(completionHandler: dropboxCompletionHandler)
-        }
-        else {
-            self.endWork(nil)
-        }
-    }
+    // MARK: Private Methods
 
     @objc private func done() {
         guard let selected = selected,

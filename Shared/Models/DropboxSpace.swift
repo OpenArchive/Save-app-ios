@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import SwiftyDropbox
 
 /**
  A special space supporting Dropbox.
@@ -48,37 +47,7 @@ class DropboxSpace: Space, Item {
         return dropboxSpace
     }
 
-    class func transportClient(unauthorized: Bool) -> DropboxTransportClient? {
-        guard let accessToken = space?.password ?? (unauthorized ? "" : nil) else {
-            return nil
-        }
-
-        return DropboxTransportClient(
-            accessToken: accessToken, baseHosts: nil, userAgent: nil, selectUser: nil,
-            sharedContainerIdentifier: Constants.appGroup)
-    }
-
-    class var client: DropboxClient? {
-        if let client = DropboxClientsManager.authorizedClient {
-            return client
-        }
-
-        if let transportClient = transportClient(unauthorized: false) {
-            return DropboxClient(transportClient: transportClient)
-        }
-
-        return nil
-    }
-
-    class func fetchEmail() {
-        if email == nil {
-            client?.users?.getCurrentAccount().response(completionHandler: { account, error in
-                email = account?.email
-            })
-        }
-    }
-
-    private(set) static var email: String?
+    static var email: String?
 
 
     init(uid: String? = nil, accessToken: String? = nil) {

@@ -8,9 +8,8 @@ use_frameworks!
 
 def shared_pods
     pod 'YapDatabase', :git => 'https://github.com/difftim/YapDatabase.git' #'~> 4.0'
-    pod 'SwiftyDropbox', '~> 8.3'
     pod 'Eureka', '~> 5.3'
-    pod 'ImageRow', '~> 4.0'
+    pod 'ImageRow', '~> 4.1'
     pod 'UIImage-Resize', '~> 1.0'
     pod 'AlignedCollectionViewFlowLayout', '~> 1.1'
     pod 'DownloadButton', '~> 0.1'
@@ -24,6 +23,7 @@ def shared_pods
 end
 
 def app_only
+    pod 'SwiftyDropbox', '~> 9.1'
     pod 'FavIcon', :git => 'https://github.com/tladesignz/FavIcon.git', :branch => 'swift-5'
     pod 'TUSafariActivity', '~> 1.0'
     pod 'ARChromeActivity', '~> 1.0'
