@@ -14,9 +14,6 @@ import SwiftyDropbox
  */
 class DropboxSpace: Space, Item {
 
-    static let baseUrl = "https://s3.us.archive.org"
-
-
     // MARK: Item
 
     override class func fixArchiverName() {
@@ -85,7 +82,7 @@ class DropboxSpace: Space, Item {
 
 
     init(uid: String? = nil, accessToken: String? = nil) {
-        super.init(name: DropboxSpace.defaultPrettyName, url: URL(string: DropboxSpace.baseUrl),
+        super.init(name: DropboxSpace.defaultPrettyName, url: nil,
                    username: uid, password: accessToken)
     }
 
