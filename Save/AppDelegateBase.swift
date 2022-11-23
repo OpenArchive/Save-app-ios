@@ -57,6 +57,8 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 
         uploadManager = UploadManager.shared
 
+        cleanCache()
+
         setUpDropbox()
 
         setUpUi()
@@ -148,6 +150,8 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+
+        cleanCache()
     }
 
     func application(_ app: UIApplication, open url: URL,
@@ -317,6 +321,51 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
                 OrbotManager.shared.alertOrbotStopped()
+            }
+        }
+    }
+
+    /**
+     Somehow SwiftyDropbox still leaves traces in the URL cache, even, if we configure it to not cache anything.
+
+     So, we clean the cache here as a last resort.
+
+     Additionally, when Dropbox authentication is done via a web view, there's also remnants we try to remove here.
+     */
+    func cleanCache() {
+
+        // This will clean the contents of the Cache.db file, but unfortunately not
+        // backup copies, which also exist.
+        URLCache.shared.removeAllCachedResponses()
+
+        let fm = FileManager.default
+
+        if let id = Bundle.main.bundleIdentifier,
+           let cache = fm.urls(for: .cachesDirectory, in: .userDomainMask).first?.appendingPathComponent(id),
+           fm.fileExists(atPath: cache.path)
+        {
+            do {
+                // Try to remove *all* URL cache files.
+                try fm.removeItem(at: cache)
+            }
+            catch {
+                debugPrint(error)
+            }
+        }
+
+        // Remove cached files from Dropbox web authentication.
+        if let safariLib = fm.urls(for: .libraryDirectory, in: .userDomainMask).first?
+            .appendingPathComponent("..")
+            .appendingPathComponent("SystemData")
+            .appendingPathComponent("com.apple.SafariViewService")
+            .appendingPathComponent("Library"),
+           fm.fileExists(atPath: safariLib.path)
+        {
+            do {
+                try fm.removeItem(at: safariLib)
+            }
+            catch {
+                debugPrint(error)
             }
         }
     }

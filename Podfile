@@ -23,7 +23,7 @@ def shared_pods
 end
 
 def app_only
-    pod 'SwiftyDropbox', '~> 9.1'
+    pod 'SwiftyDropbox', :git => 'https://github.com/tladesignz/SwiftyDropbox.git', :branch => 'session_config' #'~> 9.1'
     pod 'FavIcon', :git => 'https://github.com/tladesignz/FavIcon.git', :branch => 'swift-5'
     pod 'TUSafariActivity', '~> 1.0'
     pod 'ARChromeActivity', '~> 1.0'

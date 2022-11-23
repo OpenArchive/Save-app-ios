@@ -172,7 +172,7 @@ DEPENDENCIES:
   - OrbotKit (~> 0.2)
   - ReachabilitySwift (~> 5.0)
   - SDCAlertView (~> 12.0)
-  - SwiftyDropbox (~> 9.1)
+  - SwiftyDropbox (from `https://github.com/tladesignz/SwiftyDropbox.git`, branch `session_config`)
   - TLPhotoPicker (from `https://github.com/tladesignz/TLPhotoPicker.git`)
   - TUSafariActivity (~> 1.0)
   - UIImage-Resize (~> 1.0)
@@ -194,7 +194,6 @@ SPEC REPOS:
     - OrbotKit
     - ReachabilitySwift
     - SDCAlertView
-    - SwiftyDropbox
     - TUSafariActivity
     - UIImage-Resize
     - UIImageViewAlignedSwift
@@ -206,6 +205,9 @@ EXTERNAL SOURCES:
   FavIcon:
     :branch: swift-5
     :git: https://github.com/tladesignz/FavIcon.git
+  SwiftyDropbox:
+    :branch: session_config
+    :git: https://github.com/tladesignz/SwiftyDropbox.git
   TLPhotoPicker:
     :git: https://github.com/tladesignz/TLPhotoPicker.git
   YapDatabase:
@@ -218,6 +220,9 @@ CHECKOUT OPTIONS:
   FavIcon:
     :commit: ad3139c820078d3fe8ad6beac486846a82e66b81
     :git: https://github.com/tladesignz/FavIcon.git
+  SwiftyDropbox:
+    :commit: bd5e45b8c6afa8d84f1c586cf90e27f704fa3b7c
+    :git: https://github.com/tladesignz/SwiftyDropbox.git
   TLPhotoPicker:
     :commit: 91abdc52e241936bbad850736af7dcb9adcd389d
     :git: https://github.com/tladesignz/TLPhotoPicker.git
@@ -248,6 +253,6 @@ SPEC CHECKSUMS:
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
   YapDatabase: 19c4e6ffb2e4bfab4de4d2511b92020208eecab6
 
-PODFILE CHECKSUM: b82246176749b0abbb235da3cd34f6f0ba4434f4
+PODFILE CHECKSUM: bbd85e870a7ffff7cd915ef4d6a6eababac942d8
 
 COCOAPODS: 1.11.3

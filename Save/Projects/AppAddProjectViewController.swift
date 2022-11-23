@@ -17,7 +17,7 @@ class AppAddProjectViewController: AddProjectViewController {
     // MARK: UITableViewDelegate
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        if indexPath.row == 2 {
+        if indexPath.row == 2 && SelectedSpace.space is DropboxSpace {
             navigationController?.pushViewController(BrowseDropboxViewController(), animated: true)
         }
         else {
