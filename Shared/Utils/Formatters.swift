@@ -111,7 +111,7 @@ class Formatters: NSObject {
      A formatter for URLs usable in Eureka forms.
 
      Makes it easy to connect Nextcloud servers without having to know all the
-     details. Users just needs to provide the host name.
+     details. Users just need to provide the host name.
     */
     class URLFormatter: Formatter {
 
@@ -148,7 +148,10 @@ class Formatters: NSObject {
             if let url = url,
                 var urlc = URLComponents(url: url, resolvingAgainstBaseURL: true) {
 
-                if urlc.scheme?.isEmpty ?? true {
+                // We're currently not allowing non-encrypted communication
+                // (Default iOS App-Transport-Security!), so we shouldn't allow
+                // anything else then HTTPS.
+                if urlc.scheme != "https" {
                     urlc.scheme = "https"
                 }
 
