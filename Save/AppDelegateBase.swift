@@ -172,15 +172,32 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
             case .success(let token):
                 debugPrint("[\(String(describing: type(of: self)))] dropbox auth success")
 
-                SelectedSpace.space = DropboxSpace()
-                SelectedSpace.space?.username = token.uid
-                SelectedSpace.space?.password = token.accessToken
+                let space = DropboxSpace()
+                space.username = token.uid
+                space.password = token.accessToken
+                SelectedSpace.space = space
+
+                let group = DispatchGroup()
+                group.enter()
 
                 Db.writeConn?.asyncReadWrite() { transaction in
                     SelectedSpace.store(transaction)
 
-                    transaction.setObject(SelectedSpace.space, forKey: SelectedSpace.space!.id,
-                                          inCollection: Space.collection)
+                    transaction.setObject(space, forKey: space.id, inCollection: Space.collection)
+
+                    group.leave()
+                }
+
+                DispatchQueue.global(qos: .background).async {
+                    group.wait()
+
+                    DropboxConduit.client?.users?.getCurrentAccount().response(completionHandler: { account, error in
+                        space.email = account?.email
+
+                        Db.writeConn?.asyncReadWrite { transaction in
+                            transaction.setObject(space, forKey: space.id, inCollection: Space.collection)
+                        }
+                    })
                 }
 
                 // Find the MenuNavigationController which currently should
@@ -297,8 +314,6 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         DropboxClientsManager.setupWithAppKey(
             Constants.dropboxKey,
             transportClient: DropboxConduit.transportClient(unauthorized: true))
-
-        DropboxConduit.fetchEmail()
     }
 
     func setUpUi() {

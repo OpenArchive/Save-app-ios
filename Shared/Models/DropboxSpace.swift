@@ -47,7 +47,7 @@ class DropboxSpace: Space, Item {
         return dropboxSpace
     }
 
-    static var email: String?
+    var email: String?
 
 
     init(uid: String? = nil, accessToken: String? = nil) {
@@ -57,6 +57,8 @@ class DropboxSpace: Space, Item {
 
     required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
+
+        email = decoder.decodeObject(of: NSString.self, forKey: "email") as? String
     }
 
 
@@ -90,6 +92,7 @@ class DropboxSpace: Space, Item {
         coder.encode(authorOther, forKey: "authorOther")
         coder.encode(tries, forKey: "tries")
         coder.encode(lastTry, forKey: "lastTry")
+        coder.encode(email, forKey: "email")
     }
 
 

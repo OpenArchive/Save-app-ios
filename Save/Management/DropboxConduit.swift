@@ -34,14 +34,6 @@ class DropboxConduit: Conduit {
         return nil
     }
 
-    class func fetchEmail() {
-        if DropboxSpace.email == nil {
-            client?.users?.getCurrentAccount().response(completionHandler: { account, error in
-                DropboxSpace.email = account?.email
-            })
-        }
-    }
-
 
     // MARK: Conduit
 
