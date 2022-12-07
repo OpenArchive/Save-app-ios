@@ -1,3 +1,7 @@
-- "Orbot çalışmıyor" uyarıları geliştirildi.
-- İlk çalıştırmada yaşanan yanıt vermeme ya da çökme sorunu düzeltildi.
-- Parola alanına parolayı görüntüle düğmesi eklendi
+- Küçük hatalar düzeltildi.
+- Küçük potansiyel güvenlik sorunları düzeltildi.
+- Güvenlik özellikleri eklendi:
+  - Üçüncü taraf klavyelere izin vermeme seçeneği.
+  - Uygulama kaydırıcısında uygulama içeriğini gizleme seçeneği.
+  - Uygulamanın kilidini açmak için biyometri veya parola kullanma seçeneği.
+- Çeviriler güncellendi.

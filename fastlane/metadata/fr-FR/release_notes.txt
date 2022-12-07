@@ -1,3 +1,7 @@
-- Amélioration des avertissements "Orbot ne fonctionne pas".
-- Correction de l'absence de réponse/crash lors de la première exécution.
-- Ajout du bouton de divulgation au champ du mot de passe.
+- Correction de bogues mineurs.
+- Correction de problèmes mineurs de sécurité potentiels.
+- Ajout de fonctions de sécurité :
+  - Option pour interdire les claviers tiers.
+  - Option permettant de masquer le contenu de l'application dans la barre de défilement des applications.
+  - Option permettant d'utiliser la biométrie ou une phrase de passe pour déverrouiller l'application.
+- Mise à jour des traductions.

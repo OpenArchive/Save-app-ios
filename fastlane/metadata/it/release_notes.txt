@@ -1,3 +1,7 @@
-- Avvisi "Orbot non in esecuzione" migliorati.
-- Risolto problema di mancata risposta/crash alla prima esecuzione.
-- Aggiunto pulsante di divulgazione nel campo della password.
+- Correzione di bug minori.
+- Risolti alcuni potenziali problemi di sicurezza.
+- Aggiunta di funzioni di sicurezza:
+  - Opzione per disabilitare le tastiere di terze parti.
+  - Opzione per nascondere il contenuto dell'app nel cursore dell'app.
+  - Possibilità di utilizzare la biometria o la passphrase per sbloccare l'app.
+- Traduzioni aggiornate.
