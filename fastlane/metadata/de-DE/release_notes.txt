@@ -1,3 +1,7 @@
-- "Orbot läuft nicht"-Warnungen verbessert.
-- Nichtreagieren/Absturz bei erstem Start behoben.
-- Aufdecken-Button zu Passwortfeld hinzugefügt.
+- Kleinere Bugs behoben.
+- Kleinere potentielle Sicherheitsprobleme behoben.
+- Sicherheitsfunktionen hinzugefügt:
+  - Option zum Deaktivieren von Tastaturen von Drittanbietern.
+  - Option zum Ausblenden von App-Inhalten im App-Slider.
+  - Option zur Verwendung von Biometrie oder Passphrase zum Entsperren der App.
+- Aktualisierte Übersetzungen.

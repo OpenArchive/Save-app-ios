@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.8.2
+- Fixed minor bugs.
+- Fixed minor potential security issues.
+- Added security features:
+  - Option to disallow third-party keyboards.
+  - Option to hide app content in app slider.
+  - Option to use biometrics or passphrase to unlock app.
+- Updated translations.
+
 ## 2.8.1
 - Improved "Orbot not running" warnings.
 - Fixed unresponsiveness/crash on first run.
