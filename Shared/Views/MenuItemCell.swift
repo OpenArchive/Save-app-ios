@@ -32,14 +32,22 @@ class MenuItemCell: BaseCell {
         label.text = text
         label.numberOfLines = 1
 
-        if #available(iOS 13.0, *),
-            textColor == .darkText {
-            
-            label.textColor = .label
+        var textColor = textColor
+
+        if #available(iOS 13.0, *) {
+            switch textColor {
+            case .darkText:
+                textColor = .label
+
+            case .lightGray:
+                textColor = .systemGray3
+
+            default:
+                break
+            }
         }
-        else {
-            label.textColor = textColor
-        }
+
+        label.textColor = textColor
 
         switch accessoryType {
         case .none:
@@ -83,16 +91,7 @@ class MenuItemCell: BaseCell {
 
     @discardableResult
     func set(_ text: String, isPlaceholder: Bool = false) -> MenuItemCell {
-        let textColor: UIColor
-
-        if #available(iOS 13.0, *) {
-            textColor = isPlaceholder ? .systemGray3 : .label
-        }
-        else {
-            textColor = isPlaceholder ? .lightGray : .darkText
-        }
-
-        return set(text, textColor: textColor,
+        return set(text, textColor: isPlaceholder ? .lightGray : .darkText,
                    accessoryType: isPlaceholder ? .addIndicator : .none)
     }
 

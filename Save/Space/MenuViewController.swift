@@ -77,7 +77,7 @@ class MenuViewController: TableWithSpacesViewController {
         case 2:
             return 2
         case 3:
-            return 2
+            return 3
         default:
             return 0
         }
@@ -129,8 +129,15 @@ class MenuViewController: TableWithSpacesViewController {
             switch indexPath.row {
             case 0:
                 return cell.set(String(format: NSLocalizedString("About %@", comment: ""), Bundle.main.displayName), accessoryType: .disclosureIndicator)
-            default:
+            case 1:
                 return cell.set(NSLocalizedString("Privacy Policy", comment: ""), accessoryType: .disclosureIndicator)
+            default:
+                cell.set(String(format: "%@ %@ (%@)", Bundle.main.displayName, Bundle.main.version, Bundle.main.build), textColor: .lightGray)
+
+                cell.selectionStyle = .none
+                cell.label.font = cell.label.font.withSize(UIFont.montserrat(forTextStyle: .footnote)?.pointSize ?? 13)
+
+                return cell
             }
 
         default:

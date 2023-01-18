@@ -11,8 +11,17 @@ import Foundation
 extension Bundle {
 
     var displayName: String {
-        return object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
+        object(forInfoDictionaryKey: "CFBundleDisplayName") as? String
             ?? object(forInfoDictionaryKey: kCFBundleNameKey as String) as? String
             ?? NSLocalizedString("OpenArchive", comment: "")
+    }
+
+    var version: String {
+        object(forInfoDictionaryKey: "CFBundleShortVersionString") as? String
+            ?? "unknown"
+    }
+
+    var build: String {
+        object(forInfoDictionaryKey: "CFBundleVersion") as? String ?? "unknown"
     }
 }
