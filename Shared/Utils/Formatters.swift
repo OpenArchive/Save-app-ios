@@ -135,7 +135,7 @@ class Formatters: NSObject {
         /**
          Fixes a given URL, if any given:
 
-         - Set scheme to "https", if none set, yet.
+         - Set scheme to "https", if not already set so.
          - Set path as host, if no host; set path empty, if done so.
          - Set path to "/remote.php/webdav/" (Nextcloud default WebDAV endpoint),
            if path is empty or root "/".
