@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import MobileCoreServices
+import LegacyUTType
 import Photos
 import YapDatabase
 import TLPhotoPicker
@@ -318,7 +318,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             return addProject()
         }
 
-        let vc = UIDocumentPickerViewController(documentTypes: [kUTTypeItem as String], in: .import)
+        let vc = UIDocumentPickerViewController(documentTypes: [LegacyUTType.item.identifier], in: .import)
         vc.delegate = self
 
         present(vc, animated: true)

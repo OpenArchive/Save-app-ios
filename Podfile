@@ -20,6 +20,7 @@ def shared_pods
     pod 'FontBlaster', '~> 5.2'
     pod 'CrossroadRegex', :git => 'https://github.com/crossroadlabs/Regex.git', tag: '1.2.0'
     pod 'CleanInsightsSDK', '~> 2.6'
+    pod 'LegacyUTType', '~> 0.1'
 end
 
 def app_only

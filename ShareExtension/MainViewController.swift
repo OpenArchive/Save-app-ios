@@ -9,7 +9,7 @@
 import UIKit
 import UserNotifications
 import YapDatabase
-import MobileCoreServices
+import LegacyUTType
 import MBProgressHUD
 import FontBlaster
 
@@ -220,14 +220,14 @@ class MainViewController: TableWithSpacesViewController {
             }
 
             for provider in attachments {
-                if !provider.hasItemConformingToTypeIdentifier(kUTTypeData as String) {
+                if !provider.hasItemConformingToTypeIdentifier(LegacyUTType.data.identifier) {
                     continue
                 }
 
                 progress.totalUnitCount += 1
 
                 provider.loadPreviewImage(options: providerOptions) { thumbnail, error in
-                    provider.loadItem(forTypeIdentifier: kUTTypeData as String, options: nil) { item, error in
+                    provider.loadItem(forTypeIdentifier: LegacyUTType.data.identifier, options: nil) { item, error in
 
                         if let error = error {
                             return self.onCompletion(error)
@@ -248,7 +248,7 @@ class MainViewController: TableWithSpacesViewController {
 
                         if let image = (item as? UIImage)?.jpegData(compressionQuality: 1) {
                             AssetFactory.create(from: image,
-                                                uti: kUTTypeJPEG as String,
+                                                uti: LegacyUTType.jpeg,
                                                 name: provider.suggestedName,
                                                 thumbnail: thumbnail as? UIImage,
                                                 collection)
@@ -261,7 +261,7 @@ class MainViewController: TableWithSpacesViewController {
 
                         if let data = item as? Data {
                             AssetFactory.create(from: data,
-                                                uti: kUTTypeData as String,
+                                                uti: LegacyUTType.data,
                                                 name: provider.suggestedName,
                                                 thumbnail: thumbnail as? UIImage,
                                                 collection)

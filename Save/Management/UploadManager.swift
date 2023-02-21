@@ -422,7 +422,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                         let data: [String: String?] = [
                             "error": upload.error,
                             "filesize": filesize != nil ? String(filesize!) : nil,
-                            "type": upload.asset?.uti,
+                            "type": upload.asset?.uti.identifier,
                             "retries": String(upload.tries),
                             "network": self.reachability?.connection.description]
 

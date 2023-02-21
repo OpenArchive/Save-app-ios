@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import MobileCoreServices
+import LegacyUTType
 import YapDatabase
 import CommonCrypto
 import AVFoundation
@@ -44,7 +44,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
 
     let id: String
     let created: Date
-    var uti: String
+    private var _uti: String
     private var _filename: String?
     var title: String?
     var desc: String?
@@ -125,21 +125,22 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         return project?.space
     }
 
+    var uti: any UTTypeProtocol {
+        get {
+            LegacyUTType(_uti)
+        }
+        set {
+            _uti = newValue.identifier
+        }
+    }
+
     /**
      The MIME equivalent to the stored `uti` or "application/octet-stream" if the UTI has no MIME type.
 
      See [Wikipedia](https://en.wikipedia.org/wiki/Uniform_Type_Identifier) about UTIs.
      */
     var mimeType: String {
-        get {
-            if let mimeType = UTTypeCopyPreferredTagWithClass(uti as CFString, kUTTagClassMIMEType)?
-                .takeRetainedValue() {
-
-                return mimeType as String
-            }
-
-            return Asset.defaultMimeType
-        }
+        uti.preferredMIMEType ?? Self.defaultMimeType
     }
 
     /**
@@ -152,7 +153,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
                 return filename
             }
 
-            if let ext = Asset.getFileExt(uti: uti) {
+            if let ext = uti.preferredFilenameExtension {
                 return "\(id).\(ext)"
             }
 
@@ -173,7 +174,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
             // We need a file extension in order to have AVAssetImageGenerator be able
             // to recognize video formats and generate a thumbnail.
             // See AssetFactory#createThumbnail
-            if let ext = Asset.getFileExt(uti: uti) {
+            if let ext = uti.preferredFilenameExtension {
                 return file?.appendingPathExtension(ext)
             }
 
@@ -289,7 +290,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
      Checks, if asset is audio or video.
      */
     var isAv: Bool {
-        return UTTypeConformsTo(uti as CFString, kUTTypeAudiovisualContent)
+        uti.conforms(to: .audiovisualContent)
     }
 
     private var _duration: TimeInterval?
@@ -326,12 +327,12 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     }
 
 
-    init(_ collection: Collection, uti: String = kUTTypeData as String,
+    init(_ collection: Collection, uti: any UTTypeProtocol = LegacyUTType.data,
          id: String = UUID().uuidString, created: Date = Date())
     {
         self.id = id
         self.created = created
-        self.uti = uti
+        self._uti = uti.identifier
         self.collectionId = collection.id
 
         phImageRequestId = PHInvalidImageRequestID
@@ -345,7 +346,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     required init(coder decoder: NSCoder) {
         id = decoder.decodeObject(of: NSString.self, forKey: "id") as? String ?? UUID().uuidString
         created = decoder.decodeObject(of: NSDate.self, forKey: "created") as? Date ?? Date()
-        uti = decoder.decodeObject(of: NSString.self, forKey: "uti")! as String
+        _uti = decoder.decodeObject(of: NSString.self, forKey: "uti")! as String
         _filename = decoder.decodeObject(of: NSString.self, forKey: "filename") as? String
         title = decoder.decodeObject(of: NSString.self, forKey: "title") as? String
         desc = decoder.decodeObject(of: NSString.self, forKey: "desc") as? String
@@ -366,7 +367,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     func encode(with coder: NSCoder) {
         coder.encode(id, forKey: "id")
         coder.encode(created, forKey: "created")
-        coder.encode(uti, forKey: "uti")
+        coder.encode(_uti, forKey: "uti")
         coder.encode(_filename, forKey: "filename")
         coder.encode(title, forKey: "title")
         coder.encode(desc, forKey: "desc")
@@ -467,7 +468,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
 
     override var description: String {
         return "\(String(describing: type(of: self))): [id=\(id), created=\(created), "
-            + "uti=\(uti), title=\(title ?? "nil"), desc=\(desc ?? "nil"), "
+            + "uti=\(_uti), title=\(title ?? "nil"), desc=\(desc ?? "nil"), "
             + "location=\(location ?? "nil"), notes=\(notes ?? "nil"), "
             + "tags=\(tags?.description ?? "nil"), "
             + "mimeType=\(mimeType), filename=\(filename), "
@@ -577,25 +578,5 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         }
 
         return self
-    }
-
-    // MARK: Class methods
-
-    /**
-     See [Wikipedia](https://en.wikipedia.org/wiki/Uniform_Type_Identifier) about UTIs.
-
-     - parameter uti: A Uniform Type Identifier
-     - returns: The standard file extension or `nil` if no UTI or nothing found.
-     */
-    class func getFileExt(uti: String?) -> String? {
-        if let uti = uti {
-            if let ext = UTTypeCopyPreferredTagWithClass(uti as CFString, kUTTagClassFilenameExtension)?
-                .takeRetainedValue() {
-
-                return ext as String
-            }
-        }
-
-        return nil
     }
 }

@@ -8,7 +8,7 @@
 
 import UIKit
 import Photos
-import MobileCoreServices
+import LegacyUTType
 
 /**
  Factory class to create `Asset`s.
@@ -120,7 +120,7 @@ class AssetFactory {
             { data, uti, orientation, info in
 
                 if let data = data, let uti = uti {
-                    asset.uti = uti
+                    asset.uti = LegacyUTType(uti)
                     asset.phassetId = phasset.localIdentifier
 
                     if let info = info, let fileUrl = info["PHImageFileURLKey"] as? URL {
@@ -180,7 +180,7 @@ class AssetFactory {
                 { exportSession, info in
                     let uti: AVFileType = phasset.mediaType == .audio ? .mp3 : .mp4
 
-                    asset.uti = uti.rawValue
+                    asset.uti = uti
                     asset.phassetId = phasset.localIdentifier
 
                     // Store asset before export, so user doesn't have the
@@ -255,7 +255,7 @@ class AssetFactory {
                       _ collection: Collection, _ resultHandler: ResultHandler? = nil) {
         if let uti = (try? url.resourceValues(forKeys: [.typeIdentifierKey]))?.typeIdentifier
         {
-            let asset = Asset(collection, uti: uti)
+            let asset = Asset(collection, uti: LegacyUTType(uti))
             asset.filename = url.lastPathComponent
 
             if  let file = asset.file, createParentDir(file: file)
@@ -300,12 +300,12 @@ class AssetFactory {
      - parameter collection: The collection the asset will belong to.
      - parameter resultHandler: Callback with the created `Asset` object.
      */
-    class func create(from data: Data, uti: String, name: String? = nil, thumbnail: UIImage? = nil,
+    class func create(from data: Data, uti: any UTTypeProtocol, name: String? = nil, thumbnail: UIImage? = nil,
                       _ collection: Collection, _ resultHandler: ResultHandler? = nil) {
         let asset = Asset(collection, uti: uti)
 
         if let name = name {
-            if let ext = Asset.getFileExt(uti: asset.uti) {
+            if let ext = asset.uti.preferredFilenameExtension {
                 let url = URL(fileURLWithPath: name).deletingPathExtension().appendingPathExtension(ext)
                 asset.filename = url.lastPathComponent
             }
@@ -351,7 +351,7 @@ class AssetFactory {
      - parameter collection: The collection the asset will belong to.
      */
     class func create(fromAssets name: String, _ collection: Collection) -> Asset {
-        let asset = Asset(collection, uti: kUTTypeJPEG as String)
+        let asset = Asset(collection, uti: LegacyUTType.jpeg)
 
         let image = UIImage(named: name)
 

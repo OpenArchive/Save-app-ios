@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import MobileCoreServices
+import LegacyUTType
 
 class IaConduit: Conduit {
 
@@ -138,17 +138,15 @@ class IaConduit: Conduit {
     }
 
     private func mediatype(for asset: Asset) -> String {
-        let uti = asset.uti as CFString
-
-        if UTTypeConformsTo(uti, kUTTypeImage) {
+        if asset.uti.conforms(to: .image) {
             return "image"
         }
 
-        if UTTypeConformsTo(uti, kUTTypeMovie) {
+        if asset.uti.conforms(to: .movie) {
             return "movies"
         }
 
-        if UTTypeConformsTo(uti, kUTTypeAudio) {
+        if asset.uti.conforms(to: .audio) {
             return "audio"
         }
 
