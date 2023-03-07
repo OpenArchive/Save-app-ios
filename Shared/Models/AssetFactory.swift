@@ -460,9 +460,7 @@ class AssetFactory {
      - parameter resultHandler: The handler to call after storing.
     */
     private class func store(_ asset: Asset, _ resultHandler: ResultHandler? = nil) {
-        Db.writeConn?.asyncReadWrite { transaction in
-            transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
-
+        asset.store() {
             handleResult(asset, resultHandler)
         }
     }

@@ -409,9 +409,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         }
 
         if shouldStore {
-            Db.writeConn?.asyncReadWrite { transaction in
-                transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
-            }
+            asset.store()
         }
     }
 }

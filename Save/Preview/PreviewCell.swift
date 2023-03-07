@@ -79,9 +79,7 @@ class PreviewCell: BaseCell {
             asset.flagged = !asset.flagged
             flagBt.isSelected = asset.flagged
 
-            Db.writeConn?.asyncReadWrite { transaction in
-                transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
-            }
+            asset.store()
 
             FlagInfoAlert.presentIfNeeded()
         }

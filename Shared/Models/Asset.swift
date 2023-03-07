@@ -89,7 +89,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     }
 
     var license: String? {
-        return collection?.project.license
+        collection?.project.license
     }
 
     private var _collection: Collection?
@@ -115,14 +115,14 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
      Shortcut for `.collection.project`.
     */
     var project: Project? {
-        return collection?.project
+        collection?.project
     }
 
     /**
      Shortcut for `.project.space`.
      */
     var space: Space? {
-        return project?.space
+        project?.space
     }
 
     var uti: any UTTypeProtocol {
@@ -319,7 +319,11 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
             return nil
         }
 
-        return PHAsset.fetchAssets(withLocalIdentifiers: [phassetId], options: nil).firstObject
+        let options = PHFetchOptions()
+        options.fetchLimit = 1
+        options.includeHiddenAssets = true
+
+        return PHAsset.fetchAssets(withLocalIdentifiers: [phassetId], options: options).firstObject
     }
 
     var isImporting: Bool {
@@ -544,7 +548,26 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         }
 
         Db.writeConn?.asyncReadWrite { transaction in
-            transaction.removeObject(forKey: self.id, inCollection: Asset.collection)
+            transaction.removeObject(forKey: self.id, inCollection: Self.collection)
+
+            if let callback = callback {
+                DispatchQueue.main.async(execute: callback)
+            }
+        }
+
+        return self
+    }
+
+    /**
+     Asynchronously stores this asset into the database.
+
+     - parameter callback: Optional callback is called asynchronously on main queue after store.
+     - returns: self for fluency.
+    */
+    @discardableResult
+    func store(_ callback: (() -> Void)? = nil) -> Asset {
+        Db.writeConn?.asyncReadWrite { transaction in
+            transaction.setObject(self, forKey: self.id, inCollection: Self.collection)
 
             if let callback = callback {
                 DispatchQueue.main.async(execute: callback)
