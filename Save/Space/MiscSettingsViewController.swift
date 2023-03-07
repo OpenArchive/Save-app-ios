@@ -33,6 +33,21 @@ class MiscSettingsViewController: FormViewController {
         navigationItem.title = NSLocalizedString("Miscellaneous", comment: "")
 
         form
+        +++ SwitchRow() {
+            $0.title = NSLocalizedString("Enable ProofMode", comment: "")
+            $0.value = Settings.proofMode
+            $0.cellStyle = .subtitle
+            $0.cell.switchControl.onTintColor = .accent
+            $0.cell.textLabel?.numberOfLines = 0
+            $0.cell.detailTextLabel?.numberOfLines = 0
+        }
+        .cellUpdate { cell, row in
+            cell.detailTextLabel?.text = NSLocalizedString("Capture extra metadata and notarize all media.", comment: "")
+        }
+        .onChange { row in
+            Settings.proofMode = row.value ?? false
+        }
+
         +++ uploadFailsRow
         .cellUpdate { [weak self] cell, row in
             let end = self?.consent?.end

@@ -13,11 +13,29 @@ import CommonCrypto
 import AVFoundation
 import CoreMedia
 import Photos
+import LibProofMode
 
 /**
  Representation of a file asset in the database.
 */
 class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
+
+    enum Files: String, CaseIterable {
+        case thumb = "thumb"
+        case signature = "asc"
+        case proofCsv = "proof.csv"
+        case proofCsvSignature = "proof.csv.asc"
+        case proofJson = "proof.json"
+        case proofJsonSignature = "proof.json.asc"
+
+        static let base = FileManager.default.containerURL(
+            forSecurityApplicationGroupIdentifier: Constants.appGroup)?
+            .appendingPathComponent(Asset.collection)
+
+        func url(_ name: String) -> URL? {
+            Self.base?.appendingPathComponent(name).appendingPathExtension(self.rawValue)
+        }
+    }
 
     // MARK: Item
 
@@ -165,21 +183,16 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     }
 
     var file: URL? {
-        get {
-            let file = FileManager.default.containerURL(
-                forSecurityApplicationGroupIdentifier: Constants.appGroup)?
-                .appendingPathComponent(Asset.collection)
-                .appendingPathComponent(id)
+        let file = Files.base?.appendingPathComponent(id)
 
-            // We need a file extension in order to have AVAssetImageGenerator be able
-            // to recognize video formats and generate a thumbnail.
-            // See AssetFactory#createThumbnail
-            if let ext = uti.preferredFilenameExtension {
-                return file?.appendingPathExtension(ext)
-            }
-
-            return file
+        // We need a file extension in order to have AVAssetImageGenerator be able
+        // to recognize video formats and generate a thumbnail.
+        // See AssetFactory#createThumbnail
+        if let ext = uti.preferredFilenameExtension {
+            return file?.appendingPathExtension(ext)
         }
+
+        return file
     }
 
     private var _filesize: Int64?
@@ -235,12 +248,11 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     }
 
     var thumb: URL? {
-        get {
-            return FileManager.default.containerURL(
-                forSecurityApplicationGroupIdentifier: Constants.appGroup)?
-                .appendingPathComponent(Asset.collection)
-                .appendingPathComponent("\(id).thumb")
-        }
+        Files.thumb.url(id)
+    }
+
+    var hasProof: Bool {
+        Files.signature.url(id)?.exists ?? false
     }
 
     var flagged: Bool {
@@ -497,11 +509,12 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
                 nodeDeleteRules: .deleteDestinationIfSourceDeleted))
         }
 
-        if let thumb = thumb,
-            FileManager.default.fileExists(atPath: thumb.path) {
-            edges.append(YapDatabaseRelationshipEdge(
-                name: "thumb", destinationFileURL: thumb,
-                nodeDeleteRules: .deleteDestinationIfSourceDeleted))
+        for file in Files.allCases {
+            if let url = file.url(id), url.exists {
+                edges.append(.init(
+                    name: file.rawValue, destinationFileURL: url,
+                    nodeDeleteRules: .deleteDestinationIfSourceDeleted))
+            }
         }
 
         if let id = collectionId {
@@ -600,5 +613,63 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         }
 
         return self
+    }
+
+    /**
+     Generates ProofMode data, if
+     */
+    func generateProof(_ completed: ((_ asset: Asset, _ stored: Bool) -> Void)? = nil) {
+        guard Settings.proofMode && !hasProof else {
+            completed?(self, false)
+
+            return
+        }
+
+        var item: MediaItem? = nil
+
+        if let phAsset = phAsset {
+            item = MediaItem(asset: phAsset)
+        }
+        else if let file = file {
+            item = MediaItem(mediaUrl: file, mediaType: uti)
+        }
+
+        guard let item = item else {
+            completed?(self, false)
+
+            return
+        }
+
+        if isReady {
+            isReady = false
+            store()
+        }
+
+        item.proofFolder = Files.base
+        item.proofFilesBaseName = id
+
+        print("Generating proof into: \(item.proofFolder?.path ?? "(nil)")")
+
+        Proof.shared.process(
+            mediaItem: item,
+            options: .init(showDeviceIds: true, showLocation: false, showMobileNetwork: false, notarizationProviders: []))
+        { _ in
+            // Re-read from DB, something could have changed in the meantime.
+            Db.bgRwConn?.asyncRead { transaction in
+                let asset = transaction.object(forKey: self.id, inCollection: Self.collection) as? Asset ?? self
+
+                // Only set ready, if there's not a video import still ongoing.
+                if asset.phImageRequestId == PHInvalidImageRequestID {
+                    asset.isReady = true
+                }
+
+                // Always store to establish DB-to-file relationships.
+                DispatchQueue.main.async {
+                    asset.store() {
+                        completed?(asset, true)
+                    }
+                }
+            }
+        }
     }
 }

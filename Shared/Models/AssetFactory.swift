@@ -132,9 +132,18 @@ class AssetFactory {
 
                         fetchThumb(phasset, asset) // asynchronous
 
-                        asset.isReady = true
+                        asset.generateProof() { asset, stored in
+                            if !stored || !asset.isReady {
+                                asset.isReady = true
 
-                        return store(asset, resultHandler) // asynchronous
+                                store(asset, resultHandler)
+                            }
+                            else {
+                                handleResult(asset, resultHandler)
+                            }
+                        }
+
+                        return
                     }
                 }
 
@@ -201,9 +210,18 @@ class AssetFactory {
                                     createThumb(asset)
                                 }
 
-                                asset.isReady = true
+                                asset.generateProof() { asset, stored in
+                                    if !stored || !asset.isReady {
+                                        asset.isReady = true
 
-                                return store(asset, resultHandler)
+                                        store(asset, resultHandler)
+                                    }
+                                    else {
+                                        handleResult(asset, resultHandler)
+                                    }
+                                }
+
+                                return
 
                             case .failed:
                                 // The export can be triggered again before upload.
@@ -265,9 +283,16 @@ class AssetFactory {
 
                 self.createThumb(asset, thumbnail: thumbnail)
 
-                asset.isReady = true
+                asset.generateProof() { asset, stored in
+                    if !stored || !asset.isReady {
+                        asset.isReady = true
 
-                return store(asset, resultHandler)
+                        store(asset, resultHandler)
+                    }
+                    else {
+                        handleResult(asset, resultHandler)
+                    }
+                }
             }
         }
 
@@ -311,10 +336,16 @@ class AssetFactory {
 
             self.createThumb(asset, thumbnail: thumbnail)
 
+            asset.generateProof() { asset, stored in
+                if !stored || !asset.isReady {
+                    asset.isReady = true
 
-            asset.isReady = true
-
-            store(asset, resultHandler)
+                    store(asset, resultHandler)
+                }
+                else {
+                    handleResult(asset, resultHandler)
+                }
+            }
         }
         else {
             resultHandler?(nil)

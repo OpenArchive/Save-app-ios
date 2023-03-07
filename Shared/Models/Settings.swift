@@ -13,8 +13,10 @@ class Settings {
     private static let kWifiOnly = "wifi_only"
     private static let kHighCompression = "high_compression"
     private static let kUseTor = "use_tor"
+    private static let kOrbotApiToken = "orbotApiToken"
     private static let kTransport = "transport"
     private static let kCustomBridges = "custom_bridges"
+    private static let kProofMode = "proof_mode"
     private static let kFirstRunDone = "already_run"
     private static let kFirstFlaggedDone = "first_flagged_done"
     private static let kFirstBatchEditDone = "first_batch_edit_done"
@@ -57,10 +59,10 @@ class Settings {
 
     class var orbotApiToken: String {
         get {
-            defaults?.string(forKey: "orbotApiToken") ?? ""
+            defaults?.string(forKey: kOrbotApiToken) ?? ""
         }
         set {
-            defaults?.set(newValue, forKey: "orbotApiToken")
+            defaults?.set(newValue, forKey: kOrbotApiToken)
         }
     }
 
@@ -70,6 +72,15 @@ class Settings {
         }
         set {
             defaults?.set(newValue, forKey: kCustomBridges)
+        }
+    }
+
+    class var proofMode: Bool {
+        get {
+            defaults?.bool(forKey: kProofMode) ?? false
+        }
+        set {
+            defaults?.set(newValue, forKey: kProofMode)
         }
     }
 

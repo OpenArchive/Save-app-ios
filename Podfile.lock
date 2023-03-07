@@ -4,6 +4,7 @@ PODS:
   - ARChromeActivity (1.0.6)
   - CleanInsightsSDK (2.6.0)
   - CrossroadRegex (1.2.0)
+  - DeviceKit (4.9.0)
   - DownloadButton (0.1.0)
   - Eureka (5.3.6)
   - FavIcon (3.1.0)
@@ -41,7 +42,12 @@ PODS:
   - ImageRow (4.1.0):
     - Eureka (~> 5.3.5)
   - LegacyUTType (0.1.0)
+  - LibProofMode/NoAdSupport (0.1.0):
+    - DeviceKit (~> 4.0)
+    - LegacyUTType (~> 0.1)
+    - ObjectivePGP (~> 0.99)
   - MBProgressHUD (1.2.0)
+  - ObjectivePGP (0.99.2)
   - OrbotKit (0.2.2)
   - ReachabilitySwift (5.0.0)
   - SDCAlertView (12.0.3)
@@ -170,6 +176,7 @@ DEPENDENCIES:
   - FormatterKit (~> 1.9)
   - ImageRow (~> 4.1)
   - LegacyUTType (~> 0.1)
+  - LibProofMode/NoAdSupport (from `https://gitlab.com/threeletteracronym/libproofmode-ios.git`, branch `proofFilesBaseName`)
   - MBProgressHUD (~> 1.2)
   - OrbotKit (~> 0.2)
   - ReachabilitySwift (~> 5.0)
@@ -187,6 +194,7 @@ SPEC REPOS:
     - AlignedCollectionViewFlowLayout
     - ARChromeActivity
     - CleanInsightsSDK
+    - DeviceKit
     - DownloadButton
     - Eureka
     - FontBlaster
@@ -194,6 +202,7 @@ SPEC REPOS:
     - ImageRow
     - LegacyUTType
     - MBProgressHUD
+    - ObjectivePGP
     - OrbotKit
     - ReachabilitySwift
     - SDCAlertView
@@ -208,6 +217,9 @@ EXTERNAL SOURCES:
   FavIcon:
     :branch: swift-5
     :git: https://github.com/tladesignz/FavIcon.git
+  LibProofMode:
+    :branch: proofFilesBaseName
+    :git: https://gitlab.com/threeletteracronym/libproofmode-ios.git
   SwiftyDropbox:
     :branch: session_config
     :git: https://github.com/tladesignz/SwiftyDropbox.git
@@ -223,6 +235,9 @@ CHECKOUT OPTIONS:
   FavIcon:
     :commit: ad3139c820078d3fe8ad6beac486846a82e66b81
     :git: https://github.com/tladesignz/FavIcon.git
+  LibProofMode:
+    :commit: 1991465227cb011732917ff7f6b01574f25881a8
+    :git: https://gitlab.com/threeletteracronym/libproofmode-ios.git
   SwiftyDropbox:
     :commit: bd5e45b8c6afa8d84f1c586cf90e27f704fa3b7c
     :git: https://github.com/tladesignz/SwiftyDropbox.git
@@ -239,6 +254,7 @@ SPEC CHECKSUMS:
   ARChromeActivity: 5dcf9b9f09323761f992aff3525cdd777f83609d
   CleanInsightsSDK: 41957828284408a969f4bf310ae4d378350bdbc2
   CrossroadRegex: 9af32b4b4dc6ff404c87647ef1bc68ea711cc570
+  DeviceKit: 847709bf70b78fd9ab765bd571fb9f5f815c3fc1
   DownloadButton: 49a21a89e0d7d1b42d9134f79aaa40e727cd57c3
   Eureka: 28ad9dec6286cd7cd601fdf8e8df39bb7356a8f4
   FavIcon: 57f172cc9880265915c1aba226a2538b722c83fd
@@ -246,7 +262,9 @@ SPEC CHECKSUMS:
   FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
   ImageRow: 880c0f052c5a89c80521b485c86ccf723a124e99
   LegacyUTType: 827291c20ad7361a47ace7bcdd1652a607fe4108
+  LibProofMode: 519690f8044bef4da29aef42eb3c8f159190162d
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
+  ObjectivePGP: 4ecece797bebcd4129e888180bb401c1d3be13b7
   OrbotKit: 33dd047aa0d14812d7a08618f68ab1f0874e97f2
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDCAlertView: cec2dd84906b1fb30490ea59f50d1666f797be6f
@@ -257,6 +275,6 @@ SPEC CHECKSUMS:
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
   YapDatabase: 19c4e6ffb2e4bfab4de4d2511b92020208eecab6
 
-PODFILE CHECKSUM: a674e8683b07ce0b68e675243d3b1ba7ecb9dee7
+PODFILE CHECKSUM: 31454ff1bd8f1440e3c912c91a031714f7a93449
 
 COCOAPODS: 1.11.3
