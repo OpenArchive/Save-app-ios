@@ -110,22 +110,23 @@ class AssetFactory {
             }
         }
 
+        // Get filename of assets from iOS 13 onwards.
+        if let filename = PHAssetResource.assetResources(for: phasset).first?.originalFilename {
+            asset.filename = filename
+        }
+
         if phasset.mediaType == .image {
             // Fetch non-resized version first. We need the UTI, the filename and the original
             // image data.
 
             let options = Settings.highCompression ? loResImageOptions : hiResImageOptions
 
-            asset.phImageRequestId = imageManager.requestImageData(for: phasset, options: options)
+            asset.phImageRequestId = imageManager.requestImageDataAndOrientation(for: phasset, options: options)
             { data, uti, orientation, info in
 
                 if let data = data, let uti = uti {
                     asset.uti = LegacyUTType(uti)
                     asset.phassetId = phasset.localIdentifier
-
-                    if let info = info, let fileUrl = info["PHImageFileURLKey"] as? URL {
-                        asset.filename = fileUrl.lastPathComponent
-                    }
 
                     if let file = asset.file,
                         createParentDir(file: file) && (try? data.write(to: file)) != nil {

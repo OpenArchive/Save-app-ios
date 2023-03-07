@@ -359,7 +359,13 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
 
     @IBAction func removeAssets() {
-        present(RemoveAssetAlert(getSelectedAssets(), { self.toggleMode(newMode: false) }), animated: true)
+        present(RemoveAssetAlert(getSelectedAssets(), { [weak self] success in
+            guard success else {
+                return
+            }
+
+            self?.toggleMode(newMode: false)
+        }), animated: true)
     }
 
 

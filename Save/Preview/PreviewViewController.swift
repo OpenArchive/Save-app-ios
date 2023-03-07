@@ -21,24 +21,6 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     private let sc = SelectedCollection()
 
-    /**
-     Remove action for table list row. Deletes an asset.
-     */
-    private lazy var removeAction: UITableViewRowAction = {
-        let action = UITableViewRowAction(
-            style: .destructive,
-            title: NSLocalizedString("Remove", comment: ""))
-        { (action, indexPath) in
-            if let asset = self.sc.getAsset(indexPath) {
-                self.present(RemoveAssetAlert([asset]), animated: true)
-            }
-
-            self.tableView.setEditing(false, animated: true)
-        }
-
-        return action
-    }()
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -126,8 +108,22 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
         }
     }
 
-    public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        return [removeAction]
+    public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let action = UIContextualAction(
+            style: .destructive,
+            title: NSLocalizedString("Remove", comment: ""))
+        { [weak self] _, _, completionHandler in
+            self?.tableView.setEditing(false, animated: true)
+
+            if let asset = self?.sc.getAsset(indexPath) {
+                self?.present(RemoveAssetAlert([asset], completionHandler), animated: true)
+            }
+            else {
+                completionHandler(false)
+            }
+        }
+
+        return UISwipeActionsConfiguration(actions: [action])
     }
 
 
@@ -249,7 +245,13 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     @IBAction func removeAssets() {
-        present(RemoveAssetAlert(getSelectedAssets(), { self.toggleToolbar(false) }), animated: true)
+        present(RemoveAssetAlert(getSelectedAssets(), { [weak self] success in
+            guard success else {
+                return
+            }
+
+            self?.toggleToolbar(false)
+        }), animated: true)
     }
 
 

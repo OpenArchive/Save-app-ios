@@ -20,25 +20,6 @@ class MenuViewController: TableWithSpacesViewController {
         return Int(projectsMappings.numberOfItems(inSection: 0))
     }
 
-    /**
-     Remove action for table list row. Deletes a space.
-     */
-    private lazy var removeAction: UITableViewRowAction = {
-        let action = UITableViewRowAction(
-            style: .destructive,
-            title: NSLocalizedString("Remove", comment: ""))
-        { (action, indexPath) in
-
-            if let project = self.getProject(indexPath) {
-                self.present(RemoveProjectAlert(project), animated: true)
-            }
-
-            self.tableView.setEditing(false, animated: true)
-        }
-
-        return action
-    }()
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -173,8 +154,22 @@ class MenuViewController: TableWithSpacesViewController {
         return indexPath.section == 1 && indexPath.row < projectsCount
     }
 
-    override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        return [removeAction]
+    override public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let action = UIContextualAction(
+            style: .destructive,
+            title: NSLocalizedString("Remove", comment: ""))
+        { [weak self] _, _, completionHandler in
+            self?.tableView.setEditing(false, animated: true)
+
+            if let project = self?.getProject(indexPath) {
+                self?.present(RemoveProjectAlert(project, completionHandler), animated: true)
+            }
+            else {
+                completionHandler(false)
+            }
+        }
+
+        return UISwipeActionsConfiguration(actions: [action])
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {

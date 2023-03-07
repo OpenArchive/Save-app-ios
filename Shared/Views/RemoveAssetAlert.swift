@@ -10,7 +10,7 @@ import UIKit
 
 class RemoveAssetAlert: UIAlertController {
 
-    convenience init(_ assets: [Asset], _ onSuccess: (() -> Void)? = nil) {
+    convenience init(_ assets: [Asset], _ completionHandler: ((_ success: Bool) -> Void)? = nil) {
         let appName = Bundle.main.displayName
 
         let text = [
@@ -25,11 +25,19 @@ class RemoveAssetAlert: UIAlertController {
                   message: text.joined(separator: "\n"),
                    preferredStyle: .alert)
 
-        addAction(AlertHelper.cancelAction())
+        addAction(AlertHelper.cancelAction(handler: { _ in
+            if let completionHandler = completionHandler {
+                DispatchQueue.main.async {
+                    completionHandler(false)
+                }
+            }
+        }))
         addAction(AlertHelper.destructiveAction(NSLocalizedString("Remove Media", comment: ""), handler: { _ in
             for asset in assets {
                 if asset == assets.last {
-                    asset.remove(onSuccess)
+                    asset.remove() {
+                        completionHandler?(true)
+                    }
                 }
                 else {
                     asset.remove()

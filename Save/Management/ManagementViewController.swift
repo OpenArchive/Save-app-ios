@@ -31,24 +31,6 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
         return Int(mappings.numberOfItems(inSection: 0))
     }
 
-    /**
-     Delete action for table list row. Deletes an upload.
-     */
-    private lazy var removeAction: UITableViewRowAction = {
-        let action = UITableViewRowAction(
-            style: .destructive,
-            title: NSLocalizedString("Remove", comment: ""))
-        { action, indexPath in
-            guard let upload = self.getUpload(indexPath) else {
-                return
-            }
-
-            upload.remove()
-        }
-
-        return action
-    }()
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -143,8 +125,21 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
         return cell
     }
 
-    override public func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        return indexPath.section == 0 ? [] : [removeAction]
+    override public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let action = UIContextualAction(
+            style: .destructive,
+            title: NSLocalizedString("Remove", comment: ""))
+        { [weak self] _, _, completionHandler in
+            guard let upload = self?.getUpload(indexPath) else {
+                return completionHandler(false)
+            }
+
+            upload.remove() {
+                completionHandler(true)
+            }
+        }
+
+        return UISwipeActionsConfiguration(actions: [action])
     }
 
     override func setEditing(_ editing: Bool, animated: Bool) {

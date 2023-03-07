@@ -100,9 +100,13 @@ class EditProjectViewController: BaseProjectViewController {
                 $0.cell.tintColor = .systemRed
             }
             .onCellSelection { cell, row in
-                self.present(RemoveProjectAlert(self.project, {
-                    self.doStore = false
-                    self.navigationController?.popViewController(animated: true)
+                self.present(RemoveProjectAlert(self.project, { [weak self] success in
+                    guard success else {
+                        return
+                    }
+
+                    self?.doStore = false
+                    self?.navigationController?.popViewController(animated: true)
                 }),
                              animated: true)
             }

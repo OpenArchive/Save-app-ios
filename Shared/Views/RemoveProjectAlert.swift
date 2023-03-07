@@ -10,18 +10,27 @@ import UIKit
 
 class RemoveProjectAlert: UIAlertController {
 
-    convenience init(_ project: Project, _ onSuccess: (() -> Void)? = nil) {
+    convenience init(_ project: Project, _ completionHandler: ((_ success: Bool) -> Void)? = nil) {
         self.init(title: NSLocalizedString("Remove from App", comment: ""),
                    message: String(format: NSLocalizedString("Are you sure you want to remove your project \"%@\"?", comment: ""), project.name ?? ""),
                    preferredStyle: .alert)
 
-        addAction(AlertHelper.cancelAction())
+        addAction(AlertHelper.cancelAction(handler: { _ in
+            if let completionHandler = completionHandler {
+                DispatchQueue.main.async {
+                    completionHandler(false)
+                }
+            }
+        }))
+
         addAction(AlertHelper.destructiveAction(NSLocalizedString("Remove", comment: ""), handler: { _ in
             Db.writeConn?.asyncReadWrite() { transaction in
                 transaction.removeObject(forKey: project.id, inCollection: Project.collection)
 
-                if let onSuccess = onSuccess {
-                    DispatchQueue.main.async(execute: onSuccess)
+                if let completionHandler = completionHandler {
+                    DispatchQueue.main.async {
+                        completionHandler(true)
+                    }
                 }
             }
         }))
