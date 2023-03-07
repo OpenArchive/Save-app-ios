@@ -116,8 +116,7 @@ class AssetFactory {
         }
 
         if phasset.mediaType == .image {
-            // Fetch non-resized version first. We need the UTI, the filename and the original
-            // image data.
+            // Fetch non-resized version first. We need the UTI and the original image data.
 
             let options = Settings.highCompression ? loResImageOptions : hiResImageOptions
 
@@ -198,9 +197,7 @@ class AssetFactory {
                         exportSession.exportAsynchronously {
                             switch exportSession.status {
                             case .completed:
-                                if let thumb = asset.thumb?.path,
-                                    !FileManager.default.fileExists(atPath: thumb) {
-
+                                if !(asset.thumb?.exists ?? false) {
                                     createThumb(asset)
                                 }
 
@@ -253,7 +250,8 @@ class AssetFactory {
      - parameter resultHandler: Callback with the created `Asset` object.
      */
     class func create(fromFileUrl url: URL, thumbnail: UIImage? = nil,
-                      _ collection: Collection, _ resultHandler: ResultHandler? = nil) {
+                      _ collection: Collection, _ resultHandler: ResultHandler? = nil)
+    {
         if let uti = (try? url.resourceValues(forKeys: [.typeIdentifierKey]))?.typeIdentifier
         {
             let asset = Asset(collection, uti: LegacyUTType(uti))
@@ -265,17 +263,7 @@ class AssetFactory {
             {
                 self.fetchLocation(asset)
 
-                if let thumb = asset.thumb,
-                    createParentDir(file: thumb) {
-
-                    if let thumbnail = thumbnail {
-                        try? thumbnail.jpegData(compressionQuality: thumbnailCompressionQuality)?.write(to: thumb)
-                    }
-
-                    if !FileManager.default.fileExists(atPath: thumb.path) {
-                        self.createThumb(asset)
-                    }
-                }
+                self.createThumb(asset, thumbnail: thumbnail)
 
                 asset.isReady = true
 
@@ -302,7 +290,8 @@ class AssetFactory {
      - parameter resultHandler: Callback with the created `Asset` object.
      */
     class func create(from data: Data, uti: any UTTypeProtocol, name: String? = nil, thumbnail: UIImage? = nil,
-                      _ collection: Collection, _ resultHandler: ResultHandler? = nil) {
+                      _ collection: Collection, _ resultHandler: ResultHandler? = nil)
+    {
         let asset = Asset(collection, uti: uti)
 
         if let name = name {
@@ -316,21 +305,12 @@ class AssetFactory {
         }
 
         if  let file = asset.file, createParentDir(file: file)
-                && (try? data.write(to: file)) != nil {
-
+                && (try? data.write(to: file)) != nil
+        {
             self.fetchLocation(asset)
 
-            if let thumb = asset.thumb,
-                createParentDir(file: thumb) {
+            self.createThumb(asset, thumbnail: thumbnail)
 
-                if let thumbnail = thumbnail {
-                    try? thumbnail.jpegData(compressionQuality: thumbnailCompressionQuality)?.write(to: thumb)
-                }
-
-                if !FileManager.default.fileExists(atPath: thumb.path) {
-                    self.createThumb(asset)
-                }
-            }
 
             asset.isReady = true
 
@@ -361,11 +341,7 @@ class AssetFactory {
 
             self.fetchLocation(asset)
 
-            if let thumb = asset.thumb,
-                createParentDir(file: thumb) {
-
-                self.createThumb(asset)
-            }
+            self.createThumb(asset)
 
             asset.isReady = true
         }
@@ -385,16 +361,8 @@ class AssetFactory {
                                   contentMode: .default,
                                   options: thumbnailOptions)
         { image, info in
-
             // If we don't get one, fine. A default will be provided.
-            if let image = image, let thumb = asset.thumb,
-                createParentDir(file: thumb) {
-                try? image.jpegData(compressionQuality: thumbnailCompressionQuality)?.write(to: thumb)
-
-                if !FileManager.default.fileExists(atPath: thumb.path) {
-                    self.createThumb(asset)
-                }
-            }
+            self.createThumb(asset, thumbnail: image)
         }
     }
 
@@ -422,33 +390,49 @@ class AssetFactory {
     }
 
     /**
-     Create a thumbnail for an asset from its file. The file must be already set to its destination
-     and be readable, obviously.
+     Create a thumbnail for an asset from its file or from an optionally given `UIImage`.
+     The file must be already set to its destination and be readable, obviously.
 
      - parameter asset: The `Asset` to read the file from and store the thumbnail with.
+     - parameter thumbnail: Optional `UIImage` fetched from somewhere else, from which to create the thumbnail.
+         If it can't be stored, automatically falls back to generating a thumbnail from the original file.
     */
-    private class func createThumb(_ asset: Asset) {
-        if let file = asset.file,
-            let thumb = asset.thumb {
+    private class func createThumb(_ asset: Asset, thumbnail: UIImage? = nil) {
+        guard let thumb = asset.thumb,
+              createParentDir(file: thumb)
+        else {
+            return
+        }
 
-            var cgThumbnail: CGImage?
+        if let thumbnail = thumbnail {
+            try? thumbnail.jpegData(compressionQuality: thumbnailCompressionQuality)?.write(to: thumb)
 
-            if asset.isAv {
-                let avAsset = AVAsset(url: file)
-                let generator = AVAssetImageGenerator(asset: avAsset)
-                generator.appliesPreferredTrackTransform = true
-                let time = min(CMTimeMakeWithSeconds(Float64(1), preferredTimescale: 100), avAsset.duration)
-
-                cgThumbnail = try? generator.copyCGImage(at: time, actualTime: nil)
+            if thumb.exists {
+                return
             }
-            else if let source = CGImageSourceCreateWithURL(file as CFURL, nil) {
-                cgThumbnail = CGImageSourceCreateThumbnailAtIndex(source, 0, cgThumbnailOptions)
-            }
+        }
 
-            if let cgThumbnail = cgThumbnail {
-                let thumbnail = UIImage(cgImage: cgThumbnail)
-                try? thumbnail.jpegData(compressionQuality: thumbnailCompressionQuality)?.write(to: thumb)
-            }
+        guard let file = asset.file, file.exists else {
+            return
+        }
+
+        var cgThumbnail: CGImage?
+
+        if asset.isAv {
+            let avAsset = AVAsset(url: file)
+            let generator = AVAssetImageGenerator(asset: avAsset)
+            generator.appliesPreferredTrackTransform = true
+            let time = min(CMTimeMakeWithSeconds(Float64(1), preferredTimescale: 100), avAsset.duration)
+
+            cgThumbnail = try? generator.copyCGImage(at: time, actualTime: nil)
+        }
+        else if let source = CGImageSourceCreateWithURL(file as CFURL, nil) {
+            cgThumbnail = CGImageSourceCreateThumbnailAtIndex(source, 0, cgThumbnailOptions)
+        }
+
+        if let cgThumbnail = cgThumbnail {
+            let thumbnail = UIImage(cgImage: cgThumbnail)
+            try? thumbnail.jpegData(compressionQuality: thumbnailCompressionQuality)?.write(to: thumb)
         }
     }
 

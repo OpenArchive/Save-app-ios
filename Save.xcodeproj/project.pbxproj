@@ -41,6 +41,9 @@
 		A026C34622C641EB007B1C5B /* IaScrapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */; };
 		A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029F6822118715700C4EF6D /* AssetFactory.swift */; };
 		A029F6842118715700C4EF6D /* AssetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029F6822118715700C4EF6D /* AssetFactory.swift */; };
+		A02DB29A29B647390090ECF6 /* URL+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02DB29929B647390090ECF6 /* URL+Utils.swift */; };
+		A02DB29B29B647390090ECF6 /* URL+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02DB29929B647390090ECF6 /* URL+Utils.swift */; };
+		A02DB29C29B647390090ECF6 /* URL+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02DB29929B647390090ECF6 /* URL+Utils.swift */; };
 		A0357D1122CF901800292077 /* BatchEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0357D1022CF901800292077 /* BatchEditViewController.swift */; };
 		A0362192220DA390003C21DC /* UIColor+accent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362191220DA390003C21DC /* UIColor+accent.swift */; };
 		A0362193220DA390003C21DC /* UIColor+accent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362191220DA390003C21DC /* UIColor+accent.swift */; };
@@ -510,6 +513,7 @@
 		A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaScrapeViewController.swift; sourceTree = "<group>"; };
 		A029F6822118715700C4EF6D /* AssetFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFactory.swift; sourceTree = "<group>"; };
 		A02BC66D2400195C007B05AB /* NSError+from.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+from.swift"; sourceTree = "<group>"; };
+		A02DB29929B647390090ECF6 /* URL+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Utils.swift"; sourceTree = "<group>"; };
 		A0357D1022CF901800292077 /* BatchEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchEditViewController.swift; sourceTree = "<group>"; };
 		A0362191220DA390003C21DC /* UIColor+accent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+accent.swift"; sourceTree = "<group>"; };
 		A0362194220DB2CA003C21DC /* IaSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaSpace.swift; sourceTree = "<group>"; };
@@ -798,6 +802,7 @@
 				A05DF97F282C0F48003FADA2 /* AEXMLOptions.swift */,
 				A05DF983282C0F6E003FADA2 /* AEXMLError.swift */,
 				A05DF987282C0F92003FADA2 /* AEXMLParser.swift */,
+				A02DB29929B647390090ECF6 /* URL+Utils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1602,6 +1607,7 @@
 				A05275152211A91300BDB14B /* CollectionsView.swift in Sources */,
 				A0AFCF1022300E41005E57FD /* MultilineTitle.swift in Sources */,
 				A0E27200224E267800CB7113 /* BrowseViewController.swift in Sources */,
+				A02DB29B29B647390090ECF6 /* URL+Utils.swift in Sources */,
 				A0A192E121F23B61009A8CF0 /* Constants+Swift.swift in Sources */,
 				A0631B5C22034F0E00B3E90D /* Collection.swift in Sources */,
 				A0F7FDE822494E3E006610F0 /* RemoveProjectAlert.swift in Sources */,
@@ -1638,6 +1644,7 @@
 				A09B5416232671D1005266C2 /* AppDelegate.swift in Sources */,
 				A056555E23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */,
 				A094EA4A282A8C25006CE059 /* URLSession+Utils.swift in Sources */,
+				A02DB29C29B647390090ECF6 /* URL+Utils.swift in Sources */,
 				A09B538423266F02005266C2 /* SpacesView.swift in Sources */,
 				A09B538523266F02005266C2 /* RoundedImageView.swift in Sources */,
 				A09B538623266F02005266C2 /* Settings.swift in Sources */,
@@ -1824,6 +1831,7 @@
 				A05DF97C282C0E7C003FADA2 /* AEXMLElement.swift in Sources */,
 				A0212FCE22D374CA009079DC /* UICollectionView+selection.swift in Sources */,
 				A065AE732864885C00FCFB4A /* OrbotManager.swift in Sources */,
+				A02DB29A29B647390090ECF6 /* URL+Utils.swift in Sources */,
 				A05275142211A91300BDB14B /* CollectionsView.swift in Sources */,
 				A07129102111E4F1007A432A /* Db.swift in Sources */,
 				A059E647223AE9FB00ABC621 /* UploadManager.swift in Sources */,

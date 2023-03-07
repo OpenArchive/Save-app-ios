@@ -352,7 +352,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 
         if let id = Bundle.main.bundleIdentifier,
            let cache = fm.urls(for: .cachesDirectory, in: .userDomainMask).first?.appendingPathComponent(id),
-           fm.fileExists(atPath: cache.path)
+           cache.exists
         {
             do {
                 // Try to remove *all* URL cache files.
@@ -369,7 +369,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
             .appendingPathComponent("SystemData")
             .appendingPathComponent("com.apple.SafariViewService")
             .appendingPathComponent("Library"),
-           fm.fileExists(atPath: safariLib.path)
+           safariLib.exists
         {
             do {
                 try fm.removeItem(at: safariLib)

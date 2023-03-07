@@ -188,7 +188,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
      be read, otherwise a recorded value, from when a file was still around.
     */
     var filesize: Int64? {
-        if let size = (try? file?.resourceValues(forKeys: [.fileSizeKey]))?.fileSize {
+        if let size = file?.size {
             _filesize = Int64(size)
         }
 
@@ -300,9 +300,9 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
      */
     var duration: TimeInterval? {
         if isAv,
-            let file = file,
-            FileManager.default.fileExists(atPath: file.path) {
-
+           let file = file,
+           file.exists
+        {
             let avAsset = AVAsset(url: file)
 
             _duration = CMTimeGetSeconds(avAsset.duration)
@@ -487,9 +487,8 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     func yapDatabaseRelationshipEdges() -> [YapDatabaseRelationshipEdge]? {
         var edges = [YapDatabaseRelationshipEdge]()
 
-        if let file = file,
-            FileManager.default.fileExists(atPath: file.path) {
-            edges.append(YapDatabaseRelationshipEdge(
+        if let file = file, file.exists {
+            edges.append(.init(
                 name: "file", destinationFileURL: file,
                 nodeDeleteRules: .deleteDestinationIfSourceDeleted))
         }
@@ -502,7 +501,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         }
 
         if let id = collectionId {
-            edges.append(YapDatabaseRelationshipEdge(
+            edges.append(.init(
                 name: "collection", destinationKey: id, collection: Collection.collection,
                 nodeDeleteRules: .deleteSourceIfDestinationDeleted))
         }
