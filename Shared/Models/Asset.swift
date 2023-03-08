@@ -14,6 +14,7 @@ import AVFoundation
 import CoreMedia
 import Photos
 import LibProofMode
+import CryptoKit
 
 /**
  Representation of a file asset in the database.
@@ -217,31 +218,23 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     var digest: Data? {
         if _digest == nil,
             let url = file,
-            let fh = try? FileHandle(forReadingFrom: url) {
-
+            let fh = try? FileHandle(forReadingFrom: url)
+        {
             defer {
                 fh.closeFile()
             }
 
-            var context = CC_SHA256_CTX()
-            CC_SHA256_Init(&context)
+            var sha = SHA256()
 
-            let data = fh.readData(ofLength: 1024 * 1024)
+            var data: Data
 
-            if data.count > 0 {
-                data.withUnsafeBytes {
-                    if let pointer = $0.baseAddress {
-                        _ = CC_SHA256_Update(&context, pointer, UInt32(data.count))
-                    }
-                }
-            }
+            repeat {
+                data = fh.readData(ofLength: 1024 * 1024)
 
-            _digest = Data(count: Int(CC_SHA256_DIGEST_LENGTH))
-            _digest?.withUnsafeMutableBytes {
-                if let pointer = $0.baseAddress?.assumingMemoryBound(to: UInt8.self) {
-                    _ = CC_SHA256_Final(pointer, &context)
-                }
-            }
+                sha.update(data: data)
+            } while !data.isEmpty
+
+            _digest = Data(sha.finalize())
         }
 
         return _digest
