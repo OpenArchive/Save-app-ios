@@ -627,7 +627,9 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
 
         var item: MediaItem? = nil
 
-        if let phAsset = phAsset {
+        // Don't do this with videos, ProofMode will create a signature for something else,
+        // not what we're exporting.
+        if let phAsset = phAsset, phAsset.mediaType == .image {
             item = MediaItem(asset: phAsset)
         }
         else if let file = file {
