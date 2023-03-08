@@ -83,7 +83,7 @@ class DropboxConduit: Conduit {
 
             let to = self.construct(path)
 
-            error = self.copyMetadata(self.asset, to: to.appendingPathExtension(Conduit.metaFileExt), progress)
+            error = self.copyMetadata(to: to, progress)
 
             if error != nil || progress.isCancelled {
                 return self.done(uploadId, error: error)
@@ -129,7 +129,7 @@ class DropboxConduit: Conduit {
         var error: Error? = nil
 
         let p = Progress(totalUnitCount: 2)
-        progress.addChild(p, withPendingUnitCount: 2)
+        progress.addChild(p, withPendingUnitCount: 1)
 
         let group = DispatchGroup.enter()
 
@@ -159,11 +159,10 @@ class DropboxConduit: Conduit {
     /**
      Writes an `Asset`'s metadata to a destination on the Dropbox server.
 
-     - parameter asset: The `Asset` to extract metadata from.
      - parameter to: The destination on the Dropbox server.
      - returns: An eventual error.
      */
-    private func copyMetadata(_ asset: Asset, to: URL, _ progress: Progress) -> Error? {
+    private func copyMetadata(to: URL, _ progress: Progress) -> Error? {
         let json: Data
 
         do {
@@ -176,12 +175,20 @@ class DropboxConduit: Conduit {
         var error: Error? = nil
         let group = DispatchGroup.enter()
 
-        upload(json, to: to, progress, 2) { e in
+        upload(json, to: to.appendingPathExtension(Conduit.metaFileExt), progress, 1) { e in
             error = e
             group.leave()
         }
 
         group.wait(signal: progress)
+
+        uploadProofMode { file, ext in
+            guard let size = file.size else {
+                return
+            }
+
+            upload(file, of: Int64(size), to: to.appendingPathExtension(ext), progress, pendingUnitCount: 1)
+        }
 
         return error
     }
@@ -224,8 +231,11 @@ class DropboxConduit: Conduit {
      - parameter completionHandler: The callback to call when the copy is done,
      or when an error happened.
      */
-    func upload(_ file: URL, of filesize: Int64, to: URL, _ progress: Progress, _ completionHandler: URLSession.SimpleCompletionHandler? = nil)
+    func upload(_ file: URL, of filesize: Int64, to: URL, _ progress: Progress, pendingUnitCount: Int64? = nil,
+                _ completionHandler: URLSession.SimpleCompletionHandler? = nil)
     {
+        let pendingUnitCount = pendingUnitCount ?? (progress.totalUnitCount - progress.completedUnitCount)
+
         if filesize > Conduit.chunkFileSizeThreshold {
             let expectedSize = min(Conduit.chunkSize, filesize)
             let chunk: Data
@@ -239,7 +249,7 @@ class DropboxConduit: Conduit {
                 return
             }
 
-            let progressPerChunk = (progress.totalUnitCount - progress.completedUnitCount) / (filesize / Conduit.chunkSize + 1)
+            let progressPerChunk = pendingUnitCount / (filesize / Conduit.chunkSize + 1)
 
             Self.client?.files.uploadSessionStart(input: chunk)
                 .progress(progressHandler(progress: progress, addWithCount: progressPerChunk))
@@ -256,7 +266,7 @@ class DropboxConduit: Conduit {
         }
         else {
             Self.client?.files.upload(path: to.path, input: file)
-                .progress(progressHandler(progress: progress, addWithCount: progress.totalUnitCount - progress.completedUnitCount))
+                .progress(progressHandler(progress: progress, addWithCount: pendingUnitCount))
                 .response { metadata, error in
                     completionHandler?(NSError.from(error))
                 }

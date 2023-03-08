@@ -110,12 +110,12 @@ class Conduit {
      - parameter headers: Addtitional request headers.
      - parameter progress: The main progress to report on.
      */
-    func upload(_ file: URL, to: URL, _ progress: Progress, credential: URLCredential? = nil,
+    func upload(_ file: URL, to: URL, _ progress: Progress, pendingUnitCount: Int64? = nil, credential: URLCredential? = nil,
                 headers: [String: String]? = nil)
     {
         let task = backgroundSession.upload(file, to: to, headers: headers, credential: credential)
 
-        progress.addChild(task.progress, withPendingUnitCount: progress.totalUnitCount - progress.completedUnitCount)
+        progress.addChild(task.progress, withPendingUnitCount: pendingUnitCount ?? (progress.totalUnitCount - progress.completedUnitCount))
     }
 
     func upload(_ data: Data, to: URL, _ progress: Progress, _ share: Int64, credential: URLCredential? = nil,
@@ -126,6 +126,29 @@ class Conduit {
             completionHandler: completionHandler)
 
         progress.addChild(task.progress, withPendingUnitCount: share)
+    }
+
+    /**
+     Uploads ProofMode files, if ProofMode is enabled and files are available for the current asset.
+
+     - parameter upload: Callback which implements the actual upload of a file, which differs depending on the actual conduit.
+     - parameter file: The file URL which to upload.
+     - parameter ext: The ProofMode file extension which needs to get applied to the destination file name.
+     */
+    func uploadProofMode(_ upload: (_ file: URL, _ ext: String) -> Void) {
+        guard Settings.proofMode else {
+            return
+        }
+
+        for file in Asset.Files.allCases {
+            guard file != .thumb else {
+                continue
+            }
+
+            if let url = file.url(asset.id), url.exists {
+                upload(url, file.rawValue)
+            }
+        }
     }
 
     /**

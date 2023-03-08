@@ -67,7 +67,7 @@ class WebDavConduit: Conduit {
 
             let to = self.construct(url: url, path)
 
-            error = self.copyMetadata(self.asset, to: to.appendingPathExtension(Conduit.metaFileExt), progress)
+            error = self.copyMetadata(to: to, progress)
 
             if error != nil || progress.isCancelled {
                 return self.done(uploadId, error: error)
@@ -155,7 +155,7 @@ class WebDavConduit: Conduit {
             group.leave()
         }
 
-        progress.addChild(task.progress, withPendingUnitCount: 2)
+        progress.addChild(task.progress, withPendingUnitCount: 1)
 
         group.wait(signal: progress)
 
@@ -187,11 +187,10 @@ class WebDavConduit: Conduit {
     /**
      Writes an `Asset`'s metadata to a destination on the WebDAV server.
 
-     - parameter asset: The `Asset` to extract metadata from.
      - parameter to: The destination on the WebDAV server.
      - returns: An eventual error.
      */
-    private func copyMetadata(_ asset: Asset, to: URL, _ progress: Progress) -> Error? {
+    private func copyMetadata(to: URL, _ progress: Progress) -> Error? {
         let json: Data
 
         do {
@@ -204,12 +203,16 @@ class WebDavConduit: Conduit {
         var error: Error? = nil
         let group = DispatchGroup.enter()
 
-        upload(json, to: to, progress, 2, credential: credential) { e in
+        upload(json, to: to.appendingPathExtension(Conduit.metaFileExt), progress, 1, credential: credential) { e in
             error = e
             group.leave()
         }
 
         group.wait(signal: progress)
+
+        uploadProofMode { file, ext in
+            upload(file, to: to.appendingPathExtension(ext), progress, pendingUnitCount: 1, credential: credential)
+        }
 
         return error
     }

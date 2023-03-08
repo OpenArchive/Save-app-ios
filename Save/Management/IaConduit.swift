@@ -79,6 +79,8 @@ class IaConduit: Conduit {
             headers["x-archive-meta-licenseurl"] = license
         }
 
+        copyMetadata(to: url, progress, headers: headers)
+
         //Fix to 10% from here, so uploaded bytes can be calculated properly
         // in `UploadCell.upload#didSet`!
         progress.completedUnitCount = 10
@@ -120,6 +122,18 @@ class IaConduit: Conduit {
 
 
     // MARK: Private Methods
+
+    /**
+     Writes an `Asset`'s ProofMode metadata, if any, to a destination on the Internet Archive.
+
+     - parameter to: The destination on the Internet Archive.
+     - parameter headers: Full Internet Archive headers.
+     */
+    private func copyMetadata(to: URL, _ progress: Progress, headers: [String: String]) {
+        uploadProofMode { file, ext in
+            upload(file, to: to.appendingPathExtension(ext), progress, pendingUnitCount: 1, headers: headers)
+        }
+    }
 
     private func url(for asset: Asset) -> URL? {
         if let url = asset.publicUrl {
