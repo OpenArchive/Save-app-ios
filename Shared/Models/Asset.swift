@@ -644,8 +644,6 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         item.proofFolder = Files.base
         item.proofFilesBaseName = id
 
-        print("Generating proof into: \(item.proofFolder?.path ?? "(nil)")")
-
         Proof.shared.process(
             mediaItem: item,
             options: .init(showDeviceIds: true, showLocation: false, showMobileNetwork: false, notarizationProviders: []))

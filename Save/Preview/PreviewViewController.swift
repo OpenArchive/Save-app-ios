@@ -191,6 +191,13 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
                 .iterateKeysAndObjects(inGroup: group) { collection, key, object, index, stop in
 
                     if let asset = object as? Asset {
+                        // ProofMode might have been switched on in between import and now,
+                        // or something inhibited proof generation, so make sure,
+                        // proof is generated before upload.
+                        // Proofing will set asset to un-ready, so upload will not start
+                        // before proof is done as asset is set to ready again.
+                        asset.generateProof()
+
                         let upload = Upload(order: order, asset: asset)
                         transaction.setObject(upload, forKey: upload.id, inCollection: Upload.collection)
                         order += 1
