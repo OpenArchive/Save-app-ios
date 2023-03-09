@@ -49,7 +49,7 @@ class ProjectTab: UIButton {
     }
 
     required init?(coder: NSCoder) {
-        project = coder.decodeObject(forKey: "project") as! Project
+        project = coder.decodeObject(of: Project.self, forKey: "project")!
 
         super.init(coder: coder)
 
