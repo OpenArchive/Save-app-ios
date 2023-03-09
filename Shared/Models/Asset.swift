@@ -23,6 +23,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
 
     enum Files: String, CaseIterable {
         case thumb = "thumb"
+        case meta = "meta.json"
         case signature = "asc"
         case proofCsv = "proof.csv"
         case proofCsvSignature = "proof.csv.asc"
@@ -32,6 +33,36 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         static let base = FileManager.default.containerURL(
             forSecurityApplicationGroupIdentifier: Constants.appGroup)?
             .appendingPathComponent(Asset.collection)
+
+        var isProof: Bool {
+            switch self {
+            case .signature, .proofCsv, .proofCsvSignature, .proofJson, .proofJsonSignature:
+                return true
+
+            default:
+                return false
+            }
+        }
+
+        var isInternal: Bool {
+            switch self {
+            case .thumb:
+                return true
+
+            default:
+                return false
+            }
+        }
+
+        var isVirtual: Bool {
+            switch self {
+            case .meta:
+                return true
+
+            default:
+                return false
+            }
+        }
 
         func url(_ name: String) -> URL? {
             Self.base?.appendingPathComponent(name).appendingPathExtension(self.rawValue)
@@ -503,7 +534,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         }
 
         for file in Files.allCases {
-            if let url = file.url(id), url.exists {
+            if !file.isVirtual, let url = file.url(id), url.exists {
                 edges.append(.init(
                     name: file.rawValue, destinationFileURL: url,
                     nodeDeleteRules: .deleteDestinationIfSourceDeleted))

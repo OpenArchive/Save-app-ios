@@ -132,6 +132,8 @@ class IaConduit: Conduit {
     private func copyMetadata(to: URL, _ progress: Progress, headers: [String: String]) {
         uploadProofMode { file, ext in
             upload(file, to: to.appendingPathExtension(ext), progress, pendingUnitCount: 1, headers: headers)
+
+            return !progress.isCancelled
         }
     }
 

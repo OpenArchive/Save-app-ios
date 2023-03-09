@@ -175,19 +175,38 @@ class DropboxConduit: Conduit {
         var error: Error? = nil
         let group = DispatchGroup.enter()
 
-        upload(json, to: to.appendingPathExtension(Conduit.metaFileExt), progress, 1) { e in
-            error = e
+        upload(json, to: to.appendingPathExtension(Asset.Files.meta.rawValue), progress, 1) { e in
+            if error == nil && e != nil {
+                error = e
+            }
+
             group.leave()
         }
 
         group.wait(signal: progress)
 
+        if error != nil || progress.isCancelled {
+            return error
+        }
+
         uploadProofMode { file, ext in
             guard let size = file.size else {
-                return
+                return true
             }
 
-            upload(file, of: Int64(size), to: to.appendingPathExtension(ext), progress, pendingUnitCount: 1)
+            group.enter()
+
+            upload(file, of: Int64(size), to: to.appendingPathExtension(ext), progress, pendingUnitCount: 1) { e in
+                if error == nil && e != nil {
+                    error = e
+                }
+
+                group.leave()
+            }
+
+            group.wait(signal: progress)
+
+            return error == nil && !progress.isCancelled
         }
 
         return error

@@ -222,49 +222,53 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         let filename = url.lastPathComponent
 
         // Ignore Metadata files.
-        guard filename.lowercased() !~ "\(Conduit.metaFileExt)$" else {
+        for file in Asset.Files.allCases {
+            if !file.isInternal && filename =~ "\(file.rawValue)$" {
+                return
+            }
+        }
+
+        guard task is URLSessionUploadTask && filename !~ "\\d{15}-\\d{15}" /* ignore chunks */ else {
             return
         }
 
-        if task is URLSessionUploadTask && filename !~ "\\d{15}-\\d{15}" /* ignore chunks */ {
-            if current?.filename == filename {
-                done(current?.id, error, url, synchronous: true)
-            }
-            else {
-                var found: Upload? = nil
+        if current?.filename == filename {
+            done(current?.id, error, url, synchronous: true)
+        }
+        else {
+            var found: Upload? = nil
 
-                Db.bgRwConn?.read { transaction in
-                    let viewTransaction = transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction
+            Db.bgRwConn?.read { transaction in
+                let viewTransaction = transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction
 
-                    viewTransaction?.iterateKeysAndObjects(inGroup: UploadsView.groups[0])
-                    { collection, key, object, index, stop in
+                viewTransaction?.iterateKeysAndObjects(inGroup: UploadsView.groups[0])
+                { collection, key, object, index, stop in
 
-                        // Look at next, if it's paused or delayed.
-                        guard let upload = object as? Upload,
-                              !upload.paused
-                        else {
-                            return
-                        }
-
-                        // First attach object chain to upload before next call,
-                        // otherwise, that will trigger more DB reads and with that
-                        // a deadlock.
-                        self.heatCache(transaction, upload)
-
-                        // Look at next, if it's not ready, yet.
-                        guard  upload.filename == filename && upload.isReady else {
-                            return
-                        }
-
-                        found = upload
-                        stop = true
+                    // Look at next, if it's paused or delayed.
+                    guard let upload = object as? Upload,
+                          !upload.paused
+                    else {
+                        return
                     }
-                }
 
-                if let found = found {
-                    current = found // Otherwise next call will do nothing.
-                    done(found.id, error, url, synchronous: true)
+                    // First attach object chain to upload before next call,
+                    // otherwise, that will trigger more DB reads and with that
+                    // a deadlock.
+                    self.heatCache(transaction, upload)
+
+                    // Look at next, if it's not ready, yet.
+                    guard  upload.filename == filename && upload.isReady else {
+                        return
+                    }
+
+                    found = upload
+                    stop = true
                 }
+            }
+
+            if let found = found {
+                current = found // Otherwise next call will do nothing.
+                done(found.id, error, url, synchronous: true)
             }
         }
     }

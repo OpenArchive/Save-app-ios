@@ -108,7 +108,7 @@ class WebDavConduit: Conduit {
                     self.asset.setUploaded(nil)
                 }
 
-                self.foregroundSession.delete(publicUrl.appendingPathExtension(Conduit.metaFileExt), credential: self.credential) { error in
+                self.foregroundSession.delete(publicUrl.appendingPathExtension(Asset.Files.meta.rawValue), credential: self.credential) { error in
 
                     // Try to delete containing folders until root.
                     self.delete(folder: publicUrl.deletingLastPathComponent()) { error in
@@ -203,15 +203,21 @@ class WebDavConduit: Conduit {
         var error: Error? = nil
         let group = DispatchGroup.enter()
 
-        upload(json, to: to.appendingPathExtension(Conduit.metaFileExt), progress, 1, credential: credential) { e in
+        upload(json, to: to.appendingPathExtension(Asset.Files.meta.rawValue), progress, 1, credential: credential) { e in
             error = e
             group.leave()
         }
 
         group.wait(signal: progress)
 
+        if error != nil || progress.isCancelled {
+            return error
+        }
+
         uploadProofMode { file, ext in
             upload(file, to: to.appendingPathExtension(ext), progress, pendingUnitCount: 1, credential: credential)
+
+            return !progress.isCancelled
         }
 
         return error

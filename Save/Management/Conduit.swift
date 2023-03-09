@@ -14,7 +14,6 @@ import Foundation
  */
 class Conduit {
 
-    static let metaFileExt = "meta.json"
     static let chunkSize: Int64 = 2 * 1024 * 1024 // 2 MByte
     static let chunkFileSizeThreshold: Int64 = 10 * 1024 * 1024 // 10 MByte
 
@@ -131,22 +130,24 @@ class Conduit {
     /**
      Uploads ProofMode files, if ProofMode is enabled and files are available for the current asset.
 
-     - parameter upload: Callback which implements the actual upload of a file, which differs depending on the actual conduit.
+     - parameter upload: Callback which implements the actual upload of a file, which differs depending on the actual conduit. Return `true` to continue or `false` to stop.
      - parameter file: The file URL which to upload.
      - parameter ext: The ProofMode file extension which needs to get applied to the destination file name.
      */
-    func uploadProofMode(_ upload: (_ file: URL, _ ext: String) -> Void) {
+    func uploadProofMode(_ upload: (_ file: URL, _ ext: String) -> Bool) {
         guard Settings.proofMode else {
             return
         }
 
         for file in Asset.Files.allCases {
-            guard file != .thumb else {
+            guard file.isProof else {
                 continue
             }
 
             if let url = file.url(asset.id), url.exists {
-                upload(url, file.rawValue)
+                if !upload(url, file.rawValue) {
+                    break
+                }
             }
         }
     }
