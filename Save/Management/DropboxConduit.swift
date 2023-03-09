@@ -176,9 +176,7 @@ class DropboxConduit: Conduit {
         let group = DispatchGroup.enter()
 
         upload(json, to: to.appendingPathExtension(Asset.Files.meta.rawValue), progress, 1) { e in
-            if error == nil && e != nil {
-                error = e
-            }
+            error = e
 
             group.leave()
         }
@@ -197,9 +195,7 @@ class DropboxConduit: Conduit {
             group.enter()
 
             upload(file, of: Int64(size), to: to.appendingPathExtension(ext), progress, pendingUnitCount: 1) { e in
-                if error == nil && e != nil {
-                    error = e
-                }
+                error = e
 
                 group.leave()
             }
