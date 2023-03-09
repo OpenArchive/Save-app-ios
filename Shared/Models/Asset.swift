@@ -640,6 +640,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
             store()
         }
 
+        item.fileName = filename
         item.proofFolder = Files.base
         item.proofFilesBaseName = id
 

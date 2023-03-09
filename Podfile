@@ -21,7 +21,7 @@ def shared_pods
     pod 'CrossroadRegex', :git => 'https://github.com/crossroadlabs/Regex.git', tag: '1.2.0'
     pod 'CleanInsightsSDK', '~> 2.6'
     pod 'LegacyUTType', '~> 0.1'
-    pod 'LibProofMode/NoAdSupport', :git => 'https://gitlab.com/threeletteracronym/libproofmode-ios.git', :branch => 'proofFilesBaseName' # :path => '../libproofmode-ios'
+    pod 'LibProofMode/NoAdSupport', :git => 'https://gitlab.com/threeletteracronym/libproofmode-ios.git', :branch => 'dev' # :path => '../libproofmode-ios'
 end
 
 def app_only

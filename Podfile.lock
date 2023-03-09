@@ -176,7 +176,7 @@ DEPENDENCIES:
   - FormatterKit (~> 1.9)
   - ImageRow (~> 4.1)
   - LegacyUTType (~> 0.1)
-  - LibProofMode/NoAdSupport (from `https://gitlab.com/threeletteracronym/libproofmode-ios.git`, branch `proofFilesBaseName`)
+  - LibProofMode/NoAdSupport (from `https://gitlab.com/threeletteracronym/libproofmode-ios.git`, branch `dev`)
   - MBProgressHUD (~> 1.2)
   - OrbotKit (~> 0.2)
   - ReachabilitySwift (~> 5.0)
@@ -218,7 +218,7 @@ EXTERNAL SOURCES:
     :branch: swift-5
     :git: https://github.com/tladesignz/FavIcon.git
   LibProofMode:
-    :branch: proofFilesBaseName
+    :branch: dev
     :git: https://gitlab.com/threeletteracronym/libproofmode-ios.git
   SwiftyDropbox:
     :branch: session_config
@@ -236,7 +236,7 @@ CHECKOUT OPTIONS:
     :commit: ad3139c820078d3fe8ad6beac486846a82e66b81
     :git: https://github.com/tladesignz/FavIcon.git
   LibProofMode:
-    :commit: 1991465227cb011732917ff7f6b01574f25881a8
+    :commit: 14f3f5a728b6ea69404d79d1a510b31a492df529
     :git: https://gitlab.com/threeletteracronym/libproofmode-ios.git
   SwiftyDropbox:
     :commit: bd5e45b8c6afa8d84f1c586cf90e27f704fa3b7c
@@ -275,6 +275,6 @@ SPEC CHECKSUMS:
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
   YapDatabase: 19c4e6ffb2e4bfab4de4d2511b92020208eecab6
 
-PODFILE CHECKSUM: 31454ff1bd8f1440e3c912c91a031714f7a93449
+PODFILE CHECKSUM: b45fdf27860afb142e5650c3cfa58719972c3876
 
 COCOAPODS: 1.11.3
