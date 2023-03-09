@@ -77,9 +77,11 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         pageVc.view.frame = container.bounds
         pageVc.didMove(toParent: self)
 
-        dh = DarkroomHelper(self, infos)
-
+        // Deactivate before initializing DarkroomHelper, because otherwise
+        // the constraints debugger spams the debug log.
         infosHeight?.isActive = false
+
+        dh = DarkroomHelper(self, infos)
 
         toolbarHeight.isActive = addMode
 

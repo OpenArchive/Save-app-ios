@@ -63,6 +63,9 @@ class InfoBox: UIView, UITextViewDelegate {
         }
     }
 
+    @IBOutlet weak var textTopMargin: NSLayoutConstraint?
+    @IBOutlet weak var textBottomMargin: NSLayoutConstraint?
+
     private lazy var textHeight: NSLayoutConstraint = textView.heightAnchor.constraint(equalToConstant: 0)
 
     private lazy var zeroHeight: NSLayoutConstraint = heightAnchor.constraint(equalToConstant: 0)
@@ -106,10 +109,13 @@ class InfoBox: UIView, UITextViewDelegate {
         // UITextView does not auto-size as UILabel. So we do that here.
         textHeight.constant = textView.sizeThatFits(CGSize(width: textView.frame.size.width,
                                                            height: CGFloat.greatestFiniteMagnitude)).height
-        textHeight.isActive = true
 
         isHidden = !isUsed && !hasPlaceholder
 
+        // Calm the constraints debugger.
+        textHeight.isActive = !isHidden
+        textTopMargin?.isActive = !isHidden
+        textBottomMargin?.isActive = !isHidden
         zeroHeight.isActive = isHidden
     }
 
