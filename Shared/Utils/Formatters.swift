@@ -146,8 +146,8 @@ class Formatters: NSObject {
         */
         class func fix(url: URL?, baseOnly: Bool = false) -> URL? {
             if let url = url,
-                var urlc = URLComponents(url: url, resolvingAgainstBaseURL: true) {
-
+                var urlc = URLComponents(url: url, resolvingAgainstBaseURL: true)
+            {
                 // We're currently not allowing non-encrypted communication
                 // (Default iOS App-Transport-Security!), so we shouldn't allow
                 // anything else then HTTPS.

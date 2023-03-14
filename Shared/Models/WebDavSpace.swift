@@ -24,6 +24,20 @@ class WebDavSpace: Space, Item {
         return super.compare(rhs)
     }
 
+    override var username: String? {
+        didSet {
+            // If the username changes, the session needs to be recreated!
+            _session = nil
+        }
+    }
+
+    override var password: String? {
+        didSet {
+            // If the password changes, the session needs to be recreated!
+            _session = nil
+        }
+    }
+
     var credential: URLCredential? {
         if let username = username,
            let password = password
