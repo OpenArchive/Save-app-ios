@@ -121,9 +121,9 @@ class Formatters: NSObject {
 
         override func getObjectValue(
             _ obj: AutoreleasingUnsafeMutablePointer<AnyObject?>?, for string: String,
-            errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>?) -> Bool {
-            
-            if let url = URL(string: string) {
+            errorDescription error: AutoreleasingUnsafeMutablePointer<NSString?>?) -> Bool
+        {
+            if let url = URL(string: string.trimmingCharacters(in: .whitespacesAndNewlines)) {
                 obj?.pointee = url as AnyObject
 
                 return true
