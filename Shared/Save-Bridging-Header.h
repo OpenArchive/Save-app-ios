@@ -10,5 +10,6 @@
 #define OpenArchive_Bridging_Header_h
 
 #import "Constants.h"
+#import "TTTLocationFormatter.h"
 
 #endif /* OpenArchive_Bridging_Header_h */

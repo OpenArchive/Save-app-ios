@@ -1,7 +1,6 @@
 PODS:
   - Alamofire (5.4.4)
   - AlignedCollectionViewFlowLayout (1.1.2)
-  - ARChromeActivity (1.0.6)
   - CleanInsightsSDK (2.6.0)
   - CrossroadRegex (1.2.0)
   - DeviceKit (4.9.0)
@@ -9,36 +8,6 @@ PODS:
   - Eureka (5.3.6)
   - FavIcon (3.1.0)
   - FontBlaster (5.3.0)
-  - FormatterKit (1.9.0):
-    - FormatterKit/AddressFormatter (= 1.9.0)
-    - FormatterKit/ArrayFormatter (= 1.9.0)
-    - FormatterKit/ColorFormatter (= 1.9.0)
-    - FormatterKit/LocationFormatter (= 1.9.0)
-    - FormatterKit/NameFormatter (= 1.9.0)
-    - FormatterKit/OrdinalNumberFormatter (= 1.9.0)
-    - FormatterKit/Resources (= 1.9.0)
-    - FormatterKit/TimeIntervalFormatter (= 1.9.0)
-    - FormatterKit/UnitOfInformationFormatter (= 1.9.0)
-    - FormatterKit/URLRequestFormatter (= 1.9.0)
-  - FormatterKit/AddressFormatter (1.9.0):
-    - FormatterKit/Resources
-  - FormatterKit/ArrayFormatter (1.9.0):
-    - FormatterKit/Resources
-  - FormatterKit/ColorFormatter (1.9.0):
-    - FormatterKit/Resources
-  - FormatterKit/LocationFormatter (1.9.0):
-    - FormatterKit/Resources
-  - FormatterKit/NameFormatter (1.9.0):
-    - FormatterKit/Resources
-  - FormatterKit/OrdinalNumberFormatter (1.9.0):
-    - FormatterKit/Resources
-  - FormatterKit/Resources (1.9.0)
-  - FormatterKit/TimeIntervalFormatter (1.9.0):
-    - FormatterKit/Resources
-  - FormatterKit/UnitOfInformationFormatter (1.9.0):
-    - FormatterKit/Resources
-  - FormatterKit/URLRequestFormatter (1.9.0):
-    - FormatterKit/Resources
   - ImageRow (4.1.0):
     - Eureka (~> 5.3.5)
   - LegacyUTType (0.1.0)
@@ -51,10 +20,9 @@ PODS:
   - OrbotKit (0.2.2)
   - ReachabilitySwift (5.0.0)
   - SDCAlertView (12.0.3)
-  - SwiftyDropbox (9.1.0):
+  - SwiftyDropbox (9.2.0):
     - Alamofire (~> 5.4.3)
   - TLPhotoPicker (2.1.9)
-  - TUSafariActivity (1.0.4)
   - UIImage-Resize (1.0.1)
   - UIImageViewAlignedSwift (0.8.2)
   - YapDatabase (4.1):
@@ -166,39 +134,34 @@ PODS:
 
 DEPENDENCIES:
   - AlignedCollectionViewFlowLayout (~> 1.1)
-  - ARChromeActivity (~> 1.0)
   - CleanInsightsSDK (~> 2.6)
   - CrossroadRegex (from `https://github.com/crossroadlabs/Regex.git`, tag `1.2.0`)
   - DownloadButton (~> 0.1)
   - Eureka (~> 5.3)
   - FavIcon (from `https://github.com/tladesignz/FavIcon.git`, branch `swift-5`)
   - FontBlaster (~> 5.2)
-  - FormatterKit (~> 1.9)
   - ImageRow (~> 4.1)
   - LegacyUTType (~> 0.1)
-  - LibProofMode/NoAdSupport (from `https://gitlab.com/threeletteracronym/libproofmode-ios.git`, branch `dev`)
+  - LibProofMode/NoAdSupport (from `https://gitlab.com/guardianproject/proofmode/libproofmode-ios.git`, branch `main`)
   - MBProgressHUD (~> 1.2)
   - OrbotKit (~> 0.2)
   - ReachabilitySwift (~> 5.0)
   - SDCAlertView (~> 12.0)
   - SwiftyDropbox (from `https://github.com/tladesignz/SwiftyDropbox.git`, branch `session_config`)
   - TLPhotoPicker (from `https://github.com/tladesignz/TLPhotoPicker.git`)
-  - TUSafariActivity (~> 1.0)
   - UIImage-Resize (~> 1.0)
   - UIImageViewAlignedSwift (~> 0.8)
-  - YapDatabase (from `https://github.com/difftim/YapDatabase.git`)
+  - YapDatabase (from `https://github.com/tladesignz/YapDatabase.git`)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
     - Alamofire
     - AlignedCollectionViewFlowLayout
-    - ARChromeActivity
     - CleanInsightsSDK
     - DeviceKit
     - DownloadButton
     - Eureka
     - FontBlaster
-    - FormatterKit
     - ImageRow
     - LegacyUTType
     - MBProgressHUD
@@ -206,7 +169,6 @@ SPEC REPOS:
     - OrbotKit
     - ReachabilitySwift
     - SDCAlertView
-    - TUSafariActivity
     - UIImage-Resize
     - UIImageViewAlignedSwift
 
@@ -218,15 +180,15 @@ EXTERNAL SOURCES:
     :branch: swift-5
     :git: https://github.com/tladesignz/FavIcon.git
   LibProofMode:
-    :branch: dev
-    :git: https://gitlab.com/threeletteracronym/libproofmode-ios.git
+    :branch: main
+    :git: https://gitlab.com/guardianproject/proofmode/libproofmode-ios.git
   SwiftyDropbox:
     :branch: session_config
     :git: https://github.com/tladesignz/SwiftyDropbox.git
   TLPhotoPicker:
     :git: https://github.com/tladesignz/TLPhotoPicker.git
   YapDatabase:
-    :git: https://github.com/difftim/YapDatabase.git
+    :git: https://github.com/tladesignz/YapDatabase.git
 
 CHECKOUT OPTIONS:
   CrossroadRegex:
@@ -236,22 +198,21 @@ CHECKOUT OPTIONS:
     :commit: ad3139c820078d3fe8ad6beac486846a82e66b81
     :git: https://github.com/tladesignz/FavIcon.git
   LibProofMode:
-    :commit: 14f3f5a728b6ea69404d79d1a510b31a492df529
-    :git: https://gitlab.com/threeletteracronym/libproofmode-ios.git
+    :commit: ff71d22a08973df781a205a18c4181fbb4cc56e9
+    :git: https://gitlab.com/guardianproject/proofmode/libproofmode-ios.git
   SwiftyDropbox:
-    :commit: bd5e45b8c6afa8d84f1c586cf90e27f704fa3b7c
+    :commit: ae66d3b5a31a0a51bb360052e0985b8678f68b6a
     :git: https://github.com/tladesignz/SwiftyDropbox.git
   TLPhotoPicker:
     :commit: 91abdc52e241936bbad850736af7dcb9adcd389d
     :git: https://github.com/tladesignz/TLPhotoPicker.git
   YapDatabase:
-    :commit: 5586190caffd2e74b9b3e21a1e4fa3d62a3e0c17
-    :git: https://github.com/difftim/YapDatabase.git
+    :commit: 1561f664305a77eea56d3fd9277471d1040e3b2c
+    :git: https://github.com/tladesignz/YapDatabase.git
 
 SPEC CHECKSUMS:
   Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
   AlignedCollectionViewFlowLayout: ee2ef451e741ec08f8e0967d828001e2f051c20a
-  ARChromeActivity: 5dcf9b9f09323761f992aff3525cdd777f83609d
   CleanInsightsSDK: 41957828284408a969f4bf310ae4d378350bdbc2
   CrossroadRegex: 9af32b4b4dc6ff404c87647ef1bc68ea711cc570
   DeviceKit: 847709bf70b78fd9ab765bd571fb9f5f815c3fc1
@@ -259,7 +220,6 @@ SPEC CHECKSUMS:
   Eureka: 28ad9dec6286cd7cd601fdf8e8df39bb7356a8f4
   FavIcon: 57f172cc9880265915c1aba226a2538b722c83fd
   FontBlaster: 941f89d735a29e1c7d24e7a90d3e16939ef1609a
-  FormatterKit: 184db51bf120b633693a73624a4cede89ec51a41
   ImageRow: 880c0f052c5a89c80521b485c86ccf723a124e99
   LegacyUTType: 827291c20ad7361a47ace7bcdd1652a607fe4108
   LibProofMode: 519690f8044bef4da29aef42eb3c8f159190162d
@@ -268,13 +228,12 @@ SPEC CHECKSUMS:
   OrbotKit: 33dd047aa0d14812d7a08618f68ab1f0874e97f2
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDCAlertView: cec2dd84906b1fb30490ea59f50d1666f797be6f
-  SwiftyDropbox: 9d4bf6ccc0989b0c567004e425972d59993fdac5
+  SwiftyDropbox: 073c7e0852bf50d858163140f56d0a1133b79b48
   TLPhotoPicker: 2e7caa72ec0cb29d1c85543b252a02d56aeede01
-  TUSafariActivity: afc55a00965377939107ce4fdc7f951f62454546
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
-  YapDatabase: 19c4e6ffb2e4bfab4de4d2511b92020208eecab6
+  YapDatabase: c9924a3d45245d6878d0bf8172cb22a8522aa012
 
-PODFILE CHECKSUM: b45fdf27860afb142e5650c3cfa58719972c3876
+PODFILE CHECKSUM: cf410e570979e0b2fc05c8b17cc1318494b47913
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.12.0

@@ -6,6 +6,8 @@
 //  Copyright © 2019 Open Archive. All rights reserved.
 //
 
+import UIKit
+
 /**
  A special alert which informs the user about the batch edit feature.
  */

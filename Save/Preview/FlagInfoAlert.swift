@@ -6,7 +6,7 @@
 //  Copyright © 2019 Open Archive. All rights reserved.
 //
 
-import Foundation
+import UIKit
 
 /**
  A special alert which informs the user about the flag feature.

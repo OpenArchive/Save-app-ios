@@ -7,7 +7,7 @@ platform :ios, '13.0'
 use_frameworks!
 
 def shared_pods
-    pod 'YapDatabase', :git => 'https://github.com/difftim/YapDatabase.git' #'~> 4.0'
+    pod 'YapDatabase', :git => 'https://github.com/tladesignz/YapDatabase.git' #'~> 4.0'
     pod 'Eureka', '~> 5.3'
     pod 'ImageRow', '~> 4.1'
     pod 'UIImage-Resize', '~> 1.0'
@@ -15,20 +15,17 @@ def shared_pods
     pod 'DownloadButton', '~> 0.1'
     pod 'MBProgressHUD', '~> 1.2'
     pod 'ReachabilitySwift', '~> 5.0'
-    pod 'FormatterKit', '~> 1.9'
     pod 'UIImageViewAlignedSwift', '~> 0.8' #:git => 'https://github.com/mirego/UIImageViewAlignedSwift.git'
     pod 'FontBlaster', '~> 5.2'
     pod 'CrossroadRegex', :git => 'https://github.com/crossroadlabs/Regex.git', tag: '1.2.0'
     pod 'CleanInsightsSDK', '~> 2.6'
     pod 'LegacyUTType', '~> 0.1'
-    pod 'LibProofMode/NoAdSupport', :git => 'https://gitlab.com/threeletteracronym/libproofmode-ios.git', :branch => 'dev' # :path => '../libproofmode-ios'
+    pod 'LibProofMode/NoAdSupport', :git => 'https://gitlab.com/guardianproject/proofmode/libproofmode-ios.git', :branch => 'main' # :path => '../libproofmode-ios'
 end
 
 def app_only
-    pod 'SwiftyDropbox', :git => 'https://github.com/tladesignz/SwiftyDropbox.git', :branch => 'session_config' #'~> 9.1'
+    pod 'SwiftyDropbox', :git => 'https://github.com/tladesignz/SwiftyDropbox.git', :branch => 'session_config' #'~> 9.2'
     pod 'FavIcon', :git => 'https://github.com/tladesignz/FavIcon.git', :branch => 'swift-5'
-    pod 'TUSafariActivity', '~> 1.0'
-    pod 'ARChromeActivity', '~> 1.0'
     pod 'SDCAlertView', '~> 12.0'
     pod 'TLPhotoPicker', :git => 'https://github.com/tladesignz/TLPhotoPicker.git' # '~> 2.1'
     pod 'OrbotKit', '~> 0.2'

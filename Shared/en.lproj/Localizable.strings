@@ -169,6 +169,9 @@
 /* DropboxViewController */
 "Dropbox" = "Dropbox";
 
+/* East Direction Abbreviation */
+"E" = "E";
+
 /* BatchInfoAlert */
 "Edit Multiple Items" = "Edit Multiple Items";
 
@@ -265,11 +268,17 @@
 /* ManagementViewController */
 "Multiple attempts with no success" = "Multiple attempts with no success";
 
+/* North Direction Abbreviation */
+"N" = "N";
+
 /* EditProfileViewController */
 "Name" = "Name";
 
 /* BaseProjectViewController */
 "Name your project" = "Name your project";
+
+/* Northeast Direction Abbreviation */
+"NE" = "NE";
 
 /* NewProjectViewController, ShareExtension.MainViewController */
 "New Project" = "New Project";
@@ -285,6 +294,9 @@
 
 /* UploadManager */
 "No URL provided." = "No URL provided.";
+
+/* Northwest Direction Abbreviation */
+"NW" = "NW";
 
 /* AnalyticsCell */
 "OK" = "OK";
@@ -385,11 +397,17 @@
 /* AnalyticsCell */
 "Run health checks to help improve uploading." = "Run health checks to help improve uploading.";
 
+/* South Direction Abbreviation */
+"S" = "S";
+
 /* SlideshowViewController */
 "Save over Tor." = "Save over Tor.";
 
 /* SlideshowViewController */
 "Save to a safe place." = "Save to a safe place.";
+
+/* Southeast Direction Abbreviation */
+"SE" = "SE";
 
 /* InternetArchiveViewController */
 "Secret Key" = "Secret Key";
@@ -438,6 +456,9 @@
 
 /* SlideshowViewController */
 "Store the facts." = "Store the facts.";
+
+/* Southwest Direction Abbreviation */
+"SW" = "SW";
 
 /* MainViewController */
 "Tap buttons below to add media to your project." = "Tap buttons below to add media to your project.";
@@ -504,6 +525,9 @@
 
 /* DataUsageViewController */
 "Video/Image Compression" = "Video/Image Compression";
+
+/* West Direction Abbreviation */
+"W" = "W";
 
 /* ManagementViewController */
 "Waiting…" = "Waiting…";
