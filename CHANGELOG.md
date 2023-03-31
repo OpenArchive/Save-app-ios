@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.9.0
+- Show app version at bottom of settings.
+- Added preliminary proofmode support for WebDAV and Dropbox spaces.
+- Fixed SHA256 digest generation.
+- Fixed minor issues when trying to log into a WebDAV account.
+
 ## 2.8.2
 - Fixed minor bugs.
 - Fixed minor potential security issues.

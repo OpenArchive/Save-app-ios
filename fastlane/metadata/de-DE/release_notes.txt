@@ -1,7 +1,4 @@
-- Kleinere Bugs behoben.
-- Kleinere potentielle Sicherheitsprobleme behoben.
-- Sicherheitsfunktionen hinzugefügt:
-  - Option zum Deaktivieren von Tastaturen von Drittanbietern.
-  - Option zum Ausblenden von App-Inhalten im App-Slider.
-  - Option zur Verwendung von Biometrie oder Passphrase zum Entsperren der App.
-- Aktualisierte Übersetzungen.
+- Anzeige der App-Version am Ende der Einstellungen.
+- Vorläufige Proofmode-Unterstützung für WebDAV- und Dropbox-Spaces hinzugefügt.
+- SHA256-Digest-Generierung korrigiert.
+- Kleinere Probleme beim Versuch, sich bei einem WebDAV-Konto anzumelden, wurden behoben.

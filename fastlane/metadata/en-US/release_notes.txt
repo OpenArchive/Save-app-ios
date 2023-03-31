@@ -1,7 +1,4 @@
-- Fixed minor bugs.
-- Fixed minor potential security issues.
-- Added security features:
-  - Option to disallow third-party keyboards.
-  - Option to hide app content in app slider.
-  - Option to use biometrics or passphrase to unlock app.
-- Updated translations.
+- Show app version at bottom of settings.
+- Added preliminary proofmode support for WebDAV and Dropbox spaces.
+- Fixed SHA256 digest generation.
+- Fixed minor issues when trying to log into a WebDAV account.
