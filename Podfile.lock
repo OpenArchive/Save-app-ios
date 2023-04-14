@@ -11,7 +11,7 @@ PODS:
   - ImageRow (4.1.0):
     - Eureka (~> 5.3.5)
   - LegacyUTType (0.1.0)
-  - LibProofMode/NoAdSupport (0.1.0):
+  - LibProofMode/PrivacyProtected (0.1.0):
     - DeviceKit (~> 4.0)
     - LegacyUTType (~> 0.1)
     - ObjectivePGP (~> 0.99)
@@ -142,7 +142,7 @@ DEPENDENCIES:
   - FontBlaster (~> 5.2)
   - ImageRow (~> 4.1)
   - LegacyUTType (~> 0.1)
-  - LibProofMode/NoAdSupport (from `https://gitlab.com/guardianproject/proofmode/libproofmode-ios.git`, branch `main`)
+  - LibProofMode/PrivacyProtected (from `https://gitlab.com/threeletteracronym/libproofmode-ios.git`, branch `privacy_protected`)
   - MBProgressHUD (~> 1.2)
   - OrbotKit (~> 0.2)
   - ReachabilitySwift (~> 5.0)
@@ -180,8 +180,8 @@ EXTERNAL SOURCES:
     :branch: swift-5
     :git: https://github.com/tladesignz/FavIcon.git
   LibProofMode:
-    :branch: main
-    :git: https://gitlab.com/guardianproject/proofmode/libproofmode-ios.git
+    :branch: privacy_protected
+    :git: https://gitlab.com/threeletteracronym/libproofmode-ios.git
   SwiftyDropbox:
     :branch: session_config
     :git: https://github.com/tladesignz/SwiftyDropbox.git
@@ -198,8 +198,8 @@ CHECKOUT OPTIONS:
     :commit: ad3139c820078d3fe8ad6beac486846a82e66b81
     :git: https://github.com/tladesignz/FavIcon.git
   LibProofMode:
-    :commit: ff71d22a08973df781a205a18c4181fbb4cc56e9
-    :git: https://gitlab.com/guardianproject/proofmode/libproofmode-ios.git
+    :commit: 5a1f8c57a29877c524894eeae5207089a5bfcd22
+    :git: https://gitlab.com/threeletteracronym/libproofmode-ios.git
   SwiftyDropbox:
     :commit: ae66d3b5a31a0a51bb360052e0985b8678f68b6a
     :git: https://github.com/tladesignz/SwiftyDropbox.git
@@ -222,7 +222,7 @@ SPEC CHECKSUMS:
   FontBlaster: 941f89d735a29e1c7d24e7a90d3e16939ef1609a
   ImageRow: 880c0f052c5a89c80521b485c86ccf723a124e99
   LegacyUTType: 827291c20ad7361a47ace7bcdd1652a607fe4108
-  LibProofMode: 519690f8044bef4da29aef42eb3c8f159190162d
+  LibProofMode: fd09a1bdb8db5c096eeb0483c06d8588b927ec37
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   ObjectivePGP: 4ecece797bebcd4129e888180bb401c1d3be13b7
   OrbotKit: 33dd047aa0d14812d7a08618f68ab1f0874e97f2
@@ -234,6 +234,6 @@ SPEC CHECKSUMS:
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
   YapDatabase: c9924a3d45245d6878d0bf8172cb22a8522aa012
 
-PODFILE CHECKSUM: cf410e570979e0b2fc05c8b17cc1318494b47913
+PODFILE CHECKSUM: 453e1eaeb8213041cb80ce5e3fb9f5ac31333910
 
 COCOAPODS: 1.12.0
