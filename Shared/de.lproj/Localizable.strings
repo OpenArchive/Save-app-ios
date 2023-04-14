@@ -433,6 +433,9 @@
 /* MainViewController */
 "Settings" = "Einstellungen";
 
+/* No comment provided by engineer. */
+"Share ProofMode Public Key" = "Teile öffentlichen ProofMode Schlüssel";
+
 /* Placeholders will be replaced by newline - ClaimViewController */
 "Share%1$@Archive%1$@Verify%1$@Encrypt" = "Teilen%1$@Archivieren%1$@Verifizieren%1$@Verschlüsseln";
 
