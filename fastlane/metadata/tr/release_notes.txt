@@ -1,7 +1,4 @@
-- Küçük hatalar düzeltildi.
-- Küçük potansiyel güvenlik sorunları düzeltildi.
-- Güvenlik özellikleri eklendi:
-  - Üçüncü taraf klavyelere izin vermeme seçeneği.
-  - Uygulama kaydırıcısında uygulama içeriğini gizleme seçeneği.
-  - Uygulamanın kilidini açmak için biyometri veya parola kullanma seçeneği.
-- Çeviriler güncellendi.
+- Ayarların altına uygulama sürümü eklendi.
+- WebDAV ve Dropbox alanları için ön düzeltme kipi desteği eklendi.
+- SHA256 özeti oluşturulurken yaşanan sorun düzeltildi.
+- Bir WebDAV hesabında oturum açmaya çalışırken oluşan küçük sorunlar düzeltildi.

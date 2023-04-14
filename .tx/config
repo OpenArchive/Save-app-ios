@@ -1,88 +1,88 @@
 [main]
 host = https://www.transifex.com
 
-[SAVE.localizable-strings]
-file_filter = Shared/<lang>.lproj/Localizable.strings
+[o:otf:p:SAVE:r:localizable-strings]
+file_filter  = Shared/<lang>.lproj/Localizable.strings
+source_file  = Shared/en.lproj/Localizable.strings
+source_lang  = en
+type         = STRINGS
 minimum_perc = 20
-source_file = Shared/en.lproj/Localizable.strings
-source_lang = en
-type = STRINGS
 
-[SAVE.info-plist]
-file_filter = Save/<lang>.lproj/InfoPlist.strings
+[o:otf:p:SAVE:r:info-plist]
+file_filter  = Save/<lang>.lproj/InfoPlist.strings
+source_file  = Save/en.lproj/InfoPlist.strings
+source_lang  = en
+type         = STRINGS
 minimum_perc = 75
-source_file = Save/en.lproj/InfoPlist.strings
-source_lang = en
-type = STRINGS
 
-[SAVE.name]
-file_filter = fastlane/metadata/<lang>/name.txt
+[o:otf:p:SAVE:r:localizable-stringsdict]
+file_filter  = Shared/<lang>.lproj/Localizable.stringsdict
+source_file  = Shared/en.lproj/Localizable.stringsdict
+source_lang  = en
+type         = STRINGSDICT
+minimum_perc = 20
+
+[o:otf:p:SAVE:r:name]
+file_filter  = fastlane/metadata/<lang>/name.txt
+source_file  = fastlane/metadata/en-US/name.txt
+source_lang  = en
+type         = TXT
 minimum_perc = 100
-source_file = fastlane/metadata/en-US/name.txt
-source_lang = en
-trans.de = fastlane/metadata/de-DE/name.txt
-trans.es = fastlane/metadata/es-MX/name.txt
-trans.fr = fastlane/metadata/fr-FR/name.txt
-type = TXT
+trans.es     = fastlane/metadata/es-MX/name.txt
+trans.fr     = fastlane/metadata/fr-FR/name.txt
+trans.de     = fastlane/metadata/de-DE/name.txt
 
-[SAVE.subtitle]
-file_filter = fastlane/metadata/<lang>/subtitle.txt
+[o:otf:p:SAVE:r:subtitle]
+file_filter  = fastlane/metadata/<lang>/subtitle.txt
+source_file  = fastlane/metadata/en-US/subtitle.txt
+source_lang  = en
+type         = TXT
 minimum_perc = 100
-source_file = fastlane/metadata/en-US/subtitle.txt
-source_lang = en
-trans.ar = fastlane/metadata/ar-SA/subtitle.txt
-trans.de = fastlane/metadata/de-DE/subtitle.txt
-trans.es = fastlane/metadata/es-MX/subtitle.txt
-trans.fr = fastlane/metadata/fr-FR/subtitle.txt
-type = TXT
+trans.ar     = fastlane/metadata/ar-SA/subtitle.txt
+trans.de     = fastlane/metadata/de-DE/subtitle.txt
+trans.es     = fastlane/metadata/es-MX/subtitle.txt
+trans.fr     = fastlane/metadata/fr-FR/subtitle.txt
 
-[SAVE.keywords]
-file_filter = fastlane/metadata/<lang>/keywords.txt
+[o:otf:p:SAVE:r:keywords]
+file_filter  = fastlane/metadata/<lang>/keywords.txt
+source_file  = fastlane/metadata/en-US/keywords.txt
+source_lang  = en
+type         = TXT
 minimum_perc = 75
-source_file = fastlane/metadata/en-US/keywords.txt
-source_lang = en
-trans.ar = fastlane/metadata/ar-SA/keywords.txt
-trans.de = fastlane/metadata/de-DE/keywords.txt
-trans.es = fastlane/metadata/es-MX/keywords.txt
-trans.fr = fastlane/metadata/fr-FR/keywords.txt
-type = TXT
+trans.es     = fastlane/metadata/es-MX/keywords.txt
+trans.fr     = fastlane/metadata/fr-FR/keywords.txt
+trans.ar     = fastlane/metadata/ar-SA/keywords.txt
+trans.de     = fastlane/metadata/de-DE/keywords.txt
 
-[SAVE.promotional_text]
-file_filter = fastlane/metadata/<lang>/promotional_text.txt
+[o:otf:p:SAVE:r:promotional_text]
+file_filter  = fastlane/metadata/<lang>/promotional_text.txt
+source_file  = fastlane/metadata/en-US/promotional_text.txt
+source_lang  = en
+type         = TXT
 minimum_perc = 75
-source_file = fastlane/metadata/en-US/promotional_text.txt
-source_lang = en
-trans.ar = fastlane/metadata/ar-SA/promotional_text.txt
-trans.de = fastlane/metadata/de-DE/promotional_text.txt
-trans.es = fastlane/metadata/es-MX/promotional_text.txt
-trans.fr = fastlane/metadata/fr-FR/promotional_text.txt
-type = TXT
+trans.ar     = fastlane/metadata/ar-SA/promotional_text.txt
+trans.de     = fastlane/metadata/de-DE/promotional_text.txt
+trans.es     = fastlane/metadata/es-MX/promotional_text.txt
+trans.fr     = fastlane/metadata/fr-FR/promotional_text.txt
 
-[SAVE.description]
-file_filter = fastlane/metadata/<lang>/description.txt
+[o:otf:p:SAVE:r:description]
+file_filter  = fastlane/metadata/<lang>/description.txt
+source_file  = fastlane/metadata/en-US/description.txt
+source_lang  = en
+type         = TXT
 minimum_perc = 50
-source_file = fastlane/metadata/en-US/description.txt
-source_lang = en
-trans.ar = fastlane/metadata/ar-SA/description.txt
-trans.de = fastlane/metadata/de-DE/description.txt
-trans.es = fastlane/metadata/es-MX/description.txt
-trans.fr = fastlane/metadata/fr-FR/description.txt
-type = TXT
+trans.ar     = fastlane/metadata/ar-SA/description.txt
+trans.de     = fastlane/metadata/de-DE/description.txt
+trans.es     = fastlane/metadata/es-MX/description.txt
+trans.fr     = fastlane/metadata/fr-FR/description.txt
 
-[SAVE.release_notes]
-file_filter = fastlane/metadata/<lang>/release_notes.txt
+[o:otf:p:SAVE:r:release_notes]
+file_filter  = fastlane/metadata/<lang>/release_notes.txt
+source_file  = fastlane/metadata/en-US/release_notes.txt
+source_lang  = en
+type         = TXT
 minimum_perc = 10
-source_file = fastlane/metadata/en-US/release_notes.txt
-source_lang = en
-trans.ar = fastlane/metadata/ar-SA/release_notes.txt
-trans.de = fastlane/metadata/de-DE/release_notes.txt
-trans.es = fastlane/metadata/es-MX/release_notes.txt
-trans.fr = fastlane/metadata/fr-FR/release_notes.txt
-type = TXT
-
-[SAVE.localizable-stringsdict]
-file_filter = Shared/<lang>.lproj/Localizable.stringsdict
-minimum_perc = 20
-source_file = Shared/en.lproj/Localizable.stringsdict
-source_lang = en
-type = STRINGSDICT
+trans.ar     = fastlane/metadata/ar-SA/release_notes.txt
+trans.de     = fastlane/metadata/de-DE/release_notes.txt
+trans.es     = fastlane/metadata/es-MX/release_notes.txt
+trans.fr     = fastlane/metadata/fr-FR/release_notes.txt
