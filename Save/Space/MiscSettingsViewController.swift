@@ -14,9 +14,6 @@ class MiscSettingsViewController: FormViewController {
 
     private static let campaignId = "upload_fails"
 
-    private static let proofModePublicKeyFile = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        .first? .appendingPathComponent("pub.asc")
-
     private var consent: CampaignConsent? {
         CleanInsights.shared.consent(forCampaign: Self.campaignId)
     }
@@ -53,10 +50,10 @@ class MiscSettingsViewController: FormViewController {
 
         +++ ButtonRow {
             $0.title = NSLocalizedString("Share ProofMode Public Key", comment: "")
-            $0.disabled = .init(booleanLiteral: !(Self.proofModePublicKeyFile?.exists ?? false))
+            $0.disabled = .init(booleanLiteral: !(URL.proofModePublicKey?.exists ?? false))
         }
         .onCellSelection({ [weak self] cell, row in
-            guard let file = Self.proofModePublicKeyFile, file.exists else {
+            guard let file = URL.proofModePublicKey, file.exists else {
                 return
             }
 

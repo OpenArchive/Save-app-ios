@@ -130,12 +130,17 @@ class Conduit {
     /**
      Uploads ProofMode files, if ProofMode is enabled and files are available for the current asset.
 
+     - parameter folder: The destination folder URL.
      - parameter upload: Callback which implements the actual upload of a file, which differs depending on the actual conduit. Return `true` to continue or `false` to stop.
-     - parameter file: The file URL which to upload.
-     - parameter ext: The ProofMode file extension which needs to get applied to the destination file name.
+     - parameter source: The URL of the file to upload.
+     - parameter destination: The destination URL.
      */
-    func uploadProofMode(_ upload: (_ file: URL, _ ext: String) -> Bool) {
-        guard Settings.proofMode else {
+    func uploadProofMode(to folder: URL, _ upload: (_ source: URL, _ destintation: URL) -> Bool) {
+        guard Settings.proofMode,
+              let publicKeyFile = URL.proofModePublicKey,
+              publicKeyFile.exists,
+              upload(publicKeyFile, construct(url: folder, publicKeyFile.lastPathComponent))
+        else {
             return
         }
 
@@ -145,7 +150,7 @@ class Conduit {
             }
 
             if let url = file.url(asset.id), url.exists {
-                if !upload(url, file.rawValue) {
+                if !upload(url, construct(url: folder, asset.filename).appendingPathExtension(file.rawValue)) {
                     break
                 }
             }

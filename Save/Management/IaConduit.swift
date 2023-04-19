@@ -31,7 +31,8 @@ class IaConduit: Conduit {
                 return progress
         }
 
-//        let error = copyMetadata(to: url, progress, headers: generateHeaders(accessKey, secretKey, forMetadata: true))
+//        let error = copyMetadata(to: url.deletingLastPathComponent(), progress,
+//                                 headers: generateHeaders(accessKey, secretKey, forMetadata: true))
 //
 //        if error != nil || progress.isCancelled {
 //            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
@@ -149,17 +150,17 @@ class IaConduit: Conduit {
     /**
      Writes an `Asset`'s ProofMode metadata, if any, to a destination on the Internet Archive.
 
-     - parameter to: The destination on the Internet Archive.
+     - parameter folder: The destination folder on the Internet Archive.
      - parameter headers: Full Internet Archive headers.
      */
-    private func copyMetadata(to: URL, _ progress: Progress, headers: [String: String]) -> Error? {
+    private func copyMetadata(to folder: URL, _ progress: Progress, headers: [String: String]) -> Error? {
         var error: Error? = nil
         let group = DispatchGroup.enter()
 
-        uploadProofMode { file, ext in
+        uploadProofMode(to: folder) { source, destination in
             group.enter()
 
-            let task = foregroundSession.upload(file, to: to.appendingPathExtension(ext), headers: headers) { e in
+            let task = foregroundSession.upload(source, to: destination, headers: headers) { e in
                 error = e
 
                 group.leave()

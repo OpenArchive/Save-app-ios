@@ -393,8 +393,9 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         let work: () -> Void = {
             guard id == self.current?.id,
                 let upload = self.current,
-                let asset = upload.asset else {
-                    return self.endBackgroundTask(.failed)
+                let asset = upload.asset
+            else {
+                return self.endBackgroundTask(.failed)
             }
 
             let collection: Collection?

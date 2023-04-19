@@ -37,7 +37,7 @@ class AssetFactory {
         kCGImageSourceCreateThumbnailWithTransform: true,
         kCGImageSourceCreateThumbnailFromImageAlways: true,
         kCGImageSourceThumbnailMaxPixelSize: thumbnailSize.width
-        ] as CFDictionary
+    ] as [CFString : Any] as CFDictionary
 
     private static var loResImageOptions: PHImageRequestOptions = {
         let options = PHImageRequestOptions()

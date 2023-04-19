@@ -23,11 +23,11 @@ class WebDavConduit: Conduit {
         let progress = Progress.discreteProgress(totalUnitCount: 100)
 
         guard let projectName = asset.collection?.project.name,
-            let collectionName = asset.collection?.name,
-            let url = asset.space?.url,
-            let file = asset.file,
-            let filesize = asset.filesize,
-            let credential = credential
+              let collectionName = asset.collection?.name,
+              let url = asset.space?.url,
+              let file = asset.file,
+              let filesize = asset.filesize,
+              let credential = credential
         else {
             DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
                 self.done(uploadId, error: UploadError.invalidConf)
@@ -63,17 +63,17 @@ class WebDavConduit: Conduit {
                 }
             }
 
-            path.append(self.asset.filename)
-
-            let to = self.construct(url: url, path)
-
-            error = self.copyMetadata(to: to, progress)
+            error = self.copyMetadata(to: self.construct(url: url, path), progress)
 
             if error != nil || progress.isCancelled {
                 return self.done(uploadId, error: error)
             }
 
-            if self.isUploaded(self.construct(url: url, path), filesize) {
+            path.append(self.asset.filename)
+
+            let to = self.construct(url: url, path)
+
+            if self.isUploaded(to, filesize) {
                 return self.done(uploadId, url: to)
             }
 
@@ -187,10 +187,10 @@ class WebDavConduit: Conduit {
     /**
      Writes an `Asset`'s metadata to a destination on the WebDAV server.
 
-     - parameter to: The destination on the WebDAV server.
+     - parameter folder: The destination folder on the WebDAV server.
      - returns: An eventual error.
      */
-    private func copyMetadata(to: URL, _ progress: Progress) -> Error? {
+    private func copyMetadata(to folder: URL, _ progress: Progress) -> Error? {
         let json: Data
 
         do {
@@ -203,7 +203,9 @@ class WebDavConduit: Conduit {
         var error: Error? = nil
         let group = DispatchGroup.enter()
 
-        upload(json, to: to.appendingPathExtension(Asset.Files.meta.rawValue), progress, 1, credential: credential) { e in
+        let to = construct(url: folder, asset.filename).appendingPathExtension(Asset.Files.meta.rawValue)
+
+        upload(json, to: to, progress, 1, credential: credential) { e in
             error = e
             group.leave()
         }
@@ -214,13 +216,13 @@ class WebDavConduit: Conduit {
             return error
         }
 
-        uploadProofMode { file, ext in
-            upload(file, to: to.appendingPathExtension(ext), progress, pendingUnitCount: 1, credential: credential)
+        uploadProofMode(to: folder) { source, destination in
+            upload(source, to: destination, progress, pendingUnitCount: 1, credential: credential)
 
             return !progress.isCancelled
         }
 
-        return error
+        return nil
     }
 
     /**

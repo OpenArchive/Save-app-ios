@@ -79,17 +79,17 @@ class DropboxConduit: Conduit {
                 }
             }
 
-            path.append(self.asset.filename)
-
-            let to = self.construct(path)
-
-            error = self.copyMetadata(to: to, progress)
+            error = self.copyMetadata(to: self.construct(path), progress)
 
             if error != nil || progress.isCancelled {
                 return self.done(uploadId, error: error)
             }
 
-            if self.isUploaded(self.construct(path), filesize) {
+            path.append(self.asset.filename)
+
+            let to = self.construct(path)
+
+            if self.isUploaded(to, filesize) {
                 return self.done(uploadId, url: to)
             }
 
@@ -159,10 +159,10 @@ class DropboxConduit: Conduit {
     /**
      Writes an `Asset`'s metadata to a destination on the Dropbox server.
 
-     - parameter to: The destination on the Dropbox server.
+     - parameter folder: The destination folder on the Dropbox server.
      - returns: An eventual error.
      */
-    private func copyMetadata(to: URL, _ progress: Progress) -> Error? {
+    private func copyMetadata(to folder: URL, _ progress: Progress) -> Error? {
         let json: Data
 
         do {
@@ -175,7 +175,9 @@ class DropboxConduit: Conduit {
         var error: Error? = nil
         let group = DispatchGroup.enter()
 
-        upload(json, to: to.appendingPathExtension(Asset.Files.meta.rawValue), progress, 1) { e in
+        let to = construct(url: folder, asset.filename).appendingPathExtension(Asset.Files.meta.rawValue)
+
+        upload(json, to: to, progress, 1) { e in
             error = e
 
             group.leave()
@@ -187,14 +189,14 @@ class DropboxConduit: Conduit {
             return error
         }
 
-        uploadProofMode { file, ext in
-            guard let size = file.size else {
+        uploadProofMode(to: folder) { source, destination in
+            guard let size = source.size else {
                 return true
             }
 
             group.enter()
 
-            upload(file, of: Int64(size), to: to.appendingPathExtension(ext), progress, pendingUnitCount: 1) { e in
+            upload(source, of: Int64(size), to: destination, progress, pendingUnitCount: 1) { e in
                 error = e
 
                 group.leave()

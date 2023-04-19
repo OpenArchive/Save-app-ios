@@ -10,6 +10,9 @@ import Foundation
 
 extension URL {
 
+    static let proofModePublicKey = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        .first?.appendingPathComponent("pub.asc")
+
     var exists: Bool {
         (try? checkResourceIsReachable()) ?? false
     }

@@ -146,8 +146,8 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     var collection: Collection? {
         get {
             if _collection == nil,
-                let id = collectionId {
-
+                let id = collectionId
+            {
                 Db.bgRwConn?.read { transaction in
                     self._collection = transaction.object(forKey: id, inCollection: Collection.collection) as? Collection
                 }
