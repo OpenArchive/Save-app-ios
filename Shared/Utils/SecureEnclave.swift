@@ -98,7 +98,11 @@ class SecureEnclave: NSObject {
      - parameter key: A private key.
      - returns: the public key of the given private key or `nil` if something goes horribly wrong.
      */
-    class func getPublicKey(_ key: SecKey) -> SecKey? {
+    class func getPublicKey(_ key: SecKey?) -> SecKey? {
+        guard let key = key else {
+            return nil
+        }
+
         return SecKeyCopyPublicKey(key)
     }
 
@@ -107,19 +111,26 @@ class SecureEnclave: NSObject {
 
      - parameter data: Data to sign.
      - parameter key: Private key to use for the signature.
-     - returns: the signature, or `nil` if `data` is `nil` or if something goes horribly wrong.
+     - returns: the signature, or `nil` if `data` or `key` is `nil` or if something goes horribly wrong.
      */
-    class func sign(_ data: Data?, with key: SecKey) -> Data? {
-        guard let data = data else {
-            return nil
-        }
-
-        guard SecKeyIsAlgorithmSupported(key, .sign, .ecdsaSignatureMessageX962SHA256) else {
+    class func sign(_ data: Data?, with key: SecKey?) -> Data? {
+        guard let data = data, let key = key else {
             return nil
         }
 
         return SecKeyCreateSignature(key, .ecdsaSignatureMessageX962SHA256,
                                      data as CFData, nil) as Data?
+    }
+
+    /**
+     Sign a given string with the given private key.
+
+     - parameter data: String to sign.
+     - parameter key: Private key to use for the signature.
+     - returns: the signature as BASE64-encoded string, or `nil` if `data` or `key` is `nil` or if something goes horribly wrong.
+     */
+    class func sign(_ data: String?, with key: SecKey?) -> String? {
+        (sign(data?.data(using: .utf8), with: key) as? NSData)?.base64EncodedString()
     }
 
     /**
@@ -137,6 +148,58 @@ class SecureEnclave: NSObject {
 
         return SecKeyVerifySignature(publicKey, .ecdsaSignatureMessageX962SHA256,
                                      data as CFData, signature as CFData, nil)
+    }
+
+    /**
+     Verifies a signature on a given string.
+
+     - parameter data: The string, which was signed.
+     - parameter signature: The signature which was produced by `#sign` as a BASE64 encoded string.
+     - parameter publicKey: The public key of the private key with which this signature was created.
+     - returns: true if signature is valid, false if invalid or if `data`, `signature` or `publicKey` was nil.
+     */
+    class func verify(_ data: String?, signature: String?, with publicKey: SecKey?) -> Bool {
+        guard let signature = signature else {
+            return false
+        }
+
+        return verify(data?.data(using: .utf8), signature: NSData(base64Encoded: signature) as Data?, with: publicKey)
+    }
+
+    /**
+     Encrypts a given plaintext.
+
+     - parameter plaintext: The plaintext to encrypt.
+     - parameter publicKey: A public key.
+     - returns: the encrypted ciphertext or `nil` if `plaintext` or `publicKey` is `nil` or something goes horribly wrong.
+     */
+    class func encrypt(_ plaintext: String?, with publicKey: SecKey?) -> Data? {
+        guard let plaintext = plaintext?.data(using: .utf8),
+              let publicKey = publicKey,
+              let data = SecKeyCreateEncryptedData(publicKey, .eciesEncryptionCofactorVariableIVX963SHA224AESGCM, plaintext as CFData, nil)
+        else {
+            return nil
+        }
+
+        return data as Data
+    }
+
+    /**
+     Decrypts a given ciphertext.
+
+     - parameter cyphertext: The cyphertext data to decrypt.
+     - parameter key: A secret key.
+     - returns: the decrypted plaintext or `nil`, if `ciphertext` or `key` is `nil` or the plaintext cannot be encoded as UTF-8 or something goes horribly wrong.
+     */
+    class func decrypt(_ ciphertext: Data?, with key: SecKey?) -> String? {
+        guard let ciphertext = ciphertext,
+              let key = key,
+              let data = SecKeyCreateDecryptedData(key, .eciesEncryptionCofactorVariableIVX963SHA224AESGCM, ciphertext as CFData, nil)
+        else {
+            return nil
+        }
+
+        return String(data: data as Data, encoding: .utf8)
     }
 
     /**

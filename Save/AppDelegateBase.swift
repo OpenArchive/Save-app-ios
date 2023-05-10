@@ -11,6 +11,7 @@ import UserNotifications
 import FontBlaster
 import SwiftyDropbox
 import CleanInsightsSDK
+import LibProofMode
 
 class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
@@ -115,11 +116,19 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
             var counter = 0
 
             repeat {
-                let nonce = SecureEnclave.getNonce()
+                if let encryptedPassphrase = Settings.proofModeEncryptedPassphrase {
+                    let passphrase = SecureEnclave.decrypt(encryptedPassphrase, with: privateKey)
+                    Proof.shared.passphrase = passphrase
 
-                verified = SecureEnclave.verify(
-                    nonce, signature: SecureEnclave.sign(nonce, with: privateKey),
-                    with: SecureEnclave.getPublicKey(privateKey))
+                    verified = passphrase != nil
+                }
+                else {
+                    let nonce = SecureEnclave.getNonce()
+
+                    verified = SecureEnclave.verify(
+                        nonce, signature: SecureEnclave.sign(nonce, with: privateKey),
+                        with: SecureEnclave.getPublicKey(privateKey))
+                }
 
                 counter += 1
             } while !verified && counter < 3

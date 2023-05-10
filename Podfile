@@ -22,8 +22,8 @@ def shared_pods
     pod 'LegacyUTType', '~> 0.1'
     pod 'LibProofMode/PrivacyProtected',
         # :git => 'https://gitlab.com/guardianproject/proofmode/libproofmode-ios.git', :branch => 'main'
-        :git => 'https://gitlab.com/threeletteracronym/libproofmode-ios.git', :branch => 'privacy_protected'
-        # :path => '../libproofmode-ios'
+        :git => 'https://gitlab.com/threeletteracronym/libproofmode-ios.git', :branch => 'external_passphrase'
+        #:path => '../libproofmode-ios'
 end
 
 def app_only

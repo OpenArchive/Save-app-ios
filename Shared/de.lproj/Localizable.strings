@@ -124,6 +124,9 @@
 /* SlideshowViewController */
 "Capture notes, location and people with each piece of media." = "Halte Notizen, Orte und Menschen bei allen Medien fest.";
 
+/* No comment provided by engineer. */
+"Changing this will create a new key! If you exported and signed that one before, you will need to do it again with the new one." = "Wenn Du das änderst, wird ein neuer Schlüssel generiert! Wenn Du den Vorherigen exportiert und signiert hast, wirst Du das mit dem Neuen wiederholen müssen.";
+
 /* ShareExtension.MainViewController */
 "Choose a Project" = "Wähle ein Projekt";
 
@@ -414,6 +417,15 @@
 
 /* ClaimViewController */
 "Secure Mobile Media Preservation" = "Sichere Bewahrung mobiler Medien";
+
+/* No comment provided by engineer. */
+"Secure ProofMode Key with Device Passcode" = "Sichere den ProofMode-Schlüssel mit dem Gerätepasswort ab";
+
+/* No comment provided by engineer. */
+"Secure ProofMode Key with Face ID or Device Passcode" = "Sichere den ProofMode-Schlüssel mit Face ID oder dem Gerätepasswort ab";
+
+/* No comment provided by engineer. */
+"Secure ProofMode Key with Touch ID or Device Passcode" = "Sichere den ProofMode-Schlüssel mit Touch ID oder dem Gerätepasswort ab";
 
 /* MainViewController */
 "Select" = "Auswählen";

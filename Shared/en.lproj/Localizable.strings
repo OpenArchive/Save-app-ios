@@ -124,6 +124,9 @@
 /* SlideshowViewController */
 "Capture notes, location and people with each piece of media." = "Capture notes, location and people with each piece of media.";
 
+/* No comment provided by engineer. */
+"Changing this will create a new key! If you exported and signed that one before, you will need to do it again with the new one." = "Changing this will create a new key! If you exported and signed that one before, you will need to do it again with the new one.";
+
 /* ShareExtension.MainViewController */
 "Choose a Project" = "Choose a Project";
 
@@ -414,6 +417,15 @@
 
 /* ClaimViewController */
 "Secure Mobile Media Preservation" = "Secure Mobile Media Preservation";
+
+/* No comment provided by engineer. */
+"Secure ProofMode Key with Device Passcode" = "Secure ProofMode Key with Device Passcode";
+
+/* No comment provided by engineer. */
+"Secure ProofMode Key with Face ID or Device Passcode" = "Secure ProofMode Key with Face ID or Device Passcode";
+
+/* No comment provided by engineer. */
+"Secure ProofMode Key with Touch ID or Device Passcode" = "Secure ProofMode Key with Touch ID or Device Passcode";
 
 /* MainViewController */
 "Select" = "Select";

@@ -17,6 +17,7 @@ class Settings {
     private static let kTransport = "transport"
     private static let kCustomBridges = "custom_bridges"
     private static let kProofMode = "proof_mode"
+    private static let kProofModeEncryptedPassphrase = "proof_mode_encrypted_passphrase"
     private static let kFirstRunDone = "already_run"
     private static let kFirstFlaggedDone = "first_flagged_done"
     private static let kFirstBatchEditDone = "first_batch_edit_done"
@@ -81,6 +82,15 @@ class Settings {
         }
         set {
             defaults?.set(newValue, forKey: kProofMode)
+        }
+    }
+
+    class var proofModeEncryptedPassphrase: Data? {
+        get {
+            defaults?.data(forKey: kProofModeEncryptedPassphrase)
+        }
+        set {
+            defaults?.set(newValue, forKey: kProofModeEncryptedPassphrase)
         }
     }
 

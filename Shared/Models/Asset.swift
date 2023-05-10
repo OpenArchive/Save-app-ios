@@ -640,7 +640,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     }
 
     /**
-     Generates ProofMode data, if
+     Generates ProofMode data, if the asset doesn't have it, yet.
      */
     func generateProof(_ completed: ((_ asset: Asset, _ stored: Bool) -> Void)? = nil) {
         guard Settings.proofMode && !hasProof else {

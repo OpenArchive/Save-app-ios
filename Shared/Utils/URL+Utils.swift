@@ -10,6 +10,9 @@ import Foundation
 
 extension URL {
 
+    static let proofModePrivateKey = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
+        .first?.appendingPathComponent("pkr.asc")
+
     static let proofModePublicKey = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
         .first?.appendingPathComponent("pub.asc")
 

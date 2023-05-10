@@ -11,12 +11,12 @@ PODS:
   - ImageRow (4.1.0):
     - Eureka (~> 5.3.5)
   - LegacyUTType (0.1.0)
-  - LibProofMode/PrivacyProtected (0.1.0):
+  - LibProofMode/PrivacyProtected (0.1.1):
     - DeviceKit (~> 4.0)
     - LegacyUTType (~> 0.1)
     - ObjectivePGP (~> 0.99)
   - MBProgressHUD (1.2.0)
-  - ObjectivePGP (0.99.2)
+  - ObjectivePGP (0.99.4)
   - OrbotKit (0.2.2)
   - ReachabilitySwift (5.0.0)
   - SDCAlertView (12.0.3)
@@ -142,7 +142,7 @@ DEPENDENCIES:
   - FontBlaster (~> 5.2)
   - ImageRow (~> 4.1)
   - LegacyUTType (~> 0.1)
-  - LibProofMode/PrivacyProtected (from `https://gitlab.com/threeletteracronym/libproofmode-ios.git`, branch `privacy_protected`)
+  - LibProofMode/PrivacyProtected (from `https://gitlab.com/threeletteracronym/libproofmode-ios.git`, branch `external_passphrase`)
   - MBProgressHUD (~> 1.2)
   - OrbotKit (~> 0.2)
   - ReachabilitySwift (~> 5.0)
@@ -180,7 +180,7 @@ EXTERNAL SOURCES:
     :branch: swift-5
     :git: https://github.com/tladesignz/FavIcon.git
   LibProofMode:
-    :branch: privacy_protected
+    :branch: external_passphrase
     :git: https://gitlab.com/threeletteracronym/libproofmode-ios.git
   SwiftyDropbox:
     :branch: session_config
@@ -198,7 +198,7 @@ CHECKOUT OPTIONS:
     :commit: ad3139c820078d3fe8ad6beac486846a82e66b81
     :git: https://github.com/tladesignz/FavIcon.git
   LibProofMode:
-    :commit: 5a1f8c57a29877c524894eeae5207089a5bfcd22
+    :commit: 987b4e0c17172181cd940e803c765f7e17c3b04e
     :git: https://gitlab.com/threeletteracronym/libproofmode-ios.git
   SwiftyDropbox:
     :commit: ae66d3b5a31a0a51bb360052e0985b8678f68b6a
@@ -222,9 +222,9 @@ SPEC CHECKSUMS:
   FontBlaster: 941f89d735a29e1c7d24e7a90d3e16939ef1609a
   ImageRow: 880c0f052c5a89c80521b485c86ccf723a124e99
   LegacyUTType: 827291c20ad7361a47ace7bcdd1652a607fe4108
-  LibProofMode: fd09a1bdb8db5c096eeb0483c06d8588b927ec37
+  LibProofMode: 6621c76256876f2e22e8bd336cf48f3d04dade3e
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
-  ObjectivePGP: 4ecece797bebcd4129e888180bb401c1d3be13b7
+  ObjectivePGP: 5b023e0a73c9edb89a5d333e5e9ce89ec7740772
   OrbotKit: 33dd047aa0d14812d7a08618f68ab1f0874e97f2
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDCAlertView: cec2dd84906b1fb30490ea59f50d1666f797be6f
@@ -234,6 +234,6 @@ SPEC CHECKSUMS:
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
   YapDatabase: c9924a3d45245d6878d0bf8172cb22a8522aa012
 
-PODFILE CHECKSUM: 453e1eaeb8213041cb80ce5e3fb9f5ac31333910
+PODFILE CHECKSUM: 6b908b7752343b00729dfa55291ff6b723c6272c
 
-COCOAPODS: 1.12.0
+COCOAPODS: 1.12.1
