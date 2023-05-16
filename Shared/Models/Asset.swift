@@ -714,18 +714,8 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
      - parameter completed: OPTIONAL. A callback on the main thread with the latest version of the `Asset`s.
      */
     class func update(assets: [Asset], _ update: ((AssetProxy) -> Void)? = nil, _ completed: (([Asset]) -> Void)? = nil) {
-        Db.writeConn?.asyncReadWrite { transaction in
-            var updated = [Asset]()
-
-            for asset in assets {
-                let asset = transaction.object(forKey: asset.id, inCollection: collection) as? Asset ?? asset
-
-                update?(AssetProxy(asset))
-
-                transaction.setObject(asset, forKey: asset.id, inCollection: collection)
-
-                updated.append(asset)
-            }
+        DispatchQueue.global(qos: .userInitiated).async {
+            let updated = updateSync(assets: assets, update)
 
             if let completed = completed {
                 DispatchQueue.main.async {
@@ -747,21 +737,55 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
      - returns: A list with the latest version of the `Asset`s.
      */
     class func updateSync(assets: [Asset], _ update: ((AssetProxy) -> Void)? = nil) -> [Asset] {
+        guard !assets.isEmpty else {
+            return []
+        }
+
         var updated = [Asset]()
 
-        Db.writeConn?.readWrite { transaction in
-            for asset in assets {
-                let asset = transaction.object(forKey: asset.id, inCollection: collection) as? Asset ?? asset
-
-                update?(AssetProxy(asset))
-
-                transaction.setObject(asset, forKey: asset.id, inCollection: collection)
-
-                updated.append(asset)
+        Db.bgRwConn?.read { transaction in
+            transaction.enumerateObjects(forKeys: assets.map({ $0.id }), inCollection: collection) { i, object, stop in
+                if let asset = object as? Asset {
+                    updated.append(asset)
+                }
             }
         }
 
-        return updated
+        var notStored = [Asset]()
+
+        if updated.count < assets.count {
+            for asset in assets {
+                if !updated.contains(where: { $0.id == asset.id }) {
+                    notStored.append(asset)
+                }
+            }
+        }
+
+        if let update = update {
+            for asset in updated {
+                update(AssetProxy(asset))
+            }
+
+            for asset in notStored {
+                update(AssetProxy(asset))
+            }
+        }
+
+        if !notStored.isEmpty || update != nil {
+            Db.writeConn?.readWrite { transaction in
+                if update != nil {
+                    for asset in updated {
+                        transaction.setObject(asset, forKey: asset.id, inCollection: collection)
+                    }
+                }
+
+                for asset in notStored {
+                    transaction.setObject(asset, forKey: asset.id, inCollection: collection)
+                }
+            }
+        }
+
+        return updated + notStored
     }
 }
 
