@@ -15,6 +15,7 @@ class DarkroomHelper {
     private static let notesPlaceholder = NSLocalizedString("Add Notes", comment: "")
     private static let flagPlaceholder = NSLocalizedString("Tap to flag as significant content", comment: "")
 
+
     let delegate: InfoBoxDelegate
 
     let publicUrl: InfoBox?
@@ -22,6 +23,7 @@ class DarkroomHelper {
     let location: InfoBox?
     let notes: InfoBox?
     let flag: InfoBox?
+
 
     init(_ delegate: InfoBoxDelegate, _ superview: UIView) {
         self.delegate = delegate
@@ -60,6 +62,9 @@ class DarkroomHelper {
         flag?.addConstraints(superview, top: notes)
     }
 
+
+    // MARK: Public Methods
+
     func setInfos(_ asset: Asset?, defaults: Bool = false, isEditable: Bool = true) {
         publicUrl?.set(asset?.space is IaSpace ? asset?.publicUrl?.absoluteString : nil)
 
@@ -75,6 +80,50 @@ class DarkroomHelper {
         flag?.set(asset?.flagged ?? false ? NSLocalizedString("Significant Content", comment: "") : nil,
                   with: defaults ? DarkroomHelper.flagPlaceholder : nil)
     }
+
+    func getFirstResponder() -> (infoBox: InfoBox?, value: String?) {
+        if desc?.textView.isFirstResponder ?? false {
+            return (desc, desc?.textView.text)
+        }
+
+        if location?.textView.isFirstResponder ?? false {
+            return (location, location?.textView.text)
+        }
+
+        if notes?.textView.isFirstResponder ?? false {
+            return (notes, notes?.textView.text)
+        }
+
+        return (nil, nil)
+    }
+
+    func assign(_ info: (infoBox: InfoBox?, value: String?)?) -> ((_ asset: AssetProxy) -> Void)? {
+        switch  info?.infoBox {
+        case nil:
+            return nil
+
+        case desc:
+            return { asset in
+                asset.desc = info?.value
+            }
+
+        case location:
+            return { asset in
+                asset.location = info?.value
+            }
+
+        case notes:
+            return { asset in
+                asset.notes = info?.value
+            }
+
+        default:
+            return nil
+        }
+    }
+
+
+    // MARK: Private Methods
 
     @objc private func flagged() {
         if let flag = flag {

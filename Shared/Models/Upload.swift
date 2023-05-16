@@ -76,8 +76,8 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
     var asset: Asset? {
         get {
             if _asset == nil,
-                let id = assetId {
-
+               let id = assetId
+            {
                 Db.bgRwConn?.read { transaction in
                     self._asset = transaction.object(forKey: id, inCollection: Asset.collection) as? Asset
                 }

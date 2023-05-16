@@ -75,11 +75,12 @@ class PreviewCell: BaseCell {
     }
 
     @IBAction func flag() {
-        if let asset = asset {
+        asset?.update({ asset in
             asset.flagged = !asset.flagged
-            flagBt.isSelected = asset.flagged
+        }) { [weak self] asset in
+            self?.asset = asset
 
-            asset.store()
+            self?.flagBt.isSelected = asset.flagged
 
             FlagInfoAlert.presentIfNeeded()
         }

@@ -108,79 +108,38 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
      Store changes.
      */
     func textChanged(_ infoBox: InfoBox, _ text: String) {
-        switch infoBox {
-        case dh?.desc:
-            for asset in assets ?? [] {
-                asset.desc = text
-            }
-
-        case dh?.location:
-            for asset in assets ?? [] {
-                asset.location = text
-            }
-
-        default:
-            for asset in assets ?? [] {
-                asset.notes = text
-            }
+        guard let assets = assets,
+              let update = dh?.assign((infoBox, text))
+        else {
+            return
         }
 
-        store()
+        Asset.update(assets: assets, update)
+        { [weak self] assets in
+            self?.assets = assets
+        }
     }
 
     func tapped(_ infoBox: InfoBox) {
-        // Take the first's status and set all of them to that.
-        let flagged = !(assets?.first?.flagged ?? false)
-
-
-        for asset in assets ?? [] {
-            asset.flagged = flagged
-        }
-
-        store(fetchFirstResponder: true)
-
-        dh?.setInfos(assets?.first, defaults: true, isEditable: true)
-
-        FlagInfoAlert.presentIfNeeded()
-    }
-
-
-    // MARK: Private Methods
-
-    private func store(always: Bool = true, fetchFirstResponder: Bool = false) {
         guard let assets = assets else {
             return
         }
 
-        var shouldStore = always
+        // Take the first's status and set all of them to that.
+        let flagged = !(assets.first?.flagged ?? false)
 
-        if fetchFirstResponder {
-            if dh?.desc?.textView.isFirstResponder ?? false {
-                for asset in assets {
-                    asset.desc = dh?.desc?.textView.text
-                }
-                shouldStore = true
-            }
-            else if dh?.location?.textView.isFirstResponder ?? false {
-                for asset in assets {
-                    asset.location = dh?.location?.textView.text
-                }
-                shouldStore = true
-            }
-            else if dh?.notes?.textView.isFirstResponder ?? false {
-                for asset in assets {
-                    asset.notes = dh?.notes?.textView.text
-                }
-                shouldStore = true
-            }
+        let update = dh?.assign(dh?.getFirstResponder())
+
+        Asset.update(assets: assets, { asset in
+            asset.flagged = flagged
+
+            update?(asset)
+        }) { [weak self] in
+            self?.assets = $0
         }
 
-        if shouldStore {
-            Db.writeConn?.asyncReadWrite { transaction in
-                for asset in assets {
-                    transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
-                }
-            }
-        }
+        dh?.setInfos(assets.first, defaults: true, isEditable: true)
+
+        FlagInfoAlert.presentIfNeeded()
     }
 }

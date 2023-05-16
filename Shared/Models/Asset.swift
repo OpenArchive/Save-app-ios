@@ -94,17 +94,15 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
 
     let id: String
     let created: Date
-    private var _uti: String
-    private var _filename: String?
-    var title: String?
-    var desc: String?
-    var location: String?
-    var tags: [String]?
-    var notes: String?
-    var phassetId: String?
-    var phImageRequestId: PHImageRequestID
+    fileprivate(set) var title: String?
+    fileprivate(set) var desc: String?
+    fileprivate(set) var location: String?
+    fileprivate(set) var tags: [String]?
+    fileprivate(set) var notes: String?
+    fileprivate(set) var phassetId: String?
+    fileprivate(set) var phImageRequestId: PHImageRequestID
     private(set) var publicUrl: URL?
-    var isReady = false {
+    fileprivate(set) var isReady = false {
         didSet {
             if isReady {
                 phImageRequestId = PHInvalidImageRequestID
@@ -175,7 +173,8 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         project?.space
     }
 
-    var uti: any UTTypeProtocol {
+    private var _uti: String
+    fileprivate(set) var uti: any UTTypeProtocol {
         get {
             LegacyUTType(_uti)
         }
@@ -193,11 +192,13 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         uti.preferredMIMEType ?? Self.defaultMimeType
     }
 
+    private var _filename: String?
+
     /**
      The stored filename, if any stored, or a made up filename, which uses the `id` and
      a typical extension for that `uti`.
     */
-    var filename: String {
+    fileprivate(set) var filename: String {
         get {
             if let filename = _filename {
                 return filename
@@ -279,7 +280,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         Files.signature.url(id)?.exists ?? false
     }
 
-    var flagged: Bool {
+    fileprivate(set) var flagged: Bool {
         get {
             return tags?.contains(Asset.flag) ?? false
         }
@@ -368,12 +369,13 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
 
 
     init(_ collection: Collection, uti: any UTTypeProtocol = LegacyUTType.data,
-         id: String = UUID().uuidString, created: Date = Date())
+         id: String = UUID().uuidString, created: Date = Date(), filename: String? = nil)
     {
+        self.collectionId = collection.id
+        self._uti = uti.identifier
         self.id = id
         self.created = created
-        self._uti = uti.identifier
-        self.collectionId = collection.id
+        self._filename = filename
 
         phImageRequestId = PHInvalidImageRequestID
     }
@@ -596,25 +598,6 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     }
 
     /**
-     Asynchronously stores this asset into the database.
-
-     - parameter callback: Optional callback is called asynchronously on main queue after store.
-     - returns: self for fluency.
-    */
-    @discardableResult
-    func store(_ callback: (() -> Void)? = nil) -> Asset {
-        Db.writeConn?.asyncReadWrite { transaction in
-            transaction.setObject(self, forKey: self.id, inCollection: Self.collection)
-
-            if let callback = callback {
-                DispatchQueue.main.async(execute: callback)
-            }
-        }
-
-        return self
-    }
-
-    /**
      Sets `publicUrl` to the given value, sets `isUploaded` to true, if the argument
      is non-nil and to false, if nil and removes the actual file from the app's
      file system, in order to keep the disk usage in check.
@@ -642,11 +625,9 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     /**
      Generates ProofMode data, if the asset doesn't have it, yet.
      */
-    func generateProof(_ completed: ((_ asset: Asset, _ stored: Bool) -> Void)? = nil) {
+    func generateProof(_ completed: @escaping () -> Void) {
         guard Settings.proofMode && !hasProof else {
-            completed?(self, false)
-
-            return
+            return completed()
         }
 
         var item: MediaItem? = nil
@@ -661,14 +642,15 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         }
 
         guard let item = item else {
-            completed?(self, false)
-
-            return
+            return completed()
         }
 
         if isReady {
             isReady = false
-            store()
+
+            update({ asset in
+                asset.isReady = false
+            })
         }
 
         item.fileName = filename
@@ -679,22 +661,198 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
             mediaItem: item,
             options: .init(showDeviceIds: true, showLocation: false, showMobileNetwork: false, notarizationProviders: []))
         { _ in
-            // Re-read from DB, something could have changed in the meantime.
-            Db.bgRwConn?.asyncRead { transaction in
-                let asset = transaction.object(forKey: self.id, inCollection: Self.collection) as? Asset ?? self
+            completed()
+        }
+    }
 
-                // Only set ready, if there's not a video import still ongoing.
-                if asset.phImageRequestId == PHInvalidImageRequestID {
-                    asset.isReady = true
-                }
+    /**
+     Asynchronously store or update this `Asset`.
 
-                // Always store to establish DB-to-file relationships.
+     - Re-read the asset from database, if already stored to get the latest version.
+     - Let the update callback handle changes.
+     - Store updated asset to database.
+
+     - parameter update: OPTIONAL. The update callback, executed on this `Asset`.
+     - parameter completed: OPTIONAL. A callback on the main thread with the latest version of this `Asset`.
+     */
+    func update(_ update: ((AssetProxy) -> Void)? = nil, _ completed: ((Asset) -> Void)? = nil) {
+        var outerCompleted: (([Asset]) -> Void)? = nil
+
+        if let completed = completed {
+            outerCompleted = {
+                completed($0.first ?? self)
+            }
+        }
+
+        Self.update(assets: [self], update, outerCompleted)
+    }
+
+    /**
+     Synchronously store or update this `Asset`.
+
+     - Re-read the asset from database, if already stored to get the latest version.
+     - Let the update callback handle changes.
+     - Store updated asset to database.
+
+     - parameter update: OPTIONAL. The update callback, executed on this `Asset`.
+     - returns: The latest version of this `Asset`.
+     */
+    func updateSync(_ update: ((AssetProxy) -> Void)? = nil) -> Asset
+    {
+        Self.updateSync(assets: [self], update).first ?? self
+    }
+
+    /**
+     Asynchronously store or update a bunch of `Asset`s.
+
+     - Re-read the assets from database, if already stored to get the latest version.
+     - Let the update callback handle changes.
+     - Store updated assets to database.
+
+     - parameter assets: A lsit of assets to change and update.
+     - parameter update: OPTIONAL. The update callback, executed on every single given `Asset`.
+     - parameter completed: OPTIONAL. A callback on the main thread with the latest version of the `Asset`s.
+     */
+    class func update(assets: [Asset], _ update: ((AssetProxy) -> Void)? = nil, _ completed: (([Asset]) -> Void)? = nil) {
+        Db.writeConn?.asyncReadWrite { transaction in
+            var updated = [Asset]()
+
+            for asset in assets {
+                let asset = transaction.object(forKey: asset.id, inCollection: collection) as? Asset ?? asset
+
+                update?(AssetProxy(asset))
+
+                transaction.setObject(asset, forKey: asset.id, inCollection: collection)
+
+                updated.append(asset)
+            }
+
+            if let completed = completed {
                 DispatchQueue.main.async {
-                    asset.store() {
-                        completed?(asset, true)
-                    }
+                    completed(updated)
                 }
             }
         }
+    }
+
+    /**
+     Synchronously store or update a bunch of `Asset`s.
+
+     - Re-read the assets from database, if already stored to get the latest version.
+     - Let the update callback handle changes.
+     - Store updated assets to database.
+
+     - parameter assets: A lsit of assets to change and update.
+     - parameter update: OPTIONAL. The update callback, executed on every single given asset.
+     - returns: A list with the latest version of the `Asset`s.
+     */
+    class func updateSync(assets: [Asset], _ update: ((AssetProxy) -> Void)? = nil) -> [Asset] {
+        var updated = [Asset]()
+
+        Db.writeConn?.readWrite { transaction in
+            for asset in assets {
+                let asset = transaction.object(forKey: asset.id, inCollection: collection) as? Asset ?? asset
+
+                update?(AssetProxy(asset))
+
+                transaction.setObject(asset, forKey: asset.id, inCollection: collection)
+
+                updated.append(asset)
+            }
+        }
+
+        return updated
+    }
+}
+
+class AssetProxy {
+
+    var desc: String? {
+        get {
+            asset.desc
+        }
+        set {
+            asset.desc = newValue
+        }
+    }
+
+    var filename: String {
+        get {
+            asset.filename
+        }
+        set {
+            asset.filename = newValue
+        }
+    }
+
+    var flagged: Bool {
+        get {
+            asset.flagged
+        }
+        set {
+            asset.flagged = newValue
+        }
+    }
+
+    var isReady: Bool {
+        get {
+            asset.isReady
+        }
+        set {
+            asset.isReady = newValue
+        }
+    }
+
+    var location: String? {
+        get {
+            asset.location
+        }
+        set {
+            asset.location = newValue
+        }
+    }
+
+    var notes: String? {
+        get {
+            asset.notes
+        }
+        set {
+            asset.notes = newValue
+        }
+    }
+
+    var phassetId: String? {
+        get {
+            asset.phassetId
+        }
+        set {
+            asset.phassetId = newValue
+        }
+    }
+
+    var phImageRequestId: PHImageRequestID {
+        get {
+            asset.phImageRequestId
+        }
+        set {
+            asset.phImageRequestId = newValue
+        }
+    }
+
+    var uti: any UTTypeProtocol {
+        get {
+            asset.uti
+        }
+        set {
+            asset.uti = newValue
+        }
+    }
+
+
+    private let asset: Asset
+
+
+    fileprivate init(_ asset: Asset) {
+        self.asset = asset
     }
 }

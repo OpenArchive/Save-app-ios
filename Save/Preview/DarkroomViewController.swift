@@ -168,9 +168,11 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
                             previousViewControllers: [UIViewController],
                             transitionCompleted completed: Bool) {
         if completed,
-            let index = (pageViewController.viewControllers?.first as? ImageViewController)?.index {
-
-            store(always: false, fetchFirstResponder: true)
+           let index = (pageViewController.viewControllers?.first as? ImageViewController)?.index
+        {
+            if let update = dh?.assign(dh?.getFirstResponder()) {
+                asset?.update(update)
+            }
 
             selected = index
 
@@ -187,32 +189,27 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
      Store changes.
      */
     func textChanged(_ infoBox: InfoBox, _ text: String) {
-        let asset = self.asset
-
-        switch infoBox {
-        case dh?.desc:
-            asset?.desc = text
-
-        case dh?.location:
-            asset?.location = text
-
-        default:
-            asset?.notes = text
+        if let update = dh?.assign((infoBox, text)) {
+            asset?.update(update)
         }
-
-        store()
     }
 
     func tapped(_ infoBox: InfoBox) {
-        if addMode {
-            asset?.flagged = !(asset?.flagged ?? false)
-
-            store(fetchFirstResponder: true)
-
-            dh?.setInfos(asset, defaults: addMode, isEditable: addMode)
-
-            FlagInfoAlert.presentIfNeeded()
+        guard addMode else {
+            return
         }
+
+        let update = dh?.assign(dh?.getFirstResponder())
+
+        asset?.update({ asset in
+            asset.flagged = !asset.flagged
+
+            update?(asset)
+        })
+
+        dh?.setInfos(asset, defaults: addMode, isEditable: addMode)
+
+        FlagInfoAlert.presentIfNeeded()
     }
 
 
@@ -386,32 +383,5 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
 
     private func getFreshImageVcList() -> [ImageViewController] {
         return [getImageVc(selected)]
-    }
-
-    private func store(always: Bool = true, fetchFirstResponder: Bool = false) {
-        guard let asset = asset else {
-            return
-        }
-
-        var shouldStore = always
-
-        if fetchFirstResponder {
-            if dh?.desc?.textView.isFirstResponder ?? false {
-                asset.desc = dh?.desc?.textView.text
-                shouldStore = true
-            }
-            else if dh?.location?.textView.isFirstResponder ?? false {
-                asset.location = dh?.location?.textView.text
-                shouldStore = true
-            }
-            else if dh?.notes?.textView.isFirstResponder ?? false {
-                asset.notes = dh?.notes?.textView.text
-                shouldStore = true
-            }
-        }
-
-        if shouldStore {
-            asset.store()
-        }
     }
 }

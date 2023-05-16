@@ -105,14 +105,19 @@ class AssetFactory {
         // Try to acquire a proper address from metadata.
         Geocoder.shared.fetchAddress(from: phasset) { address in
             if let address = address {
-                asset.location = address
-                store(asset)
+                asset.update() { ma in
+                    ma.location = address
+                }
             }
         }
 
+        var asset = asset
+
         // Get filename of assets from iOS 13 onwards.
         if let filename = PHAssetResource.assetResources(for: phasset).first?.originalFilename {
-            asset.filename = filename
+            asset = asset.updateSync { asset in
+                asset.filename = filename
+            }
         }
 
         if phasset.mediaType == .image {
@@ -120,25 +125,24 @@ class AssetFactory {
 
             let options = Settings.highCompression ? loResImageOptions : hiResImageOptions
 
-            asset.phImageRequestId = imageManager.requestImageDataAndOrientation(for: phasset, options: options)
+            let phImageRequestId = imageManager.requestImageDataAndOrientation(for: phasset, options: options)
             { data, uti, orientation, info in
 
                 if let data = data, let uti = uti {
-                    asset.uti = LegacyUTType(uti)
-                    asset.phassetId = phasset.localIdentifier
+                    asset = asset.updateSync { asset in
+                        asset.uti = LegacyUTType(uti)
+                        asset.phassetId = phasset.localIdentifier
+                    }
 
                     if let file = asset.file,
-                        createParentDir(file: file) && (try? data.write(to: file)) != nil {
-
+                        createParentDir(file: file) && (try? data.write(to: file)) != nil
+                    {
                         fetchThumb(phasset, asset) // asynchronous
 
-                        asset.generateProof() { asset, stored in
-                            if !stored || !asset.isReady {
+                        asset.generateProof {
+                            asset.update({ asset in
                                 asset.isReady = true
-
-                                store(asset, resultHandler)
-                            }
-                            else {
+                            }) { asset in
                                 handleResult(asset, resultHandler)
                             }
                         }
@@ -147,10 +151,13 @@ class AssetFactory {
                     }
                 }
 
+                asset.remove()
                 handleResult(nil, resultHandler)
             }
 
-            store(asset)
+            asset.update { asset in
+                asset.phImageRequestId = phImageRequestId
+            }
         }
         else if phasset.mediaType == .video || phasset.mediaType == .audio {
             let options = Settings.highCompression ? loResAvOptions : hiResAvOptions
@@ -159,6 +166,7 @@ class AssetFactory {
                 avAsset, audioMix, info in
 
                 guard let avAsset = avAsset else {
+                    asset.remove()
                     return handleResult(nil, resultHandler)
                 }
 
@@ -181,21 +189,21 @@ class AssetFactory {
                 }
 
                 if preset == nil {
+                    asset.remove()
                     return handleResult(nil, resultHandler)
                 }
 
-                asset.phImageRequestId = imageManager.requestExportSession(
+                let phImageRequestId = imageManager.requestExportSession(
                     forVideo: phasset, options: options, exportPreset: preset!)
                 { exportSession, info in
                     let uti: AVFileType = phasset.mediaType == .audio ? .mp3 : .mp4
 
-                    asset.uti = uti
-                    asset.phassetId = phasset.localIdentifier
+                    asset = asset.updateSync { asset in
+                        asset.uti = uti
+                        asset.phassetId = phasset.localIdentifier
+                    }
 
-                    // Store asset before export, so user doesn't have the
-                    // feeling that it got lost.
                     fetchThumb(phasset, asset) // asynchronous
-                    store(asset) // asynchronous
 
                     if let exportSession = exportSession,
                         createParentDir(file: asset.file)
@@ -210,13 +218,10 @@ class AssetFactory {
                                     createThumb(asset)
                                 }
 
-                                asset.generateProof() { asset, stored in
-                                    if !stored || !asset.isReady {
+                                asset.generateProof {
+                                    asset.update({ asset in
                                         asset.isReady = true
-
-                                        store(asset, resultHandler)
-                                    }
-                                    else {
+                                    }) { asset in
                                         handleResult(asset, resultHandler)
                                     }
                                 }
@@ -227,12 +232,16 @@ class AssetFactory {
                                 // The export can be triggered again before upload.
                                 // Make this situation clear, by invalidating that ID,
                                 // and leave `isReady` at `false`.
-                                asset.phImageRequestId = PHInvalidImageRequestID
+                                asset.update({ asset in
+                                    asset.phImageRequestId = PHInvalidImageRequestID
+                                }) { asset in
+                                    handleResult(asset, resultHandler)
+                                }
 
-                                return store(asset, resultHandler)
+                                return
 
                             case .cancelled:
-                                asset.remove()
+                                break
 
                             case .unknown, .waiting, .exporting:
                                 // This should not happen, as this callback is only called on success or failure.
@@ -243,12 +252,18 @@ class AssetFactory {
                                 break
                             }
 
+                            asset.remove()
                             handleResult(nil, resultHandler)
                         }
                     }
                     else {
+                        asset.remove()
                         handleResult(nil, resultHandler)
                     }
+                }
+
+                asset.update { asset in
+                    asset.phImageRequestId = phImageRequestId
                 }
             }
         }
@@ -272,8 +287,8 @@ class AssetFactory {
     {
         if let uti = (try? url.resourceValues(forKeys: [.typeIdentifierKey]))?.typeIdentifier
         {
-            let asset = Asset(collection, uti: LegacyUTType(uti))
-            asset.filename = url.lastPathComponent
+            let asset = Asset(collection, uti: LegacyUTType(uti), filename: url.lastPathComponent)
+            asset.update()
 
             if  let file = asset.file, createParentDir(file: file)
                 // BEWARE: Using move in the ShareExtension will only work in the simulator!
@@ -283,17 +298,18 @@ class AssetFactory {
 
                 self.createThumb(asset, thumbnail: thumbnail)
 
-                asset.generateProof() { asset, stored in
-                    if !stored || !asset.isReady {
+                asset.generateProof {
+                    asset.update({ asset in
                         asset.isReady = true
-
-                        store(asset, resultHandler)
-                    }
-                    else {
+                    }) { asset in
                         handleResult(asset, resultHandler)
                     }
                 }
+
+                return
             }
+
+            asset.remove()
         }
 
         handleResult(nil, resultHandler)
@@ -317,17 +333,20 @@ class AssetFactory {
     class func create(from data: Data, uti: any UTTypeProtocol, name: String? = nil, thumbnail: UIImage? = nil,
                       _ collection: Collection, _ resultHandler: ResultHandler? = nil)
     {
-        let asset = Asset(collection, uti: uti)
+        var filename: String? = nil
 
         if let name = name {
-            if let ext = asset.uti.preferredFilenameExtension {
+            if let ext = uti.preferredFilenameExtension {
                 let url = URL(fileURLWithPath: name).deletingPathExtension().appendingPathExtension(ext)
-                asset.filename = url.lastPathComponent
+                filename = url.lastPathComponent
             }
             else {
-                asset.filename = name
+                filename = name
             }
         }
+
+        let asset = Asset(collection, uti: uti, filename: filename)
+        asset.update()
 
         if  let file = asset.file, createParentDir(file: file)
                 && (try? data.write(to: file)) != nil
@@ -336,19 +355,17 @@ class AssetFactory {
 
             self.createThumb(asset, thumbnail: thumbnail)
 
-            asset.generateProof() { asset, stored in
-                if !stored || !asset.isReady {
+            asset.generateProof {
+                asset.update({ asset in
                     asset.isReady = true
-
-                    store(asset, resultHandler)
-                }
-                else {
+                }) { asset in
                     handleResult(asset, resultHandler)
                 }
             }
         }
         else {
-            resultHandler?(nil)
+            asset.remove()
+            handleResult(nil, resultHandler)
         }
     }
 
@@ -374,7 +391,9 @@ class AssetFactory {
 
             self.createThumb(asset)
 
-            asset.isReady = true
+            asset.update { asset in
+                asset.isReady = true
+            }
         }
 
         return asset
@@ -408,13 +427,14 @@ class AssetFactory {
             let metadata = CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString : AnyObject],
             let gps = metadata[kCGImagePropertyGPSDictionary] as? [CFString : AnyObject],
             let latitude = gps[kCGImagePropertyGPSLatitude] as? Double,
-            let longitude = gps[kCGImagePropertyGPSLongitude] as? Double {
-
+            let longitude = gps[kCGImagePropertyGPSLongitude] as? Double
+        {
             // Try to acquire a proper address from metadata.
             Geocoder.shared.fetchAddress(from: CLLocation(latitude: latitude, longitude: longitude)) { address in
                 if let address = address {
-                    asset.location = address
-                    store(asset)
+                    asset.update { asset in
+                        asset.location = address
+                    }
                 }
             }
         }
@@ -482,18 +502,6 @@ class AssetFactory {
         }
 
         return false
-    }
-
-    /**
-     Store an asset in the database. When done, call a handler on the main queue.
-
-     - parameter asset: The asset to store.
-     - parameter resultHandler: The handler to call after storing.
-    */
-    private class func store(_ asset: Asset, _ resultHandler: ResultHandler? = nil) {
-        asset.store() {
-            handleResult(asset, resultHandler)
-        }
     }
 
     private class func handleResult(_ asset: Asset?, _ resultHandler: ResultHandler?) {

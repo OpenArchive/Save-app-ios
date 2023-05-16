@@ -196,7 +196,13 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
                         // proof is generated before upload.
                         // Proofing will set asset to un-ready, so upload will not start
                         // before proof is done as asset is set to ready again.
-                        asset.generateProof()
+                        if asset.isReady && !asset.hasProof && Settings.proofMode {
+                            asset.generateProof {
+                                asset.update { asset in
+                                    asset.isReady = true
+                                }
+                            }
+                        }
 
                         let upload = Upload(order: order, asset: asset)
                         transaction.setObject(upload, forKey: upload.id, inCollection: Upload.collection)
