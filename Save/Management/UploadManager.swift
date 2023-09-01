@@ -564,6 +564,11 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
             self.debug("#uploadNext try upload=\(upload)")
 
+            let space = upload.asset?.space
+            let name = space is WebDavSpace ? "WebDAV" : upload.asset?.space?.name
+
+            CleanInsights.shared.measure(event: "upload", "try_upload", forCampaign: "upload_fails", name: name)
+
             upload.liveProgress = Conduit
                 .get(for: asset, self.backgroundSession, self.foregroundSession)?
                 .upload(uploadId: upload.id)

@@ -10,6 +10,7 @@ import UIKit
 import Eureka
 import FavIcon
 import YapDatabase
+import CleanInsightsSDK
 
 class PrivateServerViewController: BaseServerViewController {
 
@@ -111,6 +112,8 @@ class PrivateServerViewController: BaseServerViewController {
         if space == nil {
             space = WebDavSpace()
             isEdit = false
+
+            CleanInsights.shared.measure(event: "backend", "new", forCampaign: "upload_fails", name: "WebDAV")
         }
         else if isEdit == nil {
             isEdit = true

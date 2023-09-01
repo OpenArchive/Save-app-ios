@@ -181,6 +181,8 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                 space.password = token.accessToken
                 SelectedSpace.space = space
 
+                CleanInsights.shared.measure(event: "backend", "new", forCampaign: "upload_fails", name: space.name)
+
                 let group = DispatchGroup()
                 group.enter()
 

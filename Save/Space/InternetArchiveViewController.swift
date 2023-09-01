@@ -8,6 +8,7 @@
 
 import UIKit
 import Eureka
+import CleanInsightsSDK
 
 class InternetArchiveViewController: BaseServerViewController, ScrapeDelegate {
 
@@ -98,6 +99,8 @@ class InternetArchiveViewController: BaseServerViewController, ScrapeDelegate {
         if space == nil {
             space = IaSpace()
             isEdit = false
+
+            CleanInsights.shared.measure(event: "backend", "new", forCampaign: "upload_fails", name: space?.name)
         }
         else if isEdit == nil {
             isEdit = true
