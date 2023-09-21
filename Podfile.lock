@@ -1,7 +1,7 @@
 PODS:
   - Alamofire (5.4.4)
   - AlignedCollectionViewFlowLayout (1.1.2)
-  - CleanInsightsSDK (2.6.0)
+  - CleanInsightsSDK (2.7.0)
   - CrossroadRegex (1.2.0)
   - DeviceKit (4.9.0)
   - DownloadButton (0.1.0)
@@ -213,7 +213,7 @@ CHECKOUT OPTIONS:
 SPEC CHECKSUMS:
   Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
   AlignedCollectionViewFlowLayout: ee2ef451e741ec08f8e0967d828001e2f051c20a
-  CleanInsightsSDK: 41957828284408a969f4bf310ae4d378350bdbc2
+  CleanInsightsSDK: 758f2c056ad4602304fefb2711b94e70607a96f1
   CrossroadRegex: 9af32b4b4dc6ff404c87647ef1bc68ea711cc570
   DeviceKit: 847709bf70b78fd9ab765bd571fb9f5f815c3fc1
   DownloadButton: 49a21a89e0d7d1b42d9134f79aaa40e727cd57c3

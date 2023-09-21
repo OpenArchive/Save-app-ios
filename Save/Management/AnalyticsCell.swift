@@ -47,8 +47,8 @@ class AnalyticsCell: BaseCell, ConsentRequestUi {
     weak var delegate: AnalyticsCellDelegate?
 
     @IBAction func ok() {
-        CleanInsights.shared.requestConsent(forCampaign: "upload_fails", self) { [weak self] granted in
-            if granted {
+        CleanInsights.shared.requestConsent(forCampaign: "upload_fails", self) { [weak self] consent in
+            if consent?.granted ?? false {
                 CleanInsights.shared.grant(feature: .lang)
             }
 
@@ -65,11 +65,11 @@ class AnalyticsCell: BaseCell, ConsentRequestUi {
 
     // MARK: ConsentRequestUi
 
-    func show(campaignId: String, campaign: Campaign, _ complete: @escaping Complete) {
+    func show(campaignId: String, campaign: Campaign, _ complete: @escaping CompleteCampaign) {
         delegate?.analyticsPresent(ConsentViewController.new(complete))
     }
 
-    func show(feature: Feature, _ complete: @escaping Complete) {
+    func show(feature: Feature, _ complete: @escaping CompleteFeature) {
         // Unused.
     }
 }

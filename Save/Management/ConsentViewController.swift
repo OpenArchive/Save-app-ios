@@ -11,7 +11,7 @@ import CleanInsightsSDK
 
 class ConsentViewController: BaseViewController {
 
-    class func new(_ completed: @escaping ConsentRequestUi.Complete) -> ConsentViewController {
+    class func new(_ completed: @escaping ConsentRequestUi.CompleteCampaign) -> ConsentViewController {
         let vc = UIStoryboard.main.instantiateViewController(
             withIdentifier: "consentViewController") as! ConsentViewController
 
@@ -102,18 +102,18 @@ class ConsentViewController: BaseViewController {
         }
     }
 
-    var completed: ConsentRequestUi.Complete?
+    var completed: ConsentRequestUi.CompleteCampaign?
 
 
     @IBAction func ok() {
         dismiss {
-            self.completed?(true)
+            self.completed?(true, nil)
         }
     }
 
     @IBAction func decline() {
         dismiss {
-            self.completed?(false)
+            self.completed?(false, nil)
         }
     }
 }

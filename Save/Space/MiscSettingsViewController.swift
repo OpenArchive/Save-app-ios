@@ -169,7 +169,7 @@ class MiscSettingsViewController: FormViewController {
         }
         .onChange { [weak self] row in
             if row.value == true {
-                self?.navigationController?.pushViewController(ConsentViewController.new({ granted in
+                self?.navigationController?.pushViewController(ConsentViewController.new({ granted, _ in
                     if granted {
                         CleanInsights.shared.grant(campaign: Self.campaignId)
                         CleanInsights.shared.grant(feature: .lang)
