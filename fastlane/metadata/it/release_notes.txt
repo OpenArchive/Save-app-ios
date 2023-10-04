@@ -1,7 +1,4 @@
-- Correzione di bug minori.
-- Risolti alcuni potenziali problemi di sicurezza.
-- Aggiunta di funzioni di sicurezza:
-  - Opzione per disabilitare le tastiere di terze parti.
-  - Opzione per nascondere il contenuto dell'app nel cursore dell'app.
-  - Possibilità di utilizzare la biometria o la passphrase per sbloccare l'app.
-- Traduzioni aggiornate.
+- Mostra la versione dell'app in fondo alle impostazioni.
+- Aggiunto il supporto della modalità di prova preliminare per gli spazi WebDAV e Dropbox.
+- Generazione corretta del digest SHA256.
+- Risolti problemi minori quando si cerca di accedere a un account WebDAV.

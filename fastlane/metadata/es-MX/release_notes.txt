@@ -1,7 +1,4 @@
-- Corrección de errores menores.
-- Corregidos posibles problemas menores de seguridad.
-- Añadidas funciones de seguridad:
-  - Opción para no permitir teclados de terceros.
-  - Opción de ocultar el contenido de la aplicación en el deslizador de aplicaciones.
-  - Opción de utilizar datos biométricos o una contraseña para desbloquear la aplicación.
-- Traducciones actualizadas.
+- Mostrar la versión de la aplicación en la parte inferior de la configuración.
+- Añadido soporte preliminar proofmode para WebDAV y Dropbox espacios.
+- Corregida la generación del resumen SHA256.
+- Corregidos problemas menores al intentar iniciar sesión en una cuenta WebDAV.

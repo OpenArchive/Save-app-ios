@@ -1,7 +1,4 @@
-- Correction de bogues mineurs.
-- Correction de problèmes mineurs de sécurité potentiels.
-- Ajout de fonctions de sécurité :
-  - Option pour interdire les claviers tiers.
-  - Option permettant de masquer le contenu de l'application dans la barre de défilement des applications.
-  - Option permettant d'utiliser la biométrie ou une phrase de passe pour déverrouiller l'application.
-- Mise à jour des traductions.
+- Affichage de la version de l'application en bas des paramètres.
+- Ajout de la prise en charge préliminaire du mode de preuve pour les espaces WebDAV et Dropbox.
+- Correction de la génération du condensé SHA256.
+- Correction de problèmes mineurs lors de la connexion à un compte WebDAV.
