@@ -21,8 +21,8 @@ extension PreviewViewController {
             var lowest = Int.max
             var firstUpload: Upload?
 
-            transaction.enumerateKeysAndObjects(inCollection: Upload.collection) { key, object, stop in
-                if let upload = object as? Upload, upload.order < lowest {
+            transaction.iterateKeysAndObjects(inCollection: Upload.collection) { (_, upload: Upload, _) in
+                if upload.order < lowest {
                     lowest = upload.order
                     firstUpload = upload
                 }

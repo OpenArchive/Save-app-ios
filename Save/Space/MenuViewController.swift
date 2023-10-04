@@ -9,7 +9,7 @@
 import UIKit
 import YapDatabase
 
-class MenuViewController: TableWithSpacesViewController {
+class MenuViewController: BaseTableViewController {
 
     private lazy var projectsReadConn = Db.newLongLivedReadConn()
 
@@ -26,8 +26,6 @@ class MenuViewController: TableWithSpacesViewController {
         navigationItem.title = NSLocalizedString("Menu", comment: "")
 
         projectsReadConn?.update(mappings: projectsMappings)
-
-        allowAdd = true
 
         tableView.separatorStyle = .none
 
@@ -46,18 +44,16 @@ class MenuViewController: TableWithSpacesViewController {
     // MARK: UITableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 4
+        return 3
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         switch section {
         case 0:
-            return 2
-        case 1:
             return projectsCount
-        case 2:
+        case 1:
             return 2
-        case 3:
+        case 2:
             return 3
         default:
             return 0
@@ -78,27 +74,13 @@ class MenuViewController: TableWithSpacesViewController {
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            if indexPath.row == 0,
-                let cell = getSpacesListCell() {
-
-                return cell
-            }
-            else if indexPath.row == 1,
-                let cell = getSelectedSpaceCell() {
-                cell.accessoryType = .disclosureIndicator
-
-                return cell
-            }
-        }
-
         let cell = tableView.dequeueReusableCell(withIdentifier: MenuItemCell.reuseId, for: indexPath) as! MenuItemCell
         
         switch indexPath.section {
-        case 1:
+        case 0:
             return cell.set(Project.getName(getProject(indexPath)), accessoryType: .disclosureIndicator)
 
-        case 2:
+        case 1:
             switch indexPath.row {
             case 0:
                 return cell.set(NSLocalizedString("Data Usage", comment: ""), accessoryType: .disclosureIndicator)
@@ -106,7 +88,7 @@ class MenuViewController: TableWithSpacesViewController {
                 return cell.set(NSLocalizedString("Miscellaneous", comment: ""), accessoryType: .disclosureIndicator)
             }
 
-        case 3:
+        case 2:
             switch indexPath.row {
             case 0:
                 return cell.set(String(format: NSLocalizedString("About %@", comment: ""), Bundle.main.displayName), accessoryType: .disclosureIndicator)
@@ -133,11 +115,11 @@ class MenuViewController: TableWithSpacesViewController {
         let header = super.tableView(tableView, viewForHeaderInSection: section)
 
         switch section {
-        case 1:
+        case 0:
             header.label.text = NSLocalizedString("Project Settings", comment: "").localizedUppercase
-        case 2:
+        case 1:
             header.label.text = NSLocalizedString("App Settings", comment: "").localizedUppercase
-        case 3:
+        case 2:
             header.label.text = NSLocalizedString("Info", comment: "").localizedUppercase
         default:
             header.label.text = nil
@@ -147,11 +129,11 @@ class MenuViewController: TableWithSpacesViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return section == 0 ? TableHeader.reducedHeight : TableHeader.height
+        return TableHeader.height
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        return indexPath.section == 1 && indexPath.row < projectsCount
+        return indexPath.section == 0 && indexPath.row < projectsCount
     }
 
     override public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
@@ -177,16 +159,11 @@ class MenuViewController: TableWithSpacesViewController {
 
         switch indexPath.section {
         case 0:
-            if indexPath.row == 1 {
-                vc = SpaceViewController()
-            }
-
-        case 1:
             if let project = getProject(indexPath) {
                 vc = EditProjectViewController(project)
             }
 
-        case 2:
+        case 1:
             switch indexPath.row {
             case 0:
                 vc = DataUsageViewController()
@@ -195,7 +172,7 @@ class MenuViewController: TableWithSpacesViewController {
                 vc = MiscSettingsViewController()
             }
 
-        case 3:
+        case 2:
             if indexPath.row == 0 {
                 if let url = URL(string: "https://open-archive.org/about") {
                     UIApplication.shared.open(url, options: [:])
@@ -233,9 +210,7 @@ class MenuViewController: TableWithSpacesViewController {
 
      Shall be called, when something changes the database.
      */
-    @objc override func yapDatabaseModified(notification: Notification) {
-        super.yapDatabaseModified(notification: notification)
-
+    @objc func yapDatabaseModified(notification: Notification) {
         guard let notifications = projectsReadConn?.beginLongLivedReadTransaction(),
             let viewConn = projectsReadConn?.ext(ProjectsView.name) as? YapDatabaseViewConnection else {
                 return
@@ -289,9 +264,8 @@ class MenuViewController: TableWithSpacesViewController {
     private func getProject(_ indexPath: IndexPath) -> Project? {
         var project: Project?
 
-        projectsReadConn?.read() { transaction in
-            project = (transaction.ext(ProjectsView.name) as? YapDatabaseViewTransaction)?
-                .object(atRow: UInt(indexPath.row), inSection: 0, with: self.projectsMappings) as? Project
+        projectsReadConn?.readInView(ProjectsView.name) { transaction, _ in
+            project = transaction?.object(atRow: UInt(indexPath.row), inSection: 0, with: self.projectsMappings) as? Project
         }
 
         return project

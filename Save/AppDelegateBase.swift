@@ -41,6 +41,20 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     */
     private var verified = false
 
+    private var mainVc: MainViewController? {
+        var vc = window?.rootViewController
+
+        while vc != nil {
+            if let mainVc = vc as? MainViewController {
+                return mainVc
+            }
+
+            vc = vc?.subViewController
+        }
+
+        return nil
+    }
+
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions
         launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
@@ -84,17 +98,13 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     func applicationWillEnterForeground(_ application: UIApplication) {
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
 
-        if let navVc = window?.rootViewController as? UINavigationController,
-            let mainVc = navVc.viewControllers.first as? MainViewController {
-
-            // `MainViewController#viewWillAppear` will not be called, when the
-            // app is still running, but we need to update the selected project
-            // filter anyway, because the share extension could have added an
-            // image and for an unkown reason, this update doesn't bubble up
-            // into the `AbcFilteredByProjectView`.
-            // Here is the only place where we know, that we're in this situation.
-            mainVc.updateFilter()
-        }
+        // `MainViewController#viewWillAppear` will not be called, when the
+        // app is still running, but we need to update the selected project
+        // filter anyway, because the share extension could have added an
+        // image and for an unkown reason, this update doesn't bubble up
+        // into the `AbcFilteredByProjectView`.
+        // Here is the only place where we know, that we're in this situation.
+        mainVc?.updateFilter()
 
         // #applicationWillEnterForeground is only called, if the app was already running,
         // not the first time.
@@ -206,22 +216,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                     })
                 }
 
-                // Find the MenuNavigationController which currently should
-                // display DropboxViewController and replace that with the next step
-                // of AddProjectViewController.
-                var vc = self?.window?.rootViewController
-                var menuNav: MenuNavigationController?
-
-                while vc != nil {
-                    if vc is MenuNavigationController {
-                        menuNav = vc as? MenuNavigationController
-                        break
-                    }
-
-                    vc = vc?.subViewController
-                }
-
-                menuNav?.setViewControllers([AppAddProjectViewController()], animated: true)
+                self?.mainVc?.addFolder()
 
             case .cancel, .none:
                 debugPrint("[\(String(describing: type(of: self)))] dropbox auth cancelled")
@@ -298,14 +293,14 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                 SelectedSpace.space = project.space
 
                 if let navVc = window?.rootViewController as? UINavigationController,
-                    let mainVc = navVc.viewControllers.first as? MainViewController {
-
+                   let mainVc = mainVc
+                {
                     navVc.popToViewController(mainVc, animated: false)
 
                     // When launching, the app needs some time to initialize everything,
                     // otherwise it will crash.
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        mainVc.tabBar.selectedProject = project
+                        mainVc.sideMenu.selectedProject = project
                         mainVc.updateFilter()
                         mainVc.showDetails(project.currentCollection)
                     }

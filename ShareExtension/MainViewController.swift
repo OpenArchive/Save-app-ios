@@ -314,9 +314,8 @@ class MainViewController: TableWithSpacesViewController {
         var project: Project?
 
         if row > -1 {
-            projectsReadConn?.read() { transaction in
-                project = (transaction.ext(ActiveProjectsView.name) as? YapDatabaseViewTransaction)?
-                    .object(atRow: UInt(row), inSection: 0, with: self.projectsMappings) as? Project
+            projectsReadConn?.readInView(ActiveProjectsView.name) { transaction, _ in
+                project = transaction?.object(atRow: UInt(row), inSection: 0, with: self.projectsMappings) as? Project
             }
         }
 

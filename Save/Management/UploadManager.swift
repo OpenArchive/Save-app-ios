@@ -238,9 +238,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         else {
             var found: Upload? = nil
 
-            Db.bgRwConn?.read { transaction in
-                let viewTransaction = transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction
-
+            Db.bgRwConn?.readInView(UploadsView.name) { viewTransaction, transaction in
                 viewTransaction?.iterateKeysAndObjects(inGroup: UploadsView.groups[0])
                 { collection, key, object, index, stop in
 
@@ -288,9 +286,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
         var found = false
 
-        Db.bgRwConn?.read { transaction in
-            let viewTransaction = transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction
-
+        Db.bgRwConn?.readInView(UploadsView.name) { viewTransaction, transaction in
             viewTransaction?.iterateKeysAndObjects(inGroup: UploadsView.groups[0])
             { collection, key, object, index, stop in
                 if let upload = object as? Upload,

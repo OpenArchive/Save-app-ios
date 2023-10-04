@@ -16,6 +16,8 @@ class ConnectSpaceViewController: BaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
+
         // Onboarding phase, directly after first start. Allow skip, so
         // users can see the main scene. Where they can't do anything, but
         // at least they can have a glimpse.

@@ -83,12 +83,25 @@ extension UIView {
      - parameter hide: Set true to hide, false to unhide.
      */
     private func animateHideShow(hide: Bool) {
-        if isHidden != hide {
-            UIView.transition(with: self,
-                              duration: 0.25,
-                              options: .transitionCrossDissolve,
-                              animations: { self.isHidden = hide },
-                              completion: nil)
+        guard isHidden != hide else {
+            return
+        }
+
+        if isHidden {
+            alpha = 0
+            isHidden = false
+
+            UIView.animate(withDuration: 0.25) {
+                self.alpha = 1
+            }
+        }
+        else {
+            UIView.animate(withDuration: 0.25) {
+                self.alpha = 0
+            } completion: { _ in
+                self.isHidden = true
+                self.alpha = 1
+            }
         }
     }
 }

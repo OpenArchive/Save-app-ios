@@ -145,9 +145,8 @@ class TableWithSpacesViewController: BaseTableViewController, UICollectionViewDe
     private func getSpace(_ indexPath: IndexPath) -> Space? {
         var space: Space?
 
-        spacesReadConn?.read() { transaction in
-            space = (transaction.ext(SpacesView.name) as? YapDatabaseViewTransaction)?
-                .object(atRow: UInt(indexPath.row), inSection: 0, with: self.spacesMappings) as? Space
+        spacesReadConn?.readInView(SpacesView.name) { transaction, _ in
+            space = transaction?.object(atRow: UInt(indexPath.row), inSection: 0, with: self.spacesMappings) as? Space
         }
 
         return space

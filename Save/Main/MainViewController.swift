@@ -14,19 +14,20 @@ import TLPhotoPicker
 import DownloadButton
 
 class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,
-                          UINavigationControllerDelegate,
-                          UIDocumentPickerDelegate, ProjectsTabBarDelegate, HeaderViewDelegate,
+                          UINavigationControllerDelegate, SideMenuDelegate,
+                          UIDocumentPickerDelegate, HeaderViewDelegate,
                           TLPhotosPickerViewControllerDelegate, PKDownloadButtonDelegate
 {
 
-    static let segueShowMenu = "showMenuSegue"
+    static let segueShowSettings = "showSettingsSegue"
+    private static let segueConnectSpace = "connectSpaceSegue"
     private static let segueShowPreview = "showPreviewSegue"
     static let segueShowDarkroom = "showDarkroomSegue"
     static let segueShowBatchEdit = "showBatchEditSegue"
     private static let segueShowManagement = "showManagmentSegue"
 
-    @IBOutlet weak var spaceFavIcon: UIImageView!
-    @IBOutlet weak var spaceName: UILabel!
+    @IBOutlet weak var logo: UIImageView!
+
     @IBOutlet weak var manageBt: PKDownloadButton! {
         didSet {
             UploadCell.style(manageBt)
@@ -38,15 +39,17 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
     }
 
-    @IBOutlet weak var tabBar: ProjectsTabBar! {
+    @IBOutlet weak var menuBt: UIButton!
+
+    @IBOutlet weak var menu: UIView! {
         didSet {
-            tabBar.connection = projectsReadConn
-            tabBar.viewName = ActiveProjectsView.name
-            tabBar.mappings = projectsMappings
-            tabBar.projectsDelegate = self
-            tabBar.load()
+            menu.isHidden = true
         }
     }
+
+    @IBOutlet weak var spaceFavIcon: UIImageView!
+    @IBOutlet weak var folderNameLb: UILabel!
+    @IBOutlet weak var folderAssetCountLb: UILabel!
 
     @IBOutlet weak var hintLb: UILabel! {
         didSet {
@@ -79,6 +82,28 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     private lazy var assetsMappings = AbcFilteredByProjectView.createMappings()
 
     private var inEditMode = false
+
+    lazy var sideMenu: SideMenuViewController = {
+        let vc = SideMenuViewController()
+        vc.delegate = self
+        vc.projectsConn = projectsReadConn
+        vc.projectsViewName = ActiveProjectsView.name
+        vc.projectsMappings = projectsMappings
+
+        addChild(vc)
+        menu.addSubview(vc.view)
+
+        vc.view.translatesAutoresizingMaskIntoConstraints = false
+        vc.view.leadingAnchor.constraint(equalTo: menu.leadingAnchor).isActive = true
+        vc.view.topAnchor.constraint(equalTo: menu.topAnchor).isActive = true
+        vc.view.trailingAnchor.constraint(equalTo: menu.trailingAnchor).isActive = true
+        vc.view.bottomAnchor.constraint(equalTo: menu.bottomAnchor).isActive = true
+
+        vc.didMove(toParent: self)
+
+        return vc
+    }()
+
 
     lazy var pickerConf: TLPhotosPickerConfigure = {
         var conf = TLPhotosPickerConfigure()
@@ -123,11 +148,10 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         collectionsReadConn?.update(mappings: collectionsMappings)
         assetsReadConn?.update(mappings: assetsMappings)
 
-        updateSpace()
-
         navigationController?.setNavigationBarHidden(true, animated: animated)
 
-        AbcFilteredByProjectView.updateFilter(tabBar.selectedProject?.id)
+        updateSpace()
+        updateProject()
 
         collectionView.toggle(numberOfSections(in: collectionView) != 0, animated: animated)
 
@@ -149,7 +173,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     func updateFilter() {
         ProjectsView.updateGrouping()
 
-        AbcFilteredByProjectView.updateFilter(tabBar.selectedProject?.id)
+        updateProject()
     }
 
 
@@ -178,12 +202,11 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         // before we repopulate.
         collection?.assets.removeAll()
 
-        assetsReadConn?.read { transaction in
-            (transaction.ext(AbcFilteredByProjectView.name) as? YapDatabaseViewTransaction)?
-                .iterateKeysAndObjects(inGroup: group!) { collName, key, object, index, stop in
-                    if let asset = object as? Asset {
-                        collection?.assets.append(asset)
-                    }
+        assetsReadConn?.readInView(AbcFilteredByProjectView.name) { transaction, _ in
+            transaction?.iterateKeysAndObjects(inGroup: group!) { collName, key, object, index, stop in
+                if let asset = object as? Asset {
+                    collection?.assets.append(asset)
+                }
             }
         }
 
@@ -201,9 +224,8 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.reuseId, for: indexPath) as! ImageCell
 
-        assetsReadConn?.read() { transaction in
-            cell.asset = (transaction.ext(AbcFilteredByProjectView.name) as? YapDatabaseViewTransaction)?
-                .object(at: indexPath, with: self.assetsMappings) as? Asset
+        assetsReadConn?.readInView(AbcFilteredByProjectView.name) { transaction, _ in
+            cell.asset = transaction?.object(at: indexPath, with: self.assetsMappings) as? Asset
         }
 
         return cell
@@ -222,7 +244,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         AbcFilteredByCollectionView.updateFilter(AssetsByCollectionView.collectionId(
             from: assetsMappings.group(forSection: UInt(indexPath.section))))
 
-        performSegue(withIdentifier: MainViewController.segueShowDarkroom, sender: indexPath.row)
+        performSegue(withIdentifier: Self.segueShowDarkroom, sender: indexPath.row)
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -237,34 +259,67 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
 
 
+    // MARK: SideMenuDelegate
+
+    func hideMenu() {
+        toggleMenu(false)
+    }
+
+    func selected(project: Project?) {
+        toggleMenu(false)
+
+        if AbcFilteredByProjectView.projectId != project?.id {
+            toggleMode(newMode: false)
+        }
+
+        updateProject()
+    }
+
+    func addSpace() {
+        toggleMenu(false) { _ in
+            self.performSegue(withIdentifier: Self.segueConnectSpace, sender: self)
+        }
+    }
+
+
     // MARK: Actions
 
-    @IBAction func connectShowSpace() {
-        performSegue(withIdentifier: MainViewController.segueShowMenu, sender: self)
+    @IBAction func showSettings() {
+        toggleMenu(false) { _ in
+            self.performSegue(withIdentifier: Self.segueShowSettings, sender: self)
+        }
     }
 
-    @IBAction func addProject() {
+    @IBAction func toggleMenu() {
+        if menu.isHidden {
+            sideMenu.reload()
+        }
+
+        toggleMenu(menu.isHidden)
+    }
+
+    @IBAction func addFolder() {
         toggleMode(newMode: false)
 
-        if SelectedSpace.available {
-            let vc = UINavigationController(rootViewController: AppAddProjectViewController())
-            vc.modalPresentationStyle = .popover
-            vc.popoverPresentationController?.sourceView = tabBar
-            vc.popoverPresentationController?.sourceRect = tabBar.frame
+        toggleMenu(false) { _ in
+            if SelectedSpace.available {
+                let vc = UINavigationController(rootViewController: AppAddProjectViewController())
+                vc.modalPresentationStyle = .popover
+                vc.popoverPresentationController?.sourceView = self.menuBt
+                vc.popoverPresentationController?.sourceRect = self.menuBt.bounds
 
-            present(vc, animated: true)
-        }
-        else {
-            performSegue(withIdentifier: MainViewController.segueShowMenu, sender: self)
+                self.present(vc, animated: true)
+            }
+            else {
+                self.performSegue(withIdentifier: Self.segueConnectSpace, sender: self)
+            }
         }
     }
-
-
 
     @IBAction func add() {
         // Don't allow to add assets without a space or a project.
-        if tabBar.selectedProject == nil {
-            return addProject()
+        if sideMenu.selectedProject == nil {
+            return addFolder()
         }
 
         let tlpp = TLPhotosPickerViewController()
@@ -303,8 +358,8 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
      */
     @IBAction func addDocument() {
         // Don't allow to add assets without a space or a project.
-        if tabBar.selectedProject == nil {
-            return addProject()
+        if sideMenu.selectedProject == nil {
+            return addFolder()
         }
 
         let vc = UIDocumentPickerViewController(documentTypes: [LegacyUTType.item.identifier], in: .import)
@@ -343,7 +398,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             }
         }
         else if count > 1 {
-            performSegue(withIdentifier: MainViewController.segueShowBatchEdit, sender: getSelectedAssets())
+            performSegue(withIdentifier: Self.segueShowBatchEdit, sender: getSelectedAssets())
         }
     }
 
@@ -361,7 +416,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     // MARK: TLPhotosPickerViewControllerDelegate
 
     func dismissPhotoPicker(withPHAssets assets: [PHAsset]) {
-        guard let collection = tabBar.selectedProject?.currentCollection,
+        guard let collection = sideMenu.selectedProject?.currentCollection,
             assets.count > 0 else {
             return
         }
@@ -376,7 +431,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
         AbcFilteredByCollectionView.updateFilter(collection.id)
 
-        performSegue(withIdentifier: MainViewController.segueShowPreview, sender: nil)
+        performSegue(withIdentifier: Self.segueShowPreview, sender: nil)
     }
 
     func handleNoAlbumPermissions(picker: TLPhotosPickerViewController) {
@@ -395,7 +450,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     // MARK: UIDocumentPickerDelegate
 
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        guard let collection = tabBar.selectedProject?.currentCollection,
+        guard let collection = sideMenu.selectedProject?.currentCollection,
             controller.documentPickerMode == .import &&
             urls.count > 0 else {
             return
@@ -411,18 +466,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
         AbcFilteredByCollectionView.updateFilter(collection.id)
 
-        performSegue(withIdentifier: MainViewController.segueShowPreview, sender: nil)
-    }
-
-
-    // MARK: ProjectsTabBarDelegate
-
-    func didSelect(_ tabBar: ProjectsTabBar, project: Project?) {
-        if AbcFilteredByProjectView.projectId != project?.id {
-            toggleMode(newMode: false)
-        }
-
-        AbcFilteredByProjectView.updateFilter(project?.id)
+        performSegue(withIdentifier: Self.segueShowPreview, sender: nil)
     }
 
 
@@ -458,14 +502,14 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         // If not in edit mode, go to PreviewViewController.
         AbcFilteredByCollectionView.updateFilter(collection.id)
 
-        performSegue(withIdentifier: MainViewController.segueShowPreview, sender: nil)
+        performSegue(withIdentifier: Self.segueShowPreview, sender: nil)
     }
 
 
     // MARK: PKDownloadButtonDelegate
 
     func downloadButtonTapped(_ downloadButton: PKDownloadButton, currentState state: PKDownloadButtonState) {
-        performSegue(withIdentifier: MainViewController.segueShowManagement, sender: nil)
+        performSegue(withIdentifier: Self.segueShowManagement, sender: nil)
     }
 
 
@@ -477,9 +521,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
             vc.selected = index
         }
-        else if segue.identifier == MainViewController.segueShowMenu {
-            segue.destination.popoverPresentationController?.sourceView = spaceFavIcon
-            segue.destination.popoverPresentationController?.sourceRect = spaceFavIcon.bounds
+        else if segue.identifier == Self.segueShowSettings {
+            segue.destination.popoverPresentationController?.sourceView = logo
+            segue.destination.popoverPresentationController?.sourceRect = logo.bounds
         }
         else if let vc = segue.destination as? BatchEditViewController {
             vc.assets = sender as? [Asset]
@@ -509,29 +553,15 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             let viewConn = projectsReadConn?.ext(ActiveProjectsView.name) as? YapDatabaseViewConnection
         {
             // Fix crash by checking, if the snapshots are in sync.
-            if projectsMappings.isNextSnapshot(notifications)
-            {
-                if viewConn.hasChanges(for: notifications) {
-                    updateSpace() // Needed on iPad, where MainViewController is not reloaded,
-                    // because config changes happen in popovers.
+            if !projectsMappings.isNextSnapshot(notifications) || viewConn.hasChanges(for: notifications) {
+                // Needed on iPad, where MainViewController is not reloaded,
+                // because config changes happen in popovers.
 
-                    let (_, rowChanges) = viewConn.getChanges(forNotifications: notifications,
-                                                              withMappings: projectsMappings)
-
-                    for change in rowChanges {
-                        tabBar.handle(change)
-                    }
-
-                    AbcFilteredByProjectView.updateFilter(tabBar.selectedProject?.id)
-                }
-            }
-            else {
                 projectsReadConn?.update(mappings: projectsMappings)
 
                 updateSpace()
-                tabBar.load()
-
-                AbcFilteredByProjectView.updateFilter(tabBar.selectedProject?.id)
+                sideMenu.reload()
+                updateProject()
             }
         }
 
@@ -549,7 +579,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
                     // We need to recognize changes in `Collection` objects used in the
                     // section headers.
-                    reload = collectionChanges.contains { $0.type == .update && $0.finalGroup == tabBar.selectedProject?.id }
+                    reload = collectionChanges.contains { $0.type == .update && $0.finalGroup == sideMenu.selectedProject?.id }
                 }
             }
             else {
@@ -588,7 +618,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
 
         if reload {
-            collectionView.reloadData()
+            updateAssets()
         }
 
         if collectionView.isHidden != (numberOfSections(in: collectionView) < 1) {
@@ -673,12 +703,26 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     private func updateSpace() {
         if let space = SelectedSpace.space {
             spaceFavIcon.image = space.favIcon
-            spaceName.text = space.prettyName
+            sideMenu.space = space
         }
         else {
             spaceFavIcon.image = SelectedSpace.defaultFavIcon
-            spaceName.text = Bundle.main.displayName
+            sideMenu.space = nil
         }
+    }
+
+    private func updateProject() {
+        let project = sideMenu.selectedProject
+
+        AbcFilteredByProjectView.updateFilter(project?.id)
+
+        folderNameLb.text = project?.name
+    }
+
+    private func updateAssets() {
+        folderAssetCountLb.text = "  \(Formatters.format(assetsMappings.numberOfItemsInAllGroups()))  "
+
+        collectionView.reloadData()
     }
 
     private func updateHeaderButton() {
@@ -706,10 +750,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     private func getSelectedAssets(preheat: Bool = false) -> [Asset] {
         var assets = [Asset]()
 
-        assetsReadConn?.read() { transaction in
+        assetsReadConn?.readInView(AbcFilteredByProjectView.name) { viewTransaction, transaction in
             for indexPath in self.collectionView.indexPathsForSelectedItems ?? [] {
-                if let asset = (transaction.ext(AbcFilteredByProjectView.name) as? YapDatabaseViewTransaction)?
-                    .object(at: indexPath, with: self.assetsMappings) as? Asset
+                if let asset = viewTransaction?.object(at: indexPath, with: self.assetsMappings) as? Asset
                 {
                     if preheat,
                         let collectionId = asset.collectionId,
@@ -742,5 +785,30 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 comment: ""),
             title: NSLocalizedString("Access Denied", comment: ""),
             actions: actions)
+    }
+
+    private func toggleMenu(_ toggle: Bool, _ completion: ((_ finished: Bool) -> Void)? = nil) {
+        guard menu.isHidden != !toggle else {
+            completion?(true)
+            return
+        }
+
+        if toggle {
+            if !SelectedSpace.available {
+                addSpace()
+            }
+            else {
+                menu.isHidden = false
+
+                sideMenu.animate(toggle, completion)
+            }
+        }
+        else {
+            sideMenu.animate(toggle) { finished in
+                self.menu.isHidden = true
+
+                completion?(finished)
+            }
+        }
     }
 }

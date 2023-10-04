@@ -360,9 +360,8 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
     private func getUpload(_ indexPath: IndexPath) -> Upload? {
         var upload: Upload?
 
-        readConn?.read { transaction in
-            upload = (transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction)?
-                .object(atRow: UInt(indexPath.row), inSection: 0, with: self.mappings) as? Upload
+        readConn?.readInView(UploadsView.name) { transaction, _ in
+            upload = transaction?.object(atRow: UInt(indexPath.row), inSection: 0, with: self.mappings) as? Upload
         }
 
         return upload

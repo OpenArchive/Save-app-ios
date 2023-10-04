@@ -154,9 +154,7 @@ class SlideshowViewController: UIViewController, UIPageViewControllerDataSource,
             navC.setRoot()
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                if let mainVc = navC.topViewController as? MainViewController {
-                    mainVc.performSegue(withIdentifier: MainViewController.segueShowMenu, sender: mainVc)
-                }
+                (navC.topViewController as? MainViewController)?.addSpace()
             }
         }
     }

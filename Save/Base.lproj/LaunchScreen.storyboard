@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="38r-I9-0nI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="38r-I9-0nI">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -16,29 +17,20 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="server" translatesAutoresizingMaskIntoConstraints="NO" id="ynJ-sp-AwL">
-                                <rect key="frame" x="16" y="16" width="36" height="36"/>
+                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="ynJ-sp-AwL">
+                                <rect key="frame" x="16" y="36" width="64" height="36"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="36" id="qTc-Vi-WTK"/>
-                                    <constraint firstAttribute="width" constant="36" id="qTs-ye-ucK"/>
+                                    <constraint firstAttribute="width" constant="64" id="qTs-ye-ucK"/>
                                 </constraints>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save" textAlignment="natural" lineBreakMode="tailTruncation" minimumFontSize="7" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="R3i-5i-bPY">
-                                <rect key="frame" x="60" y="15" width="244" height="38.5"/>
-                                <fontDescription key="fontDescription" type="boldSystem" pointSize="32"/>
-                                <color key="textColor" red="0.0" green="0.70398116440000003" blue="0.64921339899999997" alpha="1" colorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <viewLayoutGuide key="safeArea" id="AOC-9c-Arb"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
                             <constraint firstItem="ynJ-sp-AwL" firstAttribute="leading" secondItem="AOC-9c-Arb" secondAttribute="leading" constant="16" id="069-iG-Dhf"/>
-                            <constraint firstItem="R3i-5i-bPY" firstAttribute="leading" secondItem="ynJ-sp-AwL" secondAttribute="trailing" constant="8" id="WNJ-Dv-LrI"/>
-                            <constraint firstItem="AOC-9c-Arb" firstAttribute="trailing" secondItem="R3i-5i-bPY" secondAttribute="trailing" constant="16" id="WcE-r9-Pdp"/>
-                            <constraint firstItem="R3i-5i-bPY" firstAttribute="centerY" secondItem="ynJ-sp-AwL" secondAttribute="centerY" id="WhR-XM-T2A"/>
                             <constraint firstItem="ynJ-sp-AwL" firstAttribute="top" secondItem="AOC-9c-Arb" secondAttribute="top" constant="16" id="XN6-gT-gm0"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="AOC-9c-Arb"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="UAp-fh-qaj" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -46,8 +38,11 @@
             <point key="canvasLocation" x="26" y="343"/>
         </scene>
     </scenes>
-    <resources>
-        <image name="server" width="27" height="26"/>
-    </resources>
     <color key="tintColor" red="0.0" green="0.70398116438356162" blue="0.64921339897260277" alpha="1" colorSpace="calibratedRGB"/>
+    <resources>
+        <image name="logo" width="92" height="52"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

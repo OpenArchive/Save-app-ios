@@ -127,10 +127,10 @@ class BaseServerViewController: FormViewController {
     */
     private func goToNext() {
         if SelectedSpace.available {
-            navigationController?.popToRootViewController(animated: true)
+            navigationController?.dismiss(animated: true)
             return
         }
 
-        (navigationController as? MenuNavigationController)?.setRoot()
+        navigationController?.popToRootViewController(animated: true)
     }
 }

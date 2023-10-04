@@ -72,9 +72,8 @@ class SelectedCollection {
     func getAsset(_ indexPath: IndexPath) -> Asset? {
         var asset: Asset?
 
-        readConn?.read { transaction in
-            asset = (transaction.ext(AbcFilteredByCollectionView.name) as? YapDatabaseViewTransaction)?
-                .object(at: indexPath, with: self.mappings) as? Asset
+        readConn?.readInView(AbcFilteredByCollectionView.name) { transaction, _ in
+            asset = transaction?.object(at: indexPath, with: self.mappings) as? Asset
         }
 
         return asset
@@ -87,9 +86,8 @@ class SelectedCollection {
     func getIndexPath(_ asset: Asset) -> IndexPath? {
         var indexPath: IndexPath?
 
-        readConn?.read { transaction in
-            indexPath = (transaction.ext(AbcFilteredByCollectionView.name) as? YapDatabaseViewTransaction)?
-                .indexPath(forKey: asset.id, inCollection: Asset.collection, with: self.mappings)
+        readConn?.readInView(AbcFilteredByCollectionView.name) { transaction, _ in
+            indexPath = transaction?.indexPath(forKey: asset.id, inCollection: Asset.collection, with: self.mappings)
         }
 
         return indexPath

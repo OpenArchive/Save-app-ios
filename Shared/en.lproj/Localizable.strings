@@ -46,6 +46,9 @@
 /* AddProjectViewController, NewProjectViewController */
 "Add a project folder to the server that anyone can upload to." = "Add a project folder to the server that anyone can upload to.";
 
+/* No comment provided by engineer. */
+"Add Another Account" = "Add Another Account";
+
 /* DarkroomViewController */
 "Add Info" = "Add Info";
 
@@ -282,6 +285,9 @@
 
 /* Northeast Direction Abbreviation */
 "NE" = "NE";
+
+/* No comment provided by engineer. */
+"New Folder" = "New Folder";
 
 /* NewProjectViewController, ShareExtension.MainViewController */
 "New Project" = "New Project";
