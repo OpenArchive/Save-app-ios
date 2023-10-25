@@ -58,6 +58,12 @@ class BaseServerViewController: FormViewController {
         super.init(coder: decoder)
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
+
 
     @objc func connect() {
         SelectedSpace.space = self.space
@@ -122,7 +128,7 @@ class BaseServerViewController: FormViewController {
     }
 
     /**
-     Pop to MenuViewController or to ConnectSpaceViewController, depending on
+     Pop to GeneralSettingsViewController or to ConnectSpaceViewController, depending on
      if we still have a space.
     */
     private func goToNext() {

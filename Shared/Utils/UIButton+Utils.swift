@@ -18,6 +18,14 @@ extension UIButton {
         setTitle(title, for: .selected)
     }
 
+    func setAttributedTitle(_ title: NSAttributedString?) {
+        setAttributedTitle(title, for: .normal)
+        setAttributedTitle(title, for: .highlighted)
+        setAttributedTitle(title, for: .disabled)
+        setAttributedTitle(title, for: .focused)
+        setAttributedTitle(title, for: .selected)
+    }
+
     func setImage(_ image: UIImage?) {
         setImage(image, for: .normal)
         setImage(image, for: .highlighted)

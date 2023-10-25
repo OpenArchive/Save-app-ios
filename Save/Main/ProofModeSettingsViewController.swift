@@ -1,5 +1,5 @@
 //
-//  MiscSettingsViewController.swift
+//  ProofModeSettingsViewController.swift
 //  OpenArchive
 //
 //  Created by Benjamin Erhart on 14.03.22.
@@ -8,30 +8,14 @@
 
 import UIKit
 import Eureka
-import CleanInsightsSDK
 import LibProofMode
 
-class MiscSettingsViewController: FormViewController {
-
-    private static let campaignId = "upload_fails"
-
-    private var consent: CampaignConsent? {
-        CleanInsights.shared.consent(forCampaign: Self.campaignId)
-    }
-
-    private var uploadFailsRow = SwitchRow() {
-        $0.title = NSLocalizedString("Health Checks", comment: "")
-        $0.cellStyle = .subtitle
-        $0.cell.switchControl.onTintColor = .accent
-        $0.cell.textLabel?.numberOfLines = 0
-        $0.cell.detailTextLabel?.numberOfLines = 0
-    }
-
+class ProofModeSettingsViewController: FormViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = NSLocalizedString("Miscellaneous", comment: "")
+        navigationItem.title = NSLocalizedString("ProofMode", comment: "")
 
         form
         +++ SwitchRow("proof_mode") {
@@ -157,121 +141,5 @@ class MiscSettingsViewController: FormViewController {
 
             self?.present(vc, animated: true)
         })
-
-        +++ uploadFailsRow
-        .cellUpdate { [weak self] cell, row in
-            let end = self?.consent?.end
-
-            cell.detailTextLabel?.text = row.value == true && end != nil
-                ? String(format: NSLocalizedString("Consent expires on %@.", comment: ""),
-                         Formatters.format(end!))
-                : NSLocalizedString("Help improve the app by running health checks when uploads fail.", comment: "")
-        }
-        .onChange { [weak self] row in
-            if row.value == true {
-                self?.navigationController?.pushViewController(ConsentViewController.new({ granted, _ in
-                    if granted {
-                        CleanInsights.shared.grant(campaign: Self.campaignId)
-                        CleanInsights.shared.grant(feature: .lang)
-
-                        self?.form.delegate = nil
-                        row.value = true
-                        self?.form.delegate = self
-
-                        self?.uploadFailsRow.updateCell()
-                    }
-                    else {
-                        row.value = false // Will trigger #onChange again with other path.
-                    }
-                }), animated: true)
-            }
-            else {
-                CleanInsights.shared.deny(campaign: Self.campaignId)
-                self?.uploadFailsRow.updateCell()
-            }
-        }
-
-        +++ SwitchRow() {
-            $0.title = NSLocalizedString("Allow 3rd-Party Keyboards", comment: "")
-            $0.value = Settings.thirdPartyKeyboards
-            $0.cell.switchControl.onTintColor = .accent
-            $0.cell.textLabel?.numberOfLines = 0
-        }
-        .onChange({ row in
-            Settings.thirdPartyKeyboards = row.value ?? false
-        })
-
-        +++ SwitchRow() {
-            $0.title = NSLocalizedString("Hide App Content when in Background", comment: "")
-            $0.value = Settings.hideContent
-            $0.cell.switchControl.onTintColor = .accent
-            $0.cell.textLabel?.numberOfLines = 0
-        }
-        .onChange({ row in
-            Settings.hideContent = row.value ?? false
-        })
-
-        if SecureEnclave.deviceSecured() {
-            form
-            +++ SwitchRow("lock_app") {
-                switch SecureEnclave.biometryType() {
-                case .touchID:
-                    $0.title = NSLocalizedString("Lock App with Touch ID or Device Passcode", comment: "")
-
-                case .faceID:
-                    $0.title = NSLocalizedString("Lock App with Face ID or Device Passcode", comment: "")
-
-                default:
-                    $0.title = NSLocalizedString("Lock App with Device Passcode", comment: "")
-                }
-
-                $0.value = SecureEnclave.loadKey() != nil
-                $0.cell.switchControl.onTintColor = .accent
-                $0.cell.textLabel?.numberOfLines = 0
-
-                $0.disabled = .function(["proof_mode_key_encryption"], { form in
-                    Settings.proofModeEncryptedPassphrase != nil
-                })
-            }
-            .onChange { [weak self] row in
-                let newValue: Bool
-
-                if row.value ?? false {
-                    newValue = SecureEnclave.createKey() != nil
-                }
-                else {
-                    newValue = !SecureEnclave.removeKey()
-                }
-
-                // Seems, we can't create a key. Maybe running on a simulator?
-                if newValue != row.value {
-                    // Quirky way of disabling the onChange callback to avoid an endless loop.
-                    self?.form.delegate = nil
-
-                    row.value = newValue
-                    row.updateCell()
-
-                    row.disabled = true
-                    row.evaluateDisabled()
-
-                    self?.form.delegate = self // Enable callback again.
-
-                    // Also disable this one.
-                    if let pmkeRow = self?.form.rowBy(tag: "proof_mode_key_encryption") as? SwitchRow {
-                        pmkeRow.value = false
-                        pmkeRow.disabled = true
-                        pmkeRow.evaluateDisabled()
-                    }
-                }
-            }
-        }
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        form.delegate = nil
-        uploadFailsRow.value = consent?.state == .granted || consent?.state == .notStarted
-        form.delegate = self
     }
 }

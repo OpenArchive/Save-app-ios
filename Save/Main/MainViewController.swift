@@ -19,11 +19,8 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                           TLPhotosPickerViewControllerDelegate, PKDownloadButtonDelegate
 {
 
-    static let segueShowSettings = "showSettingsSegue"
     private static let segueConnectSpace = "connectSpaceSegue"
     private static let segueShowPreview = "showPreviewSegue"
-    static let segueShowDarkroom = "showDarkroomSegue"
-    static let segueShowBatchEdit = "showBatchEditSegue"
     private static let segueShowManagement = "showManagmentSegue"
 
     @IBOutlet weak var logo: UIImageView!
@@ -36,6 +33,12 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             manageBt.stopDownloadButton.stopButton.setTitleColor(.accent, for: .normal)
             manageBt.stopDownloadButton.stopButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 11)
             manageBt.isHidden = true
+        }
+    }
+
+    @IBOutlet weak var removeBt: UIButton! {
+        didSet {
+            removeBt.isHidden = true
         }
     }
 
@@ -59,9 +62,30 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
 
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var toolbar: UIToolbar!
-    @IBOutlet weak var editAssetsBt: UIBarButtonItem!
-    @IBOutlet weak var removeAssetsBt: UIBarButtonItem!
+
+    @IBOutlet weak var myMediaBt: UIButton! {
+        didSet {
+            myMediaBt.setAttributedTitle(.init(
+                string: NSLocalizedString("My Media", comment: ""),
+                attributes: [.font: UIFont.preferredFont(forTextStyle: .caption1)]))
+        }
+    }
+
+    @IBOutlet weak var container: UIView!
+
+    @IBOutlet weak var addBt: UIButton! {
+        didSet {
+            addBt.setTitle("")
+        }
+    }
+
+    @IBOutlet weak var settingsBt: UIButton! {
+        didSet {
+            settingsBt.setAttributedTitle(.init(
+                string: NSLocalizedString("Settings", comment: ""),
+                attributes: [.font: UIFont.preferredFont(forTextStyle: .caption1)]))
+        }
+    }
 
     private lazy var uploadsReadConn = Db.newLongLivedReadConn()
 
@@ -100,6 +124,12 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         vc.view.bottomAnchor.constraint(equalTo: menu.bottomAnchor).isActive = true
 
         vc.didMove(toParent: self)
+
+        return vc
+    }()
+
+    lazy var settingsVc: SettingsViewController = {
+        let vc = UIStoryboard.main.instantiate(SettingsViewController.self)
 
         return vc
     }()
@@ -234,7 +264,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if inEditMode {
             updateHeaderButton()
-            updateToolbar()
+            updateRemove()
 
             return
         }
@@ -244,7 +274,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         AbcFilteredByCollectionView.updateFilter(AssetsByCollectionView.collectionId(
             from: assetsMappings.group(forSection: UInt(indexPath.section))))
 
-        performSegue(withIdentifier: Self.segueShowDarkroom, sender: indexPath.row)
+        performSegue(withIdentifier: Self.segueShowPreview, sender: indexPath.row)
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -254,7 +284,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
         else {
             updateHeaderButton()
-            updateToolbar()
+            updateRemove()
         }
     }
 
@@ -284,9 +314,21 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
     // MARK: Actions
 
+    @IBAction func hideSettings() {
+        toggleMenu(false) { _ in
+            self.container.hide(animated: true)
+            self.settingsVc.view.removeFromSuperview()
+            self.settingsVc.removeFromParent()
+        }
+    }
+
     @IBAction func showSettings() {
         toggleMenu(false) { _ in
-            self.performSegue(withIdentifier: Self.segueShowSettings, sender: self)
+            self.container.addSubview(self.settingsVc.view)
+            self.addChild(self.settingsVc)
+            self.settingsVc.didMove(toParent: self)
+
+            self.container.show2(animated: true)
         }
     }
 
@@ -385,23 +427,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
     }
 
-    @IBAction func editAssets() {
-        let count = collectionView.numberOfSelectedItems
-
-        if count == 1 {
-            if let indexPath = collectionView.indexPathsForSelectedItems?.first {
-                toggleMode()
-
-                // Trigger selection, so DarkroomViewController gets pushed.
-                collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredVertically)
-                collectionView(collectionView, didSelectItemAt: indexPath)
-            }
-        }
-        else if count > 1 {
-            performSegue(withIdentifier: Self.segueShowBatchEdit, sender: getSelectedAssets())
-        }
-    }
-
     @IBAction func removeAssets() {
         present(RemoveAssetAlert(getSelectedAssets(), { [weak self] success in
             guard success else {
@@ -492,7 +517,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 }
                 else {
                     updateHeaderButton()
-                    updateToolbar()
+                    updateRemove()
                 }
             }
 
@@ -510,24 +535,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
     func downloadButtonTapped(_ downloadButton: PKDownloadButton, currentState state: PKDownloadButtonState) {
         performSegue(withIdentifier: Self.segueShowManagement, sender: nil)
-    }
-
-
-    // MARK: Navigation
-
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let vc = segue.destination as? DarkroomViewController,
-            let index = sender as? Int {
-
-            vc.selected = index
-        }
-        else if segue.identifier == Self.segueShowSettings {
-            segue.destination.popoverPresentationController?.sourceView = logo
-            segue.destination.popoverPresentationController?.sourceRect = logo.bounds
-        }
-        else if let vc = segue.destination as? BatchEditViewController {
-            vc.assets = sender as? [Asset]
-        }
     }
 
 
@@ -671,30 +678,14 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         inEditMode = newMode
 
         updateHeaderButton()
-        updateToolbar()
+        updateRemove()
     }
 
     /**
-     Enables/disables the edit and remove buttons, depending on if and what is selected.
+     Shows/hides the  remove button, depending on if and what is selected.
      */
-    private func updateToolbar() {
-        var editEnabled = false
-        var removeEnabled = false
-
-        if inEditMode && collectionView.numberOfSelectedItems > 0 {
-            editEnabled = true
-            removeEnabled = true
-
-            for asset in getSelectedAssets(preheat: true) {
-                if asset.collection?.closed != nil {
-                    editEnabled = false
-                    break
-                }
-            }
-        }
-
-        editAssetsBt.isEnabled = editEnabled
-        removeAssetsBt.isEnabled = removeEnabled
+    private func updateRemove() {
+        removeBt.isHidden = !inEditMode || collectionView.numberOfSelectedItems < 1
     }
 
     /**
@@ -717,6 +708,8 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         AbcFilteredByProjectView.updateFilter(project?.id)
 
         folderNameLb.text = project?.name
+
+        settingsVc.project = project
     }
 
     private func updateAssets() {

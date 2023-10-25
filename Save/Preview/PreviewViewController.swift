@@ -11,6 +11,10 @@ import YapDatabase
 
 class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, PreviewCellDelegate, DoneDelegate {
 
+    private static let segueShowDarkroom = "showDarkroomSegue"
+    private static let segueShowBatchEdit = "showBatchEditSegue"
+
+
     @IBOutlet weak var uploadBt: UIBarButtonItem! {
         didSet {
             uploadBt.title = NSLocalizedString("Upload", comment: "")
@@ -96,7 +100,7 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
 
         tableView.deselectRow(at: indexPath, animated: false)
 
-        performSegue(withIdentifier: MainViewController.segueShowDarkroom, sender: (indexPath.row, nil as DarkroomViewController.DirectEdit?))
+        performSegue(withIdentifier: Self.segueShowDarkroom, sender: (indexPath.row, nil as DarkroomViewController.DirectEdit?))
     }
 
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -131,7 +135,7 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
 
     func edit(_ asset: Asset, _ directEdit: DarkroomViewController.DirectEdit? = nil) {
         if let indexPath = sc.getIndexPath(asset) {
-            performSegue(withIdentifier: MainViewController.segueShowDarkroom, sender: (indexPath.row, directEdit))
+            performSegue(withIdentifier: Self.segueShowDarkroom, sender: (indexPath.row, directEdit))
         }
     }
 
@@ -253,7 +257,7 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
             }
         }
         else if count > 1 {
-            performSegue(withIdentifier: MainViewController.segueShowBatchEdit, sender: getSelectedAssets())
+            performSegue(withIdentifier: Self.segueShowBatchEdit, sender: getSelectedAssets())
         }
     }
 
