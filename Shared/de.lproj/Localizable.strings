@@ -82,9 +82,6 @@
 /* OrbotManager */
 "Allow without Orbot" = "Ohne Orbot erlauben";
 
-/* MenuViewController */
-"App Settings" = "App-Einstellungen";
-
 /* OrbotManager */
 "App Store" = "App Store";
 
@@ -148,6 +145,9 @@
 /* ConnectSpaceViewController */
 "Connect Your Space" = "Verbinde Deinen Space";
 
+/* No comment provided by engineer. */
+"Connectivity & Data" = "Connectivity & Data";
+
 /* HealthCheckViewController */
 "Consent expires on %@." = "Zustimmung läuft am %@ aus.";
 
@@ -162,9 +162,6 @@
 
 /* EditProjectViewController */
 "Creative Commons" = "Creative Commons";
-
-/* MenuViewController, DataUsageViewController */
-"Data Usage" = "Datenübertragung";
 
 /* MainViewController */
 "Deselect" = "Abwählen";
@@ -201,6 +198,12 @@
 
 /* FlagInfoAlert */
 "Flag Significant Content" = "Besonderen Inhalt markieren";
+
+/* No comment provided by engineer. */
+"Folder" = "Folder";
+
+/* No comment provided by engineer. */
+"General" = "General";
 
 /* ClaimViewController */
 "Get Started" = "Los gehts";
@@ -241,9 +244,6 @@
 /* Error+friendlyMessage */
 "Incorrect username or password" = "Benutzername oder Passwort falsch";
 
-/* MenuViewController */
-"Info" = "Info";
-
 /* SlideshowViewController */
 "Install" = "Installieren";
 
@@ -265,14 +265,17 @@
 /* SpaceViewController */
 "Login Info" = "Zugangsdaten";
 
-/* MenuViewController */
-"Menu" = "Menü";
+/* No comment provided by engineer. */
+"Media Compression" = "Media Compression";
 
-/* MiscSettingsViewController */
-"Miscellaneous" = "Verschiedenes";
+/* No comment provided by engineer. */
+"Metadata" = "Metadata";
 
 /* ManagementViewController */
 "Multiple attempts with no success" = "Mehrere erfolglose Versuche";
+
+/* No comment provided by engineer. */
+"My Media" = "My Media";
 
 /* North Direction Abbreviation */
 "N" = "N";
@@ -367,8 +370,8 @@
 /* DuplicateProjectAlert */
 "Project Already Exists" = "Projekt existiert bereits";
 
-/* MenuViewController */
-"Project Settings" = "Projekteinstellungen";
+/* No comment provided by engineer. */
+"ProofMode" = "ProofMode";
 
 /* HeaderView */
 "Ready to upload" = "Fertig zum hochladen";
@@ -433,11 +436,17 @@
 /* No comment provided by engineer. */
 "Secure ProofMode Key with Touch ID or Device Passcode" = "Sichere den ProofMode-Schlüssel mit Touch ID oder dem Gerätepasswort ab";
 
+/* No comment provided by engineer. */
+"Security" = "Security";
+
 /* MainViewController */
 "Select" = "Auswählen";
 
 /* BigMenuItemCell */
 "Send directly to a private server." = "An einen privaten Server schicken.";
+
+/* No comment provided by engineer. */
+"Server" = "Server";
 
 /* PrivateServerViewController */
 "Server Name" = "Servername";
@@ -544,8 +553,8 @@
 /* BaseServerViewController */
 "User Name" = "Benutzername";
 
-/* DataUsageViewController */
-"Video/Image Compression" = "Video-/Bildkompression";
+/* No comment provided by engineer. */
+"Version %@" = "Version %@";
 
 /* West Direction Abbreviation */
 "W" = "W";

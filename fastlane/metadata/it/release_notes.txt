@@ -1,4 +1,4 @@
-- Mostra la versione dell'app in fondo alle impostazioni.
-- Aggiunto il supporto della modalità di prova preliminare per gli spazi WebDAV e Dropbox.
-- Generazione corretta del digest SHA256.
-- Risolti problemi minori quando si cerca di accedere a un account WebDAV.
+
+
+
+

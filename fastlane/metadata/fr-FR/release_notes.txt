@@ -1,4 +1,4 @@
-- Affichage de la version de l'application en bas des paramètres.
-- Ajout de la prise en charge préliminaire du mode de preuve pour les espaces WebDAV et Dropbox.
-- Correction de la génération du condensé SHA256.
-- Correction de problèmes mineurs lors de la connexion à un compte WebDAV.
+
+
+
+

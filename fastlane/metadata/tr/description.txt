@@ -53,7 +53,7 @@ Bize info[at]open-archive[dot]org adresinden yazabilirsiniz
 
 //Hakkında
 
-OpenArchive, basın özgürlüğünü korumaya adanmış insan hakları teknolojisi uzmanları, etnograflar ve arşivcilerden oluşan bir topluluktur. Teknolojilerimiz, şu anda çevrimiçi basın ekosistemine hâkim olan kurumsal duvarlı bahçelerin dışında kalarak, mobil medyayı herkese açık ya da özel arşivler üzerinden, topluluk tarafından güncellenen koleksiyonlarda saklamak, güçlendirmek ve güvenli bir şekilde aktarmak amacıyla tasarlanmıştır.
+OpenArchive, basın özgürlüğünü korumaya adanmış insan hakları teknolojisi uzmanları, etnograflar ve arşivcilerden oluşan bir topluluktur. Teknolojilerimiz, şu anda çevrim içi basın eko sistemine hâkim olan kurumsal duvarlı bahçelerin dışında kalarak, mobil ortamları herkese açık ya da özel arşivler üzerinden, topluluk tarafından güncellenen koleksiyonlarda saklamak, güçlendirmek ve güvenli bir şekilde aktarmak amacıyla tasarlanmıştır.
 
 Save hakkında
 OpenArchive tarafından geliştirilen Save, belgesel yapımcıları ve insan hakları savunucuları için ücretsiz, açık kaynak kodlu bir mobil arşivleme uygulamasıdır. Risk altındaki gruplara, medya doğrulaması, taklitçiliğe karşı koruma, lisanslama denetimi,  uzun süreli erişim ve yeniden kullanım olanağı sağlamak için ortamların nerede ve nasıl saklanacağını seçme gibi özellikler sunarak, geçmiş kayıtlar üzerinde geniş bir aracılık sağlar.

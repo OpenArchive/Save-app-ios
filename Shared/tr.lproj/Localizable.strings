@@ -82,9 +82,6 @@
 /* OrbotManager */
 "Allow without Orbot" = "Orbot olmadan izin ver";
 
-/* MenuViewController */
-"App Settings" = "Uygulama ayarları";
-
 /* OrbotManager */
 "App Store" = "Uygulama Mağazası";
 
@@ -148,6 +145,9 @@
 /* ConnectSpaceViewController */
 "Connect Your Space" = "Alanınıza bağlanın";
 
+/* No comment provided by engineer. */
+"Connectivity & Data" = "Connectivity & Data";
+
 /* HealthCheckViewController */
 "Consent expires on %@." = "Onayın geçerlilik süresi %@ zamanında bitecek.";
 
@@ -162,9 +162,6 @@
 
 /* EditProjectViewController */
 "Creative Commons" = "Creative Commons";
-
-/* MenuViewController, DataUsageViewController */
-"Data Usage" = "Veri kullanımı";
 
 /* MainViewController */
 "Deselect" = "Seçimi kaldır";
@@ -201,6 +198,12 @@
 
 /* FlagInfoAlert */
 "Flag Significant Content" = "Önemli içerik olarak işaretle";
+
+/* No comment provided by engineer. */
+"Folder" = "Folder";
+
+/* No comment provided by engineer. */
+"General" = "General";
 
 /* ClaimViewController */
 "Get Started" = "Kullanmaya başlayın";
@@ -241,9 +244,6 @@
 /* Error+friendlyMessage */
 "Incorrect username or password" = "Kullanıcı adı ya da parola hatalı";
 
-/* MenuViewController */
-"Info" = "Bilgiler";
-
 /* SlideshowViewController */
 "Install" = "Kur";
 
@@ -265,14 +265,17 @@
 /* SpaceViewController */
 "Login Info" = "Oturum açma bilgileri";
 
-/* MenuViewController */
-"Menu" = "Menü";
+/* No comment provided by engineer. */
+"Media Compression" = "Media Compression";
 
-/* MiscSettingsViewController */
-"Miscellaneous" = "Diğerleri";
+/* No comment provided by engineer. */
+"Metadata" = "Metadata";
 
 /* ManagementViewController */
 "Multiple attempts with no success" = "Bir kaç kez denendi ve başarısız oldu";
+
+/* No comment provided by engineer. */
+"My Media" = "My Media";
 
 /* North Direction Abbreviation */
 "N" = "K";
@@ -367,8 +370,8 @@
 /* DuplicateProjectAlert */
 "Project Already Exists" = "Proje zaten var";
 
-/* MenuViewController */
-"Project Settings" = "Proje ayarları";
+/* No comment provided by engineer. */
+"ProofMode" = "ProofMode";
 
 /* HeaderView */
 "Ready to upload" = "Yüklemeye hazır";
@@ -433,11 +436,17 @@
 /* No comment provided by engineer. */
 "Secure ProofMode Key with Touch ID or Device Passcode" = "ProofMode anahtarını Touch ID veya aygıt parolası koruyun";
 
+/* No comment provided by engineer. */
+"Security" = "Security";
+
 /* MainViewController */
 "Select" = "Seç";
 
 /* BigMenuItemCell */
 "Send directly to a private server." = "Doğrudan özel bir sunucuya gönderin.";
+
+/* No comment provided by engineer. */
+"Server" = "Server";
 
 /* PrivateServerViewController */
 "Server Name" = "Sunucu adı";
@@ -544,8 +553,8 @@
 /* BaseServerViewController */
 "User Name" = "Kullanıcı adı";
 
-/* DataUsageViewController */
-"Video/Image Compression" = "Görüntü/görsel sıkıştırması";
+/* No comment provided by engineer. */
+"Version %@" = "Version %@";
 
 /* West Direction Abbreviation */
 "W" = "B";

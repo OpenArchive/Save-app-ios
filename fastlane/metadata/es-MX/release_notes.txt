@@ -1,4 +1,4 @@
-- Mostrar la versión de la aplicación en la parte inferior de la configuración.
-- Añadido soporte preliminar proofmode para WebDAV y Dropbox espacios.
-- Corregida la generación del resumen SHA256.
-- Corregidos problemas menores al intentar iniciar sesión en una cuenta WebDAV.
+
+
+
+
