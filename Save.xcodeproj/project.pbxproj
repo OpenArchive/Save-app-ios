@@ -315,6 +315,7 @@
 		A0A6819829D7118C002D9F21 /* TTTLocationFormatter.m in Sources */ = {isa = PBXBuildFile; fileRef = A0A6819529D7118C002D9F21 /* TTTLocationFormatter.m */; };
 		A0A98AEC22428A9300596B74 /* TableHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0A98AEB22428A9300596B74 /* TableHeader.xib */; };
 		A0A98AED22428A9300596B74 /* TableHeader.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0A98AEB22428A9300596B74 /* TableHeader.xib */; };
+		A0A9F1912AF0193D007D284A /* FoldersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A9F1902AF0193D007D284A /* FoldersViewController.swift */; };
 		A0AC057F224CE8C7008B9249 /* TableWithSpacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC057E224CE8C7008B9249 /* TableWithSpacesViewController.swift */; };
 		A0AC0580224CE8C7008B9249 /* TableWithSpacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC057E224CE8C7008B9249 /* TableWithSpacesViewController.swift */; };
 		A0AC0581224CEBE3008B9249 /* SpacesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050AA482225DF4000AE5D15 /* SpacesListCell.swift */; };
@@ -632,6 +633,7 @@
 		A0A6819429D7118C002D9F21 /* TTTLocationFormatter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TTTLocationFormatter.h; sourceTree = "<group>"; };
 		A0A6819529D7118C002D9F21 /* TTTLocationFormatter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TTTLocationFormatter.m; sourceTree = "<group>"; };
 		A0A98AEB22428A9300596B74 /* TableHeader.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TableHeader.xib; sourceTree = "<group>"; };
+		A0A9F1902AF0193D007D284A /* FoldersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoldersViewController.swift; sourceTree = "<group>"; };
 		A0AC057E224CE8C7008B9249 /* TableWithSpacesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableWithSpacesViewController.swift; sourceTree = "<group>"; };
 		A0AC06A92201CFD800BD5FBA /* BrowseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseViewController.swift; sourceTree = "<group>"; };
 		A0AC06AB2201D00100BD5FBA /* FolderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCell.swift; sourceTree = "<group>"; };
@@ -828,6 +830,7 @@
 				A01128E52AE6CB34000848DB /* SettingsViewController.swift */,
 				A0E1A67B21EE7A5C00E4F6B7 /* GeneralSettingsViewController.swift */,
 				A0BF451927DF5EE800DBB629 /* ProofModeSettingsViewController.swift */,
+				A0A9F1902AF0193D007D284A /* FoldersViewController.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -1899,6 +1902,7 @@
 				A09B5419232673EE005266C2 /* AppDelegateBase.swift in Sources */,
 				A0D1013E22CCF4140068D047 /* WebDavConduit.swift in Sources */,
 				A0AFCF0F22300E41005E57FD /* MultilineTitle.swift in Sources */,
+				A0A9F1912AF0193D007D284A /* FoldersViewController.swift in Sources */,
 				A05DF988282C0F92003FADA2 /* AEXMLParser.swift in Sources */,
 				A05DF978282C0E54003FADA2 /* AEXMLDocument.swift in Sources */,
 				A056555C23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */,

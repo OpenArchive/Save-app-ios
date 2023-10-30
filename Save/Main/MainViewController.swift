@@ -708,8 +708,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         AbcFilteredByProjectView.updateFilter(project?.id)
 
         folderNameLb.text = project?.name
-
-        settingsVc.project = project
     }
 
     private func updateAssets() {

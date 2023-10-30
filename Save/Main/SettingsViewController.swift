@@ -11,8 +11,6 @@ import UIImage_Resize
 
 class SettingsViewController: UIViewController {
 
-    var project: Project?
-
     @IBOutlet weak var generalBt: UIButton! {
         didSet {
             generalBt.setTitle(NSLocalizedString("General", comment: ""))
@@ -82,13 +80,7 @@ class SettingsViewController: UIViewController {
     }
 
     @IBAction func folder() {
-        guard let project = project else {
-            return
-        }
-
-        let vc = EditProjectViewController(project)
-
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(FoldersViewController(), animated: true)
     }
 
     @IBAction func about() {
