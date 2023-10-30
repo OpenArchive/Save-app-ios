@@ -551,7 +551,7 @@
 "Use Upload Chunking (Nextcloud only)" = "Yükleme paketleri kullanılsın (yalnızca Nextcloud)";
 
 /* BaseServerViewController */
-"User Name" = "Kullanıcı adı";
+"Username" = "Kullanıcı adı";
 
 /* No comment provided by engineer. */
 "Version %@" = "Version %@";

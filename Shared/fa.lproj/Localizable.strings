@@ -551,7 +551,7 @@
 "Use Upload Chunking (Nextcloud only)" = "استفاده از بارگذاری چند تکه (فقط برای Nextcloud)";
 
 /* BaseServerViewController */
-"User Name" = "نام کاربری";
+"Username" = "نام کاربری";
 
 /* No comment provided by engineer. */
 "Version %@" = "Version %@";

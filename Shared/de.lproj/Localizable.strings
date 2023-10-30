@@ -551,7 +551,7 @@
 "Use Upload Chunking (Nextcloud only)" = "Upload stückeln (nur Nextcloud)";
 
 /* BaseServerViewController */
-"User Name" = "Benutzername";
+"Username" = "Benutzername";
 
 /* No comment provided by engineer. */
 "Version %@" = "Version %@";

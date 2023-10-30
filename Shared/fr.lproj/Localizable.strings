@@ -551,7 +551,7 @@
 "Use Upload Chunking (Nextcloud only)" = "Utiliser le fractionnement des téléversements (Nextcloud seulement)";
 
 /* BaseServerViewController */
-"User Name" = "Nom d’utilisateur";
+"Username" = "Nom d’utilisateur";
 
 /* No comment provided by engineer. */
 "Version %@" = "Version %@";

@@ -21,7 +21,7 @@ class BaseServerViewController: FormViewController {
     }
 
     let userNameRow = AccountRow() {
-        $0.title = NSLocalizedString("User Name", comment: "")
+        $0.title = NSLocalizedString("Username", comment: "")
         $0.placeholder = NSLocalizedString("Required", comment: "")
         $0.cell.textField.accessibilityIdentifier = "tfUsername"
         $0.add(rule: RuleRequired())

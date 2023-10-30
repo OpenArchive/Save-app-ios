@@ -551,7 +551,7 @@
 "Use Upload Chunking (Nextcloud only)" = "Используйте выгрузку сегментами (только для Nextcloud)";
 
 /* BaseServerViewController */
-"User Name" = "Имя пользователя";
+"Username" = "Имя пользователя";
 
 /* No comment provided by engineer. */
 "Version %@" = "Version %@";
