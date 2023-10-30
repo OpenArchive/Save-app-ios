@@ -31,7 +31,7 @@ class GeneralSettingsViewController: FormViewController {
         form
         +++ Section(NSLocalizedString("Connectivity & Data", comment: ""))
 
-        +++ Section()
+        +++ Section("")
         <<< SwitchRow() {
             $0.title = NSLocalizedString("Only upload media when you are connected to Wi-Fi", comment: "")
             $0.value = Settings.wifiOnly
@@ -60,7 +60,7 @@ class GeneralSettingsViewController: FormViewController {
 
         +++ Section(NSLocalizedString("Metadata", comment: ""))
 
-        +++ Section()
+        +++ Section("")
         <<< ButtonRow {
             $0.title = NSLocalizedString("ProofMode", comment: "")
             $0.presentationMode = .show(controllerProvider: .callback(builder: {
@@ -70,14 +70,20 @@ class GeneralSettingsViewController: FormViewController {
 
         +++ Section(NSLocalizedString("Security", comment: ""))
 
-        +++ Section()
+        +++ Section("")
         <<< SwitchRow() {
             $0.title = NSLocalizedString("Transfer via Orbot only", comment: "")
             $0.value = Settings.useOrbot
 
-            $0.cell.textLabel?.numberOfLines = 0
+            $0.cellStyle = .subtitle
+
             $0.cell.switchControl.onTintColor = .accent
+            $0.cell.textLabel?.numberOfLines = 0
+            $0.cell.detailTextLabel?.numberOfLines = 0
         }
+        .cellUpdate({ cell, row in
+            cell.detailTextLabel?.text = NSLocalizedString("Orbot routes all traffic through the Tor network", comment: "")
+        })
         .onChange { row in
             let newValue = row.value ?? false
 
@@ -194,7 +200,7 @@ class GeneralSettingsViewController: FormViewController {
         form
         +++ Section(NSLocalizedString("Health Checks", comment: ""))
 
-        +++ Section()
+        +++ Section("")
         <<< SwitchRow("health_checks") {
             $0.title = NSLocalizedString("Health Checks", comment: "")
 

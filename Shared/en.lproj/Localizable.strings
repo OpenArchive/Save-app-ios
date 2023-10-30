@@ -334,6 +334,9 @@
 /* OrbotManager */
 "Orbot not running" = "Orbot not running";
 
+/* No comment provided by engineer. */
+"Orbot routes all traffic through the Tor network" = "Orbot routes all traffic through the Tor network";
+
 /* SlideshowViewController */
 "Organize your media into projects." = "Organize your media into projects.";
 
