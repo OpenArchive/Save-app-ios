@@ -39,7 +39,7 @@ Paylaşma
 Daha önce iş ortaklarınız ya da çalışma arkadaşlarınız tarafından oluşturulmuş ve güncellenen proje albümlerine bağlanabilirsiniz.
 Fotoğraflarınızdaki ve diğer iOS uygulamalarınızdaki ortamları Save uygulamasına gönderebilirsiniz.
 
-Güvenli tutma
+Güvende tutma
 Save her zaman mobil aygıtınız ile seçtiğiniz hedef sunucu arasında TLS şifrelemesini kullanır. Hedef sunucu özel bir sunucu olabileceği gibi Internet Archive sunucuları da olabilir.
 Save, Nextcloud gibi topladığınız verileri şifrelemeyi kolaylaştıran sunucu yazılımları ile birlikte çalışabilir.
 
