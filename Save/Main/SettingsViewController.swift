@@ -41,7 +41,8 @@ class SettingsViewController: UIViewController {
 
     @IBOutlet weak var versionLb: UILabel! {
         didSet {
-            versionLb.text = String(format: NSLocalizedString("Version %@", comment: ""), Bundle.main.version)
+            versionLb.text = String(format: NSLocalizedString("Version %1$@, build %2$@", comment: ""),
+                                    Bundle.main.version, Bundle.main.build)
         }
     }
 

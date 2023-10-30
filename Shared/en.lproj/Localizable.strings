@@ -557,7 +557,7 @@
 "Username" = "Username";
 
 /* No comment provided by engineer. */
-"Version %@" = "Version %@";
+"Version %1$@, build %2$@" = "Version %1$@, build %2$@";
 
 /* West Direction Abbreviation */
 "W" = "W";
