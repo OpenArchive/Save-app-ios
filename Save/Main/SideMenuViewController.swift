@@ -26,8 +26,6 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
 
     var projectsConn: YapDatabaseConnection?
 
-    var projectsViewName: String?
-
     var projectsMappings: YapDatabaseViewMappings?
 
     private var _selectedProject: Project?
@@ -274,7 +272,7 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
 
         var project: Project?
 
-        projectsConn?.readInView(projectsViewName) { transaction, _ in
+        projectsConn?.readInView(mappings.view) { transaction, _ in
             project = transaction?.object(at: indexPath, with: mappings) as? Project
         }
 
@@ -288,7 +286,7 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
 
         var found = false
 
-        projectsConn?.readInView(projectsViewName) { transaction, _ in
+        projectsConn?.readInView(mappings.view) { transaction, _ in
             found = transaction?.indexPath(forKey: project.id, inCollection: Project.collection, with: mappings) != nil
         }
 

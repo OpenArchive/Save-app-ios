@@ -22,8 +22,8 @@ class ProjectsView: YapDatabaseAutoView {
         // When nothing is selected (ShareExtension!), everything would match nil,
         // when using optional casting, so ensure cast before compare!
         if let project = object as? Project,
-            project.spaceId == SelectedSpace.id {
-
+           project.spaceId == SelectedSpace.id
+        {
             return Project.collection
         }
 
@@ -37,8 +37,8 @@ class ProjectsView: YapDatabaseAutoView {
     }
 
     override init() {
-        super.init(grouping: ProjectsView.grouping,
-                   sorting: ProjectsView.sorting,
+        super.init(grouping: Self.grouping,
+                   sorting: Self.sorting,
                    versionTag: UUID().uuidString, options: nil)
     }
 

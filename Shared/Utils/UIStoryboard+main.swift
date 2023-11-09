@@ -14,7 +14,7 @@ extension UIStoryboard {
         return UIStoryboard(name: "Main", bundle: Bundle(for: MainViewController.self))
     }
 
-    func instantiate<T>(_ class: T.Type) -> T {
+    func instantiate<T: UIViewController>(_ class: T.Type) -> T {
         return instantiateViewController(withIdentifier: String(describing: `class`)) as! T
     }
 }

@@ -111,7 +111,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         let vc = SideMenuViewController()
         vc.delegate = self
         vc.projectsConn = projectsReadConn
-        vc.projectsViewName = ActiveProjectsView.name
         vc.projectsMappings = projectsMappings
 
         addChild(vc)
@@ -547,7 +546,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
      */
     @objc func yapDatabaseModified(notification: Notification) {
         if let notifications = uploadsReadConn?.beginLongLivedReadTransaction(),
-            let viewConn = uploadsReadConn?.ext(UploadsView.name) as? YapDatabaseViewConnection
+           let viewConn = uploadsReadConn?.ext(uploadsMappings.view) as? YapDatabaseViewConnection
         {
             uploadsReadConn?.update(mappings: uploadsMappings)
 
@@ -557,7 +556,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
 
         if let notifications = projectsReadConn?.beginLongLivedReadTransaction(),
-            let viewConn = projectsReadConn?.ext(ActiveProjectsView.name) as? YapDatabaseViewConnection
+           let viewConn = projectsReadConn?.ext(projectsMappings.view) as? YapDatabaseViewConnection
         {
             // Fix crash by checking, if the snapshots are in sync.
             if !projectsMappings.isNextSnapshot(notifications) || viewConn.hasChanges(for: notifications) {

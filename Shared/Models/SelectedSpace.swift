@@ -21,11 +21,11 @@ class SelectedSpace {
     private static let collection  = "selected_space"
 
     static var id: String? {
-        return space?.id
+        space?.id
     }
 
     static var available: Bool {
-        return space != nil
+        space != nil
     }
 
     private static var _space: Space?
