@@ -63,6 +63,14 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
     @IBOutlet weak var collectionView: UICollectionView!
 
+    @IBOutlet weak var botomMenu: UIView! {
+        didSet {
+            // Only round top corners.
+            botomMenu.layer.cornerRadius = 9
+            botomMenu.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        }
+    }
+
     @IBOutlet weak var myMediaBt: UIButton! {
         didSet {
             myMediaBt.setAttributedTitle(.init(
