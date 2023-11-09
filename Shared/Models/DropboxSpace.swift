@@ -90,6 +90,7 @@ class DropboxSpace: Space, Item {
         coder.encode(authorName, forKey: "authorName")
         coder.encode(authorRole, forKey: "authorRole")
         coder.encode(authorOther, forKey: "authorOther")
+        coder.encode(license, forKey: "license")
         coder.encode(tries, forKey: "tries")
         coder.encode(lastTry, forKey: "lastTry")
         coder.encode(email, forKey: "email")

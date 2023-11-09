@@ -60,25 +60,27 @@ class Space: NSObject {
     var authorName: String?
     var authorRole: String?
     var authorOther: String?
+    var license: String?
 
     // Circuit breaker pattern for uploads
     var tries = 0
     var lastTry: Date?
     var nextTry: Date {
-        return lastTry?.addingTimeInterval(10 * 60) ?? Date(timeIntervalSince1970: 0)
+        lastTry?.addingTimeInterval(10 * 60) ?? Date(timeIntervalSince1970: 0)
     }
     var uploadAllowed: Bool {
-        return tries < Space.maxFails || nextTry.compare(Date()) == .orderedAscending
+        tries < Space.maxFails || nextTry.compare(Date()) == .orderedAscending
     }
 
     var prettyName: String {
-        return name ?? url?.host ?? url?.absoluteString ?? Space.defaultPrettyName
+        name ?? url?.host ?? url?.absoluteString ?? Space.defaultPrettyName
     }
 
     init(name: String? = nil, url: URL? = nil, favIcon: UIImage? = nil,
          username: String? = nil, password: String? = nil,
          authorName: String? = nil, authorRole: String? = nil,
-         authorOther: String? = nil) {
+         authorOther: String? = nil, license: String? = nil
+    ) {
 
         id = UUID().uuidString
         self.name = name
@@ -89,6 +91,7 @@ class Space: NSObject {
         self.authorName = authorName
         self.authorRole = authorRole
         self.authorOther = authorOther
+        self.license = license
     }
 
 
@@ -106,6 +109,7 @@ class Space: NSObject {
         authorName = decoder.decodeObject(of: NSString.self, forKey: "authorName") as? String
         authorRole = decoder.decodeObject(of: NSString.self, forKey: "authorRole") as? String
         authorOther = decoder.decodeObject(of: NSString.self, forKey: "authorOther") as? String
+        license = decoder.decodeObject(of: NSString.self, forKey: "license") as? String
         tries = decoder.decodeInteger(forKey: "tries")
         lastTry = decoder.decodeObject(of: NSDate.self, forKey: "lastTry") as? Date
     }
@@ -121,6 +125,7 @@ class Space: NSObject {
         coder.encode(authorName, forKey: "authorName")
         coder.encode(authorRole, forKey: "authorRole")
         coder.encode(authorOther, forKey: "authorOther")
+        coder.encode(license, forKey: "license")
         coder.encode(tries, forKey: "tries")
         coder.encode(lastTry, forKey: "lastTry")
     }
@@ -135,6 +140,7 @@ class Space: NSObject {
             + "username=\(username ?? "nil"), password=\(password ?? "nil"), "
             + "isNextcloud=\(isNextcloud), "
             + "authorName=\(authorName ?? "nil"), authorRole=\(authorRole ?? "nil"), "
-            + "authorOther=\(authorOther ?? "nil"), tries=\(tries), lastTry=\(String(describing: lastTry))]"
+            + "authorOther=\(authorOther ?? "nil"), license=\(license ?? "nil"), "
+            + "tries=\(tries), lastTry=\(String(describing: lastTry))]"
     }
 }

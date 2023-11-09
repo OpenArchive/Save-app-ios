@@ -27,13 +27,13 @@ class SettingsViewController: UIViewController {
 
     @IBOutlet weak var aboutLb: UILabel! {
         didSet {
-            aboutLb.text = String(format: NSLocalizedString("About %@", comment: ""), Bundle.main.displayName)
+            aboutLb.attributedText = String(format: NSLocalizedString("About %@", comment: ""), Bundle.main.displayName).underlined
         }
     }
 
     @IBOutlet weak var privacyPolicyLb: UILabel! {
         didSet {
-            privacyPolicyLb.text = NSLocalizedString("Privacy Policy", comment: "")
+            privacyPolicyLb.attributedText = NSLocalizedString("Privacy Policy", comment: "").underlined
         }
     }
 

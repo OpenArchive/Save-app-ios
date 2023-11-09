@@ -72,11 +72,11 @@ class WebDavSpace: Space, Item {
     override init(name: String? = nil, url: URL? = nil, favIcon: UIImage? = nil,
                   username: String? = nil, password: String? = nil,
                   authorName: String? = nil, authorRole: String? = nil,
-                  authorOther: String? = nil) {
-
+                  authorOther: String? = nil, license: String? = nil)
+    {
         super.init(name: name, url: url, favIcon: favIcon, username: username,
                    password: password, authorName: authorName,
-                   authorRole: authorRole, authorOther: authorOther)
+                   authorRole: authorRole, authorOther: authorOther, license: license)
     }
 
     required init?(coder decoder: NSCoder) {

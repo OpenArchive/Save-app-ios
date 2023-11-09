@@ -137,7 +137,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     }
 
     var license: String? {
-        collection?.project.license
+        project?.license ?? space?.license
     }
 
     private var _collection: Collection?

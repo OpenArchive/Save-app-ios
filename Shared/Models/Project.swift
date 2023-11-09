@@ -105,6 +105,7 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
         created = Date()
         self.name = name
         self.spaceId = space?.id
+        self.license = space?.license
     }
 
 

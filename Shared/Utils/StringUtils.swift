@@ -63,3 +63,10 @@ class StringUtils {
         return prefix
     }
 }
+
+extension String {
+
+    var underlined: NSAttributedString {
+        NSAttributedString(string: self, attributes: [.underlineStyle: NSUnderlineStyle.single.rawValue])
+    }
+}
