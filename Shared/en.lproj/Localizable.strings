@@ -73,9 +73,6 @@
 /* EditProjectViewController */
 "Allow commercial use" = "Allow commercial use";
 
-/* EditProjectViewController */
-"Allow Creative Commons use for all media in this project" = "Allow Creative Commons use for all media in this project";
-
 /* ConsentViewController */
 "Allow health checks?" = "Allow health checks?";
 
@@ -85,8 +82,11 @@
 /* OrbotManager */
 "App Store" = "App Store";
 
-/* EditProjectViewController */
-"Archive Project" = "Archive Project";
+/* No comment provided by engineer. */
+"Archive Folder" = "Archive Folder";
+
+/* No comment provided by engineer. */
+"Archived Folders" = "Archived Folders";
 
 /* RemoveProjectAlert */
 "Are you sure you want to remove your project \"%@\"?" = "Are you sure you want to remove your project \"%@\"?";
@@ -160,9 +160,6 @@
 /* AddProjectViewController */
 "Create New Project" = "Create New Project";
 
-/* EditProjectViewController */
-"Creative Commons" = "Creative Commons";
-
 /* MainViewController */
 "Deselect" = "Deselect";
 
@@ -201,6 +198,9 @@
 
 /* No comment provided by engineer. */
 "Folder" = "Folder";
+
+/* No comment provided by engineer. */
+"Folders" = "Folders";
 
 /* No comment provided by engineer. */
 "General" = "General";
@@ -252,6 +252,9 @@
 
 /* HeaderView */
 "Just now" = "Just now";
+
+/* No comment provided by engineer. */
+"Learn more about Creative Commons" = "Learn more about Creative Commons";
 
 /* MiscSettingsViewController */
 "Lock App with Device Passcode" = "Lock App with Device Passcode";
@@ -457,6 +460,12 @@
 /* PrivateServerViewController */
 "Server URL" = "Server URL";
 
+/* No comment provided by engineer. */
+"Set the same Creative Commons license for ALL folders on this server." = "Set the same Creative Commons license for ALL folders on this server.";
+
+/* No comment provided by engineer. */
+"Set unique Creative Commons licenses for EACH INDIVIDUAL folder on this server." = "Set unique Creative Commons licenses for EACH INDIVIDUAL folder on this server.";
+
 /* AddProjectViewController, Main.storyboard */
 "Set up where you want your media to be stored." = "Set up where you want your media to be stored.";
 
@@ -517,8 +526,8 @@
 /* DataUsageViewController */
 "Transfer via Orbot only" = "Transfer via Orbot only";
 
-/* EditProjectViewController */
-"Unarchive Project" = "Unarchive Project";
+/* No comment provided by engineer. */
+"Unarchive Folder" = "Unarchive Folder";
 
 /* UploadManager */
 "Unknown error." = "Unknown error.";
@@ -558,6 +567,9 @@
 
 /* No comment provided by engineer. */
 "Version %1$@, build %2$@" = "Version %1$@, build %2$@";
+
+/* No comment provided by engineer. */
+"View Archived Folders" = "View Archived Folders";
 
 /* West Direction Abbreviation */
 "W" = "W";

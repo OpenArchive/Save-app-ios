@@ -60,7 +60,6 @@ class FoldersViewController: FormViewController {
 
         if archived {
             form
-            +++ Section(NSLocalizedString("Archived Folders", comment: ""))
             +++ Section("")
 
             projectsSection = form.last
@@ -83,7 +82,6 @@ class FoldersViewController: FormViewController {
 
             <<< cc.learnMoreRow
 
-            +++ Section(NSLocalizedString("Active Folders", comment: ""))
             +++ Section("")
 
             projectsSection = form.last
