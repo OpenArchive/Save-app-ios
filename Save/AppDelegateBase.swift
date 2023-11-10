@@ -300,7 +300,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                     // When launching, the app needs some time to initialize everything,
                     // otherwise it will crash.
                     DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        mainVc.sideMenu.selectedProject = project
+                        mainVc.selectedProject = project
                         mainVc.updateFilter()
                         mainVc.showDetails(project.currentCollection)
                     }

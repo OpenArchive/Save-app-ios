@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="PreviewCell" customModule="Save" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="190" height="190"/>
+            <autoresizingMask key="autoresizingMask"/>
+            <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
+                <rect key="frame" x="0.0" y="0.0" width="190" height="190"/>
+                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="RWO-r6-3n7">
+                        <rect key="frame" x="0.0" y="0.0" width="190" height="190"/>
+                        <color key="backgroundColor" systemColor="viewFlipsideBackgroundColor"/>
+                    </imageView>
+                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JV7-VY-5JS" customClass="MovieIndicator" customModule="Save" customModuleProvider="target">
+                        <rect key="frame" x="8" y="8" width="80" height="24"/>
+                        <constraints>
+                            <constraint firstAttribute="width" priority="900" constant="80" id="ZUj-bs-yya"/>
+                            <constraint firstAttribute="height" constant="24" id="ccL-LO-xYZ"/>
+                        </constraints>
+                    </view>
+                </subviews>
+            </view>
+            <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
+            <constraints>
+                <constraint firstItem="RWO-r6-3n7" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" id="009-NE-4zc"/>
+                <constraint firstAttribute="bottom" secondItem="RWO-r6-3n7" secondAttribute="bottom" id="CyN-tW-IWr"/>
+                <constraint firstAttribute="trailing" secondItem="RWO-r6-3n7" secondAttribute="trailing" id="DXa-yO-TWm"/>
+                <constraint firstItem="JV7-VY-5JS" firstAttribute="leading" secondItem="gTV-IL-0wX" secondAttribute="leading" constant="8" id="UYU-3F-wrk"/>
+                <constraint firstItem="JV7-VY-5JS" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" constant="8" id="gvr-0X-O3l"/>
+                <constraint firstItem="RWO-r6-3n7" firstAttribute="top" secondItem="gTV-IL-0wX" secondAttribute="top" id="zbC-ZE-Mp9"/>
+            </constraints>
+            <size key="customSize" width="326" height="301"/>
+            <connections>
+                <outlet property="movieIndicator" destination="JV7-VY-5JS" id="kIO-H5-hsL"/>
+                <outlet property="previewImg" destination="RWO-r6-3n7" id="iJs-mc-uas"/>
+            </connections>
+            <point key="canvasLocation" x="328.24427480916029" y="77.112676056338032"/>
+        </collectionViewCell>
+    </objects>
+    <resources>
+        <systemColor name="viewFlipsideBackgroundColor">
+            <color red="0.12156862745098039" green="0.12941176470588237" blue="0.14117647058823529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

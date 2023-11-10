@@ -162,6 +162,9 @@
 		A08C2CEB21F0B71B008ACA3E /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CEA21F0B71B008ACA3E /* EditProfileViewController.swift */; };
 		A08C2CED21F0C634008ACA3E /* AvatarRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */; };
 		A08C2CEF21F0C757008ACA3E /* AvatarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */; };
+		A08F2CEB2AFE6F2E004D7EA7 /* PreviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A08F2CE92AFE6F2E004D7EA7 /* PreviewCell.xib */; };
+		A08F2CEC2AFE6F2E004D7EA7 /* PreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08F2CEA2AFE6F2E004D7EA7 /* PreviewCell.swift */; };
+		A08F2CEE2AFE8784004D7EA7 /* AssetPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08F2CED2AFE8784004D7EA7 /* AssetPicker.swift */; };
 		A092C0F0223A8D4B003EB0AA /* DoneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A092C0EF223A8D4B003EB0AA /* DoneDelegate.swift */; };
 		A092C0F1223A8D4B003EB0AA /* DoneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A092C0EF223A8D4B003EB0AA /* DoneDelegate.swift */; };
 		A094EA48282A8C24006CE059 /* URLSession+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3728199687007637DD /* URLSession+Utils.swift */; };
@@ -240,7 +243,6 @@
 		A09B53BB23266F02005266C2 /* Space.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192DC21F208DA009A8CF0 /* Space.swift */; };
 		A09B53BC23266F02005266C2 /* InternetArchiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CE121F09B3F008ACA3E /* InternetArchiveViewController.swift */; };
 		A09B53BD23266F02005266C2 /* TableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68821EE873200E4F6B7 /* TableHeader.swift */; };
-		A09B53BE23266F02005266C2 /* PreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF1122302054005E57FD /* PreviewCell.swift */; };
 		A09B53BF23266F02005266C2 /* TableWithSpacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC057E224CE8C7008B9249 /* TableWithSpacesViewController.swift */; };
 		A09B53C023266F02005266C2 /* TintedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDE224936C8006610F0 /* TintedImageView.swift */; };
 		A09B53C123266F02005266C2 /* FolderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC06AB2201D00100BD5FBA /* FolderCell.swift */; };
@@ -325,7 +327,6 @@
 		A0AFCF0D22300279005E57FD /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF0C22300279005E57FD /* PreviewViewController.swift */; };
 		A0AFCF0F22300E41005E57FD /* MultilineTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */; };
 		A0AFCF1022300E41005E57FD /* MultilineTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */; };
-		A0AFCF1222302054005E57FD /* PreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF1122302054005E57FD /* PreviewCell.swift */; };
 		A0B24C6421F0CD94006C0CC6 /* AvatarRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */; };
 		A0B24C6521F0CDA6006C0CC6 /* AvatarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */; };
 		A0B645BE22B7A11F00BBE3FF /* AddProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0B645BD22B7A11F00BBE3FF /* AddProjectViewController.swift */; };
@@ -608,6 +609,9 @@
 		A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarRow.swift; sourceTree = "<group>"; };
 		A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AvatarCell.xib; sourceTree = "<group>"; };
 		A08CA2CF27DBB7BB00F23100 /* .bartycrouch.toml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .bartycrouch.toml; sourceTree = "<group>"; };
+		A08F2CE92AFE6F2E004D7EA7 /* PreviewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreviewCell.xib; sourceTree = "<group>"; };
+		A08F2CEA2AFE6F2E004D7EA7 /* PreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewCell.swift; sourceTree = "<group>"; };
+		A08F2CED2AFE8784004D7EA7 /* AssetPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetPicker.swift; sourceTree = "<group>"; };
 		A092C0EF223A8D4B003EB0AA /* DoneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoneDelegate.swift; sourceTree = "<group>"; };
 		A0958DED291AA37700D917C0 /* SecureEnclave.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SecureEnclave.swift; sourceTree = "<group>"; };
 		A098980522369F8100022851 /* ManagementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ManagementViewController.swift; sourceTree = "<group>"; };
@@ -640,7 +644,6 @@
 		A0AC06B32201E94000BD5FBA /* MenuItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuItemCell.xib; sourceTree = "<group>"; };
 		A0AFCF0C22300279005E57FD /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineTitle.swift; sourceTree = "<group>"; };
-		A0AFCF1122302054005E57FD /* PreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewCell.swift; sourceTree = "<group>"; };
 		A0B645BD22B7A11F00BBE3FF /* AddProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddProjectViewController.swift; sourceTree = "<group>"; };
 		A0B645C322B7ABFE00BBE3FF /* TitleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TitleCell.xib; sourceTree = "<group>"; };
 		A0B645C622B7ADAA00BBE3FF /* BigMenuItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BigMenuItemCell.swift; sourceTree = "<group>"; };
@@ -779,6 +782,7 @@
 				A0FE2C1D22E1E8D200C5443F /* Error+friendlyMessage.swift */,
 				A004E24B20EBCF1700A1D5F5 /* Formatters.swift */,
 				A0BBEF8822846F310071EE93 /* Geocoder.swift */,
+				A08F2CED2AFE8784004D7EA7 /* AssetPicker.swift */,
 				A02BC66D2400195C007B05AB /* NSError+from.swift */,
 				A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */,
 				A070335A2119E7DF00BF1F33 /* Request+debug.swift */,
@@ -990,7 +994,8 @@
 			isa = PBXGroup;
 			children = (
 				A0AFCF0C22300279005E57FD /* PreviewViewController.swift */,
-				A0AFCF1122302054005E57FD /* PreviewCell.swift */,
+				A08F2CE92AFE6F2E004D7EA7 /* PreviewCell.xib */,
+				A08F2CEA2AFE6F2E004D7EA7 /* PreviewCell.swift */,
 				A0E321F8228EDBE900F2E9BD /* DarkroomViewController.swift */,
 				A0212FCB22D35ADC009079DC /* DarkroomHelper.swift */,
 				A00DC98922315D4F004F07E0 /* ImageViewController.swift */,
@@ -1406,6 +1411,7 @@
 				A09B537623266D69005266C2 /* Assets.xcassets in Resources */,
 				A09CC28C27E0B16500D6415D /* Localizable.stringsdict in Resources */,
 				A0AC06B42201E94000BD5FBA /* MenuItemCell.xib in Resources */,
+				A08F2CEB2AFE6F2E004D7EA7 /* PreviewCell.xib in Resources */,
 				A05471D22296B77D009FEA93 /* Montserrat-Medium.ttf in Resources */,
 				A0CBFCA92AC5B6F4005A78BF /* SideMenuItemCell.xib in Resources */,
 				A045D1E4224CF034008FF8C1 /* SpaceCell.xib in Resources */,
@@ -1739,7 +1745,6 @@
 				A09B53BC23266F02005266C2 /* InternetArchiveViewController.swift in Sources */,
 				A076790727BEA31200609630 /* ConsentViewController.swift in Sources */,
 				A09B53BD23266F02005266C2 /* TableHeader.swift in Sources */,
-				A09B53BE23266F02005266C2 /* PreviewCell.swift in Sources */,
 				A09B53BF23266F02005266C2 /* TableWithSpacesViewController.swift in Sources */,
 				A09B53C023266F02005266C2 /* TintedImageView.swift in Sources */,
 				A09B53C123266F02005266C2 /* FolderCell.swift in Sources */,
@@ -1827,6 +1832,7 @@
 				A050147F2228209E0056ED95 /* BaseServerViewController.swift in Sources */,
 				A0AC06AA2201CFD800BD5FBA /* BrowseViewController.swift in Sources */,
 				A0CBFCAA2AC5B6F4005A78BF /* SideMenuItemCell.swift in Sources */,
+				A08F2CEC2AFE6F2E004D7EA7 /* PreviewCell.swift in Sources */,
 				A0E321FB228EFA8800F2E9BD /* InfoBox.swift in Sources */,
 				A0D58DCE20E51517005A2F34 /* Asset.swift in Sources */,
 				A08C2CE421F0A98C008ACA3E /* PrivateServerViewController.swift in Sources */,
@@ -1843,6 +1849,7 @@
 				A026C34622C641EB007B1C5B /* IaScrapeViewController.swift in Sources */,
 				A08C2CEB21F0B71B008ACA3E /* EditProfileViewController.swift in Sources */,
 				A07E8A4222958D0600E9FFAA /* SlideViewController.swift in Sources */,
+				A08F2CEE2AFE8784004D7EA7 /* AssetPicker.swift in Sources */,
 				A0E27209224E335400CB7113 /* NewProjectViewController.swift in Sources */,
 				A05CFCCC292D30D70045991A /* AppAddProjectViewController.swift in Sources */,
 				A05DF980282C0F48003FADA2 /* AEXMLOptions.swift in Sources */,
@@ -1866,7 +1873,6 @@
 				A0A192DD21F208DA009A8CF0 /* Space.swift in Sources */,
 				A08C2CE221F09B3F008ACA3E /* InternetArchiveViewController.swift in Sources */,
 				A0E1A68921EE873200E4F6B7 /* TableHeader.swift in Sources */,
-				A0AFCF1222302054005E57FD /* PreviewCell.swift in Sources */,
 				A0AC057F224CE8C7008B9249 /* TableWithSpacesViewController.swift in Sources */,
 				A0F7FDDF224936C8006610F0 /* TintedImageView.swift in Sources */,
 				A0AC06AC2201D00100BD5FBA /* FolderCell.swift in Sources */,

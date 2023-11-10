@@ -9,7 +9,10 @@
 import UIKit
 import YapDatabase
 
-class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource, PreviewCellDelegate, DoneDelegate {
+class PreviewViewController: UIViewController, 
+                                UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,
+                                AssetPickerDelegate, DoneDelegate
+{
 
     private static let segueShowDarkroom = "showDarkroomSegue"
     private static let segueShowBatchEdit = "showBatchEditSegue"
@@ -20,10 +23,15 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
             uploadBt.title = NSLocalizedString("Upload", comment: "")
         }
     }
-    @IBOutlet weak var tableView: UITableView!
+    @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var toolbar: UIToolbar!
+    @IBOutlet var editBt: UIBarButtonItem!
+    @IBOutlet var addBt: UIBarButtonItem!
+    @IBOutlet var deleteBt: UIBarButtonItem!
 
     private let sc = SelectedCollection()
+
+    private lazy var assetPicker = AssetPicker(self)
 
 
     override func viewDidLoad() {
@@ -35,7 +43,12 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
 
         navigationItem.rightBarButtonItem?.accessibilityIdentifier = "btUpload"
 
-        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
+        collectionView.register(PreviewCell.nib, forCellWithReuseIdentifier: PreviewCell.reuseId)
+        collectionView.allowsMultipleSelection = true
+
+        if #available(iOS 14.0, *) {
+            collectionView.allowsMultipleSelectionDuringEditing = true
+        }
 
         Db.add(observer: self, #selector(yapDatabaseModified))
     }
@@ -46,6 +59,8 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
         updateTitle()
+
+        toggleToolbar(false, animated: animated)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -59,84 +74,71 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
 
-    // MARK: UITableViewDataSource
+    // MARK: UICollectionViewDataSource
 
-    func numberOfSections(in tableView: UITableView) -> Int {
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
         return sc.sections
     }
 
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return sc.count
     }
 
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: PreviewCell.reuseId, for: indexPath) as! PreviewCell
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PreviewCell.reuseId, for: indexPath) as! PreviewCell
         cell.asset = sc.getAsset(indexPath)
-        cell.delegate = self
 
         return cell
     }
 
 
-    // MARK: UITableViewDelegate
+    // MARK: UICollectionViewDelegateFlowLayout
 
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return PreviewCell.height
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        let layout = collectionViewLayout as? UICollectionViewFlowLayout
+        let space = (layout?.minimumInteritemSpacing ?? 0) + (layout?.sectionInset.left ?? 0) + (layout?.sectionInset.right ?? 0)
+        let size = (collectionView.frame.size.width - space) / 2
+
+        return CGSize(width: size, height: size)
     }
 
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // If the currently selected number of rows is exactly one, that means,
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        // If the currently selected number of items is exactly one, that means,
         // that there was no selection before, and this item was just selected.
         // In that case, ignore the selection and instead move to DarkroomViewController.
         // Because in this scenario, the first selection is done by a long press,
         // which basically enters an "edit" mode. (See #longPressItem.)
-        if tableView.numberOfSelectedRows != 1 {
+        if collectionView.numberOfSelectedItems != 1 {
 
             // For an unkown reason, this isn't done automatically.
-            tableView.cellForRow(at: indexPath)?.isSelected = true
+            collectionView.cellForItem(at: indexPath)?.isSelected = true
 
             return
         }
 
-        tableView.deselectRow(at: indexPath, animated: false)
+        collectionView.deselectItem(at: indexPath, animated: false)
 
         performSegue(withIdentifier: Self.segueShowDarkroom, sender: (indexPath.row, nil as DarkroomViewController.DirectEdit?))
     }
 
-    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         // For an unkown reason, this isn't done automatically.
-        tableView.cellForRow(at: indexPath)?.isSelected = false
+        collectionView.cellForItem(at: indexPath)?.isSelected = false
 
-        if tableView.numberOfSelectedRows == 0 {
+        if collectionView.numberOfSelectedItems == 0 {
             toggleToolbar(false)
         }
     }
 
-    public func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
-        let action = UIContextualAction(
-            style: .destructive,
-            title: NSLocalizedString("Remove", comment: ""))
-        { [weak self] _, _, completionHandler in
-            self?.tableView.setEditing(false, animated: true)
 
-            if let asset = self?.sc.getAsset(indexPath) {
-                self?.present(RemoveAssetAlert([asset], completionHandler), animated: true)
-            }
-            else {
-                completionHandler(false)
-            }
-        }
+    // MARK: AssetPickerDelegate
 
-        return UISwipeActionsConfiguration(actions: [action])
+    var currentCollection: Collection? {
+        sc.collection
     }
 
-
-    // MARK: PreviewCellDelegate
-
-    func edit(_ asset: Asset, _ directEdit: DarkroomViewController.DirectEdit? = nil) {
-        if let indexPath = sc.getIndexPath(asset) {
-            performSegue(withIdentifier: Self.segueShowDarkroom, sender: (indexPath.row, directEdit))
-        }
+    func picked() {
+        // Should be automatically updated via database.
     }
 
 
@@ -234,31 +236,35 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
             return
         }
 
-        if let indexPath = tableView.indexPathForRow(at: sender.location(in: tableView)) {
-            tableView.cellForRow(at: indexPath)?.isSelected = true
-            tableView.selectRow(at: indexPath, animated: false, scrollPosition: .middle)
+        if let indexPath = collectionView.indexPathForItem(at: sender.location(in: collectionView)) {
+            collectionView.cellForItem(at: indexPath)?.isSelected = true
+            collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredVertically)
 
             toggleToolbar(true)
         }
     }
 
     @IBAction func editAssets() {
-        let count = tableView.numberOfSelectedRows
+        let count = collectionView.numberOfSelectedItems
 
         if count == 1 {
-            if let indexPath = tableView.indexPathsForSelectedRows?.first {
+            if let indexPath = collectionView.indexPathsForSelectedItems?.first {
                 // Trigger deselection, so edit mode UI goes away.
-                tableView.deselectRow(at: indexPath, animated: false)
-                tableView(tableView, didDeselectRowAt: indexPath)
+                collectionView.deselectItem(at: indexPath, animated: false)
+                collectionView(collectionView, didDeselectItemAt: indexPath)
 
                 // Trigger selection, so DarkroomViewController gets pushed.
-                tableView.selectRow(at: indexPath, animated: false, scrollPosition: .middle)
-                tableView(tableView, didSelectRowAt: indexPath)
+                collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredVertically)
+                collectionView(collectionView, didSelectItemAt: indexPath)
             }
         }
         else if count > 1 {
             performSegue(withIdentifier: Self.segueShowBatchEdit, sender: getSelectedAssets())
         }
+    }
+
+    @IBAction func addAssets() {
+        assetPicker.pickMedia()
     }
 
     @IBAction func removeAssets() {
@@ -285,7 +291,7 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
         updateTitle()
 
         if forceFull {
-            tableView.reloadData()
+            collectionView.reloadData()
 
             return
         }
@@ -294,51 +300,49 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
             return
         }
 
-        tableView.beginUpdates()
+        collectionView.performBatchUpdates {
+            for change in sectionChanges {
+                switch change.type {
+                case .delete:
+                    collectionView.deleteSections(IndexSet(integer: Int(change.index)))
 
-        for change in sectionChanges {
-            switch change.type {
-            case .delete:
-                tableView.deleteSections(IndexSet(integer: Int(change.index)), with: .fade)
+                case .insert:
+                    collectionView.insertSections(IndexSet(integer: Int(change.index)))
 
-            case .insert:
-                tableView.insertSections(IndexSet(integer: Int(change.index)), with: .fade)
-
-            default:
-                break
+                default:
+                    break
+                }
             }
-        }
 
-        for change in rowChanges {
-            switch change.type {
-            case .delete:
-                if let indexPath = change.indexPath {
-                    tableView.deleteRows(at: [indexPath], with: .fade)
+            for change in rowChanges {
+                switch change.type {
+                case .delete:
+                    if let indexPath = change.indexPath {
+                        collectionView.deleteItems(at: [indexPath])
+                    }
+                case .insert:
+                    if let newIndexPath = change.newIndexPath {
+                        collectionView.insertItems(at: [newIndexPath])
+                    }
+                case .move:
+                    if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
+                        collectionView.moveItem(at: indexPath, to: newIndexPath)
+                    }
+                case .update:
+                    if let indexPath = change.indexPath {
+                        collectionView.reloadItems(at: [indexPath])
+                    }
+                @unknown default:
+                    break
                 }
-            case .insert:
-                if let newIndexPath = change.newIndexPath {
-                    tableView.insertRows(at: [newIndexPath], with: .fade)
-                }
-            case .move:
-                if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
-                    tableView.moveRow(at: indexPath, to: newIndexPath)
-                }
-            case .update:
-                if let indexPath = change.indexPath {
-                    tableView.reloadRows(at: [indexPath], with: .none)
-                }
-            @unknown default:
-                break
             }
-        }
-
-        tableView.endUpdates()
-
-        if sc.count < 1 {
-            // When we don't have any assets anymore after an update, because the
-            // user deleted them, it doesn't make sense, to show this view
-            // controller anymore. So we leave here.
-            navigationController?.popViewController(animated: true)
+        } completion: { [weak self] _ in
+            if self?.sc.count ?? 0 < 1 {
+                // When we don't have any assets anymore after an update, because the
+                // user deleted them, it doesn't make sense, to show this view
+                // controller anymore. So we leave here.
+                self?.navigationController?.popViewController(animated: true)
+            }
         }
     }
 
@@ -351,18 +355,25 @@ class PreviewViewController: UIViewController, UITableViewDelegate, UITableViewD
     }
 
     /**
-     Shows/hides the toolbar, depending on the toggle.
+     Shows different buttons on the toolbar, depending on the `selected` parameter.
 
-     - parameter toggle: true, to show toolbar, false to hide.
+     - parameter selected: true, to show icons for editing, false to show icon for adding.
      */
-    private func toggleToolbar(_ toggle: Bool) {
-        toolbar.toggle(toggle, animated: true)
+    private func toggleToolbar(_ selected: Bool, animated: Bool = true) {
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+
+        if selected {
+            toolbar.setItems([editBt, flexibleSpace, deleteBt], animated: animated)
+        }
+        else {
+            toolbar.setItems([flexibleSpace, addBt, flexibleSpace], animated: animated)
+        }
     }
 
     private func getSelectedAssets() -> [Asset] {
         var assets = [Asset]()
 
-        for indexPath in self.tableView.indexPathsForSelectedRows ?? [] {
+        for indexPath in collectionView.indexPathsForSelectedItems ?? [] {
             if let asset = sc.getAsset(indexPath) {
                 assets.append(asset)
             }

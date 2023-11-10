@@ -7,16 +7,12 @@
 //
 
 import UIKit
-import LegacyUTType
-import Photos
 import YapDatabase
-import TLPhotoPicker
 import DownloadButton
 
 class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,
-                          UINavigationControllerDelegate, SideMenuDelegate,
-                          UIDocumentPickerDelegate, HeaderViewDelegate,
-                          TLPhotosPickerViewControllerDelegate, PKDownloadButtonDelegate
+                          UINavigationControllerDelegate, SideMenuDelegate, HeaderViewDelegate,
+                          AssetPickerDelegate, PKDownloadButtonDelegate
 {
 
     private static let segueConnectSpace = "connectSpaceSegue"
@@ -101,6 +97,15 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
     }
 
+    var selectedProject: Project? {
+        get {
+            sideMenu.selectedProject
+        }
+        set {
+            sideMenu.selectedProject = newValue
+        }
+    }
+
     private lazy var uploadsReadConn = Db.newLongLivedReadConn()
 
     private lazy var uploadsMappings = YapDatabaseViewMappings(
@@ -121,7 +126,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
     private var inEditMode = false
 
-    lazy var sideMenu: SideMenuViewController = {
+    private lazy var sideMenu: SideMenuViewController = {
         let vc = SideMenuViewController()
         vc.delegate = self
         vc.projectsConn = projectsReadConn
@@ -141,26 +146,13 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         return vc
     }()
 
-    lazy var settingsVc: SettingsViewController = {
+    private lazy var settingsVc: SettingsViewController = {
         let vc = UIStoryboard.main.instantiate(SettingsViewController.self)
 
         return vc
     }()
 
-
-    lazy var pickerConf: TLPhotosPickerConfigure = {
-        var conf = TLPhotosPickerConfigure()
-        conf.customLocalizedTitle = ["Camera Roll": NSLocalizedString("Camera Roll", comment: "")]
-        conf.tapHereToChange = NSLocalizedString("Tap here to change", comment: "")
-        conf.cancelTitle = NSLocalizedString("Cancel", comment: "")
-        conf.doneTitle = NSLocalizedString("Done", comment: "")
-        conf.emptyMessage = NSLocalizedString("No albums", comment: "")
-        conf.allowedAlbumCloudShared = true
-        conf.recordingVideoQuality = .typeHigh
-        conf.selectedColor = .accent
-
-        return conf
-    }()
+    private lazy var assetPicker = AssetPicker(self)
 
 
     override func viewDidLoad() {
@@ -375,39 +367,11 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         closeAddMenu()
 
         // Don't allow to add assets without a space or a project.
-        if sideMenu.selectedProject == nil {
+        if selectedProject == nil {
             return addFolder()
         }
 
-        let tlpp = TLPhotosPickerViewController()
-        tlpp.delegate = self
-        tlpp.configure = pickerConf
-
-        switch PHPhotoLibrary.authorizationStatus() {
-        case .authorized, .limited:
-            present(tlpp, animated: true)
-
-        case .notDetermined:
-            PHPhotoLibrary.requestAuthorization() { newStatus in
-                if newStatus == .authorized {
-                    DispatchQueue.main.async {
-                        self.present(tlpp, animated: true)
-                    }
-                }
-            }
-
-        case .restricted:
-            AlertHelper.present(
-                self, message: NSLocalizedString("Sorry, you are not allowed to view the camera roll.", comment: ""),
-                title: NSLocalizedString("Access Restricted", comment: ""),
-                actions: [AlertHelper.cancelAction()])
-
-        case .denied:
-            showMissingPermissionAlert()
-
-        @unknown default:
-            break
-        }
+        assetPicker.pickMedia()
     }
 
     @IBAction func showAddMenu() {
@@ -425,14 +389,11 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         closeAddMenu()
 
         // Don't allow to add assets without a space or a project.
-        if sideMenu.selectedProject == nil {
+        if selectedProject == nil {
             return addFolder()
         }
 
-        let vc = UIDocumentPickerViewController(documentTypes: [LegacyUTType.item.identifier], in: .import)
-        vc.delegate = self
-
-        present(vc, animated: true)
+        assetPicker.pickDocuments()
     }
 
     @IBAction func longPressItem(_ sender: UILongPressGestureRecognizer) {
@@ -463,59 +424,13 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
 
 
-    // MARK: TLPhotosPickerViewControllerDelegate
+    // MARK: AssetPickerDelegate
 
-    func dismissPhotoPicker(withPHAssets assets: [PHAsset]) {
-        guard let collection = sideMenu.selectedProject?.currentCollection,
-            assets.count > 0 else {
-            return
-        }
-
-        for asset in assets {
-            let id = UIApplication.shared.beginBackgroundTask()
-
-            AssetFactory.create(fromPhasset: asset, collection) { asset in
-                UIApplication.shared.endBackgroundTask(id)
-            }
-        }
-
-        AbcFilteredByCollectionView.updateFilter(collection.id)
-
-        performSegue(withIdentifier: Self.segueShowPreview, sender: nil)
+    var currentCollection: Collection? {
+        selectedProject?.currentCollection
     }
 
-    func handleNoAlbumPermissions(picker: TLPhotosPickerViewController) {
-        showMissingPermissionAlert(controller: picker)
-    }
-
-    func handleNoCameraPermissions(picker: TLPhotosPickerViewController) {
-        showMissingPermissionAlert(
-            controller: picker,
-            NSLocalizedString(
-                "Please go to the Settings app to grant this app access to your camera, if you want to upload photos or videos.",
-                comment: ""))
-    }
-
-
-    // MARK: UIDocumentPickerDelegate
-
-    func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-        guard let collection = sideMenu.selectedProject?.currentCollection,
-            controller.documentPickerMode == .import &&
-            urls.count > 0 else {
-            return
-        }
-
-        for url in urls {
-            let id = UIApplication.shared.beginBackgroundTask()
-
-            AssetFactory.create(fromFileUrl: url, collection) { asset in
-                UIApplication.shared.endBackgroundTask(id)
-            }
-        }
-
-        AbcFilteredByCollectionView.updateFilter(collection.id)
-
+    func picked() {
         performSegue(withIdentifier: Self.segueShowPreview, sender: nil)
     }
 
@@ -611,7 +526,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
                     // We need to recognize changes in `Collection` objects used in the
                     // section headers.
-                    reload = collectionChanges.contains { $0.type == .update && $0.finalGroup == sideMenu.selectedProject?.id }
+                    reload = collectionChanges.contains { $0.type == .update && $0.finalGroup == selectedProject?.id }
                 }
             }
             else {
@@ -728,7 +643,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
 
     private func updateProject() {
-        let project = sideMenu.selectedProject
+        let project = selectedProject
 
         AbcFilteredByProjectView.updateFilter(project?.id)
 
@@ -783,24 +698,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
 
         return assets
-    }
-
-    private func showMissingPermissionAlert(controller: UIViewController? = nil, _ message: String? = nil) {
-        var actions = [AlertHelper.cancelAction()]
-
-        if let url = URL(string: UIApplication.openSettingsURLString) {
-            actions.append(AlertHelper.defaultAction(NSLocalizedString("Settings", comment: ""), handler: { _ in
-                UIApplication.shared.open(url)
-            }))
-        }
-
-        AlertHelper.present(
-            controller ?? self,
-            message: message ?? NSLocalizedString(
-                "Please go to the Settings app to grant this app access to your photo library, if you want to upload photos or videos.",
-                comment: ""),
-            title: NSLocalizedString("Access Denied", comment: ""),
-            actions: actions)
     }
 
     private func toggleMenu(_ toggle: Bool, _ completion: ((_ finished: Bool) -> Void)? = nil) {
