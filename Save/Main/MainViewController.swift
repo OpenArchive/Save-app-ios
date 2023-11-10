@@ -63,11 +63,11 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
     @IBOutlet weak var collectionView: UICollectionView!
 
-    @IBOutlet weak var botomMenu: UIView! {
+    @IBOutlet weak var bottomMenu: UIView! {
         didSet {
             // Only round top corners.
-            botomMenu.layer.cornerRadius = 9
-            botomMenu.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+            bottomMenu.layer.cornerRadius = 9
+            bottomMenu.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         }
     }
 
@@ -92,6 +92,12 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             settingsBt.setAttributedTitle(.init(
                 string: NSLocalizedString("Settings", comment: ""),
                 attributes: [.font: UIFont.preferredFont(forTextStyle: .caption1)]))
+        }
+    }
+
+    @IBOutlet weak var addMenu: UIView! {
+        didSet {
+            addMenu.hide()
         }
     }
 
@@ -366,6 +372,8 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
 
     @IBAction func add() {
+        closeAddMenu()
+
         // Don't allow to add assets without a space or a project.
         if sideMenu.selectedProject == nil {
             return addFolder()
@@ -402,10 +410,20 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
     }
 
+    @IBAction func showAddMenu() {
+        addMenu.show2(animated: true)
+    }
+
+    @IBAction func closeAddMenu() {
+        addMenu.hide(animated: true)
+    }
+
     /**
      Deactivated, was deemed too confusing.
      */
     @IBAction func addDocument() {
+        closeAddMenu()
+
         // Don't allow to add assets without a space or a project.
         if sideMenu.selectedProject == nil {
             return addFolder()
