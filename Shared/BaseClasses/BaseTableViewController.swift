@@ -41,7 +41,12 @@ class BaseTableViewController: UITableViewController {
 
     // MARK: Actions
 
-    @IBAction func cancel() {
-        dismiss(animated: true)
+    @IBAction func dismiss(_ sender: Any? = nil) {
+        if let nav = navigationController {
+            nav.popViewController(animated: true)
+        }
+        else {
+            dismiss(animated: true)
+        }
     }
 }

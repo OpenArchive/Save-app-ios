@@ -29,7 +29,7 @@ class AddProjectViewController: BaseTableViewController {
         }
         else {
             navigationItem.leftBarButtonItem = UIBarButtonItem(
-                barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
+                barButtonSystemItem: .cancel, target: self, action: #selector(dismiss(_:)))
         }
 
         tableView.register(TitleCell.nib, forCellReuseIdentifier: TitleCell.reuseId)

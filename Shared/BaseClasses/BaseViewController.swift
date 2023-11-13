@@ -142,10 +142,9 @@ open class BaseViewController: UIViewController {
      
      Can be a callback for simple "Cancel", "Done" etc. buttons.
 
-     - parameter sender: The triggering UI element. Ignored. Just there so attachments from Storyboard work without issues.
      - parameter completion: Block to be executed after animation has ended.
      */
-    @IBAction public func dismiss(_ sender: Any? = nil, _ completion: (() -> Void)? = nil) {
+    public func dismiss(completion: (() -> Void)?) {
         if let nav = navigationController {
             nav.popViewController(animated: true)
 
@@ -158,5 +157,15 @@ open class BaseViewController: UIViewController {
         else {
             dismiss(animated: true, completion: completion)
         }
+    }
+
+    /**
+     Dismisses ourselves, animated.
+     Handles being in a `UINavigationController` gracefully.
+
+     Can be a callback for simple "Cancel", "Done" etc. buttons.
+     */
+    @IBAction public func dismiss(_ sender: Any? = nil) {
+        dismiss(completion: nil)
     }
 }

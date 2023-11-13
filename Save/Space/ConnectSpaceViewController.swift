@@ -16,7 +16,7 @@ class ConnectSpaceViewController: BaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
+        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(dismiss))
 
         // Onboarding phase, directly after first start. Allow skip, so
         // users can see the main scene. Where they can't do anything, but
@@ -25,7 +25,7 @@ class ConnectSpaceViewController: BaseTableViewController {
         if !SelectedSpace.available {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
                 title: NSLocalizedString("Skip", comment: ""), style: .plain, target: self,
-                action: #selector(cancel))
+                action: #selector(dismiss))
         }
 
         Db.bgRwConn?.asyncRead { transaction in

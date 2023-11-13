@@ -24,7 +24,7 @@ class NewProjectViewController: BaseProjectViewController {
 
         if navigationController?.viewControllers.first == self {
             navigationItem.leftBarButtonItem = UIBarButtonItem(
-                barButtonSystemItem: .cancel, target: self, action: #selector(cancel))
+                barButtonSystemItem: .cancel, target: self, action: #selector(dismiss))
         }
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(
