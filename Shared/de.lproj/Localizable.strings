@@ -55,9 +55,6 @@
 /* No comment provided by engineer. */
 "Add Another Account" = "Server hinzufügen";
 
-/* DarkroomViewController */
-"Add Info" = "Editieren";
-
 /* No comment provided by engineer. */
 "Add notes (optional)" = "Add notes (optional)";
 
@@ -99,9 +96,6 @@
 
 /* ManagementViewController */
 "Back" = "Zurück";
-
-/* BatchEditViewController, Main.storyboard */
-"Batch Edit" = "Massenbearbeitung";
 
 /* DataUsageViewController */
 "Better Quality" = "Höhere Qualität";
@@ -174,6 +168,9 @@
 
 /* East Direction Abbreviation */
 "E" = "O";
+
+/* No comment provided by engineer. */
+"Edit Media Info" = "Edit Media Info";
 
 /* BatchInfoAlert */
 "Edit Multiple Items" = "Mehrere Elemente editieren";

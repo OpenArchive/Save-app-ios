@@ -60,7 +60,7 @@ class PreviewViewController: UIViewController,
 
         updateTitle()
 
-        toggleToolbar(false, animated: animated)
+        toggleToolbar(collectionView.numberOfSelectedItems != 0, animated: animated)
     }
 
     override func viewDidAppear(_ animated: Bool) {

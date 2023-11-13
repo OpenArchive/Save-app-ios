@@ -32,6 +32,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
             flagBt.setImage(.init(systemName: "flag.fill"), for: .selected)
         }
     }
+
     @IBOutlet weak var backwardBt: UIButton! {
         didSet {
             backwardBt.setTitle("")
@@ -44,7 +45,6 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     }
 
     @IBOutlet weak var infos: UIView!
-    @IBOutlet weak var infosHeight: NSLayoutConstraint?
     @IBOutlet weak var infosBottom: NSLayoutConstraint?
 
 
@@ -84,10 +84,6 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
             infos.bottomAnchor.constraint(equalTo: infos.keyboardLayoutGuide.topAnchor).isActive = true
         }
 
-        // Deactivate before initializing DarkroomHelper, because otherwise
-        // the constraints debugger spams the debug log.
-        infosHeight?.isActive = false
-
         dh = DarkroomHelper(self, infos)
 
         Db.add(observer: self, #selector(yapDatabaseModified))
@@ -111,6 +107,9 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     // MARK: BaseViewController
 
     override func keyboardWillShow(notification: Notification) {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .done, target: self, action: #selector(dismissKeyboard))
+
         if let infosBottom = infosBottom,
             let kbSize = getKeyboardSize(notification)
         {
@@ -121,6 +120,9 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     }
 
     override func keyboardWillBeHidden(notification: Notification) {
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .done, target: self, action: #selector(dismiss(_:)))
+
         infosBottom?.constant = 0
 
         animateDuringKeyboardMovement(notification)
@@ -304,10 +306,8 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         let asset = self.asset // Don't repeat asset#get all the time.
 
         let title = navigationItem.titleView as? MultilineTitle
-        title?.title.text = NSLocalizedString("Add Info", comment: "")
+        title?.title.text = NSLocalizedString("Edit Media Info", comment: "")
         title?.subtitle.text = asset?.filename
-
-        navigationItem.rightBarButtonItem?.isEnabled = asset != nil && !asset!.isUploaded && !asset!.isUploading
 
         counterLb.text = String(format: NSLocalizedString("%1$@/%2$@", comment: "both are integer numbers meaning 'x of n'"),
                                 Formatters.format(selected + 1), Formatters.format(sc.count))

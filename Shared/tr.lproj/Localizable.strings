@@ -55,9 +55,6 @@
 /* No comment provided by engineer. */
 "Add Another Account" = "Başka bir hesap ekle";
 
-/* DarkroomViewController */
-"Add Info" = "Bilgiler ekle";
-
 /* No comment provided by engineer. */
 "Add notes (optional)" = "Add notes (optional)";
 
@@ -99,9 +96,6 @@
 
 /* ManagementViewController */
 "Back" = "Geri";
-
-/* BatchEditViewController, Main.storyboard */
-"Batch Edit" = "Toplu düzenleme";
 
 /* DataUsageViewController */
 "Better Quality" = "Daha kaliteli";
@@ -174,6 +168,9 @@
 
 /* East Direction Abbreviation */
 "E" = "D";
+
+/* No comment provided by engineer. */
+"Edit Media Info" = "Edit Media Info";
 
 /* BatchInfoAlert */
 "Edit Multiple Items" = "Birkaç ögeyi düzenle";

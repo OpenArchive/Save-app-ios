@@ -13,12 +13,20 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
 
     var assets: [Asset]?
 
-    @IBOutlet weak var container: UIView!
-    @IBOutlet weak var containerWidth: NSLayoutConstraint!
+    @IBOutlet weak var image1: UIImageView!
+    @IBOutlet weak var image2: UIImageView!
+    @IBOutlet weak var image3: UIImageView!
+
+    @IBOutlet weak var counterLb: UILabel!
+    @IBOutlet weak var flagBt: UIButton! {
+        didSet {
+            flagBt.setTitle("")
+            flagBt.setImage(.init(systemName: "flag.fill"), for: .selected)
+        }
+    }
 
     @IBOutlet weak var infos: UIView!
-    @IBOutlet weak var infosHeight: NSLayoutConstraint!
-    @IBOutlet weak var infosBottom: NSLayoutConstraint!
+    @IBOutlet weak var infosBottom: NSLayoutConstraint?
 
     private var dh: DarkroomHelper?
 
@@ -26,49 +34,39 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
         super.viewDidLoad()
 
         let title = MultilineTitle()
-        title.title.text = NSLocalizedString("Batch Edit", comment: "")
+        title.title.text = NSLocalizedString("Edit Media Info", comment: "")
         title.subtitle.text = String.localizedStringWithFormat(NSLocalizedString("%u Item(s) Selected", comment: "#bc-ignore!"), assets?.count ?? 0)
         navigationItem.titleView = title
 
-        var lastIv: UIImageView?
+        counterLb.text = Formatters.format(assets?.count ?? 0)
+        flagBt.isSelected = assets?.reduce(true, { $0 && $1.flagged }) ?? false
 
-        for asset in assets ?? [] {
-            let iv = UIImageView(image: asset.getThumbnail())
-            iv.contentMode = .scaleAspectFit
-            iv.translatesAutoresizingMaskIntoConstraints = false
+        setImage(image1, assets?.first)
+        setImage(image2, assets?.count ?? 0 > 1 ? assets?[1] : nil)
+        setImage(image3, assets?.count ?? 0 > 2 ? assets?[2] : nil)
 
-            container.addSubview(iv)
-
-            iv.topAnchor.constraint(equalTo: container.topAnchor, constant: 8).isActive = true
-            iv.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: 8).isActive = true
-            iv.addConstraint(NSLayoutConstraint(
-                item: iv, attribute: .height, relatedBy: .equal, toItem: iv,
-                attribute: .width, multiplier: iv.intrinsicContentSize.height / iv.intrinsicContentSize.width,
-                constant: 0))
-
-            if let lastIv = lastIv {
-                iv.leadingAnchor.constraint(equalTo: lastIv.trailingAnchor, constant: 8).isActive = true
-            }
-            else {
-                iv.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 8).isActive = true
-            }
-
-            lastIv = iv
+        // Use the new keyboard layout guide, if available, that's more reliable
+        // than any calculation.
+        if #available(iOS 15.0, *) {
+            infosBottom?.isActive = false
+            infos.bottomAnchor.constraint(equalTo: infos.keyboardLayoutGuide.topAnchor).isActive = true
         }
-
-        lastIv?.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: 8).isActive = true
 
         dh = DarkroomHelper(self, infos)
 
-        // These constraints are solely there to stop Interface Builder complaining
-        // about missing sizing. It's actually unneeded. The sizes will
-        // be automatically defined by its content, which whe have injected above.
-        containerWidth.isActive = false
-        infosHeight.isActive = false
-
-        dh?.setInfos(assets?.first, defaults: true, isEditable: true)
+        dh?.setInfos(assets?.first, defaults: true)
 
         hideKeyboardOnOutsideTap()
+    }
+
+    private func setImage(_ iv: UIImageView, _ asset: Asset?) {
+        if let image = asset?.getThumbnail() {
+            iv.image = image
+            iv.show2()
+        }
+        else {
+            iv.hide()
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -84,17 +82,20 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .done, target: self, action: #selector(dismissKeyboard))
 
-        if let kbSize = getKeyboardSize(notification) {
-            infosBottom.constant = kbSize.height
-
-            animateDuringKeyboardMovement(notification)
+        if let infosBottom = infosBottom,
+           let kbSize = getKeyboardSize(notification)
+        {
+            infosBottom.constant = view.bounds.maxY - kbSize.minY
         }
+
+        animateDuringKeyboardMovement(notification)
     }
 
     override func keyboardWillBeHidden(notification: Notification) {
-        navigationItem.rightBarButtonItem = nil
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .done, target: self, action: #selector(dismiss(_:)))
 
-        infosBottom.constant = 0
+        infosBottom?.constant = 0
 
         animateDuringKeyboardMovement(notification)
     }
@@ -121,12 +122,15 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
     }
 
     func tapped(_ infoBox: InfoBox) {
+        toggleFlagged()
+    }
+
+    @IBAction func toggleFlagged() {
         guard let assets = assets else {
             return
         }
 
-        // Take the first's status and set all of them to that.
-        let flagged = !(assets.first?.flagged ?? false)
+        let flagged = !flagBt.isSelected
 
         let update = dh?.assign(dh?.getFirstResponder())
 
@@ -138,7 +142,9 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
             self?.assets = $0
         }
 
-        dh?.setInfos(assets.first, defaults: true, isEditable: true)
+        flagBt.isSelected = flagged
+
+        dh?.setInfos(assets.first, defaults: true)
 
         FlagInfoAlert.presentIfNeeded()
     }
