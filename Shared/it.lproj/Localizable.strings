@@ -172,8 +172,8 @@
 /* No comment provided by engineer. */
 "Edit Media Info" = "Edit Media Info";
 
-/* BatchInfoAlert */
-"Edit Multiple Items" = "Modifica Elementi Multipli";
+/* No comment provided by engineer. */
+"Edit Multiple" = "Edit Multiple";
 
 /* SlideshowViewController */
 "Enable" = "Abilita";
@@ -316,6 +316,9 @@
 /* AnalyticsCell */
 "OK" = "OK";
 
+/* No comment provided by engineer. */
+"Once uploaded, you will not be able to edit media.." = "Once uploaded, you will not be able to edit media..";
+
 /* DataUsageViewController */
 "Only upload media when you are connected to Wi-Fi" = "Carica i media solo quando connesso ad una rete Wi-Fi";
 
@@ -360,6 +363,9 @@
 
 /* MainViewController */
 "Please go to the Settings app to grant this app access to your photo library, if you want to upload photos or videos." = "Per favore, vai nelle Impostazioni app ed autorizzane l'accesso alla tua libreria fotografica, se vuoi caricare foro o video.";
+
+/* No comment provided by engineer. */
+"Press and hold to select and edit multiple media." = "Press and hold to select and edit multiple media.";
 
 /* PreviewViewController */
 "Preview" = "Anteprima";
@@ -514,9 +520,6 @@
 /* BaseServerViewController */
 "This will remove the asset history for that space, too!" = "Questo rimuoverà lo storico anche per questo spazio !";
 
-/* BatchInfoAlert */
-"To edit multiple items, tap and hold each." = "Per modificare elementi multipli, tocca e tieni premuto";
-
 /* SlideshowViewController */
 "To enable advanced network security, please install Orbot iOS." = "To enable advanced network security, please install Orbot iOS.";
 
@@ -580,8 +583,8 @@
 /* InternetArchiveViewController */
 "When using the \"%1$@\" feature, make sure to log in and then touch the \"Refresh\" button in the top right to let %2$@ have another try at automatically scraping the keys." = "Quando usi la funzione \"%1$@\", assicurati d'accedere a quindi di toccare il il pulsante \"Aggiorna\" in altro a destra per permettere %2$@ di fare un altro tentativo automatico d'acquisizione chiavi.";
 
-/* FlagInfoAlert */
-"When you flag an item, it is routed into a subfolder within the chosen project folder on the private server." = "Quando segnali un elemento, è instradato in una sottocartella all'interno della cartella di progetto scelto nel server privato.";
+/* No comment provided by engineer. */
+"When you flag an item, it is routed into a subfolder within the chosen folder on the private server." = "When you flag an item, it is routed into a subfolder within the chosen folder on the private server.";
 
 /* ConsentViewController */
 "With your permission, we'll run a check each time you encounter an error while uploading." = "With your permission, we'll run a check each time you encounter an error while uploading.";

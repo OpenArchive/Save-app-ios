@@ -26,7 +26,7 @@ class FlagInfoAlert: InfoAlert {
     }
 
     override class var message: String {
-        return NSLocalizedString("When you flag an item, it is routed into a subfolder within the chosen project folder on the private server.", comment: "")
+        return NSLocalizedString("When you flag an item, it is routed into a subfolder within the chosen folder on the private server.", comment: "")
     }
 
     override class var wasAlreadyShown: Bool {

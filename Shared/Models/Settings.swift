@@ -22,6 +22,7 @@ class Settings {
     private static let kFirstFlaggedDone = "first_flagged_done"
     private static let kFirstBatchEditDone = "first_batch_edit_done"
     private static let kIaShownFirstTime = "ia_shown_first_time"
+    private static let kFirstUploadDone = "first_upload_done"
     private static let kThirdPartyKeyboards = "third_party_keyboards"
     private static let kHideContent = "hide_content"
 
@@ -133,6 +134,15 @@ class Settings {
         }
         set {
             defaults?.set(newValue, forKey: kIaShownFirstTime)
+        }
+    }
+
+    class var firstUploadDone: Bool {
+        get {
+            defaults?.bool(forKey: kFirstUploadDone) ?? false
+        }
+        set {
+            defaults?.set(newValue, forKey: kFirstUploadDone)
         }
     }
 

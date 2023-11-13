@@ -65,8 +65,10 @@ class InfoAlert {
         in which case the top view controller will be taken.
      - parameter additionalCondition: Only if this condition is *also* met, will this alert be shown. Defaults to `true`.
     */
-    class func presentIfNeeded(_ viewController: UIViewController? = nil, additionalCondition: Bool = true) {
+    class func presentIfNeeded(_ viewController: UIViewController? = nil, additionalCondition: Bool = true, success: (() -> Void)? = nil) {
         if !additionalCondition || wasAlreadyShown {
+            success?()
+
             return
         }
 
@@ -144,17 +146,21 @@ class InfoAlert {
         message.bottomAnchor.constraint(equalTo: cv.bottomAnchor, constant: -16).isActive = true
 
 
-        alert.addAction(AlertAction(title: NSLocalizedString("Got it", comment: ""), style: .normal))
-
-        let completion = {
+        alert.addAction(AlertAction(title: NSLocalizedString("Got it", comment: ""), style: .normal, handler: { _ in
             wasAlreadyShown = true
+
+            success?()
+        }))
+
+        if success != nil {
+            alert.addAction(AlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .preferred))
         }
 
         if let vc = viewController {
-            vc.present(alert, animated: true, completion: completion)
+            vc.present(alert, animated: true)
         }
         else {
-            alert.present(animated: true, completion: completion)
+            alert.present(animated: true)
         }
     }
 }

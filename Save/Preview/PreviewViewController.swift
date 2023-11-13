@@ -169,56 +169,58 @@ class PreviewViewController: UIViewController,
     // MARK: Actions
 
     @IBAction func upload() {
-        Db.writeConn?.asyncReadWrite { transaction in
-            var order = 0
+        UploadInfoAlert.presentIfNeeded(self) {
+            Db.writeConn?.asyncReadWrite { transaction in
+                var order = 0
 
-            transaction.iterateKeysAndObjects(inCollection: Upload.collection) { (key, upload: Upload, stop) in
-                if upload.order >= order {
-                    order = upload.order + 1
+                transaction.iterateKeysAndObjects(inCollection: Upload.collection) { (key, upload: Upload, stop) in
+                    if upload.order >= order {
+                        order = upload.order + 1
+                    }
                 }
-            }
 
-            guard let group = self.sc.group else {
-                return
-            }
+                guard let group = self.sc.group else {
+                    return
+                }
 
-            if let id = self.sc.id,
-                let collection = transaction.object(forKey: id, inCollection: Collection.collection) as? Collection {
+                if let id = self.sc.id,
+                   let collection = transaction.object(forKey: id, inCollection: Collection.collection) as? Collection {
 
-                collection.close()
+                    collection.close()
 
-                transaction.setObject(collection, forKey: collection.id,
-                                      inCollection: Collection.collection)
-            }
+                    transaction.setObject(collection, forKey: collection.id,
+                                          inCollection: Collection.collection)
+                }
 
-            (transaction.ext(AbcFilteredByCollectionView.name) as? YapDatabaseViewTransaction)?
-                .iterateKeysAndObjects(inGroup: group) { collection, key, object, index, stop in
+                (transaction.ext(AbcFilteredByCollectionView.name) as? YapDatabaseViewTransaction)?
+                    .iterateKeysAndObjects(inGroup: group) { collection, key, object, index, stop in
 
-                    if let asset = object as? Asset {
-                        // ProofMode might have been switched on in between import and now,
-                        // or something inhibited proof generation, so make sure,
-                        // proof is generated before upload.
-                        // Proofing will set asset to un-ready, so upload will not start
-                        // before proof is done as asset is set to ready again.
-                        if asset.isReady && !asset.hasProof && Settings.proofMode {
-                            asset.generateProof {
-                                asset.update { asset in
-                                    asset.isReady = true
+                        if let asset = object as? Asset {
+                            // ProofMode might have been switched on in between import and now,
+                            // or something inhibited proof generation, so make sure,
+                            // proof is generated before upload.
+                            // Proofing will set asset to un-ready, so upload will not start
+                            // before proof is done as asset is set to ready again.
+                            if asset.isReady && !asset.hasProof && Settings.proofMode {
+                                asset.generateProof {
+                                    asset.update { asset in
+                                        asset.isReady = true
+                                    }
                                 }
                             }
+
+                            let upload = Upload(order: order, asset: asset)
+                            transaction.setObject(upload, forKey: upload.id, inCollection: Upload.collection)
+                            order += 1
                         }
-
-                        let upload = Upload(order: order, asset: asset)
-                        transaction.setObject(upload, forKey: upload.id, inCollection: Upload.collection)
-                        order += 1
                     }
-            }
 
-            let count = transaction.numberOfKeys(inCollection: Upload.collection)
+                let count = transaction.numberOfKeys(inCollection: Upload.collection)
 
-            DispatchQueue.main.async {
-                OrbotManager.shared.alertOrbotStopped(count: count) { [weak self] in
-                    self?.navigationController?.popViewController(animated: true)
+                DispatchQueue.main.async {
+                    OrbotManager.shared.alertOrbotStopped(count: count) { [weak self] in
+                        self?.navigationController?.popViewController(animated: true)
+                    }
                 }
             }
         }

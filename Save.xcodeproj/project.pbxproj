@@ -372,6 +372,7 @@
 		A0E12C162B024C2F00892AC8 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E12C152B024C2F00892AC8 /* GradientView.swift */; };
 		A0E12C172B024C2F00892AC8 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E12C152B024C2F00892AC8 /* GradientView.swift */; };
 		A0E12C182B024C2F00892AC8 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E12C152B024C2F00892AC8 /* GradientView.swift */; };
+		A0E12C1A2B028EC300892AC8 /* UploadInfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E12C192B028CEE00892AC8 /* UploadInfoAlert.swift */; };
 		A0E1A67C21EE7A5C00E4F6B7 /* GeneralSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A67B21EE7A5C00E4F6B7 /* GeneralSettingsViewController.swift */; };
 		A0E1A68121EE7BE900E4F6B7 /* MenuItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */; };
 		A0E1A68721EE834D00E4F6B7 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68621EE834D00E4F6B7 /* BaseCell.swift */; };
@@ -687,6 +688,7 @@
 		A0DE78AE21F76D2200B6B68B /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		A0DE78B121F771A700B6B68B /* BaseProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProjectViewController.swift; sourceTree = "<group>"; };
 		A0E12C152B024C2F00892AC8 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
+		A0E12C192B028CEE00892AC8 /* UploadInfoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadInfoAlert.swift; sourceTree = "<group>"; };
 		A0E1A67B21EE7A5C00E4F6B7 /* GeneralSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsViewController.swift; sourceTree = "<group>"; };
 		A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemCell.swift; sourceTree = "<group>"; };
 		A0E1A68321EE831300E4F6B7 /* SelectedSpaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedSpaceCell.swift; sourceTree = "<group>"; };
@@ -1005,6 +1007,7 @@
 				A00DC98922315D4F004F07E0 /* ImageViewController.swift */,
 				A0357D1022CF901800292077 /* BatchEditViewController.swift */,
 				A0E321F5228EBE6A00F2E9BD /* FlagInfoAlert.swift */,
+				A0E12C192B028CEE00892AC8 /* UploadInfoAlert.swift */,
 				A010D39F22D4A3F200FAB433 /* BatchInfoAlert.swift */,
 			);
 			path = Preview;
@@ -1927,6 +1930,7 @@
 				A0D1013E22CCF4140068D047 /* WebDavConduit.swift in Sources */,
 				A0AFCF0F22300E41005E57FD /* MultilineTitle.swift in Sources */,
 				A0A9F1912AF0193D007D284A /* FoldersViewController.swift in Sources */,
+				A0E12C1A2B028EC300892AC8 /* UploadInfoAlert.swift in Sources */,
 				A05DF988282C0F92003FADA2 /* AEXMLParser.swift in Sources */,
 				A05DF978282C0E54003FADA2 /* AEXMLDocument.swift in Sources */,
 				A056555C23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */,
