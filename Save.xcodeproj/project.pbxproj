@@ -369,6 +369,9 @@
 		A0DE78AF21F76D2200B6B68B /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78AE21F76D2200B6B68B /* Project.swift */; };
 		A0DE78B021F76D2200B6B68B /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78AE21F76D2200B6B68B /* Project.swift */; };
 		A0DE78B221F771A700B6B68B /* BaseProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78B121F771A700B6B68B /* BaseProjectViewController.swift */; };
+		A0E12C162B024C2F00892AC8 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E12C152B024C2F00892AC8 /* GradientView.swift */; };
+		A0E12C172B024C2F00892AC8 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E12C152B024C2F00892AC8 /* GradientView.swift */; };
+		A0E12C182B024C2F00892AC8 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E12C152B024C2F00892AC8 /* GradientView.swift */; };
 		A0E1A67C21EE7A5C00E4F6B7 /* GeneralSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A67B21EE7A5C00E4F6B7 /* GeneralSettingsViewController.swift */; };
 		A0E1A68121EE7BE900E4F6B7 /* MenuItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */; };
 		A0E1A68721EE834D00E4F6B7 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68621EE834D00E4F6B7 /* BaseCell.swift */; };
@@ -683,6 +686,7 @@
 		A0DC0FAB233914BD00C4969A /* MovieIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieIndicator.swift; sourceTree = "<group>"; };
 		A0DE78AE21F76D2200B6B68B /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		A0DE78B121F771A700B6B68B /* BaseProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProjectViewController.swift; sourceTree = "<group>"; };
+		A0E12C152B024C2F00892AC8 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		A0E1A67B21EE7A5C00E4F6B7 /* GeneralSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsViewController.swift; sourceTree = "<group>"; };
 		A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuItemCell.swift; sourceTree = "<group>"; };
 		A0E1A68321EE831300E4F6B7 /* SelectedSpaceCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedSpaceCell.swift; sourceTree = "<group>"; };
@@ -1070,6 +1074,7 @@
 				A0B645C622B7ADAA00BBE3FF /* BigMenuItemCell.swift */,
 				A0B645C722B7ADAB00BBE3FF /* BigMenuItemCell.xib */,
 				A045D200224D07C3008FF8C1 /* ButtonCell.swift */,
+				A0E12C152B024C2F00892AC8 /* GradientView.swift */,
 				A0E321FA228EFA8800F2E9BD /* InfoBox.swift */,
 				A0E321FC228EFDA200F2E9BD /* InfoBox.xib */,
 				A0C6B30A2AFD1CCF00304187 /* LinkRow.swift */,
@@ -1598,6 +1603,7 @@
 				A00A8D48220C7EDD0083F0CB /* AbcFilteredByProjectView.swift in Sources */,
 				A076790327BE89E900609630 /* UIButton+Utils.swift in Sources */,
 				A098980B2236A9E800022851 /* UploadsView.swift in Sources */,
+				A0E12C172B024C2F00892AC8 /* GradientView.swift in Sources */,
 				A098980E2236C23200022851 /* Upload.swift in Sources */,
 				A08C2CE721F0B5FA008ACA3E /* FormViewController.swift in Sources */,
 				A0362199220DB384003C21DC /* WebDavSpace.swift in Sources */,
@@ -1727,6 +1733,7 @@
 				A006A6AA282950D00029E49B /* UIBackgroundFetchResult+description.swift in Sources */,
 				A09B53AF23266F02005266C2 /* UIView+utils.swift in Sources */,
 				A09B53B023266F02005266C2 /* FlagInfoAlert.swift in Sources */,
+				A0E12C182B024C2F00892AC8 /* GradientView.swift in Sources */,
 				A09B53B123266F02005266C2 /* UICollectionView+selection.swift in Sources */,
 				A09B53B223266F02005266C2 /* CollectionsView.swift in Sources */,
 				A09B53B323266F02005266C2 /* Db.swift in Sources */,
@@ -1908,6 +1915,7 @@
 				A006AF30281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */,
 				A0631B5B22034F0700B3E90D /* Collection.swift in Sources */,
 				A0656AB821F9BC8500070C4B /* ConnectSpaceViewController.swift in Sources */,
+				A0E12C162B024C2F00892AC8 /* GradientView.swift in Sources */,
 				A0FB4DBE21F8CC2300B46099 /* MainViewController.swift in Sources */,
 				A0DE78AF21F76D2200B6B68B /* Project.swift in Sources */,
 				A0B645BE22B7A11F00BBE3FF /* AddProjectViewController.swift in Sources */,

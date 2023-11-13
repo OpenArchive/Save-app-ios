@@ -1,3 +1,6 @@
+/* both are integer numbers meaning 'x of n' */
+"%1$@/%2$@" = "%1$@/%2$@";
+
 /* ConsentViewController */
 "%@ Error description" = "%@ Описание ошибки";
 
@@ -40,6 +43,9 @@
 /* InternetArchiveViewController */
 "Acquire Keys" = "Получить ключи";
 
+/* No comment provided by engineer. */
+"Add a location (optional)" = "Add a location (optional)";
+
 /* AddProjectViewController */
 "Add a Project" = "Добавить проект";
 
@@ -52,11 +58,8 @@
 /* DarkroomViewController */
 "Add Info" = "Добавить инфо";
 
-/* DarkroomHelper */
-"Add Location" = "Добавить геолокацию";
-
-/* DarkroomHelper */
-"Add Notes" = "Добавить примечания";
+/* No comment provided by engineer. */
+"Add notes (optional)" = "Add notes (optional)";
 
 /* DarkroomHelper */
 "Add People" = "Добавить людей";

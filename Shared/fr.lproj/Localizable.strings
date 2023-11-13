@@ -1,3 +1,6 @@
+/* both are integer numbers meaning 'x of n' */
+"%1$@/%2$@" = "%1$@/%2$@";
+
 /* ConsentViewController */
 "%@ Error description" = "%@ Description de l’erreur";
 
@@ -40,6 +43,9 @@
 /* InternetArchiveViewController */
 "Acquire Keys" = "Obtenir les clés";
 
+/* No comment provided by engineer. */
+"Add a location (optional)" = "Add a location (optional)";
+
 /* AddProjectViewController */
 "Add a Project" = "Ajouter un projet";
 
@@ -52,11 +58,8 @@
 /* DarkroomViewController */
 "Add Info" = "Ajouter des infos";
 
-/* DarkroomHelper */
-"Add Location" = "Ajouter une position géographique";
-
-/* DarkroomHelper */
-"Add Notes" = "Ajouter des notes";
+/* No comment provided by engineer. */
+"Add notes (optional)" = "Add notes (optional)";
 
 /* DarkroomHelper */
 "Add People" = "Ajouter des personnes";

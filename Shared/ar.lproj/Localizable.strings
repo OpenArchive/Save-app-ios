@@ -1,3 +1,6 @@
+/* both are integer numbers meaning 'x of n' */
+"%1$@/%2$@" = "%1$@/%2$@";
+
 /* ConsentViewController */
 "%@ Error description" = "%@ Error description";
 
@@ -40,6 +43,9 @@
 /* InternetArchiveViewController */
 "Acquire Keys" = "اكتسب المفاتيح";
 
+/* No comment provided by engineer. */
+"Add a location (optional)" = "Add a location (optional)";
+
 /* AddProjectViewController */
 "Add a Project" = "أضف مشروع";
 
@@ -52,11 +58,8 @@
 /* DarkroomViewController */
 "Add Info" = "أضف معلومات";
 
-/* DarkroomHelper */
-"Add Location" = "أضف الموقع";
-
-/* DarkroomHelper */
-"Add Notes" = "أضف ملاحظات";
+/* No comment provided by engineer. */
+"Add notes (optional)" = "Add notes (optional)";
 
 /* DarkroomHelper */
 "Add People" = "أضف أشخاص";

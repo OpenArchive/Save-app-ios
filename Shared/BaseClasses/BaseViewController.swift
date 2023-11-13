@@ -66,8 +66,8 @@ open class BaseViewController: UIViewController {
     */
     @objc open func keyboardWillShow(notification: Notification) {
         if let scrollView = scrollView,
-            let kbSize = getKeyboardSize(notification) {
-            
+           let kbSize = getKeyboardSize(notification)
+        {
             if originalInsets == nil {
                 originalInsets = scrollView.contentInset
             }
@@ -99,7 +99,16 @@ open class BaseViewController: UIViewController {
      - returns: the keyboard sizing from a given notification, if any contained.
      */
     public func getKeyboardSize(_ notification: Notification) -> CGRect? {
-        return notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect
+        guard let frameEnd = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect else {
+            return nil
+        }
+
+        let screen = notification.object as? UIScreen
+        if let convertedFrameEnd = screen?.coordinateSpace.convert(frameEnd, to: view) {
+            return view.bounds.intersection(convertedFrameEnd)
+        }
+
+        return frameEnd
     }
     
     /**

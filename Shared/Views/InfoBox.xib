@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="21507" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="21505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -13,37 +13,62 @@
             <rect key="frame" x="0.0" y="0.0" width="315" height="133"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oYD-Zz-S1f">
-                    <rect key="frame" x="8" y="16" width="16" height="16"/>
+                <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="KNE-bd-2yi">
+                    <rect key="frame" x="8" y="8" width="299" height="117"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="oYD-Zz-S1f">
+                            <rect key="frame" x="8" y="16" width="16" height="16"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="16" id="6nH-7D-l30"/>
+                                <constraint firstAttribute="width" constant="16" id="HxE-Fg-o84"/>
+                            </constraints>
+                        </imageView>
+                        <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UsQ-QJ-wPf">
+                            <rect key="frame" x="32" y="8" width="259" height="101"/>
+                            <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                            <color key="textColor" systemColor="lightTextColor"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                            <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                        </textView>
+                    </subviews>
                     <constraints>
-                        <constraint firstAttribute="height" constant="16" id="6nH-7D-l30"/>
-                        <constraint firstAttribute="width" constant="16" id="HxE-Fg-o84"/>
+                        <constraint firstAttribute="bottom" secondItem="UsQ-QJ-wPf" secondAttribute="bottom" constant="8" id="BMb-WG-Pmi"/>
+                        <constraint firstItem="UsQ-QJ-wPf" firstAttribute="leading" secondItem="oYD-Zz-S1f" secondAttribute="trailing" constant="8" id="Fmh-by-fWS"/>
+                        <constraint firstItem="oYD-Zz-S1f" firstAttribute="leading" secondItem="KNE-bd-2yi" secondAttribute="leading" constant="8" id="Zqv-Ca-XQV"/>
+                        <constraint firstItem="UsQ-QJ-wPf" firstAttribute="top" secondItem="KNE-bd-2yi" secondAttribute="top" constant="8" id="hQD-xm-3Ep"/>
+                        <constraint firstItem="oYD-Zz-S1f" firstAttribute="top" secondItem="UsQ-QJ-wPf" secondAttribute="top" constant="8" id="yPb-bG-8IZ"/>
+                        <constraint firstAttribute="trailing" secondItem="UsQ-QJ-wPf" secondAttribute="trailing" constant="8" id="z1d-Vf-nOV"/>
                     </constraints>
-                </imageView>
-                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="UsQ-QJ-wPf">
-                    <rect key="frame" x="32" y="8" width="275" height="117"/>
-                    <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
-                    <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
-                    <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
-                </textView>
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                            <color key="value" systemColor="lightTextColor"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                            <real key="value" value="8"/>
+                        </userDefinedRuntimeAttribute>
+                        <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                            <real key="value" value="1"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                </view>
             </subviews>
             <constraints>
-                <constraint firstItem="UsQ-QJ-wPf" firstAttribute="leading" secondItem="oYD-Zz-S1f" secondAttribute="trailing" constant="8" id="39Y-2s-Szr"/>
-                <constraint firstItem="oYD-Zz-S1f" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="UdO-IT-ohm"/>
-                <constraint firstAttribute="bottom" secondItem="UsQ-QJ-wPf" secondAttribute="bottom" constant="8" id="Wjw-cB-Kk3"/>
-                <constraint firstAttribute="trailing" secondItem="UsQ-QJ-wPf" secondAttribute="trailing" constant="8" id="fob-yg-TZA"/>
-                <constraint firstItem="UsQ-QJ-wPf" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="nQN-m0-ujT"/>
-                <constraint firstItem="oYD-Zz-S1f" firstAttribute="top" secondItem="UsQ-QJ-wPf" secondAttribute="top" constant="8" id="v8j-E2-jvU"/>
+                <constraint firstAttribute="trailing" secondItem="KNE-bd-2yi" secondAttribute="trailing" constant="8" id="Ecp-oq-7jA"/>
+                <constraint firstAttribute="bottom" secondItem="KNE-bd-2yi" secondAttribute="bottom" constant="8" id="R6V-9P-50c"/>
+                <constraint firstItem="KNE-bd-2yi" firstAttribute="leading" secondItem="iN0-l3-epB" secondAttribute="leading" constant="8" id="nTr-ju-HjJ"/>
+                <constraint firstItem="KNE-bd-2yi" firstAttribute="top" secondItem="iN0-l3-epB" secondAttribute="top" constant="8" id="xcD-Qe-GKy"/>
             </constraints>
             <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
             <connections>
                 <outlet property="icon" destination="oYD-Zz-S1f" id="fKR-c7-YFh"/>
-                <outlet property="textBottomMargin" destination="Wjw-cB-Kk3" id="4GU-TZ-NHA"/>
-                <outlet property="textTopMargin" destination="nQN-m0-ujT" id="eU3-s3-WAM"/>
                 <outlet property="textView" destination="UsQ-QJ-wPf" id="dCP-dI-N3W"/>
             </connections>
             <point key="canvasLocation" x="-158.4375" y="-281.875"/>
         </view>
     </objects>
+    <resources>
+        <systemColor name="lightTextColor">
+            <color white="1" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

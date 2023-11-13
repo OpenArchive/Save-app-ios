@@ -118,7 +118,7 @@ class PreviewViewController: UIViewController,
 
         collectionView.deselectItem(at: indexPath, animated: false)
 
-        performSegue(withIdentifier: Self.segueShowDarkroom, sender: (indexPath.row, nil as DarkroomViewController.DirectEdit?))
+        performSegue(withIdentifier: Self.segueShowDarkroom, sender: indexPath.row)
     }
 
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -153,10 +153,8 @@ class PreviewViewController: UIViewController,
 
      override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let vc = segue.destination as? DarkroomViewController {
-            if let (index, directEdit) = sender as? (Int, DarkroomViewController.DirectEdit?) {
+            if let index = sender as? Int {
                 vc.selected = index
-                vc.directEdit = directEdit
-                vc.addMode = true
             }
         }
         else if let vc = segue.destination as? BatchEditViewController {

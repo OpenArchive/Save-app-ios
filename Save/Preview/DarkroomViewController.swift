@@ -21,26 +21,31 @@ import UIKit
 class DarkroomViewController: BaseViewController, UIPageViewControllerDataSource,
 UIPageViewControllerDelegate, InfoBoxDelegate {
 
-    enum DirectEdit {
-        case description
-        case location
-        case notes
-    }
-
     var selected = 0
-
-    var directEdit: DarkroomViewController.DirectEdit?
-
-    var addMode = false
 
     @IBOutlet weak var container: UIView!
 
+    @IBOutlet weak var counterLb: UILabel!
+    @IBOutlet weak var flagBt: UIButton! {
+        didSet {
+            flagBt.setTitle("")
+            flagBt.setImage(.init(systemName: "flag.fill"), for: .selected)
+        }
+    }
+    @IBOutlet weak var backwardBt: UIButton! {
+        didSet {
+            backwardBt.setTitle("")
+        }
+    }
+    @IBOutlet weak var forwardBt: UIButton! {
+        didSet {
+            forwardBt.setTitle("")
+        }
+    }
+
     @IBOutlet weak var infos: UIView!
     @IBOutlet weak var infosHeight: NSLayoutConstraint?
-    @IBOutlet weak var infosBottom: NSLayoutConstraint!
-
-    @IBOutlet weak var toolbar: UIToolbar!
-    private lazy var toolbarHeight: NSLayoutConstraint = toolbar.heightAnchor.constraint(equalToConstant: 0)
+    @IBOutlet weak var infosBottom: NSLayoutConstraint?
 
 
     private let sc = SelectedCollection()
@@ -67,23 +72,23 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
 
         navigationItem.titleView = MultilineTitle()
 
-        if !addMode {
-            navigationItem.rightBarButtonItem = UIBarButtonItem(
-                title: NSLocalizedString("Add Info", comment: ""), style: .plain, target: self, action: #selector(addInfo))
-        }
-
         addChild(pageVc)
         container.addSubview(pageVc.view)
         pageVc.view.frame = container.bounds
         pageVc.didMove(toParent: self)
+
+        // Use the new keyboard layout guide, if available, that's more reliable
+        // than any calculation.
+        if #available(iOS 15.0, *) {
+            infosBottom?.isActive = false
+            infos.bottomAnchor.constraint(equalTo: infos.keyboardLayoutGuide.topAnchor).isActive = true
+        }
 
         // Deactivate before initializing DarkroomHelper, because otherwise
         // the constraints debugger spams the debug log.
         infosHeight?.isActive = false
 
         dh = DarkroomHelper(self, infos)
-
-        toolbarHeight.isActive = addMode
 
         Db.add(observer: self, #selector(yapDatabaseModified))
 
@@ -98,20 +103,6 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         BatchInfoAlert.presentIfNeeded(self, additionalCondition: sc.count > 1)
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        if directEdit == .description {
-            dh?.desc?.textView.becomeFirstResponder()
-        }
-        else if directEdit == .location {
-            dh?.location?.textView.becomeFirstResponder()
-        }
-        else if directEdit == .notes {
-            dh?.notes?.textView.becomeFirstResponder()
-        }
-    }
-
     override var preferredStatusBarStyle: UIStatusBarStyle {
         return  .lightContent
     }
@@ -120,15 +111,17 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     // MARK: BaseViewController
 
     override func keyboardWillShow(notification: Notification) {
-        if let kbSize = getKeyboardSize(notification) {
-            infosBottom.constant = kbSize.height
-
-            animateDuringKeyboardMovement(notification)
+        if let infosBottom = infosBottom,
+            let kbSize = getKeyboardSize(notification)
+        {
+            infosBottom.constant = view.bounds.maxY - kbSize.minY
         }
+
+        animateDuringKeyboardMovement(notification)
     }
 
     override func keyboardWillBeHidden(notification: Notification) {
-        infosBottom.constant = 0
+        infosBottom?.constant = 0
 
         animateDuringKeyboardMovement(notification)
     }
@@ -166,7 +159,8 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     func pageViewController(_ pageViewController: UIPageViewController,
                             didFinishAnimating finished: Bool,
                             previousViewControllers: [UIViewController],
-                            transitionCompleted completed: Bool) {
+                            transitionCompleted completed: Bool) 
+    {
         if completed,
            let index = (pageViewController.viewControllers?.first as? ImageViewController)?.index
         {
@@ -195,21 +189,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     }
 
     func tapped(_ infoBox: InfoBox) {
-        guard addMode else {
-            return
-        }
-
-        let update = dh?.assign(dh?.getFirstResponder())
-
-        asset?.update({ asset in
-            asset.flagged = !asset.flagged
-
-            update?(asset)
-        })
-
-        dh?.setInfos(asset, defaults: addMode, isEditable: addMode)
-
-        FlagInfoAlert.presentIfNeeded()
+        toggleFlagged()
     }
 
 
@@ -225,7 +205,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
 
         if forceFull {
             DispatchQueue.main.async {
-                self.refresh(direction: .forward)
+                self.refresh()
             }
 
             return
@@ -288,55 +268,33 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     }
 
     @IBAction func toggleUi() {
-        if addMode {
-            dismissKeyboard()  // Also stores newly entered texts.
-
-            return
-        }
-
-        showUi = !showUi
-
-        navigationController?.setNavigationBarHidden(!showUi, animated: true)
-
-        // This should not be nil, but it is sometimes, for an unkown reason.
-        if infosHeight == nil {
-            infosHeight = infos.heightAnchor.constraint(equalToConstant: 0)
-        }
-
-        infosHeight?.isActive = !showUi
-        toolbarHeight.isActive = !showUi
-
-        if showUi {
-            self.infos.isHidden = false
-            self.toolbar.isHidden = false
-        }
-
-        UIView.animate(withDuration: 0.5, animations: {
-            self.view.layoutIfNeeded()
-            }) { _ in
-                if !self.showUi {
-                    self.infos.isHidden = true
-                    self.toolbar.isHidden = true
-                }
-        }
+        dismissKeyboard()  // Also stores newly entered texts.
     }
 
-    @IBAction func addInfo() {
-        addMode = !addMode
+    @IBAction func toggleFlagged() {
+        let update = dh?.assign(dh?.getFirstResponder())
 
-        navigationItem.rightBarButtonItem?.title = addMode
-            ? NSLocalizedString("Done", comment: "")
-            : NSLocalizedString("Add Info", comment: "")
+        asset?.update({ asset in
+            asset.flagged = !asset.flagged
 
-        if !addMode {
-            dismissKeyboard() // Also stores newly entered texts.
+            update?(asset)
+        })
 
-            self.toolbar.isHidden = false
-        }
+        dh?.setInfos(asset, defaults: true)
 
-        toolbarHeight.isActive = addMode
+        FlagInfoAlert.presentIfNeeded()
+    }
 
-        refresh()
+    @IBAction func backward() {
+        selected = max(0, selected - 1)
+
+        refresh(direction: .reverse)
+    }
+
+    @IBAction func forward() {
+        selected = min(selected + 1, sc.count - 1)
+
+        refresh(direction: .forward)
     }
 
 
@@ -346,27 +304,23 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         let asset = self.asset // Don't repeat asset#get all the time.
 
         let title = navigationItem.titleView as? MultilineTitle
-        title?.title.text = addMode ? NSLocalizedString("Add Info", comment: "") : asset?.filename
-        title?.subtitle.text = addMode ? asset?.filename : Formatters.formatByteCount(asset?.filesize)
+        title?.title.text = NSLocalizedString("Add Info", comment: "")
+        title?.subtitle.text = asset?.filename
 
         navigationItem.rightBarButtonItem?.isEnabled = asset != nil && !asset!.isUploaded && !asset!.isUploading
+
+        counterLb.text = String(format: NSLocalizedString("%1$@/%2$@", comment: "both are integer numbers meaning 'x of n'"),
+                                Formatters.format(selected + 1), Formatters.format(sc.count))
+        flagBt.isSelected = asset?.flagged ?? false
+
+        backwardBt.toggle(selected > 0, animated: animate)
+        forwardBt.toggle(selected < sc.count - 1, animated: animate)
 
         if pageVc.viewControllers?.isEmpty ?? true || direction != nil {
             pageVc.setViewControllers(getFreshImageVcList(), direction: direction ?? .forward, animated: direction != nil)
         }
 
-        dh?.setInfos(asset, defaults: addMode, isEditable: addMode)
-
-        if animate {
-            UIView.animate(withDuration: 0.5, animations: {
-                self.view.layoutIfNeeded()
-            }) { _ in
-                self.toolbar.isHidden = self.addMode
-            }
-        }
-        else {
-            toolbar.isHidden = addMode
-        }
+        dh?.setInfos(asset, defaults: true)
     }
 
     private func getImageVc(_ index: Int) -> ImageViewController {
