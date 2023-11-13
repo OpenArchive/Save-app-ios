@@ -82,8 +82,8 @@
 		A05471D92296B77D009FEA93 /* Montserrat-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A05471B32296B77D009FEA93 /* Montserrat-Bold.ttf */; };
 		A05471DB2296C8FD009FEA93 /* UITableView+separatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05471DA2296C8FD009FEA93 /* UITableView+separatorView.swift */; };
 		A05471DC2296C8FD009FEA93 /* UITableView+separatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05471DA2296C8FD009FEA93 /* UITableView+separatorView.swift */; };
-		A0552050222566CE00B9645F /* UIView+animateHideShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A055204F222566CE00B9645F /* UIView+animateHideShow.swift */; };
-		A0552051222566CE00B9645F /* UIView+animateHideShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A055204F222566CE00B9645F /* UIView+animateHideShow.swift */; };
+		A0552050222566CE00B9645F /* UIView+utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A055204F222566CE00B9645F /* UIView+utils.swift */; };
+		A0552051222566CE00B9645F /* UIView+utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A055204F222566CE00B9645F /* UIView+utils.swift */; };
 		A056555523F6D1C600DE0168 /* DropboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555423F6D1C600DE0168 /* DropboxViewController.swift */; };
 		A056555723F6D8A100DE0168 /* DropboxSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555623F6D67E00DE0168 /* DropboxSpace.swift */; };
 		A056555823F6D8A300DE0168 /* DropboxSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555623F6D67E00DE0168 /* DropboxSpace.swift */; };
@@ -228,7 +228,7 @@
 		A09B53AC23266F02005266C2 /* NewProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E27208224E335400CB7113 /* NewProjectViewController.swift */; };
 		A09B53AD23266F02005266C2 /* DarkroomHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0212FCB22D35ADC009079DC /* DarkroomHelper.swift */; };
 		A09B53AE23266F02005266C2 /* Conduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D1013B22CCF2DA0068D047 /* Conduit.swift */; };
-		A09B53AF23266F02005266C2 /* UIView+animateHideShow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A055204F222566CE00B9645F /* UIView+animateHideShow.swift */; };
+		A09B53AF23266F02005266C2 /* UIView+utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A055204F222566CE00B9645F /* UIView+utils.swift */; };
 		A09B53B023266F02005266C2 /* FlagInfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E321F5228EBE6A00F2E9BD /* FlagInfoAlert.swift */; };
 		A09B53B123266F02005266C2 /* UICollectionView+selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0212FCD22D374CA009079DC /* UICollectionView+selection.swift */; };
 		A09B53B223266F02005266C2 /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05275132211A91300BDB14B /* CollectionsView.swift */; };
@@ -552,7 +552,7 @@
 		A05471B22296B77D009FEA93 /* Montserrat-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Regular.ttf"; sourceTree = "<group>"; };
 		A05471B32296B77D009FEA93 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		A05471DA2296C8FD009FEA93 /* UITableView+separatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+separatorView.swift"; sourceTree = "<group>"; };
-		A055204F222566CE00B9645F /* UIView+animateHideShow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+animateHideShow.swift"; sourceTree = "<group>"; };
+		A055204F222566CE00B9645F /* UIView+utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+utils.swift"; sourceTree = "<group>"; };
 		A056555423F6D1C600DE0168 /* DropboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxViewController.swift; sourceTree = "<group>"; };
 		A056555623F6D67E00DE0168 /* DropboxSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSpace.swift; sourceTree = "<group>"; };
 		A056555923F6D9D600DE0168 /* DropboxConduit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxConduit.swift; sourceTree = "<group>"; };
@@ -796,7 +796,7 @@
 				A056BE1B2857457E00F354B6 /* UIFont+Montserrat.swift */,
 				A04255CD22944C1B0048E00C /* UIStoryboard+main.swift */,
 				A05471DA2296C8FD009FEA93 /* UITableView+separatorView.swift */,
-				A055204F222566CE00B9645F /* UIView+animateHideShow.swift */,
+				A055204F222566CE00B9645F /* UIView+utils.swift */,
 				A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */,
 				A006AF3728199687007637DD /* URLSession+Utils.swift */,
 				A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */,
@@ -1607,7 +1607,7 @@
 				A0B645BF22B7A11F00BBE3FF /* AddProjectViewController.swift in Sources */,
 				A07129112111E4F1007A432A /* Db.swift in Sources */,
 				A05DF989282C0F92003FADA2 /* AEXMLParser.swift in Sources */,
-				A0552051222566CE00B9645F /* UIView+animateHideShow.swift in Sources */,
+				A0552051222566CE00B9645F /* UIView+utils.swift in Sources */,
 				A0C475B4211474A50012937E /* Formatters.swift in Sources */,
 				A0362196220DB2CA003C21DC /* IaSpace.swift in Sources */,
 				A006AF31281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */,
@@ -1725,7 +1725,7 @@
 				A0CA19C52821849D0082BD7C /* SnapshotHelper.swift in Sources */,
 				A09B53AE23266F02005266C2 /* Conduit.swift in Sources */,
 				A006A6AA282950D00029E49B /* UIBackgroundFetchResult+description.swift in Sources */,
-				A09B53AF23266F02005266C2 /* UIView+animateHideShow.swift in Sources */,
+				A09B53AF23266F02005266C2 /* UIView+utils.swift in Sources */,
 				A09B53B023266F02005266C2 /* FlagInfoAlert.swift in Sources */,
 				A09B53B123266F02005266C2 /* UICollectionView+selection.swift in Sources */,
 				A09B53B223266F02005266C2 /* CollectionsView.swift in Sources */,
@@ -1855,7 +1855,7 @@
 				A05DF980282C0F48003FADA2 /* AEXMLOptions.swift in Sources */,
 				A0212FCC22D35ADC009079DC /* DarkroomHelper.swift in Sources */,
 				A0D1013C22CCF2DA0068D047 /* Conduit.swift in Sources */,
-				A0552050222566CE00B9645F /* UIView+animateHideShow.swift in Sources */,
+				A0552050222566CE00B9645F /* UIView+utils.swift in Sources */,
 				A0E321F6228EBE6A00F2E9BD /* FlagInfoAlert.swift in Sources */,
 				A05DF97C282C0E7C003FADA2 /* AEXMLElement.swift in Sources */,
 				A0212FCE22D374CA009079DC /* UICollectionView+selection.swift in Sources */,
