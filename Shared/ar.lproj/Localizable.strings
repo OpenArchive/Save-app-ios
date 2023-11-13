@@ -200,7 +200,7 @@
 "Folder" = "مجلد";
 
 /* No comment provided by engineer. */
-"Folders" = "Folders";
+"Folders" = "المجلدات";
 
 /* No comment provided by engineer. */
 "General" = "عام";
@@ -317,7 +317,7 @@
 "OK" = "يعمل";
 
 /* No comment provided by engineer. */
-"Once uploaded, you will not be able to edit media.." = "Once uploaded, you will not be able to edit media..";
+"Once uploaded, you will not be able to edit media." = "Once uploaded, you will not be able to edit media.";
 
 /* DataUsageViewController */
 "Only upload media when you are connected to Wi-Fi" = "ارفع الوسائط عندما تكون متصلا بالشيكة اللاسلكية فقط";

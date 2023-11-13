@@ -1,1 +1,1 @@
-Save, ortamlarınızı ve kimliğinizi, İnternet kesintisi, izlenme, aygıta el konulması, içerik kaldırma, bant genişliği sınırlaması ve veri kaybına karşı korur ve kollar.
+Kaydet (Share, Archive, Verify, Encrypt, Paylaş, Arşivle, Doğrula, Şifrele), mobil medyalarınızı depolamanıza, paylaşmanıza ve duyurmanıza yardımcı olmak için tasarlanmış ücretsiz, açık kaynaklı ve güvenli bir mobil uygulamadır.

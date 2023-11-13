@@ -317,7 +317,7 @@
 "OK" = "OK";
 
 /* No comment provided by engineer. */
-"Once uploaded, you will not be able to edit media.." = "Once uploaded, you will not be able to edit media..";
+"Once uploaded, you will not be able to edit media." = "Once uploaded, you will not be able to edit media.";
 
 /* DataUsageViewController */
 "Only upload media when you are connected to Wi-Fi" = "Only upload media when you are connected to Wi-Fi";

@@ -44,7 +44,7 @@
 "Acquire Keys" = "Adquirir claves";
 
 /* No comment provided by engineer. */
-"Add a location (optional)" = "Add a location (optional)";
+"Add a location (optional)" = "Agregar una ubicación (opcional)";
 
 /* AddProjectViewController */
 "Add a Project" = "Agregar un proyecto";
@@ -56,7 +56,7 @@
 "Add Another Account" = "Agregar otra cuenta";
 
 /* No comment provided by engineer. */
-"Add notes (optional)" = "Add notes (optional)";
+"Add notes (optional)" = "Agregar notas (opcional)";
 
 /* DarkroomHelper */
 "Add People" = "Añadir Personas";
@@ -86,7 +86,7 @@
 "Archive Folder" = "Archive Folder";
 
 /* No comment provided by engineer. */
-"Archived Folders" = "Archived Folders";
+"Archived Folders" = "Carpetas archivadas";
 
 /* RemoveProjectAlert */
 "Are you sure you want to remove your project \"%@\"?" = "¿Estás seguro de que quieres eliminar tu proyecto \"%@\"?";
@@ -170,10 +170,10 @@
 "E" = "E";
 
 /* No comment provided by engineer. */
-"Edit Media Info" = "Edit Media Info";
+"Edit Media Info" = "Editar información de los medios";
 
 /* No comment provided by engineer. */
-"Edit Multiple" = "Edit Multiple";
+"Edit Multiple" = "Editar varios";
 
 /* SlideshowViewController */
 "Enable" = "Habilitar";
@@ -200,7 +200,7 @@
 "Folder" = "Carpeta";
 
 /* No comment provided by engineer. */
-"Folders" = "Folders";
+"Folders" = "Carpetas";
 
 /* No comment provided by engineer. */
 "General" = "General";
@@ -317,7 +317,7 @@
 "OK" = "Aceptar";
 
 /* No comment provided by engineer. */
-"Once uploaded, you will not be able to edit media.." = "Once uploaded, you will not be able to edit media..";
+"Once uploaded, you will not be able to edit media." = "Once uploaded, you will not be able to edit media.";
 
 /* DataUsageViewController */
 "Only upload media when you are connected to Wi-Fi" = "Solo subir medios cuando estés conectado a Wi-Fi";
@@ -365,7 +365,7 @@
 "Please go to the Settings app to grant this app access to your photo library, if you want to upload photos or videos." = "Por favor, dirígete a los Ajustes de la aplicación para otorgar acceso  a su biblioteca de fotos para esta aplicación, si deseas subir fotos o videos.";
 
 /* No comment provided by engineer. */
-"Press and hold to select and edit multiple media." = "Press and hold to select and edit multiple media.";
+"Press and hold to select and edit multiple media." = "Presionar y sostener para seleccionar medios y editar varios medios";
 
 /* PreviewViewController */
 "Preview" = "Vista Previa";
@@ -467,10 +467,10 @@
 "Server URL" = "URL del servidor";
 
 /* No comment provided by engineer. */
-"Set the same Creative Commons license for ALL folders on this server." = "Set the same Creative Commons license for ALL folders on this server.";
+"Set the same Creative Commons license for ALL folders on this server." = "Permitir el uso de \"Creative Commons\" para todas las carpetas de este servidor";
 
 /* No comment provided by engineer. */
-"Set unique Creative Commons licenses for EACH INDIVIDUAL folder on this server." = "Set unique Creative Commons licenses for EACH INDIVIDUAL folder on this server.";
+"Set unique Creative Commons licenses for EACH INDIVIDUAL folder on this server." = "Establezca licencias Creative Commons únicas para cada carpeta en este servidor.";
 
 /* AddProjectViewController, Main.storyboard */
 "Set up where you want your media to be stored." = "Configura donde quieres que se guarden tus medios.";
@@ -572,7 +572,7 @@
 "Version %1$@, build %2$@" = "Version %1$@, build %2$@";
 
 /* No comment provided by engineer. */
-"View Archived Folders" = "View Archived Folders";
+"View Archived Folders" = "Ver carpetas archivadas";
 
 /* West Direction Abbreviation */
 "W" = "O";

@@ -22,7 +22,7 @@ class UploadInfoAlert: InfoAlert {
     }
 
     override class var message: String {
-        NSLocalizedString("Once uploaded, you will not be able to edit media..", comment: "")
+        NSLocalizedString("Once uploaded, you will not be able to edit media.", comment: "")
     }
 
     override class var wasAlreadyShown: Bool {

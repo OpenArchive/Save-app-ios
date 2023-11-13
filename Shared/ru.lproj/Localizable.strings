@@ -200,7 +200,7 @@
 "Folder" = "папка";
 
 /* No comment provided by engineer. */
-"Folders" = "Folders";
+"Folders" = "Папки";
 
 /* No comment provided by engineer. */
 "General" = "Общие";
@@ -317,7 +317,7 @@
 "OK" = "OK";
 
 /* No comment provided by engineer. */
-"Once uploaded, you will not be able to edit media.." = "Once uploaded, you will not be able to edit media..";
+"Once uploaded, you will not be able to edit media." = "Once uploaded, you will not be able to edit media.";
 
 /* DataUsageViewController */
 "Only upload media when you are connected to Wi-Fi" = "Выгружать медиа данные только когда вы подключены к Wi-Fi";

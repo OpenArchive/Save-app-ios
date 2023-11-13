@@ -26,7 +26,7 @@
 "__webdav_description__" = "%@ yalnızca WebDAV uyumlu sunuculara bağlanır (Nextcloud ve ownCloud gibi).";
 
 /* MenuViewController */
-"About %@" = "%@ Hakkında";
+"About %@" = "%@ hakkında";
 
 /* MainViewController */
 "Access Denied" = "Erişim engellendi";
@@ -44,7 +44,7 @@
 "Acquire Keys" = "Anahtarları al";
 
 /* No comment provided by engineer. */
-"Add a location (optional)" = "Add a location (optional)";
+"Add a location (optional)" = "Bir konum ekle (isteğe bağlı)";
 
 /* AddProjectViewController */
 "Add a Project" = "Proje ekle";
@@ -56,7 +56,7 @@
 "Add Another Account" = "Başka bir hesap ekle";
 
 /* No comment provided by engineer. */
-"Add notes (optional)" = "Add notes (optional)";
+"Add notes (optional)" = "Notlar ekle (isteğe bağlı)";
 
 /* DarkroomHelper */
 "Add People" = "Kişiler ekle";
@@ -65,7 +65,7 @@
 "Adding…" = "Ekleniyor…";
 
 /* MiscSettingsViewController */
-"Allow 3rd-Party Keyboards" = "3. Taraf Tuş Takımları Kullanılabilsin";
+"Allow 3rd-Party Keyboards" = "3. taraf klavyeler kullanılabilsin";
 
 /* EditProjectViewController */
 "Allow anyone to remix and share" = "Herkes yeniden derleyip paylaşabilsin";
@@ -83,10 +83,10 @@
 "App Store" = "Uygulama Mağazası";
 
 /* No comment provided by engineer. */
-"Archive Folder" = "Archive Folder";
+"Archive Folder" = "Klasörü arşivle";
 
 /* No comment provided by engineer. */
-"Archived Folders" = "Archived Folders";
+"Archived Folders" = "Arşivlenmiş klasörler";
 
 /* RemoveProjectAlert */
 "Are you sure you want to remove your project \"%@\"?" = "\"%@\" projesini silmek istediğinize emin misiniz?";
@@ -170,10 +170,10 @@
 "E" = "D";
 
 /* No comment provided by engineer. */
-"Edit Media Info" = "Edit Media Info";
+"Edit Media Info" = "Ortam bilgilerini düzenle";
 
 /* No comment provided by engineer. */
-"Edit Multiple" = "Edit Multiple";
+"Edit Multiple" = "Birkaç ögeyi düzenle";
 
 /* SlideshowViewController */
 "Enable" = "Aç";
@@ -200,7 +200,7 @@
 "Folder" = "Klasör";
 
 /* No comment provided by engineer. */
-"Folders" = "Folders";
+"Folders" = "Klasörler";
 
 /* No comment provided by engineer. */
 "General" = "Genel";
@@ -230,7 +230,7 @@
 "Hide App Content when in Background" = "Arka plandayken uygulama içeriği gizlensin";
 
 /* OrbotManager */
-"Ignore" = "Yoksay";
+"Ignore" = "Yok say";
 
 /* ShareExtension.MainViewController */
 "Import" = "İçe aktar";
@@ -254,16 +254,16 @@
 "Just now" = "Şimdi";
 
 /* No comment provided by engineer. */
-"Learn more about Creative Commons" = "Learn more about Creative Commons";
+"Learn more about Creative Commons" = "Creative Commons hakkında ayrıntılı bilgi alın";
 
 /* MiscSettingsViewController */
 "Lock App with Device Passcode" = "Uygulama Aygıt Parolası ile kilitlensin";
 
 /* MiscSettingsViewController */
-"Lock App with Face ID or Device Passcode" = "Uygulama Face ID ya da Aygıt Parolası ile kilitlensin";
+"Lock App with Face ID or Device Passcode" = "Uygulama Face ID ya da aygıt parolası ile kilitlensin";
 
 /* MiscSettingsViewController */
-"Lock App with Touch ID or Device Passcode" = "Uygulama Touch ID ya da Aygıt Parolası ile kilitlensin";
+"Lock App with Touch ID or Device Passcode" = "Uygulama Touch ID ya da aygıt parolası ile kilitlensin";
 
 /* SpaceViewController */
 "Login Info" = "Oturum açma bilgileri";
@@ -317,7 +317,7 @@
 "OK" = "Tamam";
 
 /* No comment provided by engineer. */
-"Once uploaded, you will not be able to edit media.." = "Once uploaded, you will not be able to edit media..";
+"Once uploaded, you will not be able to edit media." = "Once uploaded, you will not be able to edit media.";
 
 /* DataUsageViewController */
 "Only upload media when you are connected to Wi-Fi" = "Ortamlar yalnızca Wi-Fi bağlantısı varken yüklensin";
@@ -365,7 +365,7 @@
 "Please go to the Settings app to grant this app access to your photo library, if you want to upload photos or videos." = "Fotoğraf ya da görüntü yükleyebilmek için lütfen Ayarlar uygulamasına giderek bu uygulamaya fotoğraflara erişme izni verin.";
 
 /* No comment provided by engineer. */
-"Press and hold to select and edit multiple media." = "Press and hold to select and edit multiple media.";
+"Press and hold to select and edit multiple media." = "Birkaç ortamı seçmek ve düzenlemek için basılı tutun";
 
 /* PreviewViewController */
 "Preview" = "Ön izleme";
@@ -467,10 +467,10 @@
 "Server URL" = "Sunucu adresi";
 
 /* No comment provided by engineer. */
-"Set the same Creative Commons license for ALL folders on this server." = "Set the same Creative Commons license for ALL folders on this server.";
+"Set the same Creative Commons license for ALL folders on this server." = "Bu sunucudaki TÜM klasörler için aynı Creative Commons lisansı ayarlayın.";
 
 /* No comment provided by engineer. */
-"Set unique Creative Commons licenses for EACH INDIVIDUAL folder on this server." = "Set unique Creative Commons licenses for EACH INDIVIDUAL folder on this server.";
+"Set unique Creative Commons licenses for EACH INDIVIDUAL folder on this server." = "Bu sunucudaki HER BİR klasör için ayrı Creative Commons lisansı ayarlayın.";
 
 /* AddProjectViewController, Main.storyboard */
 "Set up where you want your media to be stored." = "Ortamlarınızın saklanacağı yeri seçin.";
@@ -530,7 +530,7 @@
 "Transfer via Orbot only" = "Yalnızca Orbot ile aktarılsın";
 
 /* No comment provided by engineer. */
-"Unarchive Folder" = "Unarchive Folder";
+"Unarchive Folder" = "Klasörü arşivden çıkar";
 
 /* UploadManager */
 "Unknown error." = "Bilinmeyen bir sorun çıktı.";
@@ -572,7 +572,7 @@
 "Version %1$@, build %2$@" = "Sürüm: %1$@, Yapım: %2$@";
 
 /* No comment provided by engineer. */
-"View Archived Folders" = "View Archived Folders";
+"View Archived Folders" = "Arşivlenmiş klasörleri görüntüle";
 
 /* West Direction Abbreviation */
 "W" = "B";
