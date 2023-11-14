@@ -1,6 +1,6 @@
 //
 //  AbcFilteredByProjectView.swift
-//  OpenArchive
+//  Save
 //
 //  Created by Benjamin Erhart on 07.02.19.
 //  Copyright © 2019 Open Archive. All rights reserved.
@@ -45,7 +45,7 @@ class AbcFilteredByProjectView: YapDatabaseFilteredView {
         options.isPersistent = false
 
         super.init(parentViewName: AssetsByCollectionView.name,
-                   filtering: AbcFilteredByProjectView.getFilter(),
+                   filtering: Self.getFilter(),
                    versionTag: nil, options: options)
     }
 
@@ -56,7 +56,7 @@ class AbcFilteredByProjectView: YapDatabaseFilteredView {
         `nil` will disable the filter and show all entries.
     */
     class func updateFilter(_ projectId: String? = nil) {
-        AbcFilteredByProjectView.projectId = projectId
+        Self.projectId = projectId
         Db.writeConn?.asyncReadWrite { transaction in
             (transaction.ext(name) as? YapDatabaseFilteredViewTransaction)?
                 .setFiltering(getFilter(), versionTag: UUID().uuidString)
@@ -70,8 +70,8 @@ class AbcFilteredByProjectView: YapDatabaseFilteredView {
      */
     private class func getFilter() -> YapDatabaseViewFiltering {
         return YapDatabaseViewFiltering.withKeyBlock { _, group, _, _ in
-            return AbcFilteredByProjectView.projectId != nil &&
-                AssetsByCollectionView.projectId(from: group) == AbcFilteredByProjectView.projectId
+            return projectId != nil &&
+                AssetsByCollectionView.projectId(from: group) == projectId
         }
     }
 }

@@ -1,6 +1,6 @@
 //
-//  AssetsView.swift
-//  OpenArchive
+//  UploadsView.swift
+//  Save
 //
 //  Created by Benjamin Erhart on 11.03.19.
 //  Copyright © 2019 Open Archive. All rights reserved.
@@ -34,8 +34,9 @@ class UploadsView: YapDatabaseAutoView {
 
         let sorting = YapDatabaseViewSorting.withObjectBlock { transaction, group, collection1, key1, object1, collection2, key2, object2 in
             if Asset.collection == collection1,
-                let asset1 = object1 as? Asset,
-                let asset2 = object2 as? Asset {
+               let asset1 = object1 as? Asset,
+               let asset2 = object2 as? Asset
+            {
                 return asset1.compare(asset2)
             }
 

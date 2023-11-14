@@ -1,6 +1,6 @@
 //
 //  AssetsByCollectionView.swift
-//  OpenArchive
+//  Save
 //
 //  Created by Benjamin Erhart on 23.01.19.
 //  Copyright © 2019 Open Archive. All rights reserved.
@@ -27,7 +27,7 @@ class AssetsByCollectionView: YapDatabaseAutoView {
         let grouping = YapDatabaseViewGrouping.withObjectBlock() {
             transaction, collection, key, object in
 
-            return AssetsByCollectionView.groupKey(for: object as? Asset)
+            return Self.groupKey(for: object as? Asset)
         }
 
         let sorting = YapDatabaseViewSorting.withObjectBlock() {
@@ -47,8 +47,8 @@ class AssetsByCollectionView: YapDatabaseAutoView {
     */
     class func groupKey(for asset: Asset?) -> String? {
         if let asset = asset,
-            let collection = asset.collection {
-
+           let collection = asset.collection
+        {
             let created = String(Int(collection.created.timeIntervalSince1970))
 
             return "\(created)\(separator)\(collection.projectId)\(separator)\(collection.id)"
@@ -63,9 +63,9 @@ class AssetsByCollectionView: YapDatabaseAutoView {
         Will return `nil` if `group` is `nil` or the group string is invalid.
     */
     class func created(from group: String?) -> Date? {
-        if let group = group?.split(separator: separator),
-            let epoch = TimeInterval(String(group[0])) {
-
+        if let created = group?.split(separator: separator).first,
+           let epoch = TimeInterval(String(created))
+        {
             return Date(timeIntervalSince1970: epoch)
         }
 
@@ -79,8 +79,8 @@ class AssetsByCollectionView: YapDatabaseAutoView {
     */
     class func projectId(from group: String?) -> String? {
         if let group = group?.split(separator: separator),
-            group.count > 1 {
-
+           group.count > 1
+        {
             return String(group[1])
         }
 
@@ -94,8 +94,8 @@ class AssetsByCollectionView: YapDatabaseAutoView {
      */
     class func collectionId(from group: String?) -> String? {
         if let group = group?.split(separator: separator),
-            group.count > 2 {
-
+           group.count > 2
+        {
             return String(group[2])
         }
 
