@@ -170,10 +170,10 @@ class PreviewViewController: UIViewController,
 
     @IBAction func upload() {
         UploadInfoAlert.presentIfNeeded(self) {
-            Db.writeConn?.asyncReadWrite { transaction in
+            Db.writeConn?.asyncReadWrite { tx in
                 var order = 0
 
-                transaction.iterateKeysAndObjects(inCollection: Upload.collection) { (key, upload: Upload, stop) in
+                tx.iterate { (key, upload: Upload, stop) in
                     if upload.order >= order {
                         order = upload.order + 1
                     }
@@ -183,39 +183,32 @@ class PreviewViewController: UIViewController,
                     return
                 }
 
-                if let id = self.sc.id,
-                   let collection = transaction.object(forKey: id, inCollection: Collection.collection) as? Collection {
-
+                if let collection: Collection = tx.object(for: self.sc.id) {
                     collection.close()
 
-                    transaction.setObject(collection, forKey: collection.id,
-                                          inCollection: Collection.collection)
+                    tx.setObject(collection)
                 }
 
-                (transaction.ext(AbcFilteredByCollectionView.name) as? YapDatabaseViewTransaction)?
-                    .iterateKeysAndObjects(inGroup: group) { collection, key, object, index, stop in
-
-                        if let asset = object as? Asset {
-                            // ProofMode might have been switched on in between import and now,
-                            // or something inhibited proof generation, so make sure,
-                            // proof is generated before upload.
-                            // Proofing will set asset to un-ready, so upload will not start
-                            // before proof is done as asset is set to ready again.
-                            if asset.isReady && !asset.hasProof && Settings.proofMode {
-                                asset.generateProof {
-                                    asset.update { asset in
-                                        asset.isReady = true
-                                    }
-                                }
+                tx.iterate(group: group, in: AbcFilteredByCollectionView.name) { (collection, key, asset: Asset, index, stop) in
+                    // ProofMode might have been switched on in between import and now,
+                    // or something inhibited proof generation, so make sure,
+                    // proof is generated before upload.
+                    // Proofing will set asset to un-ready, so upload will not start
+                    // before proof is done as asset is set to ready again.
+                    if asset.isReady && !asset.hasProof && Settings.proofMode {
+                        asset.generateProof {
+                            asset.update { asset in
+                                asset.isReady = true
                             }
-
-                            let upload = Upload(order: order, asset: asset)
-                            transaction.setObject(upload, forKey: upload.id, inCollection: Upload.collection)
-                            order += 1
                         }
                     }
 
-                let count = transaction.numberOfKeys(inCollection: Upload.collection)
+                    let upload = Upload(order: order, asset: asset)
+                    tx.setObject(upload)
+                    order += 1
+                }
+
+                let count = tx.numberOfKeys(inCollection: Upload.collection)
 
                 DispatchQueue.main.async {
                     OrbotManager.shared.alertOrbotStopped(count: count) { [weak self] in

@@ -251,7 +251,8 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
      */
     @objc func yapDatabaseModified(notification: Notification) {
         guard let notifications = spacesConn?.beginLongLivedReadTransaction(),
-            let viewConn = spacesConn?.ext(SpacesView.name) as? YapDatabaseViewConnection else {
+              let viewConn = spacesConn?.forView(SpacesView.name) 
+        else {
             return
         }
 
@@ -266,41 +267,15 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
     // MARK: Private Methods
 
     private func getProject(at indexPath: IndexPath) -> Project? {
-        guard let mappings = projectsMappings else {
-            return nil
-        }
-
-        var project: Project?
-
-        projectsConn?.readInView(mappings.view) { transaction, _ in
-            project = transaction?.object(at: indexPath, with: mappings) as? Project
-        }
-
-        return project
+        projectsConn?.object(at: indexPath, in: projectsMappings)
     }
 
     private func contains(project: Project?) -> Bool {
-        guard let project = project, let mappings = projectsMappings else {
-            return false
-        }
-
-        var found = false
-
-        projectsConn?.readInView(mappings.view) { transaction, _ in
-            found = transaction?.indexPath(forKey: project.id, inCollection: Project.collection, with: mappings) != nil
-        }
-
-        return found
+        projectsConn?.indexPath(of: project, with: projectsMappings) != nil
     }
 
     private func getSpace(at indexPath: IndexPath) -> Space? {
-        var space: Space?
-
-        spacesConn?.readInView(SpacesView.name) { transaction, _ in
-            space = transaction?.object(at: indexPath, with: self.spacesMappings) as? Space
-        }
-
-        return space
+        spacesConn?.object(at: indexPath, in: spacesMappings)
     }
 
     private func setToggleIcon(_ toggle: Bool) {

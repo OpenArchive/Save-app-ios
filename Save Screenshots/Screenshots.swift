@@ -37,8 +37,8 @@ class Screenshots {
 
             SelectedSpace.store(transaction)
 
-            transaction.setObject(project1, forKey: project1.id, inCollection: Project.collection)
-            transaction.setObject(project2, forKey: project2.id, inCollection: Project.collection)
+            transaction.setObject(project1)
+            transaction.setObject(project2)
         })
 
         var assets = [Asset]()
@@ -57,7 +57,7 @@ class Screenshots {
 
         Db.writeConn?.readWrite({ transaction in
             for asset in assets {
-                transaction.setObject(asset, forKey: asset.id, inCollection: Asset.collection)
+                transaction.setObject(asset)
             }
         })
     }

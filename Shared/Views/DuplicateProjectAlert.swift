@@ -38,17 +38,8 @@ class DuplicateProjectAlert: UIAlertController {
      - parameter name: The project name.
     */
     func exists(spaceId: String, name: String) -> Bool {
-        var exists = false
-
-        Db.bgRwConn?.read { transaction in
-            transaction.iterateKeysAndObjects(inCollection: Project.collection) { (key, project: Project, stop) in
-                if project.spaceId == spaceId && project.name == name {
-                    exists = true
-                    stop = true
-                }
-            }
-        }
-
-        return exists
+        Db.bgRwConn?.find(where: { (project: Project) in
+            project.spaceId == spaceId && project.name == name
+        }) != nil
     }
 }

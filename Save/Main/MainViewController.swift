@@ -229,9 +229,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             ofKind: kind, withReuseIdentifier: HeaderView.reuseId, for: indexPath) as! HeaderView
 
         let group = assetsMappings.group(forSection: UInt(indexPath.section))
-
-        let collection = Collection.get(byId: AssetsByCollectionView.collectionId(from: group),
-                                        conn: collectionsReadConn)
+        let collection: Collection? = collectionsReadConn?.object(for: AssetsByCollectionView.collectionId(from: group))
 
         // Fixed bug: YapDatabase caches these objects, therefore we need to clear
         // before we repopulate.
@@ -259,9 +257,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.reuseId, for: indexPath) as! ImageCell
 
-        assetsReadConn?.readInView(AbcFilteredByProjectView.name) { transaction, _ in
-            cell.asset = transaction?.object(at: indexPath, with: self.assetsMappings) as? Asset
-        }
+        cell.asset = assetsReadConn?.object(at: indexPath, in: assetsMappings)
+
+//        cell.upload = uploadsReadConn?.find(where: { $0.assetId == cell.asset?.id })
 
         return cell
     }
@@ -487,7 +485,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
      */
     @objc func yapDatabaseModified(notification: Notification) {
         if let notifications = uploadsReadConn?.beginLongLivedReadTransaction(),
-           let viewConn = uploadsReadConn?.ext(uploadsMappings.view) as? YapDatabaseViewConnection
+           let viewConn = uploadsReadConn?.forView(uploadsMappings.view)
         {
             uploadsReadConn?.update(mappings: uploadsMappings)
 
@@ -497,7 +495,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
 
         if let notifications = projectsReadConn?.beginLongLivedReadTransaction(),
-           let viewConn = projectsReadConn?.ext(projectsMappings.view) as? YapDatabaseViewConnection
+           let viewConn = projectsReadConn?.forView(projectsMappings.view)
         {
             // Fix crash by checking, if the snapshots are in sync.
             if !projectsMappings.isNextSnapshot(notifications) || viewConn.hasChanges(for: notifications) {
@@ -515,7 +513,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         var reload = false
 
         if let notifications = collectionsReadConn?.beginLongLivedReadTransaction(),
-            let viewConn = collectionsReadConn?.ext(CollectionsView.name) as? YapDatabaseViewConnection
+            let viewConn = collectionsReadConn?.forView(CollectionsView.name)
         {
             if collectionsMappings.isNextSnapshot(notifications)
             {
@@ -538,7 +536,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
         if !reload {
             if let notifications = assetsReadConn?.beginLongLivedReadTransaction(),
-                let viewConn = assetsReadConn?.ext(AbcFilteredByProjectView.name) as? YapDatabaseViewConnection {
+                let viewConn = assetsReadConn?.forView(AbcFilteredByProjectView.name) {
 
                 if assetsMappings.isNextSnapshot(notifications)
                 {
@@ -679,25 +677,13 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
 
     private func getSelectedAssets(preheat: Bool = false) -> [Asset] {
-        var assets = [Asset]()
-
-        assetsReadConn?.readInView(AbcFilteredByProjectView.name) { viewTransaction, transaction in
-            for indexPath in self.collectionView.indexPathsForSelectedItems ?? [] {
-                if let asset = viewTransaction?.object(at: indexPath, with: self.assetsMappings) as? Asset
-                {
-                    if preheat,
-                        let collectionId = asset.collectionId,
-                        let collection = transaction.object(forKey: collectionId, inCollection: Collection.collection) as? Collection
-                    {
-                        asset.collection = collection
-                    }
-
-                    assets.append(asset)
-                }
+        return assetsReadConn?.objects(at: collectionView.indexPathsForSelectedItems, in: assetsMappings, { asset, tx in
+            if preheat {
+                asset.collection = tx.object(for: asset.collectionId)
             }
-        }
 
-        return assets
+            return asset
+        }) ?? []
     }
 
     private func toggleMenu(_ toggle: Bool, _ completion: ((_ finished: Bool) -> Void)? = nil) {

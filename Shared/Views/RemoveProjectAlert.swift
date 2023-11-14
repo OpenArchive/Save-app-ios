@@ -24,8 +24,8 @@ class RemoveProjectAlert: UIAlertController {
         }))
 
         addAction(AlertHelper.destructiveAction(NSLocalizedString("Remove", comment: ""), handler: { _ in
-            Db.writeConn?.asyncReadWrite() { transaction in
-                transaction.removeObject(forKey: project.id, inCollection: Project.collection)
+            Db.writeConn?.asyncReadWrite() { tx in
+                tx.remove(project)
 
                 if let completionHandler = completionHandler {
                     DispatchQueue.main.async {

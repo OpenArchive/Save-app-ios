@@ -33,19 +33,18 @@ class SelectedSpace {
     static var space: Space? {
         get {
             if _space == nil {
-                Db.bgRwConn?.read { transaction in
-                    for id in transaction.allKeys(inCollection: SelectedSpace.collection) {
-                        self._space = transaction.object(
-                            forKey: id, inCollection: Space.collection) as? Space
+                Db.bgRwConn?.read { tx in
+                    for id in tx.allKeys(inCollection: collection) {
+                        _space = tx.object(for: id, in: Space.collection)
 
-                        if self._space != nil {
+                        if _space != nil {
                             break
                         }
                     }
 
-                    if self._space == nil {
-                        transaction.iterateKeysAndObjects(inCollection: Space.collection) { (key, space: Space, stop) in
-                            self._space = space
+                    if _space == nil {
+                        tx.iterateKeysAndObjects(inCollection: Space.collection) { (key, space: Space, stop) in
+                            _space = space
                             stop = true
                         }
                     }
@@ -68,13 +67,13 @@ class SelectedSpace {
             return
         }
 
-        transaction.removeAllObjects(inCollection: SelectedSpace.collection)
+        transaction.removeAllObjects(inCollection: collection)
 
         if let space = _space {
             // We just need any serializable object to store here, otherwise
             // when sending nil, nothing is stored.
             // That object is never read. The original space is always read instead!
-            transaction.setObject(space, forKey: space.id, inCollection: SelectedSpace.collection)
+            transaction.setObject(space, forKey: space.id, inCollection: collection)
         }
 
         // Update projects grouping to show projects of currently selected space.

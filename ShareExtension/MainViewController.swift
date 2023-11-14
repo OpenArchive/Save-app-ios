@@ -311,23 +311,15 @@ class MainViewController: TableWithSpacesViewController {
     // MARK: Private Methods
 
     private func getProject(_ row: Int) -> Project? {
-        var project: Project?
-
-        if row > -1 {
-            projectsReadConn?.readInView(ActiveProjectsView.name) { transaction, _ in
-                project = transaction?.object(atRow: UInt(row), inSection: 0, with: self.projectsMappings) as? Project
-            }
-        }
-
-        return project
+        projectsReadConn?.object(at: IndexPath(row: row, section: 0), in: projectsMappings)
     }
 
     private func getProject(_ indexPath: IndexPath) -> Project? {
-        return getProject(indexPath.row)
+        getProject(indexPath.row)
     }
 
     private func transform(_ indexPath: IndexPath) -> IndexPath {
-        return IndexPath(row: indexPath.row, section: indexPath.section + MainViewController.projectSection)
+        IndexPath(row: indexPath.row, section: indexPath.section + MainViewController.projectSection)
     }
 
     /**

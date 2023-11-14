@@ -199,7 +199,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                 Db.writeConn?.asyncReadWrite() { transaction in
                     SelectedSpace.store(transaction)
 
-                    transaction.setObject(space, forKey: space.id, inCollection: Space.collection)
+                    transaction.setObject(space)
 
                     group.leave()
                 }
@@ -210,9 +210,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                     DropboxConduit.client?.users?.getCurrentAccount().response(completionHandler: { account, error in
                         space.email = account?.email
 
-                        Db.writeConn?.asyncReadWrite { transaction in
-                            transaction.setObject(space, forKey: space.id, inCollection: Space.collection)
-                        }
+                        Db.writeConn?.setObject(space)
                     })
                 }
 
@@ -282,28 +280,22 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         response: UNNotificationResponse, withCompletionHandler completionHandler:
         @escaping () -> Void) {
 
-        if let projectId = response.notification.request.content.userInfo[Project.collection] as? String {
-            var project: Project?
+        if let projectId = response.notification.request.content.userInfo[Project.collection] as? String,
+           let project: Project = Db.bgRwConn?.object(for: projectId)
+        {
+            SelectedSpace.space = project.space
 
-            Db.bgRwConn?.read { transaction in
-                project = transaction.object(forKey: projectId, inCollection: Project.collection) as? Project
-            }
+            if let navVc = window?.rootViewController as? UINavigationController,
+               let mainVc = mainVc
+            {
+                navVc.popToViewController(mainVc, animated: false)
 
-            if let project = project {
-                SelectedSpace.space = project.space
-
-                if let navVc = window?.rootViewController as? UINavigationController,
-                   let mainVc = mainVc
-                {
-                    navVc.popToViewController(mainVc, animated: false)
-
-                    // When launching, the app needs some time to initialize everything,
-                    // otherwise it will crash.
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                        mainVc.selectedProject = project
-                        mainVc.updateFilter()
-                        mainVc.showDetails(project.currentCollection)
-                    }
+                // When launching, the app needs some time to initialize everything,
+                // otherwise it will crash.
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                    mainVc.selectedProject = project
+                    mainVc.updateFilter()
+                    mainVc.showDetails(project.currentCollection)
                 }
             }
         }

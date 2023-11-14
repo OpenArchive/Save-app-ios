@@ -16,9 +16,6 @@
 		A006A6AC282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006A6AB282973C10029E49B /* DispatchGroup+waitSignal.swift */; };
 		A006A6AD282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006A6AB282973C10029E49B /* DispatchGroup+waitSignal.swift */; };
 		A006A6AE282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006A6AB282973C10029E49B /* DispatchGroup+waitSignal.swift */; };
-		A006AF30281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */; };
-		A006AF31281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */; };
-		A006AF32281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */; };
 		A006AF3428198752007637DD /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3328198752007637DD /* AlertHelper.swift */; };
 		A006AF3528198752007637DD /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3328198752007637DD /* AlertHelper.swift */; };
 		A006AF3628198752007637DD /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3328198752007637DD /* AlertHelper.swift */; };
@@ -203,7 +200,7 @@
 		A09B539123266F02005266C2 /* Screenshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = A080538E22E85C460031D4B5 /* Screenshots.swift */; };
 		A09B539223266F02005266C2 /* FormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CE521F0B46C008ACA3E /* FormViewController.swift */; };
 		A09B539323266F02005266C2 /* RemoveProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */; };
-		A09B539423266F02005266C2 /* YapDatabaseConnection+updateMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */; };
+		A09B539423266F02005266C2 /* YapDatabase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1364E227256F4008A22BF /* YapDatabase+Utils.swift */; };
 		A09B539523266F02005266C2 /* BaseProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78B121F771A700B6B68B /* BaseProjectViewController.swift */; };
 		A09B539623266F02005266C2 /* AvatarRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */; };
 		A09B539723266F02005266C2 /* InfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A052A490230D546F00E72594 /* InfoAlert.swift */; };
@@ -399,8 +396,8 @@
 		A0E739E220E4C85E00DB31E1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0E739E020E4C85E00DB31E1 /* LaunchScreen.storyboard */; };
 		A0E9069322CB7D16008CD81B /* SelectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E9069222CB7D16008CD81B /* SelectedView.swift */; };
 		A0E9069422CB7D16008CD81B /* SelectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E9069222CB7D16008CD81B /* SelectedView.swift */; };
-		A0F1364F227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */; };
-		A0F13650227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */; };
+		A0F1364F227256F4008A22BF /* YapDatabase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1364E227256F4008A22BF /* YapDatabase+Utils.swift */; };
+		A0F13650227256F4008A22BF /* YapDatabase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1364E227256F4008A22BF /* YapDatabase+Utils.swift */; };
 		A0F7FDDC22491C6C006610F0 /* TintedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDB22491C6C006610F0 /* TintedButton.swift */; };
 		A0F7FDDD22491C6C006610F0 /* TintedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDB22491C6C006610F0 /* TintedButton.swift */; };
 		A0F7FDDF224936C8006610F0 /* TintedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDE224936C8006610F0 /* TintedImageView.swift */; };
@@ -497,7 +494,6 @@
 		A006A6A7282950D00029E49B /* UIBackgroundFetchResult+description.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIBackgroundFetchResult+description.swift"; sourceTree = "<group>"; };
 		A006A6AB282973C10029E49B /* DispatchGroup+waitSignal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "DispatchGroup+waitSignal.swift"; sourceTree = "<group>"; };
 		A006AF2E28193E0F007637DD /* docs */ = {isa = PBXFileReference; lastKnownFileType = folder; path = docs; sourceTree = "<group>"; };
-		A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YapDatabaseViewMappings+isNextSnapshot.swift"; sourceTree = "<group>"; };
 		A006AF3328198752007637DD /* AlertHelper.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AlertHelper.swift; sourceTree = "<group>"; };
 		A006AF3728199687007637DD /* URLSession+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URLSession+Utils.swift"; sourceTree = "<group>"; };
 		A00A8D43220C63B20083F0CB /* ProjectsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectsView.swift; sourceTree = "<group>"; };
@@ -709,7 +705,7 @@
 		A0E739E120E4C85E00DB31E1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A0E739E320E4C85E00DB31E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0E9069222CB7D16008CD81B /* SelectedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedView.swift; sourceTree = "<group>"; };
-		A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YapDatabaseConnection+updateMappings.swift"; sourceTree = "<group>"; };
+		A0F1364E227256F4008A22BF /* YapDatabase+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YapDatabase+Utils.swift"; sourceTree = "<group>"; };
 		A0F7FDDB22491C6C006610F0 /* TintedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintedButton.swift; sourceTree = "<group>"; };
 		A0F7FDDE224936C8006610F0 /* TintedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintedImageView.swift; sourceTree = "<group>"; };
 		A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveProjectAlert.swift; sourceTree = "<group>"; };
@@ -805,8 +801,7 @@
 				A055204F222566CE00B9645F /* UIView+utils.swift */,
 				A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */,
 				A006AF3728199687007637DD /* URLSession+Utils.swift */,
-				A0F1364E227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift */,
-				A006AF2F281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift */,
+				A0F1364E227256F4008A22BF /* YapDatabase+Utils.swift */,
 				A05DF973282C0E13003FADA2 /* DavResponse.swift */,
 				A05DF98B282C118A003FADA2 /* FileInfo.swift */,
 				A0DA7626282D0F300039438A /* Date+rfcString.swift */,
@@ -1619,7 +1614,6 @@
 				A0552051222566CE00B9645F /* UIView+utils.swift in Sources */,
 				A0C475B4211474A50012937E /* Formatters.swift in Sources */,
 				A0362196220DB2CA003C21DC /* IaSpace.swift in Sources */,
-				A006AF31281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */,
 				A05F79FF22EEFA9F003DBB74 /* RuleFilename.swift in Sources */,
 				A006A6AD282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */,
 				A0E9069422CB7D16008CD81B /* SelectedView.swift in Sources */,
@@ -1644,7 +1638,7 @@
 				A045D1FC224D02AA008FF8C1 /* TitleCell.swift in Sources */,
 				A05DF975282C0E13003FADA2 /* DavResponse.swift in Sources */,
 				A04255CF22944C1B0048E00C /* UIStoryboard+main.swift in Sources */,
-				A0F13650227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift in Sources */,
+				A0F13650227256F4008A22BF /* YapDatabase+Utils.swift in Sources */,
 				A08750AA2112099700BFAFE4 /* Constants.m in Sources */,
 				A05275152211A91300BDB14B /* CollectionsView.swift in Sources */,
 				A0AFCF1022300E41005E57FD /* MultilineTitle.swift in Sources */,
@@ -1703,7 +1697,7 @@
 				A006A6AE282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */,
 				A09B539323266F02005266C2 /* RemoveProjectAlert.swift in Sources */,
 				A05DF976282C0E13003FADA2 /* DavResponse.swift in Sources */,
-				A09B539423266F02005266C2 /* YapDatabaseConnection+updateMappings.swift in Sources */,
+				A09B539423266F02005266C2 /* YapDatabase+Utils.swift in Sources */,
 				A09B539523266F02005266C2 /* BaseProjectViewController.swift in Sources */,
 				A09B539623266F02005266C2 /* AvatarRow.swift in Sources */,
 				A09B539723266F02005266C2 /* InfoAlert.swift in Sources */,
@@ -1763,7 +1757,6 @@
 				A09B53C323266F02005266C2 /* UploadsView.swift in Sources */,
 				A09B53C423266F02005266C2 /* PreviewViewController.swift in Sources */,
 				A09B53C523266F02005266C2 /* StringUtils.swift in Sources */,
-				A006AF32281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */,
 				A09B53C623266F02005266C2 /* BaseViewController.swift in Sources */,
 				A09B53C723266F02005266C2 /* SpacesListCell.swift in Sources */,
 				A09B53C823266F02005266C2 /* MainNavigationController.swift in Sources */,
@@ -1831,7 +1824,7 @@
 				A08C2CE621F0B46C008ACA3E /* FormViewController.swift in Sources */,
 				A0F7FDE722494E2F006610F0 /* RemoveProjectAlert.swift in Sources */,
 				A094EA4B282AD110006CE059 /* DropboxConduit.swift in Sources */,
-				A0F1364F227256F4008A22BF /* YapDatabaseConnection+updateMappings.swift in Sources */,
+				A0F1364F227256F4008A22BF /* YapDatabase+Utils.swift in Sources */,
 				A0BF451A27DF5EE800DBB629 /* ProofModeSettingsViewController.swift in Sources */,
 				A0DE78B221F771A700B6B68B /* BaseProjectViewController.swift in Sources */,
 				A08C2CED21F0C634008ACA3E /* AvatarRow.swift in Sources */,
@@ -1915,7 +1908,6 @@
 				A0E1A68721EE834D00E4F6B7 /* BaseCell.swift in Sources */,
 				A0F7FDDC22491C6C006610F0 /* TintedButton.swift in Sources */,
 				A0E2BC722226AA10006D33E3 /* SelectedSpace.swift in Sources */,
-				A006AF30281951E8007637DD /* YapDatabaseViewMappings+isNextSnapshot.swift in Sources */,
 				A0631B5B22034F0700B3E90D /* Collection.swift in Sources */,
 				A0656AB821F9BC8500070C4B /* ConnectSpaceViewController.swift in Sources */,
 				A0E12C162B024C2F00892AC8 /* GradientView.swift in Sources */,

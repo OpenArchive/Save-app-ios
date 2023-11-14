@@ -22,10 +22,8 @@ class SelectedCollection {
     private var _collection: Collection?
     var collection: Collection? {
         get {
-            if _collection == nil, let id = id {
-                readConn?.read { transaction in
-                    self._collection = transaction.object(forKey: id, inCollection: Collection.collection) as? Collection
-                }
+            if _collection == nil {
+                _collection = readConn?.object(for: id)
             }
 
             return _collection
@@ -38,7 +36,7 @@ class SelectedCollection {
 
     var id: String? {
         get {
-            return AssetsByCollectionView.collectionId(from: group)
+            AssetsByCollectionView.collectionId(from: group)
         }
         set {
             AbcFilteredByCollectionView.updateFilter(newValue)
@@ -47,18 +45,18 @@ class SelectedCollection {
     }
 
     var group: String? {
-        return mappings.allGroups.first
+        mappings.allGroups.first
     }
 
     /**
      Should only ever be 0 or 1.
     */
     var sections: Int {
-        return Int(mappings.numberOfSections())
+        Int(mappings.numberOfSections())
     }
 
     var count: Int {
-        return Int(mappings.numberOfItems(inSection: 0))
+        Int(mappings.numberOfItems(inSection: 0))
     }
 
 
@@ -70,33 +68,22 @@ class SelectedCollection {
     // MARK: Public Methods
 
     func getAsset(_ indexPath: IndexPath) -> Asset? {
-        var asset: Asset?
-
-        readConn?.readInView(AbcFilteredByCollectionView.name) { transaction, _ in
-            asset = transaction?.object(at: indexPath, with: self.mappings) as? Asset
-        }
-
-        return asset
+        readConn?.object(at: indexPath, in: mappings)
     }
 
     func getAsset(_ row: Int) -> Asset? {
-        return getAsset(IndexPath(row: row, section: 0))
+        getAsset(IndexPath(row: row, section: 0))
     }
 
     func getIndexPath(_ asset: Asset) -> IndexPath? {
-        var indexPath: IndexPath?
-
-        readConn?.readInView(AbcFilteredByCollectionView.name) { transaction, _ in
-            indexPath = transaction?.indexPath(forKey: asset.id, inCollection: Asset.collection, with: self.mappings)
-        }
-
-        return indexPath
+        readConn?.indexPath(of: asset, with: mappings)
     }
 
     func yapDatabaseModified() -> (forceFull: Bool, sectionChanges: [YapDatabaseViewSectionChange], rowChanges: [YapDatabaseViewRowChange]) {
         guard let notifications = readConn?.beginLongLivedReadTransaction(),
-            let viewConn = readConn?.ext(AbcFilteredByCollectionView.name) as? YapDatabaseViewConnection else {
-                return (false, [], [])
+              let viewConn = readConn?.forView(AbcFilteredByCollectionView.name)
+        else {
+            return (false, [], [])
         }
 
         if !mappings.isNextSnapshot(notifications) || !viewConn.hasChanges(for: notifications) {

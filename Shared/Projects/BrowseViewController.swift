@@ -182,10 +182,7 @@ class BrowseViewController: BaseTableViewController {
 
         let project = Project(name: folders[selected].name, space: space)
 
-        Db.writeConn?.asyncReadWrite() { transaction in
-            transaction.setObject(project, forKey: project.id,
-                                  inCollection: Project.collection)
-        }
+        Db.writeConn?.setObject(project)
 
         dismiss(animated: true)
     }

@@ -17,11 +17,11 @@ extension PreviewViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
 
-        Db.writeConn?.asyncReadWrite { transaction in
+        Db.writeConn?.asyncReadWrite { tx in
             var lowest = Int.max
             var firstUpload: Upload?
 
-            transaction.iterateKeysAndObjects(inCollection: Upload.collection) { (_, upload: Upload, _) in
+            tx.iterate { (key, upload: Upload, stop) in
                 if upload.order < lowest {
                     lowest = upload.order
                     firstUpload = upload
@@ -31,7 +31,7 @@ extension PreviewViewController {
             if let firstUpload = firstUpload {
                 firstUpload.progress = 0.5
 
-                transaction.setObject(firstUpload, forKey: firstUpload.id, inCollection: Upload.collection)
+                tx.setObject(firstUpload)
             }
         }
     }

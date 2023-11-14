@@ -97,7 +97,7 @@ class TableWithSpacesViewController: BaseTableViewController, UICollectionViewDe
      */
     @objc func yapDatabaseModified(notification: Notification) {
         guard let notifications = spacesReadConn?.beginLongLivedReadTransaction(),
-            let viewConn = spacesReadConn?.ext(SpacesView.name) as? YapDatabaseViewConnection else {
+            let viewConn = spacesReadConn?.forView(SpacesView.name) else {
             return
         }
 
@@ -143,12 +143,6 @@ class TableWithSpacesViewController: BaseTableViewController, UICollectionViewDe
     // MARK: Private Methods
 
     private func getSpace(_ indexPath: IndexPath) -> Space? {
-        var space: Space?
-
-        spacesReadConn?.readInView(SpacesView.name) { transaction, _ in
-            space = transaction?.object(atRow: UInt(indexPath.row), inSection: 0, with: self.spacesMappings) as? Space
-        }
-
-        return space
+        spacesReadConn?.object(at: IndexPath(row: indexPath.row, section: 0), in: spacesMappings)
     }
 }

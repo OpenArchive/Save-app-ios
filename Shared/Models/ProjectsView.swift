@@ -43,8 +43,8 @@ class ProjectsView: YapDatabaseAutoView {
     }
 
     class func updateGrouping() {
-        Db.writeConn?.asyncReadWrite { transaction in
-            (transaction.ext(name) as? YapDatabaseAutoViewTransaction)?
+        Db.writeConn?.asyncReadWrite { tx in
+            (tx.ext(name) as? YapDatabaseAutoViewTransaction)?
                 .setGrouping(grouping,
                              sorting: sorting,
                              versionTag: UUID().uuidString)

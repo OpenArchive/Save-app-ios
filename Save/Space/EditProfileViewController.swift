@@ -56,10 +56,8 @@ class EditProfileViewController: FormViewController {
     }
 
     override func viewWillDisappear(_ animated: Bool) {
-        Db.writeConn?.asyncReadWrite { transaction in
-            if let space = self.space {
-                transaction.setObject(space, forKey: space.id, inCollection: Space.collection)
-            }
+        if let space = space {
+            Db.writeConn?.setObject(space, for: space.id, in: Space.collection)
         }
 
         super.viewWillDisappear(animated)

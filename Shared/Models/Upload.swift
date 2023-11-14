@@ -75,12 +75,8 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
 
     var asset: Asset? {
         get {
-            if _asset == nil,
-               let id = assetId
-            {
-                Db.bgRwConn?.read { transaction in
-                    self._asset = transaction.object(forKey: id, inCollection: Asset.collection) as? Asset
-                }
+            if _asset == nil {
+                _asset = Db.bgRwConn?.object(for: assetId)
             }
 
             return _asset
@@ -209,24 +205,21 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
      - parameter callback: Optional callback is called asynchronously on main queue after removal.
      */
     func remove(_ callback: (() -> Void)? = nil) {
-        Db.writeConn?.asyncReadWrite { transaction in
-            transaction.removeObject(forKey: self.id, inCollection: Upload.collection)
+        Db.writeConn?.asyncReadWrite { tx in
+            tx.remove(self)
 
             if let assetId = self.assetId {
-                transaction.removeObject(forKey: assetId, inCollection: Asset.collection)
+                tx.removeObject(forKey: assetId, inCollection: Asset.collection)
             }
 
             // Reorder uploads.
-            (transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction)?
-                .iterateKeysAndObjects(inGroup: UploadsView.groups[0])
-                { collection, key, object, index, stop in
-                    if let upload = object as? Upload,
-                        upload.order != index {
+            tx.iterate(group: UploadsView.groups.first, in: UploadsView.name) 
+            { (collection, key, upload: Upload, index, stop) in
+                if upload.order != index {
+                    upload.order = index
 
-                        upload.order = index
-
-                        transaction.replace(upload, forKey: upload.id, inCollection: collection)
-                    }
+                    tx.replace(upload, forKey: upload.id, inCollection: collection)
+                }
             }
 
             if let callback = callback {

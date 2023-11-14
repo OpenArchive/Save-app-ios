@@ -33,18 +33,7 @@ class DropboxSpace: Space, Item {
     // so there's only ever going to be one DropboxSpace, which this
     // getter will find, if it exists.
     class var space: DropboxSpace? {
-        var dropboxSpace: DropboxSpace?
-
-        Db.bgRwConn?.read { transaction in
-            transaction.iterateKeysAndObjects(inCollection: Space.collection) { (key, space: Space, stop) in
-                if let space = space as? DropboxSpace {
-                    dropboxSpace = space
-                    stop = true
-                }
-            }
-        }
-
-        return dropboxSpace
+        Db.bgRwConn?.find(where: { _ in true })
     }
 
     var email: String?

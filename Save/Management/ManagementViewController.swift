@@ -174,15 +174,11 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
      I could come up with when using YapDatabase.
     */
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
-        Db.writeConn?.asyncReadWrite { transaction in
+        Db.writeConn?.asyncReadWrite { tx in
             var uploads = [Upload]()
 
-            (transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction)?
-                .iterateKeysAndObjects(inGroup: UploadsView.groups[0])
-                { collection, key, object, index, stop in
-                    if let upload = object as? Upload {
-                        uploads.append(upload)
-                    }
+            tx.iterate(group: UploadsView.groups.first, in: UploadsView.name) { (collection, key, upload: Upload, index, stop) in
+                uploads.append(upload)
             }
 
             uploads.insert(uploads.remove(at: fromIndexPath.row), at: to.row)
@@ -191,7 +187,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
             for upload in uploads {
                 if upload.order != i {
                     upload.order = i
-                    transaction.replace(upload, forKey: upload.id, inCollection: Upload.collection)
+                    tx.replace(upload, forKey: upload.id, inCollection: Upload.collection)
                 }
 
                 i += 1
@@ -261,8 +257,9 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
      */
     @objc func yapDatabaseModified(notification: Notification) {
         guard let notifications = readConn?.beginLongLivedReadTransaction(),
-            let viewConn = readConn?.ext(UploadsView.name) as? YapDatabaseViewConnection else {
-                return
+            let viewConn = readConn?.forView(UploadsView.name) 
+        else {
+            return
         }
 
         var needsUpdate = false
@@ -358,33 +355,22 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
     }
 
     private func getUpload(_ indexPath: IndexPath) -> Upload? {
-        var upload: Upload?
-
-        readConn?.readInView(UploadsView.name) { transaction, _ in
-            upload = transaction?.object(atRow: UInt(indexPath.row), inSection: 0, with: self.mappings) as? Upload
-        }
-
-        return upload
+        readConn?.object(at: IndexPath(row: indexPath.row, section: 0), in: mappings)
     }
 
     private func transform(_ indexPath: IndexPath) -> IndexPath {
-        return IndexPath(row: indexPath.row, section: indexPath.section + 1)
+        IndexPath(row: indexPath.row, section: indexPath.section + 1)
     }
 
     /*
      Will delete the done uploads.
      */
     private func removeDone(async: Bool = true) {
-        let block = { (transaction: YapDatabaseReadWriteTransaction) in
-            var keys = [String]()
+        let block = { (tx: YapDatabaseReadWriteTransaction) in
 
-            transaction.iterateKeysAndObjects(inCollection: Upload.collection) { (key, upload: Upload, stop) in
-                if upload.state == .downloaded {
-                    keys.append(key)
-                }
-            }
+            let uploads: [Upload] = tx.findAll { $0.state == .downloaded }
 
-            transaction.removeObjects(forKeys: keys, inCollection: Upload.collection)
+            tx.removeObjects(forKeys: uploads.map({ $0.id }), inCollection: Upload.collection)
         }
 
         if async {

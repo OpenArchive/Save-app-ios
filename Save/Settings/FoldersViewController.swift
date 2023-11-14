@@ -120,7 +120,7 @@ class FoldersViewController: FormViewController {
     @objc
     private func yapDatabaseModified(_ notification: Notification) {
         if let notifications = projectsReadConn?.beginLongLivedReadTransaction(),
-           let viewConn = projectsReadConn?.ext(ProjectsView.name) as? YapDatabaseViewConnection,
+           let viewConn = projectsReadConn?.forView(ProjectsView.name),
            !projectsMappings.isNextSnapshot(notifications) || viewConn.hasChanges(for: notifications)
         {
             projectsReadConn?.update(mappings: projectsMappings)
@@ -132,33 +132,20 @@ class FoldersViewController: FormViewController {
     private func reload() {
         projectsSection?.removeAll()
 
-        hasArchived = false
 
-        projectsReadConn?.readInView(projectsMappings.view, { viewTransaction, transaction in
-            viewTransaction?.iterateKeysAndObjects(inGroup: projectsMappings.group(forSection: 0)!, using: {
-                collection, key, object, index, stop in
+        let projects: [Project] = projectsReadConn?.objects(in: 0, with: projectsMappings) ?? []
 
-                guard let project = object as? Project else {
-                    return
-                }
+        hasArchived = !archived && projects.contains(where: { !$0.active })
 
-                if !archived && !project.active {
-                    hasArchived = true
-                }
-
-                guard archived != project.active else {
-                    return
-                }
-
-                projectsSection!
-                <<< ButtonRow {
-                    $0.title = project.name
-                    $0.presentationMode = .show(controllerProvider: .callback(builder: {
-                        EditProjectViewController(project)
-                    }), onDismiss: nil)
-                }
-            })
-        })
+        for project in projects.filter({ archived != $0.active }) {
+            projectsSection!
+            <<< ButtonRow {
+                $0.title = project.name
+                $0.presentationMode = .show(controllerProvider: .callback(builder: {
+                    EditProjectViewController(project)
+                }), onDismiss: nil)
+            }
+        }
 
         if archived && (projectsSection?.isEmpty ?? true) {
             navigationController?.popViewController(animated: true)
@@ -179,20 +166,15 @@ class FoldersViewController: FormViewController {
 
         space.license = cc.get()
 
-        Db.writeConn?.asyncReadWrite { transaction in
-            transaction.setObject(space, forKey: space.id, inCollection: Space.collection)
+        Db.writeConn?.asyncReadWrite { tx in
+            tx.setObject(space, forKey: space.id, inCollection: Space.collection)
 
-            var changed = [Project]()
+            let projects: [Project] = tx.findAll { $0.active && $0.spaceId == space.id }
 
-            transaction.iterateKeysAndObjects(inCollection: Project.collection) { (key, project: Project, stop) in
-                if project.active && project.spaceId == space.id {
-                    project.license = space.license
-                    changed.append(project)
-                }
-            }
+            for project in projects {
+                project.license = space.license
 
-            for project in changed {
-                transaction.setObject(project, forKey: project.id, inCollection: Project.collection)
+                tx.setObject(project)
             }
         }
     }

@@ -28,26 +28,16 @@ class ConnectSpaceViewController: BaseTableViewController {
                 action: #selector(dismiss))
         }
 
-        Db.bgRwConn?.asyncRead { transaction in
-            transaction.iterateKeysAndObjects(inCollection: Space.collection, using: { (key, object: DropboxSpace, stop) in
-                self.hasOneDropbox = true
+        Db.bgRwConn?.asyncRead { [weak self] tx in
+            self?.hasOneDropbox = tx.find(where: { (_: DropboxSpace) in true }) != nil
 
+            self?.hasOneInternetArchive = tx.find(where: { (_: IaSpace) in true }) != nil
+
+            if self?.hasOneDropbox ?? false || self?.hasOneInternetArchive ?? false {
                 DispatchQueue.main.async {
-                    self.tableView.reloadData()
+                    self?.tableView.reloadData()
                 }
-
-                stop = true
-            })
-
-            transaction.iterateKeysAndObjects(inCollection: Space.collection, using: { (key, object: IaSpace, stop) in
-                self.hasOneInternetArchive = true
-
-                DispatchQueue.main.async {
-                    self.tableView.reloadData()
-                }
-
-                stop = true
-            })
+            }
         }
 
         tableView.register(TitleCell.nib, forCellReuseIdentifier: TitleCell.reuseId)

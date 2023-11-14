@@ -56,8 +56,8 @@ class AbcFilteredByCollectionView: YapDatabaseFilteredView {
     class func updateFilter(_ collectionId: String? = nil) {
         // Note: This needs to be synchronous. Otherwise, we will have a lot of
         // race conditions in the UI.
-        Db.writeConn?.readWrite { transaction in
-            (transaction.ext(name) as? YapDatabaseFilteredViewTransaction)?
+        Db.writeConn?.readWrite { tx in
+            (tx.ext(name) as? YapDatabaseFilteredViewTransaction)?
                 .setFiltering(getFilter(collectionId), versionTag: UUID().uuidString)
         }
     }

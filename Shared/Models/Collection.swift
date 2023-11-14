@@ -46,9 +46,7 @@ class Collection: NSObject, Item, YapDatabaseRelationshipNode {
     var project: Project {
         get {
             if _project == nil {
-                Db.bgRwConn?.read { transaction in
-                    _project = transaction.object(forKey: self.projectId, inCollection: Project.collection) as? Project
-                }
+                _project = Db.bgRwConn?.object(for: projectId)
             }
 
             return _project!
@@ -108,18 +106,6 @@ class Collection: NSObject, Item, YapDatabaseRelationshipNode {
         }
     }
 
-    class func get(byId id: String?, conn: YapDatabaseConnection? = Db.bgRwConn) -> Collection? {
-        var collection: Collection?
-
-        if let id = id {
-            conn?.read { transaction in
-                collection = transaction.object(forKey: id,
-                    inCollection: Collection.collection) as? Collection
-            }
-        }
-
-        return collection
-    }
 
     init(_ project: Project) {
         id = UUID().uuidString

@@ -143,12 +143,8 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     private var _collection: Collection?
     var collection: Collection? {
         get {
-            if _collection == nil,
-                let id = collectionId
-            {
-                Db.bgRwConn?.read { transaction in
-                    self._collection = transaction.object(forKey: id, inCollection: Collection.collection) as? Collection
-                }
+            if _collection == nil {
+                _collection = Db.bgRwConn?.object(for: collectionId)
             }
 
             return _collection
@@ -309,18 +305,9 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
      Be careful, this is an expensive check! Cache, if you need to reuse!
     */
     var isUploading: Bool {
-        var isUploading = false
-
-        Db.bgRwConn?.read { transaction in
-            transaction.iterateKeysAndObjects(inCollection: Upload.collection) { (key, upload: Upload, stop) in
-                if upload.assetId == self.id && !upload.paused {
-                    isUploading = true
-                    stop = true
-                }
-            }
-        }
-
-        return isUploading
+        Db.bgRwConn?.find(where: { (upload: Upload) in
+            !upload.paused && upload.assetId == id
+        }) != nil
     }
 
     /**
@@ -586,8 +573,8 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
             AssetFactory.imageManager.cancelImageRequest(phImageRequestId)
         }
 
-        Db.writeConn?.asyncReadWrite { transaction in
-            transaction.removeObject(forKey: self.id, inCollection: Self.collection)
+        Db.writeConn?.asyncReadWrite { tx in
+            tx.remove(self)
 
             if let callback = callback {
                 DispatchQueue.main.async(execute: callback)
@@ -741,15 +728,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
             return []
         }
 
-        var updated = [Asset]()
-
-        Db.bgRwConn?.read { transaction in
-            transaction.enumerateObjects(forKeys: assets.map({ $0.id }), inCollection: collection) { i, object, stop in
-                if let asset = object as? Asset {
-                    updated.append(asset)
-                }
-            }
-        }
+        let updated: [Asset] = Db.bgRwConn?.objects(for: assets.map({ $0.id })) ?? []
 
         var notStored = [Asset]()
 
@@ -775,12 +754,12 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
             Db.writeConn?.readWrite { transaction in
                 if update != nil {
                     for asset in updated {
-                        transaction.setObject(asset, forKey: asset.id, inCollection: collection)
+                        transaction.setObject(asset)
                     }
                 }
 
                 for asset in notStored {
-                    transaction.setObject(asset, forKey: asset.id, inCollection: collection)
+                    transaction.setObject(asset)
                 }
             }
         }

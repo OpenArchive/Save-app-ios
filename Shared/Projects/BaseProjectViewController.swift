@@ -82,9 +82,6 @@ class BaseProjectViewController: FormViewController {
     }
 
     func store() {
-        Db.writeConn?.asyncReadWrite() { transaction in
-            transaction.setObject(self.project, forKey: self.project.id,
-                                  inCollection: Project.collection)
-        }
+        Db.writeConn?.setObject(project)
     }
 }

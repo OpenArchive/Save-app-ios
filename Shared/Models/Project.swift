@@ -60,12 +60,8 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
     private var _space: Space?
     var space: Space? {
         get {
-            if _space == nil,
-                let id = spaceId {
-
-                Db.bgRwConn?.read { transaction in
-                    _space = transaction.object(forKey: id, inCollection: Space.collection) as? Space
-                }
+            if _space == nil {
+                _space = Db.bgRwConn?.object(for: spaceId, in: Space.collection)
             }
 
             return _space
@@ -79,21 +75,15 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
     private var collectionId: String?
 
     var currentCollection: Collection {
-        var collection: Collection?
-
-        if let id = collectionId {
-            Db.bgRwConn?.read { transaction in
-                collection = transaction.object(forKey: id, inCollection: Collection.collection) as? Collection
-            }
-        }
+        var collection: Collection? = Db.bgRwConn?.object(for: collectionId)
 
         if !(collection?.isOpen ?? false) {
             collection = Collection(self)
             collectionId = collection?.id
 
             Db.writeConn?.asyncReadWrite { transaction in
-                transaction.setObject(collection, forKey: collection!.id, inCollection: Collection.collection)
-                transaction.setObject(self, forKey: self.id, inCollection: Project.collection)
+                transaction.setObject(collection!)
+                transaction.setObject(self)
             }
         }
 

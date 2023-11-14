@@ -238,30 +238,26 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         else {
             var found: Upload? = nil
 
-            Db.bgRwConn?.readInView(UploadsView.name) { viewTransaction, transaction in
-                viewTransaction?.iterateKeysAndObjects(inGroup: UploadsView.groups[0])
-                { collection, key, object, index, stop in
+            Db.bgRwConn?.iterate(group: UploadsView.groups.first, in: UploadsView.name) 
+            { (tx, collection, key, upload: Upload, index, stop) in
 
-                    // Look at next, if it's paused or delayed.
-                    guard let upload = object as? Upload,
-                          !upload.paused
-                    else {
-                        return
-                    }
-
-                    // First attach object chain to upload before next call,
-                    // otherwise, that will trigger more DB reads and with that
-                    // a deadlock.
-                    self.heatCache(transaction, upload)
-
-                    // Look at next, if it's not ready, yet.
-                    guard  upload.filename == filename && upload.isReady else {
-                        return
-                    }
-
-                    found = upload
-                    stop = true
+                // Look at next, if it's paused or delayed.
+                guard !upload.paused else {
+                    return
                 }
+
+                // First attach object chain to upload before next call,
+                // otherwise, that will trigger more DB reads and with that
+                // a deadlock.
+                self.heatCache(tx, upload)
+
+                // Look at next, if it's not ready, yet.
+                guard  upload.filename == filename && upload.isReady else {
+                    return
+                }
+
+                found = upload
+                stop = true
             }
 
             if let found = found {
@@ -286,22 +282,20 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
         var found = false
 
-        Db.bgRwConn?.readInView(UploadsView.name) { viewTransaction, transaction in
-            viewTransaction?.iterateKeysAndObjects(inGroup: UploadsView.groups[0])
-            { collection, key, object, index, stop in
-                if let upload = object as? Upload,
-                    upload.id == current.id {
+        Db.bgRwConn?.iterate(group: UploadsView.groups.first, in: UploadsView.name)
+        { (tx, collection, key, upload: Upload, index, stop) in
 
-                    // First attach object chain to upload before next call,
-                    // otherwise, that will trigger another DB read.
-                    self.heatCache(transaction, upload)
-                    upload.liveProgress = current.liveProgress
+            if upload.id == current.id {
 
-                    self.current = upload
+                // First attach object chain to upload before next call,
+                // otherwise, that will trigger another DB read.
+                self.heatCache(tx, upload)
+                upload.liveProgress = current.liveProgress
 
-                    found = true
-                    stop = true
-                }
+                self.current = upload
+
+                found = true
+                stop = true
             }
         }
 
@@ -617,17 +611,14 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
      - returns: `current` for convenience or `nil` if none found.
      */
     private func getNext() -> Upload? {
-        Db.bgRwConn?.readWrite { transaction in
-            let viewTransaction = transaction.ext(UploadsView.name) as? YapDatabaseViewTransaction
-
+        Db.bgRwConn?.readWrite { tx in
             var next: Upload? = nil
 
-            viewTransaction?.iterateKeysAndObjects(inGroup: UploadsView.groups[0])
-            { collection, key, object, index, stop in
+            tx.iterate(group: UploadsView.groups.first, in: UploadsView.name) 
+            { (collection, key, upload: Upload, index, stop) in
 
                 // Look at next, if it's paused or delayed.
-                guard let upload = object as? Upload,
-                    !upload.paused
+                guard !upload.paused
                     && upload.state != .downloaded
                     && upload.nextTry.compare(Date()) == .orderedAscending else {
                     return
@@ -636,7 +627,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 // First attach object chain to upload before next call,
                 // otherwise, that will trigger more DB reads and with that
                 // a deadlock.
-                self.heatCache(transaction, upload)
+                self.heatCache(tx, upload)
 
                 // Look at next, if it's not ready, yet.
                 guard upload.isReady else {
@@ -656,7 +647,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                             upload.cancel()
                             upload.paused = true
 
-                            transaction.replace(upload, forKey: upload.id, inCollection: Upload.collection)
+                            tx.replace(upload, forKey: upload.id, inCollection: Upload.collection)
                         }
                     }
 
@@ -698,9 +689,9 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             }
         }
         else {
-            Db.bgRwConn?.readWrite { transaction in
-                if let upload = transaction.object(forKey: id, inCollection: Upload.collection) as? Upload {
-                    self.heatCache(transaction, upload)
+            Db.bgRwConn?.readWrite { tx in
+                if let upload: Upload = tx.object(for: id) {
+                    self.heatCache(tx, upload)
 
                     if pause {
                         upload.paused = true
@@ -717,11 +708,11 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                             space.tries = 0
                             space.lastTry = nil
 
-                            transaction.replace(space, forKey: space.id, inCollection: Space.collection)
+                            tx.replace(space, forKey: space.id, inCollection: Space.collection)
                         }
                     }
 
-                    transaction.replace(upload, forKey: id, inCollection: Upload.collection)
+                    tx.replace(upload, forKey: id, inCollection: Upload.collection)
                 }
             }
         }
@@ -730,28 +721,19 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     /**
      Prefill the object chain to avoid deadlocking DB access when trying to access these objects.
 
-     - parameter transaction: An active DB transaction
+     - parameter tx: An active DB transaction
      - parameter upload: The object to heat up
      */
-    private func heatCache(_ transaction: YapDatabaseReadTransaction, _ upload: Upload) {
-        if let assetId = upload.assetId {
-            upload.asset = transaction.object(forKey: assetId, inCollection: Asset.collection) as? Asset
+    private func heatCache(_ tx: YapDatabaseReadTransaction, _ upload: Upload) {
+        upload.asset = tx.object(for: upload.assetId)
 
-            if let collectionId = upload.asset?.collectionId {
-                upload.asset?.collection = transaction.object(
-                    forKey: collectionId, inCollection: Collection.collection) as? Collection
+        upload.asset?.collection = tx.object(for: upload.asset?.collectionId)
 
-                if let projectId = upload.asset?.collection?.projectId,
-                    let project = transaction.object(forKey: projectId, inCollection: Project.collection) as? Project {
+        if let project: Project = tx.object(for: upload.asset?.collection?.projectId)
+        {
+            upload.asset?.collection?.project = project
 
-                    upload.asset?.collection?.project = project
-
-                    if let spaceId = project.spaceId {
-                        upload.asset?.collection?.project.space =
-                            transaction.object(forKey: spaceId, inCollection: Space.collection) as? Space
-                    }
-                }
-            }
+            upload.asset?.collection?.project.space = tx.object(for: project.spaceId, in: Space.collection)
         }
     }
 

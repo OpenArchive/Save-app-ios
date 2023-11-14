@@ -68,11 +68,10 @@ class BaseServerViewController: FormViewController {
     @objc func connect() {
         SelectedSpace.space = self.space
 
-        Db.writeConn?.asyncReadWrite() { transaction in
-            SelectedSpace.store(transaction)
+        Db.writeConn?.asyncReadWrite() { tx in
+            SelectedSpace.store(tx)
 
-            transaction.setObject(self.space, forKey: self.space!.id,
-                                  inCollection: Space.collection)
+            tx.setObject(self.space, forKey: self.space!.id, inCollection: Space.collection)
         }
 
         if isEdit ?? true {
@@ -115,11 +114,11 @@ class BaseServerViewController: FormViewController {
                 AlertHelper.destructiveAction(
                     NSLocalizedString("Remove Space", comment: ""),
                     handler: { action in
-                        Db.writeConn?.readWrite { transaction in
-                            transaction.removeObject(forKey: space.id, inCollection: Space.collection)
+                        Db.writeConn?.readWrite { tx in
+                            tx.removeObject(forKey: space.id, inCollection: Space.collection)
 
                             SelectedSpace.space = nil
-                            SelectedSpace.store(transaction)
+                            SelectedSpace.store(tx)
 
                             DispatchQueue.main.async(execute: self.goToNext)
                         }
