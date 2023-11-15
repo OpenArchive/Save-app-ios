@@ -49,7 +49,7 @@ class UploadCell: BaseCell, PKDownloadButtonDelegate {
 
     @IBOutlet weak var progress: PKDownloadButton! {
         didSet {
-            UploadCell.style(progress)
+            Self.style(progress)
         }
     }
     

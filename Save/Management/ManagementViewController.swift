@@ -175,11 +175,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
     */
     override func tableView(_ tableView: UITableView, moveRowAt fromIndexPath: IndexPath, to: IndexPath) {
         Db.writeConn?.asyncReadWrite { tx in
-            var uploads = [Upload]()
-
-            tx.iterate(group: UploadsView.groups.first, in: UploadsView.name) { (collection, key, upload: Upload, index, stop) in
-                uploads.append(upload)
-            }
+            var uploads: [Upload] = tx.findAll(group: UploadsView.groups.first, in: UploadsView.name)
 
             uploads.insert(uploads.remove(at: fromIndexPath.row), at: to.row)
 

@@ -308,17 +308,6 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     }
 
     /**
-     Checks, if asset is currently in an upload queue and *not* paused.
-
-     Be careful, this is an expensive check! Cache, if you need to reuse!
-    */
-    var isUploading: Bool {
-        Db.bgRwConn?.find(where: { (upload: Upload) in
-            !upload.paused && upload.assetId == id
-        }) != nil
-    }
-
-    /**
      Checks, if asset is audio or video.
      */
     var isAv: Bool {
@@ -759,15 +748,15 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         }
 
         if !notStored.isEmpty || update != nil {
-            Db.writeConn?.readWrite { transaction in
+            Db.writeConn?.readWrite { tx in
                 if update != nil {
                     for asset in updated {
-                        transaction.setObject(asset)
+                        tx.setObject(asset)
                     }
                 }
 
                 for asset in notStored {
-                    transaction.setObject(asset)
+                    tx.setObject(asset)
                 }
             }
         }

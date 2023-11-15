@@ -171,16 +171,16 @@ class PreviewViewController: UIViewController,
     @IBAction func upload() {
         UploadInfoAlert.presentIfNeeded(self) {
             Db.writeConn?.asyncReadWrite { tx in
+                guard let group = self.sc.group else {
+                    return
+                }
+
                 var order = 0
 
                 tx.iterate { (key, upload: Upload, stop) in
                     if upload.order >= order {
                         order = upload.order + 1
                     }
-                }
-
-                guard let group = self.sc.group else {
-                    return
                 }
 
                 if let collection: Collection = tx.object(for: self.sc.id) {

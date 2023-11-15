@@ -60,12 +60,16 @@ extension YapDatabaseConnection {
         }
     }
 
-    func objects<T: Item>(for keys: [String]) -> [T] {
+    func objects<T: Item>(for keys: [String],
+                          _ process: ((_ tx: YapDatabaseReadTransaction, _ object: inout T) -> Void)? = nil) -> [T]
+    {
         var objects = [T]()
 
         read { tx in
             tx.enumerateObjects(forKeys: keys, inCollection: T.collection) { index, object, stop in
-                if let object = object as? T {
+                if var object = object as? T {
+                    process?(tx, &object)
+
                     objects.append(object)
                 }
             }
@@ -74,7 +78,9 @@ extension YapDatabaseConnection {
         return objects
     }
 
-    func objects<T>(in section: Int, with mappings: YapDatabaseViewMappings?) -> [T] {
+    func objects<T>(in section: Int, with mappings: YapDatabaseViewMappings?,
+                    _ process: ((_ tx: YapDatabaseReadTransaction, _ object: inout T) -> Void)? = nil) -> [T]
+    {
         var objects = [T]()
 
         guard let mappings = mappings,
@@ -84,6 +90,9 @@ extension YapDatabaseConnection {
         }
 
         iterate(group: group, in: mappings.view) { (tx, collection, key, object: T, index, stop) in
+            var object = object
+            process?(tx, &object)
+
             objects.append(object)
         }
 
@@ -91,7 +100,7 @@ extension YapDatabaseConnection {
     }
 
     func objects<T>(at indexPaths: [IndexPath]?, in mappings: YapDatabaseViewMappings?,
-                    _ process: ((T, YapDatabaseReadTransaction) -> T?)? = nil) -> [T]
+                    _ process: ((_ tx: YapDatabaseReadTransaction, _ object: inout T) -> Void)? = nil) -> [T]
     {
         var objects = [T]()
 
@@ -107,15 +116,10 @@ extension YapDatabaseConnection {
             }
 
             for indexPath in indexPaths {
-                if let object = viewTx.object(at: indexPath, with: mappings) as? T {
-                    if let process = process {
-                        if let object = process(object, tx) {
-                            objects.append(object)
-                        }
-                    }
-                    else {
-                        objects.append(object)
-                    }
+                if var object = viewTx.object(at: indexPath, with: mappings) as? T {
+                    process?(tx, &object)
+
+                    objects.append(object)
                 }
             }
         }
@@ -124,12 +128,14 @@ extension YapDatabaseConnection {
     }
 
     func object<T>(at indexPath: IndexPath, in mappings: YapDatabaseViewMappings?,
-                   _ process: ((T, YapDatabaseReadTransaction) -> T?)? = nil) -> T?
+                   _ process: ((_ tx: YapDatabaseReadTransaction, _ object: inout T) -> Void)? = nil) -> T?
     {
         objects(at: [indexPath], in: mappings, process).first
     }
 
-    func object<T>(for key: String?, in collection: String?) -> T? {
+    func object<T>(for key: String?, in collection: String?,
+                   _ process: ((_ tx: YapDatabaseReadTransaction, _ object: inout T) -> Void)? = nil) -> T?
+    {
         guard let key = key else {
             return nil
         }
@@ -137,13 +143,19 @@ extension YapDatabaseConnection {
         var object: T? = nil
 
         read { tx in
-            object = tx.object(for: key, in: collection)
+            if var o: T = tx.object(for: key, in: collection) {
+                process?(tx, &o)
+
+                object = o
+            }
         }
 
         return object
     }
 
-    func object<T: Item>(for key: String?) -> T? {
+    func object<T: Item>(for key: String?,
+                         _ process: ((_ tx: YapDatabaseReadTransaction, _ object: inout T) -> Void)? = nil) -> T?
+    {
         guard let key = key else {
             return nil
         }
@@ -151,7 +163,11 @@ extension YapDatabaseConnection {
         var object: T? = nil
 
         read { tx in
-            object = tx.object(for: key)
+            if var o: T = tx.object(for: key) {
+                process?(tx, &o)
+
+                object = o
+            }
         }
 
         return object
@@ -215,6 +231,24 @@ extension YapDatabaseConnection {
             }
         }
     }
+
+    func find<T>(group: String?, in view: String?, where: (_ tx: YapDatabaseReadTransaction, _ object: inout T) -> Bool) -> T? {
+        guard let group = group,
+              let view = view
+        else {
+            return nil
+        }
+
+        var found: T? = nil
+
+        read { tx in
+            found = tx.find(group: group, in: view) { (object: inout T) in
+                return `where`(tx, &object)
+            }
+        }
+
+        return found
+    }
 }
 
 extension YapDatabaseReadTransaction {
@@ -252,11 +286,13 @@ extension YapDatabaseReadTransaction {
         return found
     }
 
-    func findAll<T: Item>(where: (T) -> Bool) -> [T] {
+    func findAll<T: Item>(where: ((_ object: inout T) -> Bool)? = nil) -> [T] {
         var found = [T]()
 
         iterate { (key, object: T, stop) in
-            if `where`(object) {
+            var object = object
+
+            if `where`?(&object) ?? true {
                 found.append(object)
             }
         }
@@ -281,6 +317,35 @@ extension YapDatabaseReadTransaction {
                 block(collection, key, object, index, &stop)
             }
         }
+    }
+
+    func find<T>(group: String?, in view: String?, where: (_ object: inout T) -> Bool) -> T? {
+        var found: T? = nil
+
+        iterate(group: group, in: view) { (collection, key, object: T, index, stop) in
+            var object = object
+
+            if `where`(&object) {
+                found = object
+                stop = true
+            }
+        }
+
+        return found
+    }
+
+    func findAll<T>(group: String?, in view: String?, where: ((_ object: inout T) -> Bool)? = nil) -> [T] {
+        var objects = [T]()
+
+        iterate(group: group, in: view) { (collection, key, object: T, index, stop) in
+            var object = object
+
+            if `where`?(&object) ?? true {
+                objects.append(object)
+            }
+        }
+
+        return objects
     }
 }
 

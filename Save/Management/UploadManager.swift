@@ -236,14 +236,11 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             done(current?.id, error, url, synchronous: true)
         }
         else {
-            var found: Upload? = nil
-
-            Db.bgRwConn?.iterate(group: UploadsView.groups.first, in: UploadsView.name) 
-            { (tx, collection, key, upload: Upload, index, stop) in
+            if let found = Db.bgRwConn?.find(group: UploadsView.groups.first, in: UploadsView.name, where: { (tx, upload: inout Upload) in
 
                 // Look at next, if it's paused or delayed.
                 guard !upload.paused else {
-                    return
+                    return false
                 }
 
                 // First attach object chain to upload before next call,
@@ -253,14 +250,12 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
                 // Look at next, if it's not ready, yet.
                 guard  upload.filename == filename && upload.isReady else {
-                    return
+                    return false
                 }
 
-                found = upload
-                stop = true
-            }
-
-            if let found = found {
+                return true
+            })
+            {
                 current = found // Otherwise next call will do nothing.
                 done(found.id, error, url, synchronous: true)
             }
@@ -282,10 +277,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
         var found = false
 
-        Db.bgRwConn?.iterate(group: UploadsView.groups.first, in: UploadsView.name)
-        { (tx, collection, key, upload: Upload, index, stop) in
-
-            if upload.id == current.id {
+        Db.bgRwConn?.read({ tx in
+            if let upload: Upload = tx.object(for: current.id) {
 
                 // First attach object chain to upload before next call,
                 // otherwise, that will trigger another DB read.
@@ -295,9 +288,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 self.current = upload
 
                 found = true
-                stop = true
             }
-        }
+        })
 
         // Our job got deleted!
         if !found {
@@ -614,14 +606,13 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         Db.bgRwConn?.readWrite { tx in
             var next: Upload? = nil
 
-            tx.iterate(group: UploadsView.groups.first, in: UploadsView.name) 
-            { (collection, key, upload: Upload, index, stop) in
-
+            next = tx.find(group: UploadsView.groups.first, in: UploadsView.name) { upload in
                 // Look at next, if it's paused or delayed.
                 guard !upload.paused
                     && upload.state != .downloaded
-                    && upload.nextTry.compare(Date()) == .orderedAscending else {
-                    return
+                    && upload.nextTry.compare(Date()) == .orderedAscending 
+                else {
+                    return false
                 }
 
                 // First attach object chain to upload before next call,
@@ -651,11 +642,10 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                         }
                     }
 
-                    return
+                    return false
                 }
 
-                next = upload
-                stop = true
+                return true
             }
 
             current = next
