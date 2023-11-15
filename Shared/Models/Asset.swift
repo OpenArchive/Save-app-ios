@@ -82,6 +82,14 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         return created.compare(rhs.created)
     }
 
+    func preheat(_ tx: YapDatabaseReadTransaction) {
+        if _collection?.id != collectionId {
+            _collection = tx.object(for: collectionId)
+        }
+
+        _collection?.preheat(tx)
+    }
+
 
     // MARK: Asset
 

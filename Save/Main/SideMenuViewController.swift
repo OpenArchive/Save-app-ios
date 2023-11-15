@@ -250,15 +250,7 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
      Shall be called, when something changes the database.
      */
     @objc func yapDatabaseModified(notification: Notification) {
-        guard let notifications = spacesConn?.beginLongLivedReadTransaction(),
-              let viewConn = spacesConn?.forView(SpacesView.name) 
-        else {
-            return
-        }
-
-        if !spacesMappings.isNextSnapshot(notifications) || viewConn.hasChanges(for: notifications) {
-            spacesConn?.update(mappings: spacesMappings)
-
+        if spacesConn?.hasChanges(spacesMappings) ?? false {
             spacesTable.reloadData()
         }
     }

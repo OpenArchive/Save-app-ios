@@ -35,6 +35,14 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
 
     var id: String
 
+    func preheat(_ tx: YapDatabaseReadTransaction) {
+        if _asset?.id != assetId {
+            _asset = tx.object(for: assetId)
+        }
+
+        _asset?.preheat(tx)
+    }
+
 
     // MARK: Upload
 

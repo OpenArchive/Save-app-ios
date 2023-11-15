@@ -291,10 +291,9 @@ class MainViewController: TableWithSpacesViewController {
     @objc override func yapDatabaseModified(notification: Notification) {
         super.yapDatabaseModified(notification: notification)
 
-        projectsReadConn?.beginLongLivedReadTransaction()
-        projectsReadConn?.update(mappings: projectsMappings)
-
-        tableView.reloadSections([MainViewController.projectSection], with: .automatic)
+        if projectsReadConn?.hasChanges(projectsMappings) ?? false {
+            tableView.reloadSections([Self.projectSection], with: .automatic)
+        }
     }
 
 

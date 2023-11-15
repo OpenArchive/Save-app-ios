@@ -172,4 +172,9 @@ protocol Item: NSSecureCoding, NSCopying {
     associatedtype Item2: Item
 
     func compare(_ rhs: Item2) -> ComparisonResult
+
+    /**
+     Loads all cached object references.
+     */
+    func preheat(_ tx: YapDatabaseReadTransaction)
 }

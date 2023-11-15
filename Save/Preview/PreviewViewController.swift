@@ -289,7 +289,7 @@ class PreviewViewController: UIViewController,
             return
         }
 
-        if sectionChanges.count < 1 && rowChanges.count < 1 {
+        if sectionChanges.isEmpty && rowChanges.isEmpty {
             return
         }
 
@@ -364,14 +364,6 @@ class PreviewViewController: UIViewController,
     }
 
     private func getSelectedAssets() -> [Asset] {
-        var assets = [Asset]()
-
-        for indexPath in collectionView.indexPathsForSelectedItems ?? [] {
-            if let asset = sc.getAsset(indexPath) {
-                assets.append(asset)
-            }
-        }
-
-        return assets
+        sc.getAssets(collectionView.indexPathsForSelectedItems)
     }
 }

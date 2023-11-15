@@ -249,7 +249,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 // First attach object chain to upload before next call,
                 // otherwise, that will trigger more DB reads and with that
                 // a deadlock.
-                self.heatCache(tx, upload)
+                upload.preheat(tx)
 
                 // Look at next, if it's not ready, yet.
                 guard  upload.filename == filename && upload.isReady else {
@@ -289,7 +289,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
                 // First attach object chain to upload before next call,
                 // otherwise, that will trigger another DB read.
-                self.heatCache(tx, upload)
+                upload.preheat(tx)
                 upload.liveProgress = current.liveProgress
 
                 self.current = upload
@@ -627,7 +627,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 // First attach object chain to upload before next call,
                 // otherwise, that will trigger more DB reads and with that
                 // a deadlock.
-                self.heatCache(tx, upload)
+                upload.preheat(tx)
 
                 // Look at next, if it's not ready, yet.
                 guard upload.isReady else {
@@ -691,7 +691,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         else {
             Db.bgRwConn?.readWrite { tx in
                 if let upload: Upload = tx.object(for: id) {
-                    self.heatCache(tx, upload)
+                    upload.preheat(tx)
 
                     if pause {
                         upload.paused = true
@@ -715,25 +715,6 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                     tx.replace(upload, forKey: id, inCollection: Upload.collection)
                 }
             }
-        }
-    }
-
-    /**
-     Prefill the object chain to avoid deadlocking DB access when trying to access these objects.
-
-     - parameter tx: An active DB transaction
-     - parameter upload: The object to heat up
-     */
-    private func heatCache(_ tx: YapDatabaseReadTransaction, _ upload: Upload) {
-        upload.asset = tx.object(for: upload.assetId)
-
-        upload.asset?.collection = tx.object(for: upload.asset?.collectionId)
-
-        if let project: Project = tx.object(for: upload.asset?.collection?.projectId)
-        {
-            upload.asset?.collection?.project = project
-
-            upload.asset?.collection?.project.space = tx.object(for: project.spaceId, in: Space.collection)
         }
     }
 

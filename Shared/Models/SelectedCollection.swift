@@ -67,33 +67,19 @@ class SelectedCollection {
 
     // MARK: Public Methods
 
+    func getAssets(_ indexPaths: [IndexPath]?) -> [Asset] {
+        readConn?.objects(at: indexPaths, in: mappings) ?? []
+    }
+
     func getAsset(_ indexPath: IndexPath) -> Asset? {
-        readConn?.object(at: indexPath, in: mappings)
+        getAssets([indexPath]).first
     }
 
     func getAsset(_ row: Int) -> Asset? {
         getAsset(IndexPath(row: row, section: 0))
     }
 
-    func getIndexPath(_ asset: Asset) -> IndexPath? {
-        readConn?.indexPath(of: asset, with: mappings)
-    }
-
     func yapDatabaseModified() -> (forceFull: Bool, sectionChanges: [YapDatabaseViewSectionChange], rowChanges: [YapDatabaseViewRowChange]) {
-        guard let notifications = readConn?.beginLongLivedReadTransaction(),
-              let viewConn = readConn?.forView(AbcFilteredByCollectionView.name)
-        else {
-            return (false, [], [])
-        }
-
-        if !mappings.isNextSnapshot(notifications) || !viewConn.hasChanges(for: notifications) {
-            readConn?.update(mappings: mappings)
-
-            return (true, [], [])
-        }
-
-        let changes = viewConn.getChanges(forNotifications: notifications, withMappings: mappings)
-
-        return (false, changes.sectionChanges, changes.rowChanges)
+        readConn?.getChanges(mappings) ?? (false, [], [])
     }
 }

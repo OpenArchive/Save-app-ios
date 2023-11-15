@@ -37,6 +37,14 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
 
     var id: String
 
+    func preheat(_ tx: YapDatabaseReadTransaction) {
+        if _space?.id != spaceId {
+            _space = tx.object(for: spaceId, in: Space.collection)
+        }
+
+        _space?.preheat(tx)
+    }
+
 
     // MARK: Project
 
@@ -81,9 +89,9 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
             collection = Collection(self)
             collectionId = collection?.id
 
-            Db.writeConn?.asyncReadWrite { transaction in
-                transaction.setObject(collection!)
-                transaction.setObject(self)
+            Db.writeConn?.asyncReadWrite { tx in
+                tx.setObject(collection!)
+                tx.setObject(self)
             }
         }
 

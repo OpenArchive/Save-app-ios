@@ -37,6 +37,14 @@ class Collection: NSObject, Item, YapDatabaseRelationshipNode {
 
     var id: String
 
+    func preheat(_ tx: YapDatabaseReadTransaction) {
+        if _project?.id != projectId {
+            _project = tx.object(for: projectId)
+        }
+
+        _project?.preheat(tx)
+    }
+
 
     // MARK: Collection
 

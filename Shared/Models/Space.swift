@@ -26,6 +26,11 @@ class Space: NSObject {
         NSKeyedUnarchiver.setClass(self, forClassName: "Space")
     }
 
+
+    func preheat(_ tx: YapDatabaseReadTransaction) {
+        // Ignored. Nothing to do.
+    }
+
     /**
      Maximum number of failed uploads per space before the circuit breaker opens.
      */

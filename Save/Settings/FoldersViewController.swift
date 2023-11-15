@@ -119,12 +119,7 @@ class FoldersViewController: FormViewController {
 
     @objc
     private func yapDatabaseModified(_ notification: Notification) {
-        if let notifications = projectsReadConn?.beginLongLivedReadTransaction(),
-           let viewConn = projectsReadConn?.forView(ProjectsView.name),
-           !projectsMappings.isNextSnapshot(notifications) || viewConn.hasChanges(for: notifications)
-        {
-            projectsReadConn?.update(mappings: projectsMappings)
-
+        if projectsReadConn?.hasChanges(projectsMappings) ?? false {
             reload()
         }
     }

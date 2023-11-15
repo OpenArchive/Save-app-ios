@@ -235,13 +235,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         // before we repopulate.
         collection?.assets.removeAll()
 
-        assetsReadConn?.readInView(AbcFilteredByProjectView.name) { transaction, _ in
-            transaction?.iterateKeysAndObjects(inGroup: group!) { collName, key, object, index, stop in
-                if let asset = object as? Asset {
-                    collection?.assets.append(asset)
-                }
-            }
-        }
+        collection?.assets.append(contentsOf: assetsReadConn?.objects(in: indexPath.section, with: assetsMappings) ?? [])
 
         view.section = indexPath.section
         view.collection = collection
@@ -484,82 +478,50 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
      Will be called, when something changed the database.
      */
     @objc func yapDatabaseModified(notification: Notification) {
-        if let notifications = uploadsReadConn?.beginLongLivedReadTransaction(),
-           let viewConn = uploadsReadConn?.forView(uploadsMappings.view)
-        {
-            uploadsReadConn?.update(mappings: uploadsMappings)
+        if let changes = uploadsReadConn?.getChanges(uploadsMappings) {
+            for change in changes.rowChanges {
+                guard change.type == .update,
+                      let indexPath = change.indexPath,
+                      let upload: Upload = uploadsReadConn?.object(at: indexPath, in: uploadsMappings),
+                      let assetId = upload.assetId,
+                      let indexPath = assetsReadConn?.indexPath(for: assetId, in: Asset.collection, with: assetsMappings)
+                else {
+                    continue
+                }
 
-            if viewConn.hasChanges(for: notifications) {
+                DispatchQueue.main.async {
+                    self.collectionView.reloadItems(at: [indexPath])
+                }
+            }
+
+            if changes.forceFull || !changes.rowChanges.isEmpty {
                 updateManageBt()
             }
         }
 
-        if let notifications = projectsReadConn?.beginLongLivedReadTransaction(),
-           let viewConn = projectsReadConn?.forView(projectsMappings.view)
-        {
-            // Fix crash by checking, if the snapshots are in sync.
-            if !projectsMappings.isNextSnapshot(notifications) || viewConn.hasChanges(for: notifications) {
-                // Needed on iPad, where MainViewController is not reloaded,
-                // because config changes happen in popovers.
+        if projectsReadConn?.hasChanges(projectsMappings) ?? false {
+            // Needed on iPad, where MainViewController is not reloaded,
+            // because config changes happen in popovers.
 
-                projectsReadConn?.update(mappings: projectsMappings)
-
-                updateSpace()
-                sideMenu.reload()
-                updateProject()
-            }
+            updateSpace()
+            sideMenu.reload()
+            updateProject()
         }
 
         var reload = false
 
-        if let notifications = collectionsReadConn?.beginLongLivedReadTransaction(),
-            let viewConn = collectionsReadConn?.forView(CollectionsView.name)
-        {
-            if collectionsMappings.isNextSnapshot(notifications)
-            {
-                if viewConn.hasChanges(for: notifications)
-                {
-                    let (_, collectionChanges) = viewConn.getChanges(forNotifications: notifications,
-                                                                     withMappings: collectionsMappings)
-
-                    // We need to recognize changes in `Collection` objects used in the
-                    // section headers.
-                    reload = collectionChanges.contains { $0.type == .update && $0.finalGroup == selectedProject?.id }
-                }
-            }
-            else {
-                collectionsReadConn?.update(mappings: collectionsMappings)
-
-                reload = true
-            }
+        if let changes = collectionsReadConn?.getChanges(collectionsMappings) {
+            // We need to recognize changes in `Collection` objects used in the
+            // section headers.
+            reload = changes.forceFull || changes.rowChanges.contains(where: { $0.type == .update && $0.finalGroup == selectedProject?.id })
         }
 
-        if !reload {
-            if let notifications = assetsReadConn?.beginLongLivedReadTransaction(),
-                let viewConn = assetsReadConn?.forView(AbcFilteredByProjectView.name) {
-
-                if assetsMappings.isNextSnapshot(notifications)
-                {
-                    if viewConn.hasChanges(for: notifications)
-                    {
-                        let (sectionChanges, rowChanges) = viewConn.getChanges(forNotifications: notifications,
-                                                                               withMappings: assetsMappings)
-
-                        reload = sectionChanges.contains(where: { $0.type == .delete || $0.type == .insert })
-
-                        if !reload {
-                            reload = rowChanges.contains(where: {
-                                $0.type == .delete || $0.type == .insert || $0.type == .move || $0.type == .update
-                            })
-                        }
-                    }
-                }
-                else {
-                    assetsReadConn?.update(mappings: assetsMappings)
-
-                    reload = true
-                }
-            }
+        if !reload, let changes = assetsReadConn?.getChanges(assetsMappings) {
+            reload = changes.forceFull
+                || changes.sectionChanges.contains(where: { $0.type == .delete || $0.type == .insert })
+                || changes.rowChanges.contains(where: {
+                    $0.type == .delete || $0.type == .insert || $0.type == .move || $0.type == .update
+                })
         }
 
         if reload {
@@ -676,14 +638,8 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             : NSLocalizedString("Next", comment: "")
     }
 
-    private func getSelectedAssets(preheat: Bool = false) -> [Asset] {
-        return assetsReadConn?.objects(at: collectionView.indexPathsForSelectedItems, in: assetsMappings, { asset, tx in
-            if preheat {
-                asset.collection = tx.object(for: asset.collectionId)
-            }
-
-            return asset
-        }) ?? []
+    private func getSelectedAssets() -> [Asset] {
+        return assetsReadConn?.objects(at: collectionView.indexPathsForSelectedItems, in: assetsMappings) ?? []
     }
 
     private func toggleMenu(_ toggle: Bool, _ completion: ((_ finished: Bool) -> Void)? = nil) {

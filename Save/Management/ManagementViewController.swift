@@ -256,19 +256,17 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
      Will be called, when something changed the database.
      */
     @objc func yapDatabaseModified(notification: Notification) {
-        guard let notifications = readConn?.beginLongLivedReadTransaction(),
-            let viewConn = readConn?.forView(UploadsView.name) 
-        else {
-            return
-        }
-
         var needsUpdate = false
 
+        if let changes = readConn?.getChanges(mappings) {
+            if changes.forceFull {
+                // No animation. Otherwise this can happen:
+                // NSInternalInconsistencyException, reason: 'Cannot animate reordering cell because it already has an animation'
+                tableView.reloadSections([1], with: .none)
 
-        if mappings.isNextSnapshot(notifications) {
-            let (_, changes) = viewConn.getChanges(forNotifications: notifications, withMappings: mappings)
-
-            if changes.count > 0 {
+                needsUpdate = true
+            }
+            else if !changes.rowChanges.isEmpty {
                 tableView.beginUpdates()
 
                 // NOTE: Sections other than 0 are ignored, because `UploadsView`
@@ -276,45 +274,42 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
                 // its referenced assets, when their status changes.
                 // (Needed, when movie import takes longer as the user hits upload.)
 
-                for change in changes {
+                for change in changes.rowChanges {
                     switch change.type {
                     case .delete:
                         if let indexPath = change.indexPath, indexPath.section == 0 {
                             tableView.deleteRows(at: [transform(indexPath)], with: .fade)
+                            needsUpdate = true
                         }
+
                     case .insert:
                         if let newIndexPath = change.newIndexPath, newIndexPath.section == 0 {
                             tableView.insertRows(at: [transform(newIndexPath)], with: .fade)
+                            needsUpdate = true
                         }
+
                     case .move:
                         if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath,
-                            indexPath.section == 0 && newIndexPath.section == 0 {
+                            indexPath.section == 0 && newIndexPath.section == 0 
+                        {
                             tableView.reloadRows(at: [transform(indexPath), transform(newIndexPath)], with: .none)
+                            needsUpdate = true
                         }
+
                     case .update:
                         if let indexPath = change.indexPath, indexPath.section == 0 {
                             tableView.reloadRows(at: [transform(indexPath)], with: .none)
+                            needsUpdate = true
                         }
+
                     @unknown default:
                         break
                     }
                 }
 
                 tableView.endUpdates()
-
-                needsUpdate = true
             }
         }
-        else {
-            readConn?.update(mappings: mappings)
-
-            // No animation. Otherwise this can happen:
-            // NSInternalInconsistencyException, reason: 'Cannot animate reordering cell because it already has an animation'
-            tableView.reloadSections([1], with: .none)
-
-            needsUpdate = true
-        }
-
 
         if needsUpdate {
             updateTitle()

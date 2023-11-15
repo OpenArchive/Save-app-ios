@@ -24,6 +24,9 @@ class WebDavSpace: Space, Item {
         return super.compare(rhs)
     }
 
+
+    // MARK: Space
+
     override var username: String? {
         didSet {
             // If the username changes, the session needs to be recreated!

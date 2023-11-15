@@ -11,8 +11,47 @@ import YapDatabase
 
 extension YapDatabaseConnection {
 
-    func forView(_ name: String) -> YapDatabaseViewConnection? {
-        ext(name) as? YapDatabaseViewConnection
+    func hasChanges(_ mappings: YapDatabaseViewMappings) -> Bool {
+        let notifications = beginLongLivedReadTransaction()
+
+        guard mappings.isNextSnapshot(notifications) else {
+            update(mappings: mappings)
+
+            return true
+        }
+
+        guard let viewConn = ext(mappings.view) as? YapDatabaseViewConnection else {
+            return false
+        }
+
+        if viewConn.hasChanges(for: notifications) {
+            update(mappings: mappings)
+
+            return true
+        }
+
+        return false
+    }
+
+    func getChanges(_ mappings: YapDatabaseViewMappings) -> (forceFull: Bool,
+                                                             sectionChanges: [YapDatabaseViewSectionChange],
+                                                             rowChanges: [YapDatabaseViewRowChange])
+    {
+        let notifications = beginLongLivedReadTransaction()
+
+        guard mappings.isNextSnapshot(notifications) else {
+            update(mappings: mappings)
+
+            return (true, [], [])
+        }
+
+        guard let viewConn = ext(mappings.view) as? YapDatabaseViewConnection else {
+            return (false, [], [])
+        }
+
+        let changes = viewConn.getChanges(forNotifications: notifications, withMappings: mappings)
+
+        return (false, changes.sectionChanges, changes.rowChanges)
     }
 
     func update(mappings: YapDatabaseViewMappings) {

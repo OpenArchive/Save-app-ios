@@ -213,7 +213,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
             return
         }
 
-        if sectionChanges.count < 1 && rowChanges.count < 1 {
+        if sectionChanges.isEmpty && rowChanges.isEmpty {
             return
         }
 

@@ -96,47 +96,45 @@ class TableWithSpacesViewController: BaseTableViewController, UICollectionViewDe
      Shall be called, when something changes the database.
      */
     @objc func yapDatabaseModified(notification: Notification) {
-        guard let notifications = spacesReadConn?.beginLongLivedReadTransaction(),
-            let viewConn = spacesReadConn?.forView(SpacesView.name) else {
+        guard let changes = spacesReadConn?.getChanges(spacesMappings) else {
             return
         }
 
-        if !spacesMappings.isNextSnapshot(notifications) || !viewConn.hasChanges(for: notifications) {
+        if changes.forceFull {
             spacesReadConn?.update(mappings: spacesMappings)
-
             collectionView?.reloadData()
 
             return
         }
 
-        let (_, changes) = viewConn.getChanges(forNotifications: notifications, withMappings: spacesMappings)
-
-        if changes.count > 0 {
-            collectionView?.performBatchUpdates({
-                for change in changes {
-                    switch change.type {
-                    case .insert:
-                        if let newIndexPath = change.newIndexPath {
-                            collectionView?.insertItems(at: [newIndexPath])
-                        }
-                    case .delete:
-                        if let indexPath = change.indexPath {
-                            collectionView?.deleteItems(at: [indexPath])
-                        }
-                    case .move:
-                        if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
-                            collectionView?.moveItem(at: indexPath, to: newIndexPath)
-                        }
-                    case .update:
-                        if let indexPath = change.indexPath {
-                            collectionView?.reloadItems(at: [indexPath])
-                        }
-                    @unknown default:
-                        break
-                    }
-                }
-            })
+        guard !changes.rowChanges.isEmpty else {
+            return
         }
+
+        collectionView?.performBatchUpdates({
+            for change in changes.rowChanges {
+                switch change.type {
+                case .insert:
+                    if let newIndexPath = change.newIndexPath {
+                        collectionView?.insertItems(at: [newIndexPath])
+                    }
+                case .delete:
+                    if let indexPath = change.indexPath {
+                        collectionView?.deleteItems(at: [indexPath])
+                    }
+                case .move:
+                    if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
+                        collectionView?.moveItem(at: indexPath, to: newIndexPath)
+                    }
+                case .update:
+                    if let indexPath = change.indexPath {
+                        collectionView?.reloadItems(at: [indexPath])
+                    }
+                @unknown default:
+                    break
+                }
+            }
+        })
     }
 
     
