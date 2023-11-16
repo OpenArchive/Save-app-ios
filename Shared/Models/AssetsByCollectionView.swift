@@ -25,9 +25,16 @@ class AssetsByCollectionView: YapDatabaseAutoView {
 
     override init() {
         let grouping = YapDatabaseViewGrouping.withObjectBlock() {
-            transaction, collection, key, object in
+            tx, collection, key, object in
 
-            return Self.groupKey(for: object as? Asset)
+            guard let asset = object as? Asset else {
+                return nil
+            }
+
+            // We only need the collection to create the group key.
+            asset.preheat(tx, deep: false)
+
+            return Self.groupKey(for: asset)
         }
 
         let sorting = YapDatabaseViewSorting.withObjectBlock() {
@@ -46,15 +53,15 @@ class AssetsByCollectionView: YapDatabaseAutoView {
         Will return `nil` if `Asset` is `nil`.
     */
     class func groupKey(for asset: Asset?) -> String? {
-        if let asset = asset,
-           let collection = asset.collection
-        {
-            let created = String(Int(collection.created.timeIntervalSince1970))
-
-            return "\(created)\(separator)\(collection.projectId)\(separator)\(collection.id)"
+        guard let asset = asset,
+              let collection = asset.collection
+        else {
+            return nil
         }
 
-        return nil
+        let created = String(Int(collection.created.timeIntervalSince1970))
+
+        return "\(created)\(separator)\(collection.projectId)\(separator)\(collection.id)"
     }
 
     /**
@@ -63,13 +70,13 @@ class AssetsByCollectionView: YapDatabaseAutoView {
         Will return `nil` if `group` is `nil` or the group string is invalid.
     */
     class func created(from group: String?) -> Date? {
-        if let created = group?.split(separator: separator).first,
-           let epoch = TimeInterval(String(created))
-        {
-            return Date(timeIntervalSince1970: epoch)
+        guard let created = group?.split(separator: separator).first,
+              let epoch = TimeInterval(String(created))
+        else {
+            return nil
         }
 
-        return nil
+        return Date(timeIntervalSince1970: epoch)
     }
 
     /**
@@ -78,13 +85,13 @@ class AssetsByCollectionView: YapDatabaseAutoView {
         Will return `nil` if `group` is `nil` or the group string is invalid.
     */
     class func projectId(from group: String?) -> String? {
-        if let group = group?.split(separator: separator),
-           group.count > 1
-        {
-            return String(group[1])
+        guard let group = group?.split(separator: separator),
+              group.count > 1
+        else {
+            return nil
         }
 
-        return nil
+        return String(group[1])
     }
 
     /**
@@ -93,12 +100,12 @@ class AssetsByCollectionView: YapDatabaseAutoView {
         Will return `nil` if `group` is `nil` or the group string is invalid.
      */
     class func collectionId(from group: String?) -> String? {
-        if let group = group?.split(separator: separator),
-           group.count > 2
-        {
-            return String(group[2])
+        guard let group = group?.split(separator: separator),
+              group.count > 2
+        else {
+            return nil
         }
 
-        return nil
+        return String(group[2])
     }
 }

@@ -66,14 +66,8 @@ class UploadsView: YapDatabaseAutoView {
      - returns: the number of pending and currently uploading items.
      */
     class func countUploading(_ tx: YapDatabaseReadTransaction) -> Int {
-        var count = 0
-
-        tx.iterate(group: groups.first, in: name) { (collection, key, upload: Upload, index, stop) in
-            if upload.state == .pending || upload.state == .downloading {
-                count += 1
-            }
-        }
-
-        return count
+        tx.findAll(group: groups.first, in: name, where: { (upload: inout Upload) in
+            upload.state == .pending || upload.state == .downloading
+        }).count
     }
 }

@@ -82,12 +82,14 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         return created.compare(rhs.created)
     }
 
-    func preheat(_ tx: YapDatabaseReadTransaction) {
+    func preheat(_ tx: YapDatabaseReadTransaction, deep: Bool = true) {
         if _collection?.id != collectionId {
             _collection = tx.object(for: collectionId)
         }
 
-        _collection?.preheat(tx)
+        if deep {
+            _collection?.preheat(tx, deep: deep)
+        }
     }
 
 

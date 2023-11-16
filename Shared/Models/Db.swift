@@ -176,5 +176,5 @@ protocol Item: NSSecureCoding, NSCopying {
     /**
      Loads all cached object references.
      */
-    func preheat(_ tx: YapDatabaseReadTransaction)
+    func preheat(_ tx: YapDatabaseReadTransaction, deep: Bool)
 }

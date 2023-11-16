@@ -27,7 +27,7 @@ class Space: NSObject {
     }
 
 
-    func preheat(_ tx: YapDatabaseReadTransaction) {
+    func preheat(_ tx: YapDatabaseReadTransaction, deep: Bool = true) {
         // Ignored. Nothing to do.
     }
 

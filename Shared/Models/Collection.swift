@@ -37,12 +37,14 @@ class Collection: NSObject, Item, YapDatabaseRelationshipNode {
 
     var id: String
 
-    func preheat(_ tx: YapDatabaseReadTransaction) {
+    func preheat(_ tx: YapDatabaseReadTransaction, deep: Bool = true) {
         if _project?.id != projectId {
             _project = tx.object(for: projectId)
         }
 
-        _project?.preheat(tx)
+        if deep {
+            _project?.preheat(tx, deep: deep)
+        }
     }
 
 

@@ -37,12 +37,14 @@ class Project: NSObject, Item, YapDatabaseRelationshipNode {
 
     var id: String
 
-    func preheat(_ tx: YapDatabaseReadTransaction) {
+    func preheat(_ tx: YapDatabaseReadTransaction, deep: Bool = true) {
         if _space?.id != spaceId {
             _space = tx.object(for: spaceId, in: Space.collection)
         }
 
-        _space?.preheat(tx)
+        if deep {
+            _space?.preheat(tx, deep: deep)
+        }
     }
 
 
