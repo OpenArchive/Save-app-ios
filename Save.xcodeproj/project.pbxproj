@@ -515,6 +515,9 @@
 		A02BC66D2400195C007B05AB /* NSError+from.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+from.swift"; sourceTree = "<group>"; };
 		A02DB29929B647390090ECF6 /* URL+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Utils.swift"; sourceTree = "<group>"; };
 		A03236272B0B7F9D00D95BC3 /* UploadErrorAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadErrorAlert.swift; sourceTree = "<group>"; };
+		A03236292B0B986300D95BC3 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		A032362A2B0B986300D95BC3 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
+		A032362B2B0B986300D95BC3 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = uk; path = uk.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		A0357D1022CF901800292077 /* BatchEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchEditViewController.swift; sourceTree = "<group>"; };
 		A0362191220DA390003C21DC /* UIColor+accent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+accent.swift"; sourceTree = "<group>"; };
 		A0362194220DB2CA003C21DC /* IaSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaSpace.swift; sourceTree = "<group>"; };
@@ -1331,6 +1334,7 @@
 				ar,
 				fa,
 				it,
+				uk,
 			);
 			mainGroup = A0E739CB20E4C85D00DB31E1;
 			productRefGroup = A0E739D520E4C85D00DB31E1 /* Products */;
@@ -1970,6 +1974,7 @@
 				A09CC28F27E0B16500D6415D /* en */,
 				A09CC29127E0B16C00D6415D /* de */,
 				A012B09A27E49ECE002C2A1A /* fr */,
+				A032362B2B0B986300D95BC3 /* uk */,
 			);
 			name = Localizable.stringsdict;
 			sourceTree = "<group>";
@@ -2002,6 +2007,7 @@
 				A0D0B69C235BD41A00748950 /* ar */,
 				A0D0B69E235BD44500748950 /* fa */,
 				A0C7D8E027B6B44A00E377FD /* it */,
+				A032362A2B0B986300D95BC3 /* uk */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
@@ -2018,6 +2024,7 @@
 				A0D0B69B235BD41A00748950 /* ar */,
 				A0D0B69D235BD44500748950 /* fa */,
 				A0C7D8DF27B6B44A00E377FD /* it */,
+				A03236292B0B986300D95BC3 /* uk */,
 			);
 			name = InfoPlist.strings;
 			sourceTree = "<group>";
