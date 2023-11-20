@@ -36,7 +36,11 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     @IBOutlet weak var spaceFavIcon: UIImageView!
     @IBOutlet weak var folderNameLb: UILabel!
     @IBOutlet weak var folderAssetCountLb: UILabel!
-    @IBOutlet weak var manageBt: UIButton!
+    @IBOutlet weak var manageBt: UIButton! {
+        didSet {
+            manageBt.setTitle(NSLocalizedString("Edit", comment: ""))
+        }
+    }
 
     @IBOutlet weak var hintLb: UILabel! {
         didSet {
