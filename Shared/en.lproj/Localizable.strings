@@ -44,10 +44,10 @@
 "Acquire Keys" = "Acquire Keys";
 
 /* No comment provided by engineer. */
-"Add a location (optional)" = "Add a location (optional)";
+"Add a Folder" = "Add a Folder";
 
-/* AddProjectViewController */
-"Add a Project" = "Add a Project";
+/* No comment provided by engineer. */
+"Add a location (optional)" = "Add a location (optional)";
 
 /* AddProjectViewController, NewProjectViewController */
 "Add a project folder to the server that anyone can upload to." = "Add a project folder to the server that anyone can upload to.";
@@ -100,8 +100,8 @@
 /* DataUsageViewController */
 "Better Quality" = "Better Quality";
 
-/* AddProjectViewController */
-"Browse Existing Projects" = "Browse Existing Projects";
+/* No comment provided by engineer. */
+"Browse Existing Folders" = "Browse Existing Folders";
 
 /* BrowseViewController */
 "Browse Projects" = "Browse Projects";
@@ -127,9 +127,6 @@
 /* ShareExtension.MainViewController */
 "Choose a Project" = "Choose a Project";
 
-/* AddProjectViewController */
-"Choose a project folder from the server." = "Choose a project folder from the server.";
-
 /* Conduit */
 "Configuration invalid." = "Configuration invalid.";
 
@@ -154,8 +151,8 @@
 /* ShareExtension.MainViewController */
 "Couldn't import item!" = "Couldn't import item!";
 
-/* AddProjectViewController */
-"Create New Project" = "Create New Project";
+/* No comment provided by engineer. */
+"Create a New Folder" = "Create a New Folder";
 
 /* MainViewController, DarkroomViewController, PrivateServerViewController, InternetArchiveViewController, ManagementViewController, Main.storyboard */
 "Done" = "Done";
@@ -447,6 +444,9 @@
 
 /* No comment provided by engineer. */
 "Security" = "Security";
+
+/* No comment provided by engineer. */
+"Select where to store your media" = "Select where to store your media";
 
 /* BigMenuItemCell */
 "Send directly to a private server." = "Send directly to a private server.";

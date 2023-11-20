@@ -354,7 +354,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
         toggleMenu(false) { _ in
             if SelectedSpace.available {
-                let vc = UINavigationController(rootViewController: AppAddProjectViewController())
+                let vc = UINavigationController(rootViewController: AppAddFolderViewController())
                 vc.modalPresentationStyle = .popover
                 vc.popoverPresentationController?.sourceView = self.menuBt
                 vc.popoverPresentationController?.sourceRect = self.menuBt.bounds

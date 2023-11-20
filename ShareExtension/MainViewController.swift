@@ -177,7 +177,7 @@ class MainViewController: TableWithSpacesViewController {
         if indexPath.section == MainViewController.projectSection {
             if indexPath.row >= projectsCount {
                 let vc = UINavigationController(rootViewController:
-                    AddProjectViewController())
+                    AddFolderViewController())
                 vc.view.tintColor = .accent
                 vc.modalPresentationStyle = .popover
                 vc.popoverPresentationController?.sourceView = tableView.cellForRow(at: indexPath)

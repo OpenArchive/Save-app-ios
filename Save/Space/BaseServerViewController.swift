@@ -80,7 +80,7 @@ class BaseServerViewController: FormViewController {
             }
         }
         else {
-            navigationController?.setViewControllers([AppAddProjectViewController()], animated: true)
+            navigationController?.setViewControllers([AppAddFolderViewController()], animated: true)
         }
     }
 
