@@ -44,13 +44,13 @@
 "Acquire Keys" = "Acquire Keys";
 
 /* No comment provided by engineer. */
+"Add" = "Add";
+
+/* No comment provided by engineer. */
 "Add a Folder" = "Add a Folder";
 
 /* No comment provided by engineer. */
 "Add a location (optional)" = "Add a location (optional)";
-
-/* AddProjectViewController, NewProjectViewController */
-"Add a project folder to the server that anyone can upload to." = "Add a project folder to the server that anyone can upload to.";
 
 /* No comment provided by engineer. */
 "Add Another Account" = "Add Another Account";
@@ -101,10 +101,10 @@
 "Better Quality" = "Better Quality";
 
 /* No comment provided by engineer. */
-"Browse Existing Folders" = "Browse Existing Folders";
+"Browse Existing" = "Browse Existing";
 
-/* BrowseViewController */
-"Browse Projects" = "Browse Projects";
+/* No comment provided by engineer. */
+"Browse Existing Folders" = "Browse Existing Folders";
 
 /* ConsentViewController */
 "By allowing health checks, you give permission for the app to securely send health check data to the %@ team." = "By allowing health checks, you give permission for the app to securely send health check data to the %@ team.";
@@ -150,6 +150,9 @@
 
 /* ShareExtension.MainViewController */
 "Couldn't import item!" = "Couldn't import item!";
+
+/* No comment provided by engineer. */
+"Create" = "Create";
 
 /* No comment provided by engineer. */
 "Create a New Folder" = "Create a New Folder";
@@ -198,6 +201,12 @@
 
 /* No comment provided by engineer. */
 "Folder" = "Folder";
+
+/* No comment provided by engineer. */
+"Folder Already Exists" = "Folder Already Exists";
+
+/* No comment provided by engineer. */
+"Folder Name" = "Folder Name";
 
 /* No comment provided by engineer. */
 "Folders" = "Folders";
@@ -283,9 +292,6 @@
 /* EditProfileViewController */
 "Name" = "Name";
 
-/* BaseProjectViewController */
-"Name your project" = "Name your project";
-
 /* Northeast Direction Abbreviation */
 "NE" = "NE";
 
@@ -349,8 +355,8 @@
 /* OrbotManager */
 "Paste API token here" = "Paste API token here";
 
-/* DuplicateProjectAlert */
-"Please choose another name/project or use the existing one instead." = "Please choose another name/project or use the existing one instead.";
+/* No comment provided by engineer. */
+"Please choose another name/folder or use the existing one instead." = "Please choose another name/folder or use the existing one instead.";
 
 /* MainViewController */
 "Please go to the Settings app to grant this app access to your camera, if you want to upload photos or videos." = "Please go to the Settings app to grant this app access to your camera, if you want to upload photos or videos.";
@@ -372,9 +378,6 @@
 
 /* SpaceViewController, EditProfileViewController */
 "Profile" = "Profile";
-
-/* DuplicateProjectAlert */
-"Project Already Exists" = "Project Already Exists";
 
 /* No comment provided by engineer. */
 "ProofMode" = "ProofMode";

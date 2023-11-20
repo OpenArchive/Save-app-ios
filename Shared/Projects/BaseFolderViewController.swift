@@ -1,6 +1,6 @@
 //
-//  BaseProjectViewController.swift
-//  OpenArchive
+//  BaseFolderViewController.swift
+//  Save
 //
 //  Created by Benjamin Erhart on 22.01.19.
 //  Copyright © 2019 Open Archive. All rights reserved.
@@ -9,12 +9,12 @@
 import UIKit
 import Eureka
 
-class BaseProjectViewController: FormViewController {
+class BaseFolderViewController: FormViewController {
 
     var project: Project
 
     let nameRow = TextRow() {
-        $0.placeholder = NSLocalizedString("Name your project", comment: "")
+        $0.placeholder = NSLocalizedString("Folder Name", comment: "")
         $0.cell.textField.accessibilityIdentifier = "tfProjectName"
         $0.add(rule: RuleFilename())
         $0.validationOptions = .validatesAlways
@@ -56,7 +56,7 @@ class BaseProjectViewController: FormViewController {
         if let spaceId = project.spaceId,
             let name = nameRow.value {
 
-            let alert = DuplicateProjectAlert(nil)
+            let alert = DuplicateFolderAlert(nil)
 
             if alert.exists(spaceId: spaceId, name: name) {
                 present(alert, animated: true)

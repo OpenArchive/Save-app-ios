@@ -1,6 +1,6 @@
 //
 //  RemoveAssetAlert.swift
-//  OpenArchive
+//  Save
 //
 //  Created by Benjamin Erhart on 25.03.19.
 //  Copyright © 2019 Open Archive. All rights reserved.
@@ -8,15 +8,15 @@
 
 import UIKit
 
-class DuplicateProjectAlert: UIAlertController {
+class DuplicateFolderAlert: UIAlertController {
 
     /**
      - parameter foo: Just there to avoid endless recursion.
     */
     convenience init(_ foo: String?) {
-        let message = NSLocalizedString("Please choose another name/project or use the existing one instead.", comment: "")
+        let message = NSLocalizedString("Please choose another name/folder or use the existing one instead.", comment: "")
 
-        self.init(title: NSLocalizedString("Project Already Exists", comment: ""),
+        self.init(title: NSLocalizedString("Folder Already Exists", comment: ""),
                    message: message,
                    preferredStyle: .alert)
 

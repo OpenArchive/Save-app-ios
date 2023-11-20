@@ -32,8 +32,8 @@
 		A0212FCC22D35ADC009079DC /* DarkroomHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0212FCB22D35ADC009079DC /* DarkroomHelper.swift */; };
 		A0212FCE22D374CA009079DC /* UICollectionView+selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0212FCD22D374CA009079DC /* UICollectionView+selection.swift */; };
 		A0212FCF22D374CA009079DC /* UICollectionView+selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0212FCD22D374CA009079DC /* UICollectionView+selection.swift */; };
-		A025171922C2126C00EEFBD9 /* DuplicateProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A025171822C2126B00EEFBD9 /* DuplicateProjectAlert.swift */; };
-		A025171A22C2126C00EEFBD9 /* DuplicateProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A025171822C2126B00EEFBD9 /* DuplicateProjectAlert.swift */; };
+		A025171922C2126C00EEFBD9 /* DuplicateFolderAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A025171822C2126B00EEFBD9 /* DuplicateFolderAlert.swift */; };
+		A025171A22C2126C00EEFBD9 /* DuplicateFolderAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A025171822C2126B00EEFBD9 /* DuplicateFolderAlert.swift */; };
 		A026C34622C641EB007B1C5B /* IaScrapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */; };
 		A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029F6822118715700C4EF6D /* AssetFactory.swift */; };
 		A029F6842118715700C4EF6D /* AssetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029F6822118715700C4EF6D /* AssetFactory.swift */; };
@@ -201,12 +201,12 @@
 		A09B538C23266F02005266C2 /* WebDavSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362197220DB384003C21DC /* WebDavSpace.swift */; };
 		A09B538D23266F02005266C2 /* ButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A045D200224D07C3008FF8C1 /* ButtonCell.swift */; };
 		A09B538E23266F02005266C2 /* Bundle+displayName.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA93402277387D0086D276 /* Bundle+displayName.swift */; };
-		A09B538F23266F02005266C2 /* DuplicateProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A025171822C2126B00EEFBD9 /* DuplicateProjectAlert.swift */; };
+		A09B538F23266F02005266C2 /* DuplicateFolderAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A025171822C2126B00EEFBD9 /* DuplicateFolderAlert.swift */; };
 		A09B539123266F02005266C2 /* Screenshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = A080538E22E85C460031D4B5 /* Screenshots.swift */; };
 		A09B539223266F02005266C2 /* FormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CE521F0B46C008ACA3E /* FormViewController.swift */; };
 		A09B539323266F02005266C2 /* RemoveProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */; };
 		A09B539423266F02005266C2 /* YapDatabase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1364E227256F4008A22BF /* YapDatabase+Utils.swift */; };
-		A09B539523266F02005266C2 /* BaseProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78B121F771A700B6B68B /* BaseProjectViewController.swift */; };
+		A09B539523266F02005266C2 /* BaseFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78B121F771A700B6B68B /* BaseFolderViewController.swift */; };
 		A09B539623266F02005266C2 /* AvatarRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */; };
 		A09B539723266F02005266C2 /* InfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A052A490230D546F00E72594 /* InfoAlert.swift */; };
 		A09B539823266F02005266C2 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00DC98922315D4F004F07E0 /* ImageViewController.swift */; };
@@ -227,7 +227,7 @@
 		A09B53A823266F02005266C2 /* WorkingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC06AF2201E30E00BD5FBA /* WorkingOverlay.swift */; };
 		A09B53A923266F02005266C2 /* IaScrapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */; };
 		A09B53AB23266F02005266C2 /* SlideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07E8A4122958D0600E9FFAA /* SlideViewController.swift */; };
-		A09B53AC23266F02005266C2 /* NewProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E27208224E335400CB7113 /* NewProjectViewController.swift */; };
+		A09B53AC23266F02005266C2 /* NewFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E27208224E335400CB7113 /* NewFolderViewController.swift */; };
 		A09B53AD23266F02005266C2 /* DarkroomHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0212FCB22D35ADC009079DC /* DarkroomHelper.swift */; };
 		A09B53AE23266F02005266C2 /* Conduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D1013B22CCF2DA0068D047 /* Conduit.swift */; };
 		A09B53AF23266F02005266C2 /* UIView+utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A055204F222566CE00B9645F /* UIView+utils.swift */; };
@@ -366,7 +366,7 @@
 		A0DC0FAE233914BD00C4969A /* MovieIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DC0FAB233914BD00C4969A /* MovieIndicator.swift */; };
 		A0DE78AF21F76D2200B6B68B /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78AE21F76D2200B6B68B /* Project.swift */; };
 		A0DE78B021F76D2200B6B68B /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78AE21F76D2200B6B68B /* Project.swift */; };
-		A0DE78B221F771A700B6B68B /* BaseProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78B121F771A700B6B68B /* BaseProjectViewController.swift */; };
+		A0DE78B221F771A700B6B68B /* BaseFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78B121F771A700B6B68B /* BaseFolderViewController.swift */; };
 		A0E12C162B024C2F00892AC8 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E12C152B024C2F00892AC8 /* GradientView.swift */; };
 		A0E12C172B024C2F00892AC8 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E12C152B024C2F00892AC8 /* GradientView.swift */; };
 		A0E12C182B024C2F00892AC8 /* GradientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E12C152B024C2F00892AC8 /* GradientView.swift */; };
@@ -375,13 +375,13 @@
 		A0E1A68121EE7BE900E4F6B7 /* MenuItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */; };
 		A0E1A68721EE834D00E4F6B7 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68621EE834D00E4F6B7 /* BaseCell.swift */; };
 		A0E1A68921EE873200E4F6B7 /* TableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68821EE873200E4F6B7 /* TableHeader.swift */; };
-		A0E271FE224E261100CB7113 /* BaseProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78B121F771A700B6B68B /* BaseProjectViewController.swift */; };
+		A0E271FE224E261100CB7113 /* BaseFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78B121F771A700B6B68B /* BaseFolderViewController.swift */; };
 		A0E27200224E267800CB7113 /* BrowseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC06A92201CFD800BD5FBA /* BrowseViewController.swift */; };
 		A0E27201224E26A500CB7113 /* FolderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC06AB2201D00100BD5FBA /* FolderCell.swift */; };
 		A0E27204224E2A4D00CB7113 /* FolderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E27202224E2A4D00CB7113 /* FolderCell.xib */; };
 		A0E27205224E2A4D00CB7113 /* FolderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E27202224E2A4D00CB7113 /* FolderCell.xib */; };
-		A0E27209224E335400CB7113 /* NewProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E27208224E335400CB7113 /* NewProjectViewController.swift */; };
-		A0E2720A224E335400CB7113 /* NewProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E27208224E335400CB7113 /* NewProjectViewController.swift */; };
+		A0E27209224E335400CB7113 /* NewFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E27208224E335400CB7113 /* NewFolderViewController.swift */; };
+		A0E2720A224E335400CB7113 /* NewFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E27208224E335400CB7113 /* NewFolderViewController.swift */; };
 		A0E2720C224E33D000CB7113 /* EditProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2720B224E33D000CB7113 /* EditProjectViewController.swift */; };
 		A0E2BC722226AA10006D33E3 /* SelectedSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2BC712226AA10006D33E3 /* SelectedSpace.swift */; };
 		A0E2BC732226AA10006D33E3 /* SelectedSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2BC712226AA10006D33E3 /* SelectedSpace.swift */; };
@@ -509,7 +509,7 @@
 		A020C12223C602A700F219DA /* ClaimViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimViewController.swift; sourceTree = "<group>"; };
 		A0212FCB22D35ADC009079DC /* DarkroomHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkroomHelper.swift; sourceTree = "<group>"; };
 		A0212FCD22D374CA009079DC /* UICollectionView+selection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+selection.swift"; sourceTree = "<group>"; };
-		A025171822C2126B00EEFBD9 /* DuplicateProjectAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateProjectAlert.swift; sourceTree = "<group>"; };
+		A025171822C2126B00EEFBD9 /* DuplicateFolderAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateFolderAlert.swift; sourceTree = "<group>"; };
 		A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaScrapeViewController.swift; sourceTree = "<group>"; };
 		A029F6822118715700C4EF6D /* AssetFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFactory.swift; sourceTree = "<group>"; };
 		A02BC66D2400195C007B05AB /* NSError+from.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+from.swift"; sourceTree = "<group>"; };
@@ -687,7 +687,7 @@
 		A0DA7626282D0F300039438A /* Date+rfcString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+rfcString.swift"; sourceTree = "<group>"; };
 		A0DC0FAB233914BD00C4969A /* MovieIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieIndicator.swift; sourceTree = "<group>"; };
 		A0DE78AE21F76D2200B6B68B /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
-		A0DE78B121F771A700B6B68B /* BaseProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseProjectViewController.swift; sourceTree = "<group>"; };
+		A0DE78B121F771A700B6B68B /* BaseFolderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseFolderViewController.swift; sourceTree = "<group>"; };
 		A0E12C152B024C2F00892AC8 /* GradientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GradientView.swift; sourceTree = "<group>"; };
 		A0E12C192B028CEE00892AC8 /* UploadInfoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadInfoAlert.swift; sourceTree = "<group>"; };
 		A0E1A67B21EE7A5C00E4F6B7 /* GeneralSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeneralSettingsViewController.swift; sourceTree = "<group>"; };
@@ -696,7 +696,7 @@
 		A0E1A68621EE834D00E4F6B7 /* BaseCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCell.swift; sourceTree = "<group>"; };
 		A0E1A68821EE873200E4F6B7 /* TableHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableHeader.swift; sourceTree = "<group>"; };
 		A0E27202224E2A4D00CB7113 /* FolderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FolderCell.xib; sourceTree = "<group>"; };
-		A0E27208224E335400CB7113 /* NewProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewProjectViewController.swift; sourceTree = "<group>"; };
+		A0E27208224E335400CB7113 /* NewFolderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFolderViewController.swift; sourceTree = "<group>"; };
 		A0E2720B224E33D000CB7113 /* EditProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProjectViewController.swift; sourceTree = "<group>"; };
 		A0E2BC712226AA10006D33E3 /* SelectedSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedSpace.swift; sourceTree = "<group>"; };
 		A0E321F5228EBE6A00F2E9BD /* FlagInfoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagInfoAlert.swift; sourceTree = "<group>"; };
@@ -1086,7 +1086,7 @@
 				A0DC0FAB233914BD00C4969A /* MovieIndicator.swift */,
 				A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */,
 				A077732922786BCA00291F5D /* RemoveAssetAlert.swift */,
-				A025171822C2126B00EEFBD9 /* DuplicateProjectAlert.swift */,
+				A025171822C2126B00EEFBD9 /* DuplicateFolderAlert.swift */,
 				A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */,
 				A0FB4DBA21F8C9B600B46099 /* RoundedImageView.swift */,
 				A0E1A68321EE831300E4F6B7 /* SelectedSpaceCell.swift */,
@@ -1128,8 +1128,8 @@
 			children = (
 				A032362C2B0BB46B00D95BC3 /* AddFolderViewController.xib */,
 				A032362D2B0BB46B00D95BC3 /* AddFolderViewController.swift */,
-				A0DE78B121F771A700B6B68B /* BaseProjectViewController.swift */,
-				A0E27208224E335400CB7113 /* NewProjectViewController.swift */,
+				A0DE78B121F771A700B6B68B /* BaseFolderViewController.swift */,
+				A0E27208224E335400CB7113 /* NewFolderViewController.swift */,
 				A0AC06A92201CFD800BD5FBA /* BrowseViewController.swift */,
 				A0AC06AB2201D00100BD5FBA /* FolderCell.swift */,
 				A0E27202224E2A4D00CB7113 /* FolderCell.xib */,
@@ -1585,14 +1585,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A0E271FE224E261100CB7113 /* BaseProjectViewController.swift in Sources */,
-				A025171A22C2126C00EEFBD9 /* DuplicateProjectAlert.swift in Sources */,
+				A0E271FE224E261100CB7113 /* BaseFolderViewController.swift in Sources */,
+				A025171A22C2126C00EEFBD9 /* DuplicateFolderAlert.swift in Sources */,
 				A0A6819729D7118C002D9F21 /* TTTLocationFormatter.m in Sources */,
 				A0DA7628282D0F300039438A /* Date+rfcString.swift in Sources */,
 				A0BBEF8A22846F310071EE93 /* Geocoder.swift in Sources */,
 				A0E321FF228EFE7100F2E9BD /* InfoBox.swift in Sources */,
 				A0A192DE21F208DA009A8CF0 /* Space.swift in Sources */,
-				A0E2720A224E335400CB7113 /* NewProjectViewController.swift in Sources */,
+				A0E2720A224E335400CB7113 /* NewFolderViewController.swift in Sources */,
 				A08C2CE821F0B613008ACA3E /* BaseCell.swift in Sources */,
 				A056BE1D2857457E00F354B6 /* UIFont+Montserrat.swift in Sources */,
 				A08C2CE921F0B617008ACA3E /* TableHeader.swift in Sources */,
@@ -1700,14 +1700,14 @@
 				A011D55A233A1F630032304A /* PreviewViewController+Screenshots.swift in Sources */,
 				A09B538D23266F02005266C2 /* ButtonCell.swift in Sources */,
 				A09B538E23266F02005266C2 /* Bundle+displayName.swift in Sources */,
-				A09B538F23266F02005266C2 /* DuplicateProjectAlert.swift in Sources */,
+				A09B538F23266F02005266C2 /* DuplicateFolderAlert.swift in Sources */,
 				A09B539123266F02005266C2 /* Screenshots.swift in Sources */,
 				A09B539223266F02005266C2 /* FormViewController.swift in Sources */,
 				A006A6AE282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */,
 				A09B539323266F02005266C2 /* RemoveProjectAlert.swift in Sources */,
 				A05DF976282C0E13003FADA2 /* DavResponse.swift in Sources */,
 				A09B539423266F02005266C2 /* YapDatabase+Utils.swift in Sources */,
-				A09B539523266F02005266C2 /* BaseProjectViewController.swift in Sources */,
+				A09B539523266F02005266C2 /* BaseFolderViewController.swift in Sources */,
 				A09B539623266F02005266C2 /* AvatarRow.swift in Sources */,
 				A09B539723266F02005266C2 /* InfoAlert.swift in Sources */,
 				A09B539823266F02005266C2 /* ImageViewController.swift in Sources */,
@@ -1732,7 +1732,7 @@
 				A09B53A923266F02005266C2 /* IaScrapeViewController.swift in Sources */,
 				A0DA7629282D0F300039438A /* Date+rfcString.swift in Sources */,
 				A09B53AB23266F02005266C2 /* SlideViewController.swift in Sources */,
-				A09B53AC23266F02005266C2 /* NewProjectViewController.swift in Sources */,
+				A09B53AC23266F02005266C2 /* NewFolderViewController.swift in Sources */,
 				A09B53AD23266F02005266C2 /* DarkroomHelper.swift in Sources */,
 				A094EA4C282AD115006CE059 /* DropboxConduit.swift in Sources */,
 				A0CA19C52821849D0082BD7C /* SnapshotHelper.swift in Sources */,
@@ -1828,14 +1828,14 @@
 				A020C12323C602A700F219DA /* ClaimViewController.swift in Sources */,
 				A045D201224D07C3008FF8C1 /* ButtonCell.swift in Sources */,
 				A0FA93412277387D0086D276 /* Bundle+displayName.swift in Sources */,
-				A025171922C2126C00EEFBD9 /* DuplicateProjectAlert.swift in Sources */,
+				A025171922C2126C00EEFBD9 /* DuplicateFolderAlert.swift in Sources */,
 				A006A6A8282950D00029E49B /* UIBackgroundFetchResult+description.swift in Sources */,
 				A08C2CE621F0B46C008ACA3E /* FormViewController.swift in Sources */,
 				A0F7FDE722494E2F006610F0 /* RemoveProjectAlert.swift in Sources */,
 				A094EA4B282AD110006CE059 /* DropboxConduit.swift in Sources */,
 				A0F1364F227256F4008A22BF /* YapDatabase+Utils.swift in Sources */,
 				A0BF451A27DF5EE800DBB629 /* ProofModeSettingsViewController.swift in Sources */,
-				A0DE78B221F771A700B6B68B /* BaseProjectViewController.swift in Sources */,
+				A0DE78B221F771A700B6B68B /* BaseFolderViewController.swift in Sources */,
 				A08C2CED21F0C634008ACA3E /* AvatarRow.swift in Sources */,
 				A052A492230D546F00E72594 /* InfoAlert.swift in Sources */,
 				A00DC98A22315D4F004F07E0 /* ImageViewController.swift in Sources */,
@@ -1863,7 +1863,7 @@
 				A07E8A4222958D0600E9FFAA /* SlideViewController.swift in Sources */,
 				A08F2CEE2AFE8784004D7EA7 /* AssetPicker.swift in Sources */,
 				A03236352B0BB8F100D95BC3 /* AppAddFolderViewController.swift in Sources */,
-				A0E27209224E335400CB7113 /* NewProjectViewController.swift in Sources */,
+				A0E27209224E335400CB7113 /* NewFolderViewController.swift in Sources */,
 				A05DF980282C0F48003FADA2 /* AEXMLOptions.swift in Sources */,
 				A0212FCC22D35ADC009079DC /* DarkroomHelper.swift in Sources */,
 				A0D1013C22CCF2DA0068D047 /* Conduit.swift in Sources */,

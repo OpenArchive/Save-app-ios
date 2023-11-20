@@ -1,6 +1,6 @@
 //
 //  BrowseViewController.swift
-//  OpenArchive
+//  Save
 //
 //  Created by Benjamin Erhart on 30.01.19.
 //  Copyright © 2019 Open Archive. All rights reserved.
@@ -40,8 +40,11 @@ class BrowseViewController: BaseTableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = NSLocalizedString("Browse Projects", comment: "")
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(done))
+        navigationItem.title = NSLocalizedString("Browse Existing", comment: "")
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: NSLocalizedString("Add", comment: ""), style: .done,
+            target: self, action: #selector(done))
         navigationItem.rightBarButtonItem?.isEnabled = false
 
         tableView.register(FolderCell.nib, forCellReuseIdentifier: FolderCell.reuseId)
@@ -173,7 +176,7 @@ class BrowseViewController: BaseTableViewController {
             return
         }
 
-        let alert = DuplicateProjectAlert(nil)
+        let alert = DuplicateFolderAlert(nil)
 
         if alert.exists(spaceId: space.id, name: folders[selected].name) {
             present(alert, animated: true)
