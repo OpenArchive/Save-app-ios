@@ -42,8 +42,6 @@
 		A02DB29C29B647390090ECF6 /* URL+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02DB29929B647390090ECF6 /* URL+Utils.swift */; };
 		A03236282B0B7F9D00D95BC3 /* UploadErrorAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03236272B0B7F9D00D95BC3 /* UploadErrorAlert.swift */; };
 		A0357D1122CF901800292077 /* BatchEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0357D1022CF901800292077 /* BatchEditViewController.swift */; };
-		A0362192220DA390003C21DC /* UIColor+accent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362191220DA390003C21DC /* UIColor+accent.swift */; };
-		A0362193220DA390003C21DC /* UIColor+accent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362191220DA390003C21DC /* UIColor+accent.swift */; };
 		A0362195220DB2CA003C21DC /* IaSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362194220DB2CA003C21DC /* IaSpace.swift */; };
 		A0362196220DB2CA003C21DC /* IaSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362194220DB2CA003C21DC /* IaSpace.swift */; };
 		A0362198220DB384003C21DC /* WebDavSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362197220DB384003C21DC /* WebDavSpace.swift */; };
@@ -258,7 +256,6 @@
 		A09B53CD23266F02005266C2 /* AbcFilteredByCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C797E5228061AC0009751A /* AbcFilteredByCollectionView.swift */; };
 		A09B53CE23266F02005266C2 /* ImageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DBF21F8EBDD00B46099 /* ImageCell.swift */; };
 		A09B53D023266F02005266C2 /* IaConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D1013F22CCFA1B0068D047 /* IaConduit.swift */; };
-		A09B53D123266F02005266C2 /* UIColor+accent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362191220DA390003C21DC /* UIColor+accent.swift */; };
 		A09B53D223266F02005266C2 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68621EE834D00E4F6B7 /* BaseCell.swift */; };
 		A09B53D323266F02005266C2 /* TintedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDB22491C6C006610F0 /* TintedButton.swift */; };
 		A09B53D423266F02005266C2 /* SelectedSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2BC712226AA10006D33E3 /* SelectedSpace.swift */; };
@@ -519,7 +516,6 @@
 		A032362A2B0B986300D95BC3 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = uk; path = uk.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A032362B2B0B986300D95BC3 /* uk */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = uk; path = uk.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
 		A0357D1022CF901800292077 /* BatchEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchEditViewController.swift; sourceTree = "<group>"; };
-		A0362191220DA390003C21DC /* UIColor+accent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+accent.swift"; sourceTree = "<group>"; };
 		A0362194220DB2CA003C21DC /* IaSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaSpace.swift; sourceTree = "<group>"; };
 		A0362197220DB384003C21DC /* WebDavSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDavSpace.swift; sourceTree = "<group>"; };
 		A03EE8DA224CEE63008A0281 /* SpacesListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpacesListCell.xib; sourceTree = "<group>"; };
@@ -799,7 +795,6 @@
 				A006A6A7282950D00029E49B /* UIBackgroundFetchResult+description.swift */,
 				A076790127BE89E900609630 /* UIButton+Utils.swift */,
 				A0212FCD22D374CA009079DC /* UICollectionView+selection.swift */,
-				A0362191220DA390003C21DC /* UIColor+accent.swift */,
 				A056BE1B2857457E00F354B6 /* UIFont+Montserrat.swift */,
 				A04255CD22944C1B0048E00C /* UIStoryboard+main.swift */,
 				A05471DA2296C8FD009FEA93 /* UITableView+separatorView.swift */,
@@ -1658,7 +1653,6 @@
 				A05C582B21EF95A800141633 /* BaseViewController.swift in Sources */,
 				A0C475B5211474A70012937E /* RegexUtils.swift in Sources */,
 				A0631B572203068900B3E90D /* MenuItemCell.swift in Sources */,
-				A0362193220DA390003C21DC /* UIColor+accent.swift in Sources */,
 				A006AF3528198752007637DD /* AlertHelper.swift in Sources */,
 				A0C797E7228063280009751A /* AbcFilteredByCollectionView.swift in Sources */,
 				A0DE78B021F76D2200B6B68B /* Project.swift in Sources */,
@@ -1776,7 +1770,6 @@
 				A09B53CE23266F02005266C2 /* ImageCell.swift in Sources */,
 				A09B53D023266F02005266C2 /* IaConduit.swift in Sources */,
 				A0DC0FAE233914BD00C4969A /* MovieIndicator.swift in Sources */,
-				A09B53D123266F02005266C2 /* UIColor+accent.swift in Sources */,
 				A09B53D223266F02005266C2 /* BaseCell.swift in Sources */,
 				A076790427BE89E900609630 /* UIButton+Utils.swift in Sources */,
 				A05DF97A282C0E54003FADA2 /* AEXMLDocument.swift in Sources */,
@@ -1912,7 +1905,6 @@
 				A05DF974282C0E13003FADA2 /* DavResponse.swift in Sources */,
 				A0D1014022CCFA1B0068D047 /* IaConduit.swift in Sources */,
 				A076790627BEA31200609630 /* ConsentViewController.swift in Sources */,
-				A0362192220DA390003C21DC /* UIColor+accent.swift in Sources */,
 				A0E1A68721EE834D00E4F6B7 /* BaseCell.swift in Sources */,
 				A0F7FDDC22491C6C006610F0 /* TintedButton.swift in Sources */,
 				A0E2BC722226AA10006D33E3 /* SelectedSpace.swift in Sources */,
