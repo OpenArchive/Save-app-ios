@@ -1,6 +1,6 @@
 //
-//  EditProjectViewController.swift
-//  OpenArchive
+//  EditFolderViewController.swift
+//  Save
 //
 //  Created by Benjamin Erhart on 29.03.19.
 //  Copyright © 2019 Open Archive. All rights reserved.
@@ -9,7 +9,7 @@
 import UIKit
 import Eureka
 
-class EditProjectViewController: BaseProjectViewController {
+class EditFolderViewController: BaseFolderViewController {
 
     private var archiveLabel: String {
         return project.active ? NSLocalizedString("Archive Folder", comment: "") : NSLocalizedString("Unarchive Folder", comment: "")

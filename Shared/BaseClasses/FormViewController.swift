@@ -76,7 +76,7 @@ class FormViewController: Eureka.FormViewController {
     // MARK: Actions
 
     @IBAction func dismiss(_ sender: Any? = nil) {
-        if let nav = navigationController {
+        if let nav = navigationController, navigationController?.topViewController != self {
             nav.popViewController(animated: true)
         }
         else {

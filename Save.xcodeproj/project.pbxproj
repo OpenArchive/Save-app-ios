@@ -382,7 +382,7 @@
 		A0E27205224E2A4D00CB7113 /* FolderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E27202224E2A4D00CB7113 /* FolderCell.xib */; };
 		A0E27209224E335400CB7113 /* NewFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E27208224E335400CB7113 /* NewFolderViewController.swift */; };
 		A0E2720A224E335400CB7113 /* NewFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E27208224E335400CB7113 /* NewFolderViewController.swift */; };
-		A0E2720C224E33D000CB7113 /* EditProjectViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2720B224E33D000CB7113 /* EditProjectViewController.swift */; };
+		A0E2720C224E33D000CB7113 /* EditFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2720B224E33D000CB7113 /* EditFolderViewController.swift */; };
 		A0E2BC722226AA10006D33E3 /* SelectedSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2BC712226AA10006D33E3 /* SelectedSpace.swift */; };
 		A0E2BC732226AA10006D33E3 /* SelectedSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2BC712226AA10006D33E3 /* SelectedSpace.swift */; };
 		A0E321F6228EBE6A00F2E9BD /* FlagInfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E321F5228EBE6A00F2E9BD /* FlagInfoAlert.swift */; };
@@ -697,7 +697,7 @@
 		A0E1A68821EE873200E4F6B7 /* TableHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableHeader.swift; sourceTree = "<group>"; };
 		A0E27202224E2A4D00CB7113 /* FolderCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = FolderCell.xib; sourceTree = "<group>"; };
 		A0E27208224E335400CB7113 /* NewFolderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NewFolderViewController.swift; sourceTree = "<group>"; };
-		A0E2720B224E33D000CB7113 /* EditProjectViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProjectViewController.swift; sourceTree = "<group>"; };
+		A0E2720B224E33D000CB7113 /* EditFolderViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFolderViewController.swift; sourceTree = "<group>"; };
 		A0E2BC712226AA10006D33E3 /* SelectedSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedSpace.swift; sourceTree = "<group>"; };
 		A0E321F5228EBE6A00F2E9BD /* FlagInfoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FlagInfoAlert.swift; sourceTree = "<group>"; };
 		A0E321F8228EDBE900F2E9BD /* DarkroomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkroomViewController.swift; sourceTree = "<group>"; };
@@ -1020,7 +1020,7 @@
 				A0E1A67B21EE7A5C00E4F6B7 /* GeneralSettingsViewController.swift */,
 				A0BF451927DF5EE800DBB629 /* ProofModeSettingsViewController.swift */,
 				A0A9F1902AF0193D007D284A /* FoldersViewController.swift */,
-				A0E2720B224E33D000CB7113 /* EditProjectViewController.swift */,
+				A0E2720B224E33D000CB7113 /* EditFolderViewController.swift */,
 				A0C6B3082AFD11C400304187 /* CcSelector.swift */,
 			);
 			path = Settings;
@@ -1935,7 +1935,7 @@
 				A05DF978282C0E54003FADA2 /* AEXMLDocument.swift in Sources */,
 				A056555C23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */,
 				A0631B552203022100B3E90D /* BaseTableViewController.swift in Sources */,
-				A0E2720C224E33D000CB7113 /* EditProjectViewController.swift in Sources */,
+				A0E2720C224E33D000CB7113 /* EditFolderViewController.swift in Sources */,
 				A0457E6920EFB57C00B8FBCB /* RegexUtils.swift in Sources */,
 				A094EA48282A8C24006CE059 /* URLSession+Utils.swift in Sources */,
 				A0B645CA22B7AEBB00BBE3FF /* BigMenuItemCell.swift in Sources */,

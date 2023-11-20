@@ -42,10 +42,16 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
     }
 
+    @IBOutlet weak var welcomeLb: UILabel! {
+        didSet {
+            welcomeLb.font = welcomeLb.font.bold()
+            welcomeLb.text = NSLocalizedString("Welcome!", comment: "")
+        }
+    }
+
     @IBOutlet weak var hintLb: UILabel! {
         didSet {
-            hintLb.font = hintLb.font.bold()
-            hintLb.text = NSLocalizedString("Tap buttons below to add media to your project.", comment: "")
+            hintLb.text = NSLocalizedString("Press the button below to add media", comment: "")
         }
     }
 

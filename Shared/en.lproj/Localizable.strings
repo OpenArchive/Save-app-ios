@@ -367,6 +367,9 @@
 /* No comment provided by engineer. */
 "Press and hold to select and edit multiple media." = "Press and hold to select and edit multiple media.";
 
+/* No comment provided by engineer. */
+"Press the button below to add media" = "Press the button below to add media";
+
 /* PreviewViewController */
 "Preview" = "Preview";
 
@@ -506,9 +509,6 @@
 "SW" = "SW";
 
 /* MainViewController */
-"Tap buttons below to add media to your project." = "Tap buttons below to add media to your project.";
-
-/* MainViewController */
 "Tap here to change" = "Tap here to change";
 
 /* DarkroomHelper */
@@ -579,6 +579,9 @@
 
 /* ManagementViewController */
 "Waiting…" = "Waiting…";
+
+/* No comment provided by engineer. */
+"Welcome!" = "Welcome!";
 
 /* InternetArchiveViewController */
 "When using the \"%1$@\" feature, make sure to log in and then touch the \"Refresh\" button in the top right to let %2$@ have another try at automatically scraping the keys." = "When using the \"%1$@\" feature, make sure to log in and then touch the \"Refresh\" button in the top right to let %2$@ have another try at automatically scraping the keys.";

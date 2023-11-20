@@ -137,7 +137,7 @@ class FoldersViewController: FormViewController {
             <<< ButtonRow {
                 $0.title = project.name
                 $0.presentationMode = .show(controllerProvider: .callback(builder: {
-                    EditProjectViewController(project)
+                    EditFolderViewController(project)
                 }), onDismiss: nil)
             }
         }
