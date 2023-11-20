@@ -1,6 +1,6 @@
 //
 //  MainViewController.swift
-//  OpenArchive
+//  Save
 //
 //  Created by Benjamin Erhart on 23.01.19.
 //  Copyright © 2019 Open Archive. All rights reserved.
@@ -8,29 +8,16 @@
 
 import UIKit
 import YapDatabase
-import DownloadButton
 
 class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,
-                          UINavigationControllerDelegate, SideMenuDelegate, HeaderViewDelegate,
-                          AssetPickerDelegate, PKDownloadButtonDelegate
+                          UINavigationControllerDelegate, SideMenuDelegate,
+                          AssetPickerDelegate
 {
 
     private static let segueConnectSpace = "connectSpaceSegue"
     private static let segueShowPreview = "showPreviewSegue"
-    private static let segueShowManagement = "showManagmentSegue"
 
     @IBOutlet weak var logo: UIImageView!
-
-    @IBOutlet weak var manageBt: PKDownloadButton! {
-        didSet {
-            UploadCell.style(manageBt)
-            manageBt.state = .downloading
-            manageBt.stopDownloadButton.stopButton.setImage(nil, for: .normal)
-            manageBt.stopDownloadButton.stopButton.setTitleColor(.accent, for: .normal)
-            manageBt.stopDownloadButton.stopButton.titleLabel?.font = UIFont.boldSystemFont(ofSize: 11)
-            manageBt.isHidden = true
-        }
-    }
 
     @IBOutlet weak var removeBt: UIButton! {
         didSet {
@@ -49,6 +36,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     @IBOutlet weak var spaceFavIcon: UIImageView!
     @IBOutlet weak var folderNameLb: UILabel!
     @IBOutlet weak var folderAssetCountLb: UILabel!
+    @IBOutlet weak var manageBt: UIButton!
 
     @IBOutlet weak var hintLb: UILabel! {
         didSet {
@@ -223,8 +211,8 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
 
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind
-        kind: String, at indexPath: IndexPath) -> UICollectionReusableView {
-
+        kind: String, at indexPath: IndexPath) -> UICollectionReusableView 
+    {
         let view = collectionView.dequeueReusableSupplementaryView(
             ofKind: kind, withReuseIdentifier: HeaderView.reuseId, for: indexPath) as! HeaderView
 
@@ -237,13 +225,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
         collection?.assets.append(contentsOf: assetsReadConn?.objects(in: indexPath.section, with: assetsMappings) ?? [])
 
-        view.section = indexPath.section
         view.collection = collection
-        view.delegate = self
-
-        let title = headerButtonTitle(indexPath.section)
-        view.manageBt.setTitle(title, for: .normal)
-        view.manageBt.setTitle(title, for: .highlighted)
 
         return view
     }
@@ -253,17 +235,44 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
         cell.asset = assetsReadConn?.object(at: indexPath, in: assetsMappings)
 
-//        cell.upload = uploadsReadConn?.find(where: { $0.assetId == cell.asset?.id })
+        if !(cell.asset?.isUploaded ?? true) {
+            cell.upload = uploadsReadConn?.find(where: { $0.assetId == cell.asset?.id })
+            cell.viewController = self
+        }
 
         return cell
     }
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if inEditMode {
-            updateHeaderButton()
-            updateRemove()
+            return updateRemove()
+        }
 
-            return
+        if let cell = collectionView.cellForItem(at: indexPath) as? ImageCell {
+            if let upload = cell.upload {
+                collectionView.deselectItem(at: indexPath, animated: false)
+
+                if upload.error != nil {
+                    return UploadErrorAlert.present(self, upload)
+                }
+
+                switch upload.state {
+                case .startDownload:
+                    NotificationCenter.default.post(name: .uploadManagerUnpause, object: upload.id)
+                case .pending, .downloading:
+                    NotificationCenter.default.post(name: .uploadManagerPause, object: upload.id)
+                default:
+                    break
+                }
+
+                return
+            }
+
+            if cell.asset?.isUploaded ?? false || cell.upload != nil {
+                toggleMode(newMode: true)
+
+                return updateRemove()
+            }
         }
 
         collectionView.deselectItem(at: indexPath, animated: false)
@@ -280,7 +289,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             toggleMode(newMode: false)
         }
         else {
-            updateHeaderButton()
             updateRemove()
         }
     }
@@ -427,49 +435,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
 
 
-    // MARK: HeaderViewDelegate
-
-    func showDetails(_ collection: Collection, section: Int? = nil) {
-
-        // If in "edit" mode, select all of this section.
-        if inEditMode {
-
-            if let section = section {
-                if collectionView.isSectionSelected(section) {
-                    // If all are selected, deselect again.
-                    collectionView.deselectSection(section, animated: false)
-                }
-                else {
-                    collectionView.selectSection(section, animated: false, scrollPosition: .centeredVertically)
-                }
-
-                // Switch off edit mode, when last item was deselected.
-                if collectionView.numberOfSelectedItems < 1 {
-                    toggleMode(newMode: false)
-                }
-                else {
-                    updateHeaderButton()
-                    updateRemove()
-                }
-            }
-
-            return
-        }
-
-        // If not in edit mode, go to PreviewViewController.
-        AbcFilteredByCollectionView.updateFilter(collection.id)
-
-        performSegue(withIdentifier: Self.segueShowPreview, sender: nil)
-    }
-
-
-    // MARK: PKDownloadButtonDelegate
-
-    func downloadButtonTapped(_ downloadButton: PKDownloadButton, currentState state: PKDownloadButtonState) {
-        performSegue(withIdentifier: Self.segueShowManagement, sender: nil)
-    }
-
-
     // MARK: Observers
 
     /**
@@ -540,17 +505,12 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
      Shows/hides the upload manager button. Sets the number of currently queued items.
      */
     private func updateManageBt() {
-        uploadsReadConn?.asyncRead { [weak self] transaction in
-            let count = UploadsView.countUploading(transaction)
+        uploadsReadConn?.asyncRead { [weak self] tx in
+            let count = UploadsView.countUploading(tx)
 
             DispatchQueue.main.async {
-                if count > 0 {
-                    self?.manageBt.stopDownloadButton.stopButton.setTitle(Formatters.format(count), for: .normal)
-                    self?.manageBt.show2(animated: true)
-                }
-                else {
-                    self?.manageBt.hide(animated: true)
-                }
+                self?.folderAssetCountLb.toggle(count < 1, animated: true)
+                self?.manageBt.toggle(count > 0, animated: true)
             }
         }
     }
@@ -577,7 +537,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
         inEditMode = newMode
 
-        updateHeaderButton()
         updateRemove()
     }
 
@@ -616,30 +575,8 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         collectionView.reloadData()
     }
 
-    private func updateHeaderButton() {
-        for i in 0 ... collectionView.numberOfSections {
-            if let header = collectionView.supplementaryView(
-                forElementKind: "UICollectionElementKindSectionHeader",
-                at: IndexPath(item: 0, section: i)) as? HeaderView {
-
-                let title = headerButtonTitle(i)
-
-                header.manageBt.setTitle(title, for: .normal)
-                header.manageBt.setTitle(title, for: .highlighted)
-            }
-        }
-    }
-
-    private func headerButtonTitle(_ section: Int) -> String {
-        return inEditMode
-            ? (collectionView.isSectionSelected(section)
-               ? NSLocalizedString("Deselect", comment: "")
-               : NSLocalizedString("Select", comment: ""))
-            : NSLocalizedString("Next", comment: "")
-    }
-
     private func getSelectedAssets() -> [Asset] {
-        return assetsReadConn?.objects(at: collectionView.indexPathsForSelectedItems, in: assetsMappings) ?? []
+        assetsReadConn?.objects(at: collectionView.indexPathsForSelectedItems, in: assetsMappings) ?? []
     }
 
     private func toggleMenu(_ toggle: Bool, _ completion: ((_ finished: Bool) -> Void)? = nil) {

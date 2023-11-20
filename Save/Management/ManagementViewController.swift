@@ -151,6 +151,8 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
         else {
             NotificationCenter.default.post(name: .uploadManagerUnpause, object: nil)
         }
+
+        updateTitle()
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
@@ -200,25 +202,13 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
             NotificationCenter.default.post(name: .uploadManagerUnpause, object: upload.id)
         case .pending, .downloading:
             NotificationCenter.default.post(name: .uploadManagerPause, object: upload.id)
-        case .downloaded:
-            break
-        @unknown default:
+        default:
             break
         }
     }
 
     func showError(_ upload: Upload) {
-        AlertHelper.present(
-            self, message: upload.error,
-            title: NSLocalizedString("Multiple attempts with no success", comment: ""),
-            actions: [
-                AlertHelper.destructiveAction(NSLocalizedString("Remove", comment: ""), handler: { _ in
-                    upload.remove()
-                }),
-                AlertHelper.defaultAction(NSLocalizedString("Retry", comment: ""), handler: { _ in
-                    NotificationCenter.default.post(name: .uploadManagerUnpause, object: upload.id)
-                }),
-                AlertHelper.cancelAction()])
+        UploadErrorAlert.present(self, upload)
     }
 
 
@@ -317,12 +307,21 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
     // MARK: Private Methods
 
     private func updateTitle() {
-        readConn?.asyncRead { [weak self] transaction in
-            let left = UploadsView.countUploading(transaction)
+        let titleView = navigationItem.titleView as? MultilineTitle ?? MultilineTitle()
+
+        if isEditing {
+            titleView.title.text = NSLocalizedString("Edit Media", comment: "")
+            titleView.subtitle.text = NSLocalizedString("Uploading is paused", comment: "")
+
+            navigationItem.titleView = titleView
+
+            return
+        }
+
+        readConn?.asyncRead { [weak self] tx in
+            let left = UploadsView.countUploading(tx)
 
             DispatchQueue.main.async {
-                let titleView = self?.navigationItem.titleView as? MultilineTitle ?? MultilineTitle()
-
                 titleView.title.text = self?.count == 0
                     ? NSLocalizedString("Done", comment: "")
                     : (left > 0

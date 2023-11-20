@@ -40,6 +40,7 @@
 		A02DB29A29B647390090ECF6 /* URL+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02DB29929B647390090ECF6 /* URL+Utils.swift */; };
 		A02DB29B29B647390090ECF6 /* URL+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02DB29929B647390090ECF6 /* URL+Utils.swift */; };
 		A02DB29C29B647390090ECF6 /* URL+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02DB29929B647390090ECF6 /* URL+Utils.swift */; };
+		A03236282B0B7F9D00D95BC3 /* UploadErrorAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03236272B0B7F9D00D95BC3 /* UploadErrorAlert.swift */; };
 		A0357D1122CF901800292077 /* BatchEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0357D1022CF901800292077 /* BatchEditViewController.swift */; };
 		A0362192220DA390003C21DC /* UIColor+accent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362191220DA390003C21DC /* UIColor+accent.swift */; };
 		A0362193220DA390003C21DC /* UIColor+accent.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362191220DA390003C21DC /* UIColor+accent.swift */; };
@@ -513,6 +514,7 @@
 		A029F6822118715700C4EF6D /* AssetFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFactory.swift; sourceTree = "<group>"; };
 		A02BC66D2400195C007B05AB /* NSError+from.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+from.swift"; sourceTree = "<group>"; };
 		A02DB29929B647390090ECF6 /* URL+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Utils.swift"; sourceTree = "<group>"; };
+		A03236272B0B7F9D00D95BC3 /* UploadErrorAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadErrorAlert.swift; sourceTree = "<group>"; };
 		A0357D1022CF901800292077 /* BatchEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchEditViewController.swift; sourceTree = "<group>"; };
 		A0362191220DA390003C21DC /* UIColor+accent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+accent.swift"; sourceTree = "<group>"; };
 		A0362194220DB2CA003C21DC /* IaSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaSpace.swift; sourceTree = "<group>"; };
@@ -833,6 +835,7 @@
 				A09AD11E2AC2F94000DE8085 /* SideMenuViewController.xib */,
 				A0CBFCA82AC5B6F4005A78BF /* SideMenuItemCell.swift */,
 				A0CBFCA72AC5B6F4005A78BF /* SideMenuItemCell.xib */,
+				A03236272B0B7F9D00D95BC3 /* UploadErrorAlert.swift */,
 			);
 			path = Main;
 			sourceTree = "<group>";
@@ -1794,6 +1797,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A03236282B0B7F9D00D95BC3 /* UploadErrorAlert.swift in Sources */,
 				A094EA4D282AD23D006CE059 /* NSError+from.swift in Sources */,
 				A056BE1C2857457E00F354B6 /* UIFont+Montserrat.swift in Sources */,
 				A0E739D820E4C85D00DB31E1 /* AppDelegate.swift in Sources */,

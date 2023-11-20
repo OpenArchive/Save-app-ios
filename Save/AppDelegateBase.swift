@@ -295,7 +295,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                     mainVc.selectedProject = project
                     mainVc.updateFilter()
-                    mainVc.showDetails(project.currentCollection)
+                    mainVc.picked()
                 }
             }
         }

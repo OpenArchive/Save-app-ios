@@ -8,75 +8,46 @@
 
 import UIKit
 
-protocol HeaderViewDelegate: AnyObject {
-    func showDetails(_ collection: Collection, section: Int?)
-}
-
 class HeaderView: UICollectionReusableView {
 
     static let reuseId = "headerView"
 
-    @IBOutlet weak var infoLb: UILabel! {
-        didSet {
-            infoLb.font = infoLb.font.bold()
-        }
-    }
+    @IBOutlet weak var infoLb: UILabel!
 
-    @IBOutlet weak var subInfoLb: UILabel!
-    @IBOutlet weak var manageBt: UIButton!
+    @IBOutlet weak var assetCountLb: UILabel!
 
-    weak var delegate: HeaderViewDelegate?
-
-    var section: Int?
 
     var collection: Collection? {
         didSet {
             if let uploadedTs = collection?.uploaded, collection?.waitingAssetsCount ?? 0 == 0 {
-                let uploaded = collection?.uploadedAssetsCount ?? 0
-
-                // I know this is really wrong, but using stringsdict is just a fucking
-                // hastle and at least this works well for English, German and many more
-                // languages.
-                infoLb.text = String.localizedStringWithFormat(NSLocalizedString("%u Item(s) Uploaded", comment: "#bc-ignore!"), uploaded)
-
                 let fiveMinAgo = Date(timeIntervalSinceNow: -5 * 60)
 
-                subInfoLb.text = fiveMinAgo < uploadedTs
+                infoLb.text = fiveMinAgo < uploadedTs
                     ? NSLocalizedString("Just now", comment: "")
                     : Formatters.format(uploadedTs)
 
-                manageBt.isHidden = true
+                let uploaded = collection?.uploadedAssetsCount ?? 0
+
+                assetCountLb.text = "  \(Formatters.format(uploaded))  "
             }
             else if collection?.closed != nil {
-                infoLb.text = NSLocalizedString("Uploading", comment: "").localizedUppercase
+                infoLb.text = NSLocalizedString("Uploading…", comment: "")
 
                 let total = collection?.assets.count ?? 0
                 let uploaded = collection?.uploadedAssetsCount ?? 0
 
-                subInfoLb.text = String.localizedStringWithFormat(
-                    NSLocalizedString("%2$u of %1$u item(s) uploaded", comment: "#bc-ignore!"),
-                    total, uploaded)
-
-                manageBt.isHidden = true
+                assetCountLb.text = String(
+                    format: "  \(NSLocalizedString("%1$@/%2$@", comment: "both are integer numbers meaning 'x of n'"))  ",
+                    Formatters.format(uploaded),
+                    Formatters.format(total))
             }
             else {
                 infoLb.text = NSLocalizedString("Ready to upload", comment: "").localizedUppercase
 
                 let waiting = collection?.waitingAssetsCount ?? 0
 
-                subInfoLb.text = String.localizedStringWithFormat(NSLocalizedString("%u item(s)", comment: "#bc-ignore!"), waiting)
-
-                manageBt.isHidden = false
+                assetCountLb.text = "  \(Formatters.format(waiting))  "
             }
-        }
-    }
-    
-    @IBAction func manage() {
-        if let collection = collection {
-            delegate?.showDetails(collection, section: section)
-        }
-        else {
-            debugPrint("[\(String(describing: type(of: self)))]#manage - no collection! That should not happen!")
         }
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import DownloadButton
 
 class ImageCell: UICollectionViewCell {
 
@@ -15,11 +16,19 @@ class ImageCell: UICollectionViewCell {
     private var blurView: UIVisualEffectView?
     
     @IBOutlet weak var imgView: UIImageView!
+    @IBOutlet weak var progress: PKDownloadButton! {
+        didSet {
+            UploadCell.style(progress)
+        }
+    }
+    @IBOutlet weak var errorIcon: UIImageView!
     @IBOutlet weak var movieIndicator: MovieIndicator!
 
     private lazy var selectedView = SelectedView()
 
     var highlightNonUploaded = true
+
+    weak var viewController: UIViewController?
 
     var asset: Asset? {
         didSet {
@@ -41,8 +50,18 @@ class ImageCell: UICollectionViewCell {
                 blurView?.removeFromSuperview()
             }
 
-            movieIndicator.isHidden = !(asset?.isAv ?? false)
-            movieIndicator.set(duration: asset?.duration)
+            renderUpload()
+
+            if asset?.isAv ?? false {
+                movieIndicator.isHidden = false
+                movieIndicator.set(duration: asset?.duration)
+            }
+        }
+    }
+
+    var upload: Upload? {
+        didSet {
+            renderUpload()
         }
     }
 
@@ -55,5 +74,20 @@ class ImageCell: UICollectionViewCell {
                 selectedView.removeFromSuperview()
             }
         }
+    }
+
+    private func renderUpload() {
+        if upload?.error != nil {
+            errorIcon.isHidden = false
+            progress.isHidden = true
+
+            return
+        }
+
+        errorIcon.isHidden = true
+
+        progress.isHidden = asset?.isUploaded ?? true || upload?.state == .downloaded
+        progress.state = upload?.state ?? .pending
+        progress.stopDownloadButton.progress = upload?.progress ?? 0
     }
 }

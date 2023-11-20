@@ -157,9 +157,6 @@
 /* AddProjectViewController */
 "Create New Project" = "Crear nuevo proyecto";
 
-/* MainViewController */
-"Deselect" = "Deseleccionar";
-
 /* MainViewController, DarkroomViewController, PrivateServerViewController, InternetArchiveViewController, ManagementViewController, Main.storyboard */
 "Done" = "Listo";
 
@@ -168,6 +165,9 @@
 
 /* East Direction Abbreviation */
 "E" = "E";
+
+/* No comment provided by engineer. */
+"Edit Media" = "Edit Media";
 
 /* No comment provided by engineer. */
 "Edit Media Info" = "Editar información de los medios";
@@ -274,9 +274,6 @@
 /* No comment provided by engineer. */
 "Metadata" = "Metadatos";
 
-/* ManagementViewController */
-"Multiple attempts with no success" = "Múltiples intentos sin éxito";
-
 /* No comment provided by engineer. */
 "My Media" = "Mis medios";
 
@@ -297,9 +294,6 @@
 
 /* NewProjectViewController, ShareExtension.MainViewController */
 "New Project" = "Nuevo Proyecto";
-
-/* MainViewController */
-"Next" = "Siguiente";
 
 /* MainViewController */
 "No albums" = "Sin álbumes";
@@ -451,9 +445,6 @@
 /* No comment provided by engineer. */
 "Security" = "Seguridad";
 
-/* MainViewController */
-"Select" = "Seleccionar";
-
 /* BigMenuItemCell */
 "Send directly to a private server." = "Enviar directamente a un servidor privado";
 
@@ -553,8 +544,11 @@
 /* BigMenuItemCell */
 "Upload to the Internet Archive" = "Subir a Internet Archive";
 
-/* HeaderView */
-"Uploading" = "Subiendo";
+/* No comment provided by engineer. */
+"Upload unsuccessful" = "Upload unsuccessful";
+
+/* No comment provided by engineer. */
+"Uploading is paused" = "Uploading is paused";
 
 /* ManagementViewController */
 "Uploading…" = "Subiendo...";

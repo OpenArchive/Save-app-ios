@@ -157,9 +157,6 @@
 /* AddProjectViewController */
 "Create New Project" = "پروژه جدید بسازید";
 
-/* MainViewController */
-"Deselect" = "لغو انتخاب";
-
 /* MainViewController, DarkroomViewController, PrivateServerViewController, InternetArchiveViewController, ManagementViewController, Main.storyboard */
 "Done" = "انجام شد";
 
@@ -168,6 +165,9 @@
 
 /* East Direction Abbreviation */
 "E" = "E";
+
+/* No comment provided by engineer. */
+"Edit Media" = "Edit Media";
 
 /* No comment provided by engineer. */
 "Edit Media Info" = "Edit Media Info";
@@ -274,9 +274,6 @@
 /* No comment provided by engineer. */
 "Metadata" = "فرا داده";
 
-/* ManagementViewController */
-"Multiple attempts with no success" = "چند تلاش بدون موفقیت";
-
 /* No comment provided by engineer. */
 "My Media" = "My Media";
 
@@ -297,9 +294,6 @@
 
 /* NewProjectViewController, ShareExtension.MainViewController */
 "New Project" = "پروژه جدید";
-
-/* MainViewController */
-"Next" = "بعد";
 
 /* MainViewController */
 "No albums" = "بدون آلبوم";
@@ -451,9 +445,6 @@
 /* No comment provided by engineer. */
 "Security" = "امنیت";
 
-/* MainViewController */
-"Select" = "انتخاب";
-
 /* BigMenuItemCell */
 "Send directly to a private server." = "به طور مستقیم به سرور شخصی بفرستید.";
 
@@ -553,8 +544,11 @@
 /* BigMenuItemCell */
 "Upload to the Internet Archive" = "در بایگانی اینترنت بارگذاری کنید";
 
-/* HeaderView */
-"Uploading" = "در حال بارگذاری";
+/* No comment provided by engineer. */
+"Upload unsuccessful" = "Upload unsuccessful";
+
+/* No comment provided by engineer. */
+"Uploading is paused" = "Uploading is paused";
 
 /* ManagementViewController */
 "Uploading…" = "بارگذاری.......";

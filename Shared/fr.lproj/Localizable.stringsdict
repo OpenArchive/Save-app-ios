@@ -20,42 +20,6 @@
 			<string>%u éléments</string>
 		</dict>
 	</dict>
-	<key>%2$u of %1$u item(s) uploaded</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@text@</string>
-		<key>text</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%2$u élément sur %1$u a été téléversé</string>
-			<key>many</key>
-			<string>%2$u éléments sur %1$u ont été téléversés</string>
-			<key>other</key>
-			<string>%2$u éléments sur %1$u ont été téléversés</string>
-		</dict>
-	</dict>
-	<key>%u Item(s) Uploaded</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@items_uploaded@</string>
-		<key>items_uploaded</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%u élément a été téléversé</string>
-			<key>many</key>
-			<string>%u éléments ont été téléversés</string>
-			<key>other</key>
-			<string>%u éléments ont été téléversés</string>
-		</dict>
-	</dict>
 	<key>%u Item(s) Selected</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
