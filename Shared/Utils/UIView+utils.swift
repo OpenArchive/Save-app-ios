@@ -32,13 +32,14 @@ extension UIView {
      
      - parameter animated: If the change (if any) shall be animated or not.
     */
-    func hide(animated: Bool = false) {
-        
+    func hide(animated: Bool = false, _ completion: ((_ finished: Bool) -> Void)? = nil) {
+
         if animated {
-            animateHideShow(hide: true)
+            animateHideShow(hide: true, completion)
         }
         else {
             isHidden = true
+            completion?(true)
         }
     }
     
@@ -50,12 +51,13 @@ extension UIView {
      
      - parameter animated: If the change (if any) shall be animated or not.
     */
-    func show2(animated: Bool = false) {
+    func show2(animated: Bool = false, _ completion: ((_ finished: Bool) -> Void)? = nil) {
         if animated {
-            animateHideShow(hide: false)
+            animateHideShow(hide: false, completion)
         }
         else {
             isHidden = false
+            completion?(true)
         }
     }
     
@@ -65,12 +67,12 @@ extension UIView {
      - parameter toggle: If true, view will be shown, if false view will be hidden.
      - parameter animated: If the change (if any) shall be animated or not.
     */
-    func toggle(_ toggle: Bool, animated: Bool = false) {
+    func toggle(_ toggle: Bool, animated: Bool = false, _ completion: ((_ finished: Bool) -> Void)? = nil) {
         if toggle {
-            show2(animated: animated)
+            show2(animated: animated, completion)
         }
         else {
-            hide(animated: animated)
+            hide(animated: animated, completion)
         }
     }
     
@@ -83,7 +85,7 @@ extension UIView {
      
      - parameter hide: Set true to hide, false to unhide.
      */
-    private func animateHideShow(hide: Bool) {
+    private func animateHideShow(hide: Bool, _ completion: ((_ finished: Bool) -> Void)?) {
         guard isHidden != hide else {
             return
         }
@@ -92,16 +94,19 @@ extension UIView {
             alpha = 0
             isHidden = false
 
-            UIView.animate(withDuration: 0.25) {
-                self.alpha = 1
-            }
+            UIView.animate(
+                withDuration: 0.25,
+                animations: { self.alpha = 1 },
+                completion: completion)
         }
         else {
             UIView.animate(withDuration: 0.25) {
                 self.alpha = 0
-            } completion: { _ in
+            } completion: { finished in
                 self.isHidden = true
                 self.alpha = 1
+
+                completion?(finished)
             }
         }
     }

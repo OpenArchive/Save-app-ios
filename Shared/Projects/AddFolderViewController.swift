@@ -27,23 +27,6 @@ class AddFolderViewController: BaseViewController {
         }
     }
 
-    @IBOutlet weak var newBt: UIView!
-
-    @IBOutlet weak var newLb: UILabel! {
-        didSet {
-            newLb.text = NSLocalizedString("Create a New Folder", comment: "")
-        }
-    }
-
-
-    @IBOutlet weak var browseBt: UIView!
-
-    @IBOutlet weak var broweLb: UILabel! {
-        didSet {
-            broweLb.text = NSLocalizedString("Browse Existing Folders", comment: "")
-        }
-    }
-
 
     convenience init() {
         self.init(nibName: "AddFolderViewController", bundle: nil)
@@ -68,6 +51,21 @@ class AddFolderViewController: BaseViewController {
 
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .cancel, target: self, action: #selector(dismiss(_:)))
+
+        let button1 = BigButton.create(
+            title: NSLocalizedString("Create a New Folder", comment: ""),
+            target: self,
+            action: #selector(createNew),
+            container: view,
+            above: subtitleLb)
+
+        BigButton.create(
+            title: NSLocalizedString("Browse Existing Folders", comment: ""),
+            target: self,
+            action: #selector(browse),
+            container: view,
+            above: button1,
+            equalHeight: true)
     }
 
 

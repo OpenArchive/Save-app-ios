@@ -270,26 +270,6 @@
             </objects>
             <point key="canvasLocation" x="-367.5" y="-690.84507042253517"/>
         </scene>
-        <!--Connect Space View Controller-->
-        <scene sceneID="6mV-Av-x6y">
-            <objects>
-                <tableViewController storyboardIdentifier="ConnectSpaceViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="6Ji-DQ-0NT" customClass="ConnectSpaceViewController" customModule="Save" customModuleProvider="target" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="100" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="g5o-l0-BcJ">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <sections/>
-                        <connections>
-                            <outlet property="dataSource" destination="6Ji-DQ-0NT" id="cf4-Cq-ete"/>
-                            <outlet property="delegate" destination="6Ji-DQ-0NT" id="GZn-RJ-vK9"/>
-                        </connections>
-                    </tableView>
-                    <navigationItem key="navigationItem" id="Vub-fF-3sQ"/>
-                    <simulatedNavigationBarMetrics key="simulatedTopBarMetrics" prompted="NO"/>
-                </tableViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="aIz-uz-W09" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2539" y="-1476"/>
-        </scene>
         <!--Main View Controller-->
         <scene sceneID="YPT-gf-YbB">
             <objects>
@@ -735,9 +715,7 @@
                         <outlet property="spaceFavIcon" destination="dn7-CY-FB2" id="GBH-lm-TVA"/>
                         <outlet property="welcomeLb" destination="a1a-GU-jmb" id="e5E-en-NsJ"/>
                         <segue destination="E3U-Mn-N4D" kind="show" identifier="showPreviewSegue" id="3Pd-9C-a4R"/>
-                        <segue destination="9re-mE-4ZF" kind="popoverPresentation" identifier="connectSpaceSegue" popoverAnchorView="Fbx-Lc-Aho" id="nR9-1T-Xa8">
-                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                        </segue>
+                        <segue destination="9re-mE-4ZF" kind="presentation" identifier="connectSpaceSegue" modalPresentationStyle="formSheet" id="4nC-3p-qXK"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xHq-hp-h3I" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1640,6 +1618,110 @@
             </objects>
             <point key="canvasLocation" x="4575" y="111.97183098591549"/>
         </scene>
+        <!--Space Wizard View Controller-->
+        <scene sceneID="ggi-Ad-1eq">
+            <objects>
+                <viewController id="xEe-Eh-JTt" customClass="SpaceWizardViewController" customModule="Save" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="f0H-UH-25G">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="C7j-8J-aFd">
+                                <rect key="frame" x="100" y="72" width="120" height="64"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="120" id="IBm-P9-HNQ"/>
+                                    <constraint firstAttribute="width" secondItem="C7j-8J-aFd" secondAttribute="height" multiplier="15:8" id="YhH-m3-qVl"/>
+                                </constraints>
+                            </imageView>
+                            <pageControl opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="xbe-Hw-1oI">
+                                <rect key="frame" x="101.5" y="144" width="117" height="26"/>
+                                <color key="pageIndicatorTintColor" systemColor="systemGray2Color"/>
+                                <color key="currentPageIndicatorTintColor" name="Accent"/>
+                            </pageControl>
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QgE-D8-wLU">
+                                <rect key="frame" x="16" y="178" width="288" height="370"/>
+                                <subviews>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="XlC-OR-eJp">
+                                        <rect key="frame" x="0.0" y="0.0" width="288" height="370"/>
+                                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                    </view>
+                                </subviews>
+                                <constraints>
+                                    <constraint firstItem="XlC-OR-eJp" firstAttribute="bottom" secondItem="tbr-fB-U7C" secondAttribute="bottom" id="3sz-pb-YdW"/>
+                                    <constraint firstItem="XlC-OR-eJp" firstAttribute="height" secondItem="R9k-mL-MBx" secondAttribute="height" priority="750" id="93c-2q-Y7g"/>
+                                    <constraint firstItem="XlC-OR-eJp" firstAttribute="trailing" secondItem="tbr-fB-U7C" secondAttribute="trailing" id="Cbu-az-4pm"/>
+                                    <constraint firstItem="XlC-OR-eJp" firstAttribute="top" secondItem="tbr-fB-U7C" secondAttribute="top" id="Nn2-MY-e5o"/>
+                                    <constraint firstItem="XlC-OR-eJp" firstAttribute="leading" secondItem="tbr-fB-U7C" secondAttribute="leading" id="hgW-bc-05e"/>
+                                    <constraint firstItem="XlC-OR-eJp" firstAttribute="width" secondItem="R9k-mL-MBx" secondAttribute="width" id="hlF-jW-j2y"/>
+                                </constraints>
+                                <viewLayoutGuide key="contentLayoutGuide" id="tbr-fB-U7C"/>
+                                <viewLayoutGuide key="frameLayoutGuide" id="R9k-mL-MBx"/>
+                            </scrollView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="7U3-V7-8ab"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="C7j-8J-aFd" firstAttribute="centerX" secondItem="f0H-UH-25G" secondAttribute="centerX" id="J9a-32-ROM"/>
+                            <constraint firstItem="QgE-D8-wLU" firstAttribute="leading" secondItem="f0H-UH-25G" secondAttribute="leadingMargin" id="aWi-YD-3a6"/>
+                            <constraint firstAttribute="bottomMargin" secondItem="QgE-D8-wLU" secondAttribute="bottom" id="c47-1E-b4k"/>
+                            <constraint firstItem="QgE-D8-wLU" firstAttribute="top" secondItem="xbe-Hw-1oI" secondAttribute="bottom" constant="8" symbolic="YES" id="cze-SD-L8Q"/>
+                            <constraint firstItem="C7j-8J-aFd" firstAttribute="top" secondItem="7U3-V7-8ab" secondAttribute="top" constant="16" id="dpc-Am-H6d"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="QgE-D8-wLU" secondAttribute="trailing" id="iZq-0R-87C"/>
+                            <constraint firstItem="xbe-Hw-1oI" firstAttribute="top" secondItem="C7j-8J-aFd" secondAttribute="bottom" constant="8" symbolic="YES" id="kvC-Oo-pO2"/>
+                            <constraint firstItem="xbe-Hw-1oI" firstAttribute="centerX" secondItem="f0H-UH-25G" secondAttribute="centerX" id="rlD-xl-rq6"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="lx5-77-VKS"/>
+                    <connections>
+                        <outlet property="container" destination="XlC-OR-eJp" id="1bh-hw-8RC"/>
+                        <outlet property="pageControl" destination="xbe-Hw-1oI" id="NpZ-ka-dDh"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vde-qg-Az2" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2539" y="-1476"/>
+        </scene>
+        <!--Space Type View Controller-->
+        <scene sceneID="aCn-oH-Epr">
+            <objects>
+                <viewController storyboardIdentifier="SpaceTypeViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="cTj-I7-Oyu" customClass="SpaceTypeViewController" customModule="Save" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Tx3-1z-bYH">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="To get started, connect to a space to store your media." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="60u-eC-Xt3">
+                                <rect key="frame" x="16" y="36" width="288" height="42.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You can add another storage space and connect to multiple servers." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WgA-6I-Pkp">
+                                <rect key="frame" x="16" y="86.5" width="288" height="34"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleFootnote"/>
+                                <color key="textColor" systemColor="secondaryLabelColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="aQH-ve-Bau"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="aQH-ve-Bau" firstAttribute="trailing" secondItem="60u-eC-Xt3" secondAttribute="trailing" constant="16" id="VkU-Kb-OqG"/>
+                            <constraint firstItem="aQH-ve-Bau" firstAttribute="trailing" secondItem="WgA-6I-Pkp" secondAttribute="trailing" constant="16" id="ehc-35-h5B"/>
+                            <constraint firstItem="60u-eC-Xt3" firstAttribute="leading" secondItem="aQH-ve-Bau" secondAttribute="leading" constant="16" id="fAI-HU-124"/>
+                            <constraint firstItem="60u-eC-Xt3" firstAttribute="top" secondItem="aQH-ve-Bau" secondAttribute="top" constant="16" id="fBk-ZH-bhd"/>
+                            <constraint firstItem="WgA-6I-Pkp" firstAttribute="leading" secondItem="aQH-ve-Bau" secondAttribute="leading" constant="16" id="u17-jp-j17"/>
+                            <constraint firstItem="WgA-6I-Pkp" firstAttribute="top" secondItem="60u-eC-Xt3" secondAttribute="bottom" constant="8" symbolic="YES" id="zgz-uf-kdO"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="subtitleLb" destination="WgA-6I-Pkp" id="ndP-Ue-7NS"/>
+                        <outlet property="titleLb" destination="60u-eC-Xt3" id="5FR-8z-6am"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="luJ-YL-A5R" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3491" y="-1477"/>
+        </scene>
         <!--Navigation Controller-->
         <scene sceneID="M08-dS-Vqy">
             <objects>
@@ -1649,7 +1731,7 @@
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
-                        <segue destination="6Ji-DQ-0NT" kind="relationship" relationship="rootViewController" id="vIB-zh-3Ls"/>
+                        <segue destination="xEe-Eh-JTt" kind="relationship" relationship="rootViewController" id="YKz-eL-t0v"/>
                     </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="oSH-Hm-cPg" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1685,6 +1767,9 @@
         <image name="server.rack" width="16" height="13"/>
         <image name="text.append" catalog="system" width="128" height="99"/>
         <image name="trash" catalog="system" width="117" height="128"/>
+        <namedColor name="Accent">
+            <color red="0.0" green="0.70588235294117652" blue="0.65098039215686276" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="menu-background">
             <color red="0.0" green="0.70588235294117652" blue="0.65098039215686276" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -1699,6 +1784,9 @@
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemGray2Color">
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
             <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

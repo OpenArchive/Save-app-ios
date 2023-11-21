@@ -18,7 +18,7 @@ class DropboxViewController: BaseServerViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = NSLocalizedString("Dropbox", comment: "")
+        navigationItem.title = DropboxSpace.defaultPrettyName
 
         favIconRow.value = DropboxSpace.favIcon
 

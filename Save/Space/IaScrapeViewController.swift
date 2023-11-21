@@ -23,7 +23,7 @@ class IaScrapeViewController: UIViewController, WKUIDelegate, WKNavigationDelega
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.title = NSLocalizedString("Internet Archive", comment: "")
+        navigationItem.title = IaSpace.defaultPrettyName
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .refresh, target: self, action: #selector(load))

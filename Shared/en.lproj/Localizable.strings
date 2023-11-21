@@ -139,9 +139,6 @@
 /* SlideshowViewController */
 "Connect to a secure server or the Internet Archive to upload photos and videos from your phone." = "Connect to a secure server or the Internet Archive to upload photos and videos from your phone.";
 
-/* ConnectSpaceViewController */
-"Connect Your Space" = "Connect Your Space";
-
 /* No comment provided by engineer. */
 "Connectivity & Data" = "Connectivity & Data";
 
@@ -162,9 +159,6 @@
 
 /* MainViewController, DarkroomViewController, PrivateServerViewController, InternetArchiveViewController, ManagementViewController, Main.storyboard */
 "Done" = "Done";
-
-/* DropboxViewController */
-"Dropbox" = "Dropbox";
 
 /* East Direction Abbreviation */
 "E" = "E";
@@ -258,9 +252,6 @@
 
 /* SlideshowViewController */
 "Install" = "Install";
-
-/* InternetArchiveViewController, IaInfoAlert, IaScrapeViewController, Main.storyboard */
-"Internet Archive" = "Internet Archive";
 
 /* HeaderView */
 "Just now" = "Just now";
@@ -382,6 +373,9 @@
 /* PrivateServerViewController, Main.storyboard */
 "Private (WebDAV) Server" = "Private (WebDAV) Server";
 
+/* No comment provided by engineer. */
+"Private Server" = "Private Server";
+
 /* SpaceViewController, EditProfileViewController */
 "Profile" = "Profile";
 
@@ -457,8 +451,8 @@
 /* No comment provided by engineer. */
 "Select where to store your media" = "Select where to store your media";
 
-/* BigMenuItemCell */
-"Send directly to a private server." = "Send directly to a private server.";
+/* No comment provided by engineer. */
+"Send to a WebDAV server" = "Send to a WebDAV server";
 
 /* No comment provided by engineer. */
 "Server" = "Server";
@@ -475,9 +469,6 @@
 /* No comment provided by engineer. */
 "Set unique Creative Commons licenses for EACH INDIVIDUAL folder on this server." = "Set unique Creative Commons licenses for EACH INDIVIDUAL folder on this server.";
 
-/* AddProjectViewController, Main.storyboard */
-"Set up where you want your media to be stored." = "Set up where you want your media to be stored.";
-
 /* MainViewController */
 "Settings" = "Settings";
 
@@ -489,9 +480,6 @@
 
 /* DarkroomHelper */
 "Significant Content" = "Significant Content";
-
-/* ConnectSpaceViewController */
-"Skip" = "Skip";
 
 /* DataUsageViewController */
 "Smaller Size" = "Smaller Size";
@@ -527,6 +515,9 @@
 "To enable advanced network security, you should enable the \"Transfer via Orbot only\" option now or later in settings." = "To enable advanced network security, you should enable the \"Transfer via Orbot only\" option now or later in settings.";
 
 /* No comment provided by engineer. */
+"To get started, connect to a space to store your media." = "To get started, connect to a space to store your media.";
+
+/* No comment provided by engineer. */
 "To get started, please create a folder" = "To get started, please create a folder";
 
 /* DataUsageViewController */
@@ -549,12 +540,6 @@
 
 /* PreviewViewController */
 "Upload to %@" = "Upload to %@";
-
-/* BigMenuItemCell */
-"Upload to Dropbox" = "Upload to Dropbox";
-
-/* BigMenuItemCell */
-"Upload to the Internet Archive" = "Upload to the Internet Archive";
 
 /* No comment provided by engineer. */
 "Upload unsuccessful" = "Upload unsuccessful";
@@ -597,6 +582,9 @@
 
 /* ConsentViewController */
 "With your permission, we'll run a check each time you encounter an error while uploading." = "With your permission, we'll run a check each time you encounter an error while uploading.";
+
+/* No comment provided by engineer. */
+"You can add another storage space and connect to multiple servers." = "You can add another storage space and connect to multiple servers.";
 
 /* InternetArchiveViewController */
 "You can let %1$@ try to acquire these keys automatically, or you can tap this row which will send you to %2$@ in Safari from where you can copy-and-paste these keys manually." = "You can let %1$@ try to acquire these keys automatically, or you can tap this row which will send you to %2$@ in Safari from where you can copy-and-paste these keys manually.";

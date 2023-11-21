@@ -18,7 +18,7 @@ class IaInfoAlert: InfoAlert {
     }
 
     override class var title: String {
-        NSLocalizedString("Internet Archive", comment: "")
+        IaSpace.defaultPrettyName
     }
 
     override class var message: String {
