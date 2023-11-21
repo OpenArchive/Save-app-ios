@@ -27,6 +27,10 @@
 		A010D3A022D4A3F200FAB433 /* BatchInfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A010D39F22D4A3F200FAB433 /* BatchInfoAlert.swift */; };
 		A01128E62AE6CB34000848DB /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01128E52AE6CB34000848DB /* SettingsViewController.swift */; };
 		A011D55A233A1F630032304A /* PreviewViewController+Screenshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = A011D559233A1F630032304A /* PreviewViewController+Screenshots.swift */; };
+		A013A9372B0D0488003476ED /* IaWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A013A9362B0D0488003476ED /* IaWizardViewController.swift */; };
+		A013A9392B0D12D6003476ED /* TextBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A013A9382B0D12D6003476ED /* TextBox.swift */; };
+		A013A93A2B0D12D6003476ED /* TextBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A013A9382B0D12D6003476ED /* TextBox.swift */; };
+		A013A93B2B0D12D6003476ED /* TextBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A013A9382B0D12D6003476ED /* TextBox.swift */; };
 		A01A7B722200F2D700E18DE0 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01A7B712200F2D700E18DE0 /* HeaderView.swift */; };
 		A020C12323C602A700F219DA /* ClaimViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A020C12223C602A700F219DA /* ClaimViewController.swift */; };
 		A0212FCC22D35ADC009079DC /* DarkroomHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0212FCB22D35ADC009079DC /* DarkroomHelper.swift */; };
@@ -503,6 +507,8 @@
 		A011D558233A160D0032304A /* config */ = {isa = PBXFileReference; lastKnownFileType = text; path = config; sourceTree = "<group>"; };
 		A011D559233A1F630032304A /* PreviewViewController+Screenshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PreviewViewController+Screenshots.swift"; sourceTree = "<group>"; };
 		A012B09A27E49ECE002C2A1A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = fr; path = fr.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
+		A013A9362B0D0488003476ED /* IaWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaWizardViewController.swift; sourceTree = "<group>"; };
+		A013A9382B0D12D6003476ED /* TextBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextBox.swift; sourceTree = "<group>"; };
 		A01A7B712200F2D700E18DE0 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		A020C12223C602A700F219DA /* ClaimViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimViewController.swift; sourceTree = "<group>"; };
 		A0212FCB22D35ADC009079DC /* DarkroomHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkroomHelper.swift; sourceTree = "<group>"; };
@@ -1097,6 +1103,7 @@
 				A03EE8DA224CEE63008A0281 /* SpacesListCell.xib */,
 				A0E1A68821EE873200E4F6B7 /* TableHeader.swift */,
 				A0A98AEB22428A9300596B74 /* TableHeader.xib */,
+				A013A9382B0D12D6003476ED /* TextBox.swift */,
 				A0F7FDDB22491C6C006610F0 /* TintedButton.swift */,
 				A0F7FDDE224936C8006610F0 /* TintedImageView.swift */,
 				A045D1F8224D02AA008FF8C1 /* TitleCell.swift */,
@@ -1111,6 +1118,7 @@
 			children = (
 				A037D6FA2B0CB9E900C77706 /* SpaceWizardViewController.swift */,
 				A037D7012B0CCC6300C77706 /* SpaceTypeViewController.swift */,
+				A013A9362B0D0488003476ED /* IaWizardViewController.swift */,
 				A072C4D5227C8B3C0022BC58 /* SpaceViewController.swift */,
 				A050147E2228209E0056ED95 /* BaseServerViewController.swift */,
 				A08C2CE321F0A98C008ACA3E /* PrivateServerViewController.swift */,
@@ -1594,6 +1602,7 @@
 				A056BE1D2857457E00F354B6 /* UIFont+Montserrat.swift in Sources */,
 				A08C2CE921F0B617008ACA3E /* TableHeader.swift in Sources */,
 				A0AC06B22201E5B900BD5FBA /* WorkingOverlay.swift in Sources */,
+				A013A93A2B0D12D6003476ED /* TextBox.swift in Sources */,
 				A0F7FDDD22491C6C006610F0 /* TintedButton.swift in Sources */,
 				A0C797EA22807DF00009751A /* SelectedCollection.swift in Sources */,
 				A0FA93422277387D0086D276 /* Bundle+displayName.swift in Sources */,
@@ -1694,6 +1703,7 @@
 				A09B538B23266F02005266C2 /* Constants.m in Sources */,
 				A05DF98E282C118A003FADA2 /* FileInfo.swift in Sources */,
 				A09B538C23266F02005266C2 /* WebDavSpace.swift in Sources */,
+				A013A93B2B0D12D6003476ED /* TextBox.swift in Sources */,
 				A011D55A233A1F630032304A /* PreviewViewController+Screenshots.swift in Sources */,
 				A09B538D23266F02005266C2 /* ButtonCell.swift in Sources */,
 				A09B538E23266F02005266C2 /* Bundle+displayName.swift in Sources */,
@@ -1815,6 +1825,7 @@
 				A0FA9346227757100086D276 /* Settings.swift in Sources */,
 				A05DF984282C0F6E003FADA2 /* AEXMLError.swift in Sources */,
 				A0C797E922807DF00009751A /* SelectedCollection.swift in Sources */,
+				A013A9372B0D0488003476ED /* IaWizardViewController.swift in Sources */,
 				A00A8D47220C7EDD0083F0CB /* AbcFilteredByProjectView.swift in Sources */,
 				A0958DEE291AA37700D917C0 /* SecureEnclave.swift in Sources */,
 				A0A3D9C72226D8DB00BB5A19 /* SpaceCell.swift in Sources */,
@@ -1885,6 +1896,7 @@
 				A0E1A68921EE873200E4F6B7 /* TableHeader.swift in Sources */,
 				A0AC057F224CE8C7008B9249 /* TableWithSpacesViewController.swift in Sources */,
 				A0F7FDDF224936C8006610F0 /* TintedImageView.swift in Sources */,
+				A013A9392B0D12D6003476ED /* TextBox.swift in Sources */,
 				A0AC06AC2201D00100BD5FBA /* FolderCell.swift in Sources */,
 				A07E8A40229575B600E9FFAA /* SlideshowViewController.swift in Sources */,
 				A006A6AC282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */,

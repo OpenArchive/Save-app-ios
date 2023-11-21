@@ -8,7 +8,7 @@
 
 import UIKit
 
-class SpaceTypeViewController: UIViewController {
+class SpaceTypeViewController: UIViewController, WizardDelegatable {
 
     weak var delegate: WizardDelegate?
 
@@ -81,6 +81,6 @@ class SpaceTypeViewController: UIViewController {
     }
 
     @IBAction func newIa() {
-        delegate?.next(InternetArchiveViewController())
+        delegate?.next(UIStoryboard.main.instantiate(IaWizardViewController.self))
     }
 }
