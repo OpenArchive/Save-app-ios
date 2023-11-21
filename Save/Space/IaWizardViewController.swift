@@ -22,7 +22,8 @@ class IaWizardViewController: UIViewController, WizardDelegatable, ScrapeDelegat
     @IBOutlet weak var subtitleLb: UILabel! {
         didSet {
             subtitleLb.text = String(
-                format: NSLocalizedString("%1$@ needs your %2$@ account's API keys to upload media.", comment: ""),
+                format: NSLocalizedString("%1$@ needs your %2$@ account's API keys to upload media.", 
+                                          comment: "First placeholder is app name, second is 'Internet Archive'"),
                 Bundle.main.displayName, IaSpace.defaultPrettyName)
         }
     }

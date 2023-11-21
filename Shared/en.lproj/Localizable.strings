@@ -1,3 +1,6 @@
+/* First placeholder is app name, second is 'Internet Archive' */
+"%1$@ needs your %2$@ account's API keys to upload media." = "%1$@ needs your %2$@ account's API keys to upload media.";
+
 /* both are integer numbers meaning 'x of n' */
 "%1$@/%2$@" = "%1$@/%2$@";
 
@@ -235,6 +238,9 @@
 /* MiscSettingsViewController */
 "Hide App Content when in Background" = "Hide App Content when in Background";
 
+/* No comment provided by engineer. */
+"If you do not have existing keys, learn how to acquire keys." = "If you do not have existing keys, learn how to acquire keys.";
+
 /* OrbotManager */
 "Ignore" = "Ignore";
 
@@ -294,6 +300,9 @@
 
 /* NewProjectViewController, ShareExtension.MainViewController */
 "New Project" = "New Project";
+
+/* No comment provided by engineer. */
+"Next" = "Next";
 
 /* MainViewController */
 "No albums" = "No albums";
