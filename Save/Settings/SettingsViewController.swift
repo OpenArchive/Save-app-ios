@@ -47,6 +47,13 @@ class SettingsViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
+        reload()
+    }
+
+
+    // MARK: Public Methods
+
+    func reload() {
         let space = SelectedSpace.space
         let icon = (space?.favIcon ?? SelectedSpace.defaultFavIcon)?
             .resizedImageToFit(in: CGSize(width: 24, height: 24), scaleIfSmaller: true)
@@ -54,6 +61,9 @@ class SettingsViewController: UIViewController {
         serverBt.setImage(icon)
         serverBt.setTitle(space?.prettyName ?? NSLocalizedString("Server", comment: ""))
     }
+
+
+    // MARK: Actions
 
     @IBAction func general() {
         navigationController?.pushViewController(

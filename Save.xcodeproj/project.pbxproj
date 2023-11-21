@@ -54,8 +54,8 @@
 		A0362198220DB384003C21DC /* WebDavSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362197220DB384003C21DC /* WebDavSpace.swift */; };
 		A0362199220DB384003C21DC /* WebDavSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362197220DB384003C21DC /* WebDavSpace.swift */; };
 		A037D6F82B0CAA0300C77706 /* FolderInfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A037D6F72B0CAA0300C77706 /* FolderInfoAlert.swift */; };
-		A04255CE22944C1B0048E00C /* UIStoryboard+main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04255CD22944C1B0048E00C /* UIStoryboard+main.swift */; };
-		A04255CF22944C1B0048E00C /* UIStoryboard+main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04255CD22944C1B0048E00C /* UIStoryboard+main.swift */; };
+		A04255CE22944C1B0048E00C /* UIStoryboard+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04255CD22944C1B0048E00C /* UIStoryboard+Utils.swift */; };
+		A04255CF22944C1B0048E00C /* UIStoryboard+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04255CD22944C1B0048E00C /* UIStoryboard+Utils.swift */; };
 		A0457E6720EF96FB00B8FBCB /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6620EF96FB00B8FBCB /* StringUtils.swift */; };
 		A0457E6920EFB57C00B8FBCB /* RegexUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */; };
 		A045D1E4224CF034008FF8C1 /* SpaceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A045D1E2224CF034008FF8C1 /* SpaceCell.xib */; };
@@ -218,7 +218,7 @@
 		A09B539D23266F02005266C2 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D58DCD20E51517005A2F34 /* Asset.swift */; };
 		A09B539E23266F02005266C2 /* PrivateServerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CE321F0A98C008ACA3E /* PrivateServerViewController.swift */; };
 		A09B539F23266F02005266C2 /* SelectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E9069222CB7D16008CD81B /* SelectedView.swift */; };
-		A09B53A023266F02005266C2 /* UIStoryboard+main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04255CD22944C1B0048E00C /* UIStoryboard+main.swift */; };
+		A09B53A023266F02005266C2 /* UIStoryboard+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04255CD22944C1B0048E00C /* UIStoryboard+Utils.swift */; };
 		A09B53A123266F02005266C2 /* DarkroomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E321F8228EDBE900F2E9BD /* DarkroomViewController.swift */; };
 		A09B53A223266F02005266C2 /* RuleFilename.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05F79FD22EEFA9F003DBB74 /* RuleFilename.swift */; };
 		A09B53A423266F02005266C2 /* SelectedSpaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68321EE831300E4F6B7 /* SelectedSpaceCell.swift */; };
@@ -527,7 +527,7 @@
 		A0362197220DB384003C21DC /* WebDavSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDavSpace.swift; sourceTree = "<group>"; };
 		A037D6F72B0CAA0300C77706 /* FolderInfoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderInfoAlert.swift; sourceTree = "<group>"; };
 		A03EE8DA224CEE63008A0281 /* SpacesListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpacesListCell.xib; sourceTree = "<group>"; };
-		A04255CD22944C1B0048E00C /* UIStoryboard+main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+main.swift"; sourceTree = "<group>"; };
+		A04255CD22944C1B0048E00C /* UIStoryboard+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Utils.swift"; sourceTree = "<group>"; };
 		A0457E6620EF96FB00B8FBCB /* StringUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
 		A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegexUtils.swift; sourceTree = "<group>"; };
 		A045D1E2224CF034008FF8C1 /* SpaceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpaceCell.xib; sourceTree = "<group>"; };
@@ -802,7 +802,7 @@
 				A076790127BE89E900609630 /* UIButton+Utils.swift */,
 				A0212FCD22D374CA009079DC /* UICollectionView+selection.swift */,
 				A056BE1B2857457E00F354B6 /* UIFont+Montserrat.swift */,
-				A04255CD22944C1B0048E00C /* UIStoryboard+main.swift */,
+				A04255CD22944C1B0048E00C /* UIStoryboard+Utils.swift */,
 				A05471DA2296C8FD009FEA93 /* UITableView+separatorView.swift */,
 				A055204F222566CE00B9645F /* UIView+utils.swift */,
 				A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */,
@@ -1650,7 +1650,7 @@
 				A071290C2111DE3C007A432A /* Asset.swift in Sources */,
 				A045D1FC224D02AA008FF8C1 /* TitleCell.swift in Sources */,
 				A05DF975282C0E13003FADA2 /* DavResponse.swift in Sources */,
-				A04255CF22944C1B0048E00C /* UIStoryboard+main.swift in Sources */,
+				A04255CF22944C1B0048E00C /* UIStoryboard+Utils.swift in Sources */,
 				A0F13650227256F4008A22BF /* YapDatabase+Utils.swift in Sources */,
 				A08750AA2112099700BFAFE4 /* Constants.m in Sources */,
 				A05275152211A91300BDB14B /* CollectionsView.swift in Sources */,
@@ -1722,7 +1722,7 @@
 				A09B539D23266F02005266C2 /* Asset.swift in Sources */,
 				A09B539E23266F02005266C2 /* PrivateServerViewController.swift in Sources */,
 				A09B539F23266F02005266C2 /* SelectedView.swift in Sources */,
-				A09B53A023266F02005266C2 /* UIStoryboard+main.swift in Sources */,
+				A09B53A023266F02005266C2 /* UIStoryboard+Utils.swift in Sources */,
 				A09B53A123266F02005266C2 /* DarkroomViewController.swift in Sources */,
 				A09B53A223266F02005266C2 /* RuleFilename.swift in Sources */,
 				A09B53A423266F02005266C2 /* SelectedSpaceCell.swift in Sources */,
@@ -1853,7 +1853,7 @@
 				A0D58DCE20E51517005A2F34 /* Asset.swift in Sources */,
 				A08C2CE421F0A98C008ACA3E /* PrivateServerViewController.swift in Sources */,
 				A0E9069322CB7D16008CD81B /* SelectedView.swift in Sources */,
-				A04255CE22944C1B0048E00C /* UIStoryboard+main.swift in Sources */,
+				A04255CE22944C1B0048E00C /* UIStoryboard+Utils.swift in Sources */,
 				A0DA7627282D0F300039438A /* Date+rfcString.swift in Sources */,
 				A0E321F9228EDBE900F2E9BD /* DarkroomViewController.swift in Sources */,
 				A05F79FE22EEFA9F003DBB74 /* RuleFilename.swift in Sources */,

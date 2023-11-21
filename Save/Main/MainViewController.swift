@@ -571,6 +571,10 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             spaceFavIcon.image = SelectedSpace.defaultFavIcon
             sideMenu.space = nil
         }
+
+        if !container.isHidden {
+            settingsVc.reload()
+        }
     }
 
     private func updateProject() {
