@@ -378,7 +378,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
         // Don't allow to add assets without a space or a project.
         if selectedProject == nil {
-            return addFolder()
+            return FolderInfoAlert.presentIfNeeded(self) { [weak self] in
+                self?.addFolder()
+            }
         }
 
         assetPicker.pickMedia()

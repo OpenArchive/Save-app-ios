@@ -1,6 +1,6 @@
 //
 //  InfoAlert.swift
-//  OpenArchive
+//  Save
 //
 //  Created by Benjamin Erhart on 21.08.19.
 //  Copyright © 2019 Open Archive. All rights reserved.
@@ -18,7 +18,7 @@ class InfoAlert {
      An illustrative image shown above the title, if not nil.
     */
     class var image: UIImage? {
-        return nil
+        nil
     }
 
     /**
@@ -26,21 +26,28 @@ class InfoAlert {
      will be used as template and tinted, else as-is.
     */
     class var tintColor: UIColor? {
-        return nil
+        nil
     }
 
     /**
      A title for the alert. Defaults to empty and will not be shown, if left as such.
     */
     class var title: String {
-        return ""
+        ""
     }
 
     /**
      The main message to display.
     */
     class var message: String {
-        return ""
+        ""
+    }
+
+    /**
+     The title of the ok button. Will default to "Got it", if not overridden.
+     */
+    class var buttonTitle: String {
+        NSLocalizedString("Got it", comment: "")
     }
 
     /**
@@ -51,7 +58,7 @@ class InfoAlert {
     */
     class var wasAlreadyShown: Bool {
         get {
-            return true
+            true
         }
         set {
             // Only implemented in subclass.
@@ -113,13 +120,10 @@ class InfoAlert {
         message.numberOfLines = 0
 
         let alert = AlertController(title: nil, message: nil)
+        alert.visualStyle.backgroundColor = .systemBackground
 
         let cv = alert.contentView
-
-        if #available(iOS 13.0, *) {
-            alert.visualStyle.backgroundColor = .systemBackground
-            cv.backgroundColor = .systemBackground
-        }
+        cv.backgroundColor = .systemBackground
 
         if let illustration = illustration {
             cv.addSubview(illustration)
@@ -146,7 +150,7 @@ class InfoAlert {
         message.bottomAnchor.constraint(equalTo: cv.bottomAnchor, constant: -16).isActive = true
 
 
-        alert.addAction(AlertAction(title: NSLocalizedString("Got it", comment: ""), style: .normal, handler: { _ in
+        alert.addAction(AlertAction(title: buttonTitle, style: .normal, handler: { _ in
             wasAlreadyShown = true
 
             success?()

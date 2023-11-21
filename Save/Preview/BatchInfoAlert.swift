@@ -1,6 +1,6 @@
 //
 //  BatchInfoAlert.swift
-//  OpenArchive
+//  Save
 //
 //  Created by Benjamin Erhart on 09.07.19.
 //  Copyright © 2019 Open Archive. All rights reserved.

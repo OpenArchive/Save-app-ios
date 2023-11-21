@@ -1,6 +1,6 @@
 //
 //  UploadInfoAlert.swift
-//  OpenArchive
+//  Save
 //
 //  Created by Benjamin Erhart on 13.11.23.
 //  Copyright © 2023 Open Archive. All rights reserved.

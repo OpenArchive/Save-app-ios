@@ -1,6 +1,6 @@
 //
 //  IaInfoAlert.swift
-//  OpenArchive
+//  Save
 //
 //  Created by Benjamin Erhart on 21.08.19.
 //  Copyright © 2019 Open Archive. All rights reserved.
@@ -14,20 +14,22 @@ import UIKit
 class IaInfoAlert: InfoAlert {
 
     override class var image: UIImage? {
-        return UIImage(named: "InternetArchiveLogo")
+        UIImage(named: "InternetArchiveLogo")
     }
 
     override class var title: String {
-        return NSLocalizedString("Internet Archive", comment: "")
+        NSLocalizedString("Internet Archive", comment: "")
     }
 
     override class var message: String {
-        return String(format: NSLocalizedString("You will need to log in to or create an Internet Archive account in order to send and preserve %@ media at the Internet Archive.", comment: ""), Bundle.main.displayName)
+        String(format: NSLocalizedString(
+            "You will need to log in to or create an Internet Archive account in order to send and preserve %@ media at the Internet Archive.",
+            comment: ""), Bundle.main.displayName)
     }
 
     override class var wasAlreadyShown: Bool {
         get {
-            return Settings.iaShownFirstTime
+            Settings.iaShownFirstTime
         }
         set {
             Settings.iaShownFirstTime = newValue

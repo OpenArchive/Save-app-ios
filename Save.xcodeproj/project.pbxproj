@@ -53,6 +53,7 @@
 		A0362196220DB2CA003C21DC /* IaSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362194220DB2CA003C21DC /* IaSpace.swift */; };
 		A0362198220DB384003C21DC /* WebDavSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362197220DB384003C21DC /* WebDavSpace.swift */; };
 		A0362199220DB384003C21DC /* WebDavSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362197220DB384003C21DC /* WebDavSpace.swift */; };
+		A037D6F82B0CAA0300C77706 /* FolderInfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A037D6F72B0CAA0300C77706 /* FolderInfoAlert.swift */; };
 		A04255CE22944C1B0048E00C /* UIStoryboard+main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04255CD22944C1B0048E00C /* UIStoryboard+main.swift */; };
 		A04255CF22944C1B0048E00C /* UIStoryboard+main.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04255CD22944C1B0048E00C /* UIStoryboard+main.swift */; };
 		A0457E6720EF96FB00B8FBCB /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6620EF96FB00B8FBCB /* StringUtils.swift */; };
@@ -524,6 +525,7 @@
 		A0357D1022CF901800292077 /* BatchEditViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BatchEditViewController.swift; sourceTree = "<group>"; };
 		A0362194220DB2CA003C21DC /* IaSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaSpace.swift; sourceTree = "<group>"; };
 		A0362197220DB384003C21DC /* WebDavSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDavSpace.swift; sourceTree = "<group>"; };
+		A037D6F72B0CAA0300C77706 /* FolderInfoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderInfoAlert.swift; sourceTree = "<group>"; };
 		A03EE8DA224CEE63008A0281 /* SpacesListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpacesListCell.xib; sourceTree = "<group>"; };
 		A04255CD22944C1B0048E00C /* UIStoryboard+main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+main.swift"; sourceTree = "<group>"; };
 		A0457E6620EF96FB00B8FBCB /* StringUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
@@ -911,6 +913,7 @@
 			children = (
 				A03236342B0BB8F100D95BC3 /* AppAddFolderViewController.swift */,
 				A05CFCC9292D2C6E0045991A /* BrowseDropboxViewController.swift */,
+				A037D6F72B0CAA0300C77706 /* FolderInfoAlert.swift */,
 			);
 			path = Projects;
 			sourceTree = "<group>";
@@ -1830,6 +1833,7 @@
 				A0FA93412277387D0086D276 /* Bundle+displayName.swift in Sources */,
 				A025171922C2126C00EEFBD9 /* DuplicateFolderAlert.swift in Sources */,
 				A006A6A8282950D00029E49B /* UIBackgroundFetchResult+description.swift in Sources */,
+				A037D6F82B0CAA0300C77706 /* FolderInfoAlert.swift in Sources */,
 				A08C2CE621F0B46C008ACA3E /* FormViewController.swift in Sources */,
 				A0F7FDE722494E2F006610F0 /* RemoveProjectAlert.swift in Sources */,
 				A094EA4B282AD110006CE059 /* DropboxConduit.swift in Sources */,

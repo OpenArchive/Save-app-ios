@@ -97,6 +97,9 @@
 /* ManagementViewController */
 "Back" = "Back";
 
+/* No comment provided by engineer. */
+"Before adding media, create a new folder first." = "Before adding media, create a new folder first.";
+
 /* DataUsageViewController */
 "Better Quality" = "Better Quality";
 
@@ -522,6 +525,9 @@
 
 /* SlideshowViewController */
 "To enable advanced network security, you should enable the \"Transfer via Orbot only\" option now or later in settings." = "To enable advanced network security, you should enable the \"Transfer via Orbot only\" option now or later in settings.";
+
+/* No comment provided by engineer. */
+"To get started, please create a folder" = "To get started, please create a folder";
 
 /* DataUsageViewController */
 "Transfer via Orbot only" = "Transfer via Orbot only";

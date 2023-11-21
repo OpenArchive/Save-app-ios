@@ -1,6 +1,6 @@
 //
 //  Settings.swift
-//  OpenArchive
+//  Save
 //
 //  Created by Benjamin Erhart on 29.04.19.
 //  Copyright © 2019 Open Archive. All rights reserved.
@@ -25,6 +25,7 @@ class Settings {
     private static let kFirstUploadDone = "first_upload_done"
     private static let kThirdPartyKeyboards = "third_party_keyboards"
     private static let kHideContent = "hide_content"
+    private static let kFirstFolderDone = "first_folder_done"
 
     private class var defaults: UserDefaults? {
         UserDefaults(suiteName: Constants.suiteName)
@@ -95,6 +96,24 @@ class Settings {
         }
     }
 
+    class var thirdPartyKeyboards: Bool {
+        get {
+            defaults?.bool(forKey: kThirdPartyKeyboards) ?? false
+        }
+        set {
+            defaults?.set(newValue, forKey: kThirdPartyKeyboards)
+        }
+    }
+
+    class var hideContent: Bool {
+        get {
+            defaults?.bool(forKey: kHideContent) ?? false
+        }
+        set {
+            defaults?.set(newValue, forKey: kHideContent)
+        }
+    }
+
 
     // MARK: First run wizard.
 
@@ -146,21 +165,12 @@ class Settings {
         }
     }
 
-    class var thirdPartyKeyboards: Bool {
+    class var firstFolderDone: Bool {
         get {
-            defaults?.bool(forKey: kThirdPartyKeyboards) ?? false
+            defaults?.bool(forKey: kFirstFolderDone) ?? false
         }
         set {
-            defaults?.set(newValue, forKey: kThirdPartyKeyboards)
-        }
-    }
-
-    class var hideContent: Bool {
-        get {
-            defaults?.bool(forKey: kHideContent) ?? false
-        }
-        set {
-            defaults?.set(newValue, forKey: kHideContent)
+            defaults?.set(newValue, forKey: kFirstFolderDone)
         }
     }
 }
