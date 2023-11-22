@@ -598,6 +598,9 @@
 /* InternetArchiveViewController */
 "You can let %1$@ try to acquire these keys automatically, or you can tap this row which will send you to %2$@ in Safari from where you can copy-and-paste these keys manually." = "Bu anahtarları %1$@ ile otomatik olarak almayı deneyebilir ya da bu satıra dokunarak açılacak Safari ile %2$@ üzerine bağlandıktan sonra anahtarları el ile kopyalayıp yapıştırabilirsiniz.";
 
+/* Placeholder is a server type or name */
+"You have successfully connected to %@!" = "You have successfully connected to %@!";
+
 /* OrbotManager */
 "You need to request API access with Orbot, in order for %@ to ensure that Orbot is running." = "Orbor ile API erişimine gerek duyuyorsunuz. %@ için Orbot uygulamasının çalıştığından emin olun.";
 

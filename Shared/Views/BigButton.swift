@@ -8,6 +8,7 @@
 
 import UIKit
 
+@IBDesignable
 class BigButton: UIView {
 
     @discardableResult
@@ -39,6 +40,7 @@ class BigButton: UIView {
 
     // MARK: Public Properties
 
+    @IBInspectable
     var icon: UIImage? {
         get {
             leadIv.image
@@ -74,6 +76,7 @@ class BigButton: UIView {
         }
     }
 
+    @IBInspectable
     var title: String? {
         get {
             titleLb.text
@@ -83,13 +86,12 @@ class BigButton: UIView {
         }
     }
 
+    @IBInspectable
     var subtitle: String? {
         get {
             subtitleLb.text
         }
         set {
-            titleLb.constraints.first(where: { $0.firstAttribute == .bottom })?.isActive = false
-
             if newValue?.isEmpty ?? true && !(subtitleLb.text?.isEmpty ?? true) {
                 subtitleLb.removeFromSuperview()
 
@@ -133,6 +135,8 @@ class BigButton: UIView {
         view.font = .preferredFont(forTextStyle: .title2)
         view.numberOfLines = 0
 
+        view.heightAnchor.constraint(greaterThanOrEqualToConstant: 24).isActive = true
+
         return view
     }()
 
@@ -145,6 +149,8 @@ class BigButton: UIView {
         view.font = .preferredFont(forTextStyle: .footnote)
         view.textColor = .secondaryLabel
         view.numberOfLines = 0
+
+        view.heightAnchor.constraint(greaterThanOrEqualToConstant: 16).isActive = true
 
         return view
     }()

@@ -105,6 +105,7 @@
 		A056555E23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */; };
 		A056ACA32B0E4DE000995FDF /* BasePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056ACA22B0E4DE000995FDF /* BasePageViewController.swift */; };
 		A056ACA52B0E4DE000995FDF /* BasePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056ACA22B0E4DE000995FDF /* BasePageViewController.swift */; };
+		A056ACA72B0E649C00995FDF /* SpaceSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056ACA62B0E649C00995FDF /* SpaceSuccessViewController.swift */; };
 		A056BE1C2857457E00F354B6 /* UIFont+Montserrat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056BE1B2857457E00F354B6 /* UIFont+Montserrat.swift */; };
 		A056BE1D2857457E00F354B6 /* UIFont+Montserrat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056BE1B2857457E00F354B6 /* UIFont+Montserrat.swift */; };
 		A056BE1E2857457E00F354B6 /* UIFont+Montserrat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056BE1B2857457E00F354B6 /* UIFont+Montserrat.swift */; };
@@ -575,6 +576,7 @@
 		A056555923F6D9D600DE0168 /* DropboxConduit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxConduit.swift; sourceTree = "<group>"; };
 		A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Utils.swift"; sourceTree = "<group>"; };
 		A056ACA22B0E4DE000995FDF /* BasePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePageViewController.swift; sourceTree = "<group>"; };
+		A056ACA62B0E649C00995FDF /* SpaceSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceSuccessViewController.swift; sourceTree = "<group>"; };
 		A056BE1B2857457E00F354B6 /* UIFont+Montserrat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Montserrat.swift"; sourceTree = "<group>"; };
 		A05768D722E0B67D00B39FCE /* Screenshots.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Screenshots.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A05768D922E0B67D00B39FCE /* Screenshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screenshots.swift; sourceTree = "<group>"; };
@@ -1123,6 +1125,7 @@
 				A037D6FA2B0CB9E900C77706 /* SpaceWizardViewController.swift */,
 				A037D7012B0CCC6300C77706 /* SpaceTypeViewController.swift */,
 				A013A9362B0D0488003476ED /* IaWizardViewController.swift */,
+				A056ACA62B0E649C00995FDF /* SpaceSuccessViewController.swift */,
 				A072C4D5227C8B3C0022BC58 /* SpaceViewController.swift */,
 				A050147E2228209E0056ED95 /* BaseServerViewController.swift */,
 				A08C2CE321F0A98C008ACA3E /* PrivateServerViewController.swift */,
@@ -1893,6 +1896,7 @@
 				A0E1A68121EE7BE900E4F6B7 /* MenuItemCell.swift in Sources */,
 				A00A8D45220C63B20083F0CB /* ProjectsView.swift in Sources */,
 				A010D3A022D4A3F200FAB433 /* BatchInfoAlert.swift in Sources */,
+				A056ACA72B0E649C00995FDF /* SpaceSuccessViewController.swift in Sources */,
 				A098980622369F8100022851 /* ManagementViewController.swift in Sources */,
 				A045D1FB224D02AA008FF8C1 /* TitleCell.swift in Sources */,
 				A092C0F0223A8D4B003EB0AA /* DoneDelegate.swift in Sources */,

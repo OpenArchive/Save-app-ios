@@ -12,6 +12,8 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
 
     weak var delegate: WizardDelegate?
 
+    @IBOutlet weak var container: UIView!
+
     @IBOutlet weak var titleLb: UILabel! {
         didSet {
             titleLb.text = NSLocalizedString(
@@ -31,42 +33,42 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let button1 = BigButton.create(
+        var button = BigButton.create(
             icon: UIImage(systemName: "server.rack"),
             title: NSLocalizedString("Private Server", comment: ""),
             subtitle: NSLocalizedString("Send to a WebDAV server", comment: ""),
             target: self,
             action: #selector(newWebDav),
-            container: view,
+            container: container,
             above: subtitleLb)
 
         Db.bgRwConn?.read { tx in
-            var button2: UIView?
-
             if tx.find(where: { (_: DropboxSpace) in true }) == nil {
-                button2 = BigButton.create(
+                button = BigButton.create(
                     icon: DropboxSpace.favIcon,
                     title: DropboxSpace.defaultPrettyName,
                     subtitle: String(format: NSLocalizedString("Upload to %@", comment: ""), DropboxSpace.defaultPrettyName),
                     target: self,
                     action: #selector(newDropbox),
-                    container: view,
-                    above: button1,
+                    container: container,
+                    above: button,
                     equalHeight: true)
             }
 
             if tx.find(where: { (_: IaSpace) in true }) == nil {
-                BigButton.create(
+                button = BigButton.create(
                     icon: IaSpace.favIcon,
                     title: IaSpace.defaultPrettyName,
                     subtitle: String(format: NSLocalizedString("Upload to %@", comment: ""), IaSpace.defaultPrettyName),
                     target: self,
                     action: #selector(newIa),
-                    container: view,
-                    above: button2 ?? button1,
+                    container: container,
+                    above: button,
                     equalHeight: true)
             }
         }
+
+        button.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -16).isActive = true
     }
 
 

@@ -13,7 +13,7 @@ protocol ScrapeDelegate {
     func scraped(accessKey: String, secretKey: String)
 }
 
-class IaScrapeViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
+class IaScrapeViewController: BaseViewController, WKUIDelegate, WKNavigationDelegate {
 
     var delegate: ScrapeDelegate?
 
@@ -24,6 +24,9 @@ class IaScrapeViewController: UIViewController, WKUIDelegate, WKNavigationDelega
         super.viewDidLoad()
 
         navigationItem.title = IaSpace.defaultPrettyName
+
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            barButtonSystemItem: .cancel, target: self, action: #selector(dismiss(_:)))
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .refresh, target: self, action: #selector(load))

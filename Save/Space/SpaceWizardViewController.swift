@@ -68,6 +68,9 @@ class SpaceWizardViewController: BasePageViewController, WizardDelegate {
             page = pos
         }
 
+        // Hide navigation bar on success scene.
+        navigationController?.setNavigationBarHidden(pos > 1, animated: true)
+
         pageVc.setViewControllers([vc], direction: getDirection(), animated: true)
 
         pageControl.currentPage = page
@@ -79,7 +82,7 @@ class SpaceWizardViewController: BasePageViewController, WizardDelegate {
     override func pageViewController(_ pageViewController: UIPageViewController, 
                             viewControllerBefore viewController: UIViewController) -> UIViewController?
     {
-        if let i = viewControllers.firstIndex(of: viewController), i > 0 {
+        if let i = viewControllers.firstIndex(of: viewController), i > 0 && i < 2 /* Do not allow paging back from success scene */ {
             return viewControllers[i - 1]
         }
 
