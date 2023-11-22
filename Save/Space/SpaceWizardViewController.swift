@@ -12,7 +12,7 @@ protocol WizardDelegate: AnyObject {
 
     func back()
 
-    func next(_ vc: UIViewController)
+    func next(_ vc: UIViewController, pos: Int)
 }
 
 protocol WizardDelegatable: AnyObject {
@@ -20,31 +20,9 @@ protocol WizardDelegatable: AnyObject {
     var delegate: WizardDelegate? { get set }
 }
 
-class SpaceWizardViewController: BaseViewController, WizardDelegate {
+class SpaceWizardViewController: BasePageViewController, WizardDelegate {
 
-    @IBOutlet weak var pageControl: UIPageControl!
-    @IBOutlet weak var container: UIView!
-
-
-    private var viewControllers = [UIViewController]() {
-        didSet {
-            if currentIdx >= viewControllers.count {
-                currentIdx = viewControllers.count - 1
-            }
-        }
-    }
-
-    private var currentIdx = -1
-
-    private var current: UIViewController? {
-        if viewControllers.count > 0 {
-            return viewControllers[max(0, min(currentIdx, viewControllers.count - 1))]
-        }
-
-        return nil
-    }
-
-
+    private lazy var viewControllers: [UIViewController] = [UIStoryboard.main.instantiate(SpaceTypeViewController.self)]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,75 +30,87 @@ class SpaceWizardViewController: BaseViewController, WizardDelegate {
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .cancel, target: self, action: #selector(dismiss(_:)))
 
-        let vc = UIStoryboard.main.instantiate(SpaceTypeViewController.self)
-        vc.delegate = self
+        hideKeyboardOnOutsideTap()
+    }
 
-        next(vc)
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        back()
     }
 
 
     // MARK: WizardDelegate
 
     func back() {
-        if let current = current {
-            remove(current)
+        // Users can only ever go back to the first page.
+        page = 0
 
-            viewControllers.removeAll { $0 == current }
-        }
-
-        add(current)
-
-        pageControl.currentPage = currentIdx
-    }
-
-    func next(_ vc: UIViewController) {
+        let vc = viewControllers[page]
         (vc as? WizardDelegatable)?.delegate = self
 
-        remove(current)
+        pageVc.setViewControllers([vc], direction: getDirection(forward: false), animated: true)
 
-        viewControllers.append(vc)
-        currentIdx += 1
+        pageControl.currentPage = page
+    }
 
-        add(vc)
+    func next(_ vc: UIViewController, pos: Int) {
+        (vc as? WizardDelegatable)?.delegate = self
 
-        pageControl.currentPage = currentIdx
+        assert(pos <= viewControllers.count, "\(String(describing: type(of: self)))#next: pos cannot be bigger than \(viewControllers.count)")
+
+        if pos < viewControllers.count {
+            viewControllers[pos] = vc
+            page = pos
+        }
+        else if pos == viewControllers.count {
+            viewControllers.append(vc)
+            page = pos
+        }
+
+        pageVc.setViewControllers([vc], direction: getDirection(), animated: true)
+
+        pageControl.currentPage = page
     }
 
 
-    // MARK: Private Methods
+    // MARK: UIPageViewControllerDataSource
 
-    private func remove(_ vc: UIViewController?) {
-        guard let vc = vc else {
-            return
+    override func pageViewController(_ pageViewController: UIPageViewController, 
+                            viewControllerBefore viewController: UIViewController) -> UIViewController?
+    {
+        if let i = viewControllers.firstIndex(of: viewController), i > 0 {
+            return viewControllers[i - 1]
         }
 
-        vc.removeFromParent()
-
-        vc.view.hide(animated: true) { _ in
-            vc.view.removeFromSuperview()
-
-            vc.didMove(toParent: nil)
-        }
+        return nil
     }
 
-    private func add(_ vc: UIViewController?) {
-        guard let vc = vc else {
-            return
+    override func pageViewController(_ pageViewController: UIPageViewController, 
+                            viewControllerAfter viewController: UIViewController) -> UIViewController? 
+    {
+        if let i = viewControllers.firstIndex(of: viewController), i < viewControllers.count - 1 {
+            return viewControllers[i + 1]
         }
 
-        addChild(vc)
+        return nil
+    }
 
-        vc.view.isHidden = true
-        container.addSubview(vc.view)
 
-        vc.view.translatesAutoresizingMaskIntoConstraints = false
-        vc.view.leadingAnchor.constraint(equalTo: container.leadingAnchor).isActive = true
-        vc.view.trailingAnchor.constraint(equalTo: container.trailingAnchor).isActive = true
-        vc.view.topAnchor.constraint(equalTo: container.topAnchor).isActive = true
-        vc.view.bottomAnchor.constraint(equalTo: container.bottomAnchor).isActive = true
+    // MARK: UIPageViewControllerDelegate
 
-        vc.view.show2(animated: current != nil) { [weak self] _ in
-            vc.didMove(toParent: self)
+    func pageViewController(_ pageViewController: UIPageViewController,
+                            didFinishAnimating finished: Bool,
+                            previousViewControllers: [UIViewController],
+                            transitionCompleted completed: Bool)
+    {
+        if completed,
+           let vc = pageViewController.viewControllers?.first,
+           let i = viewControllers.firstIndex(of: vc)
+        {
+            page = i
+
+            pageControl.currentPage = page
         }
     }
 }

@@ -73,14 +73,14 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
     // MARK: Actions
 
     @IBAction func newWebDav() {
-        delegate?.next(PrivateServerViewController())
+        delegate?.next(PrivateServerViewController(), pos: 1)
     }
 
     @IBAction func newDropbox() {
-        delegate?.next(DropboxViewController())
+        delegate?.next(DropboxViewController(), pos: 1)
     }
 
     @IBAction func newIa() {
-        delegate?.next(UIStoryboard.main.instantiate(IaWizardViewController.self))
+        delegate?.next(UIStoryboard.main.instantiate(IaWizardViewController.self), pos: 1)
     }
 }

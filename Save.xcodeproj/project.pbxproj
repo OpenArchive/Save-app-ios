@@ -103,6 +103,8 @@
 		A056555C23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */; };
 		A056555D23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */; };
 		A056555E23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */; };
+		A056ACA32B0E4DE000995FDF /* BasePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056ACA22B0E4DE000995FDF /* BasePageViewController.swift */; };
+		A056ACA52B0E4DE000995FDF /* BasePageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056ACA22B0E4DE000995FDF /* BasePageViewController.swift */; };
 		A056BE1C2857457E00F354B6 /* UIFont+Montserrat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056BE1B2857457E00F354B6 /* UIFont+Montserrat.swift */; };
 		A056BE1D2857457E00F354B6 /* UIFont+Montserrat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056BE1B2857457E00F354B6 /* UIFont+Montserrat.swift */; };
 		A056BE1E2857457E00F354B6 /* UIFont+Montserrat.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056BE1B2857457E00F354B6 /* UIFont+Montserrat.swift */; };
@@ -572,6 +574,7 @@
 		A056555623F6D67E00DE0168 /* DropboxSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSpace.swift; sourceTree = "<group>"; };
 		A056555923F6D9D600DE0168 /* DropboxConduit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxConduit.swift; sourceTree = "<group>"; };
 		A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Utils.swift"; sourceTree = "<group>"; };
+		A056ACA22B0E4DE000995FDF /* BasePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePageViewController.swift; sourceTree = "<group>"; };
 		A056BE1B2857457E00F354B6 /* UIFont+Montserrat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+Montserrat.swift"; sourceTree = "<group>"; };
 		A05768D722E0B67D00B39FCE /* Screenshots.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Screenshots.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A05768D922E0B67D00B39FCE /* Screenshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screenshots.swift; sourceTree = "<group>"; };
@@ -903,6 +906,7 @@
 			isa = PBXGroup;
 			children = (
 				A0E1A68621EE834D00E4F6B7 /* BaseCell.swift */,
+				A056ACA22B0E4DE000995FDF /* BasePageViewController.swift */,
 				A0631B542203022100B3E90D /* BaseTableViewController.swift */,
 				A05C582921EF94FC00141633 /* BaseViewController.swift */,
 				A08C2CE521F0B46C008ACA3E /* FormViewController.swift */,
@@ -1734,6 +1738,7 @@
 				A09B53A523266F02005266C2 /* RemoveAssetAlert.swift in Sources */,
 				A05DF98A282C0F92003FADA2 /* AEXMLParser.swift in Sources */,
 				A09B53A623266F02005266C2 /* BatchEditViewController.swift in Sources */,
+				A056ACA52B0E4DE000995FDF /* BasePageViewController.swift in Sources */,
 				A09B53A723266F02005266C2 /* AssetFactory.swift in Sources */,
 				A09B53A823266F02005266C2 /* WorkingOverlay.swift in Sources */,
 				A07678FF27BE855200609630 /* AnalyticsCell.swift in Sources */,
@@ -1932,6 +1937,7 @@
 				A0FB4DBE21F8CC2300B46099 /* MainViewController.swift in Sources */,
 				A0DE78AF21F76D2200B6B68B /* Project.swift in Sources */,
 				A07678FE27BE854D00609630 /* AnalyticsCell.swift in Sources */,
+				A056ACA32B0E4DE000995FDF /* BasePageViewController.swift in Sources */,
 				A0C6B30B2AFD1CCF00304187 /* LinkRow.swift in Sources */,
 				A072C4D6227C8B3C0022BC58 /* SpaceViewController.swift in Sources */,
 				A098980D2236C23200022851 /* Upload.swift in Sources */,

@@ -9,11 +9,8 @@
 import UIKit
 import OrbotKit
 
-class SlideshowViewController: UIViewController, UIPageViewControllerDataSource,
-                               UIPageViewControllerDelegate, SlideViewControllerDelegate
+class SlideshowViewController: BasePageViewController, SlideViewControllerDelegate
 {
-
-    @IBOutlet weak var container: UIView!
 
     @IBOutlet weak var doneBt: UIButton! {
         didSet {
@@ -22,11 +19,7 @@ class SlideshowViewController: UIViewController, UIPageViewControllerDataSource,
     }
 
     @IBOutlet weak var doneIcon: UIImageView!
-    @IBOutlet weak var pageControl: UIPageControl! {
-        didSet {
-            pageControl.numberOfPages = Self.slides.count
-        }
-    }
+
 
     private static let slides = [
         Slide(
@@ -64,27 +57,14 @@ class SlideshowViewController: UIViewController, UIPageViewControllerDataSource,
             illustration: "save-over-tor-screen")
     ]
 
-    private var page = 0
-
-    private lazy var pageVc: UIPageViewController = {
-        let pageVc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
-        pageVc.dataSource = self
-        pageVc.delegate = self
-
-        return pageVc
-    }()
-
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        pageControl.numberOfPages = Self.slides.count
+
         doneBt.isHidden = true
         doneIcon.isHidden = true
-
-        addChild(pageVc)
-        container.addSubview(pageVc.view)
-        pageVc.view.frame = container.bounds
-        pageVc.didMove(toParent: self)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -107,9 +87,9 @@ class SlideshowViewController: UIViewController, UIPageViewControllerDataSource,
 
     // MARK: UIPageViewControllerDataSource
 
-    func pageViewController(_ pageViewController: UIPageViewController,
-                            viewControllerBefore viewController: UIViewController) -> UIViewController? {
-
+    override func pageViewController(_ pageViewController: UIPageViewController,
+                                     viewControllerBefore viewController: UIViewController) -> UIViewController?
+    {
         let index = (viewController as? SlideViewController)?.index ?? Int.min
 
         if index <= 0 {
@@ -119,9 +99,9 @@ class SlideshowViewController: UIViewController, UIPageViewControllerDataSource,
         return getSlide(index - 1)
     }
 
-    func pageViewController(_ pageViewController: UIPageViewController,
-                            viewControllerAfter viewController: UIViewController) -> UIViewController? {
-
+    override func pageViewController(_ pageViewController: UIPageViewController,
+                                     viewControllerAfter viewController: UIViewController) -> UIViewController?
+    {
         let index = (viewController as? SlideViewController)?.index ?? Int.max
 
         if index >= Self.slides.count - 1 {
@@ -137,10 +117,34 @@ class SlideshowViewController: UIViewController, UIPageViewControllerDataSource,
     func pageViewController(_ pageViewController: UIPageViewController,
                             didFinishAnimating finished: Bool,
                             previousViewControllers: [UIViewController],
-                            transitionCompleted completed: Bool) {
+                            transitionCompleted completed: Bool) 
+    {
         if completed {
             page = (pageViewController.viewControllers?.first as? SlideViewController)?.index ?? 0
             refresh()
+        }
+    }
+
+
+    // MARK: SlideViewControllerDelegate
+
+    func buttonPressed() {
+        // Button should only appear on last page, therefore ignore all other presses,
+        // which might happen, even though the height of that button should be 0.
+        guard page >= Self.slides.count - 1 else {
+            return
+        }
+
+        if !OrbotKit.shared.installed {
+            UIApplication.shared.open(OrbotManager.appStoreLink)
+        }
+        else {
+            OrbotManager.shared.alertToken { [weak self] in
+                Settings.useOrbot = true
+                OrbotManager.shared.start()
+
+                self?.done()
+            }
         }
     }
 
@@ -179,6 +183,7 @@ class SlideshowViewController: UIViewController, UIPageViewControllerDataSource,
         }
     }
 
+
     // MARK: Private Methods
 
     @objc
@@ -211,47 +216,5 @@ class SlideshowViewController: UIViewController, UIPageViewControllerDataSource,
         vc.index = index
 
         return vc
-    }
-
-
-    // MARK: SlideViewControllerDelegate
-
-    func buttonPressed() {
-        // Button should only appear on last page, therefore ignore all other presses,
-        // which might happen, even though the height of that button should be 0.
-        guard page >= Self.slides.count - 1 else {
-            return
-        }
-
-        if !OrbotKit.shared.installed {
-            UIApplication.shared.open(OrbotManager.appStoreLink)
-        }
-        else {
-            OrbotManager.shared.alertToken { [weak self] in
-                Settings.useOrbot = true
-                OrbotManager.shared.start()
-
-                self?.done()
-            }
-        }
-    }
-
-
-    // MARK: Private Methods
-
-    /**
-     Fixes right-to-left direction missmatch.
-
-     Strange: Even though, keywords are reading direction agnostic, animations are wrong, anyway, so
-     needs reversal on right-to-left languages.
-     */
-    private func getDirection(forward: Bool = true) -> UIPageViewController.NavigationDirection {
-        var direction: UIPageViewController.NavigationDirection = forward ? .forward : .reverse
-
-        if UIApplication.shared.userInterfaceLayoutDirection == .rightToLeft {
-            direction = direction == .forward ? .reverse : .forward
-        }
-
-        return direction
     }
 }
