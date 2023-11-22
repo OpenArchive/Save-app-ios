@@ -68,7 +68,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
             }
         }
 
-        button.bottomAnchor.constraint(equalTo: container.bottomAnchor, constant: -16).isActive = true
+        button.bottomAnchor.constraint(lessThanOrEqualTo: container.bottomAnchor, constant: -16).isActive = true
     }
 
 

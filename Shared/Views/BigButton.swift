@@ -135,7 +135,7 @@ class BigButton: UIView {
         view.font = .preferredFont(forTextStyle: .title2)
         view.numberOfLines = 0
 
-        view.heightAnchor.constraint(greaterThanOrEqualToConstant: 24).isActive = true
+        view.setContentCompressionResistancePriority(.required, for: .vertical)
 
         return view
     }()
@@ -150,7 +150,7 @@ class BigButton: UIView {
         view.textColor = .secondaryLabel
         view.numberOfLines = 0
 
-        view.heightAnchor.constraint(greaterThanOrEqualToConstant: 16).isActive = true
+        view.setContentCompressionResistancePriority(.required, for: .vertical)
 
         return view
     }()
