@@ -1,6 +1,9 @@
 /* First placeholder is app name, second is 'Internet Archive' */
 "%1$@ needs your %2$@ account's API keys to upload media." = "%1$@ needs your %2$@ account's API keys to upload media.";
 
+/* First placeholder is app name */
+"%1$@ only connects to WebDAV-compatible servers, e.g. Nextcloud and ownCloud." = "%1$@ only connects to WebDAV-compatible servers, e.g. Nextcloud and ownCloud.";
+
 /* both are integer numbers meaning 'x of n' */
 "%1$@/%2$@" = "%1$@/%2$@";
 
@@ -22,6 +25,9 @@
 /* ConsentViewController */
 "%@ Size and type of media" = "%@ Размер и тип медиа";
 
+/* No comment provided by engineer. */
+"\"Chunking\" uploads media in pieces so you don't have to restart your upload if your connection is interrupted." = "\"Chunking\" uploads media in pieces so you don't have to restart your upload if your connection is interrupted.";
+
 /* PrivateServerViewController */
 "__upload_chunking_description__" = "Протестировано только на последней версии Nextcloud. Увеличивает надежность в плохих сетях. Загружать можно только до тех пор, пока устройство остается включенным и приложение активно. (Кратковременное использование других приложений допускается.)";
 
@@ -42,6 +48,9 @@
 
 /* OrbotManager */
 "Access Token" = "Маркер доступа";
+
+/* No comment provided by engineer. */
+"Account" = "Account";
 
 /* InternetArchiveViewController */
 "Acquire Keys" = "Получить ключи";
@@ -466,8 +475,14 @@
 /* No comment provided by engineer. */
 "Server" = "Сервер";
 
+/* No comment provided by engineer. */
+"Server Info" = "Server Info";
+
 /* PrivateServerViewController */
 "Server Name" = "Имя сервера";
+
+/* No comment provided by engineer. */
+"Server Name (Optional)" = "Server Name (Optional)";
 
 /* PrivateServerViewController */
 "Server URL" = "URL сервера";
@@ -564,6 +579,9 @@
 
 /* PrivateServerViewController */
 "Use Upload Chunking (Nextcloud only)" = "Используйте выгрузку сегментами (только для Nextcloud)";
+
+/* No comment provided by engineer. */
+"Use Upload Chunking (Nextcloud Only)" = "Use Upload Chunking (Nextcloud Only)";
 
 /* BaseServerViewController */
 "Username" = "Имя пользователя";

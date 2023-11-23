@@ -176,5 +176,13 @@ class Formatters: NSObject {
 
             return nil
         }
+
+        class func fix(url: String?, baseOnly: Bool = false) -> URL? {
+            guard let url = url, !url.isEmpty, let url = URL(string: url) else {
+                return nil
+            }
+
+            return fix(url: url, baseOnly: baseOnly)
+        }
     }
 }
