@@ -185,6 +185,7 @@ class PsWizardViewController: BaseViewController, WizardDelegatable, TextBoxDele
             try! FavIcon.downloadPreferred(baseUrl) { [weak self] result in
                 if case let .success(image) = result {
                     self?.iconIv.image = image
+                    self?.iconIv.contentMode = .scaleAspectFill
                     self?.iconLoaded = true
                 }
             }

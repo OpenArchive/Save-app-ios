@@ -13,6 +13,14 @@ class IaWizardViewController: UIViewController, WizardDelegatable, ScrapeDelegat
 
     weak var delegate: WizardDelegate?
 
+    @IBOutlet weak var iconIv: UIImageView! {
+        didSet {
+            iconIv.image = .internetArchiveLogo
+                .resizedImage(to: .init(width: 24, height: 24))
+                .withRenderingMode(.alwaysTemplate)
+        }
+    }
+
     @IBOutlet weak var titleLb: UILabel! {
         didSet {
             titleLb.text = IaSpace.defaultPrettyName
