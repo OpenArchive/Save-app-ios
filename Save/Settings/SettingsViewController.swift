@@ -12,6 +12,7 @@ import UIImage_Resize
 class SettingsViewController: UIViewController {
 
     private static let iaSettingsSegue = "iaSettingsSegue"
+    private static let dropboxSettingsSegue = "dropboxSettingsSegue"
 
     @IBOutlet weak var generalBt: UIButton! {
         didSet {
@@ -77,12 +78,13 @@ class SettingsViewController: UIViewController {
             return performSegue(withIdentifier: Self.iaSettingsSegue, sender: nil)
         }
 
+        if SelectedSpace.space is DropboxSpace {
+            return performSegue(withIdentifier: Self.dropboxSettingsSegue, sender: nil)
+        }
+
         let vc: BaseServerViewController
 
         switch SelectedSpace.space {
-        case is DropboxSpace:
-            vc = DropboxViewController()
-
         default:
             vc = PrivateServerViewController()
         }

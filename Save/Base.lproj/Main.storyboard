@@ -1475,6 +1475,7 @@
                         <outlet property="serverBt" destination="ind-b8-Uqd" id="OMI-KT-0fi"/>
                         <outlet property="versionLb" destination="BAd-wM-0Yb" id="0Gp-z8-vXl"/>
                         <segue destination="Eyd-p5-AkX" kind="show" identifier="iaSettingsSegue" id="zaE-WP-S6r"/>
+                        <segue destination="X2H-Lr-Xgg" kind="show" identifier="dropboxSettingsSegue" id="4fL-RL-gY2"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6lv-Nd-TRh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -1505,7 +1506,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wV4-q4-odx" customClass="TextBox" customModule="Save" customModuleProvider="target">
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wV4-q4-odx" customClass="TextBox" customModule="Save" customModuleProvider="target">
                                 <rect key="frame" x="16" y="44.5" width="288" height="38"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -1519,13 +1520,13 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Secret Key" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ire-uE-9Yh">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Secret Key" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ire-uE-9Yh">
                                 <rect key="frame" x="16" y="90.5" width="288" height="20.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qur-at-Xbp" customClass="TextBox" customModule="Save" customModuleProvider="target">
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qur-at-Xbp" customClass="TextBox" customModule="Save" customModuleProvider="target">
                                 <rect key="frame" x="16" y="119" width="288" height="38"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -1540,7 +1541,7 @@
                                 </userDefinedRuntimeAttributes>
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t8Q-WA-Rh5">
-                                <rect key="frame" x="67.5" y="237" width="185" height="35"/>
+                                <rect key="frame" x="67.5" y="256.5" width="185" height="35"/>
                                 <color key="tintColor" systemColor="systemRedColor"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" image="trash" catalog="system" title="Remove from App"/>
@@ -1563,9 +1564,9 @@
                             <constraint firstItem="wV4-q4-odx" firstAttribute="leading" secondItem="hT0-G7-z5G" secondAttribute="leading" constant="16" id="a7e-fq-Yd8"/>
                             <constraint firstItem="hT0-G7-z5G" firstAttribute="trailing" secondItem="wV4-q4-odx" secondAttribute="trailing" constant="16" id="bj7-Un-7qe"/>
                             <constraint firstItem="lHn-7r-p22" firstAttribute="top" secondItem="hT0-G7-z5G" secondAttribute="top" constant="16" id="fJs-Om-Ivl"/>
+                            <constraint firstItem="t8Q-WA-Rh5" firstAttribute="centerY" secondItem="3Cd-Sa-yND" secondAttribute="centerY" id="q6Y-1Y-0sZ"/>
                             <constraint firstItem="Ire-uE-9Yh" firstAttribute="leading" secondItem="hT0-G7-z5G" secondAttribute="leading" constant="16" id="uHo-e2-p5r"/>
                             <constraint firstItem="wV4-q4-odx" firstAttribute="top" secondItem="lHn-7r-p22" secondAttribute="bottom" constant="8" symbolic="YES" id="uxI-Of-AKQ"/>
-                            <constraint firstItem="t8Q-WA-Rh5" firstAttribute="top" secondItem="Qur-at-Xbp" secondAttribute="bottom" constant="80" id="yRU-C9-gD6"/>
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="OQm-e1-1SF"/>
@@ -1899,8 +1900,8 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qq5-R8-hER">
-                                <rect key="frame" x="96" y="268" width="128" height="35"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qq5-R8-hER">
+                                <rect key="frame" x="96" y="435.5" width="128" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="128" id="1Us-Rr-brl"/>
                                 </constraints>
@@ -1910,8 +1911,8 @@
                                     <action selector="acquireKeys" destination="XFE-uE-IXo" eventType="touchUpInside" id="Qpa-zY-nZC"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="If you do not have existing keys, learn how to acquire keys." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Agm-bY-ukH">
-                                <rect key="frame" x="16" y="311" width="288" height="30.5"/>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If you do not have existing keys, learn how to acquire keys." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Agm-bY-ukH">
+                                <rect key="frame" x="16" y="478.5" width="288" height="30.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
@@ -1927,7 +1928,7 @@
                                     <action selector="back" destination="XFE-uE-IXo" eventType="touchUpInside" id="riN-HC-wPT"/>
                                 </connections>
                             </button>
-                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ULx-ZG-M7y">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ULx-ZG-M7y">
                                 <rect key="frame" x="176" y="517" width="128" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="128" id="wtp-5t-6xS"/>
@@ -2389,6 +2390,68 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="G71-4E-Sod" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="6426" y="-1476"/>
+        </scene>
+        <!--Dropbox Settings View Controller-->
+        <scene sceneID="h2d-Sp-A3A">
+            <objects>
+                <viewController storyboardIdentifier="DropboxSettingsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="X2H-Lr-Xgg" customClass="DropboxSettingsViewController" customModule="Save" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="3Sn-US-tdc">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Dropbox ID" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2G3-Mb-OnH">
+                                <rect key="frame" x="16" y="16" width="288" height="20.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FQ1-YR-fIP" customClass="TextBox" customModule="Save" customModuleProvider="target">
+                                <rect key="frame" x="16" y="44.5" width="288" height="38"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" systemColor="secondaryLabelColor"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="tYx-bP-drC">
+                                <rect key="frame" x="67.5" y="256.5" width="185" height="35"/>
+                                <color key="tintColor" systemColor="systemRedColor"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="trash" catalog="system" title="Remove from App"/>
+                                <connections>
+                                    <action selector="remove" destination="X2H-Lr-Xgg" eventType="touchUpInside" id="gLE-2m-Pyz"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="now-hk-Oml"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="tYx-bP-drC" firstAttribute="centerX" secondItem="3Sn-US-tdc" secondAttribute="centerX" id="FJw-vq-ANp"/>
+                            <constraint firstItem="tYx-bP-drC" firstAttribute="centerY" secondItem="3Sn-US-tdc" secondAttribute="centerY" id="HzY-z3-zPb"/>
+                            <constraint firstItem="now-hk-Oml" firstAttribute="trailing" secondItem="FQ1-YR-fIP" secondAttribute="trailing" constant="16" id="I53-th-rvK"/>
+                            <constraint firstItem="2G3-Mb-OnH" firstAttribute="leading" secondItem="now-hk-Oml" secondAttribute="leading" constant="16" id="bGU-2S-MCH"/>
+                            <constraint firstItem="FQ1-YR-fIP" firstAttribute="top" secondItem="2G3-Mb-OnH" secondAttribute="bottom" constant="8" symbolic="YES" id="ez6-cH-NEC"/>
+                            <constraint firstItem="now-hk-Oml" firstAttribute="trailing" secondItem="2G3-Mb-OnH" secondAttribute="trailing" constant="16" id="iBU-W5-3yE"/>
+                            <constraint firstItem="2G3-Mb-OnH" firstAttribute="top" secondItem="now-hk-Oml" secondAttribute="top" constant="16" id="vW0-Lm-zhD"/>
+                            <constraint firstItem="FQ1-YR-fIP" firstAttribute="leading" secondItem="now-hk-Oml" secondAttribute="leading" constant="16" id="znM-cn-cks"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="5zH-sO-GbB"/>
+                    <connections>
+                        <outlet property="dropboxIdLb" destination="2G3-Mb-OnH" id="ceg-ju-cjq"/>
+                        <outlet property="dropboxIdTb" destination="FQ1-YR-fIP" id="YfV-C1-bRt"/>
+                        <outlet property="removeBt" destination="tYx-bP-drC" id="es0-iB-UrG"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="DIU-La-nKo" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3489" y="-693"/>
         </scene>
     </scenes>
     <designables>

@@ -97,7 +97,6 @@
 		A05471DC2296C8FD009FEA93 /* UITableView+separatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05471DA2296C8FD009FEA93 /* UITableView+separatorView.swift */; };
 		A0552050222566CE00B9645F /* UIView+utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A055204F222566CE00B9645F /* UIView+utils.swift */; };
 		A0552051222566CE00B9645F /* UIView+utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A055204F222566CE00B9645F /* UIView+utils.swift */; };
-		A056555523F6D1C600DE0168 /* DropboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555423F6D1C600DE0168 /* DropboxViewController.swift */; };
 		A056555723F6D8A100DE0168 /* DropboxSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555623F6D67E00DE0168 /* DropboxSpace.swift */; };
 		A056555823F6D8A300DE0168 /* DropboxSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555623F6D67E00DE0168 /* DropboxSpace.swift */; };
 		A056555C23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */; };
@@ -333,7 +332,9 @@
 		A0AC29E32B10A4CE0054D5F4 /* CGSize+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29E22B10A4CE0054D5F4 /* CGSize+Utils.swift */; };
 		A0AC29E42B10A4CE0054D5F4 /* CGSize+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29E22B10A4CE0054D5F4 /* CGSize+Utils.swift */; };
 		A0AC29E52B10A4CE0054D5F4 /* CGSize+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29E22B10A4CE0054D5F4 /* CGSize+Utils.swift */; };
-		A0AC29E72B10B7380054D5F4 /* IaSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29E62B10B7380054D5F4 /* IaSettingsViewController.swift */; };
+		A0AC29E72B10B7380054D5F4 /* DropboxSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29E62B10B7380054D5F4 /* DropboxSettingsViewController.swift */; };
+		A0AC29E92B10BFCD0054D5F4 /* IaSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29E82B10BFCD0054D5F4 /* IaSettingsViewController.swift */; };
+		A0AC29EB2B10C0DD0054D5F4 /* SpaceSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29EA2B10C0DD0054D5F4 /* SpaceSettingsViewController.swift */; };
 		A0AFCF0D22300279005E57FD /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF0C22300279005E57FD /* PreviewViewController.swift */; };
 		A0AFCF0F22300E41005E57FD /* MultilineTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */; };
 		A0AFCF1022300E41005E57FD /* MultilineTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */; };
@@ -572,7 +573,6 @@
 		A05471B32296B77D009FEA93 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		A05471DA2296C8FD009FEA93 /* UITableView+separatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+separatorView.swift"; sourceTree = "<group>"; };
 		A055204F222566CE00B9645F /* UIView+utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+utils.swift"; sourceTree = "<group>"; };
-		A056555423F6D1C600DE0168 /* DropboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxViewController.swift; sourceTree = "<group>"; };
 		A056555623F6D67E00DE0168 /* DropboxSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSpace.swift; sourceTree = "<group>"; };
 		A056555923F6D9D600DE0168 /* DropboxConduit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxConduit.swift; sourceTree = "<group>"; };
 		A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Utils.swift"; sourceTree = "<group>"; };
@@ -661,7 +661,9 @@
 		A0AC06B32201E94000BD5FBA /* MenuItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuItemCell.xib; sourceTree = "<group>"; };
 		A0AC29E02B10A2B20054D5F4 /* DropboxWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxWizardViewController.swift; sourceTree = "<group>"; };
 		A0AC29E22B10A4CE0054D5F4 /* CGSize+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+Utils.swift"; sourceTree = "<group>"; };
-		A0AC29E62B10B7380054D5F4 /* IaSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaSettingsViewController.swift; sourceTree = "<group>"; };
+		A0AC29E62B10B7380054D5F4 /* DropboxSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSettingsViewController.swift; sourceTree = "<group>"; };
+		A0AC29E82B10BFCD0054D5F4 /* IaSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaSettingsViewController.swift; sourceTree = "<group>"; };
+		A0AC29EA2B10C0DD0054D5F4 /* SpaceSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceSettingsViewController.swift; sourceTree = "<group>"; };
 		A0AFCF0C22300279005E57FD /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineTitle.swift; sourceTree = "<group>"; };
 		A0B645C322B7ABFE00BBE3FF /* TitleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TitleCell.xib; sourceTree = "<group>"; };
@@ -1034,7 +1036,9 @@
 				A01128E52AE6CB34000848DB /* SettingsViewController.swift */,
 				A0E1A67B21EE7A5C00E4F6B7 /* GeneralSettingsViewController.swift */,
 				A0BF451927DF5EE800DBB629 /* ProofModeSettingsViewController.swift */,
-				A0AC29E62B10B7380054D5F4 /* IaSettingsViewController.swift */,
+				A0AC29EA2B10C0DD0054D5F4 /* SpaceSettingsViewController.swift */,
+				A0AC29E62B10B7380054D5F4 /* DropboxSettingsViewController.swift */,
+				A0AC29E82B10BFCD0054D5F4 /* IaSettingsViewController.swift */,
 				A0A9F1902AF0193D007D284A /* FoldersViewController.swift */,
 				A0E2720B224E33D000CB7113 /* EditFolderViewController.swift */,
 				A0C6B3082AFD11C400304187 /* CcSelector.swift */,
@@ -1134,7 +1138,6 @@
 				A056ACA62B0E649C00995FDF /* SpaceSuccessViewController.swift */,
 				A050147E2228209E0056ED95 /* BaseServerViewController.swift */,
 				A08C2CE321F0A98C008ACA3E /* PrivateServerViewController.swift */,
-				A056555423F6D1C600DE0168 /* DropboxViewController.swift */,
 				A052A48E230D53D800E72594 /* IaInfoAlert.swift */,
 				A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */,
 			);
@@ -1821,6 +1824,7 @@
 			files = (
 				A03236282B0B7F9D00D95BC3 /* UploadErrorAlert.swift in Sources */,
 				A094EA4D282AD23D006CE059 /* NSError+from.swift in Sources */,
+				A0AC29E92B10BFCD0054D5F4 /* IaSettingsViewController.swift in Sources */,
 				A056BE1C2857457E00F354B6 /* UIFont+Montserrat.swift in Sources */,
 				A0E739D820E4C85D00DB31E1 /* AppDelegate.swift in Sources */,
 				A0BBEF8922846F310071EE93 /* Geocoder.swift in Sources */,
@@ -1866,6 +1870,7 @@
 				A08F2CEC2AFE6F2E004D7EA7 /* PreviewCell.swift in Sources */,
 				A0E321FB228EFA8800F2E9BD /* InfoBox.swift in Sources */,
 				A0D58DCE20E51517005A2F34 /* Asset.swift in Sources */,
+				A0AC29EB2B10C0DD0054D5F4 /* SpaceSettingsViewController.swift in Sources */,
 				A08C2CE421F0A98C008ACA3E /* PrivateServerViewController.swift in Sources */,
 				A0E9069322CB7D16008CD81B /* SelectedView.swift in Sources */,
 				A04255CE22944C1B0048E00C /* UIStoryboard+Utils.swift in Sources */,
@@ -1877,7 +1882,7 @@
 				A0357D1122CF901800292077 /* BatchEditViewController.swift in Sources */,
 				A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */,
 				A0AC06B02201E30E00BD5FBA /* WorkingOverlay.swift in Sources */,
-				A0AC29E72B10B7380054D5F4 /* IaSettingsViewController.swift in Sources */,
+				A0AC29E72B10B7380054D5F4 /* DropboxSettingsViewController.swift in Sources */,
 				A026C34622C641EB007B1C5B /* IaScrapeViewController.swift in Sources */,
 				A07E8A4222958D0600E9FFAA /* SlideViewController.swift in Sources */,
 				A08F2CEE2AFE8784004D7EA7 /* AssetPicker.swift in Sources */,
@@ -1914,7 +1919,6 @@
 				A006A6AC282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */,
 				A098980A2236A9E800022851 /* UploadsView.swift in Sources */,
 				A0AFCF0D22300279005E57FD /* PreviewViewController.swift in Sources */,
-				A056555523F6D1C600DE0168 /* DropboxViewController.swift in Sources */,
 				A0457E6720EF96FB00B8FBCB /* StringUtils.swift in Sources */,
 				A006AF3428198752007637DD /* AlertHelper.swift in Sources */,
 				A05C582A21EF94FC00141633 /* BaseViewController.swift in Sources */,

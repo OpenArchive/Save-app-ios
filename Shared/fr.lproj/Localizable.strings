@@ -10,6 +10,9 @@
 /* ConsentViewController */
 "%@ Error description" = "%@ Description de l’erreur";
 
+/* Placeholder is 'Dropbox' */
+"%@ ID" = "%@ ID";
+
 /* ConsentViewController */
 "%@ Locale" = "%@ Paramètres régionaux";
 
