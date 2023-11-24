@@ -56,7 +56,7 @@ class SettingsViewController: UIViewController {
     func reload() {
         let space = SelectedSpace.space
         let icon = (space?.favIcon ?? SelectedSpace.defaultFavIcon)?
-            .resizedImageToFit(in: CGSize(width: 24, height: 24), scaleIfSmaller: true)
+            .resizedImageToFit(in: .icon, scaleIfSmaller: true)
 
         serverBt.setImage(icon)
         serverBt.setTitle(space?.prettyName ?? NSLocalizedString("Server", comment: ""))

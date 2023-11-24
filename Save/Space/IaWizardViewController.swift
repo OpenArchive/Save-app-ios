@@ -16,7 +16,7 @@ class IaWizardViewController: UIViewController, WizardDelegatable, ScrapeDelegat
     @IBOutlet weak var iconIv: UIImageView! {
         didSet {
             iconIv.image = .internetArchiveLogo
-                .resizedImage(to: .init(width: 24, height: 24))
+                .resizedImage(to: .icon)
                 .withRenderingMode(.alwaysTemplate)
         }
     }

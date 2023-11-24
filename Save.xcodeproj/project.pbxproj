@@ -827,6 +827,7 @@
 				A05DF983282C0F6E003FADA2 /* AEXMLError.swift */,
 				A05DF987282C0F92003FADA2 /* AEXMLParser.swift */,
 				A02DB29929B647390090ECF6 /* URL+Utils.swift */,
+				A0AC29E22B10A4CE0054D5F4 /* CGSize+Utils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1641,6 +1642,7 @@
 				A0C475B4211474A50012937E /* Formatters.swift in Sources */,
 				A0362196220DB2CA003C21DC /* IaSpace.swift in Sources */,
 				A05F79FF22EEFA9F003DBB74 /* RuleFilename.swift in Sources */,
+				A0AC29E42B10A4CE0054D5F4 /* CGSize+Utils.swift in Sources */,
 				A006A6AD282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */,
 				A0E9069422CB7D16008CD81B /* SelectedView.swift in Sources */,
 				A045D1F5224CFFB4008FF8C1 /* SelectedSpaceCell.swift in Sources */,
@@ -1731,6 +1733,7 @@
 				A09B539923266F02005266C2 /* HeaderView.swift in Sources */,
 				A09B539A23266F02005266C2 /* BaseServerViewController.swift in Sources */,
 				A03236332B0BB46B00D95BC3 /* AddFolderViewController.swift in Sources */,
+				A0AC29E52B10A4CE0054D5F4 /* CGSize+Utils.swift in Sources */,
 				A09B539B23266F02005266C2 /* BrowseViewController.swift in Sources */,
 				A09B539C23266F02005266C2 /* InfoBox.swift in Sources */,
 				A09B539D23266F02005266C2 /* Asset.swift in Sources */,
@@ -1909,6 +1912,7 @@
 				A0AC057F224CE8C7008B9249 /* TableWithSpacesViewController.swift in Sources */,
 				A0F7FDDF224936C8006610F0 /* TintedImageView.swift in Sources */,
 				A013A9392B0D12D6003476ED /* TextBox.swift in Sources */,
+				A0AC29E32B10A4CE0054D5F4 /* CGSize+Utils.swift in Sources */,
 				A0AC06AC2201D00100BD5FBA /* FolderCell.swift in Sources */,
 				A07E8A40229575B600E9FFAA /* SlideshowViewController.swift in Sources */,
 				A006A6AC282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */,
