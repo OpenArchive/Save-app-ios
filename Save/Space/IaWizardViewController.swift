@@ -36,9 +36,21 @@ class IaWizardViewController: UIViewController, WizardDelegatable, ScrapeDelegat
         }
     }
 
+    @IBOutlet weak var accessKeyLb: UILabel! {
+        didSet {
+            accessKeyLb.text = NSLocalizedString("Access Key", comment: "")
+        }
+    }
+
     @IBOutlet weak var accessKeyTb: TextBox! {
         didSet {
             accessKeyTb.placeholder = NSLocalizedString("Access Key", comment: "")
+        }
+    }
+
+    @IBOutlet weak var secretKeyLb: UILabel! {
+        didSet {
+            secretKeyLb.text = NSLocalizedString("Secret Key", comment: "")
         }
     }
 

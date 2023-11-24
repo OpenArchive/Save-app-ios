@@ -145,7 +145,7 @@ open class BaseViewController: UIViewController {
      - parameter completion: Block to be executed after animation has ended.
      */
     public func dismiss(completion: (() -> Void)?) {
-        if let nav = navigationController, navigationController?.topViewController != self {
+        if let nav = navigationController, navigationController?.viewControllers.first != self {
             nav.popViewController(animated: true)
 
             if let completion = completion {

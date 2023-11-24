@@ -42,7 +42,7 @@ class BaseTableViewController: UITableViewController {
     // MARK: Actions
 
     @IBAction func dismiss(_ sender: Any? = nil) {
-        if let nav = navigationController, navigationController?.topViewController != self {
+        if let nav = navigationController, navigationController?.viewControllers.first != self {
             nav.popViewController(animated: true)
         }
         else {

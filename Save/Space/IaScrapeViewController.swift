@@ -15,6 +15,9 @@ protocol ScrapeDelegate {
 
 class IaScrapeViewController: BaseViewController, WKUIDelegate, WKNavigationDelegate {
 
+    private static let keysUrl = URL(string: "https://archive.org/account/s3.php")!
+
+
     var delegate: ScrapeDelegate?
 
     private var accessKey: String?
@@ -86,7 +89,7 @@ class IaScrapeViewController: BaseViewController, WKUIDelegate, WKNavigationDele
 
     @objc func load() {
         if let webView = view as? WKWebView {
-            webView.load(URLRequest(url: InternetArchiveViewController.keysUrl))
+            webView.load(URLRequest(url: Self.keysUrl))
         }
     }
 

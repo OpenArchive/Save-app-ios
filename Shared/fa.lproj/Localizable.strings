@@ -13,9 +13,6 @@
 /* ConsentViewController */
 "%@ Locale" = "%@ محلی";
 
-/* InternetArchiveViewController */
-"%@ needs your Internet Archive account's API keys to be able to upload to it." = "%@ به کلیدهای API حساب بایگانی اینترنت شما برای امکان بارگذاری نیاز دارد.";
-
 /* ConsentViewController */
 "%@ Network type" = "%@ نوع شبکه";
 
@@ -589,9 +586,6 @@
 /* No comment provided by engineer. */
 "Welcome!" = "خوش آمدید!";
 
-/* InternetArchiveViewController */
-"When using the \"%1$@\" feature, make sure to log in and then touch the \"Refresh\" button in the top right to let %2$@ have another try at automatically scraping the keys." = "هنگامی که از ویژگی \"%2$@\" استفاده می‌کنید، از ورود خود مطمئن شوید و روی دکمه \"Refresh\" در بخش بالا سمت راست بزنید تا به %1$@ اجازه‌ی امتحان دوباره را برای جمع‌آوری خودکار کلیدها بدهید.";
-
 /* No comment provided by engineer. */
 "When you flag an item, it is routed into a subfolder within the chosen folder on the private server." = "When you flag an item, it is routed into a subfolder within the chosen folder on the private server.";
 
@@ -600,9 +594,6 @@
 
 /* No comment provided by engineer. */
 "You can add another storage space and connect to multiple servers." = "You can add another storage space and connect to multiple servers.";
-
-/* InternetArchiveViewController */
-"You can let %1$@ try to acquire these keys automatically, or you can tap this row which will send you to %2$@ in Safari from where you can copy-and-paste these keys manually." = "شما می‌توانید به %1$@ اجازه دهید تا این کلیدها را به صورت خودکار به دست آورد و یا می‌توانید روی این ردیف بزنید تا به %2$@ در Safari منتقل شوید و بتوانید این کلیدها را به صورت دستی کپی و پیست کنید.";
 
 /* Placeholder is a server type or name */
 "You have successfully connected to %@!" = "You have successfully connected to %@!";

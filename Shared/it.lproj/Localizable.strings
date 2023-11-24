@@ -13,9 +13,6 @@
 /* ConsentViewController */
 "%@ Locale" = "%@ Locale";
 
-/* InternetArchiveViewController */
-"%@ needs your Internet Archive account's API keys to be able to upload to it." = "%@ richiede le chiavi API del tuo account Internet Archive per poter caricare.";
-
 /* ConsentViewController */
 "%@ Network type" = "%@ Network type";
 
@@ -589,9 +586,6 @@
 /* No comment provided by engineer. */
 "Welcome!" = "Benvenuto!";
 
-/* InternetArchiveViewController */
-"When using the \"%1$@\" feature, make sure to log in and then touch the \"Refresh\" button in the top right to let %2$@ have another try at automatically scraping the keys." = "Quando usi la funzione \"%1$@\", assicurati d'accedere a quindi di toccare il il pulsante \"Aggiorna\" in altro a destra per permettere %2$@ di fare un altro tentativo automatico d'acquisizione chiavi.";
-
 /* No comment provided by engineer. */
 "When you flag an item, it is routed into a subfolder within the chosen folder on the private server." = "When you flag an item, it is routed into a subfolder within the chosen folder on the private server.";
 
@@ -600,9 +594,6 @@
 
 /* No comment provided by engineer. */
 "You can add another storage space and connect to multiple servers." = "You can add another storage space and connect to multiple servers.";
-
-/* InternetArchiveViewController */
-"You can let %1$@ try to acquire these keys automatically, or you can tap this row which will send you to %2$@ in Safari from where you can copy-and-paste these keys manually." = "Puoi %1$@ provare ad acquisire queste chiavi automaticamente, oppure puoi toccare questa riga che ti manderà a %2$@ in Safari, da dove potrai copiare-incollare queste chiavi manualmente.";
 
 /* Placeholder is a server type or name */
 "You have successfully connected to %@!" = "You have successfully connected to %@!";

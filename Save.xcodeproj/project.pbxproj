@@ -167,7 +167,6 @@
 		A07E8A4222958D0600E9FFAA /* SlideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07E8A4122958D0600E9FFAA /* SlideViewController.swift */; };
 		A08750A92112099700BFAFE4 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = A08750A82112099700BFAFE4 /* Constants.m */; };
 		A08750AA2112099700BFAFE4 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = A08750A82112099700BFAFE4 /* Constants.m */; };
-		A08C2CE221F09B3F008ACA3E /* InternetArchiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CE121F09B3F008ACA3E /* InternetArchiveViewController.swift */; };
 		A08C2CE421F0A98C008ACA3E /* PrivateServerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CE321F0A98C008ACA3E /* PrivateServerViewController.swift */; };
 		A08C2CE621F0B46C008ACA3E /* FormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CE521F0B46C008ACA3E /* FormViewController.swift */; };
 		A08C2CE721F0B5FA008ACA3E /* FormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CE521F0B46C008ACA3E /* FormViewController.swift */; };
@@ -254,7 +253,6 @@
 		A09B53B923266F02005266C2 /* TitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A045D1F8224D02AA008FF8C1 /* TitleCell.swift */; };
 		A09B53BA23266F02005266C2 /* DoneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A092C0EF223A8D4B003EB0AA /* DoneDelegate.swift */; };
 		A09B53BB23266F02005266C2 /* Space.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A192DC21F208DA009A8CF0 /* Space.swift */; };
-		A09B53BC23266F02005266C2 /* InternetArchiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CE121F09B3F008ACA3E /* InternetArchiveViewController.swift */; };
 		A09B53BD23266F02005266C2 /* TableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68821EE873200E4F6B7 /* TableHeader.swift */; };
 		A09B53BF23266F02005266C2 /* TableWithSpacesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC057E224CE8C7008B9249 /* TableWithSpacesViewController.swift */; };
 		A09B53C023266F02005266C2 /* TintedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDE224936C8006610F0 /* TintedImageView.swift */; };
@@ -335,6 +333,7 @@
 		A0AC29E32B10A4CE0054D5F4 /* CGSize+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29E22B10A4CE0054D5F4 /* CGSize+Utils.swift */; };
 		A0AC29E42B10A4CE0054D5F4 /* CGSize+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29E22B10A4CE0054D5F4 /* CGSize+Utils.swift */; };
 		A0AC29E52B10A4CE0054D5F4 /* CGSize+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29E22B10A4CE0054D5F4 /* CGSize+Utils.swift */; };
+		A0AC29E72B10B7380054D5F4 /* IaSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29E62B10B7380054D5F4 /* IaSettingsViewController.swift */; };
 		A0AFCF0D22300279005E57FD /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF0C22300279005E57FD /* PreviewViewController.swift */; };
 		A0AFCF0F22300E41005E57FD /* MultilineTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */; };
 		A0AFCF1022300E41005E57FD /* MultilineTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */; };
@@ -622,7 +621,6 @@
 		A08750A72112099700BFAFE4 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		A08750A82112099700BFAFE4 /* Constants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		A08750AF21120EBF00BFAFE4 /* Save-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Save-Bridging-Header.h"; sourceTree = "<group>"; };
-		A08C2CE121F09B3F008ACA3E /* InternetArchiveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveViewController.swift; sourceTree = "<group>"; };
 		A08C2CE321F0A98C008ACA3E /* PrivateServerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateServerViewController.swift; sourceTree = "<group>"; };
 		A08C2CE521F0B46C008ACA3E /* FormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormViewController.swift; sourceTree = "<group>"; };
 		A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarRow.swift; sourceTree = "<group>"; };
@@ -663,6 +661,7 @@
 		A0AC06B32201E94000BD5FBA /* MenuItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuItemCell.xib; sourceTree = "<group>"; };
 		A0AC29E02B10A2B20054D5F4 /* DropboxWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxWizardViewController.swift; sourceTree = "<group>"; };
 		A0AC29E22B10A4CE0054D5F4 /* CGSize+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+Utils.swift"; sourceTree = "<group>"; };
+		A0AC29E62B10B7380054D5F4 /* IaSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaSettingsViewController.swift; sourceTree = "<group>"; };
 		A0AFCF0C22300279005E57FD /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineTitle.swift; sourceTree = "<group>"; };
 		A0B645C322B7ABFE00BBE3FF /* TitleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TitleCell.xib; sourceTree = "<group>"; };
@@ -1035,6 +1034,7 @@
 				A01128E52AE6CB34000848DB /* SettingsViewController.swift */,
 				A0E1A67B21EE7A5C00E4F6B7 /* GeneralSettingsViewController.swift */,
 				A0BF451927DF5EE800DBB629 /* ProofModeSettingsViewController.swift */,
+				A0AC29E62B10B7380054D5F4 /* IaSettingsViewController.swift */,
 				A0A9F1902AF0193D007D284A /* FoldersViewController.swift */,
 				A0E2720B224E33D000CB7113 /* EditFolderViewController.swift */,
 				A0C6B3082AFD11C400304187 /* CcSelector.swift */,
@@ -1135,7 +1135,6 @@
 				A050147E2228209E0056ED95 /* BaseServerViewController.swift */,
 				A08C2CE321F0A98C008ACA3E /* PrivateServerViewController.swift */,
 				A056555423F6D1C600DE0168 /* DropboxViewController.swift */,
-				A08C2CE121F09B3F008ACA3E /* InternetArchiveViewController.swift */,
 				A052A48E230D53D800E72594 /* IaInfoAlert.swift */,
 				A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */,
 			);
@@ -1778,7 +1777,6 @@
 				A056BE1E2857457E00F354B6 /* UIFont+Montserrat.swift in Sources */,
 				A09B53BA23266F02005266C2 /* DoneDelegate.swift in Sources */,
 				A09B53BB23266F02005266C2 /* Space.swift in Sources */,
-				A09B53BC23266F02005266C2 /* InternetArchiveViewController.swift in Sources */,
 				A076790727BEA31200609630 /* ConsentViewController.swift in Sources */,
 				A09B53BD23266F02005266C2 /* TableHeader.swift in Sources */,
 				A09B53BF23266F02005266C2 /* TableWithSpacesViewController.swift in Sources */,
@@ -1879,6 +1877,7 @@
 				A0357D1122CF901800292077 /* BatchEditViewController.swift in Sources */,
 				A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */,
 				A0AC06B02201E30E00BD5FBA /* WorkingOverlay.swift in Sources */,
+				A0AC29E72B10B7380054D5F4 /* IaSettingsViewController.swift in Sources */,
 				A026C34622C641EB007B1C5B /* IaScrapeViewController.swift in Sources */,
 				A07E8A4222958D0600E9FFAA /* SlideViewController.swift in Sources */,
 				A08F2CEE2AFE8784004D7EA7 /* AssetPicker.swift in Sources */,
@@ -1905,7 +1904,6 @@
 				A045D1FB224D02AA008FF8C1 /* TitleCell.swift in Sources */,
 				A092C0F0223A8D4B003EB0AA /* DoneDelegate.swift in Sources */,
 				A0A192DD21F208DA009A8CF0 /* Space.swift in Sources */,
-				A08C2CE221F09B3F008ACA3E /* InternetArchiveViewController.swift in Sources */,
 				A0E1A68921EE873200E4F6B7 /* TableHeader.swift in Sources */,
 				A0AC057F224CE8C7008B9249 /* TableWithSpacesViewController.swift in Sources */,
 				A0F7FDDF224936C8006610F0 /* TintedImageView.swift in Sources */,

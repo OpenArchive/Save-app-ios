@@ -13,9 +13,6 @@
 /* ConsentViewController */
 "%@ Locale" = "%@ локаль ";
 
-/* InternetArchiveViewController */
-"%@ needs your Internet Archive account's API keys to be able to upload to it." = "%@потрібні ключі API вашого облікового запису Internet Archive, щоб мати змогу вивантажувати до нього дані. ";
-
 /* ConsentViewController */
 "%@ Network type" = "%@ тип мережі";
 
@@ -589,9 +586,6 @@
 /* No comment provided by engineer. */
 "Welcome!" = "Ласкаво просимо!";
 
-/* InternetArchiveViewController */
-"When using the \"%1$@\" feature, make sure to log in and then touch the \"Refresh\" button in the top right to let %2$@ have another try at automatically scraping the keys." = "Використовуючи функцію \"%1$@\", переконайтеся, що ви увійшли в систему, а потім натисніть кнопку \"Оновити\" у верхньому правому куті, щоб дозволити %2$@ спробувати ще раз автоматично перечитати клавіші.";
-
 /* No comment provided by engineer. */
 "When you flag an item, it is routed into a subfolder within the chosen folder on the private server." = "Коли ви позначаєте елемент, він потрапляє до підтеки у вибраній теці на приватному сервері.";
 
@@ -600,9 +594,6 @@
 
 /* No comment provided by engineer. */
 "You can add another storage space and connect to multiple servers." = "You can add another storage space and connect to multiple servers.";
-
-/* InternetArchiveViewController */
-"You can let %1$@ try to acquire these keys automatically, or you can tap this row which will send you to %2$@ in Safari from where you can copy-and-paste these keys manually." = "Ви можете дозволити %1$@ спробувати отримати ці ключі автоматично, або ви можете натиснути цей рядок, який перенаправить вас до %2$@ у Safari, звідки ви зможете скопіювати та вставити ці ключі вручну.";
 
 /* Placeholder is a server type or name */
 "You have successfully connected to %@!" = "You have successfully connected to %@!";
