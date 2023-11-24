@@ -283,9 +283,6 @@
 /* MiscSettingsViewController */
 "Lock App with Touch ID or Device Passcode" = "Блокувати застосунок за допомогою Touch ID або паролю пристрою";
 
-/* SpaceViewController */
-"Login Info" = "Дані для входу";
-
 /* No comment provided by engineer. */
 "Media Compression" = "Стиснення медіафайлу";
 
@@ -297,9 +294,6 @@
 
 /* North Direction Abbreviation */
 "N" = "N";
-
-/* EditProfileViewController */
-"Name" = "Назва";
 
 /* Northeast Direction Abbreviation */
 "NE" = "ПнСх";
@@ -358,9 +352,6 @@
 /* SlideshowViewController */
 "Organize your media into projects." = "Організовуйте свої медіа в проєкти";
 
-/* EditProfileViewController */
-"Other Info" = "Інша інформація";
-
 /* PrivateServerViewController */
 "Password" = "Пароль";
 
@@ -394,9 +385,6 @@
 /* No comment provided by engineer. */
 "Private Server" = "Приватний сервер";
 
-/* SpaceViewController, EditProfileViewController */
-"Profile" = "Профіль";
-
 /* No comment provided by engineer. */
 "ProofMode" = "ProofMode";
 
@@ -429,9 +417,6 @@
 
 /* ManagementViewController */
 "Retry" = "Повторити";
-
-/* EditProfileViewController */
-"Role" = "Роль";
 
 /* AnalyticsCell */
 "Run health checks to help improve uploading." = "Запускайте перевірки стану, щоб покращити вивантаження.";

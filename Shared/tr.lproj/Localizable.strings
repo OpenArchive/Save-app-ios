@@ -283,9 +283,6 @@
 /* MiscSettingsViewController */
 "Lock App with Touch ID or Device Passcode" = "Uygulama Touch ID ya da aygıt parolası ile kilitlensin";
 
-/* SpaceViewController */
-"Login Info" = "Oturum açma bilgileri";
-
 /* No comment provided by engineer. */
 "Media Compression" = "Ortam Sıkıştırma";
 
@@ -297,9 +294,6 @@
 
 /* North Direction Abbreviation */
 "N" = "K";
-
-/* EditProfileViewController */
-"Name" = "Ad";
 
 /* Northeast Direction Abbreviation */
 "NE" = "KD";
@@ -358,9 +352,6 @@
 /* SlideshowViewController */
 "Organize your media into projects." = "Ortamlarınızı projeler içinde tutun.";
 
-/* EditProfileViewController */
-"Other Info" = "Diğer bilgiler";
-
 /* PrivateServerViewController */
 "Password" = "Parola";
 
@@ -394,9 +385,6 @@
 /* No comment provided by engineer. */
 "Private Server" = "Özel sunucu";
 
-/* SpaceViewController, EditProfileViewController */
-"Profile" = "Profil";
-
 /* No comment provided by engineer. */
 "ProofMode" = "ProofMode";
 
@@ -429,9 +417,6 @@
 
 /* ManagementViewController */
 "Retry" = "Yeniden dene";
-
-/* EditProfileViewController */
-"Role" = "Ro";
 
 /* AnalyticsCell */
 "Run health checks to help improve uploading." = "Yüklemeyi iyileştirmek için sağlık denetimlerini yapın.";

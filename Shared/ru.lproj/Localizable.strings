@@ -283,9 +283,6 @@
 /* MiscSettingsViewController */
 "Lock App with Touch ID or Device Passcode" = "Блокировка приложения с помощью Touch ID или кода устройства.";
 
-/* SpaceViewController */
-"Login Info" = "Информация о пользователе";
-
 /* No comment provided by engineer. */
 "Media Compression" = "Media Compression";
 
@@ -297,9 +294,6 @@
 
 /* North Direction Abbreviation */
 "N" = "С";
-
-/* EditProfileViewController */
-"Name" = "Имя";
 
 /* Northeast Direction Abbreviation */
 "NE" = "СВ";
@@ -358,9 +352,6 @@
 /* SlideshowViewController */
 "Organize your media into projects." = "Организуйте ваши медиа ресурсы в проекты.";
 
-/* EditProfileViewController */
-"Other Info" = "Другая информация";
-
 /* PrivateServerViewController */
 "Password" = "Пароль";
 
@@ -394,9 +385,6 @@
 /* No comment provided by engineer. */
 "Private Server" = "Private Server";
 
-/* SpaceViewController, EditProfileViewController */
-"Profile" = "Профиль";
-
 /* No comment provided by engineer. */
 "ProofMode" = "ProofMode";
 
@@ -429,9 +417,6 @@
 
 /* ManagementViewController */
 "Retry" = "Повторить";
-
-/* EditProfileViewController */
-"Role" = "Роль";
 
 /* AnalyticsCell */
 "Run health checks to help improve uploading." = "Запускайте проверки работоспособности, чтобы улучшить загрузку.";

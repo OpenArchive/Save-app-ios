@@ -283,9 +283,6 @@
 /* MiscSettingsViewController */
 "Lock App with Touch ID or Device Passcode" = "برنامه را با Touch ID یا رمز عبور دستگاه قفل کنید";
 
-/* SpaceViewController */
-"Login Info" = "اطلاعات ورود";
-
 /* No comment provided by engineer. */
 "Media Compression" = "Media Compression";
 
@@ -297,9 +294,6 @@
 
 /* North Direction Abbreviation */
 "N" = "N";
-
-/* EditProfileViewController */
-"Name" = "نام";
 
 /* Northeast Direction Abbreviation */
 "NE" = "NE";
@@ -358,9 +352,6 @@
 /* SlideshowViewController */
 "Organize your media into projects." = "رسانه‌های خود را در قالب پروژه سازماندهی کنید.";
 
-/* EditProfileViewController */
-"Other Info" = "سایر اطلاعات";
-
 /* PrivateServerViewController */
 "Password" = "گذرواژه";
 
@@ -394,9 +385,6 @@
 /* No comment provided by engineer. */
 "Private Server" = "Private Server";
 
-/* SpaceViewController, EditProfileViewController */
-"Profile" = "پروفایل";
-
 /* No comment provided by engineer. */
 "ProofMode" = "ProofMode";
 
@@ -429,9 +417,6 @@
 
 /* ManagementViewController */
 "Retry" = "تلاش دوباره";
-
-/* EditProfileViewController */
-"Role" = "نقش";
 
 /* AnalyticsCell */
 "Run health checks to help improve uploading." = "برای کمک به بهبود بارگذاری‌ها، بررسی‌های سلامت را اجرا کنید.";

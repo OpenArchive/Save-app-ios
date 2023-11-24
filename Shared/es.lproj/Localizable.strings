@@ -283,9 +283,6 @@
 /* MiscSettingsViewController */
 "Lock App with Touch ID or Device Passcode" = "Bloquea la App con Touch ID o Contraseña del Dispositivo";
 
-/* SpaceViewController */
-"Login Info" = "Información de inicio de sesión";
-
 /* No comment provided by engineer. */
 "Media Compression" = "Compresión de Medios";
 
@@ -297,9 +294,6 @@
 
 /* North Direction Abbreviation */
 "N" = "N";
-
-/* EditProfileViewController */
-"Name" = "Nombre";
 
 /* Northeast Direction Abbreviation */
 "NE" = "NE";
@@ -358,9 +352,6 @@
 /* SlideshowViewController */
 "Organize your media into projects." = "Organiza tus medios en proyectos.";
 
-/* EditProfileViewController */
-"Other Info" = "Otra información";
-
 /* PrivateServerViewController */
 "Password" = "Contraseña";
 
@@ -394,9 +385,6 @@
 /* No comment provided by engineer. */
 "Private Server" = "Servidor Privado";
 
-/* SpaceViewController, EditProfileViewController */
-"Profile" = "Perfil";
-
 /* No comment provided by engineer. */
 "ProofMode" = "ProofMode";
 
@@ -429,9 +417,6 @@
 
 /* ManagementViewController */
 "Retry" = "Intentar de nuevo";
-
-/* EditProfileViewController */
-"Role" = "Rol";
 
 /* AnalyticsCell */
 "Run health checks to help improve uploading." = "Ejecutar controles de salud para ayudar a mejorar la carga.";

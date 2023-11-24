@@ -150,7 +150,6 @@
 		A071290C2111DE3C007A432A /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D58DCD20E51517005A2F34 /* Asset.swift */; };
 		A07129102111E4F1007A432A /* Db.swift in Sources */ = {isa = PBXBuildFile; fileRef = A071290F2111E4F1007A432A /* Db.swift */; };
 		A07129112111E4F1007A432A /* Db.swift in Sources */ = {isa = PBXBuildFile; fileRef = A071290F2111E4F1007A432A /* Db.swift */; };
-		A072C4D6227C8B3C0022BC58 /* SpaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A072C4D5227C8B3C0022BC58 /* SpaceViewController.swift */; };
 		A07678F627BE7F0E00609630 /* cleaninsights-dev.json in Resources */ = {isa = PBXBuildFile; fileRef = A07678F527BE7F0E00609630 /* cleaninsights-dev.json */; };
 		A07678F727BE7F0E00609630 /* cleaninsights-dev.json in Resources */ = {isa = PBXBuildFile; fileRef = A07678F527BE7F0E00609630 /* cleaninsights-dev.json */; };
 		A07678F827BE7F0E00609630 /* cleaninsights-dev.json in Resources */ = {isa = PBXBuildFile; fileRef = A07678F527BE7F0E00609630 /* cleaninsights-dev.json */; };
@@ -174,7 +173,6 @@
 		A08C2CE721F0B5FA008ACA3E /* FormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CE521F0B46C008ACA3E /* FormViewController.swift */; };
 		A08C2CE821F0B613008ACA3E /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68621EE834D00E4F6B7 /* BaseCell.swift */; };
 		A08C2CE921F0B617008ACA3E /* TableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68821EE873200E4F6B7 /* TableHeader.swift */; };
-		A08C2CEB21F0B71B008ACA3E /* EditProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CEA21F0B71B008ACA3E /* EditProfileViewController.swift */; };
 		A08C2CED21F0C634008ACA3E /* AvatarRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */; };
 		A08C2CEF21F0C757008ACA3E /* AvatarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */; };
 		A08F2CEB2AFE6F2E004D7EA7 /* PreviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A08F2CE92AFE6F2E004D7EA7 /* PreviewCell.xib */; };
@@ -281,7 +279,6 @@
 		A09B53D523266F02005266C2 /* Collection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0631B5A22034F0700B3E90D /* Collection.swift */; };
 		A09B53D723266F02005266C2 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DBD21F8CC2300B46099 /* MainViewController.swift */; };
 		A09B53D823266F02005266C2 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78AE21F76D2200B6B68B /* Project.swift */; };
-		A09B53DA23266F02005266C2 /* SpaceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A072C4D5227C8B3C0022BC58 /* SpaceViewController.swift */; };
 		A09B53DB23266F02005266C2 /* Upload.swift in Sources */ = {isa = PBXBuildFile; fileRef = A098980C2236C23200022851 /* Upload.swift */; };
 		A09B53DC23266F02005266C2 /* WebDavConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D1013D22CCF4140068D047 /* WebDavConduit.swift */; };
 		A09B53DD23266F02005266C2 /* MultilineTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */; };
@@ -609,7 +606,6 @@
 		A071290F2111E4F1007A432A /* Db.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Db.swift; sourceTree = "<group>"; };
 		A07129122111F4D5007A432A /* Save.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Save.entitlements; sourceTree = "<group>"; };
 		A07129132111F4F8007A432A /* ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExtension.entitlements; sourceTree = "<group>"; };
-		A072C4D5227C8B3C0022BC58 /* SpaceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceViewController.swift; sourceTree = "<group>"; };
 		A07678F527BE7F0E00609630 /* cleaninsights-dev.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "cleaninsights-dev.json"; sourceTree = "<group>"; };
 		A07678FD27BE84AC00609630 /* AnalyticsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsCell.swift; sourceTree = "<group>"; };
 		A076790127BE89E900609630 /* UIButton+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Utils.swift"; sourceTree = "<group>"; };
@@ -629,7 +625,6 @@
 		A08C2CE121F09B3F008ACA3E /* InternetArchiveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveViewController.swift; sourceTree = "<group>"; };
 		A08C2CE321F0A98C008ACA3E /* PrivateServerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateServerViewController.swift; sourceTree = "<group>"; };
 		A08C2CE521F0B46C008ACA3E /* FormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormViewController.swift; sourceTree = "<group>"; };
-		A08C2CEA21F0B71B008ACA3E /* EditProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditProfileViewController.swift; sourceTree = "<group>"; };
 		A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarRow.swift; sourceTree = "<group>"; };
 		A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AvatarCell.xib; sourceTree = "<group>"; };
 		A08CA2CF27DBB7BB00F23100 /* .bartycrouch.toml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .bartycrouch.toml; sourceTree = "<group>"; };
@@ -1137,13 +1132,11 @@
 				A0AC29E02B10A2B20054D5F4 /* DropboxWizardViewController.swift */,
 				A013A9362B0D0488003476ED /* IaWizardViewController.swift */,
 				A056ACA62B0E649C00995FDF /* SpaceSuccessViewController.swift */,
-				A072C4D5227C8B3C0022BC58 /* SpaceViewController.swift */,
 				A050147E2228209E0056ED95 /* BaseServerViewController.swift */,
 				A08C2CE321F0A98C008ACA3E /* PrivateServerViewController.swift */,
 				A056555423F6D1C600DE0168 /* DropboxViewController.swift */,
 				A08C2CE121F09B3F008ACA3E /* InternetArchiveViewController.swift */,
 				A052A48E230D53D800E72594 /* IaInfoAlert.swift */,
-				A08C2CEA21F0B71B008ACA3E /* EditProfileViewController.swift */,
 				A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */,
 			);
 			path = Space;
@@ -1816,7 +1809,6 @@
 				A09B53D523266F02005266C2 /* Collection.swift in Sources */,
 				A09B53D723266F02005266C2 /* MainViewController.swift in Sources */,
 				A09B53D823266F02005266C2 /* Project.swift in Sources */,
-				A09B53DA23266F02005266C2 /* SpaceViewController.swift in Sources */,
 				A09B53DB23266F02005266C2 /* Upload.swift in Sources */,
 				A09B53DC23266F02005266C2 /* WebDavConduit.swift in Sources */,
 				A09B53DD23266F02005266C2 /* MultilineTitle.swift in Sources */,
@@ -1888,7 +1880,6 @@
 				A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */,
 				A0AC06B02201E30E00BD5FBA /* WorkingOverlay.swift in Sources */,
 				A026C34622C641EB007B1C5B /* IaScrapeViewController.swift in Sources */,
-				A08C2CEB21F0B71B008ACA3E /* EditProfileViewController.swift in Sources */,
 				A07E8A4222958D0600E9FFAA /* SlideViewController.swift in Sources */,
 				A08F2CEE2AFE8784004D7EA7 /* AssetPicker.swift in Sources */,
 				A03236352B0BB8F100D95BC3 /* AppAddFolderViewController.swift in Sources */,
@@ -1959,7 +1950,6 @@
 				A07678FE27BE854D00609630 /* AnalyticsCell.swift in Sources */,
 				A056ACA32B0E4DE000995FDF /* BasePageViewController.swift in Sources */,
 				A0C6B30B2AFD1CCF00304187 /* LinkRow.swift in Sources */,
-				A072C4D6227C8B3C0022BC58 /* SpaceViewController.swift in Sources */,
 				A098980D2236C23200022851 /* Upload.swift in Sources */,
 				A09B5419232673EE005266C2 /* AppDelegateBase.swift in Sources */,
 				A0D1013E22CCF4140068D047 /* WebDavConduit.swift in Sources */,
