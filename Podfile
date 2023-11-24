@@ -9,7 +9,6 @@ use_frameworks!
 def shared_pods
     pod 'YapDatabase', :git => 'https://github.com/tladesignz/YapDatabase.git' #'~> 4.0'
     pod 'Eureka', '~> 5.3'
-    pod 'ImageRow', '~> 4.1'
     pod 'UIImage-Resize', '~> 1.0'
     pod 'AlignedCollectionViewFlowLayout', '~> 1.1'
     pod 'DownloadButton', '~> 0.1'

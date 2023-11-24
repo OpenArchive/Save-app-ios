@@ -5,11 +5,9 @@ PODS:
   - CrossroadRegex (1.2.0)
   - DeviceKit (4.9.0)
   - DownloadButton (0.1.0)
-  - Eureka (5.3.6)
+  - Eureka (5.4.0)
   - FavIcon (3.1.0)
   - FontBlaster (5.3.0)
-  - ImageRow (4.1.0):
-    - Eureka (~> 5.3.5)
   - LegacyUTType (0.1.0)
   - LibProofMode/PrivacyProtected (0.1.1):
     - DeviceKit (~> 4.0)
@@ -140,7 +138,6 @@ DEPENDENCIES:
   - Eureka (~> 5.3)
   - FavIcon (from `https://github.com/tladesignz/FavIcon.git`, branch `swift-5`)
   - FontBlaster (~> 5.2)
-  - ImageRow (~> 4.1)
   - LegacyUTType (~> 0.1)
   - LibProofMode/PrivacyProtected (from `https://gitlab.com/threeletteracronym/libproofmode-ios.git`, branch `external_passphrase`)
   - MBProgressHUD (~> 1.2)
@@ -162,7 +159,6 @@ SPEC REPOS:
     - DownloadButton
     - Eureka
     - FontBlaster
-    - ImageRow
     - LegacyUTType
     - MBProgressHUD
     - ObjectivePGP
@@ -217,10 +213,9 @@ SPEC CHECKSUMS:
   CrossroadRegex: 9af32b4b4dc6ff404c87647ef1bc68ea711cc570
   DeviceKit: 847709bf70b78fd9ab765bd571fb9f5f815c3fc1
   DownloadButton: 49a21a89e0d7d1b42d9134f79aaa40e727cd57c3
-  Eureka: 28ad9dec6286cd7cd601fdf8e8df39bb7356a8f4
+  Eureka: fadaa9fa3d6e402d3c60f78f24edf3d7bafc9c29
   FavIcon: 57f172cc9880265915c1aba226a2538b722c83fd
   FontBlaster: 941f89d735a29e1c7d24e7a90d3e16939ef1609a
-  ImageRow: 880c0f052c5a89c80521b485c86ccf723a124e99
   LegacyUTType: 827291c20ad7361a47ace7bcdd1652a607fe4108
   LibProofMode: 6621c76256876f2e22e8bd336cf48f3d04dade3e
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
@@ -234,6 +229,6 @@ SPEC CHECKSUMS:
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
   YapDatabase: c9924a3d45245d6878d0bf8172cb22a8522aa012
 
-PODFILE CHECKSUM: e8655848c574e3b090007afcc0d3cba81f3f764e
+PODFILE CHECKSUM: 471fc53036ce17324ff01df842674dd6ded036eb
 
 COCOAPODS: 1.14.2
