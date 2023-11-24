@@ -196,10 +196,10 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                 let group = DispatchGroup()
                 group.enter()
 
-                Db.writeConn?.asyncReadWrite() { transaction in
-                    SelectedSpace.store(transaction)
+                Db.writeConn?.asyncReadWrite() { tx in
+                    SelectedSpace.store(tx)
 
-                    transaction.setObject(space)
+                    tx.setObject(space)
 
                     group.leave()
                 }
@@ -214,7 +214,14 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                     })
                 }
 
-                self?.mainVc?.addFolder()
+                if let navC = self?.mainVc?.presentedViewController as? UINavigationController,
+                   let vc = navC.viewControllers.first as? SpaceWizardViewController
+                {
+                    let successVc = UIStoryboard.main.instantiate(SpaceSuccessViewController.self)
+                    successVc.spaceName = DropboxSpace.defaultPrettyName
+
+                    vc.next(successVc, pos: 2)
+                }
 
             case .cancel, .none:
                 debugPrint("[\(String(describing: type(of: self)))] dropbox auth cancelled")

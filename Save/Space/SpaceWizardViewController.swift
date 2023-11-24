@@ -31,10 +31,6 @@ class SpaceWizardViewController: BasePageViewController, WizardDelegate {
             barButtonSystemItem: .cancel, target: self, action: #selector(dismiss(_:)))
 
         hideKeyboardOnOutsideTap()
-    }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
 
         back()
     }

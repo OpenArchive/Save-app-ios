@@ -502,6 +502,9 @@
 /* Placeholders will be replaced by newline - ClaimViewController */
 "Share%1$@Archive%1$@Verify%1$@Encrypt" = "Share%1$@Archive%1$@Verify%1$@Encrypt";
 
+/* Placeholder is 'Dropbox' */
+"Sign in with %@." = "Sign in with %@.";
+
 /* DarkroomHelper */
 "Significant Content" = "Significant Content";
 

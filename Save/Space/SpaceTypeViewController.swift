@@ -79,7 +79,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
     }
 
     @IBAction func newDropbox() {
-        delegate?.next(DropboxViewController(), pos: 1)
+        delegate?.next(UIStoryboard.main.instantiate(DropboxWizardViewController.self), pos: 1)
     }
 
     @IBAction func newIa() {

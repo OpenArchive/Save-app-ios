@@ -197,12 +197,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         updateManageBt()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        addSpace()
-    }
-
     /**
      Workaround for the filtered view, which potentially got reset by the share
      extension's `Db#setup` call.
