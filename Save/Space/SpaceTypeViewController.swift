@@ -35,7 +35,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
 
         var button = BigButton.create(
             icon: UIImage(systemName: "server.rack"),
-            title: NSLocalizedString("Private Server", comment: ""),
+            title: WebDavSpace.defaultPrettyName,
             subtitle: NSLocalizedString("Send to a WebDAV server", comment: ""),
             target: self,
             action: #selector(newWebDav),
@@ -75,7 +75,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
     // MARK: Actions
 
     @IBAction func newWebDav() {
-        delegate?.next(UIStoryboard.main.instantiate(PsWizardViewController.self), pos: 1)
+        delegate?.next(UIStoryboard.main.instantiate(WebDavWizardViewController.self), pos: 1)
     }
 
     @IBAction func newDropbox() {

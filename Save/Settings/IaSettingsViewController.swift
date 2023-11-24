@@ -19,6 +19,8 @@ class IaSettingsViewController: SpaceSettingsViewController {
     @IBOutlet weak var accessKeyTb: TextBox! {
         didSet {
             accessKeyTb.placeholder = NSLocalizedString("Access Key", comment: "")
+            accessKeyTb.status = .good
+            accessKeyTb.isEnabled = false
         }
     }
 
@@ -31,14 +33,14 @@ class IaSettingsViewController: SpaceSettingsViewController {
     @IBOutlet weak var secretKeyTb: TextBox! {
         didSet {
             secretKeyTb.placeholder = NSLocalizedString("Secret Key", comment: "")
+            secretKeyTb.status = .good
+            secretKeyTb.isEnabled = false
         }
     }
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        navigationItem.title = IaSpace.defaultPrettyName
 
         if space == nil || !(space is IaSpace), let space = SelectedSpace.space as? IaSpace {
             self.space = space
@@ -47,9 +49,9 @@ class IaSettingsViewController: SpaceSettingsViewController {
             return dismiss(nil)
         }
 
+        navigationItem.title = IaSpace.defaultPrettyName
+
         accessKeyTb.text = space?.username
-        accessKeyTb.status = .good
         secretKeyTb.text = space?.password
-        secretKeyTb.status = .good
     }
 }

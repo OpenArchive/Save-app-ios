@@ -79,7 +79,6 @@
 		A045D1FC224D02AA008FF8C1 /* TitleCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A045D1F8224D02AA008FF8C1 /* TitleCell.swift */; };
 		A045D201224D07C3008FF8C1 /* ButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A045D200224D07C3008FF8C1 /* ButtonCell.swift */; };
 		A045D202224D07C3008FF8C1 /* ButtonCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A045D200224D07C3008FF8C1 /* ButtonCell.swift */; };
-		A050147F2228209E0056ED95 /* BaseServerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050147E2228209E0056ED95 /* BaseServerViewController.swift */; };
 		A050AA492225DF4000AE5D15 /* SpacesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050AA482225DF4000AE5D15 /* SpacesListCell.swift */; };
 		A05275142211A91300BDB14B /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05275132211A91300BDB14B /* CollectionsView.swift */; };
 		A05275152211A91300BDB14B /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05275132211A91300BDB14B /* CollectionsView.swift */; };
@@ -161,18 +160,15 @@
 		A076790727BEA31200609630 /* ConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A076790527BEA31200609630 /* ConsentViewController.swift */; };
 		A077732A22786BF500291F5D /* RemoveAssetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A077732922786BCA00291F5D /* RemoveAssetAlert.swift */; };
 		A077732B22786BF500291F5D /* RemoveAssetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A077732922786BCA00291F5D /* RemoveAssetAlert.swift */; };
-		A077F76A2B0FB580004A4B34 /* PsWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A077F7692B0FB580004A4B34 /* PsWizardViewController.swift */; };
+		A077F76A2B0FB580004A4B34 /* WebDavWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A077F7692B0FB580004A4B34 /* WebDavWizardViewController.swift */; };
 		A07E8A40229575B600E9FFAA /* SlideshowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07E8A3F229575B600E9FFAA /* SlideshowViewController.swift */; };
 		A07E8A4222958D0600E9FFAA /* SlideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07E8A4122958D0600E9FFAA /* SlideViewController.swift */; };
 		A08750A92112099700BFAFE4 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = A08750A82112099700BFAFE4 /* Constants.m */; };
 		A08750AA2112099700BFAFE4 /* Constants.m in Sources */ = {isa = PBXBuildFile; fileRef = A08750A82112099700BFAFE4 /* Constants.m */; };
-		A08C2CE421F0A98C008ACA3E /* PrivateServerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CE321F0A98C008ACA3E /* PrivateServerViewController.swift */; };
 		A08C2CE621F0B46C008ACA3E /* FormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CE521F0B46C008ACA3E /* FormViewController.swift */; };
 		A08C2CE721F0B5FA008ACA3E /* FormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CE521F0B46C008ACA3E /* FormViewController.swift */; };
 		A08C2CE821F0B613008ACA3E /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68621EE834D00E4F6B7 /* BaseCell.swift */; };
 		A08C2CE921F0B617008ACA3E /* TableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68821EE873200E4F6B7 /* TableHeader.swift */; };
-		A08C2CED21F0C634008ACA3E /* AvatarRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */; };
-		A08C2CEF21F0C757008ACA3E /* AvatarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */; };
 		A08F2CEB2AFE6F2E004D7EA7 /* PreviewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A08F2CE92AFE6F2E004D7EA7 /* PreviewCell.xib */; };
 		A08F2CEC2AFE6F2E004D7EA7 /* PreviewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08F2CEA2AFE6F2E004D7EA7 /* PreviewCell.swift */; };
 		A08F2CEE2AFE8784004D7EA7 /* AssetPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08F2CED2AFE8784004D7EA7 /* AssetPicker.swift */; };
@@ -216,15 +212,12 @@
 		A09B539323266F02005266C2 /* RemoveProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */; };
 		A09B539423266F02005266C2 /* YapDatabase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1364E227256F4008A22BF /* YapDatabase+Utils.swift */; };
 		A09B539523266F02005266C2 /* BaseFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78B121F771A700B6B68B /* BaseFolderViewController.swift */; };
-		A09B539623266F02005266C2 /* AvatarRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */; };
 		A09B539723266F02005266C2 /* InfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A052A490230D546F00E72594 /* InfoAlert.swift */; };
 		A09B539823266F02005266C2 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00DC98922315D4F004F07E0 /* ImageViewController.swift */; };
 		A09B539923266F02005266C2 /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01A7B712200F2D700E18DE0 /* HeaderView.swift */; };
-		A09B539A23266F02005266C2 /* BaseServerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050147E2228209E0056ED95 /* BaseServerViewController.swift */; };
 		A09B539B23266F02005266C2 /* BrowseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC06A92201CFD800BD5FBA /* BrowseViewController.swift */; };
 		A09B539C23266F02005266C2 /* InfoBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E321FA228EFA8800F2E9BD /* InfoBox.swift */; };
 		A09B539D23266F02005266C2 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D58DCD20E51517005A2F34 /* Asset.swift */; };
-		A09B539E23266F02005266C2 /* PrivateServerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CE321F0A98C008ACA3E /* PrivateServerViewController.swift */; };
 		A09B539F23266F02005266C2 /* SelectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E9069222CB7D16008CD81B /* SelectedView.swift */; };
 		A09B53A023266F02005266C2 /* UIStoryboard+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04255CD22944C1B0048E00C /* UIStoryboard+Utils.swift */; };
 		A09B53A123266F02005266C2 /* DarkroomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E321F8228EDBE900F2E9BD /* DarkroomViewController.swift */; };
@@ -281,7 +274,6 @@
 		A09B53DD23266F02005266C2 /* MultilineTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */; };
 		A09B53DF23266F02005266C2 /* BaseTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0631B542203022100B3E90D /* BaseTableViewController.swift */; };
 		A09B53E123266F02005266C2 /* RegexUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */; };
-		A09B53E823266F02005266C2 /* AvatarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */; };
 		A09B53EA23266F02005266C2 /* FolderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E27202224E2A4D00CB7113 /* FolderCell.xib */; };
 		A09B53EC23266F02005266C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A09B537523266D69005266C2 /* Assets.xcassets */; };
 		A09B53ED23266F02005266C2 /* MenuItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0AC06B32201E94000BD5FBA /* MenuItemCell.xib */; };
@@ -335,11 +327,10 @@
 		A0AC29E72B10B7380054D5F4 /* DropboxSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29E62B10B7380054D5F4 /* DropboxSettingsViewController.swift */; };
 		A0AC29E92B10BFCD0054D5F4 /* IaSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29E82B10BFCD0054D5F4 /* IaSettingsViewController.swift */; };
 		A0AC29EB2B10C0DD0054D5F4 /* SpaceSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29EA2B10C0DD0054D5F4 /* SpaceSettingsViewController.swift */; };
+		A0AC29ED2B10CAC30054D5F4 /* WebDavSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29EC2B10CAC30054D5F4 /* WebDavSettingsViewController.swift */; };
 		A0AFCF0D22300279005E57FD /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF0C22300279005E57FD /* PreviewViewController.swift */; };
 		A0AFCF0F22300E41005E57FD /* MultilineTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */; };
 		A0AFCF1022300E41005E57FD /* MultilineTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */; };
-		A0B24C6421F0CD94006C0CC6 /* AvatarRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */; };
-		A0B24C6521F0CDA6006C0CC6 /* AvatarCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */; };
 		A0B645C422B7AD2E00BBE3FF /* TitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0B645C322B7ABFE00BBE3FF /* TitleCell.xib */; };
 		A0B645C522B7AD2E00BBE3FF /* TitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0B645C322B7ABFE00BBE3FF /* TitleCell.xib */; };
 		A0BBEF8922846F310071EE93 /* Geocoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BBEF8822846F310071EE93 /* Geocoder.swift */; };
@@ -546,7 +537,6 @@
 		A045D1F8224D02AA008FF8C1 /* TitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleCell.swift; sourceTree = "<group>"; };
 		A045D200224D07C3008FF8C1 /* ButtonCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ButtonCell.swift; sourceTree = "<group>"; };
 		A0485C2422AAF0CD00D5B176 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
-		A050147E2228209E0056ED95 /* BaseServerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseServerViewController.swift; sourceTree = "<group>"; };
 		A050AA482225DF4000AE5D15 /* SpacesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacesListCell.swift; sourceTree = "<group>"; };
 		A05275132211A91300BDB14B /* CollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsView.swift; sourceTree = "<group>"; };
 		A052A48E230D53D800E72594 /* IaInfoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaInfoAlert.swift; sourceTree = "<group>"; };
@@ -614,17 +604,14 @@
 		A077277D2346203A00366ADD /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A077277E2346203A00366ADD /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A077732922786BCA00291F5D /* RemoveAssetAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveAssetAlert.swift; sourceTree = "<group>"; };
-		A077F7692B0FB580004A4B34 /* PsWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PsWizardViewController.swift; sourceTree = "<group>"; };
+		A077F7692B0FB580004A4B34 /* WebDavWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDavWizardViewController.swift; sourceTree = "<group>"; };
 		A07E8A3F229575B600E9FFAA /* SlideshowViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideshowViewController.swift; sourceTree = "<group>"; };
 		A07E8A4122958D0600E9FFAA /* SlideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlideViewController.swift; sourceTree = "<group>"; };
 		A080538E22E85C460031D4B5 /* Screenshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Screenshots.swift; sourceTree = "<group>"; };
 		A08750A72112099700BFAFE4 /* Constants.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Constants.h; sourceTree = "<group>"; };
 		A08750A82112099700BFAFE4 /* Constants.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Constants.m; sourceTree = "<group>"; };
 		A08750AF21120EBF00BFAFE4 /* Save-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Save-Bridging-Header.h"; sourceTree = "<group>"; };
-		A08C2CE321F0A98C008ACA3E /* PrivateServerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PrivateServerViewController.swift; sourceTree = "<group>"; };
 		A08C2CE521F0B46C008ACA3E /* FormViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FormViewController.swift; sourceTree = "<group>"; };
-		A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AvatarRow.swift; sourceTree = "<group>"; };
-		A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = AvatarCell.xib; sourceTree = "<group>"; };
 		A08CA2CF27DBB7BB00F23100 /* .bartycrouch.toml */ = {isa = PBXFileReference; lastKnownFileType = text; path = .bartycrouch.toml; sourceTree = "<group>"; };
 		A08F2CE92AFE6F2E004D7EA7 /* PreviewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PreviewCell.xib; sourceTree = "<group>"; };
 		A08F2CEA2AFE6F2E004D7EA7 /* PreviewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewCell.swift; sourceTree = "<group>"; };
@@ -664,6 +651,7 @@
 		A0AC29E62B10B7380054D5F4 /* DropboxSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSettingsViewController.swift; sourceTree = "<group>"; };
 		A0AC29E82B10BFCD0054D5F4 /* IaSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaSettingsViewController.swift; sourceTree = "<group>"; };
 		A0AC29EA2B10C0DD0054D5F4 /* SpaceSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceSettingsViewController.swift; sourceTree = "<group>"; };
+		A0AC29EC2B10CAC30054D5F4 /* WebDavSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDavSettingsViewController.swift; sourceTree = "<group>"; };
 		A0AFCF0C22300279005E57FD /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineTitle.swift; sourceTree = "<group>"; };
 		A0B645C322B7ABFE00BBE3FF /* TitleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TitleCell.xib; sourceTree = "<group>"; };
@@ -1037,6 +1025,7 @@
 				A0E1A67B21EE7A5C00E4F6B7 /* GeneralSettingsViewController.swift */,
 				A0BF451927DF5EE800DBB629 /* ProofModeSettingsViewController.swift */,
 				A0AC29EA2B10C0DD0054D5F4 /* SpaceSettingsViewController.swift */,
+				A0AC29EC2B10CAC30054D5F4 /* WebDavSettingsViewController.swift */,
 				A0AC29E62B10B7380054D5F4 /* DropboxSettingsViewController.swift */,
 				A0AC29E82B10BFCD0054D5F4 /* IaSettingsViewController.swift */,
 				A0A9F1902AF0193D007D284A /* FoldersViewController.swift */,
@@ -1092,8 +1081,6 @@
 		A0E0307821EF6A0700A5E97F /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A08C2CEE21F0C757008ACA3E /* AvatarCell.xib */,
-				A08C2CEC21F0C634008ACA3E /* AvatarRow.swift */,
 				A037D6FD2B0CC32000C77706 /* BigButton.swift */,
 				A045D200224D07C3008FF8C1 /* ButtonCell.swift */,
 				A0E12C152B024C2F00892AC8 /* GradientView.swift */,
@@ -1132,12 +1119,10 @@
 			children = (
 				A037D6FA2B0CB9E900C77706 /* SpaceWizardViewController.swift */,
 				A037D7012B0CCC6300C77706 /* SpaceTypeViewController.swift */,
-				A077F7692B0FB580004A4B34 /* PsWizardViewController.swift */,
+				A077F7692B0FB580004A4B34 /* WebDavWizardViewController.swift */,
 				A0AC29E02B10A2B20054D5F4 /* DropboxWizardViewController.swift */,
 				A013A9362B0D0488003476ED /* IaWizardViewController.swift */,
 				A056ACA62B0E649C00995FDF /* SpaceSuccessViewController.swift */,
-				A050147E2228209E0056ED95 /* BaseServerViewController.swift */,
-				A08C2CE321F0A98C008ACA3E /* PrivateServerViewController.swift */,
 				A052A48E230D53D800E72594 /* IaInfoAlert.swift */,
 				A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */,
 			);
@@ -1389,7 +1374,6 @@
 				A05471CB2296B77D009FEA93 /* Montserrat-Black.ttf in Resources */,
 				A032362F2B0BB46B00D95BC3 /* AddFolderViewController.xib in Resources */,
 				A045D1F3224CFFAD008FF8C1 /* SelectedSpaceCell.xib in Resources */,
-				A0B24C6521F0CDA6006C0CC6 /* AvatarCell.xib in Resources */,
 				A0B645C522B7AD2E00BBE3FF /* TitleCell.xib in Resources */,
 				A0A98AED22428A9300596B74 /* TableHeader.xib in Resources */,
 				A05471D92296B77D009FEA93 /* Montserrat-Bold.ttf in Resources */,
@@ -1408,7 +1392,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				A09CC28E27E0B16500D6415D /* Localizable.stringsdict in Resources */,
-				A09B53E823266F02005266C2 /* AvatarCell.xib in Resources */,
 				A09B541423267119005266C2 /* Assets.xcassets in Resources */,
 				A09B53EA23266F02005266C2 /* FolderCell.xib in Resources */,
 				A09B53EC23266F02005266C2 /* Assets.xcassets in Resources */,
@@ -1437,7 +1420,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A08C2CEF21F0C757008ACA3E /* AvatarCell.xib in Resources */,
 				A0E27204224E2A4D00CB7113 /* FolderCell.xib in Resources */,
 				A09B537623266D69005266C2 /* Assets.xcassets in Resources */,
 				A09CC28C27E0B16500D6415D /* Localizable.stringsdict in Resources */,
@@ -1659,7 +1641,6 @@
 				A05DF97D282C0E7C003FADA2 /* AEXMLElement.swift in Sources */,
 				A071290A2111DC6A007A432A /* StringUtils.swift in Sources */,
 				A029F6842118715700C4EF6D /* AssetFactory.swift in Sources */,
-				A0B24C6421F0CD94006C0CC6 /* AvatarRow.swift in Sources */,
 				A0C475C021149B040012937E /* MainViewController.swift in Sources */,
 				A0FB4DB321F8799100B46099 /* SpacesView.swift in Sources */,
 				A056555823F6D8A300DE0168 /* DropboxSpace.swift in Sources */,
@@ -1729,18 +1710,15 @@
 				A05DF976282C0E13003FADA2 /* DavResponse.swift in Sources */,
 				A09B539423266F02005266C2 /* YapDatabase+Utils.swift in Sources */,
 				A09B539523266F02005266C2 /* BaseFolderViewController.swift in Sources */,
-				A09B539623266F02005266C2 /* AvatarRow.swift in Sources */,
 				A09B539723266F02005266C2 /* InfoAlert.swift in Sources */,
 				A09B539823266F02005266C2 /* ImageViewController.swift in Sources */,
 				A09B539923266F02005266C2 /* HeaderView.swift in Sources */,
-				A09B539A23266F02005266C2 /* BaseServerViewController.swift in Sources */,
 				A03236332B0BB46B00D95BC3 /* AddFolderViewController.swift in Sources */,
 				A0AC29E52B10A4CE0054D5F4 /* CGSize+Utils.swift in Sources */,
 				A09B539B23266F02005266C2 /* BrowseViewController.swift in Sources */,
 				A09B539C23266F02005266C2 /* InfoBox.swift in Sources */,
 				A09B539D23266F02005266C2 /* Asset.swift in Sources */,
 				A037D7002B0CC32000C77706 /* BigButton.swift in Sources */,
-				A09B539E23266F02005266C2 /* PrivateServerViewController.swift in Sources */,
 				A09B539F23266F02005266C2 /* SelectedView.swift in Sources */,
 				A09B53A023266F02005266C2 /* UIStoryboard+Utils.swift in Sources */,
 				A09B53A123266F02005266C2 /* DarkroomViewController.swift in Sources */,
@@ -1859,19 +1837,16 @@
 				A0F1364F227256F4008A22BF /* YapDatabase+Utils.swift in Sources */,
 				A0BF451A27DF5EE800DBB629 /* ProofModeSettingsViewController.swift in Sources */,
 				A0DE78B221F771A700B6B68B /* BaseFolderViewController.swift in Sources */,
-				A08C2CED21F0C634008ACA3E /* AvatarRow.swift in Sources */,
 				A052A492230D546F00E72594 /* InfoAlert.swift in Sources */,
 				A00DC98A22315D4F004F07E0 /* ImageViewController.swift in Sources */,
 				A01A7B722200F2D700E18DE0 /* HeaderView.swift in Sources */,
 				A0C6B3092AFD11C400304187 /* CcSelector.swift in Sources */,
-				A050147F2228209E0056ED95 /* BaseServerViewController.swift in Sources */,
 				A0AC06AA2201CFD800BD5FBA /* BrowseViewController.swift in Sources */,
 				A0CBFCAA2AC5B6F4005A78BF /* SideMenuItemCell.swift in Sources */,
 				A08F2CEC2AFE6F2E004D7EA7 /* PreviewCell.swift in Sources */,
 				A0E321FB228EFA8800F2E9BD /* InfoBox.swift in Sources */,
 				A0D58DCE20E51517005A2F34 /* Asset.swift in Sources */,
 				A0AC29EB2B10C0DD0054D5F4 /* SpaceSettingsViewController.swift in Sources */,
-				A08C2CE421F0A98C008ACA3E /* PrivateServerViewController.swift in Sources */,
 				A0E9069322CB7D16008CD81B /* SelectedView.swift in Sources */,
 				A04255CE22944C1B0048E00C /* UIStoryboard+Utils.swift in Sources */,
 				A0DA7627282D0F300039438A /* Date+rfcString.swift in Sources */,
@@ -1912,6 +1887,7 @@
 				A0E1A68921EE873200E4F6B7 /* TableHeader.swift in Sources */,
 				A0AC057F224CE8C7008B9249 /* TableWithSpacesViewController.swift in Sources */,
 				A0F7FDDF224936C8006610F0 /* TintedImageView.swift in Sources */,
+				A0AC29ED2B10CAC30054D5F4 /* WebDavSettingsViewController.swift in Sources */,
 				A013A9392B0D12D6003476ED /* TextBox.swift in Sources */,
 				A0AC29E32B10A4CE0054D5F4 /* CGSize+Utils.swift in Sources */,
 				A0AC06AC2201D00100BD5FBA /* FolderCell.swift in Sources */,
@@ -1946,7 +1922,7 @@
 				A0E2BC722226AA10006D33E3 /* SelectedSpace.swift in Sources */,
 				A0631B5B22034F0700B3E90D /* Collection.swift in Sources */,
 				A0E12C162B024C2F00892AC8 /* GradientView.swift in Sources */,
-				A077F76A2B0FB580004A4B34 /* PsWizardViewController.swift in Sources */,
+				A077F76A2B0FB580004A4B34 /* WebDavWizardViewController.swift in Sources */,
 				A0FB4DBE21F8CC2300B46099 /* MainViewController.swift in Sources */,
 				A0DE78AF21F76D2200B6B68B /* Project.swift in Sources */,
 				A07678FE27BE854D00609630 /* AnalyticsCell.swift in Sources */,

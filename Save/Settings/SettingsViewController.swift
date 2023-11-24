@@ -11,6 +11,7 @@ import UIImage_Resize
 
 class SettingsViewController: UIViewController {
 
+    private static let webDavSettingsSegue = "webDavSettingsSegue"
     private static let iaSettingsSegue = "iaSettingsSegue"
     private static let dropboxSettingsSegue = "dropboxSettingsSegue"
 
@@ -74,24 +75,20 @@ class SettingsViewController: UIViewController {
     }
 
     @IBAction func server() {
-        if SelectedSpace.space is IaSpace {
-            return performSegue(withIdentifier: Self.iaSettingsSegue, sender: nil)
-        }
-
-        if SelectedSpace.space is DropboxSpace {
-            return performSegue(withIdentifier: Self.dropboxSettingsSegue, sender: nil)
-        }
-
-        let vc: BaseServerViewController
+        let segue: String
 
         switch SelectedSpace.space {
+        case is IaSpace:
+            segue = Self.iaSettingsSegue
+
+        case is DropboxSpace:
+            segue = Self.dropboxSettingsSegue
+
         default:
-            vc = PrivateServerViewController()
+            segue = Self.webDavSettingsSegue
         }
 
-        vc.space = SelectedSpace.space
-
-        navigationController?.pushViewController(vc, animated: true)
+        performSegue(withIdentifier: segue, sender: nil)
     }
 
     @IBAction func folder() {

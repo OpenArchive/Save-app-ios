@@ -1,5 +1,5 @@
 //
-//  PsWizardViewController.swift
+//  WebDavWizardViewController.swift
 //  Save
 //
 //  Created by Benjamin Erhart on 23.11.23.
@@ -10,7 +10,7 @@ import UIKit
 import CleanInsightsSDK
 import FavIcon
 
-class PsWizardViewController: BaseViewController, WizardDelegatable, TextBoxDelegate {
+class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBoxDelegate {
 
     var delegate: WizardDelegate?
 

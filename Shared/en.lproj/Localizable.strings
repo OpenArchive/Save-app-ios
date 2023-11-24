@@ -28,12 +28,6 @@
 /* No comment provided by engineer. */
 "\"Chunking\" uploads media in pieces so you don't have to restart your upload if your connection is interrupted." = "\"Chunking\" uploads media in pieces so you don't have to restart your upload if your connection is interrupted.";
 
-/* PrivateServerViewController */
-"__upload_chunking_description__" = "Only tested with latest Nextcloud! Increases reliability on bad networks. Will only upload as long as the device stays on and the app in the foreground. (Short excursions to other apps are ok, though.)";
-
-/* PrivateServerViewController */
-"__webdav_description__" = "%@ connects to WebDAV-compatible servers only. (For example Nextcloud and ownCloud.)";
-
 /* MenuViewController */
 "About %@" = "About %@";
 
@@ -144,9 +138,6 @@
 
 /* Conduit */
 "Configuration invalid." = "Configuration invalid.";
-
-/* PrivateServerViewController, InternetArchiveViewController */
-"Connect" = "Connect";
 
 /* SlideshowViewController */
 "Connect to a secure server or the Internet Archive to upload photos and videos from your phone." = "Connect to a secure server or the Internet Archive to upload photos and videos from your phone.";
@@ -331,9 +322,6 @@
 /* Bundle+displayName */
 "OpenArchive" = "OpenArchive";
 
-/* EditProfileViewController, PrivateServerViewController */
-"Optional" = "Optional";
-
 /* OrbotManager */
 "Orbot could not be opened!" = "Orbot could not be opened!";
 
@@ -412,9 +400,6 @@
 /* EditProjectViewController */
 "Require them to share like you have" = "Require them to share like you have";
 
-/* BaseServerViewController, PrivateServerViewController, InternetArchiveViewController */
-"Required" = "Required";
-
 /* ManagementViewController */
 "Retry" = "Retry";
 
@@ -462,9 +447,6 @@
 
 /* No comment provided by engineer. */
 "Server Info" = "Server Info";
-
-/* PrivateServerViewController */
-"Server Name" = "Server Name";
 
 /* No comment provided by engineer. */
 "Server Name (Optional)" = "Server Name (Optional)";
@@ -541,9 +523,6 @@
 /* UploadManager */
 "Unknown error." = "Unknown error.";
 
-/* Space */
-"Unnamed" = "Unnamed";
-
 /* Project */
 "Unnamed Project" = "Unnamed Project";
 
@@ -564,9 +543,6 @@
 
 /* OrbotManager */
 "Uploads are blocked until you start Orbot or allow uploads without Orbot again." = "Uploads are blocked until you start Orbot or allow uploads without Orbot again.";
-
-/* PrivateServerViewController */
-"Use Upload Chunking (Nextcloud only)" = "Use Upload Chunking (Nextcloud only)";
 
 /* No comment provided by engineer. */
 "Use Upload Chunking (Nextcloud Only)" = "Use Upload Chunking (Nextcloud Only)";

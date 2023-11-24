@@ -58,6 +58,16 @@ class TextBox: UIView, UITextFieldDelegate {
         }
     }
 
+    @IBInspectable
+    var isEnabled: Bool {
+        get {
+            textField.isEnabled
+        }
+        set {
+            textField.isEnabled = newValue
+        }
+    }
+
     var status: Status = .unknown {
         didSet {
             switch status {
@@ -118,7 +128,7 @@ class TextBox: UIView, UITextFieldDelegate {
         view.isHidden = true
         view.isUserInteractionEnabled = true
 
-        statusIvWidth = view.widthAnchor.constraint(equalToConstant: 16)
+        statusIvWidth = view.widthAnchor.constraint(equalToConstant: 0)
         statusIvWidth?.isActive = true
         view.heightAnchor.constraint(equalToConstant: 16).isActive = true
 
@@ -188,7 +198,7 @@ class TextBox: UIView, UITextFieldDelegate {
         cornerRadius = 8
 
         addSubview(statusIv)
-        statusIvTrailing = statusIv.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -8)
+        statusIvTrailing = statusIv.trailingAnchor.constraint(equalTo: trailingAnchor, constant: 0)
         statusIvTrailing?.isActive = true
         statusIv.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
 

@@ -21,17 +21,14 @@ class DropboxSettingsViewController: SpaceSettingsViewController {
         didSet {
             dropboxIdTb.placeholder = String(format: NSLocalizedString("%@ ID", comment: "Placeholder is 'Dropbox'"),
                                              DropboxSpace.defaultPrettyName)
+            dropboxIdTb.status = .good
+            dropboxIdTb.isEnabled = false
         }
     }
 
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        navigationItem.title = DropboxSpace.defaultPrettyName
-
-        navigationController?.setNavigationBarHidden(false, animated: true)
-
 
         if space == nil || !(space is DropboxSpace), let space = SelectedSpace.space as? DropboxSpace {
             self.space = space
@@ -40,7 +37,8 @@ class DropboxSettingsViewController: SpaceSettingsViewController {
             return dismiss(nil)
         }
 
+        navigationItem.title = DropboxSpace.defaultPrettyName
+
         dropboxIdTb.text = (space as? DropboxSpace)?.email ?? space?.username
-        dropboxIdTb.status = .good
     }
 }

@@ -52,7 +52,7 @@ class Space: NSObject {
     // MARK: Space
 
     class var defaultPrettyName: String {
-        return NSLocalizedString("Unnamed", comment: "")
+        return NSLocalizedString("Private Server", comment: "")
     }
 
 
