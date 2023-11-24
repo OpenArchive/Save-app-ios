@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22154" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="38r-I9-0nI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" launchScreen="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="38r-I9-0nI">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22130"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
+        <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -17,19 +18,38 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="ynJ-sp-AwL">
-                                <rect key="frame" x="16" y="36" width="64" height="36"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="0yI-Gt-wMH">
+                                <rect key="frame" x="91.5" y="231" width="137" height="106"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="logo" translatesAutoresizingMaskIntoConstraints="NO" id="ynJ-sp-AwL">
+                                        <rect key="frame" x="0.0" y="0.0" width="137" height="77"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" secondItem="ynJ-sp-AwL" secondAttribute="height" multiplier="16:9" id="TNb-Bp-KGH"/>
+                                        </constraints>
+                                    </imageView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="open-archive.org" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GU4-II-Hdq">
+                                        <rect key="frame" x="0.0" y="85" width="137" height="21"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                        <color key="textColor" name="Accent"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="36" id="qTc-Vi-WTK"/>
-                                    <constraint firstAttribute="width" constant="64" id="qTs-ye-ucK"/>
+                                    <constraint firstItem="ynJ-sp-AwL" firstAttribute="top" secondItem="0yI-Gt-wMH" secondAttribute="top" id="96c-ES-XiK"/>
+                                    <constraint firstItem="GU4-II-Hdq" firstAttribute="top" secondItem="ynJ-sp-AwL" secondAttribute="bottom" constant="8" symbolic="YES" id="9sH-ra-Oqh"/>
+                                    <constraint firstItem="GU4-II-Hdq" firstAttribute="leading" secondItem="0yI-Gt-wMH" secondAttribute="leading" id="SM1-wu-9QE"/>
+                                    <constraint firstAttribute="bottom" secondItem="GU4-II-Hdq" secondAttribute="bottom" id="YEe-an-m3r"/>
+                                    <constraint firstItem="ynJ-sp-AwL" firstAttribute="centerX" secondItem="0yI-Gt-wMH" secondAttribute="centerX" id="d49-Q9-Zwn"/>
+                                    <constraint firstItem="GU4-II-Hdq" firstAttribute="width" secondItem="ynJ-sp-AwL" secondAttribute="width" id="lZy-eo-XsH"/>
+                                    <constraint firstAttribute="trailing" secondItem="GU4-II-Hdq" secondAttribute="trailing" id="rUs-Xw-k9x"/>
                                 </constraints>
-                            </imageView>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="AOC-9c-Arb"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="ynJ-sp-AwL" firstAttribute="leading" secondItem="AOC-9c-Arb" secondAttribute="leading" constant="16" id="069-iG-Dhf"/>
-                            <constraint firstItem="ynJ-sp-AwL" firstAttribute="top" secondItem="AOC-9c-Arb" secondAttribute="top" constant="16" id="XN6-gT-gm0"/>
+                            <constraint firstItem="0yI-Gt-wMH" firstAttribute="centerY" secondItem="1HR-i9-Bfr" secondAttribute="centerY" id="GzZ-MD-i0q"/>
+                            <constraint firstItem="0yI-Gt-wMH" firstAttribute="centerX" secondItem="1HR-i9-Bfr" secondAttribute="centerX" id="fnF-n1-XAU"/>
                         </constraints>
                     </view>
                 </viewController>
@@ -41,6 +61,9 @@
     <color key="tintColor" red="0.0" green="0.70398116438356162" blue="0.64921339897260277" alpha="1" colorSpace="calibratedRGB"/>
     <resources>
         <image name="logo" width="92" height="52"/>
+        <namedColor name="Accent">
+            <color red="0.0" green="0.70588235294117652" blue="0.65098039215686276" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
