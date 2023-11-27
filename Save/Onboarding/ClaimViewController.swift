@@ -12,9 +12,23 @@ class ClaimViewController: UIViewController {
 
     @IBOutlet weak var claimLb: UILabel? {
         didSet {
-            claimLb?.text = String(
-                format: NSLocalizedString("Share%1$@Archive%1$@Verify%1$@Encrypt", comment: "Placeholders will be replaced by newline"),
+            let text = NSMutableAttributedString(string: String(
+                format: NSLocalizedString("Share%1$@Archive%1$@Verify%1$@Encrypt",
+                                          comment: "Placeholders will be replaced by newline"),
                 "\n")
+                .localizedUppercase)
+
+            text.colorize(with: .accent, index: text.startIndex)
+
+            var rest = text.startIndex ..< text.endIndex
+
+            while let range = text.range(of: "\n", range: rest) {
+                text.colorize(with: .accent, index: range.upperBound)
+
+                rest = range.upperBound ..< text.endIndex
+            }
+
+            claimLb?.attributedText = text
         }
     }
 

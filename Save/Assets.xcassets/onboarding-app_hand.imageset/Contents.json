@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "onboarding23_app_hand.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
