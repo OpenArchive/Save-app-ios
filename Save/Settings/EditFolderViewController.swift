@@ -34,6 +34,7 @@ class EditFolderViewController: BaseFolderViewController {
         cc.set(project.license, enabled: ccEnabled && project.active)
 
         form
+        +++ Section(NSLocalizedString("Folder Name", comment: ""))
         +++ nameRow.cellUpdate { cell, row in
             cell.textField.textAlignment = .left
 
