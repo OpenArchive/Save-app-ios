@@ -151,8 +151,8 @@
                                 <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="LOG-Gh-tpR">
-                                <rect key="frame" x="16" y="484.5" width="216" height="124.5"/>
+                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="250" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LOG-Gh-tpR">
+                                <rect key="frame" x="16" y="484.5" width="216" height="83.5"/>
                                 <string key="text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam</string>
                                 <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="17"/>
                                 <nil key="highlightedColor"/>
@@ -170,9 +170,10 @@
                             <constraint firstAttribute="bottom" secondItem="kC3-Nk-Gjy" secondAttribute="bottom" id="9mf-xM-uO6"/>
                             <constraint firstItem="Xtc-qd-Hr6" firstAttribute="leading" secondItem="8oJ-xp-FPn" secondAttribute="leading" constant="16" id="GE3-Sz-aae"/>
                             <constraint firstItem="Xtc-qd-Hr6" firstAttribute="top" secondItem="8oJ-xp-FPn" secondAttribute="top" id="MRo-v6-9ti"/>
+                            <constraint firstItem="LOG-Gh-tpR" firstAttribute="bottom" secondItem="8oJ-xp-FPn" secondAttribute="bottom" id="Mu1-ct-JHQ"/>
                             <constraint firstItem="mX4-L9-fca" firstAttribute="leading" secondItem="8oJ-xp-FPn" secondAttribute="leading" constant="16" id="OHn-K9-6d7"/>
                             <constraint firstItem="mX4-L9-fca" firstAttribute="top" secondItem="Xtc-qd-Hr6" secondAttribute="bottom" constant="8" symbolic="YES" id="WVY-fm-6rA"/>
-                            <constraint firstItem="kC3-Nk-Gjy" firstAttribute="leading" secondItem="LOG-Gh-tpR" secondAttribute="trailing" constant="-8" symbolic="YES" id="Z1j-ru-x0M"/>
+                            <constraint firstItem="kC3-Nk-Gjy" firstAttribute="leading" secondItem="LOG-Gh-tpR" secondAttribute="trailing" constant="8" symbolic="YES" id="Z1j-ru-x0M"/>
                             <constraint firstItem="kC3-Nk-Gjy" firstAttribute="top" secondItem="QfH-dc-X3C" secondAttribute="top" id="b4Z-Iy-kfw"/>
                             <constraint firstItem="8oJ-xp-FPn" firstAttribute="trailing" secondItem="YVt-JP-CZ1" secondAttribute="trailing" id="c2A-ZN-P4K"/>
                             <constraint firstItem="YVt-JP-CZ1" firstAttribute="width" secondItem="QfH-dc-X3C" secondAttribute="width" multiplier="0.5" id="h2d-YY-KCS"/>
@@ -1890,7 +1891,7 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="Fsg-Nh-nlr">
-                                <rect key="frame" x="101.5" y="463" width="117" height="26"/>
+                                <rect key="frame" x="102" y="463" width="116" height="26"/>
                                 <color key="pageIndicatorTintColor" systemColor="systemGray2Color"/>
                                 <color key="currentPageIndicatorTintColor" name="Accent"/>
                             </pageControl>
