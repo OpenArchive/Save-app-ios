@@ -43,7 +43,7 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
         Slide(
             heading: NSLocalizedString("Verify", comment: "").localizedUppercase,
             text: NSLocalizedString(
-                "Authenticate your media with a cryptographic verification sha256 hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload.",
+                "Authenticate your media with a SHA-256 cryptographic verification hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload.",
                 comment: ""),
             illustration: "onboarding-handheld"),
 
@@ -53,14 +53,16 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
                 String(
                     format: NSLocalizedString(
                         "Automatically upload over TLS (Transport Layer Security) and use %@ to protect your media in transit.",
-                        comment: ""), OrbotKit.orbotName)
+                        comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName)
             },
             text2: { view in
                 let linkText: String
                 let text: String
 
                 if OrbotKit.shared.installed {
-                    linkText = NSLocalizedString("Enable \"Transfer via Orbot only\"", comment: "")
+                    linkText = String(format: NSLocalizedString(
+                        "Enable \"Transfer via %@ only\"",
+                        comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName)
 
                     text = NSLocalizedString(
                         "%@ for advanced network security.",

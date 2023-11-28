@@ -190,28 +190,28 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="isM-gW-SZD"/>
-                                <exclude reference="MRo-v6-9ti"/>
-                                <exclude reference="u1G-ql-AYz"/>
                                 <exclude reference="h2d-YY-KCS"/>
                                 <exclude reference="xNw-QA-xwV"/>
                                 <exclude reference="565-5m-toM"/>
+                                <exclude reference="MRo-v6-9ti"/>
+                                <exclude reference="u1G-ql-AYz"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact">
                             <mask key="constraints">
                                 <include reference="isM-gW-SZD"/>
-                                <exclude reference="xPF-6B-H8J"/>
-                                <include reference="MRo-v6-9ti"/>
-                                <include reference="u1G-ql-AYz"/>
-                                <include reference="OHn-K9-6d7"/>
                                 <include reference="h2d-YY-KCS"/>
                                 <exclude reference="xlQ-ce-WpR"/>
                                 <include reference="xNw-QA-xwV"/>
                                 <include reference="565-5m-toM"/>
                                 <exclude reference="nW0-J8-ylo"/>
                                 <exclude reference="Z1j-ru-x0M"/>
-                                <exclude reference="4cg-42-57D"/>
                                 <exclude reference="myC-1Q-bYo"/>
+                                <exclude reference="4cg-42-57D"/>
+                                <exclude reference="xPF-6B-H8J"/>
+                                <include reference="MRo-v6-9ti"/>
+                                <include reference="u1G-ql-AYz"/>
+                                <include reference="OHn-K9-6d7"/>
                             </mask>
                         </variation>
                     </view>
@@ -245,6 +245,7 @@
                             </view>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3B2-GC-c26">
                                 <rect key="frame" x="247" y="16" width="57" height="35"/>
+                                <color key="backgroundColor" name="Accent"/>
                                 <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <state key="normal" title="Button"/>
                                 <buttonConfiguration key="configuration" style="plain" title="Skip"/>

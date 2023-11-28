@@ -7,6 +7,9 @@
 /* both are integer numbers meaning 'x of n' */
 "%1$@/%2$@" = "%1$@/%2$@";
 
+/* Placeholder is 'Orbot' */
+"%@ could not be opened!" = "%@ could not be opened!";
+
 /* ConsentViewController */
 "%@ Error description" = "%@ Descripción del error";
 
@@ -16,14 +19,26 @@
 /* Placeholder is 'Dropbox' */
 "%@ ID" = "%@ ID";
 
+/* Placeholder is 'Orbot' */
+"%@ installed" = "%@ installed";
+
 /* ConsentViewController */
 "%@ Locale" = "%@ Ubicación";
 
 /* ConsentViewController */
 "%@ Network type" = "%@ Tipo de red";
 
+/* Placeholder is 'Orbot' */
+"%@ not installed" = "%@ not installed";
+
+/* Placeholder is 'Orbot' */
+"%@ not running" = "%@ not running";
+
 /* ConsentViewController */
 "%@ Number of retries" = "%@ Número de intentos";
+
+/* Placeholder is 'Orbot' */
+"%@ routes all traffic through the Tor network" = "%@ routes all traffic through the Tor network";
 
 /* ConsentViewController */
 "%@ Size and type of media" = "%@ Tamañp y tipo de medios";
@@ -88,8 +103,8 @@
 /* ConsentViewController */
 "Allow health checks?" = "¿Permitir controles de salud?";
 
-/* OrbotManager */
-"Allow without Orbot" = "Permitir sin Orbot";
+/* Placeholder is 'Orbot' */
+"Allow without %@" = "Allow without %@";
 
 /* OrbotManager */
 "App Store" = "App Store";
@@ -110,9 +125,9 @@
 "Authenticate" = "Autenticar";
 
 /* No comment provided by engineer. */
-"Authenticate your media with a cryptographic verification sha256 hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload." = "Authenticate your media with a cryptographic verification sha256 hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload.";
+"Authenticate your media with a SHA-256 cryptographic verification hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload." = "Authenticate your media with a SHA-256 cryptographic verification hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload.";
 
-/* No comment provided by engineer. */
+/* Placeholder is 'Orbot' */
 "Automatically upload over TLS (Transport Layer Security) and use %@ to protect your media in transit." = "Automatically upload over TLS (Transport Layer Security) and use %@ to protect your media in transit.";
 
 /* ManagementViewController */
@@ -187,8 +202,8 @@
 /* No comment provided by engineer. */
 "Edit Multiple" = "Edición Múltiple";
 
-/* No comment provided by engineer. */
-"Enable \"Transfer via Orbot only\"" = "Enable \"Transfer via Orbot only\"";
+/* Placeholder is 'Orbot' */
+"Enable \"Transfer via %@ only\"" = "Enable \"Transfer via %@ only\"";
 
 /* MiscSettingsViewController */
 "Enable ProofMode" = "Habilitar ProofMode";
@@ -256,8 +271,8 @@
 /* ShareExtension.MainViewController */
 "Import" = "Importar";
 
-/* OrbotManager */
-"In order to use Orbot, you will first need to install it!" = "Para utilizar Orbot, ¡primero deberás instalarlo!";
+/* Placeholder is 'Orbot' */
+"In order to use %@, you will first need to install it!" = "In order to use %@, you will first need to install it!";
 
 /* Error+friendlyMessage */
 "Incorrect username or password" = "Nombre de usuario o contraseña incorrectos.";
@@ -330,21 +345,6 @@
 
 /* Bundle+displayName */
 "OpenArchive" = "OpenArchive";
-
-/* OrbotManager */
-"Orbot could not be opened!" = "¡No se pudo abrir Orbot!";
-
-/* OrbotManager */
-"Orbot installed" = "Orbot instalado";
-
-/* OrbotManager */
-"Orbot not installed" = "Orbot no instalado";
-
-/* OrbotManager */
-"Orbot not running" = "Orbot no funcionando";
-
-/* No comment provided by engineer. */
-"Orbot routes all traffic through the Tor network" = "Orbot dirige todo el tráfico por la red Tor";
 
 /* PrivateServerViewController */
 "Password" = "Contraseña";
@@ -487,8 +487,8 @@
 /* MainViewController */
 "Sorry, you are not allowed to view the camera roll." = "Lo sentimos, no tienes permitido ver la galería de la cámara.";
 
-/* OrbotManager */
-"Start Orbot" = "Iniciar Orbot";
+/* Placeholder is 'Orbot' */
+"Start %@" = "Start %@";
 
 /* Southwest Direction Abbreviation */
 "SW" = "SO";
@@ -508,8 +508,8 @@
 /* No comment provided by engineer. */
 "To get started, please create a folder" = "Para comenzar, crea una carpeta.";
 
-/* DataUsageViewController */
-"Transfer via Orbot only" = "Transferencia únicamente via Orbot.";
+/* Placeholder is 'Orbot' */
+"Transfer via %@ only" = "Transfer via %@ only";
 
 /* No comment provided by engineer. */
 "Unarchive Folder" = "Desarchivar Carpeta";
@@ -538,8 +538,8 @@
 /* ManagementViewController */
 "Uploading…" = "Subiendo...";
 
-/* OrbotManager */
-"Uploads are blocked until you start Orbot or allow uploads without Orbot again." = "Cargas se bloquean hasta que inicies Orbot o permitas cargas sin Orbot nuevamente.";
+/* Placeholder is 'Orbot' */
+"Uploads are blocked until you start %1$@ or allow uploads without %1$@ again." = "Uploads are blocked until you start %1$@ or allow uploads without %1$@ again.";
 
 /* No comment provided by engineer. */
 "Use Upload Chunking (Nextcloud Only)" = "Usar Fragmentación de Subida (solo Nextcloud)";
@@ -577,8 +577,8 @@
 /* Placeholder is a server type or name */
 "You have successfully connected to %@!" = "You have successfully connected to %@!";
 
-/* OrbotManager */
-"You need to request API access with Orbot, in order for %@ to ensure that Orbot is running." = "Debes solicitar acceso a la API con Orbot, para que %@ se asegure de que Orbot esté ejecutando.";
+/* Placeholder 1 is 'Orbot', placeholder 2 is 'Save' */
+"You need to request API access with %1$@, in order for %2$@ to ensure that %1$@ is running." = "You need to request API access with %1$@, in order for %2$@ to ensure that %1$@ is running.";
 
 /* IaInfoAlert */
 "You will need to log in to or create an Internet Archive account in order to send and preserve %@ media at the Internet Archive." = "Necesitarás iniciar sesión o crear una cuenta de Internet Archive para enviar y preservar %@ medios en el Internet Archive.";

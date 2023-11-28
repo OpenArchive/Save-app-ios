@@ -9,6 +9,7 @@
 import UIKit
 import Eureka
 import CleanInsightsSDK
+import OrbotKit
 
 class GeneralSettingsViewController: FormViewController {
 
@@ -72,7 +73,8 @@ class GeneralSettingsViewController: FormViewController {
 
         +++ Section("")
         <<< SwitchRow() {
-            $0.title = NSLocalizedString("Transfer via Orbot only", comment: "")
+            $0.title = String(format: NSLocalizedString(
+                "Transfer via %@ only", comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName)
             $0.value = Settings.useOrbot
 
             $0.cellStyle = .subtitle
@@ -82,7 +84,9 @@ class GeneralSettingsViewController: FormViewController {
             $0.cell.detailTextLabel?.numberOfLines = 0
         }
         .cellUpdate({ cell, row in
-            cell.detailTextLabel?.text = NSLocalizedString("Orbot routes all traffic through the Tor network", comment: "")
+            cell.detailTextLabel?.text = String(format: NSLocalizedString(
+                "%@ routes all traffic through the Tor network",
+                comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName)
         })
         .onChange { row in
             let newValue = row.value ?? false

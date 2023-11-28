@@ -7,6 +7,9 @@
 /* both are integer numbers meaning 'x of n' */
 "%1$@/%2$@" = "%1$@/%2$@";
 
+/* Placeholder is 'Orbot' */
+"%@ could not be opened!" = "%@ could not be opened!";
+
 /* ConsentViewController */
 "%@ Error description" = "%@ Hata açıklaması";
 
@@ -16,14 +19,26 @@
 /* Placeholder is 'Dropbox' */
 "%@ ID" = "%@ kimliği";
 
+/* Placeholder is 'Orbot' */
+"%@ installed" = "%@ installed";
+
 /* ConsentViewController */
 "%@ Locale" = "%@ Yerel ayarı";
 
 /* ConsentViewController */
 "%@ Network type" = "%@ Ağ türü";
 
+/* Placeholder is 'Orbot' */
+"%@ not installed" = "%@ not installed";
+
+/* Placeholder is 'Orbot' */
+"%@ not running" = "%@ not running";
+
 /* ConsentViewController */
 "%@ Number of retries" = "%@ Yinelenme sayısı";
+
+/* Placeholder is 'Orbot' */
+"%@ routes all traffic through the Tor network" = "%@ routes all traffic through the Tor network";
 
 /* ConsentViewController */
 "%@ Size and type of media" = "%@ Ortam boyutu ve türü";
@@ -88,8 +103,8 @@
 /* ConsentViewController */
 "Allow health checks?" = "Sağlık denetimleri yapılabilsin";
 
-/* OrbotManager */
-"Allow without Orbot" = "Orbot olmadan izin ver";
+/* Placeholder is 'Orbot' */
+"Allow without %@" = "Allow without %@";
 
 /* OrbotManager */
 "App Store" = "Uygulama Mağazası";
@@ -110,9 +125,9 @@
 "Authenticate" = "Doğrula";
 
 /* No comment provided by engineer. */
-"Authenticate your media with a cryptographic verification sha256 hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload." = "Authenticate your media with a cryptographic verification sha256 hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload.";
+"Authenticate your media with a SHA-256 cryptographic verification hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload." = "Authenticate your media with a SHA-256 cryptographic verification hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload.";
 
-/* No comment provided by engineer. */
+/* Placeholder is 'Orbot' */
 "Automatically upload over TLS (Transport Layer Security) and use %@ to protect your media in transit." = "Automatically upload over TLS (Transport Layer Security) and use %@ to protect your media in transit.";
 
 /* ManagementViewController */
@@ -187,8 +202,8 @@
 /* No comment provided by engineer. */
 "Edit Multiple" = "Birkaç ögeyi düzenle";
 
-/* No comment provided by engineer. */
-"Enable \"Transfer via Orbot only\"" = "Enable \"Transfer via Orbot only\"";
+/* Placeholder is 'Orbot' */
+"Enable \"Transfer via %@ only\"" = "Enable \"Transfer via %@ only\"";
 
 /* MiscSettingsViewController */
 "Enable ProofMode" = "ProofMode kullanılsın";
@@ -256,8 +271,8 @@
 /* ShareExtension.MainViewController */
 "Import" = "İçe aktar";
 
-/* OrbotManager */
-"In order to use Orbot, you will first need to install it!" = "Orbot kullanabilmek için önce kurmalısınız!";
+/* Placeholder is 'Orbot' */
+"In order to use %@, you will first need to install it!" = "In order to use %@, you will first need to install it!";
 
 /* Error+friendlyMessage */
 "Incorrect username or password" = "Kullanıcı adı ya da parola hatalı";
@@ -330,21 +345,6 @@
 
 /* Bundle+displayName */
 "OpenArchive" = "OpenArchive";
-
-/* OrbotManager */
-"Orbot could not be opened!" = "Orbot açılamadı!";
-
-/* OrbotManager */
-"Orbot installed" = "Orbot kuruldu";
-
-/* OrbotManager */
-"Orbot not installed" = "Orbot kurulmamış";
-
-/* OrbotManager */
-"Orbot not running" = "Orbot çalışmıyor";
-
-/* No comment provided by engineer. */
-"Orbot routes all traffic through the Tor network" = "Orbot tüm trafiği Tor ağı üzerinden geçirir";
 
 /* PrivateServerViewController */
 "Password" = "Parola";
@@ -487,8 +487,8 @@
 /* MainViewController */
 "Sorry, you are not allowed to view the camera roll." = "Maalesef, fotoğraflara erişme izniniz yok.";
 
-/* OrbotManager */
-"Start Orbot" = "Orbot uygulamasını başlat";
+/* Placeholder is 'Orbot' */
+"Start %@" = "Start %@";
 
 /* Southwest Direction Abbreviation */
 "SW" = "GB";
@@ -508,8 +508,8 @@
 /* No comment provided by engineer. */
 "To get started, please create a folder" = "Başlamak için bir klasör oluşturun";
 
-/* DataUsageViewController */
-"Transfer via Orbot only" = "Yalnızca Orbot ile aktarılsın";
+/* Placeholder is 'Orbot' */
+"Transfer via %@ only" = "Transfer via %@ only";
 
 /* No comment provided by engineer. */
 "Unarchive Folder" = "Klasörü arşivden çıkar";
@@ -538,8 +538,8 @@
 /* ManagementViewController */
 "Uploading…" = "Yükleniyor…";
 
-/* OrbotManager */
-"Uploads are blocked until you start Orbot or allow uploads without Orbot again." = "Yüklemeler Orbot başlatılana ya da yeniden Orbot olmadan izin verilene kadar engellendi.";
+/* Placeholder is 'Orbot' */
+"Uploads are blocked until you start %1$@ or allow uploads without %1$@ again." = "Uploads are blocked until you start %1$@ or allow uploads without %1$@ again.";
 
 /* No comment provided by engineer. */
 "Use Upload Chunking (Nextcloud Only)" = "Yükleme paketleri kullanılsın (yalnızca Nextcloud)";
@@ -577,8 +577,8 @@
 /* Placeholder is a server type or name */
 "You have successfully connected to %@!" = "%@ ile bağlantı kurdunuz!";
 
-/* OrbotManager */
-"You need to request API access with Orbot, in order for %@ to ensure that Orbot is running." = "Orbor ile API erişimine gerek duyuyorsunuz. %@ için Orbot uygulamasının çalıştığından emin olun.";
+/* Placeholder 1 is 'Orbot', placeholder 2 is 'Save' */
+"You need to request API access with %1$@, in order for %2$@ to ensure that %1$@ is running." = "You need to request API access with %1$@, in order for %2$@ to ensure that %1$@ is running.";
 
 /* IaInfoAlert */
 "You will need to log in to or create an Internet Archive account in order to send and preserve %@ media at the Internet Archive." = "%@ ortamlarını Internet Archive üzerine göndermek ve kaydetmek için bir Internet Archive hesabı ile oturum açmalı ya da yeni bir hesap edinmelisiniz. ";

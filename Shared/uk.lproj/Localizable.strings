@@ -7,6 +7,9 @@
 /* both are integer numbers meaning 'x of n' */
 "%1$@/%2$@" = "%1$@/%2$@";
 
+/* Placeholder is 'Orbot' */
+"%@ could not be opened!" = "%@ could not be opened!";
+
 /* ConsentViewController */
 "%@ Error description" = "%@ опис помилки";
 
@@ -16,14 +19,26 @@
 /* Placeholder is 'Dropbox' */
 "%@ ID" = "%@ ID";
 
+/* Placeholder is 'Orbot' */
+"%@ installed" = "%@ installed";
+
 /* ConsentViewController */
 "%@ Locale" = "%@ локаль ";
 
 /* ConsentViewController */
 "%@ Network type" = "%@ тип мережі";
 
+/* Placeholder is 'Orbot' */
+"%@ not installed" = "%@ not installed";
+
+/* Placeholder is 'Orbot' */
+"%@ not running" = "%@ not running";
+
 /* ConsentViewController */
 "%@ Number of retries" = "%@ кількість спроб";
+
+/* Placeholder is 'Orbot' */
+"%@ routes all traffic through the Tor network" = "%@ routes all traffic through the Tor network";
 
 /* ConsentViewController */
 "%@ Size and type of media" = "%@ розмір і тип медіафайла";
@@ -88,8 +103,8 @@
 /* ConsentViewController */
 "Allow health checks?" = "Дозволити перевірки стану?";
 
-/* OrbotManager */
-"Allow without Orbot" = "Дозволити без Orbot";
+/* Placeholder is 'Orbot' */
+"Allow without %@" = "Allow without %@";
 
 /* OrbotManager */
 "App Store" = "Магазин застосунків";
@@ -110,9 +125,9 @@
 "Authenticate" = "Авторизуватися";
 
 /* No comment provided by engineer. */
-"Authenticate your media with a cryptographic verification sha256 hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload." = "Authenticate your media with a cryptographic verification sha256 hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload.";
+"Authenticate your media with a SHA-256 cryptographic verification hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload." = "Authenticate your media with a SHA-256 cryptographic verification hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload.";
 
-/* No comment provided by engineer. */
+/* Placeholder is 'Orbot' */
 "Automatically upload over TLS (Transport Layer Security) and use %@ to protect your media in transit." = "Automatically upload over TLS (Transport Layer Security) and use %@ to protect your media in transit.";
 
 /* ManagementViewController */
@@ -187,8 +202,8 @@
 /* No comment provided by engineer. */
 "Edit Multiple" = "Редагувати обрані";
 
-/* No comment provided by engineer. */
-"Enable \"Transfer via Orbot only\"" = "Enable \"Transfer via Orbot only\"";
+/* Placeholder is 'Orbot' */
+"Enable \"Transfer via %@ only\"" = "Enable \"Transfer via %@ only\"";
 
 /* MiscSettingsViewController */
 "Enable ProofMode" = "Увімкнути режим ProofMode";
@@ -256,8 +271,8 @@
 /* ShareExtension.MainViewController */
 "Import" = "Імпортувати";
 
-/* OrbotManager */
-"In order to use Orbot, you will first need to install it!" = "Для того, щоб використовувати Orbot, вам спочатку потрібно його встановити!";
+/* Placeholder is 'Orbot' */
+"In order to use %@, you will first need to install it!" = "In order to use %@, you will first need to install it!";
 
 /* Error+friendlyMessage */
 "Incorrect username or password" = "Неправильний логін або пароль";
@@ -330,21 +345,6 @@
 
 /* Bundle+displayName */
 "OpenArchive" = "OpenArchive";
-
-/* OrbotManager */
-"Orbot could not be opened!" = "Orbot не можна було відкрити!";
-
-/* OrbotManager */
-"Orbot installed" = "Orbot встановлено";
-
-/* OrbotManager */
-"Orbot not installed" = "Orbot не встановлено";
-
-/* OrbotManager */
-"Orbot not running" = "Orbot не запускається";
-
-/* No comment provided by engineer. */
-"Orbot routes all traffic through the Tor network" = "Orbot спрямовує весь трафік через мережу Tor";
 
 /* PrivateServerViewController */
 "Password" = "Пароль";
@@ -487,8 +487,8 @@
 /* MainViewController */
 "Sorry, you are not allowed to view the camera roll." = "Вибачте, вам не дозволено переглядати фотоплівку.";
 
-/* OrbotManager */
-"Start Orbot" = "Запустити Orbot";
+/* Placeholder is 'Orbot' */
+"Start %@" = "Start %@";
 
 /* Southwest Direction Abbreviation */
 "SW" = "ПдЗх";
@@ -508,8 +508,8 @@
 /* No comment provided by engineer. */
 "To get started, please create a folder" = "Щоб розпочати, будь ласка, створи папку";
 
-/* DataUsageViewController */
-"Transfer via Orbot only" = "Передавати тільки через Orbot";
+/* Placeholder is 'Orbot' */
+"Transfer via %@ only" = "Transfer via %@ only";
 
 /* No comment provided by engineer. */
 "Unarchive Folder" = "Розархівувати теку";
@@ -538,8 +538,8 @@
 /* ManagementViewController */
 "Uploading…" = "Завантаження...";
 
-/* OrbotManager */
-"Uploads are blocked until you start Orbot or allow uploads without Orbot again." = "Завантаження буде заблоковано, доки ви не запустите Orbot або не дозволите вивантаження без Orbot знову.";
+/* Placeholder is 'Orbot' */
+"Uploads are blocked until you start %1$@ or allow uploads without %1$@ again." = "Uploads are blocked until you start %1$@ or allow uploads without %1$@ again.";
 
 /* No comment provided by engineer. */
 "Use Upload Chunking (Nextcloud Only)" = "Використовувати дроблення під час завантаження (лише NextCloud)";
@@ -577,8 +577,8 @@
 /* Placeholder is a server type or name */
 "You have successfully connected to %@!" = "You have successfully connected to %@!";
 
-/* OrbotManager */
-"You need to request API access with Orbot, in order for %@ to ensure that Orbot is running." = "Вам потрібно запросити доступ до API в Orbot, щоб %@ переконався, що Orbot працює.";
+/* Placeholder 1 is 'Orbot', placeholder 2 is 'Save' */
+"You need to request API access with %1$@, in order for %2$@ to ensure that %1$@ is running." = "You need to request API access with %1$@, in order for %2$@ to ensure that %1$@ is running.";
 
 /* IaInfoAlert */
 "You will need to log in to or create an Internet Archive account in order to send and preserve %@ media at the Internet Archive." = "Щоб надсилати та зберігати медіа у форматі %@в Internet Archive, вам потрібно увійти в систему або створити обліковий запис в Internet Archive.";

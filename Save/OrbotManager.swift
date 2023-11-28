@@ -89,8 +89,11 @@ class OrbotManager: OrbotStatusChangeListener {
 
         AlertHelper.present(
             topVc,
-            message: NSLocalizedString("In order to use Orbot, you will first need to install it!", comment: ""),
-            title: NSLocalizedString("Orbot not installed", comment: ""),
+            message: String(format: NSLocalizedString(
+                "In order to use %@, you will first need to install it!",
+                comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName),
+            title: String(format: NSLocalizedString(
+                "%@ not installed", comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName),
             actions: [
                 AlertHelper.cancelAction(),
                 AlertHelper.defaultAction(NSLocalizedString("App Store", comment: ""), handler: { _ in
@@ -117,17 +120,18 @@ class OrbotManager: OrbotStatusChangeListener {
             topVc,
             message: String(
                 format: NSLocalizedString(
-                    "You need to request API access with Orbot, in order for %@ to ensure that Orbot is running.",
-                    comment: ""),
-                Bundle.main.displayName),
-            title: NSLocalizedString("Orbot installed", comment: ""),
+                    "You need to request API access with %1$@, in order for %2$@ to ensure that %1$@ is running.",
+                    comment: "Placeholder 1 is 'Orbot', placeholder 2 is 'Save'"),
+                OrbotKit.orbotName, Bundle.main.displayName),
+            title: String(format: NSLocalizedString("%@ installed", comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName),
             actions: [
                 AlertHelper.cancelAction(),
                 AlertHelper.defaultAction(NSLocalizedString("Request API Access", comment: ""), handler: { [weak self] _ in
 
                     OrbotKit.shared.open(.requestApiToken(callback: urlc?.url)) { success in
                         if !success {
-                            AlertHelper.present(topVc, message: NSLocalizedString("Orbot could not be opened!", comment: ""))
+                            AlertHelper.present(topVc, message: String(format: NSLocalizedString(
+                                "%@ could not be opened!", comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName))
                         }
                         else {
                             self?.tokenAlert = AlertHelper.build(title: NSLocalizedString("Access Token", comment: ""), actions: [AlertHelper.cancelAction()])
@@ -189,24 +193,32 @@ class OrbotManager: OrbotStatusChangeListener {
 
         AlertHelper.present(
             topVc,
-            message: NSLocalizedString("Uploads are blocked until you start Orbot or allow uploads without Orbot again.", comment: ""),
-            title: NSLocalizedString("Orbot not running", comment: ""),
+            message: String(format: NSLocalizedString(
+                "Uploads are blocked until you start %1$@ or allow uploads without %1$@ again.",
+                comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName),
+            title: String(format: NSLocalizedString("%@ not running", comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName),
             actions: [
                 AlertHelper.cancelAction(NSLocalizedString("Ignore", comment: ""), handler: { _ in
                     completed?()
                 }),
-                AlertHelper.defaultAction(NSLocalizedString("Start Orbot", comment: ""), handler: { _ in
-                    OrbotKit.shared.open(.start(callback: nil))
+                AlertHelper.defaultAction(
+                    String(format: NSLocalizedString(
+                        "Start %@", comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName),
+                    handler: { _ in
+                        OrbotKit.shared.open(.start(callback: nil))
 
-                    completed?()
-                }),
-                AlertHelper.destructiveAction(NSLocalizedString("Allow without Orbot", comment: ""), handler: { [weak self] _ in
-                    Settings.useOrbot = false
+                        completed?()
+                    }),
+                AlertHelper.destructiveAction(
+                    String(format: NSLocalizedString(
+                        "Allow without %@", comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName),
+                    handler: { [weak self] _ in
+                        Settings.useOrbot = false
 
-                    self?.stop()
+                        self?.stop()
 
-                    completed?()
-                })
+                        completed?()
+                    })
             ])
     }
 
