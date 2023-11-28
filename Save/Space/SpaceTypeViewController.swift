@@ -17,7 +17,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
     @IBOutlet weak var titleLb: UILabel! {
         didSet {
             titleLb.text = NSLocalizedString(
-                "To get started, connect to a space to store your media.",
+                "To get started, connect to a server to store your media.",
                 comment: "")
         }
     }
