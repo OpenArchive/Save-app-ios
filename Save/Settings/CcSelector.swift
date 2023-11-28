@@ -27,7 +27,7 @@ class CcSelector {
     }
 
     lazy var remixSw = SwitchRow("remixSw") {
-        $0.title = NSLocalizedString("Allow anyone to remix and share", comment: "")
+        $0.title = NSLocalizedString("Allow anyone to remix and share?", comment: "")
 
         $0.cell.textLabel?.numberOfLines = 0
         $0.cell.switchControl.onTintColor = .accent
@@ -39,7 +39,7 @@ class CcSelector {
     }
 
     lazy var shareAlikeSw = SwitchRow() {
-        $0.title = NSLocalizedString("Require them to share like you have", comment: "")
+        $0.title = NSLocalizedString("Require them to share like you have?", comment: "")
 
         $0.cell.textLabel?.numberOfLines = 0
         $0.cell.switchControl.onTintColor = .accent
@@ -51,7 +51,7 @@ class CcSelector {
     }
 
     lazy var commercialSw = SwitchRow() {
-        $0.title = NSLocalizedString("Allow commercial use", comment: "")
+        $0.title = NSLocalizedString("Allow commercial use?", comment: "")
 
         $0.cell.textLabel?.numberOfLines = 0
         $0.cell.switchControl.onTintColor = .accent

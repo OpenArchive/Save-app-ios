@@ -97,11 +97,11 @@
 /* MiscSettingsViewController */
 "Allow 3rd-Party Keyboards" = "Allow 3rd-Party Keyboards";
 
-/* EditProjectViewController */
-"Allow anyone to remix and share" = "Allow anyone to remix and share";
+/* No comment provided by engineer. */
+"Allow anyone to remix and share?" = "Allow anyone to remix and share?";
 
-/* EditProjectViewController */
-"Allow commercial use" = "Allow commercial use";
+/* No comment provided by engineer. */
+"Allow commercial use?" = "Allow commercial use?";
 
 /* ConsentViewController */
 "Allow health checks?" = "Allow health checks?";
@@ -424,8 +424,8 @@
 /* OrbotManager */
 "Request API Access" = "Request API Access";
 
-/* EditProjectViewController */
-"Require them to share like you have" = "Require them to share like you have";
+/* No comment provided by engineer. */
+"Require them to share like you have?" = "Require them to share like you have?";
 
 /* ManagementViewController */
 "Retry" = "Retry";
