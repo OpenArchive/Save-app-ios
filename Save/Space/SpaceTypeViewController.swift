@@ -45,7 +45,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
         Db.bgRwConn?.read { tx in
             if tx.find(where: { (_: DropboxSpace) in true }) == nil {
                 button = BigButton.create(
-                    icon: DropboxSpace.favIcon,
+                    icon: DropboxSpace.favIcon?.withRenderingMode(.alwaysTemplate),
                     title: DropboxSpace.defaultPrettyName,
                     subtitle: String(format: NSLocalizedString("Upload to %@", comment: ""), DropboxSpace.defaultPrettyName),
                     target: self,
@@ -57,7 +57,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
 
             if tx.find(where: { (_: IaSpace) in true }) == nil {
                 button = BigButton.create(
-                    icon: IaSpace.favIcon,
+                    icon: IaSpace.favIcon?.withRenderingMode(.alwaysTemplate),
                     title: IaSpace.defaultPrettyName,
                     subtitle: String(format: NSLocalizedString("Upload to %@", comment: ""), IaSpace.defaultPrettyName),
                     target: self,
