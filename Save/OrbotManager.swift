@@ -196,7 +196,7 @@ class OrbotManager: OrbotStatusChangeListener {
                     completed?()
                 }),
                 AlertHelper.defaultAction(NSLocalizedString("Start Orbot", comment: ""), handler: { _ in
-                    OrbotKit.shared.open(.start)
+                    OrbotKit.shared.open(.start(callback: nil))
 
                     completed?()
                 }),

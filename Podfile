@@ -30,7 +30,7 @@ def app_only
     pod 'FavIcon', :git => 'https://github.com/tladesignz/FavIcon.git', :branch => 'swift-5'
     pod 'SDCAlertView', '~> 12.0'
     pod 'TLPhotoPicker', :git => 'https://github.com/tladesignz/TLPhotoPicker.git' # '~> 2.1'
-    pod 'OrbotKit', '~> 0.2'
+    pod 'OrbotKit', '~> 1.1'
 end
 
 target 'Save' do
