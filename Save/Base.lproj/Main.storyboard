@@ -742,7 +742,10 @@
                     <navigationItem key="navigationItem" id="Wdc-5N-9pa"/>
                     <connections>
                         <outlet property="addBt" destination="YSG-EE-2gJ" id="qOK-bL-REg"/>
+                        <outlet property="addFilesBt" destination="8If-n3-PU8" id="WYI-r5-50o"/>
                         <outlet property="addMenu" destination="InD-HF-ni8" id="1aC-wa-Itl"/>
+                        <outlet property="addMenuLb" destination="YS8-to-cqp" id="Awq-zs-cff"/>
+                        <outlet property="addPhotosBt" destination="b8W-ua-DyM" id="hOc-DU-gQq"/>
                         <outlet property="bottomMenu" destination="qfO-EJ-P6h" id="pfj-lS-cDX"/>
                         <outlet property="collectionView" destination="cdB-Ih-Rhb" id="nAx-Db-2Xa"/>
                         <outlet property="container" destination="hnS-Bv-Svc" id="lnP-c7-01x"/>

@@ -86,6 +86,9 @@
 "Add Another Account" = "Add Another Account";
 
 /* No comment provided by engineer. */
+"Add media using:" = "Add media using:";
+
+/* No comment provided by engineer. */
 "Add notes (optional)" = "Add notes (optional)";
 
 /* DarkroomHelper */
@@ -226,6 +229,9 @@
 /* Conduit */
 "Failed after too many retries." = "Failed after too many retries.";
 
+/* No comment provided by engineer. */
+"Files" = "Files";
+
 /* FlagInfoAlert */
 "Flag Significant Content" = "Flag Significant Content";
 
@@ -363,6 +369,9 @@
 
 /* OrbotManager */
 "Paste API token here" = "Paste API token here";
+
+/* No comment provided by engineer. */
+"Photo Gallery" = "Photo Gallery";
 
 /* No comment provided by engineer. */
 "Please choose another name/folder or use the existing one instead." = "Please choose another name/folder or use the existing one instead.";
