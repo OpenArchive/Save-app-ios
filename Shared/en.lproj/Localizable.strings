@@ -455,7 +455,7 @@
 "Security" = "Security";
 
 /* No comment provided by engineer. */
-"Select where to store your media" = "Select where to store your media";
+"Select where to store your media." = "Select where to store your media.";
 
 /* No comment provided by engineer. */
 "Send to a WebDAV server" = "Send to a WebDAV server";
