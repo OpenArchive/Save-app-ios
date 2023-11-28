@@ -29,5 +29,20 @@ extension NSMutableAttributedString {
     func colorize(with color: UIColor, index: String.Index) {
         colorize(with: color, range: index ..< string.index(index, offsetBy: 1))
     }
+
+    func link(part: any StringProtocol, into label: UILabel) {
+        if let range = string.range(of: part) {
+            addAttributes(
+                [.font: label.font.bold() ?? .boldSystemFont(ofSize: label.font.pointSize),
+                 .underlineStyle: NSUnderlineStyle.single.rawValue],
+                range: NSRange(range, in: string))
+        }
+    }
 }
 
+extension NSAttributedString {
+
+    var isEmpty: Bool {
+        string.isEmpty
+    }
+}

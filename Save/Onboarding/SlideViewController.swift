@@ -11,15 +11,15 @@ import UIImageViewAlignedSwift
 
 protocol SlideViewControllerDelegate: AnyObject {
 
-    func buttonPressed()
+    func text2Pressed()
 }
 
 class SlideViewController: UIViewController {
 
+    @IBOutlet weak var illustrationImg: UIImageViewAligned!
     @IBOutlet weak var headingLb: UILabel!
     @IBOutlet weak var textLb: UILabel!
-    @IBOutlet weak var button: UIButton!
-    @IBOutlet weak var illustrationImg: UIImageViewAligned!
+    @IBOutlet weak var text2Lb: UILabel!
 
     var index: Int?
 
@@ -30,62 +30,53 @@ class SlideViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        headingLb.text = slide?.heading
+        headingLb.text = slide?.heading(headingLb)
 
-        textLb.text = slide?.text
+        textLb.text = slide?.text(textLb)
 
-        if slide?.buttonText?.isEmpty ?? true {
-            button.widthAnchor.constraint(equalToConstant: 0).isActive = true
+        if slide?.text2(text2Lb)?.isEmpty ?? true {
+            text2Lb.isHidden = true
         }
         else {
-            button.setTitle(slide?.buttonText)
+            text2Lb.attributedText = slide?.text2(text2Lb)
         }
 
-        illustrationImg.image = slide?.illustration
+        illustrationImg.image = slide?.illustration(illustrationImg)
         illustrationImg.alignment = .topLeft
     }
 
-    @IBAction func buttonPressed() {
-        delegate?.buttonPressed()
+    @IBAction func text2Pressed() {
+        delegate?.text2Pressed()
     }
 }
 
 struct Slide {
 
-    private var _heading: () -> String
-    private var _text: () -> String
-    private var _buttonText: () -> String?
-    private var _illustration: () -> UIImage?
+    var heading: (_ view: UILabel) -> String
+    var text: (_ view: UILabel) -> String
+    var text2: (_ view: UILabel) -> NSAttributedString?
+    var illustration: (_ view: UIImageViewAligned) -> UIImage?
 
-    var heading: String {
-        _heading()
+
+    init(
+        heading: @escaping (_ view: UILabel) -> String,
+        text: @escaping (_ view: UILabel) -> String,
+        text2: ((_ view: UILabel) -> NSAttributedString?)? = nil,
+        illustration: @escaping (_ view: UIImageViewAligned) -> UIImage?)
+    {
+        self.heading = heading
+        self.text = text
+        self.text2 = text2 ?? { _ in nil }
+        self.illustration = illustration
     }
 
-    var text: String {
-        _text()
+    init(heading: String, text: @escaping (_ view: UILabel) -> String, 
+         text2: ((_ view: UILabel) -> NSAttributedString?)? = nil, illustration: String) 
+    {
+        self.init(heading: { _ in heading }, text: text, text2: text2, illustration: { _ in UIImage(named: illustration) })
     }
 
-    var buttonText: String? {
-        _buttonText()
-    }
-
-    var illustration: UIImage? {
-        _illustration()
-    }
-
-
-    init(heading: @escaping () -> String, text: @escaping () -> String, buttonText: (() -> String?)? = nil, illustration: @escaping () -> UIImage?) {
-        _heading = heading
-        _text = text
-        _buttonText = buttonText ?? { nil }
-        _illustration = illustration
-    }
-
-    init(heading: String, text: @escaping () -> String, buttonText: (() -> String?)? = nil, illustration: String) {
-        self.init(heading: { heading }, text: text, buttonText: buttonText, illustration: { UIImage(named: illustration) })
-    }
-
-    init(heading: String, text: String, buttonText: String? = nil, illustration: String) {
-        self.init(heading: heading, text: { text }, buttonText: { buttonText }, illustration: illustration)
+    init(heading: String, text: String, text2: NSAttributedString? = nil, illustration: String) {
+        self.init(heading: heading, text: { _ in text }, text2: { _ in text2 }, illustration: illustration)
     }
 }

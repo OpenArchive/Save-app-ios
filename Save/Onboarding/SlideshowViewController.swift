@@ -12,49 +12,75 @@ import OrbotKit
 class SlideshowViewController: BasePageViewController, SlideViewControllerDelegate
 {
 
-    @IBOutlet weak var doneBt: UIButton! {
+    @IBOutlet weak var skipBt: UIButton! {
         didSet {
-            doneBt.setTitle(NSLocalizedString("Done", comment: ""))
+            skipBt.setTitle(NSLocalizedString("Skip", comment: ""))
         }
     }
 
-    @IBOutlet weak var doneIcon: UIImageView!
+    @IBOutlet weak var nextBt: UIButton! {
+        didSet {
+            nextBt.setTitle("")
+        }
+    }
 
 
     private static let slides = [
         Slide(
-            heading: NSLocalizedString("Save to a safe place.", comment: ""),
-            text: NSLocalizedString("Connect to a secure server or the Internet Archive to upload photos and videos from your phone.", comment: ""),
-            illustration: "safe-place-screen"),
+            heading: NSLocalizedString("Share", comment: "").localizedUppercase,
+            text: NSLocalizedString(
+                "Upload verified media to your chosen server. Add a Creative Commons license to communicate your intentions for future use.",
+                comment: ""),
+            illustration: "onboarding-hand"),
 
         Slide(
-            heading: NSLocalizedString("Stay organized.", comment: ""),
-            text: NSLocalizedString("Organize your media into projects.", comment: ""),
-            illustration: "stay-organized-screen"),
+            heading: NSLocalizedString("Archive", comment: "").localizedUppercase,
+            text: NSLocalizedString(
+                "Keep your media safe and organized for the long-term and create in-app project folders that map to your personal or organizational media archive.",
+                comment: ""),
+            illustration: "onboarding-laptop"),
 
         Slide(
-            heading: NSLocalizedString("Store the facts.", comment: ""),
-            text: NSLocalizedString("Capture notes, location and people with each piece of media.", comment: ""),
-            illustration: "save-the-facts"),
+            heading: NSLocalizedString("Verify", comment: "").localizedUppercase,
+            text: NSLocalizedString(
+                "Authenticate your media with a cryptographic verification sha256 hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload.",
+                comment: ""),
+            illustration: "onboarding-handheld"),
 
         Slide(
-            heading: NSLocalizedString("Ensure authenticity.", comment: ""),
-            text: String(format: NSLocalizedString("Include your credentials while %@ adds extra metadata to help with chain of custody and verification workflows.", comment: ""), Bundle.main.displayName),
-            illustration: "Ensure-Authenticity-screen"),
-
-        Slide(
-            heading: NSLocalizedString("Save over Tor.", comment: ""),
-            text: {
-                OrbotKit.shared.installed
-                ? NSLocalizedString("To enable advanced network security, you should enable the \"Transfer via Orbot only\" option now or later in settings.", comment: "")
-                : NSLocalizedString("To enable advanced network security, please install Orbot iOS.", comment: "")
+            heading: NSLocalizedString("Encrypt", comment: "").localizedUppercase,
+            text: { _ in
+                String(
+                    format: NSLocalizedString(
+                        "Automatically upload over TLS (Transport Layer Security) and use %@ to protect your media in transit.",
+                        comment: ""), OrbotKit.orbotName)
             },
-            buttonText: {
-                OrbotKit.shared.installed
-                ? NSLocalizedString("Enable", comment: "")
-                : NSLocalizedString("Install", comment: "")
+            text2: { view in
+                let linkText: String
+                let text: String
+
+                if OrbotKit.shared.installed {
+                    linkText = NSLocalizedString("Enable \"Transfer via Orbot only\"", comment: "")
+
+                    text = NSLocalizedString(
+                        "%@ for advanced network security.",
+                        comment: "Placeholder is your translation of 'Enable \"Transfer via Orbot only\"'")
+                }
+                else {
+                    linkText = String(format: NSLocalizedString("Install %@", comment: "Placeholder is 'Orbot'"), 
+                                      OrbotKit.orbotName)
+
+                    text = NSLocalizedString(
+                        "%@ to enable advanced network security.",
+                        comment: "Placeholder is your translation of 'Enable Orbot'")
+                }
+
+                let attrText = NSMutableAttributedString(string: String(format: text, linkText))
+                attrText.link(part: linkText, into: view)
+
+                return attrText
             },
-            illustration: "save-over-tor-screen")
+            illustration: "onboarding-onion"),
     ]
 
 
@@ -62,9 +88,6 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
         super.viewDidLoad()
 
         pageControl.numberOfPages = Self.slides.count
-
-        doneBt.isHidden = true
-        doneIcon.isHidden = true
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -128,7 +151,7 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
 
     // MARK: SlideViewControllerDelegate
 
-    func buttonPressed() {
+    func text2Pressed() {
         // Button should only appear on last page, therefore ignore all other presses,
         // which might happen, even though the height of that button should be 0.
         guard page >= Self.slides.count - 1 else {
@@ -143,7 +166,7 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
                 Settings.useOrbot = true
                 OrbotManager.shared.start()
 
-                self?.done()
+                self?.skip()
             }
         }
     }
@@ -151,7 +174,7 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
 
     // MARK: Actions
 
-    @IBAction func done() {
+    @IBAction func skip() {
         Settings.firstRunDone = true
 
         if let navC = navigationController as? MainNavigationController {
@@ -181,6 +204,9 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
 
             refresh()
         }
+        else {
+            skip()
+        }
     }
 
 
@@ -194,8 +220,9 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
     }
 
     private func refresh(animate: Bool = true) {
-        doneBt.isHidden = page < Self.slides.count - 1
-        doneIcon.isHidden = doneBt.isHidden
+        let last = page >= Self.slides.count - 1
+        skipBt.isHidden = last
+        nextBt.setImage(.init(systemName: last ? "arrow.right" : "checkmark"))
 
         pageControl.currentPage = page
 

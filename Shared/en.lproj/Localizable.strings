@@ -10,6 +10,9 @@
 /* ConsentViewController */
 "%@ Error description" = "%@ Error description";
 
+/* Placeholder is your translation of 'Enable \"Transfer via Orbot only\"' */
+"%@ for advanced network security." = "%@ for advanced network security.";
+
 /* Placeholder is 'Dropbox' */
 "%@ ID" = "%@ ID";
 
@@ -24,6 +27,9 @@
 
 /* ConsentViewController */
 "%@ Size and type of media" = "%@ Size and type of media";
+
+/* Placeholder is your translation of 'Enable Orbot' */
+"%@ to enable advanced network security." = "%@ to enable advanced network security.";
 
 /* No comment provided by engineer. */
 "\"Chunking\" uploads media in pieces so you don't have to restart your upload if your connection is interrupted." = "\"Chunking\" uploads media in pieces so you don't have to restart your upload if your connection is interrupted.";
@@ -89,6 +95,9 @@
 "App Store" = "App Store";
 
 /* No comment provided by engineer. */
+"Archive" = "Archive";
+
+/* No comment provided by engineer. */
 "Archive Folder" = "Archive Folder";
 
 /* No comment provided by engineer. */
@@ -99,6 +108,12 @@
 
 /* DropboxViewController */
 "Authenticate" = "Authenticate";
+
+/* No comment provided by engineer. */
+"Authenticate your media with a cryptographic verification sha256 hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload." = "Authenticate your media with a cryptographic verification sha256 hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload.";
+
+/* No comment provided by engineer. */
+"Automatically upload over TLS (Transport Layer Security) and use %@ to protect your media in transit." = "Automatically upload over TLS (Transport Layer Security) and use %@ to protect your media in transit.";
 
 /* ManagementViewController */
 "Back" = "Back";
@@ -127,9 +142,6 @@
 /* MiscSettingsViewController */
 "Capture extra metadata and notarize all media." = "Capture extra metadata and notarize all media.";
 
-/* SlideshowViewController */
-"Capture notes, location and people with each piece of media." = "Capture notes, location and people with each piece of media.";
-
 /* No comment provided by engineer. */
 "Changing this will create a new key! If you exported and signed that one before, you will need to do it again with the new one." = "Changing this will create a new key! If you exported and signed that one before, you will need to do it again with the new one.";
 
@@ -138,9 +150,6 @@
 
 /* Conduit */
 "Configuration invalid." = "Configuration invalid.";
-
-/* SlideshowViewController */
-"Connect to a secure server or the Internet Archive to upload photos and videos from your phone." = "Connect to a secure server or the Internet Archive to upload photos and videos from your phone.";
 
 /* No comment provided by engineer. */
 "Connectivity & Data" = "Connectivity & Data";
@@ -178,8 +187,8 @@
 /* No comment provided by engineer. */
 "Edit Multiple" = "Edit Multiple";
 
-/* SlideshowViewController */
-"Enable" = "Enable";
+/* No comment provided by engineer. */
+"Enable \"Transfer via Orbot only\"" = "Enable \"Transfer via Orbot only\"";
 
 /* MiscSettingsViewController */
 "Enable ProofMode" = "Enable ProofMode";
@@ -187,8 +196,8 @@
 /* UploadCell */
 "Encoding file…" = "Encoding file…";
 
-/* SlideshowViewController */
-"Ensure authenticity." = "Ensure authenticity.";
+/* No comment provided by engineer. */
+"Encrypt" = "Encrypt";
 
 /* AlertHelper */
 "Error" = "Error";
@@ -250,17 +259,17 @@
 /* OrbotManager */
 "In order to use Orbot, you will first need to install it!" = "In order to use Orbot, you will first need to install it!";
 
-/* SlideshowViewController */
-"Include your credentials while %@ adds extra metadata to help with chain of custody and verification workflows." = "Include your credentials while %@ adds extra metadata to help with chain of custody and verification workflows.";
-
 /* Error+friendlyMessage */
 "Incorrect username or password" = "Incorrect username or password";
 
-/* SlideshowViewController */
-"Install" = "Install";
+/* Placeholder is 'Orbot' */
+"Install %@" = "Install %@";
 
 /* HeaderView */
 "Just now" = "Just now";
+
+/* No comment provided by engineer. */
+"Keep your media safe and organized for the long-term and create in-app project folders that map to your personal or organizational media archive." = "Keep your media safe and organized for the long-term and create in-app project folders that map to your personal or organizational media archive.";
 
 /* No comment provided by engineer. */
 "Learn more about Creative Commons" = "Learn more about Creative Commons";
@@ -337,9 +346,6 @@
 /* No comment provided by engineer. */
 "Orbot routes all traffic through the Tor network" = "Orbot routes all traffic through the Tor network";
 
-/* SlideshowViewController */
-"Organize your media into projects." = "Organize your media into projects.";
-
 /* PrivateServerViewController */
 "Password" = "Password";
 
@@ -409,12 +415,6 @@
 /* South Direction Abbreviation */
 "S" = "S";
 
-/* SlideshowViewController */
-"Save over Tor." = "Save over Tor.";
-
-/* SlideshowViewController */
-"Save to a safe place." = "Save to a safe place.";
-
 /* Southeast Direction Abbreviation */
 "SE" = "SE";
 
@@ -464,6 +464,9 @@
 "Settings" = "Settings";
 
 /* No comment provided by engineer. */
+"Share" = "Share";
+
+/* No comment provided by engineer. */
 "Share ProofMode Public Key" = "Share ProofMode Public Key";
 
 /* Placeholders will be replaced by newline - ClaimViewController */
@@ -475,6 +478,9 @@
 /* DarkroomHelper */
 "Significant Content" = "Significant Content";
 
+/* No comment provided by engineer. */
+"Skip" = "Skip";
+
 /* DataUsageViewController */
 "Smaller Size" = "Smaller Size";
 
@@ -483,12 +489,6 @@
 
 /* OrbotManager */
 "Start Orbot" = "Start Orbot";
-
-/* SlideshowViewController */
-"Stay organized." = "Stay organized.";
-
-/* SlideshowViewController */
-"Store the facts." = "Store the facts.";
 
 /* Southwest Direction Abbreviation */
 "SW" = "SW";
@@ -501,12 +501,6 @@
 
 /* BaseServerViewController */
 "This will remove the asset history for that space, too!" = "This will remove the asset history for that space, too!";
-
-/* SlideshowViewController */
-"To enable advanced network security, please install Orbot iOS." = "To enable advanced network security, please install Orbot iOS.";
-
-/* SlideshowViewController */
-"To enable advanced network security, you should enable the \"Transfer via Orbot only\" option now or later in settings." = "To enable advanced network security, you should enable the \"Transfer via Orbot only\" option now or later in settings.";
 
 /* No comment provided by engineer. */
 "To get started, connect to a space to store your media." = "To get started, connect to a space to store your media.";
@@ -536,6 +530,9 @@
 "Upload unsuccessful" = "Upload unsuccessful";
 
 /* No comment provided by engineer. */
+"Upload verified media to your chosen server. Add a Creative Commons license to communicate your intentions for future use." = "Upload verified media to your chosen server. Add a Creative Commons license to communicate your intentions for future use.";
+
+/* No comment provided by engineer. */
 "Uploading is paused" = "Uploading is paused";
 
 /* ManagementViewController */
@@ -549,6 +546,9 @@
 
 /* BaseServerViewController */
 "Username" = "Username";
+
+/* No comment provided by engineer. */
+"Verify" = "Verify";
 
 /* No comment provided by engineer. */
 "Version %1$@, build %2$@" = "Version %1$@, build %2$@";
