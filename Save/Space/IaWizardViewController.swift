@@ -68,7 +68,14 @@ class IaWizardViewController: UIViewController, WizardDelegatable, ScrapeDelegat
 
     @IBOutlet weak var hintLb: UILabel! {
         didSet {
-            hintLb.text = NSLocalizedString("If you do not have existing keys, learn how to acquire keys.", comment: "")
+            let linkText = NSLocalizedString("learn how", comment: "")
+
+            let text = NSLocalizedString("If you do not have existing keys, %@ to acquire keys.", comment: "Placeholder is your translation of 'learn how'")
+
+            let attrText = NSMutableAttributedString(string: String(format: text, linkText))
+            attrText.link(part: linkText, into: hintLb)
+
+            hintLb.attributedText = attrText
         }
     }
 

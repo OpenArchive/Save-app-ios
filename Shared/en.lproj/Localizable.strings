@@ -163,6 +163,9 @@
 /* ShareExtension.MainViewController */
 "Choose a Project" = "Choose a Project";
 
+/* No comment provided by engineer. */
+"Close" = "Close";
+
 /* Conduit */
 "Configuration invalid." = "Configuration invalid.";
 
@@ -263,7 +266,10 @@
 "Hide App Content when in Background" = "Hide App Content when in Background";
 
 /* No comment provided by engineer. */
-"If you do not have existing keys, learn how to acquire keys." = "If you do not have existing keys, learn how to acquire keys.";
+"How to Acquire Keys in 3 Easy Steps" = "How to Acquire Keys in 3 Easy Steps";
+
+/* Placeholder is your translation of 'learn how' */
+"If you do not have existing keys, %@ to acquire keys." = "If you do not have existing keys, %@ to acquire keys.";
 
 /* OrbotManager */
 "Ignore" = "Ignore";
@@ -285,6 +291,9 @@
 
 /* No comment provided by engineer. */
 "Keep your media safe and organized for the long-term and create in-app project folders that map to your personal or organizational media archive." = "Keep your media safe and organized for the long-term and create in-app project folders that map to your personal or organizational media archive.";
+
+/* No comment provided by engineer. */
+"learn how" = "learn how";
 
 /* No comment provided by engineer. */
 "Learn more about Creative Commons" = "Learn more about Creative Commons";
@@ -489,6 +498,15 @@
 
 /* Placeholder is 'Orbot' */
 "Start %@" = "Start %@";
+
+/* Placeholder is 'Internet Archive' */
+"Step 1: Log into the %@. If you don't have an account, create one." = "Step 1: Log into the %@. If you don't have an account, create one.";
+
+/* No comment provided by engineer. */
+"Step 2: If you are creating a new account, verify your email." = "Step 2: If you are creating a new account, verify your email.";
+
+/* No comment provided by engineer. */
+"Step 3: Generate your API keys by selecting the box and it will auto-load in the app!" = "Step 3: Generate your API keys by selecting the box and it will auto-load in the app!";
 
 /* Southwest Direction Abbreviation */
 "SW" = "SW";

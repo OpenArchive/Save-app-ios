@@ -26,28 +26,28 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
 
 
     private static let slides = [
-        Slide(
+        SlideViewController.Slide(
             heading: NSLocalizedString("Share", comment: "").localizedUppercase,
             text: NSLocalizedString(
                 "Upload verified media to your chosen server. Add a Creative Commons license to communicate your intentions for future use.",
                 comment: ""),
             illustration: "onboarding-hand"),
 
-        Slide(
+        SlideViewController.Slide(
             heading: NSLocalizedString("Archive", comment: "").localizedUppercase,
             text: NSLocalizedString(
                 "Keep your media safe and organized for the long-term and create in-app project folders that map to your personal or organizational media archive.",
                 comment: ""),
             illustration: "onboarding-laptop"),
 
-        Slide(
+        SlideViewController.Slide(
             heading: NSLocalizedString("Verify", comment: "").localizedUppercase,
             text: NSLocalizedString(
                 "Authenticate your media with a SHA-256 cryptographic verification hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload.",
                 comment: ""),
             illustration: "onboarding-handheld"),
 
-        Slide(
+        SlideViewController.Slide(
             heading: NSLocalizedString("Encrypt", comment: "").localizedUppercase,
             text: { _ in
                 String(

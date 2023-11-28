@@ -400,6 +400,8 @@
 		A0E9069422CB7D16008CD81B /* SelectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E9069222CB7D16008CD81B /* SelectedView.swift */; };
 		A0F1364F227256F4008A22BF /* YapDatabase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1364E227256F4008A22BF /* YapDatabase+Utils.swift */; };
 		A0F13650227256F4008A22BF /* YapDatabase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1364E227256F4008A22BF /* YapDatabase+Utils.swift */; };
+		A0F3DF4E2B160DE1005D860E /* IaGuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F3DF4D2B160DE1005D860E /* IaGuideViewController.swift */; };
+		A0F3DF502B160E1E005D860E /* IaGuideSlideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F3DF4F2B160E1E005D860E /* IaGuideSlideViewController.swift */; };
 		A0F7FDDC22491C6C006610F0 /* TintedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDB22491C6C006610F0 /* TintedButton.swift */; };
 		A0F7FDDD22491C6C006610F0 /* TintedButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDB22491C6C006610F0 /* TintedButton.swift */; };
 		A0F7FDDF224936C8006610F0 /* TintedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDE224936C8006610F0 /* TintedImageView.swift */; };
@@ -717,6 +719,8 @@
 		A0E739E320E4C85E00DB31E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0E9069222CB7D16008CD81B /* SelectedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedView.swift; sourceTree = "<group>"; };
 		A0F1364E227256F4008A22BF /* YapDatabase+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YapDatabase+Utils.swift"; sourceTree = "<group>"; };
+		A0F3DF4D2B160DE1005D860E /* IaGuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaGuideViewController.swift; sourceTree = "<group>"; };
+		A0F3DF4F2B160E1E005D860E /* IaGuideSlideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaGuideSlideViewController.swift; sourceTree = "<group>"; };
 		A0F7FDDB22491C6C006610F0 /* TintedButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintedButton.swift; sourceTree = "<group>"; };
 		A0F7FDDE224936C8006610F0 /* TintedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintedImageView.swift; sourceTree = "<group>"; };
 		A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveProjectAlert.swift; sourceTree = "<group>"; };
@@ -1130,6 +1134,8 @@
 				A056ACA62B0E649C00995FDF /* SpaceSuccessViewController.swift */,
 				A052A48E230D53D800E72594 /* IaInfoAlert.swift */,
 				A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */,
+				A0F3DF4D2B160DE1005D860E /* IaGuideViewController.swift */,
+				A0F3DF4F2B160E1E005D860E /* IaGuideSlideViewController.swift */,
 			);
 			path = Space;
 			sourceTree = "<group>";
@@ -1828,6 +1834,7 @@
 				A013A9372B0D0488003476ED /* IaWizardViewController.swift in Sources */,
 				A00A8D47220C7EDD0083F0CB /* AbcFilteredByProjectView.swift in Sources */,
 				A0958DEE291AA37700D917C0 /* SecureEnclave.swift in Sources */,
+				A0F3DF4E2B160DE1005D860E /* IaGuideViewController.swift in Sources */,
 				A003DDFB2B14C56300443561 /* NSAttributedString+Utils.swift in Sources */,
 				A0A3D9C72226D8DB00BB5A19 /* SpaceCell.swift in Sources */,
 				A09AD1212AC2F94000DE8085 /* SideMenuViewController.swift in Sources */,
@@ -1932,6 +1939,7 @@
 				A0E12C162B024C2F00892AC8 /* GradientView.swift in Sources */,
 				A077F76A2B0FB580004A4B34 /* WebDavWizardViewController.swift in Sources */,
 				A0FB4DBE21F8CC2300B46099 /* MainViewController.swift in Sources */,
+				A0F3DF502B160E1E005D860E /* IaGuideSlideViewController.swift in Sources */,
 				A0DE78AF21F76D2200B6B68B /* Project.swift in Sources */,
 				A07678FE27BE854D00609630 /* AnalyticsCell.swift in Sources */,
 				A056ACA32B0E4DE000995FDF /* BasePageViewController.swift in Sources */,

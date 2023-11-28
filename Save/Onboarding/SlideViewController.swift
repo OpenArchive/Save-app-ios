@@ -48,35 +48,35 @@ class SlideViewController: UIViewController {
     @IBAction func text2Pressed() {
         delegate?.text2Pressed()
     }
-}
 
-struct Slide {
+    struct Slide {
 
-    var heading: (_ view: UILabel) -> String
-    var text: (_ view: UILabel) -> String
-    var text2: (_ view: UILabel) -> NSAttributedString?
-    var illustration: (_ view: UIImageViewAligned) -> UIImage?
+        var heading: (_ view: UILabel) -> String
+        var text: (_ view: UILabel) -> String
+        var text2: (_ view: UILabel) -> NSAttributedString?
+        var illustration: (_ view: UIImageViewAligned) -> UIImage?
 
 
-    init(
-        heading: @escaping (_ view: UILabel) -> String,
-        text: @escaping (_ view: UILabel) -> String,
-        text2: ((_ view: UILabel) -> NSAttributedString?)? = nil,
-        illustration: @escaping (_ view: UIImageViewAligned) -> UIImage?)
-    {
-        self.heading = heading
-        self.text = text
-        self.text2 = text2 ?? { _ in nil }
-        self.illustration = illustration
-    }
+        init(
+            heading: @escaping (_ view: UILabel) -> String,
+            text: @escaping (_ view: UILabel) -> String,
+            text2: ((_ view: UILabel) -> NSAttributedString?)? = nil,
+            illustration: @escaping (_ view: UIImageViewAligned) -> UIImage?)
+        {
+            self.heading = heading
+            self.text = text
+            self.text2 = text2 ?? { _ in nil }
+            self.illustration = illustration
+        }
 
-    init(heading: String, text: @escaping (_ view: UILabel) -> String, 
-         text2: ((_ view: UILabel) -> NSAttributedString?)? = nil, illustration: String) 
-    {
-        self.init(heading: { _ in heading }, text: text, text2: text2, illustration: { _ in UIImage(named: illustration) })
-    }
+        init(heading: String, text: @escaping (_ view: UILabel) -> String,
+             text2: ((_ view: UILabel) -> NSAttributedString?)? = nil, illustration: String)
+        {
+            self.init(heading: { _ in heading }, text: text, text2: text2, illustration: { _ in UIImage(named: illustration) })
+        }
 
-    init(heading: String, text: String, text2: NSAttributedString? = nil, illustration: String) {
-        self.init(heading: heading, text: { _ in text }, text2: { _ in text2 }, illustration: illustration)
+        init(heading: String, text: String, text2: NSAttributedString? = nil, illustration: String) {
+            self.init(heading: heading, text: { _ in text }, text2: { _ in text2 }, illustration: illustration)
+        }
     }
 }
