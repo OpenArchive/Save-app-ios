@@ -34,12 +34,14 @@ class SpaceSettingsViewController: BaseViewController {
         }
 
         AlertHelper.present(
-            self, message: NSLocalizedString("This will remove the asset history for that space, too!", comment: ""),
-            title: NSLocalizedString("Remove Space", comment: ""),
+            self, message: String(format: NSLocalizedString(
+                "Removing this server will remove all contained thumbnails from the %@ app.",
+                comment: "Placeholder is app name"), Bundle.main.displayName),
+            title: NSLocalizedString("Are you sure?", comment: ""),
             actions: [
                 AlertHelper.cancelAction(),
                 AlertHelper.destructiveAction(
-                    NSLocalizedString("Remove Space", comment: ""),
+                    NSLocalizedString("Remove Server", comment: ""),
                     handler: { [weak self] action in
                         Db.writeConn?.asyncReadWrite { tx in
                             tx.removeObject(forKey: id, inCollection: Space.collection)

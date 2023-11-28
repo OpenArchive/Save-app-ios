@@ -412,11 +412,14 @@
 /* RemoveAssetAlert */
 "Remove Media from %@" = "Remove Media from %@";
 
-/* BaseServerViewController */
-"Remove Space" = "Remove Space";
+/* No comment provided by engineer. */
+"Remove Server" = "Remove Server";
 
 /* Placeholder is app name */
 "Removing this folder will remove all contained thumbnails from the %@ app." = "Removing this folder will remove all contained thumbnails from the %@ app.";
+
+/* Placeholder is app name */
+"Removing this server will remove all contained thumbnails from the %@ app." = "Removing this server will remove all contained thumbnails from the %@ app.";
 
 /* OrbotManager */
 "Request API Access" = "Request API Access";
@@ -525,9 +528,6 @@
 
 /* DarkroomHelper */
 "Tap to flag as significant content" = "Tap to flag as significant content";
-
-/* BaseServerViewController */
-"This will remove the asset history for that space, too!" = "This will remove the asset history for that space, too!";
 
 /* No comment provided by engineer. */
 "To get started, connect to a server to store your media." = "To get started, connect to a server to store your media.";
