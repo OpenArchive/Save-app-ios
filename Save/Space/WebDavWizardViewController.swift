@@ -42,6 +42,8 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
         didSet {
             urlTb.placeholder = NSLocalizedString("Server URL", comment: "")
             urlTb.delegate = self
+            urlTb.autocorrectionType = .no
+            urlTb.autocapitalizationType = .none
         }
     }
 
@@ -49,6 +51,8 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
         didSet {
             nameTb.placeholder = NSLocalizedString("Server Name (Optional)", comment: "")
             nameTb.delegate = self
+            nameTb.autocorrectionType = .no
+            nameTb.autocapitalizationType = .none
         }
     }
 
@@ -62,6 +66,8 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
         didSet {
             usernameTb.placeholder = NSLocalizedString("Username", comment: "")
             usernameTb.delegate = self
+            usernameTb.autocorrectionType = .no
+            usernameTb.autocapitalizationType = .none
         }
     }
 
@@ -69,6 +75,8 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
         didSet {
             passwordTb.placeholder = NSLocalizedString("Password", comment: "")
             passwordTb.delegate = self
+            passwordTb.autocorrectionType = .no
+            passwordTb.autocapitalizationType = .none
             passwordTb.status = .reveal
         }
     }

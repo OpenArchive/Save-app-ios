@@ -68,6 +68,26 @@ class TextBox: UIView, UITextFieldDelegate {
         }
     }
 
+    @IBInspectable
+    var autocorrectionType: UITextAutocorrectionType {
+        get {
+            textField.autocorrectionType
+        }
+        set {
+            textField.autocorrectionType = newValue
+        }
+    }
+
+    @IBInspectable
+    var autocapitalizationType: UITextAutocapitalizationType {
+        get {
+            textField.autocapitalizationType
+        }
+        set {
+            textField.autocapitalizationType = newValue
+        }
+    }
+
     var status: Status = .unknown {
         didSet {
             switch status {

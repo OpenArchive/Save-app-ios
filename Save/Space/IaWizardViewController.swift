@@ -45,6 +45,8 @@ class IaWizardViewController: UIViewController, WizardDelegatable, ScrapeDelegat
     @IBOutlet weak var accessKeyTb: TextBox! {
         didSet {
             accessKeyTb.placeholder = NSLocalizedString("Access Key", comment: "")
+            accessKeyTb.autocorrectionType = .no
+            accessKeyTb.autocapitalizationType = .none
         }
     }
 
@@ -57,6 +59,8 @@ class IaWizardViewController: UIViewController, WizardDelegatable, ScrapeDelegat
     @IBOutlet weak var secretKeyTb: TextBox! {
         didSet {
             secretKeyTb.placeholder = NSLocalizedString("Secret Key", comment: "")
+            secretKeyTb.autocorrectionType = .no
+            secretKeyTb.autocapitalizationType = .none
         }
     }
 
