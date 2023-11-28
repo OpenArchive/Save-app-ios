@@ -121,8 +121,8 @@
 /* No comment provided by engineer. */
 "Archived Folders" = "Archived Folders";
 
-/* RemoveProjectAlert */
-"Are you sure you want to remove your project \"%@\"?" = "Are you sure you want to remove your project \"%@\"?";
+/* No comment provided by engineer. */
+"Are you sure?" = "Are you sure?";
 
 /* DropboxViewController */
 "Authenticate" = "Authenticate";
@@ -400,6 +400,9 @@
 /* PreviewViewController, MenuViewController, ManagementViewController, RemoveProjectAlert */
 "Remove" = "Remove";
 
+/* No comment provided by engineer. */
+"Remove Folder" = "Remove Folder";
+
 /* BaseServerViewController, EditProjectViewController, RemoveProjectAlert */
 "Remove from App" = "Remove from App";
 
@@ -411,6 +414,9 @@
 
 /* BaseServerViewController */
 "Remove Space" = "Remove Space";
+
+/* Placeholder is app name */
+"Removing this folder will remove all contained thumbnails from the %@ app." = "Removing this folder will remove all contained thumbnails from the %@ app.";
 
 /* OrbotManager */
 "Request API Access" = "Request API Access";
