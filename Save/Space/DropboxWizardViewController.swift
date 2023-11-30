@@ -16,7 +16,7 @@ class DropboxWizardViewController: BaseViewController, WizardDelegatable {
     @IBOutlet weak var iconIv: UIImageView! {
         didSet {
             iconIv.image = .dropboxIcon
-                .resizedImage(to: .icon)
+                .resizeFit(to: .icon)?
                 .withRenderingMode(.alwaysTemplate)
         }
     }

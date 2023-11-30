@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import UIImage_Resize
 
 class SettingsViewController: UIViewController {
 
@@ -21,11 +20,16 @@ class SettingsViewController: UIViewController {
         }
     }
 
-    @IBOutlet weak var serverBt: UIButton!
+    @IBOutlet weak var serverBt: UIButton! {
+        didSet {
+            serverBt.accessibilityIdentifier = "btServer"
+        }
+    }
 
     @IBOutlet weak var folderBt: UIButton! {
         didSet {
             folderBt.setTitle(NSLocalizedString("Folder", comment: ""))
+            folderBt.accessibilityIdentifier = "btFolder"
         }
     }
 
@@ -60,7 +64,7 @@ class SettingsViewController: UIViewController {
     func reload() {
         let space = SelectedSpace.space
         let icon = (space?.favIcon ?? SelectedSpace.defaultFavIcon)?
-            .resizedImageToFit(in: .icon, scaleIfSmaller: true)
+            .resizeFit(to: .icon)
 
         serverBt.setImage(icon)
         serverBt.setTitle(space?.prettyName ?? NSLocalizedString("Server", comment: ""))

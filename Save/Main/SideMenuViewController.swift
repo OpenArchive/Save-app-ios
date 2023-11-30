@@ -49,6 +49,11 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
 
+    @IBOutlet weak var header: UIView! {
+        didSet {
+            header.accessibilityIdentifier = "viewHeader"
+        }
+    }
     @IBOutlet weak var spaceIcon: UIImageView!
     @IBOutlet weak var spaceLb: UILabel!
     @IBOutlet weak var toggleIcon: UIImageView!
@@ -135,6 +140,7 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
         }
         else if indexPath.section >= spacesMappings.numberOfSections() {
             cell.applyAdd()
+            cell.accessibilityIdentifier = "cellAddAccount"
         }
         else {
             let space = getSpace(at: indexPath)

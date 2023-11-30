@@ -12,6 +12,7 @@ class Screenshots: XCTestCase {
 
     private static let startupTimeout: TimeInterval = 10
 
+    @MainActor 
     override func setUp() {
         // Put setup code here. This method is called before the invocation of each test method in the class.
 
@@ -30,23 +31,24 @@ class Screenshots: XCTestCase {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
 
+    @MainActor 
     func testWalkthrough() {
         let app = XCUIApplication()
 
-        XCTAssert(app.collectionViews.buttons["btManageCollection"].waitForExistence(timeout: Screenshots.startupTimeout),
-                  "App didn't start up within \(Screenshots.startupTimeout) seconds!")
+        var match = app.collectionViews.children(matching: .cell).firstMatch
+
+        XCTAssert(match.waitForExistence(timeout: Self.startupTimeout),
+                  "App didn't start up within \(Self.startupTimeout) seconds!")
 
         snapshot("01MainScene")
 
-        app.collectionViews.buttons["btManageCollection"].tap()
-        app.tables.children(matching: .cell).firstMatch.tap()
+        match.tap()
 
         snapshot("02EditAsset")
 
-        app.navigationBars.firstMatch.buttons.firstMatch.tap()
-
         app.navigationBars.firstMatch.buttons["btUpload"].tap()
-        app.otherElements["btManageUploads"].firstMatch.tap()
+
+        app.buttons["btManageUploads"].tap()
 
         snapshot("03UploadAssets")
 
@@ -57,21 +59,33 @@ class Screenshots: XCTestCase {
             app.navigationBars.firstMatch.buttons.firstMatch.tap()
         }
 
-        app.images["imgFavIcon"].tap()
+        app.buttons["btSettings"].tap()
+        app.buttons["btFolder"].tap()
         app.tables.staticTexts["Berlin 2018"].tap()
 
         snapshot("04EditProject")
 
         app.navigationBars.firstMatch.buttons.firstMatch.tap()
 
-        app.tables.collectionViews.cells["cellSpaceAdd"].tap()
-        app.tables.cells["cellPrivateServer"].tap()
+        app.navigationBars.firstMatch.buttons.firstMatch.tap()
+
+        app.buttons["btMenu"].tap()
+
+        app.otherElements["viewHeader"].tap()
+
+        app.cells["cellAddAccount"].tap()
+
+        match = app.otherElements["viewPrivateServer"]
+
+        // Don't tap too early, otherwise nothing will happen.
+        XCTAssert(match.waitForExistence(timeout: Self.startupTimeout))
+
+        match.tap()
+
 
         snapshot("05CreateSpace")
 
         // Back to main scene.
-        app.navigationBars.firstMatch.buttons.firstMatch.tap()
-        app.navigationBars.firstMatch.buttons.firstMatch.tap()
         app.navigationBars.firstMatch.buttons.firstMatch.tap()
     }
 }

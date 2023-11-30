@@ -41,6 +41,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
             action: #selector(newWebDav),
             container: container,
             above: subtitleLb)
+        button.accessibilityIdentifier = "viewPrivateServer"
 
         Db.bgRwConn?.read { tx in
             if tx.find(where: { (_: DropboxSpace) in true }) == nil {

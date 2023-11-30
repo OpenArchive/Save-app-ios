@@ -25,7 +25,11 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
     }
 
-    @IBOutlet weak var menuBt: UIButton!
+    @IBOutlet weak var menuBt: UIButton! {
+        didSet {
+            menuBt.accessibilityIdentifier = "btMenu"
+        }
+    }
 
     @IBOutlet weak var menu: UIView! {
         didSet {
@@ -39,6 +43,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     @IBOutlet weak var manageBt: UIButton! {
         didSet {
             manageBt.setTitle(NSLocalizedString("Edit", comment: ""))
+            manageBt.accessibilityIdentifier = "btManageUploads"
         }
     }
 
@@ -104,6 +109,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             settingsBt.setAttributedTitle(.init(
                 string: NSLocalizedString("Settings", comment: ""),
                 attributes: [.font: UIFont.preferredFont(forTextStyle: .caption1)]))
+            settingsBt.accessibilityIdentifier = "btSettings"
         }
     }
 

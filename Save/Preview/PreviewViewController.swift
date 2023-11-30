@@ -21,6 +21,7 @@ class PreviewViewController: UIViewController,
     @IBOutlet weak var uploadBt: UIBarButtonItem! {
         didSet {
             uploadBt.title = NSLocalizedString("Upload", comment: "")
+            uploadBt.accessibilityIdentifier = "btUpload"
         }
     }
     @IBOutlet weak var collectionView: UICollectionView!

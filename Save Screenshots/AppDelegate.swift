@@ -16,6 +16,8 @@ class AppDelegate: AppDelegateBase {
 
         _ = super.application(application, didFinishLaunchingWithOptions: launchOptions)
 
+        Settings.firstUploadDone = true
+
         Screenshots.prepare()
 
         return true

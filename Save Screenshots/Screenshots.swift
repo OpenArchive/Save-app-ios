@@ -29,36 +29,27 @@ class Screenshots {
 
         let project1 = Project(name: "Tunis 2019", space: space)
         let project2 = Project(name: "Berlin 2018", space: space)
-        project2.license = String(format: EditProjectViewController.ccUrl, EditProjectViewController.ccDomain, "by-nc-sa")
+        project2.license = String(format: CcSelector.ccUrl, CcSelector.ccDomain, "by-nc-sa")
 
-        Db.writeConn?.readWrite({ transaction in
-            transaction.removeAllObjectsInAllCollections()
-            transaction.setObject(space, forKey: space.id, inCollection: Space.collection)
+        Db.writeConn?.readWrite({ tx in
+            tx.removeAllObjectsInAllCollections()
+            tx.setObject(space, forKey: space.id, inCollection: Space.collection)
 
-            SelectedSpace.store(transaction)
+            SelectedSpace.store(tx)
 
-            transaction.setObject(project1)
-            transaction.setObject(project2)
+            tx.setObject(project1)
+            tx.setObject(project2)
         })
-
-        var assets = [Asset]()
 
         let collection = project2.currentCollection
 
         for image in images {
             let asset = AssetFactory.create(fromAssets: image, collection)
 
-            asset.filename = "\(image).JPG"
-
-            asset.location = "10405 Berlin\nGermany"
-
-            assets.append(asset)
-        }
-
-        Db.writeConn?.readWrite({ transaction in
-            for asset in assets {
-                transaction.setObject(asset)
+            _ = Asset.updateSync(assets: [asset]) {
+                $0.filename = "\(image).JPG"
+                $0.location = "10405 Berlin\nGermany"
             }
-        })
+        }
     }
 }
