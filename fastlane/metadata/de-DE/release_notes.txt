@@ -1,4 +1,1 @@
-- Anzeige der App-Version am Ende der Einstellungen.
-- Vorläufige Proofmode-Unterstützung für WebDAV- und Dropbox-Spaces hinzugefügt.
-- SHA256-Digest-Generierung korrigiert.
-- Kleinere Probleme beim Versuch, sich bei einem WebDAV-Konto anzumelden, wurden behoben.
+- Neues UI-Design.

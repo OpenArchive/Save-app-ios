@@ -1,4 +1,1 @@
-- Show app version at bottom of settings.
-- Added preliminary proofmode support for WebDAV and Dropbox spaces.
-- Fixed SHA256 digest generation.
-- Fixed minor issues when trying to log into a WebDAV account.
+- UI redesign.

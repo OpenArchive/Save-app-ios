@@ -1,4 +1,1 @@
-
-
-
-
+- Ridisegno dell'interfaccia utente.

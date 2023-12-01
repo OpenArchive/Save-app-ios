@@ -1,4 +1,1 @@
-- Ayarların altına uygulama sürümü eklendi.
-- WebDAV ve Dropbox alanları için ön düzeltme kipi desteği eklendi.
-- SHA256 özeti oluşturulurken yaşanan sorun düzeltildi.
-- Bir WebDAV hesabında oturum açmaya çalışırken oluşan küçük sorunlar düzeltildi.
+- UI yeniden tasarımı.

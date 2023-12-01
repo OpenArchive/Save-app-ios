@@ -1,5 +1,8 @@
 # Changelog
 
+# 3.0.0
+- UI redesign.
+
 ## 2.9.0
 - Show app version at bottom of settings.
 - Added preliminary proofmode support for WebDAV and Dropbox spaces.

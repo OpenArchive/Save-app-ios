@@ -16,18 +16,20 @@ https://die.netzarchitekten.com/
 These people kindly donored their time and work to translate the app and surrounding material:
 
 - French: yahoe.001, n.perraut, soizicat
-- Spanish: yamilabadu,  josephdg18, m_rey
-- Russian: palyanitsin
+- Spanish: yamilabadu, josephdg18, m_rey, Elos, fr0st, ianvatega, losalim
+- Russian: palyanitsin, viktoriiasavchuk
 - Turkish: kayazeren
-- Arabic: ahmedessamdev, mahmoud_th, Sammy_Adams
+- Arabic: ahmedessamdev, mahmoud_th, Sammy_Adams, sec.xyx
 - Persian: ahangarha, voxp
 - Italian: RickDeckard
+- Ukrainian: andriykopanytsia, losalim, viktoriiasavchuk
+- German:  m_rey
 
 Thank you very much, folks!
 
 ## Copyright
 
-2019 OpenArchive
+2019 - 2023 OpenArchive
 https://open-archive.org/
 
 ## Contributing
