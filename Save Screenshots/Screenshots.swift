@@ -23,6 +23,7 @@ class Screenshots {
         // Create test environment.
         Settings.firstRunDone = true
         Settings.firstBatchEditDone = true
+        Settings.firstUploadDone = true
 
         let space = Space(name: "My Cloud", favIcon: UIImage(named: "ic_nextcloud_favicon"))
         SelectedSpace.space = space
