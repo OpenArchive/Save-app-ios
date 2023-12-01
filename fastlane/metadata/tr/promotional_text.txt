@@ -1,1 +1,1 @@
-Kaydet (Share, Archive, Verify, Encrypt, Paylaş, Arşivle, Doğrula, Şifrele), mobil medyalarınızı depolamanıza, paylaşmanıza ve duyurmanıza yardımcı olmak için tasarlanmış ücretsiz, açık kaynaklı ve güvenli bir mobil uygulamadır.
+Save (Paylaş, Arşivle, Doğrula, Şifrele), depolamanıza, paylaşmanıza ve duyurmanıza yardımcı olmak için tasarlanmış ücretsiz, açık kaynaklı ve güvenli bir uygulamadır.

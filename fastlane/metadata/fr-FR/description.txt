@@ -2,8 +2,6 @@ Save par OpenArchive vous permet de préserver, d’organiser et de partager en 
 
 Conçue avec et pour les salles de nouvelles, les défenseurs des droits de la personne et les archivistes, Save vous permet de toujours garder le contrôle de vos contenus multimédias.
 
-========================
-
 //Caractéristiques
 
 – Télécharger n’importe quel type de contenu multimédia vers un serveur privé ou directement vers Internet Archive
@@ -21,8 +19,6 @@ Conçue avec et pour les salles de nouvelles, les défenseurs des droits de la p
 – Paramètre de téléversement « Wi-Fi seulement » pour les cas où les réseaux de données mobiles sont peu fiables ou chers
 
 – Options de licences Creative Commons pour les contenus multimédias que vous recueillez et partagez
-
-========================
 
 //Avantages
 
@@ -43,13 +39,9 @@ Sécuriser
 Save fait toujours appel au chiffrement TLS, qui chiffre la connexion entre votre appareil mobile et votre destination de choix, que ce soit un serveur privé ou Internet Archive.
 Save fonctionne avec des logiciels serveur tels que Nextcloud, ce qui facilite le chiffrement des données que vous recueillez.
 
-========================
-
 //Aide et assistance
 FAQ d’OpenArchive – https://open-archive.org/faq/ (page en anglais)
 Contactez nous à info[arobase]open-archive[point]org
-
-========================
 
 //À propos
 
@@ -57,8 +49,6 @@ OpenArchive est un collectif de technologues des droits de la personne, d’ethn
 
 À propos de Save
 Save par OpenArchive est une application mobile d’archivage gratuite et à code source ouvert destinée aux documentaristes et aux défenseurs des droits de la personne. Elle offre aux groupes à risque un contrôle supplémentaire de leurs données historiques en y ajoutant l’authentification des contenus multimédias, le pseudonymat, le contrôle des licences et la possibilité de choisir où et comment le contenu multimédia sera stocké pour un accès et une réutilisation prolongés.
-
-========================
 
 //Liens
 
