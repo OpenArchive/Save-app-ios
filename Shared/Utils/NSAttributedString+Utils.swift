@@ -22,21 +22,37 @@ extension NSMutableAttributedString {
         string.range(of: aString, range: range)
     }
 
-    func colorize(with color: UIColor, range: Range<String.Index>) {
+    @discardableResult
+    func colorize(with color: UIColor, range: Range<String.Index>) -> Self {
         addAttribute(.foregroundColor, value: color, range: NSRange(range, in: string))
+
+        return self
     }
 
-    func colorize(with color: UIColor, index: String.Index) {
+    @discardableResult
+    func colorize(with color: UIColor, index: String.Index) -> Self {
         colorize(with: color, range: index ..< string.index(index, offsetBy: 1))
+
+        return self
     }
 
-    func link(part: any StringProtocol, into label: UILabel) {
-        if let range = string.range(of: part) {
-            addAttributes(
-                [.font: label.font.bold() ?? .boldSystemFont(ofSize: label.font.pointSize),
-                 .underlineStyle: NSUnderlineStyle.single.rawValue],
-                range: NSRange(range, in: string))
+    @discardableResult
+    func link(part: (any StringProtocol)? = nil, into label: UILabel?) -> Self {
+        let range: Range<String.Index>
+
+        if let part = part, let partRange = string.range(of: part) {
+            range = partRange
         }
+        else {
+            range = startIndex ..< endIndex
+        }
+
+        addAttributes(
+            [.font: label?.font.bold() ?? .boldSystemFont(ofSize: label?.font.pointSize ?? 17),
+             .underlineStyle: NSUnderlineStyle.single.rawValue],
+            range: NSRange(range, in: string))
+
+        return self
     }
 }
 
@@ -44,5 +60,12 @@ extension NSAttributedString {
 
     var isEmpty: Bool {
         string.isEmpty
+    }
+}
+
+extension String {
+
+    var attributed: NSMutableAttributedString {
+        NSMutableAttributedString(string: self)
     }
 }

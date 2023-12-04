@@ -25,7 +25,7 @@ open class LinkCell: Cell<URL>, CellType {
     }
 
     open override func update() {
-        textLabel?.attributedText = row.title?.underlined
+        textLabel?.attributedText = row.title?.attributed.link(into: textLabel)
 
         textLabel?.textColor = row.isDisabled ? .tertiaryLabel : .accent
     }

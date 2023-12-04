@@ -77,10 +77,9 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
                         comment: "Placeholder is your translation of 'Enable Orbot'")
                 }
 
-                let attrText = NSMutableAttributedString(string: String(format: text, linkText))
-                attrText.link(part: linkText, into: view)
-
-                return attrText
+                return String(format: text, linkText)
+                    .attributed
+                    .link(part: linkText, into: view)
             },
             illustration: "onboarding-onion"),
     ]

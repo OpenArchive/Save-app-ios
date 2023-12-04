@@ -76,10 +76,9 @@ class IaWizardViewController: UIViewController, WizardDelegatable, ScrapeDelegat
 
             let text = NSLocalizedString("If you do not have existing keys, %@ to acquire keys.", comment: "Placeholder is your translation of 'learn how'")
 
-            let attrText = NSMutableAttributedString(string: String(format: text, linkText))
-            attrText.link(part: linkText, into: hintLb)
-
-            hintLb.attributedText = attrText
+            hintLb.attributedText = String(format: text, linkText)
+                .attributed
+                .link(part: linkText, into: hintLb)
         }
     }
 
