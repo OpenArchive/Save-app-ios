@@ -534,8 +534,8 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             reload = changes.forceFull || changes.rowChanges.contains(where: { $0.type == .update && $0.finalGroup == selectedProject?.id })
         }
 
-        if !reload, let changes = assetsReadConn?.getChanges(assetsMappings) {
-            reload = changes.forceFull
+        if let changes = assetsReadConn?.getChanges(assetsMappings) {
+            reload = reload || changes.forceFull
                 || changes.sectionChanges.contains(where: { $0.type == .delete || $0.type == .insert })
                 || changes.rowChanges.contains(where: {
                     $0.type == .delete || $0.type == .insert || $0.type == .move || $0.type == .update
