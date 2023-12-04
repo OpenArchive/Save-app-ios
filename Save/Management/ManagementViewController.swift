@@ -358,7 +358,14 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
     private func removeDone(async: Bool = true) {
         let block = { (tx: YapDatabaseReadWriteTransaction) in
 
-            let uploads: [Upload] = tx.findAll { $0.state == .downloaded }
+            let uploads: [Upload] = tx.findAll { upload in
+                upload.preheat(tx, deep: false)
+
+                // Remove all which are uploaded, which don't have an
+                // asset anymore, or where the asset says, it's uploaded.
+                // (That happens, when the app gets killed.)
+                return upload.state == .downloaded || upload.asset?.isUploaded ?? true
+            }
 
             tx.removeObjects(forKeys: uploads.map({ $0.id }), inCollection: Upload.collection)
         }
