@@ -78,7 +78,19 @@ class Space: NSObject {
     }
 
     var prettyName: String {
-        name ?? url?.host ?? url?.absoluteString ?? Space.defaultPrettyName
+        if let name = name?.trimmingCharacters(in: .whitespacesAndNewlines), !name.isEmpty {
+            return name
+        }
+
+        if let host = url?.host?.trimmingCharacters(in: .whitespacesAndNewlines), !host.isEmpty {
+            return host
+        }
+
+        if let url = url?.absoluteString.trimmingCharacters(in: .whitespacesAndNewlines), !url.isEmpty {
+            return url
+        }
+
+        return Space.defaultPrettyName
     }
 
     init(name: String? = nil, url: URL? = nil, favIcon: UIImage? = nil,
