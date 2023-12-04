@@ -117,7 +117,7 @@ class SettingsViewController: UIViewController {
     }
 
     @IBAction func about() {
-        if let url = URL(string: "https://open-archive.org/about") {
+        if let url = URL(string: "https://open-archive.org/save") {
             UIApplication.shared.open(url, options: [:])
         }
     }
