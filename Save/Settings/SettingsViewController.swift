@@ -16,18 +16,23 @@ class SettingsViewController: UIViewController {
 
     @IBOutlet weak var generalBt: UIButton! {
         didSet {
+            generalBt.setImage(nil)
             generalBt.setTitle(NSLocalizedString("General", comment: ""))
         }
     }
 
+    @IBOutlet weak var serverIv: UIImageView!
+
     @IBOutlet weak var serverBt: UIButton! {
         didSet {
+            serverBt.setImage(nil)
             serverBt.accessibilityIdentifier = "btServer"
         }
     }
 
     @IBOutlet weak var folderBt: UIButton! {
         didSet {
+            folderBt.setImage(nil)
             folderBt.setTitle(NSLocalizedString("Folder", comment: ""))
             folderBt.accessibilityIdentifier = "btFolder"
         }
@@ -68,10 +73,17 @@ class SettingsViewController: UIViewController {
 
     func reload() {
         let space = SelectedSpace.space
-        let icon = (space?.favIcon ?? SelectedSpace.defaultFavIcon)?
-            .resizeFit(to: .icon)
 
-        serverBt.setImage(icon)
+        if let icon = space?.favIcon?.resizeFit(to: .icon) {
+            serverIv.image = icon.withRenderingMode(.alwaysOriginal)
+        }
+        else if let icon = SelectedSpace.defaultFavIcon?.resizeFit(to: .icon) {
+            serverIv.image = icon.withRenderingMode(.alwaysTemplate)
+        }
+        else {
+            serverIv.image = UIImage(systemName: "server.rack")
+        }
+
         serverBt.setTitle(space?.prettyName ?? NSLocalizedString("Server", comment: ""))
     }
 

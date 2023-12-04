@@ -355,15 +355,25 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
     @IBAction func hideSettings() {
         toggleMenu(false) { _ in
-            self.container.hide(animated: true)
-            self.settingsVc.view.removeFromSuperview()
-            self.settingsVc.removeFromParent()
+            self.container.hide(animated: true) { _ in
+                self.settingsVc.view.removeFromSuperview()
+                self.settingsVc.removeFromParent()
+            }
         }
     }
 
     @IBAction func showSettings() {
         toggleMenu(false) { _ in
             self.container.addSubview(self.settingsVc.view)
+
+            self.container.translatesAutoresizingMaskIntoConstraints = false
+            self.settingsVc.view.translatesAutoresizingMaskIntoConstraints = false
+
+            self.container.topAnchor.constraint(equalTo: self.settingsVc.view.topAnchor).isActive = true
+            self.container.bottomAnchor.constraint(equalTo: self.settingsVc.view.bottomAnchor).isActive = true
+            self.container.leadingAnchor.constraint(equalTo: self.settingsVc.view.leadingAnchor).isActive = true
+            self.container.trailingAnchor.constraint(equalTo: self.settingsVc.view.trailingAnchor).isActive = true
+
             self.addChild(self.settingsVc)
             self.settingsVc.didMove(toParent: self)
 
