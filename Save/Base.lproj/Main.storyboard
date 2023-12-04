@@ -332,24 +332,16 @@
                                     <constraint firstAttribute="width" constant="64" id="lfi-FC-CAl"/>
                                 </constraints>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YPm-U2-0F9">
-                                <rect key="frame" x="248" y="42" width="24" height="24"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="24" id="4pr-0H-7Pu"/>
-                                    <constraint firstAttribute="height" constant="24" id="h5k-Ee-SZ4"/>
-                                </constraints>
-                                <buttonConfiguration key="configuration" style="plain" image="trash" catalog="system"/>
-                                <connections>
-                                    <action selector="removeAssets" destination="wAB-WM-ZQl" eventType="touchUpInside" id="4mQ-tr-rDs"/>
-                                </connections>
-                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fbx-Lc-Aho">
                                 <rect key="frame" x="280" y="42" width="24" height="24"/>
                                 <constraints>
                                     <constraint firstAttribute="width" constant="24" id="fsq-VT-6IS"/>
                                     <constraint firstAttribute="height" constant="24" id="z71-yM-Dee"/>
                                 </constraints>
-                                <buttonConfiguration key="configuration" style="plain" image="line.3.horizontal"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal">
+                                    <imageReference key="image" image="line.3.horizontal" symbolScale="default"/>
+                                </state>
                                 <connections>
                                     <action selector="toggleMenu" destination="wAB-WM-ZQl" eventType="touchUpInside" id="d3C-oF-RZP"/>
                                 </connections>
@@ -385,16 +377,14 @@
                                         </userDefinedRuntimeAttributes>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E7F-wy-6xa">
-                                        <rect key="frame" x="225.5" y="5" width="62.5" height="34"/>
-                                        <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" title="Edit">
+                                        <rect key="frame" x="243.5" y="12" width="44.5" height="20"/>
+                                        <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                        <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                        <state key="normal" title="Edit">
                                             <imageReference key="image" image="text.append" catalog="system" symbolScale="small"/>
-                                            <fontDescription key="titleFontDescription" style="UICTFontTextStyleCaption1"/>
-                                        </buttonConfiguration>
+                                        </state>
                                         <connections>
-                                            <segue destination="igi-j2-R7B" kind="popoverPresentation" popoverAnchorView="E7F-wy-6xa" id="mxS-Mb-p1U">
-                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                            </segue>
+                                            <action selector="manage" destination="wAB-WM-ZQl" eventType="touchUpInside" id="Co2-sK-2ce"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -728,7 +718,6 @@
                             <constraint firstItem="hnS-Bv-Svc" firstAttribute="top" secondItem="AyW-lX-T0b" secondAttribute="bottom" id="hoH-VW-dre"/>
                             <constraint firstItem="AyW-lX-T0b" firstAttribute="leading" secondItem="vgM-P6-FLk" secondAttribute="leading" constant="16" id="kVY-vC-6uU"/>
                             <constraint firstItem="vgM-P6-FLk" firstAttribute="trailing" secondItem="Fbx-Lc-Aho" secondAttribute="trailing" constant="16" id="n78-Xw-70J"/>
-                            <constraint firstItem="Fbx-Lc-Aho" firstAttribute="leading" secondItem="YPm-U2-0F9" secondAttribute="trailing" constant="8" symbolic="YES" id="ovh-bt-RSA"/>
                             <constraint firstItem="qfO-EJ-P6h" firstAttribute="top" secondItem="hnS-Bv-Svc" secondAttribute="bottom" id="p8R-1O-g2o"/>
                             <constraint firstAttribute="bottom" secondItem="InD-HF-ni8" secondAttribute="bottom" id="pXd-lH-i5f"/>
                             <constraint firstItem="vgM-P6-FLk" firstAttribute="trailing" secondItem="AyW-lX-T0b" secondAttribute="trailing" constant="16" id="si6-FZ-90x"/>
@@ -736,7 +725,6 @@
                             <constraint firstItem="vgM-P6-FLk" firstAttribute="trailing" secondItem="cdB-Ih-Rhb" secondAttribute="trailing" constant="16" id="tzz-2E-Mhp"/>
                             <constraint firstItem="5dc-h7-E3x" firstAttribute="centerY" secondItem="cdB-Ih-Rhb" secondAttribute="centerY" priority="750" constant="-40" id="uKL-S5-Tev"/>
                             <constraint firstItem="Bhs-Ln-YUb" firstAttribute="leading" secondItem="VEn-ta-I3v" secondAttribute="leading" id="wc6-OI-0xK"/>
-                            <constraint firstItem="YPm-U2-0F9" firstAttribute="centerY" secondItem="hpS-2l-dcc" secondAttribute="centerY" id="xwR-cT-uBF"/>
                             <constraint firstItem="AyW-lX-T0b" firstAttribute="top" secondItem="hpS-2l-dcc" secondAttribute="bottom" constant="8" id="zrs-Zm-RdH"/>
                         </constraints>
                     </view>
@@ -758,12 +746,14 @@
                         <outlet property="menu" destination="Bhs-Ln-YUb" id="Pi8-tu-3Wk"/>
                         <outlet property="menuBt" destination="Fbx-Lc-Aho" id="xpo-ec-CyW"/>
                         <outlet property="myMediaBt" destination="QIU-V8-v7v" id="Co4-ka-MJ3"/>
-                        <outlet property="removeBt" destination="YPm-U2-0F9" id="M83-E8-Jbl"/>
                         <outlet property="settingsBt" destination="VpT-Ct-gHj" id="Ttw-9V-DDF"/>
                         <outlet property="spaceFavIcon" destination="dn7-CY-FB2" id="GBH-lm-TVA"/>
                         <outlet property="welcomeLb" destination="a1a-GU-jmb" id="e5E-en-NsJ"/>
                         <segue destination="E3U-Mn-N4D" kind="show" identifier="showPreviewSegue" id="3Pd-9C-a4R"/>
                         <segue destination="9re-mE-4ZF" kind="presentation" identifier="connectSpaceSegue" modalPresentationStyle="formSheet" id="4nC-3p-qXK"/>
+                        <segue destination="igi-j2-R7B" kind="popoverPresentation" identifier="manageUploadsSegue" popoverAnchorView="E7F-wy-6xa" id="3Cy-4J-Kck">
+                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                        </segue>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xHq-hp-h3I" userLabel="First Responder" sceneMemberID="firstResponder"/>

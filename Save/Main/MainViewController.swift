@@ -16,14 +16,13 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
     private static let segueConnectSpace = "connectSpaceSegue"
     private static let segueShowPreview = "showPreviewSegue"
+    private static let segueManageUploads = "manageUploadsSegue"
+
+    private static let tagNone = -1
+    private static let tagDelete = 666
+    private static let tagManage = 667
 
     @IBOutlet weak var logo: UIImageView!
-
-    @IBOutlet weak var removeBt: UIButton! {
-        didSet {
-            removeBt.isHidden = true
-        }
-    }
 
     @IBOutlet weak var menuBt: UIButton! {
         didSet {
@@ -42,7 +41,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     @IBOutlet weak var folderAssetCountLb: UILabel!
     @IBOutlet weak var manageBt: UIButton! {
         didSet {
-            manageBt.setTitle(NSLocalizedString("Edit", comment: ""))
             manageBt.accessibilityIdentifier = "btManageUploads"
         }
     }
@@ -279,7 +277,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if inEditMode {
-            return updateRemove()
+            return updateManageBt()
         }
 
         if let cell = collectionView.cellForItem(at: indexPath) as? ImageCell {
@@ -305,7 +303,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             if cell.asset?.isUploaded ?? false || cell.upload != nil {
                 toggleMode(newMode: true)
 
-                return updateRemove()
+                return updateManageBt()
             }
         }
 
@@ -323,7 +321,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             toggleMode(newMode: false)
         }
         else {
-            updateRemove()
+            updateManageBt()
         }
     }
 
@@ -459,14 +457,23 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
     }
 
-    @IBAction func removeAssets() {
-        present(RemoveAssetAlert(getSelectedAssets(), { [weak self] success in
-            guard success else {
-                return
-            }
+    @IBAction func manage() {
+        switch manageBt.tag {
+        case Self.tagDelete:
+            return present(RemoveAssetAlert(getSelectedAssets(), { [weak self] success in
+                guard success else {
+                    return
+                }
 
-            self?.toggleMode(newMode: false)
-        }), animated: true)
+                self?.toggleMode(newMode: false)
+            }), animated: true)
+
+        case Self.tagManage:
+            performSegue(withIdentifier: Self.segueManageUploads, sender: manageBt)
+
+        default:
+            break
+        }
     }
 
 
@@ -555,8 +562,28 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             let count = UploadsView.countUploading(tx)
 
             DispatchQueue.main.async {
-                self?.folderAssetCountLb.toggle(count < 1, animated: true)
-                self?.manageBt.toggle(count > 0, animated: true)
+                if count > 0 {
+                    self?.folderAssetCountLb.hide(animated: true)
+
+                    self?.manageBt.setTitle(NSLocalizedString("Edit", comment: ""))
+                    self?.manageBt.setImage(.init(systemName: "text.append"))
+                    self?.manageBt.tag = Self.tagManage
+                    self?.manageBt.show2(animated: true)
+                }
+                else if self?.inEditMode ?? false && self?.collectionView.numberOfSelectedItems ?? 0 > 0 {
+                    self?.folderAssetCountLb.hide(animated: true)
+
+                    self?.manageBt.setTitle(nil)
+                    self?.manageBt.setImage(.init(systemName: "trash"))
+                    self?.manageBt.tag = Self.tagDelete
+                    self?.manageBt.show2(animated: true)
+                }
+                else {
+                    self?.folderAssetCountLb.show2(animated: true)
+
+                    self?.manageBt.hide(animated: true)
+                    self?.manageBt.tag = Self.tagNone
+                }
             }
         }
     }
@@ -583,14 +610,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
         inEditMode = newMode
 
-        updateRemove()
-    }
-
-    /**
-     Shows/hides the  remove button, depending on if and what is selected.
-     */
-    private func updateRemove() {
-        removeBt.isHidden = !inEditMode || collectionView.numberOfSelectedItems < 1
+        updateManageBt()
     }
 
     /**
