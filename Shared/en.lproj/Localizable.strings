@@ -289,6 +289,9 @@
 /* Placeholder is 'Orbot' */
 "In order to use %@, you will first need to install it!" = "In order to use %@, you will first need to install it!";
 
+/* No comment provided by engineer. */
+"In the side menu, you can add another server and connect to multiple servers" = "In the side menu, you can add another server and connect to multiple servers";
+
 /* Error+friendlyMessage */
 "Incorrect username or password" = "Incorrect username or password";
 
@@ -606,9 +609,6 @@
 
 /* ConsentViewController */
 "With your permission, we'll run a check each time you encounter an error while uploading." = "With your permission, we'll run a check each time you encounter an error while uploading.";
-
-/* No comment provided by engineer. */
-"You can add another storage space and connect to multiple servers." = "You can add another storage space and connect to multiple servers.";
 
 /* Placeholder is a server type or name */
 "You have successfully connected to %@!" = "You have successfully connected to %@!";

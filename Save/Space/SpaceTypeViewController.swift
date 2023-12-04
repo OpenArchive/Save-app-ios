@@ -25,7 +25,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
     @IBOutlet weak var subtitleLb: UILabel! {
         didSet {
             subtitleLb.text = NSLocalizedString(
-                "You can add another storage space and connect to multiple servers.",
+                "In the side menu, you can add another server and connect to multiple servers",
                 comment: "")
         }
     }
