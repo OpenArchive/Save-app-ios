@@ -86,7 +86,7 @@ class ImageCell: UICollectionViewCell {
 
         errorIcon.isHidden = true
 
-        progress.isHidden = asset?.isUploaded ?? true || upload?.state == .downloaded
+        progress.isHidden = upload == nil || asset?.isUploaded ?? true || upload?.state == .downloaded
         progress.state = upload?.state ?? .pending
         progress.stopDownloadButton.progress = upload?.progress ?? 0
     }
