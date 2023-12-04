@@ -10,7 +10,7 @@ import UIKit
 import YapDatabase
 
 /**
- Helper class which is used in `PreviewViewController` and `EditViewController`
+ Helper class which is used in `PreviewViewController` and `DarkroomViewController`
  to handle the common changes in assets of a user selected collection.
  */
 class SelectedCollection {

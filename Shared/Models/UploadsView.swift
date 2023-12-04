@@ -32,7 +32,7 @@ class UploadsView: YapDatabaseAutoView {
             }
         }
 
-        let sorting = YapDatabaseViewSorting.withObjectBlock { transaction, group, collection1, key1, object1, collection2, key2, object2 in
+        let sorting = YapDatabaseViewSorting.withObjectBlock { tx, group, collection1, key1, object1, collection2, key2, object2 in
             if Asset.collection == collection1,
                let asset1 = object1 as? Asset,
                let asset2 = object2 as? Asset

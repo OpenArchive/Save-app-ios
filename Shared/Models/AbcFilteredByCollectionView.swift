@@ -10,7 +10,8 @@ import UIKit
 import YapDatabase
 
 /**
- A child view of `AssetsByCollectionView` which can filter that by collection.
+ A child view of `AssetsByCollectionView` which can filter that by collection
+ and only shows non-uploaded assets.
 
  Use `updateFilter(:)` to engage filtering.
  */
@@ -74,8 +75,9 @@ class AbcFilteredByCollectionView: YapDatabaseFilteredView {
             }
         }
 
-        return YapDatabaseViewFiltering.withKeyBlock { _, group, _, _ in
-            return AssetsByCollectionView.collectionId(from: group) == collectionId
+        return YapDatabaseViewFiltering.withObjectBlock { tx, group, collection, key, object in
+            !((object as? Asset)?.isUploaded ?? true) 
+                && AssetsByCollectionView.collectionId(from: group) == collectionId
         }
     }
 }
