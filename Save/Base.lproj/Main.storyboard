@@ -191,28 +191,28 @@
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="isM-gW-SZD"/>
-                                <exclude reference="MRo-v6-9ti"/>
-                                <exclude reference="u1G-ql-AYz"/>
                                 <exclude reference="h2d-YY-KCS"/>
                                 <exclude reference="xNw-QA-xwV"/>
                                 <exclude reference="565-5m-toM"/>
+                                <exclude reference="MRo-v6-9ti"/>
+                                <exclude reference="u1G-ql-AYz"/>
                             </mask>
                         </variation>
                         <variation key="heightClass=compact">
                             <mask key="constraints">
                                 <include reference="isM-gW-SZD"/>
-                                <exclude reference="xPF-6B-H8J"/>
-                                <include reference="MRo-v6-9ti"/>
-                                <include reference="u1G-ql-AYz"/>
-                                <include reference="OHn-K9-6d7"/>
                                 <include reference="h2d-YY-KCS"/>
                                 <exclude reference="xlQ-ce-WpR"/>
                                 <include reference="xNw-QA-xwV"/>
                                 <include reference="565-5m-toM"/>
                                 <exclude reference="nW0-J8-ylo"/>
                                 <exclude reference="Z1j-ru-x0M"/>
-                                <exclude reference="4cg-42-57D"/>
                                 <exclude reference="myC-1Q-bYo"/>
+                                <exclude reference="4cg-42-57D"/>
+                                <exclude reference="xPF-6B-H8J"/>
+                                <include reference="MRo-v6-9ti"/>
+                                <include reference="u1G-ql-AYz"/>
+                                <include reference="OHn-K9-6d7"/>
                             </mask>
                         </variation>
                     </view>
@@ -822,6 +822,11 @@
                                         <buttonConfiguration key="configuration" style="plain">
                                             <imageReference key="image" image="flag" catalog="system" symbolScale="medium"/>
                                         </buttonConfiguration>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="selectedColor">
+                                                <color key="value" name="Warning"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="toggleFlagged" destination="VxB-Su-waJ" eventType="touchUpInside" id="2XT-V1-aAm"/>
                                         </connections>
@@ -1763,6 +1768,11 @@
                                         <buttonConfiguration key="configuration" style="plain">
                                             <imageReference key="image" image="flag" catalog="system" symbolScale="medium"/>
                                         </buttonConfiguration>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="color" keyPath="selectedColor">
+                                                <color key="value" name="Warning"/>
+                                            </userDefinedRuntimeAttribute>
+                                        </userDefinedRuntimeAttributes>
                                         <connections>
                                             <action selector="toggleFlagged" destination="q39-It-YtO" eventType="touchUpInside" id="6J1-4N-sGI"/>
                                         </connections>
@@ -2931,12 +2941,15 @@
         <image name="person.crop.circle" catalog="system" width="128" height="123"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="save-open-archive-logo" width="145" height="120"/>
-        <image name="server.rack" width="16" height="13"/>
         <image name="server.rack" catalog="system" width="128" height="93"/>
+        <image name="server.rack" width="16" height="13"/>
         <image name="text.append" catalog="system" width="128" height="99"/>
         <image name="trash" catalog="system" width="117" height="128"/>
         <namedColor name="Accent">
             <color red="0.0" green="0.70588235294117652" blue="0.65098039215686276" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Warning">
+            <color red="0.9137254901960784" green="0.74117647058823533" blue="0.027450980392156862" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="menu-background">
             <color red="0.0" green="0.70588235294117652" blue="0.65098039215686276" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
