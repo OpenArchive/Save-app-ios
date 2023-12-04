@@ -558,6 +558,17 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
      Shows/hides the upload manager button. Sets the number of currently queued items.
      */
     private func updateManageBt() {
+        if inEditMode && collectionView.numberOfSelectedItems > 0 {
+            folderAssetCountLb.hide(animated: true)
+
+            manageBt.setTitle(nil)
+            manageBt.setImage(.init(systemName: "trash"))
+            manageBt.tag = Self.tagDelete
+            manageBt.show2(animated: true)
+
+            return
+        }
+
         uploadsReadConn?.asyncRead { [weak self] tx in
             let count = UploadsView.countUploading(tx)
 
@@ -568,14 +579,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                     self?.manageBt.setTitle(NSLocalizedString("Edit", comment: ""))
                     self?.manageBt.setImage(.init(systemName: "text.append"))
                     self?.manageBt.tag = Self.tagManage
-                    self?.manageBt.show2(animated: true)
-                }
-                else if self?.inEditMode ?? false && self?.collectionView.numberOfSelectedItems ?? 0 > 0 {
-                    self?.folderAssetCountLb.hide(animated: true)
-
-                    self?.manageBt.setTitle(nil)
-                    self?.manageBt.setImage(.init(systemName: "trash"))
-                    self?.manageBt.tag = Self.tagDelete
                     self?.manageBt.show2(animated: true)
                 }
                 else {
