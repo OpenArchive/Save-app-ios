@@ -143,7 +143,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mX4-L9-fca">
-                                <rect key="frame" x="16" y="352" width="216" height="99.5"/>
+                                <rect key="frame" x="16" y="352" width="216" height="124.5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="hvg-50-O1E"/>
                                 </constraints>
@@ -152,7 +152,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="250" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LOG-Gh-tpR">
-                                <rect key="frame" x="16" y="459.5" width="216" height="108.5"/>
+                                <rect key="frame" x="16" y="484.5" width="216" height="83.5"/>
                                 <string key="text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam</string>
                                 <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="17"/>
                                 <nil key="highlightedColor"/>
@@ -332,6 +332,18 @@
                                     <constraint firstAttribute="width" constant="64" id="lfi-FC-CAl"/>
                                 </constraints>
                             </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gz7-kv-s2C">
+                                <rect key="frame" x="232" y="42" width="24" height="24"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="24" id="ed0-Xi-UlT"/>
+                                    <constraint firstAttribute="height" constant="24" id="kbQ-fE-Itk"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="trash" catalog="system"/>
+                                <connections>
+                                    <action selector="removeAssets" destination="wAB-WM-ZQl" eventType="touchUpInside" id="Iww-2i-Kau"/>
+                                </connections>
+                            </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Fbx-Lc-Aho">
                                 <rect key="frame" x="280" y="42" width="24" height="24"/>
                                 <constraints>
@@ -384,7 +396,9 @@
                                             <imageReference key="image" image="text.append" catalog="system" symbolScale="small"/>
                                         </state>
                                         <connections>
-                                            <action selector="manage" destination="wAB-WM-ZQl" eventType="touchUpInside" id="Co2-sK-2ce"/>
+                                            <segue destination="igi-j2-R7B" kind="popoverPresentation" popoverAnchorView="E7F-wy-6xa" id="D5S-RT-Oki">
+                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                            </segue>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -711,7 +725,9 @@
                             <constraint firstItem="hpS-2l-dcc" firstAttribute="leading" secondItem="vgM-P6-FLk" secondAttribute="leading" constant="16" id="aEv-nP-VtX"/>
                             <constraint firstItem="InD-HF-ni8" firstAttribute="top" secondItem="VEn-ta-I3v" secondAttribute="top" id="be8-uw-zxe"/>
                             <constraint firstItem="5dc-h7-E3x" firstAttribute="centerX" secondItem="VEn-ta-I3v" secondAttribute="centerX" id="bkv-l7-TAq"/>
+                            <constraint firstItem="gz7-kv-s2C" firstAttribute="centerY" secondItem="hpS-2l-dcc" secondAttribute="centerY" id="blE-2q-bJ8"/>
                             <constraint firstAttribute="bottom" secondItem="qfO-EJ-P6h" secondAttribute="bottom" id="c78-Qc-pKj"/>
+                            <constraint firstItem="Fbx-Lc-Aho" firstAttribute="leading" secondItem="gz7-kv-s2C" secondAttribute="trailing" constant="24" id="clK-3b-C8A"/>
                             <constraint firstAttribute="trailing" secondItem="Bhs-Ln-YUb" secondAttribute="trailing" id="dY4-Fy-Hbj"/>
                             <constraint firstItem="vgM-P6-FLk" firstAttribute="trailing" secondItem="hnS-Bv-Svc" secondAttribute="trailing" id="h6M-Vg-QmD"/>
                             <constraint firstItem="5dc-h7-E3x" firstAttribute="top" relation="greaterThanOrEqual" secondItem="cdB-Ih-Rhb" secondAttribute="top" id="h8P-St-3A1"/>
@@ -746,14 +762,12 @@
                         <outlet property="menu" destination="Bhs-Ln-YUb" id="Pi8-tu-3Wk"/>
                         <outlet property="menuBt" destination="Fbx-Lc-Aho" id="xpo-ec-CyW"/>
                         <outlet property="myMediaBt" destination="QIU-V8-v7v" id="Co4-ka-MJ3"/>
+                        <outlet property="removeBt" destination="gz7-kv-s2C" id="LWx-Ue-tEf"/>
                         <outlet property="settingsBt" destination="VpT-Ct-gHj" id="Ttw-9V-DDF"/>
                         <outlet property="spaceFavIcon" destination="dn7-CY-FB2" id="GBH-lm-TVA"/>
                         <outlet property="welcomeLb" destination="a1a-GU-jmb" id="e5E-en-NsJ"/>
                         <segue destination="E3U-Mn-N4D" kind="show" identifier="showPreviewSegue" id="3Pd-9C-a4R"/>
                         <segue destination="9re-mE-4ZF" kind="presentation" identifier="connectSpaceSegue" modalPresentationStyle="formSheet" id="4nC-3p-qXK"/>
-                        <segue destination="igi-j2-R7B" kind="popoverPresentation" identifier="manageUploadsSegue" popoverAnchorView="E7F-wy-6xa" id="3Cy-4J-Kck">
-                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                        </segue>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="xHq-hp-h3I" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2931,8 +2945,8 @@
         <image name="person.crop.circle" catalog="system" width="128" height="123"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="save-open-archive-logo" width="145" height="120"/>
-        <image name="server.rack" catalog="system" width="128" height="93"/>
         <image name="server.rack" width="16" height="13"/>
+        <image name="server.rack" catalog="system" width="128" height="93"/>
         <image name="text.append" catalog="system" width="128" height="99"/>
         <image name="trash" catalog="system" width="117" height="128"/>
         <namedColor name="Accent">
