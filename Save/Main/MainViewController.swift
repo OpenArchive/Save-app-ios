@@ -508,7 +508,10 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 }
 
                 DispatchQueue.main.async {
-                    self.collectionView.reloadItems(at: [indexPath])
+                    UIView.performWithoutAnimation { // Less flickering: no fading animation.
+                        // Make sure, section header is reloaded, always.
+                        self.collectionView.reloadSections([indexPath.section])
+                    }
                 }
             }
 
@@ -526,28 +529,27 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             updateProject()
         }
 
-        var reload = false
+        var forceFull = false
 
         if let changes = collectionsReadConn?.getChanges(collectionsMappings) {
             // We need to recognize changes in `Collection` objects used in the
             // section headers.
-            reload = changes.forceFull || changes.rowChanges.contains(where: { $0.type == .update && $0.finalGroup == selectedProject?.id })
+            forceFull = changes.forceFull || changes.rowChanges.contains(where: { $0.type == .update && $0.finalGroup == selectedProject?.id })
         }
 
-        if let changes = assetsReadConn?.getChanges(assetsMappings) {
-            reload = reload || changes.forceFull
-                || changes.sectionChanges.contains(where: { $0.type == .delete || $0.type == .insert })
-                || changes.rowChanges.contains(where: {
-                    $0.type == .delete || $0.type == .insert || $0.type == .move || $0.type == .update
-                })
-        }
+        var changes = assetsReadConn?.getChanges(assetsMappings) ?? YapDatabaseChanges(forceFull, [], [])
+        changes.forceFull = changes.forceFull || forceFull
 
-        if reload {
-            updateAssets()
-        }
+        collectionView.apply(changes) { [weak self] countChanged in
+            guard let self = self, countChanged else {
+                return
+            }
 
-        if collectionView.isHidden != (numberOfSections(in: collectionView) < 1) {
-            collectionView.toggle(collectionView.isHidden, animated: true)
+            self.folderAssetCountLb.text = "  \(Formatters.format(self.assetsMappings.numberOfItemsInAllGroups()))  "
+
+            if self.collectionView.isHidden != (self.numberOfSections(in: self.collectionView) < 1) {
+                self.collectionView.toggle(self.collectionView.isHidden, animated: true)
+            }
         }
     }
 
@@ -624,12 +626,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         AbcFilteredByProjectView.updateFilter(project?.id)
 
         folderNameLb.text = project?.name
-    }
-
-    private func updateAssets() {
-        folderAssetCountLb.text = "  \(Formatters.format(assetsMappings.numberOfItemsInAllGroups()))  "
-
-        collectionView.reloadData()
     }
 
     private func getSelectedAssets() -> [Asset] {

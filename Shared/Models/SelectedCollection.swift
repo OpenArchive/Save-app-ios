@@ -79,7 +79,7 @@ class SelectedCollection {
         getAsset(IndexPath(row: row, section: 0))
     }
 
-    func yapDatabaseModified() -> (forceFull: Bool, sectionChanges: [YapDatabaseViewSectionChange], rowChanges: [YapDatabaseViewRowChange]) {
+    func yapDatabaseModified() -> YapDatabaseChanges {
         readConn?.getChanges(mappings) ?? (false, [], [])
     }
 }

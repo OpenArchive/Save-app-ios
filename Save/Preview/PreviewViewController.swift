@@ -280,57 +280,11 @@ class PreviewViewController: UIViewController,
      Will be called, when something changed the database.
      */
     @objc func yapDatabaseModified(notification: Notification) {
-        let (forceFull, sectionChanges, rowChanges) = sc.yapDatabaseModified()
+        let changes = sc.yapDatabaseModified()
 
         updateTitle()
 
-        if forceFull {
-            collectionView.reloadData()
-
-            return
-        }
-
-        if sectionChanges.isEmpty && rowChanges.isEmpty {
-            return
-        }
-
-        collectionView.performBatchUpdates {
-            for change in sectionChanges {
-                switch change.type {
-                case .delete:
-                    collectionView.deleteSections(IndexSet(integer: Int(change.index)))
-
-                case .insert:
-                    collectionView.insertSections(IndexSet(integer: Int(change.index)))
-
-                default:
-                    break
-                }
-            }
-
-            for change in rowChanges {
-                switch change.type {
-                case .delete:
-                    if let indexPath = change.indexPath {
-                        collectionView.deleteItems(at: [indexPath])
-                    }
-                case .insert:
-                    if let newIndexPath = change.newIndexPath {
-                        collectionView.insertItems(at: [newIndexPath])
-                    }
-                case .move:
-                    if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
-                        collectionView.moveItem(at: indexPath, to: newIndexPath)
-                    }
-                case .update:
-                    if let indexPath = change.indexPath {
-                        collectionView.reloadItems(at: [indexPath])
-                    }
-                @unknown default:
-                    break
-                }
-            }
-        } completion: { [weak self] _ in
+        collectionView.apply(changes) { [weak self] _ in
             if self?.sc.count ?? 0 < 1 {
                 // When we don't have any assets anymore after an update, because the
                 // user deleted them, it doesn't make sense, to show this view
@@ -345,7 +299,9 @@ class PreviewViewController: UIViewController,
 
     private func updateTitle() {
         let projectName = sc.collection?.project.name
-        (navigationItem.titleView as? MultilineTitle)?.subtitle.text = projectName == nil ? nil : String(format: NSLocalizedString("Upload to %@", comment: ""), projectName!)
+        (navigationItem.titleView as? MultilineTitle)?.subtitle.text = projectName == nil 
+            ? nil
+            : String(format: NSLocalizedString("Upload to %@", comment: ""), projectName!)
     }
 
     /**

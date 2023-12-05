@@ -100,41 +100,7 @@ class TableWithSpacesViewController: BaseTableViewController, UICollectionViewDe
             return
         }
 
-        if changes.forceFull {
-            spacesReadConn?.update(mappings: spacesMappings)
-            collectionView?.reloadData()
-
-            return
-        }
-
-        guard !changes.rowChanges.isEmpty else {
-            return
-        }
-
-        collectionView?.performBatchUpdates({
-            for change in changes.rowChanges {
-                switch change.type {
-                case .insert:
-                    if let newIndexPath = change.newIndexPath {
-                        collectionView?.insertItems(at: [newIndexPath])
-                    }
-                case .delete:
-                    if let indexPath = change.indexPath {
-                        collectionView?.deleteItems(at: [indexPath])
-                    }
-                case .move:
-                    if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
-                        collectionView?.moveItem(at: indexPath, to: newIndexPath)
-                    }
-                case .update:
-                    if let indexPath = change.indexPath {
-                        collectionView?.reloadItems(at: [indexPath])
-                    }
-                @unknown default:
-                    break
-                }
-            }
-        })
+        collectionView?.apply(changes)
     }
 
     

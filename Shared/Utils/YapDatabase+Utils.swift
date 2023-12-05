@@ -9,6 +9,10 @@
 import Foundation
 import YapDatabase
 
+typealias YapDatabaseChanges = (forceFull: Bool,
+                                sectionChanges: [YapDatabaseViewSectionChange],
+                                rowChanges: [YapDatabaseViewRowChange])
+
 extension YapDatabaseConnection {
 
     func hasChanges(_ mappings: YapDatabaseViewMappings) -> Bool {
@@ -33,10 +37,7 @@ extension YapDatabaseConnection {
         return false
     }
 
-    func getChanges(_ mappings: YapDatabaseViewMappings) -> (forceFull: Bool,
-                                                             sectionChanges: [YapDatabaseViewSectionChange],
-                                                             rowChanges: [YapDatabaseViewRowChange])
-    {
+    func getChanges(_ mappings: YapDatabaseViewMappings) -> YapDatabaseChanges {
         let notifications = beginLongLivedReadTransaction()
 
         guard mappings.isNextSnapshot(notifications) else {
@@ -370,5 +371,80 @@ extension YapDatabaseViewMappings {
         let firstSnapshot = (notifications.first?.userInfo?[YapDatabaseSnapshotKey] as? NSNumber)?.uint64Value
 
         return snapshotOfLastUpdate + 1 == firstSnapshot
+    }
+}
+
+extension UICollectionView {
+
+    func apply(_ changes: YapDatabaseChanges, completion: ((_ countChanged: Bool) -> Void)? = nil) {
+        if changes.forceFull {
+            UIView.performWithoutAnimation {
+                reloadData()
+            }
+
+            DispatchQueue.main.async {
+                completion?(true)
+            }
+
+            return
+        }
+
+        if changes.rowChanges.isEmpty && changes.sectionChanges.isEmpty {
+            DispatchQueue.main.async {
+                completion?(false)
+            }
+
+            return
+        }
+
+        var countChanged = false
+
+        performBatchUpdates {
+            for change in changes.sectionChanges {
+                switch change.type {
+                case .insert:
+                    insertSections([Int(change.index)])
+                    countChanged = true
+
+                case .delete:
+                    deleteSections([Int(change.index)])
+                    countChanged = true
+
+                default:
+                    break
+                }
+            }
+
+            for change in changes.rowChanges {
+                switch change.type {
+                case .insert:
+                    if let newIndexPath = change.newIndexPath {
+                        insertItems(at: [newIndexPath])
+                        countChanged = true
+                    }
+
+                case .delete:
+                    if let indexPath = change.indexPath {
+                        deleteItems(at: [indexPath])
+                        countChanged = true
+                    }
+
+                case .move:
+                    if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath {
+                        moveItem(at: indexPath, to: newIndexPath)
+                    }
+
+                case .update:
+                    if let indexPath = change.indexPath {
+                        reloadItems(at: [indexPath])
+                    }
+
+                @unknown default:
+                    break
+                }
+            }
+        } completion: { _ in
+            completion?(countChanged)
+        }
     }
 }
