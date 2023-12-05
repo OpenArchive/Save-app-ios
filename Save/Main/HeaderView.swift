@@ -14,7 +14,12 @@ class HeaderView: UICollectionReusableView {
 
     @IBOutlet weak var infoLb: UILabel!
 
-    @IBOutlet weak var assetCountLb: UILabel!
+    @IBOutlet weak var assetCountLb: UILabel! {
+        didSet {
+            // iOS 17 fix: Is ignored in iOS 17, when only set in storyboard.
+            assetCountLb.clipsToBounds = true
+        }
+    }
 
 
     var collection: Collection? {

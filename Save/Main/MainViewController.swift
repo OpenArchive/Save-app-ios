@@ -39,7 +39,14 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
     @IBOutlet weak var spaceFavIcon: UIImageView!
     @IBOutlet weak var folderNameLb: UILabel!
-    @IBOutlet weak var folderAssetCountLb: UILabel!
+
+    @IBOutlet weak var folderAssetCountLb: UILabel! {
+        didSet {
+            // iOS 17 fix: Is ignored, when only set in storyboard.
+            folderAssetCountLb.clipsToBounds = true
+        }
+    }
+
     @IBOutlet weak var manageBt: UIButton! {
         didSet {
             manageBt.setTitle(NSLocalizedString("Edit", comment: ""))
