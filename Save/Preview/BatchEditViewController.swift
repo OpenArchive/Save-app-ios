@@ -18,12 +18,7 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
     @IBOutlet weak var image3: UIImageView!
 
     @IBOutlet weak var counterLb: UILabel!
-    @IBOutlet weak var flagBt: UIButton! {
-        didSet {
-            flagBt.setTitle("")
-            flagBt.setImage(.init(systemName: "flag.fill"), for: .selected)
-        }
-    }
+    @IBOutlet weak var flagIv: Flag!
 
     @IBOutlet weak var infos: UIView!
     @IBOutlet weak var infosBottom: NSLayoutConstraint?
@@ -39,7 +34,7 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
         navigationItem.titleView = title
 
         counterLb.text = Formatters.format(assets?.count ?? 0)
-        flagBt.isSelected = assets?.reduce(true, { $0 && $1.flagged }) ?? false
+        flagIv.isSelected = assets?.reduce(true, { $0 && $1.flagged }) ?? false
 
         setImage(image1, assets?.first)
         setImage(image2, assets?.count ?? 0 > 1 ? assets?[1] : nil)
@@ -130,7 +125,7 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
             return
         }
 
-        let flagged = !flagBt.isSelected
+        let flagged = !flagIv.isSelected
 
         let update = dh?.assign(dh?.getFirstResponder())
 
@@ -142,7 +137,7 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
             self?.assets = $0
         }
 
-        flagBt.isSelected = flagged
+        flagIv.isSelected = flagged
 
         dh?.setInfos(assets.first, defaults: true)
 

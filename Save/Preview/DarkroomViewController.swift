@@ -26,12 +26,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     @IBOutlet weak var container: UIView!
 
     @IBOutlet weak var counterLb: UILabel!
-    @IBOutlet weak var flagBt: UIButton! {
-        didSet {
-            flagBt.setTitle("")
-            flagBt.setImage(.init(systemName: "flag.fill"), for: .selected)
-        }
-    }
+    @IBOutlet weak var flagIv: Flag!
 
     @IBOutlet weak var backwardBt: UIButton! {
         didSet {
@@ -311,7 +306,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
 
         counterLb.text = String(format: NSLocalizedString("%1$@/%2$@", comment: "both are integer numbers meaning 'x of n'"),
                                 Formatters.format(selected + 1), Formatters.format(sc.count))
-        flagBt.isSelected = asset?.flagged ?? false
+        flagIv.isSelected = asset?.flagged ?? false
 
         backwardBt.toggle(selected > 0, animated: animate)
         forwardBt.toggle(selected < sc.count - 1, animated: animate)
