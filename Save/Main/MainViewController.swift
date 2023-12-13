@@ -537,10 +537,19 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             forceFull = changes.forceFull || changes.rowChanges.contains(where: { $0.type == .update && $0.finalGroup == selectedProject?.id })
         }
 
-        var changes = assetsReadConn?.getChanges(assetsMappings) ?? YapDatabaseChanges(forceFull, [], [])
-        changes.forceFull = changes.forceFull || forceFull
+        // Always, always, always force a full reload if anything changed.
+        // No optimizing helps. Tried this again, and got crash reports again when people
+        // tried to delete a folder. Forget it.
+        if let changes = assetsReadConn?.getChanges(assetsMappings) {
+            forceFull = forceFull || changes.forceFull
+                || changes.sectionChanges.contains(where: { $0.type == .delete || $0.type == .insert })
+                || changes.rowChanges.contains(where: {
+                    $0.type == .delete || $0.type == .insert || $0.type == .move || $0.type == .update
+                })
+        }
 
-        collectionView.apply(changes) { [weak self] countChanged in
+        collectionView.apply(YapDatabaseChanges(forceFull, [], [])) { [weak self] countChanged in
+
             guard let self = self, countChanged else {
                 return
             }
