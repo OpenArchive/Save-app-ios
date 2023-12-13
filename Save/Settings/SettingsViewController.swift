@@ -75,13 +75,18 @@ class SettingsViewController: UIViewController {
         let space = SelectedSpace.space
 
         if let icon = space?.favIcon?.resizeFit(to: .icon) {
-            serverIv.image = icon.withRenderingMode(.alwaysOriginal)
+            if space is IaSpace || space is DropboxSpace {
+                serverIv.image = icon.withRenderingMode(.alwaysTemplate)
+            }
+            else {
+                serverIv.image = icon.withRenderingMode(.alwaysOriginal)
+            }
         }
         else if let icon = SelectedSpace.defaultFavIcon?.resizeFit(to: .icon) {
             serverIv.image = icon.withRenderingMode(.alwaysTemplate)
         }
         else {
-            serverIv.image = UIImage(systemName: "server.rack")
+            serverIv.image = UIImage(systemName: "server.rack")?.withRenderingMode(.alwaysTemplate)
         }
 
         serverBt.setTitle(space?.prettyName ?? NSLocalizedString("Server", comment: ""))

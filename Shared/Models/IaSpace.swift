@@ -30,7 +30,7 @@ class IaSpace: Space, Item {
 
     // MARK: IaSpace
 
-    static let favIcon = UIImage(named: "InternetArchiveLogo")
+    static let favIcon = UIImage(named: "InternetArchiveLogo")?.withRenderingMode(.alwaysTemplate)
 
 
     init(accessKey: String? = nil, secretKey: String? = nil) {

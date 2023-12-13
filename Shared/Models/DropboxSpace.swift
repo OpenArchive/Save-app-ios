@@ -27,7 +27,7 @@ class DropboxSpace: Space, Item {
 
     // MARK: DropboxSpace
 
-    static let favIcon = UIImage(named: "dropbox-icon")
+    static let favIcon = UIImage(named: "dropbox-icon")?.withRenderingMode(.alwaysTemplate)
 
     // Dropbox doesn't support parallel access to different accounts,
     // so there's only ever going to be one DropboxSpace, which this

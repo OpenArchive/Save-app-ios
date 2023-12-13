@@ -28,7 +28,7 @@ class SideMenuItemCell: UITableViewCell {
         iconLeadingConstraint.constant = 8
 
         icon.image = space?.favIcon ?? SelectedSpace.defaultFavIcon
-        icon.tintColor = .clear
+        icon.tintColor = .label
 
         nameLb.text = space?.prettyName ?? Bundle.main.displayName
         nameLb.textColor = .label
