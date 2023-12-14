@@ -4,7 +4,6 @@ PODS:
   - CleanInsightsSDK (2.7.0)
   - CrossroadRegex (1.2.0)
   - DeviceKit (4.9.0)
-  - DownloadButton (0.1.0)
   - Eureka (5.4.0)
   - FavIcon (3.1.0)
   - FontBlaster (5.3.0)
@@ -134,7 +133,6 @@ DEPENDENCIES:
   - AlignedCollectionViewFlowLayout (~> 1.1)
   - CleanInsightsSDK (~> 2.6)
   - CrossroadRegex (from `https://github.com/crossroadlabs/Regex.git`, tag `1.2.0`)
-  - DownloadButton (~> 0.1)
   - Eureka (~> 5.3)
   - FavIcon (from `https://github.com/tladesignz/FavIcon.git`, branch `swift-5`)
   - FontBlaster (~> 5.2)
@@ -156,7 +154,6 @@ SPEC REPOS:
     - AlignedCollectionViewFlowLayout
     - CleanInsightsSDK
     - DeviceKit
-    - DownloadButton
     - Eureka
     - FontBlaster
     - LegacyUTType
@@ -212,7 +209,6 @@ SPEC CHECKSUMS:
   CleanInsightsSDK: 758f2c056ad4602304fefb2711b94e70607a96f1
   CrossroadRegex: 9af32b4b4dc6ff404c87647ef1bc68ea711cc570
   DeviceKit: 847709bf70b78fd9ab765bd571fb9f5f815c3fc1
-  DownloadButton: 49a21a89e0d7d1b42d9134f79aaa40e727cd57c3
   Eureka: fadaa9fa3d6e402d3c60f78f24edf3d7bafc9c29
   FavIcon: 57f172cc9880265915c1aba226a2538b722c83fd
   FontBlaster: 941f89d735a29e1c7d24e7a90d3e16939ef1609a
@@ -229,6 +225,6 @@ SPEC CHECKSUMS:
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
   YapDatabase: c9924a3d45245d6878d0bf8172cb22a8522aa012
 
-PODFILE CHECKSUM: 43a0e82a065be00f699dd9ce64ce23c7ebae2fc3
+PODFILE CHECKSUM: 10e91437b01b17bdf5363b7fab2565cb4545f38e
 
-COCOAPODS: 1.14.2
+COCOAPODS: 1.14.3

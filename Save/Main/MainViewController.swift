@@ -298,9 +298,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 }
 
                 switch upload.state {
-                case .startDownload:
+                case .paused:
                     NotificationCenter.default.post(name: .uploadManagerUnpause, object: upload.id)
-                case .pending, .downloading:
+                case .pending, .uploading:
                     NotificationCenter.default.post(name: .uploadManagerPause, object: upload.id)
                 default:
                     break

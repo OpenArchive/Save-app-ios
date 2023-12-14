@@ -7,15 +7,14 @@
 //
 
 import UIKit
-import DownloadButton
 
 protocol UploadCellDelegate: AnyObject {
-    func progressTapped(_ upload: Upload, _ button: PKDownloadButton)
+    func progressTapped(_ upload: Upload, _ button: ProgressButton)
 
     func showError(_ upload: Upload)
 }
 
-class UploadCell: BaseCell, PKDownloadButtonDelegate {
+class UploadCell: BaseCell {
 
     override class var reuseId: String {
         return "uploadCell"
@@ -25,31 +24,9 @@ class UploadCell: BaseCell, PKDownloadButtonDelegate {
         return 64
     }
 
-    class func style(_ button: PKDownloadButton) {
-        let icon = UIImage(named: "ic_up")
-
-        button.startDownloadButton.setTitle(nil, for: .normal)
-        button.startDownloadButton.setAttributedTitle(nil, for: .normal)
-        button.startDownloadButton.setImage(icon?.withRenderingMode(.alwaysTemplate), for: .normal)
-        button.startDownloadButton.setBackgroundImage(
-            UIImage.buttonBackground(with: .accent)?
-                .resizableImage(withCapInsets: UIEdgeInsets(top: 15, left: 15, bottom: 15, right: 15)),
-            for: .normal)
-        button.startDownloadButton.setTitle(nil, for: .highlighted)
-        button.startDownloadButton.setAttributedTitle(nil, for: .highlighted)
-        button.startDownloadButton.setImage(icon, for: .highlighted)
-        button.startDownloadButton.setBackgroundImage(
-            UIImage.highlitedButtonBackground(with: .accent),
-            for: .highlighted)
-
-        button.stopDownloadButton.stopButton.setImage(
-            UIImage.stop(ofSize: button.stopDownloadButton.stopButtonWidth, color: .accent),
-            for: .normal)
-    }
-
-    @IBOutlet weak var progress: PKDownloadButton! {
+    @IBOutlet weak var progress: ProgressButton! {
         didSet {
-            Self.style(progress)
+            progress.addTarget(self, action: #selector(progressTapped))
         }
     }
     
@@ -71,18 +48,18 @@ class UploadCell: BaseCell, PKDownloadButtonDelegate {
         didSet {
             let progressValue = upload?.progress ?? 0
 
-            progress.isHidden = upload?.error != nil || upload?.state == .downloaded
+            progress.isHidden = upload?.error != nil || upload?.state == .uploaded
             progress.state = upload?.state ?? .pending
-            progress.stopDownloadButton.progress = CGFloat(progressValue)
+            progress.progress = CGFloat(progressValue)
 
             errorBt.isHidden = upload?.error == nil
-            done.isHidden = upload?.state != .downloaded
+            done.isHidden = upload?.state != .uploaded
 
             thumbnail.image = upload?.thumbnail
 
             nameLb.text = upload?.filename
 
-            if !(upload?.isReady ?? false) && upload?.state != .downloaded {
+            if !(upload?.isReady ?? false) && upload?.state != .uploaded {
                 sizeLb.text = NSLocalizedString("Encoding file…", comment: "")
             }
             else {
@@ -104,11 +81,12 @@ class UploadCell: BaseCell, PKDownloadButtonDelegate {
     weak var delegate: UploadCellDelegate?
 
 
-    // MARK: PKDownloadButtonDelegate
+    // MARK: Actions
 
-    func downloadButtonTapped(_ downloadButton: PKDownloadButton, currentState state: PKDownloadButtonState) {
+    @IBAction
+    func progressTapped() {
         if let upload = upload {
-            delegate?.progressTapped(upload, downloadButton)
+            delegate?.progressTapped(upload, progress)
         }
     }
 

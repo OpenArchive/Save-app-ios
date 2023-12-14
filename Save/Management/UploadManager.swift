@@ -524,7 +524,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             }
 
             // Check if there's currently an item uploading which is not paused and not already uploaded.
-            if !(self.current?.paused ?? true) && self.current?.state != .downloaded {
+            if !(self.current?.paused ?? true) && self.current?.state != .uploaded {
                 self.debug("#uploadNext already one uploading")
 
                 return self.endBackgroundTask(.noData)
@@ -609,7 +609,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             next = tx.find(group: UploadsView.groups.first, in: UploadsView.name) { upload in
                 // Look at next, if it's paused or delayed.
                 guard !upload.paused
-                    && upload.state != .downloaded
+                    && upload.state != .uploaded
                     && upload.nextTry.compare(Date()) == .orderedAscending 
                 else {
                     return false

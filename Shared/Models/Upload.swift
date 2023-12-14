@@ -7,10 +7,16 @@
 //
 
 import UIKit
-import DownloadButton
 import YapDatabase
 
 class Upload: NSObject, Item, YapDatabaseRelationshipNode {
+
+    enum State {
+        case paused
+        case pending
+        case uploading
+        case uploaded
+    }
 
     // MARK: Item
 
@@ -104,17 +110,17 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
             && (asset?.space?.uploadAllowed ?? false)
     }
 
-    var state: PKDownloadButtonState {
+    var state: State {
         if paused {
-            return .startDownload
+            return .paused
         }
 
         if progress >= 1 {
-            return .downloaded
+            return .uploaded
         }
 
         if progress > 0 {
-            return .downloading
+            return .uploading
         }
 
         return .pending

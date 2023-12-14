@@ -130,6 +130,9 @@
 		A04255CF22944C1B0048E00C /* UIStoryboard+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04255CD22944C1B0048E00C /* UIStoryboard+Utils.swift */; };
 		A0457E6720EF96FB00B8FBCB /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6620EF96FB00B8FBCB /* StringUtils.swift */; };
 		A0457E6920EFB57C00B8FBCB /* RegexUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */; };
+		A045BF052B2B109D00C01D39 /* ProgressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A045BF042B2B109D00C01D39 /* ProgressButton.swift */; };
+		A045BF062B2B109D00C01D39 /* ProgressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A045BF042B2B109D00C01D39 /* ProgressButton.swift */; };
+		A045BF072B2B109D00C01D39 /* ProgressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A045BF042B2B109D00C01D39 /* ProgressButton.swift */; };
 		A045D1E4224CF034008FF8C1 /* SpaceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A045D1E2224CF034008FF8C1 /* SpaceCell.xib */; };
 		A045D1E5224CF034008FF8C1 /* SpaceCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A045D1E2224CF034008FF8C1 /* SpaceCell.xib */; };
 		A045D1E8224CF24E008FF8C1 /* SpacesListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A03EE8DA224CEE63008A0281 /* SpacesListCell.xib */; };
@@ -569,6 +572,7 @@
 		A04255CD22944C1B0048E00C /* UIStoryboard+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Utils.swift"; sourceTree = "<group>"; };
 		A0457E6620EF96FB00B8FBCB /* StringUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
 		A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegexUtils.swift; sourceTree = "<group>"; };
+		A045BF042B2B109D00C01D39 /* ProgressButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressButton.swift; sourceTree = "<group>"; };
 		A045D1E2224CF034008FF8C1 /* SpaceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpaceCell.xib; sourceTree = "<group>"; };
 		A045D1EF224CFB96008FF8C1 /* SelectedSpaceCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SelectedSpaceCell.xib; sourceTree = "<group>"; };
 		A045D1F8224D02AA008FF8C1 /* TitleCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitleCell.swift; sourceTree = "<group>"; };
@@ -1125,6 +1129,8 @@
 			children = (
 				A037D6FD2B0CC32000C77706 /* BigButton.swift */,
 				A045D200224D07C3008FF8C1 /* ButtonCell.swift */,
+				A025171822C2126B00EEFBD9 /* DuplicateFolderAlert.swift */,
+				A0F7FDDB22491C6C006610F0 /* Flag.swift */,
 				A0E12C152B024C2F00892AC8 /* GradientView.swift */,
 				A0E321FA228EFA8800F2E9BD /* InfoBox.swift */,
 				A0E321FC228EFDA200F2E9BD /* InfoBox.xib */,
@@ -1133,8 +1139,8 @@
 				A0AC06B32201E94000BD5FBA /* MenuItemCell.xib */,
 				A0DC0FAB233914BD00C4969A /* MovieIndicator.swift */,
 				A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */,
+				A045BF042B2B109D00C01D39 /* ProgressButton.swift */,
 				A077732922786BCA00291F5D /* RemoveAssetAlert.swift */,
-				A025171822C2126B00EEFBD9 /* DuplicateFolderAlert.swift */,
 				A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */,
 				A0FB4DBA21F8C9B600B46099 /* RoundedImageView.swift */,
 				A0E1A68321EE831300E4F6B7 /* SelectedSpaceCell.swift */,
@@ -1147,7 +1153,6 @@
 				A0E1A68821EE873200E4F6B7 /* TableHeader.swift */,
 				A0A98AEB22428A9300596B74 /* TableHeader.xib */,
 				A013A9382B0D12D6003476ED /* TextBox.swift */,
-				A0F7FDDB22491C6C006610F0 /* Flag.swift */,
 				A0F7FDDE224936C8006610F0 /* TintedImageView.swift */,
 				A045D1F8224D02AA008FF8C1 /* TitleCell.swift */,
 				A0B645C322B7ABFE00BBE3FF /* TitleCell.xib */,
@@ -1703,6 +1708,7 @@
 				A0AFCF1022300E41005E57FD /* MultilineTitle.swift in Sources */,
 				A0E27200224E267800CB7113 /* BrowseViewController.swift in Sources */,
 				A02DB29B29B647390090ECF6 /* URL+Utils.swift in Sources */,
+				A045BF062B2B109D00C01D39 /* ProgressButton.swift in Sources */,
 				A0A192E121F23B61009A8CF0 /* Constants+Swift.swift in Sources */,
 				A0631B5C22034F0E00B3E90D /* Collection.swift in Sources */,
 				A0F7FDE822494E3E006610F0 /* RemoveProjectAlert.swift in Sources */,
@@ -1808,6 +1814,7 @@
 				A0102D802B18EC480054D3D4 /* SettingsViewController.swift in Sources */,
 				A0102DA32B18EF090054D3D4 /* ManagementViewController.swift in Sources */,
 				A0E12C182B024C2F00892AC8 /* GradientView.swift in Sources */,
+				A045BF072B2B109D00C01D39 /* ProgressButton.swift in Sources */,
 				A0102D862B18EC9B0054D3D4 /* FolderInfoAlert.swift in Sources */,
 				A09B53B123266F02005266C2 /* UICollectionView+selection.swift in Sources */,
 				A0102D9F2B18EEE80054D3D4 /* BatchInfoAlert.swift in Sources */,
@@ -1962,6 +1969,7 @@
 				A0A192DD21F208DA009A8CF0 /* Space.swift in Sources */,
 				A0E1A68921EE873200E4F6B7 /* TableHeader.swift in Sources */,
 				A0AC057F224CE8C7008B9249 /* TableWithSpacesViewController.swift in Sources */,
+				A045BF052B2B109D00C01D39 /* ProgressButton.swift in Sources */,
 				A0F7FDDF224936C8006610F0 /* TintedImageView.swift in Sources */,
 				A0AC29ED2B10CAC30054D5F4 /* WebDavSettingsViewController.swift in Sources */,
 				A013A9392B0D12D6003476ED /* TextBox.swift in Sources */,

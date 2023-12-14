@@ -67,7 +67,7 @@ class UploadsView: YapDatabaseAutoView {
      */
     class func countUploading(_ tx: YapDatabaseReadTransaction) -> Int {
         tx.findAll(group: groups.first, in: name, where: { (upload: inout Upload) in
-            upload.state != .downloaded
+            upload.state != .uploaded
         }).count
     }
 }

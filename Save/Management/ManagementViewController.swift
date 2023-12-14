@@ -8,7 +8,6 @@
 
 import UIKit
 import YapDatabase
-import DownloadButton
 import CleanInsightsSDK
 
 class ManagementViewController: BaseTableViewController, UploadCellDelegate, AnalyticsCellDelegate {
@@ -168,7 +167,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
             return false
         }
 
-        return getUpload(indexPath)?.state != .downloading
+        return getUpload(indexPath)?.state != .uploading
     }
 
     /**
@@ -196,11 +195,11 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
 
     // MARK: UploadCellDelegate
 
-    func progressTapped(_ upload: Upload, _ button: PKDownloadButton) {
+    func progressTapped(_ upload: Upload, _ button: ProgressButton) {
         switch button.state {
-        case .startDownload:
+        case .paused:
             NotificationCenter.default.post(name: .uploadManagerUnpause, object: upload.id)
-        case .pending, .downloading:
+        case .pending, .uploading:
             NotificationCenter.default.post(name: .uploadManagerPause, object: upload.id)
         default:
             break
@@ -364,7 +363,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
                 // Remove all which are uploaded, which don't have an
                 // asset anymore, or where the asset says, it's uploaded.
                 // (That happens, when the app gets killed.)
-                return upload.state == .downloaded || upload.asset?.isUploaded ?? true
+                return upload.state == .uploaded || upload.asset?.isUploaded ?? true
             }
 
             tx.removeObjects(forKeys: uploads.map({ $0.id }), inCollection: Upload.collection)

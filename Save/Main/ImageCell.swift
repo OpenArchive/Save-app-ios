@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import DownloadButton
 
 class ImageCell: UICollectionViewCell {
 
@@ -16,11 +15,7 @@ class ImageCell: UICollectionViewCell {
     private var blurView: UIVisualEffectView?
     
     @IBOutlet weak var imgView: UIImageView!
-    @IBOutlet weak var progress: PKDownloadButton! {
-        didSet {
-            UploadCell.style(progress)
-        }
-    }
+    @IBOutlet weak var progress: ProgressButton!
     @IBOutlet weak var errorIcon: UIImageView!
     @IBOutlet weak var movieIndicator: MovieIndicator!
 
@@ -86,8 +81,8 @@ class ImageCell: UICollectionViewCell {
 
         errorIcon.isHidden = true
 
-        progress.isHidden = upload == nil || asset?.isUploaded ?? true || upload?.state == .downloaded
-        progress.state = upload?.state ?? .pending
-        progress.stopDownloadButton.progress = upload?.progress ?? 0
+        progress.isHidden = upload == nil || asset?.isUploaded ?? true || upload?.state == .uploaded
+        progress.state = upload?.state ?? .paused
+        progress.progress = upload?.progress ?? 0
     }
 }

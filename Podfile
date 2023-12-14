@@ -11,7 +11,6 @@ def shared_pods
     pod 'Eureka', '~> 5.3'
     pod 'UIImage-Resize', '~> 1.0'
     pod 'AlignedCollectionViewFlowLayout', '~> 1.1'
-    pod 'DownloadButton', '~> 0.1'
     pod 'MBProgressHUD', '~> 1.2'
     pod 'ReachabilitySwift', '~> 5.0'
     pod 'UIImageViewAlignedSwift', '~> 0.8' #:git => 'https://github.com/mirego/UIImageViewAlignedSwift.git'
