@@ -262,13 +262,13 @@ class PreviewViewController: UIViewController,
     }
 
     @IBAction func removeAssets() {
-        present(RemoveAssetAlert(getSelectedAssets(), { [weak self] success in
+        RemoveAssetAlert.present(self, getSelectedAssets(), { [weak self] success in
             guard success else {
                 return
             }
 
             self?.toggleToolbar(false)
-        }), animated: true)
+        })
     }
 
 

@@ -20,8 +20,6 @@
 		A006A6AD282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006A6AB282973C10029E49B /* DispatchGroup+waitSignal.swift */; };
 		A006A6AE282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006A6AB282973C10029E49B /* DispatchGroup+waitSignal.swift */; };
 		A006AF3428198752007637DD /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3328198752007637DD /* AlertHelper.swift */; };
-		A006AF3528198752007637DD /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3328198752007637DD /* AlertHelper.swift */; };
-		A006AF3628198752007637DD /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3328198752007637DD /* AlertHelper.swift */; };
 		A00A8D44220C63B20083F0CB /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00A8D43220C63B20083F0CB /* ProjectsView.swift */; };
 		A00A8D45220C63B20083F0CB /* ProjectsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00A8D43220C63B20083F0CB /* ProjectsView.swift */; };
 		A00A8D47220C7EDD0083F0CB /* AbcFilteredByProjectView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00A8D46220C7EDD0083F0CB /* AbcFilteredByProjectView.swift */; };
@@ -51,7 +49,6 @@
 		A0102D852B18EC910054D3D4 /* AppAddFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03236342B0BB8F100D95BC3 /* AppAddFolderViewController.swift */; };
 		A0102D862B18EC9B0054D3D4 /* FolderInfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A037D6F72B0CAA0300C77706 /* FolderInfoAlert.swift */; };
 		A0102D872B18ECA80054D3D4 /* InfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A052A490230D546F00E72594 /* InfoAlert.swift */; };
-		A0102D882B18ECC10054D3D4 /* OrbotManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A065AE722864885C00FCFB4A /* OrbotManager.swift */; };
 		A0102D892B18ECCB0054D3D4 /* DropboxConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555923F6D9D600DE0168 /* DropboxConduit.swift */; };
 		A0102D8A2B18ECD30054D3D4 /* ClaimViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A020C12223C602A700F219DA /* ClaimViewController.swift */; };
 		A0102D8B2B18ECDE0054D3D4 /* SpaceSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056ACA62B0E649C00995FDF /* SpaceSuccessViewController.swift */; };
@@ -223,7 +220,6 @@
 		A076790427BE89E900609630 /* UIButton+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A076790127BE89E900609630 /* UIButton+Utils.swift */; };
 		A076790627BEA31200609630 /* ConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A076790527BEA31200609630 /* ConsentViewController.swift */; };
 		A077732A22786BF500291F5D /* RemoveAssetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A077732922786BCA00291F5D /* RemoveAssetAlert.swift */; };
-		A077732B22786BF500291F5D /* RemoveAssetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A077732922786BCA00291F5D /* RemoveAssetAlert.swift */; };
 		A077F76A2B0FB580004A4B34 /* WebDavWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A077F7692B0FB580004A4B34 /* WebDavWizardViewController.swift */; };
 		A07E8A40229575B600E9FFAA /* SlideshowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07E8A3F229575B600E9FFAA /* SlideshowViewController.swift */; };
 		A07E8A4222958D0600E9FFAA /* SlideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07E8A4122958D0600E9FFAA /* SlideViewController.swift */; };
@@ -272,7 +268,6 @@
 		A09B538F23266F02005266C2 /* DuplicateFolderAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A025171822C2126B00EEFBD9 /* DuplicateFolderAlert.swift */; };
 		A09B539123266F02005266C2 /* Screenshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = A080538E22E85C460031D4B5 /* Screenshots.swift */; };
 		A09B539223266F02005266C2 /* FormViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08C2CE521F0B46C008ACA3E /* FormViewController.swift */; };
-		A09B539323266F02005266C2 /* RemoveProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */; };
 		A09B539423266F02005266C2 /* YapDatabase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1364E227256F4008A22BF /* YapDatabase+Utils.swift */; };
 		A09B539523266F02005266C2 /* BaseFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78B121F771A700B6B68B /* BaseFolderViewController.swift */; };
 		A09B539B23266F02005266C2 /* BrowseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC06A92201CFD800BD5FBA /* BrowseViewController.swift */; };
@@ -282,7 +277,6 @@
 		A09B53A023266F02005266C2 /* UIStoryboard+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04255CD22944C1B0048E00C /* UIStoryboard+Utils.swift */; };
 		A09B53A223266F02005266C2 /* RuleFilename.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05F79FD22EEFA9F003DBB74 /* RuleFilename.swift */; };
 		A09B53A423266F02005266C2 /* SelectedSpaceCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68321EE831300E4F6B7 /* SelectedSpaceCell.swift */; };
-		A09B53A523266F02005266C2 /* RemoveAssetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A077732922786BCA00291F5D /* RemoveAssetAlert.swift */; };
 		A09B53A723266F02005266C2 /* AssetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029F6822118715700C4EF6D /* AssetFactory.swift */; };
 		A09B53A823266F02005266C2 /* WorkingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC06AF2201E30E00BD5FBA /* WorkingOverlay.swift */; };
 		A09B53AC23266F02005266C2 /* NewFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E27208224E335400CB7113 /* NewFolderViewController.swift */; };
@@ -394,6 +388,15 @@
 		A0DA7627282D0F300039438A /* Date+rfcString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DA7626282D0F300039438A /* Date+rfcString.swift */; };
 		A0DA7628282D0F300039438A /* Date+rfcString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DA7626282D0F300039438A /* Date+rfcString.swift */; };
 		A0DA7629282D0F300039438A /* Date+rfcString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DA7626282D0F300039438A /* Date+rfcString.swift */; };
+		A0DB02522B2C7D11001BF79E /* Montserrat-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A05471A52296B77D009FEA93 /* Montserrat-MediumItalic.ttf */; };
+		A0DB02532B2C7D11001BF79E /* Montserrat-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A05471A52296B77D009FEA93 /* Montserrat-MediumItalic.ttf */; };
+		A0DB02542B2C7D11001BF79E /* Montserrat-MediumItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A05471A52296B77D009FEA93 /* Montserrat-MediumItalic.ttf */; };
+		A0DB02552B2C7D1A001BF79E /* Montserrat-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A05471A62296B77D009FEA93 /* Montserrat-BoldItalic.ttf */; };
+		A0DB02562B2C7D1A001BF79E /* Montserrat-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A05471A62296B77D009FEA93 /* Montserrat-BoldItalic.ttf */; };
+		A0DB02572B2C7D1B001BF79E /* Montserrat-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A05471A62296B77D009FEA93 /* Montserrat-BoldItalic.ttf */; };
+		A0DB02582B2C8D86001BF79E /* OrbotManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A065AE722864885C00FCFB4A /* OrbotManager.swift */; };
+		A0DB02592B2C8F24001BF79E /* AlertHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3328198752007637DD /* AlertHelper.swift */; };
+		A0DB025A2B2C9216001BF79E /* RemoveAssetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A077732922786BCA00291F5D /* RemoveAssetAlert.swift */; };
 		A0DC0FAC233914BD00C4969A /* MovieIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DC0FAB233914BD00C4969A /* MovieIndicator.swift */; };
 		A0DC0FAD233914BD00C4969A /* MovieIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DC0FAB233914BD00C4969A /* MovieIndicator.swift */; };
 		A0DC0FAE233914BD00C4969A /* MovieIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DC0FAB233914BD00C4969A /* MovieIndicator.swift */; };
@@ -439,7 +442,6 @@
 		A0F7FDDF224936C8006610F0 /* TintedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDE224936C8006610F0 /* TintedImageView.swift */; };
 		A0F7FDE0224936C8006610F0 /* TintedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDE224936C8006610F0 /* TintedImageView.swift */; };
 		A0F7FDE722494E2F006610F0 /* RemoveProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */; };
-		A0F7FDE822494E3E006610F0 /* RemoveProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */; };
 		A0FA93412277387D0086D276 /* Bundle+displayName.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA93402277387D0086D276 /* Bundle+displayName.swift */; };
 		A0FA93422277387D0086D276 /* Bundle+displayName.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA93402277387D0086D276 /* Bundle+displayName.swift */; };
 		A0FA9346227757100086D276 /* Settings.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FA9345227757100086D276 /* Settings.swift */; };
@@ -1076,6 +1078,7 @@
 				A0AC29E82B10BFCD0054D5F4 /* IaSettingsViewController.swift */,
 				A0A9F1902AF0193D007D284A /* FoldersViewController.swift */,
 				A0E2720B224E33D000CB7113 /* EditFolderViewController.swift */,
+				A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */,
 				A0C6B3082AFD11C400304187 /* CcSelector.swift */,
 			);
 			path = Settings;
@@ -1141,7 +1144,6 @@
 				A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */,
 				A045BF042B2B109D00C01D39 /* ProgressButton.swift */,
 				A077732922786BCA00291F5D /* RemoveAssetAlert.swift */,
-				A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */,
 				A0FB4DBA21F8C9B600B46099 /* RoundedImageView.swift */,
 				A0E1A68321EE831300E4F6B7 /* SelectedSpaceCell.swift */,
 				A045D1EF224CFB96008FF8C1 /* SelectedSpaceCell.xib */,
@@ -1421,6 +1423,7 @@
 				A0631B582203069200B3E90D /* MenuItemCell.xib in Resources */,
 				A045D1E5224CF034008FF8C1 /* SpaceCell.xib in Resources */,
 				A05471D72296B77D009FEA93 /* Montserrat-Regular.ttf in Resources */,
+				A0DB02532B2C7D11001BF79E /* Montserrat-MediumItalic.ttf in Resources */,
 				A05471CB2296B77D009FEA93 /* Montserrat-Black.ttf in Resources */,
 				A032362F2B0BB46B00D95BC3 /* AddFolderViewController.xib in Resources */,
 				A045D1F3224CFFAD008FF8C1 /* SelectedSpaceCell.xib in Resources */,
@@ -1429,6 +1432,7 @@
 				A05471D92296B77D009FEA93 /* Montserrat-Bold.ttf in Resources */,
 				A07678F727BE7F0E00609630 /* cleaninsights-dev.json in Resources */,
 				A09CC28D27E0B16500D6415D /* Localizable.stringsdict in Resources */,
+				A0DB02562B2C7D1A001BF79E /* Montserrat-BoldItalic.ttf in Resources */,
 				A0E27205224E2A4D00CB7113 /* FolderCell.xib in Resources */,
 				A0C475B7211488BF0012937E /* Assets.xcassets in Resources */,
 				A0FE2C2422E1FE7C00C5443F /* Localizable.strings in Resources */,
@@ -1449,8 +1453,10 @@
 				A09B53EE23266F02005266C2 /* Montserrat-Medium.ttf in Resources */,
 				A0102D792B18EB260054D3D4 /* PreviewCell.xib in Resources */,
 				A09B53EF23266F02005266C2 /* SpaceCell.xib in Resources */,
+				A0DB02572B2C7D1B001BF79E /* Montserrat-BoldItalic.ttf in Resources */,
 				A03236302B0BB46B00D95BC3 /* AddFolderViewController.xib in Resources */,
 				A09B53F123266F02005266C2 /* SpacesListCell.xib in Resources */,
+				A0DB02542B2C7D11001BF79E /* Montserrat-MediumItalic.ttf in Resources */,
 				A09B53F323266F02005266C2 /* Montserrat-Black.ttf in Resources */,
 				A09B53F423266F02005266C2 /* Localizable.strings in Resources */,
 				A0102DA72B18F0A30054D3D4 /* Main.storyboard in Resources */,
@@ -1471,6 +1477,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A0DB02552B2C7D1A001BF79E /* Montserrat-BoldItalic.ttf in Resources */,
 				A0E27204224E2A4D00CB7113 /* FolderCell.xib in Resources */,
 				A09B537623266D69005266C2 /* Assets.xcassets in Resources */,
 				A09CC28C27E0B16500D6415D /* Localizable.stringsdict in Resources */,
@@ -1486,6 +1493,7 @@
 				A0E321FD228EFDA200F2E9BD /* InfoBox.xib in Resources */,
 				A0B645C422B7AD2E00BBE3FF /* TitleCell.xib in Resources */,
 				A0A98AEC22428A9300596B74 /* TableHeader.xib in Resources */,
+				A0DB02522B2C7D11001BF79E /* Montserrat-MediumItalic.ttf in Resources */,
 				A0E739E220E4C85E00DB31E1 /* LaunchScreen.storyboard in Resources */,
 				A05471D82296B77D009FEA93 /* Montserrat-Bold.ttf in Resources */,
 				A0E739DF20E4C85E00DB31E1 /* Assets.xcassets in Resources */,
@@ -1661,7 +1669,6 @@
 				A0DC0FAD233914BD00C4969A /* MovieIndicator.swift in Sources */,
 				A05DF98D282C118A003FADA2 /* FileInfo.swift in Sources */,
 				A03236322B0BB46B00D95BC3 /* AddFolderViewController.swift in Sources */,
-				A077732B22786BF500291F5D /* RemoveAssetAlert.swift in Sources */,
 				A00A8D48220C7EDD0083F0CB /* AbcFilteredByProjectView.swift in Sources */,
 				A076790327BE89E900609630 /* UIButton+Utils.swift in Sources */,
 				A098980B2236A9E800022851 /* UploadsView.swift in Sources */,
@@ -1711,12 +1718,10 @@
 				A045BF062B2B109D00C01D39 /* ProgressButton.swift in Sources */,
 				A0A192E121F23B61009A8CF0 /* Constants+Swift.swift in Sources */,
 				A0631B5C22034F0E00B3E90D /* Collection.swift in Sources */,
-				A0F7FDE822494E3E006610F0 /* RemoveProjectAlert.swift in Sources */,
 				A00A8D44220C63B20083F0CB /* ProjectsView.swift in Sources */,
 				A05C582B21EF95A800141633 /* BaseViewController.swift in Sources */,
 				A0C475B5211474A70012937E /* RegexUtils.swift in Sources */,
 				A0631B572203068900B3E90D /* MenuItemCell.swift in Sources */,
-				A006AF3528198752007637DD /* AlertHelper.swift in Sources */,
 				A0C797E7228063280009751A /* AbcFilteredByCollectionView.swift in Sources */,
 				A0DE78B021F76D2200B6B68B /* Project.swift in Sources */,
 				A0FB4DB621F89FD500B46099 /* AssetsByCollectionView.swift in Sources */,
@@ -1784,13 +1789,13 @@
 				A006A6AE282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */,
 				A0102D982B18EE880054D3D4 /* IaWizardViewController.swift in Sources */,
 				A0102D8E2B18EDAD0054D3D4 /* BrowseDropboxViewController.swift in Sources */,
-				A09B539323266F02005266C2 /* RemoveProjectAlert.swift in Sources */,
 				A0102D672B18E2C60054D3D4 /* LinkRow.swift in Sources */,
 				A05DF976282C0E13003FADA2 /* DavResponse.swift in Sources */,
 				A09B539423266F02005266C2 /* YapDatabase+Utils.swift in Sources */,
 				A09B539523266F02005266C2 /* BaseFolderViewController.swift in Sources */,
 				A0102D7C2B18EBE70054D3D4 /* UploadManager.swift in Sources */,
 				A03236332B0BB46B00D95BC3 /* AddFolderViewController.swift in Sources */,
+				A0DB02582B2C8D86001BF79E /* OrbotManager.swift in Sources */,
 				A0AC29E52B10A4CE0054D5F4 /* CGSize+Utils.swift in Sources */,
 				A09B539B23266F02005266C2 /* BrowseViewController.swift in Sources */,
 				A09B539C23266F02005266C2 /* InfoBox.swift in Sources */,
@@ -1801,10 +1806,10 @@
 				A09B53A023266F02005266C2 /* UIStoryboard+Utils.swift in Sources */,
 				A09B53A223266F02005266C2 /* RuleFilename.swift in Sources */,
 				A09B53A423266F02005266C2 /* SelectedSpaceCell.swift in Sources */,
-				A09B53A523266F02005266C2 /* RemoveAssetAlert.swift in Sources */,
 				A05DF98A282C0F92003FADA2 /* AEXMLParser.swift in Sources */,
 				A056ACA52B0E4DE000995FDF /* BasePageViewController.swift in Sources */,
 				A09B53A723266F02005266C2 /* AssetFactory.swift in Sources */,
+				A0DB025A2B2C9216001BF79E /* RemoveAssetAlert.swift in Sources */,
 				A09B53A823266F02005266C2 /* WorkingOverlay.swift in Sources */,
 				A0DA7629282D0F300039438A /* Date+rfcString.swift in Sources */,
 				A09B53AC23266F02005266C2 /* NewFolderViewController.swift in Sources */,
@@ -1821,13 +1826,12 @@
 				A09B53B223266F02005266C2 /* CollectionsView.swift in Sources */,
 				A09B53B323266F02005266C2 /* Db.swift in Sources */,
 				A09B53B523266F02005266C2 /* MenuItemCell.swift in Sources */,
+				A0DB02592B2C8F24001BF79E /* AlertHelper.swift in Sources */,
 				A0102D992B18EE970054D3D4 /* IaScrapeViewController.swift in Sources */,
 				A09B53B623266F02005266C2 /* ProjectsView.swift in Sources */,
-				A006AF3628198752007637DD /* AlertHelper.swift in Sources */,
 				A0102DA02B18EEED0054D3D4 /* BatchEditViewController.swift in Sources */,
 				A09B53B923266F02005266C2 /* TitleCell.swift in Sources */,
 				A05DF982282C0F48003FADA2 /* AEXMLOptions.swift in Sources */,
-				A0102D882B18ECC10054D3D4 /* OrbotManager.swift in Sources */,
 				A056BE1E2857457E00F354B6 /* UIFont+Montserrat.swift in Sources */,
 				A0102D942B18EE490054D3D4 /* SpaceTypeViewController.swift in Sources */,
 				A09B53BA23266F02005266C2 /* DoneDelegate.swift in Sources */,

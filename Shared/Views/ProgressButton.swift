@@ -118,9 +118,7 @@ class ProgressButton: UIView {
     private func draw(text: String, center: CGPoint, boundingSize: CGSize, fontSize: CGFloat) {
         var attributes = [NSAttributedString.Key: Any]()
 
-        if let font = UIFont.montserrat(forTextStyle: .caption1)?.withSize(fontSize) {
-            attributes[.font] = font
-        }
+        attributes[.font] = UIFont.montserrat(forTextStyle: .caption1).withSize(fontSize)
 
         if let color = tintColor {
             attributes[.foregroundColor] = color

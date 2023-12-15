@@ -8,9 +8,9 @@
 
 import UIKit
 
-class RemoveAssetAlert: UIAlertController {
+class RemoveAssetAlert {
 
-    convenience init(_ assets: [Asset], _ completionHandler: ((_ success: Bool) -> Void)? = nil) {
+    class func present(_ vc: UIViewController, _ assets: [Asset], _ completionHandler: ((_ success: Bool) -> Void)? = nil) {
         let appName = Bundle.main.displayName
 
         let text = [
@@ -21,36 +21,30 @@ class RemoveAssetAlert: UIAlertController {
                 NSLocalizedString("It/They will remain on the server and in your Photos app.", comment: "#bc-ignore!"),
                 assets.count)]
 
-        self.init(title: String(format: NSLocalizedString("Remove Media from %@", comment: ""), appName),
-                  message: text.joined(separator: "\n"),
-                   preferredStyle: .alert)
-
-        addAction(AlertHelper.cancelAction(handler: { _ in
-            if let completionHandler = completionHandler {
-                DispatchQueue.main.async {
-                    completionHandler(false)
-                }
-            }
-        }))
-        addAction(AlertHelper.destructiveAction(NSLocalizedString("Remove Media", comment: ""), handler: { _ in
-            for asset in assets {
-                if asset == assets.last {
-                    asset.remove() {
-                        completionHandler?(true)
+        AlertHelper.present(
+            vc,
+            message: text.joined(separator: "\n"),
+            title: String(format: NSLocalizedString("Remove Media from %@", comment: ""), appName),
+            actions: [
+                AlertHelper.cancelAction(handler: { _ in
+                    if let completionHandler = completionHandler {
+                        DispatchQueue.main.async {
+                            completionHandler(false)
+                        }
                     }
-                }
-                else {
-                    asset.remove()
-                }
-            }
-        }))
-    }
-
-    private override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
-        super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil)
-    }
-
-    required init?(coder decoder: NSCoder) {
-        super.init(coder: decoder)
+                }),
+                AlertHelper.destructiveAction(NSLocalizedString("Remove Media", comment: ""), handler: { _ in
+                    for asset in assets {
+                        if asset == assets.last {
+                            asset.remove() {
+                                completionHandler?(true)
+                            }
+                        }
+                        else {
+                            asset.remove()
+                        }
+                    }
+                })
+            ])
     }
 }

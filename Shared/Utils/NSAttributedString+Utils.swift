@@ -48,7 +48,7 @@ extension NSMutableAttributedString {
         }
 
         addAttributes(
-            [.font: label?.font.bold() ?? .boldSystemFont(ofSize: label?.font.pointSize ?? 17),
+            [.font: UIFont.montserrat(similarTo: label?.font, with: .traitBold),
              .underlineStyle: NSUnderlineStyle.single.rawValue],
             range: NSRange(range, in: string))
 

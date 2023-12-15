@@ -1,5 +1,5 @@
 //
-//  RemoveAssetAlert.swift
+//  DuplicateFolderAlert.swift
 //  Save
 //
 //  Created by Benjamin Erhart on 25.03.19.
@@ -20,7 +20,7 @@ class DuplicateFolderAlert: UIAlertController {
                    message: message,
                    preferredStyle: .alert)
 
-        addAction(AlertHelper.defaultAction())
+        addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default))
     }
 
     private override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {

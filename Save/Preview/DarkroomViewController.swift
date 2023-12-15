@@ -261,7 +261,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
             return
         }
 
-        present(RemoveAssetAlert([asset]), animated: true)
+        RemoveAssetAlert.present(self, [asset])
     }
 
     @IBAction func toggleUi() {

@@ -56,7 +56,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
     @IBOutlet weak var welcomeLb: UILabel! {
         didSet {
-            welcomeLb.font = welcomeLb.font.bold()
+            welcomeLb.font = .montserrat(forTextStyle: .largeTitle, with: .traitBold)
             welcomeLb.text = NSLocalizedString("Welcome!", comment: "")
         }
     }
@@ -81,7 +81,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         didSet {
             myMediaBt.setAttributedTitle(.init(
                 string: NSLocalizedString("My Media", comment: ""),
-                attributes: [.font: UIFont.preferredFont(forTextStyle: .caption1)]))
+                attributes: [.font: UIFont.montserrat(forTextStyle: .caption1)]))
         }
     }
 
@@ -115,7 +115,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         didSet {
             settingsBt.setAttributedTitle(.init(
                 string: NSLocalizedString("Settings", comment: ""),
-                attributes: [.font: UIFont.preferredFont(forTextStyle: .caption1)]))
+                attributes: [.font: UIFont.montserrat(forTextStyle: .caption1)]))
             settingsBt.accessibilityIdentifier = "btSettings"
         }
     }
@@ -467,13 +467,13 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
 
     @IBAction func removeAssets() {
-        present(RemoveAssetAlert(getSelectedAssets(), { [weak self] success in
+        RemoveAssetAlert.present(self, getSelectedAssets(), { [weak self] success in
             guard success else {
                 return
             }
 
             self?.toggleMode(newMode: false)
-        }), animated: true)
+        })
     }
 
 

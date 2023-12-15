@@ -38,7 +38,7 @@ class ButtonCell: BaseCell {
         selectionStyle = .none
 
         label.textColor = .accent
-        label.font = .preferredFont(forTextStyle: .body).bold()
+        label.font = .montserrat(forTextStyle: .body, with: .traitBold)
         label.adjustsFontForContentSizeCategory = true
         label.textAlignment = .center
         label.layer.borderWidth = 2

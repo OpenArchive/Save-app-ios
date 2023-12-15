@@ -20,12 +20,12 @@ class InfoBox: UIView, UITextViewDelegate {
 
     // Don't store, otherwise font won't be recalculated after size change.
     private class var normalFont: UIFont {
-        UIFont.preferredFont(forTextStyle: .caption1)
+        UIFont.montserrat(forTextStyle: .caption1)
     }
 
     // Don't store, otherwise font won't be recalculated after size change.
     private class var placeholderFont: UIFont? {
-        UIFont.preferredFont(forTextStyle: .caption1).italic()
+        UIFont.montserrat(forTextStyle: .caption1, with: .traitItalic)
     }
 
     class func instantiate(_ icon: String? = nil, _ superview: UIView? = nil) -> InfoBox? {

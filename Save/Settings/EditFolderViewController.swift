@@ -67,15 +67,18 @@ class EditFolderViewController: BaseFolderViewController {
             $0.cell.tintColor = .systemRed
         }
         .onCellSelection { [weak self] cell, row in
-            self?.present(RemoveProjectAlert(self!.project, { success in
+            guard let self = self else {
+                return
+            }
+
+            RemoveProjectAlert.present(self, self.project, { [weak self] success in
                 guard success else {
                     return
                 }
 
                 self?.doStore = false
                 self?.navigationController?.popViewController(animated: true)
-            }),
-                         animated: true)
+            })
         }
 
         <<< ButtonRow() {

@@ -7,13 +7,14 @@
 //
 
 import UIKit
+import SDCAlertView
 
 public class AlertHelper {
 
-    public typealias ActionHandler = (UIAlertAction) -> Void
+    public typealias ActionHandler = (AlertAction) -> Void
 
     /**
-     Creates and immediately presents a `UIAlertController`.
+     Creates and immediately presents a `SDCAlertView.AlertController`.
      Alert style is `.alert`, presentation will be animated.
 
      if `actions` is ommitted, it will have one action of type `.default` labeled "OK".
@@ -27,15 +28,15 @@ public class AlertHelper {
     public class func present(_ controller: UIViewController,
                               message: String? = nil,
                               title: String? = NSLocalizedString("Error", comment: ""),
-                              style: UIAlertController.Style = .alert,
-                              actions: [UIAlertAction]? = [defaultAction()])
+                              style: AlertControllerStyle = .alert,
+                              actions: [AlertAction]? = [defaultAction()])
     {
         controller.present(build(message: message, title: title, style: style, actions: actions),
                            animated: true)
     }
 
     /**
-     Creates a `UIAlertController`.
+     Creates a `SDCAlertView.AlertController`.
      Alert style is `.alert`.
 
      if `actions` is ommitted, it will have one action of type `.default` labeled "OK".
@@ -46,10 +47,10 @@ public class AlertHelper {
      */
     public class func build(message: String? = nil,
                             title: String? = NSLocalizedString("Error", comment: ""),
-                            style: UIAlertController.Style = .alert,
-                            actions: [UIAlertAction]? = [defaultAction()]) -> UIAlertController
+                            style: AlertControllerStyle = .alert,
+                            actions: [AlertAction]? = [defaultAction()]) -> AlertController
     {
-        let alert = UIAlertController(title: title,
+        let alert = AlertController(title: title,
                                       message: message,
                                       preferredStyle: style)
 
@@ -66,9 +67,9 @@ public class AlertHelper {
      - returns: A default `UIAlertAction`.
      */
     public class func defaultAction(_ title: String? = NSLocalizedString("OK", comment: ""),
-                                    handler: ActionHandler? = nil) -> UIAlertAction
+                                    handler: ActionHandler? = nil) -> AlertAction
     {
-        return UIAlertAction(title: title, style: .default, handler: handler)
+        return AlertAction(title: title, style: .normal, handler: handler)
     }
 
     /**
@@ -77,9 +78,9 @@ public class AlertHelper {
      - returns: A cancel `UIAlertAction`.
      */
     public class func cancelAction(_ title: String? = NSLocalizedString("Cancel", comment: ""),
-                                   handler: ActionHandler? = nil) -> UIAlertAction
+                                   handler: ActionHandler? = nil) -> AlertAction
     {
-        return UIAlertAction(title: title, style: .cancel, handler: handler)
+        return AlertAction(title: title, style: .preferred, handler: handler)
     }
 
     /**
@@ -87,14 +88,14 @@ public class AlertHelper {
      - parameter handler: The callback when the user tapped the action.
      - returns: A destructive `UIAlertAction`.
      */
-    public class func destructiveAction(_ title: String?, handler: ActionHandler? = nil) -> UIAlertAction
+    public class func destructiveAction(_ title: String?, handler: ActionHandler? = nil) -> AlertAction
     {
-        return UIAlertAction(title: title, style: .destructive, handler: handler)
+        return AlertAction(title: title, style: .destructive, handler: handler)
     }
 
 
     /**
-     Add a `UITextField` to a given `UIAlertController`.
+     Add a `UITextField` to a given `SDCAlertView.AlertController`.
 
      - parameter alert: The alert controller to add the text field to.
      - parameter placeholder: The placeholder string. Defaults to `nil`.
@@ -104,7 +105,7 @@ public class AlertHelper {
      a single parameter corresponding to the text field object.
      Use that parameter to change the text field properties.
      */
-    public class func addTextField(_ alert: UIAlertController, placeholder: String? = nil,
+    public class func addTextField(_ alert: AlertController, placeholder: String? = nil,
                                    text: String? = nil, configurationHandler: ((UITextField) -> Void)? = nil)
     {
         alert.addTextField() { textField in
@@ -117,7 +118,7 @@ public class AlertHelper {
     }
 
     /**
-     Add a `UITextField` in password entry style to a given `UIAlertController`.
+     Add a `UITextField` in password entry style to a given `SDCAlertView.AlertController`.
 
      - parameter alert: The alert controller to add the text field to.
      - parameter placeholder: The placeholder string. Defaults to `nil`.
@@ -127,7 +128,7 @@ public class AlertHelper {
      a single parameter corresponding to the text field object.
      Use that parameter to change the text field properties.
      */
-    public class func addPasswordField(_ alert: UIAlertController, placeholder: String? = nil,
+    public class func addPasswordField(_ alert: AlertController, placeholder: String? = nil,
                                        text: String? = nil, configurationHandler: ((UITextField) -> Void)? = nil)
     {
         addTextField(alert, placeholder: placeholder, text: text) { textField in

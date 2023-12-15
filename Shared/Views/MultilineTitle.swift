@@ -13,7 +13,7 @@ class MultilineTitle: UIView {
     let title: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .preferredFont(forTextStyle: .headline)
+        label.font = .montserrat(forTextStyle: .headline)
         label.adjustsFontForContentSizeCategory = true
         label.textAlignment = .center
 
@@ -23,7 +23,7 @@ class MultilineTitle: UIView {
     let subtitle: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .preferredFont(forTextStyle: .subheadline)
+        label.font = .montserrat(forTextStyle: .subheadline)
         label.adjustsFontForContentSizeCategory = true
         label.textAlignment = .center
 

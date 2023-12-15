@@ -18,7 +18,7 @@ class SelectedSpaceCell: BaseCell {
 
     @IBOutlet weak var serverNameLb: UILabel! {
         didSet {
-            serverNameLb.font = serverNameLb.font.bold()
+            serverNameLb.font = .montserrat(forTextStyle: .title1, with: .traitBold)
         }
     }
 

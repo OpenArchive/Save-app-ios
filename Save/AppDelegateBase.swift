@@ -321,12 +321,55 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
             print(fonts)
         } */
 
+        UILabel.appearance().fontName = UIFont.defaultFontName
+        UIButton.appearance().fontName = UIFont.defaultFontName
 
-        if #available(iOS 13.0, *) {
-            let a = UINavigationBarAppearance()
-            a.configureWithOpaqueBackground()
+        for state in [UIControl.State.application, .disabled, .focused, .highlighted, .normal, .reserved, .selected] {
+            let font = UIBarItem.appearance().titleTextAttributes(for: state)?[.font] as? UIFont
 
-            UINavigationBar.appearance().scrollEdgeAppearance = a
+            let attributes = [NSAttributedString.Key.font: UIFont.montserrat(similarTo: font)]
+
+            UIBarItem.appearance().setTitleTextAttributes(attributes, for: state)
+        }
+
+        let nba = UINavigationBarAppearance()
+        nba.configureWithOpaqueBackground()
+
+        var font = nba.titleTextAttributes[.font] as? UIFont
+        nba.titleTextAttributes[.font] = UIFont.montserrat(similarTo: font)
+
+        for style in [UIBarButtonItem.Style.done, .plain] {
+            let bbia = UIBarButtonItemAppearance(style: style)
+
+            font = bbia.normal.titleTextAttributes[.font] as? UIFont
+            bbia.normal.titleTextAttributes[.font] = UIFont.montserrat(similarTo: font)
+
+            font = bbia.disabled.titleTextAttributes[.font] as? UIFont
+            bbia.disabled.titleTextAttributes[.font] = UIFont.montserrat(similarTo: font)
+
+            font = bbia.highlighted.titleTextAttributes[.font] as? UIFont
+            bbia.highlighted.titleTextAttributes[.font] = UIFont.montserrat(similarTo: font)
+
+            font = bbia.focused.titleTextAttributes[.font] as? UIFont
+            bbia.focused.titleTextAttributes[.font] = UIFont.montserrat(similarTo: font)
+
+            if style == .done {
+                nba.doneButtonAppearance = bbia
+            }
+            else {
+                nba.buttonAppearance = bbia
+                nba.backButtonAppearance = bbia
+            }
+        }
+
+        let a = UINavigationBar.appearance()
+
+        a.scrollEdgeAppearance = nba
+        a.compactAppearance = nba
+        a.standardAppearance = nba
+
+        if #available(iOS 15.0, *) {
+            a.compactScrollEdgeAppearance = nba
         }
     }
 

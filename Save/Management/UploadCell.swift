@@ -38,7 +38,7 @@ class UploadCell: BaseCell {
 
     @IBOutlet weak var nameLb: UILabel! {
         didSet {
-            nameLb.font = nameLb.font.bold()
+            nameLb.font = .montserrat(forTextStyle: .body, with: .traitBold)
         }
     }
 

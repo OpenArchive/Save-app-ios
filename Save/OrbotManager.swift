@@ -8,6 +8,7 @@
 
 import OrbotKit
 import YapDatabase
+import SDCAlertView
 
 extension Notification.Name {
 
@@ -32,7 +33,7 @@ class OrbotManager: OrbotStatusChangeListener {
 
     private var lastOrbotInfo = OrbotKit.Info(status: .stopped)
 
-    private weak var tokenAlert: UIAlertController?
+    private weak var tokenAlert: AlertController?
 
 
     // MARK: Public Methods

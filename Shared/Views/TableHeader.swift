@@ -38,7 +38,7 @@ class TableHeader: UITableViewHeaderFooterView {
 
     @IBOutlet weak var label: UILabel! {
         didSet {
-            label.font = label.font.bold()
+            label.font = .montserrat(forTextStyle: .caption1, with: .traitBold)
         }
     }
 

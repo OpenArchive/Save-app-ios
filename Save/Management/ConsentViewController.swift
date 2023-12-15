@@ -23,7 +23,7 @@ class ConsentViewController: BaseViewController {
 
     @IBOutlet weak var headerLb: UILabel! {
         didSet {
-            headerLb.font = headerLb.font.bold()
+            headerLb.font = .montserrat(forTextStyle: .title1, with: .traitBold)
             headerLb.text = NSLocalizedString("Health checks help us understand why uploads fail.", comment: "")
         }
     }
@@ -42,7 +42,7 @@ class ConsentViewController: BaseViewController {
 
     @IBOutlet weak var head2Lb: UILabel! {
         didSet {
-            head2Lb.font = head2Lb.font.bold()
+            head2Lb.font = .montserrat(forTextStyle: .title2, with: .traitBold)
             head2Lb.text = NSLocalizedString("Health checks capture", comment: "")
         }
     }
@@ -79,7 +79,7 @@ class ConsentViewController: BaseViewController {
 
     @IBOutlet weak var head3Lb: UILabel! {
         didSet {
-            head3Lb.font = head3Lb.font.bold()
+            head3Lb.font = .montserrat(forTextStyle: .title2, with: .traitBold)
             head3Lb.text = NSLocalizedString("Allow health checks?", comment: "")
         }
     }

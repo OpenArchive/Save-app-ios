@@ -132,7 +132,7 @@ class BigButton: UIView {
     private lazy var titleLb: UILabel = {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.font = .preferredFont(forTextStyle: .title2)
+        view.font = .montserrat(forTextStyle: .title2, with: .traitBold)
         view.numberOfLines = 0
 
         view.setContentCompressionResistancePriority(.required, for: .vertical)
@@ -146,7 +146,7 @@ class BigButton: UIView {
     private lazy var subtitleLb: UILabel = {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.font = .preferredFont(forTextStyle: .footnote)
+        view.font = .montserrat(forTextStyle: .footnote)
         view.textColor = .secondaryLabel
         view.numberOfLines = 0
 
