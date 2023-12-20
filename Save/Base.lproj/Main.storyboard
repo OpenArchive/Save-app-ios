@@ -2121,7 +2121,7 @@
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="InternetArchiveLogo" translatesAutoresizingMaskIntoConstraints="NO" id="oic-ym-feR">
                                                 <rect key="frame" x="16" y="16" width="48" height="48"/>
-                                                <color key="backgroundColor" systemColor="systemGrayColor"/>
+                                                <color key="backgroundColor" systemColor="systemGray3Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" secondItem="oic-ym-feR" secondAttribute="height" multiplier="1:1" id="IVc-5F-5wV"/>
                                                     <constraint firstAttribute="width" constant="48" id="pUt-yy-dBw"/>
@@ -2395,7 +2395,7 @@
                                         <subviews>
                                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="server.rack" translatesAutoresizingMaskIntoConstraints="NO" id="zHW-kD-Pea">
                                                 <rect key="frame" x="20" y="20" width="48" height="48"/>
-                                                <color key="backgroundColor" systemColor="systemGrayColor"/>
+                                                <color key="backgroundColor" systemColor="systemGray3Color"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="48" id="E1t-dv-VRC"/>
                                                     <constraint firstAttribute="width" secondItem="zHW-kD-Pea" secondAttribute="height" multiplier="1:1" id="xAU-An-jEA"/>
@@ -2626,7 +2626,7 @@
                         <subviews>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="dropbox-icon" translatesAutoresizingMaskIntoConstraints="NO" id="d2j-rm-5UU">
                                 <rect key="frame" x="136" y="20" width="48" height="48"/>
-                                <color key="backgroundColor" systemColor="systemGrayColor"/>
+                                <color key="backgroundColor" systemColor="systemGray3Color"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="d2j-rm-5UU" secondAttribute="height" multiplier="1:1" id="B9D-HK-mam"/>
                                     <constraint firstAttribute="width" constant="48" id="gxx-BT-1qJ"/>
@@ -2979,8 +2979,8 @@
         <systemColor name="systemGray2Color">
             <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
-        <systemColor name="systemGrayColor">
-            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        <systemColor name="systemGray3Color">
+            <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
             <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
