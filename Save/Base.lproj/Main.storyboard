@@ -1451,6 +1451,7 @@
                                         <subviews>
                                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="person.crop.circle" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="wvk-Ws-cbo">
                                                 <rect key="frame" x="20" y="28.5" width="24" height="23"/>
+                                                <color key="tintColor" systemColor="labelColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="24" id="453-IK-JfE"/>
                                                     <constraint firstAttribute="height" constant="24" id="MGj-1K-JAD"/>
@@ -1466,13 +1467,16 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="General"/>
+                                                <state key="normal" title="General">
+                                                    <color key="titleColor" systemColor="labelColor"/>
+                                                </state>
                                                 <connections>
                                                     <action selector="general" destination="iDn-RV-tbJ" eventType="touchUpInside" id="Htb-CE-STm"/>
                                                 </connections>
                                             </button>
                                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="server.rack" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="NCQ-ws-Vjq">
                                                 <rect key="frame" x="20" y="77" width="24" height="21.5"/>
+                                                <color key="tintColor" systemColor="labelColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="24" id="kU8-tK-Z3C"/>
                                                     <constraint firstAttribute="height" constant="24" id="nLL-L2-Yhs"/>
@@ -1488,13 +1492,16 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Server"/>
+                                                <state key="normal" title="Server">
+                                                    <color key="titleColor" systemColor="labelColor"/>
+                                                </state>
                                                 <connections>
                                                     <action selector="server" destination="iDn-RV-tbJ" eventType="touchUpInside" id="Ivq-Kl-Kex"/>
                                                 </connections>
                                             </button>
                                             <imageView clipsSubviews="YES" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="folder" catalog="system" translatesAutoresizingMaskIntoConstraints="NO" id="2os-yI-sq7">
                                                 <rect key="frame" x="20" y="125" width="24" height="21.5"/>
+                                                <color key="tintColor" systemColor="labelColor"/>
                                                 <constraints>
                                                     <constraint firstAttribute="height" constant="24" id="8h2-uD-gow"/>
                                                     <constraint firstAttribute="width" constant="24" id="Abv-Pg-ZnP"/>
@@ -1510,7 +1517,9 @@
                                                 </constraints>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
                                                 <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
-                                                <state key="normal" title="Folder"/>
+                                                <state key="normal" title="Folder">
+                                                    <color key="titleColor" systemColor="labelColor"/>
+                                                </state>
                                                 <connections>
                                                     <action selector="folder" destination="iDn-RV-tbJ" eventType="touchUpInside" id="rCC-83-uq4"/>
                                                 </connections>
