@@ -143,7 +143,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mX4-L9-fca">
-                                <rect key="frame" x="16" y="352" width="216" height="99.5"/>
+                                <rect key="frame" x="16" y="352" width="216" height="124.5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="hvg-50-O1E"/>
                                 </constraints>
@@ -152,7 +152,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="250" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LOG-Gh-tpR">
-                                <rect key="frame" x="16" y="459.5" width="216" height="108.5"/>
+                                <rect key="frame" x="16" y="484.5" width="216" height="83.5"/>
                                 <string key="text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam</string>
                                 <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="17"/>
                                 <nil key="highlightedColor"/>
@@ -2330,7 +2330,7 @@
                                 </constraints>
                             </imageView>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rmQ-iI-oMX">
-                                <rect key="frame" x="96" y="280" width="128" height="35"/>
+                                <rect key="frame" x="96" y="517" width="128" height="35"/>
                                 <constraints>
                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="128" id="RoI-22-6e0"/>
                                 </constraints>
@@ -2344,8 +2344,8 @@
                         <viewLayoutGuide key="safeArea" id="GUb-HG-VrU"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                         <constraints>
-                            <constraint firstItem="rmQ-iI-oMX" firstAttribute="top" secondItem="fmm-tp-aX6" secondAttribute="bottom" constant="16" id="1CJ-hh-7ps"/>
                             <constraint firstItem="GUb-HG-VrU" firstAttribute="trailing" secondItem="fmm-tp-aX6" secondAttribute="trailing" constant="16" id="HQH-pz-QxT"/>
+                            <constraint firstItem="GUb-HG-VrU" firstAttribute="bottom" secondItem="rmQ-iI-oMX" secondAttribute="bottom" constant="16" id="JsO-zH-Vzw"/>
                             <constraint firstItem="tKn-Gc-X17" firstAttribute="leading" secondItem="GUb-HG-VrU" secondAttribute="leading" constant="16" id="Yud-57-uPP"/>
                             <constraint firstItem="rmQ-iI-oMX" firstAttribute="centerX" secondItem="KzK-On-5WE" secondAttribute="centerX" id="b0r-Oe-EdM"/>
                             <constraint firstItem="fmm-tp-aX6" firstAttribute="top" secondItem="tKn-Gc-X17" secondAttribute="bottom" constant="16" id="cy6-uz-hHl"/>
@@ -2932,7 +2932,7 @@
     <color key="tintColor" red="0.0" green="0.70398116438356162" blue="0.64921339897260277" alpha="1" colorSpace="calibratedRGB"/>
     <resources>
         <image name="InternetArchiveLogo" width="76" height="86"/>
-        <image name="arrow.right" catalog="system" width="128" height="95"/>
+        <image name="arrow.right" catalog="system" width="32" height="32"/>
         <image name="camera" catalog="system" width="128" height="93"/>
         <image name="check-mark" width="12" height="12"/>
         <image name="chevron.left" catalog="system" width="97" height="128"/>
@@ -2971,19 +2971,19 @@
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGrayColor">
-            <color red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="viewFlipsideBackgroundColor">
             <color red="0.12156862745098039" green="0.12941176470588237" blue="0.14117647058823529" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
