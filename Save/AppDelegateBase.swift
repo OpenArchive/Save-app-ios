@@ -325,10 +325,10 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     func setUpGdrive() {
         GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
             if error != nil || user == nil {
-                // Signed out
+                GdriveConduit.user = nil
             }
             else {
-                // Signed in
+                GdriveConduit.user = user
             }
         }
     }

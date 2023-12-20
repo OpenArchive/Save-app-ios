@@ -16,10 +16,14 @@ class AppAddFolderViewController: AddFolderViewController {
 
 
     override func browse() {
-        if SelectedSpace.space is DropboxSpace {
+        switch SelectedSpace.space {
+        case is DropboxSpace:
             navigationController?.pushViewController(BrowseDropboxViewController(), animated: true)
-        }
-        else {
+
+        case is GdriveSpace:
+            navigationController?.pushViewController(BrowseGdriveViewController(), animated: true)
+
+        default:
             super.browse()
         }
     }
