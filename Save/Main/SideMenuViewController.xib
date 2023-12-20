@@ -91,7 +91,7 @@
                             </connections>
                         </tableView>
                         <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="none" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="ykB-Ts-wR0">
-                            <rect key="frame" x="0.0" y="220" width="240" height="441"/>
+                            <rect key="frame" x="0.0" y="219.99999999999997" width="240" height="454.33333333333326"/>
                             <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <outlet property="dataSource" destination="-1" id="hTo-SY-NoR"/>
@@ -99,9 +99,10 @@
                             </connections>
                         </tableView>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="leading" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vli-SS-eKP">
-                            <rect key="frame" x="16" y="677" width="208" height="35"/>
-                            <state key="normal" title="Button"/>
-                            <buttonConfiguration key="configuration" style="plain" image="plus" catalog="system" title="New Folder"/>
+                            <rect key="frame" x="16" y="690.33333333333337" width="208" height="21.666666666666629"/>
+                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                            <state key="normal" title="New Folder" image="plus" catalog="system"/>
                             <connections>
                                 <action selector="newFolder" destination="-1" eventType="touchUpInside" id="dOU-Pu-kYB"/>
                             </connections>
