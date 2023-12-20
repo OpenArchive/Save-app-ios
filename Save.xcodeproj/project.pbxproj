@@ -99,6 +99,8 @@
 		A025171922C2126C00EEFBD9 /* DuplicateFolderAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A025171822C2126B00EEFBD9 /* DuplicateFolderAlert.swift */; };
 		A025171A22C2126C00EEFBD9 /* DuplicateFolderAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A025171822C2126B00EEFBD9 /* DuplicateFolderAlert.swift */; };
 		A026C34622C641EB007B1C5B /* IaScrapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */; };
+		A029AF622B33057200FCCB3A /* CcSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C6B3082AFD11C400304187 /* CcSelector.swift */; };
+		A029AF652B330B6A00FCCB3A /* LinkRow-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029AF642B330B4A00FCCB3A /* LinkRow-extension.swift */; };
 		A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029F6822118715700C4EF6D /* AssetFactory.swift */; };
 		A029F6842118715700C4EF6D /* AssetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029F6822118715700C4EF6D /* AssetFactory.swift */; };
 		A02DB29A29B647390090ECF6 /* URL+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02DB29929B647390090ECF6 /* URL+Utils.swift */; };
@@ -553,6 +555,7 @@
 		A0212FCD22D374CA009079DC /* UICollectionView+selection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+selection.swift"; sourceTree = "<group>"; };
 		A025171822C2126B00EEFBD9 /* DuplicateFolderAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateFolderAlert.swift; sourceTree = "<group>"; };
 		A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaScrapeViewController.swift; sourceTree = "<group>"; };
+		A029AF642B330B4A00FCCB3A /* LinkRow-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LinkRow-extension.swift"; sourceTree = "<group>"; };
 		A029F6822118715700C4EF6D /* AssetFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFactory.swift; sourceTree = "<group>"; };
 		A02BC66D2400195C007B05AB /* NSError+from.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+from.swift"; sourceTree = "<group>"; };
 		A02DB29929B647390090ECF6 /* URL+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Utils.swift"; sourceTree = "<group>"; };
@@ -1079,7 +1082,6 @@
 				A0A9F1902AF0193D007D284A /* FoldersViewController.swift */,
 				A0E2720B224E33D000CB7113 /* EditFolderViewController.swift */,
 				A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */,
-				A0C6B3082AFD11C400304187 /* CcSelector.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -1132,12 +1134,14 @@
 			children = (
 				A037D6FD2B0CC32000C77706 /* BigButton.swift */,
 				A045D200224D07C3008FF8C1 /* ButtonCell.swift */,
+				A0C6B3082AFD11C400304187 /* CcSelector.swift */,
 				A025171822C2126B00EEFBD9 /* DuplicateFolderAlert.swift */,
 				A0F7FDDB22491C6C006610F0 /* Flag.swift */,
 				A0E12C152B024C2F00892AC8 /* GradientView.swift */,
 				A0E321FA228EFA8800F2E9BD /* InfoBox.swift */,
 				A0E321FC228EFDA200F2E9BD /* InfoBox.xib */,
 				A0C6B30A2AFD1CCF00304187 /* LinkRow.swift */,
+				A029AF642B330B4A00FCCB3A /* LinkRow-extension.swift */,
 				A0E1A67F21EE7BE900E4F6B7 /* MenuItemCell.swift */,
 				A0AC06B32201E94000BD5FBA /* MenuItemCell.xib */,
 				A0DC0FAB233914BD00C4969A /* MovieIndicator.swift */,
@@ -1700,6 +1704,7 @@
 				A05DF981282C0F48003FADA2 /* AEXMLOptions.swift in Sources */,
 				A05DF97D282C0E7C003FADA2 /* AEXMLElement.swift in Sources */,
 				A071290A2111DC6A007A432A /* StringUtils.swift in Sources */,
+				A029AF652B330B6A00FCCB3A /* LinkRow-extension.swift in Sources */,
 				A029F6842118715700C4EF6D /* AssetFactory.swift in Sources */,
 				A0C475C021149B040012937E /* MainViewController.swift in Sources */,
 				A0FB4DB321F8799100B46099 /* SpacesView.swift in Sources */,
@@ -1726,6 +1731,7 @@
 				A0DE78B021F76D2200B6B68B /* Project.swift in Sources */,
 				A0FB4DB621F89FD500B46099 /* AssetsByCollectionView.swift in Sources */,
 				A006A6A9282950D00029E49B /* UIBackgroundFetchResult+description.swift in Sources */,
+				A029AF622B33057200FCCB3A /* CcSelector.swift in Sources */,
 				A045D202224D07C3008FF8C1 /* ButtonCell.swift in Sources */,
 				A0FB4DBC21F8C9B600B46099 /* RoundedImageView.swift in Sources */,
 				A05471DC2296C8FD009FEA93 /* UITableView+separatorView.swift in Sources */,

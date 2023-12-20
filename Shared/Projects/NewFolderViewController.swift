@@ -11,6 +11,11 @@ import Eureka
 
 class NewFolderViewController: BaseFolderViewController {
 
+    private lazy var ccEnabled = SelectedSpace.space?.license == nil
+
+    private lazy var cc = CcSelector(individual: ccEnabled)
+
+
     init() {
         super.init(Project(space: SelectedSpace.space))
     }
@@ -32,10 +37,26 @@ class NewFolderViewController: BaseFolderViewController {
             target: self, action: #selector(connect))
         navigationItem.rightBarButtonItem?.accessibilityIdentifier = "btDone"
 
+        cc.set(project.license, enabled: ccEnabled && project.active)
+
         form
-            +++ nameRow.cellUpdate { cell, _ in
-                self.enableDone()
-            }
+        +++ nameRow.cellUpdate { cell, _ in
+            self.enableDone()
+        }
+
+        +++ Section("")
+
+        <<< cc.ccSw.onChange(ccLicenseChanged)
+
+        <<< cc.remixSw.onChange(ccLicenseChanged)
+
+        <<< cc.shareAlikeSw.onChange(ccLicenseChanged)
+
+        <<< cc.commercialSw.onChange(ccLicenseChanged)
+
+        <<< cc.licenseRow
+
+        <<< cc.learnMoreRow
 
         super.viewDidLoad()
     }
@@ -49,5 +70,12 @@ class NewFolderViewController: BaseFolderViewController {
 
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         return section == 1 ? tableView.separatorView : nil
+    }
+
+
+    // MARK: Private Methods
+
+    private func ccLicenseChanged(_ row: SwitchRow) {
+        project.license = cc.get()
     }
 }
