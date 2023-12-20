@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import FontBlaster
 
 extension UIFont {
 
@@ -16,7 +17,7 @@ extension UIFont {
     static let boldItalicFontName = "Montserrat-BoldItalic"
     static let blackFontName = "Montserrat-Black"
 
-    static let baseSizes: [UIFont.TextStyle: CGFloat] = [
+    static let baseSizes: [TextStyle: CGFloat] = [
         .body: 17,
         .callout: 16,
         .caption1: 12,
@@ -30,7 +31,64 @@ extension UIFont {
         .title3: 20,
     ]
 
-    class func montserrat(forTextStyle style: UIFont.TextStyle, with traits: UIFontDescriptor.SymbolicTraits? = nil) -> UIFont {
+    class func setUpMontserrat() {
+        FontBlaster.blast() /* { fonts in
+            print(fonts)
+        } */
+
+        UILabel.appearance().fontName = defaultFontName
+        UIButton.appearance().fontName = defaultFontName
+
+        for state in [UIControl.State.application, .disabled, .focused, .highlighted, .normal, .reserved, .selected] {
+            let font = UIBarItem.appearance().titleTextAttributes(for: state)?[.font] as? UIFont
+
+            let attributes = [NSAttributedString.Key.font: montserrat(similarTo: font)]
+
+            UIBarItem.appearance().setTitleTextAttributes(attributes, for: state)
+        }
+
+        let nba = UINavigationBarAppearance()
+        nba.configureWithOpaqueBackground()
+
+        var font = nba.titleTextAttributes[.font] as? UIFont
+        nba.titleTextAttributes[.font] = montserrat(similarTo: font)
+
+        for style in [UIBarButtonItem.Style.done, .plain] {
+            let bbia = UIBarButtonItemAppearance(style: style)
+
+            font = bbia.normal.titleTextAttributes[.font] as? UIFont
+            bbia.normal.titleTextAttributes[.font] = montserrat(similarTo: font)
+
+            font = bbia.disabled.titleTextAttributes[.font] as? UIFont
+            bbia.disabled.titleTextAttributes[.font] = montserrat(similarTo: font)
+
+            font = bbia.highlighted.titleTextAttributes[.font] as? UIFont
+            bbia.highlighted.titleTextAttributes[.font] = montserrat(similarTo: font)
+
+            font = bbia.focused.titleTextAttributes[.font] as? UIFont
+            bbia.focused.titleTextAttributes[.font] = montserrat(similarTo: font)
+
+            if style == .done {
+                nba.doneButtonAppearance = bbia
+            }
+            else {
+                nba.buttonAppearance = bbia
+                nba.backButtonAppearance = bbia
+            }
+        }
+
+        let a = UINavigationBar.appearance()
+
+        a.scrollEdgeAppearance = nba
+        a.compactAppearance = nba
+        a.standardAppearance = nba
+
+        if #available(iOS 15.0, *) {
+            a.compactScrollEdgeAppearance = nba
+        }
+    }
+
+    class func montserrat(forTextStyle style: TextStyle, with traits: UIFontDescriptor.SymbolicTraits? = nil) -> UIFont {
         let fontName: String
 
         if traits?.contains(.traitBold) ?? false && traits?.contains(.traitItalic) ?? false {
@@ -52,7 +110,7 @@ extension UIFont {
 
         // Fall back to system font.
 
-        let font = UIFont.preferredFont(forTextStyle: style)
+        let font = preferredFont(forTextStyle: style)
 
         if let traits = traits, let descriptor = font.fontDescriptor.withSymbolicTraits(traits) {
             return UIFont(descriptor: descriptor, size: 0)
@@ -62,7 +120,7 @@ extension UIFont {
     }
 
     class func montserrat(similarTo font: UIFont?, with traits: UIFontDescriptor.SymbolicTraits? = nil) -> UIFont {
-        montserrat(forTextStyle: font?.fontDescriptor.object(forKey: .textStyle) as? UIFont.TextStyle ?? .body, with: traits)
+        montserrat(forTextStyle: font?.fontDescriptor.object(forKey: .textStyle) as? TextStyle ?? .body, with: traits)
     }
 }
 
