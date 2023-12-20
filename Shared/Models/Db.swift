@@ -39,6 +39,7 @@ class Db {
         WebDavSpace.fixArchiverName()
         DropboxSpace.fixArchiverName()
         IaSpace.fixArchiverName()
+        GdriveSpace.fixArchiverName()
         shared?.setObjectPolicy(.copy, forCollection: Space.collection)
 
         Project.fixArchiverName()

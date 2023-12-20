@@ -1,47 +1,47 @@
 //
-//  DropboxSpace.swift
+//  GdriveSpace.swift
 //  OpenArchive
 //
-//  Created by Benjamin Erhart on 14.02.20.
+//  Created by Benjamin Erhart on 20.12.23.
 //  Copyright © 2019 Open Archive. All rights reserved.
 //
 
 import UIKit
 
 /**
- A special space supporting Dropbox.
+ A special space supporting Google Drive.
  */
-class DropboxSpace: Space, Item {
+class GdriveSpace: Space, Item {
 
     // MARK: Item
 
     override class func fixArchiverName() {
-        NSKeyedArchiver.setClassName("DropboxSpace", for: self)
-        NSKeyedUnarchiver.setClass(self, forClassName: "DropboxSpace")
+        NSKeyedArchiver.setClassName("GdriveSpace", for: self)
+        NSKeyedUnarchiver.setClass(self, forClassName: "GdriveSpace")
     }
 
-    func compare(_ rhs: DropboxSpace) -> ComparisonResult {
+    func compare(_ rhs: GdriveSpace) -> ComparisonResult {
         return super.compare(rhs)
     }
 
 
-    // MARK: DropboxSpace
+    // MARK: GdriveSpace
 
-    static let favIcon = UIImage(named: "dropbox-icon")?.withRenderingMode(.alwaysTemplate)
+    static let favIcon = UIImage(named: "ic_gdrive")?.withRenderingMode(.alwaysTemplate)
 
-    // Dropbox doesn't support parallel access to different accounts,
-    // so there's only ever going to be one DropboxSpace, which this
+    // Google Drive doesn't support parallel access to different accounts,
+    // so there's only ever going to be one GdriveSpace, which this
     // getter will find, if it exists.
-    class var space: DropboxSpace? {
+    class var space: GdriveSpace? {
         Db.bgRwConn?.find(where: { _ in true })
     }
 
     var email: String?
 
 
-    init(uid: String? = nil, accessToken: String? = nil) {
+    init(userId: String? = nil, accessToken: String? = nil) {
         super.init(name: Self.defaultPrettyName, url: nil,
-                   username: uid, password: accessToken)
+                   username: userId, password: accessToken)
     }
 
     required init?(coder decoder: NSCoder) {
@@ -54,7 +54,7 @@ class DropboxSpace: Space, Item {
     // MARK: Space
 
     override class var defaultPrettyName: String {
-        return "Dropbox"
+        return "Google Drive"
     }
 
     override var favIcon: UIImage? {

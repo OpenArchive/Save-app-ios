@@ -1611,6 +1611,7 @@
                         <segue destination="Eyd-p5-AkX" kind="show" identifier="iaSettingsSegue" id="zaE-WP-S6r"/>
                         <segue destination="X2H-Lr-Xgg" kind="show" identifier="dropboxSettingsSegue" id="4fL-RL-gY2"/>
                         <segue destination="WA0-0x-5gX" kind="show" identifier="webDavSettingsSegue" id="r2e-I9-qmb"/>
+                        <segue destination="K9l-Jy-OOR" kind="show" identifier="gdriveSettingsSegue" id="xUp-Xb-dfd"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="6lv-Nd-TRh" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -2370,7 +2371,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lpO-xV-QNw" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="7311" y="-1477"/>
+            <point key="canvasLocation" x="8250" y="-1476"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="M08-dS-Vqy">
@@ -2929,6 +2930,155 @@
             </objects>
             <point key="canvasLocation" x="4575" y="-691.90140845070425"/>
         </scene>
+        <!--Gdrive Wizard View Controller-->
+        <scene sceneID="DPZ-Jy-eAk">
+            <objects>
+                <viewController storyboardIdentifier="GdriveWizardViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="3t4-vV-9Ku" customClass="GdriveWizardViewController" customModule="Save" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="MQV-qS-tGS">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="ic_gdrive" translatesAutoresizingMaskIntoConstraints="NO" id="WGj-yf-1XO">
+                                <rect key="frame" x="136" y="20" width="48" height="48"/>
+                                <color key="backgroundColor" systemColor="systemGray3Color"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="WGj-yf-1XO" secondAttribute="height" multiplier="1:1" id="0cz-gh-Cqa"/>
+                                    <constraint firstAttribute="width" constant="48" id="5Kz-p2-2Cy"/>
+                                </constraints>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="24"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Google Drive" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3ov-yG-eFN">
+                                <rect key="frame" x="16" y="76" width="288" height="20.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Sign in with Google Drive." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Mv2-kV-NKc">
+                                <rect key="frame" x="16" y="104.5" width="288" height="14.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                <color key="textColor" systemColor="secondaryLabelColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="muf-dt-V5G">
+                                <rect key="frame" x="176" y="517" width="128" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="128" id="Ade-HM-Iz5"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Authenticate"/>
+                                <connections>
+                                    <action selector="next" destination="3t4-vV-9Ku" eventType="touchUpInside" id="Cm8-H0-gYT"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="04D-Iy-n3q">
+                                <rect key="frame" x="16" y="517" width="128" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="128" id="hKx-io-db8"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Back"/>
+                                <connections>
+                                    <action selector="back" destination="3t4-vV-9Ku" eventType="touchUpInside" id="YIP-No-UJJ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="znT-bf-D5f"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Mv2-kV-NKc" firstAttribute="leading" secondItem="znT-bf-D5f" secondAttribute="leading" constant="16" id="Gsd-hr-zGB"/>
+                            <constraint firstItem="znT-bf-D5f" firstAttribute="trailing" secondItem="3ov-yG-eFN" secondAttribute="trailing" constant="16" id="If4-Yv-O8s"/>
+                            <constraint firstItem="3ov-yG-eFN" firstAttribute="leading" secondItem="znT-bf-D5f" secondAttribute="leading" constant="16" id="STC-Dt-NlR"/>
+                            <constraint firstItem="muf-dt-V5G" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="04D-Iy-n3q" secondAttribute="trailing" constant="8" id="WYj-kG-jh6"/>
+                            <constraint firstItem="znT-bf-D5f" firstAttribute="bottom" secondItem="04D-Iy-n3q" secondAttribute="bottom" constant="16" id="X92-ia-GfP"/>
+                            <constraint firstItem="04D-Iy-n3q" firstAttribute="leading" secondItem="znT-bf-D5f" secondAttribute="leading" constant="16" id="Xh6-lp-djQ"/>
+                            <constraint firstItem="WGj-yf-1XO" firstAttribute="centerX" secondItem="MQV-qS-tGS" secondAttribute="centerX" id="bcu-Jq-GaD"/>
+                            <constraint firstItem="znT-bf-D5f" firstAttribute="bottom" secondItem="muf-dt-V5G" secondAttribute="bottom" constant="16" id="ipD-Gg-ww1"/>
+                            <constraint firstItem="znT-bf-D5f" firstAttribute="trailing" secondItem="muf-dt-V5G" secondAttribute="trailing" constant="16" id="l96-ea-6tA"/>
+                            <constraint firstItem="muf-dt-V5G" firstAttribute="width" secondItem="04D-Iy-n3q" secondAttribute="width" id="nBj-ed-gzb"/>
+                            <constraint firstItem="3ov-yG-eFN" firstAttribute="top" secondItem="WGj-yf-1XO" secondAttribute="bottom" constant="8" symbolic="YES" id="nOs-AZ-Peg"/>
+                            <constraint firstItem="WGj-yf-1XO" firstAttribute="top" secondItem="znT-bf-D5f" secondAttribute="top" id="ttr-pZ-XPx"/>
+                            <constraint firstItem="Mv2-kV-NKc" firstAttribute="top" secondItem="3ov-yG-eFN" secondAttribute="bottom" constant="8" symbolic="YES" id="u8P-7x-vo7"/>
+                            <constraint firstItem="znT-bf-D5f" firstAttribute="trailing" secondItem="Mv2-kV-NKc" secondAttribute="trailing" constant="16" id="xZz-Xn-HbU"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="backBt" destination="04D-Iy-n3q" id="rf2-rB-LzI"/>
+                        <outlet property="iconIv" destination="WGj-yf-1XO" id="jvm-bR-sbS"/>
+                        <outlet property="nextBt" destination="muf-dt-V5G" id="MD5-u9-cXE"/>
+                        <outlet property="subtitleLb" destination="Mv2-kV-NKc" id="hL3-RN-QLH"/>
+                        <outlet property="titleLb" destination="3ov-yG-eFN" id="NuY-jv-2ME"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="agg-lJ-JN5" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7331" y="-1476"/>
+        </scene>
+        <!--Gdrive Settings View Controller-->
+        <scene sceneID="4hY-Kc-plz">
+            <objects>
+                <viewController storyboardIdentifier="GdriveSettingsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="K9l-Jy-OOR" customClass="GdriveSettingsViewController" customModule="Save" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="BvE-2E-L81">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Google ID" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="8LC-Ul-Qyg">
+                                <rect key="frame" x="16" y="16" width="288" height="20.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VbP-zd-jwk" customClass="TextBox" customModule="Save" customModuleProvider="target">
+                                <rect key="frame" x="16" y="44.5" width="288" height="38"/>
+                                <userDefinedRuntimeAttributes>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
+                                        <real key="value" value="8"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="color" keyPath="borderColor">
+                                        <color key="value" systemColor="secondaryLabelColor"/>
+                                    </userDefinedRuntimeAttribute>
+                                    <userDefinedRuntimeAttribute type="number" keyPath="borderWidth">
+                                        <real key="value" value="1"/>
+                                    </userDefinedRuntimeAttribute>
+                                </userDefinedRuntimeAttributes>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6lq-8U-YVx">
+                                <rect key="frame" x="67.5" y="256.5" width="185" height="35"/>
+                                <color key="tintColor" systemColor="systemRedColor"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="trash" catalog="system" title="Remove from App"/>
+                                <connections>
+                                    <action selector="remove" destination="K9l-Jy-OOR" eventType="touchUpInside" id="2ej-nk-IVA"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="UdX-vj-sIG"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="6lq-8U-YVx" firstAttribute="centerY" secondItem="BvE-2E-L81" secondAttribute="centerY" id="0b4-0E-lrw"/>
+                            <constraint firstItem="UdX-vj-sIG" firstAttribute="trailing" secondItem="8LC-Ul-Qyg" secondAttribute="trailing" constant="16" id="JLW-ct-s3c"/>
+                            <constraint firstItem="6lq-8U-YVx" firstAttribute="centerX" secondItem="BvE-2E-L81" secondAttribute="centerX" id="Snn-KC-ZGs"/>
+                            <constraint firstItem="VbP-zd-jwk" firstAttribute="leading" secondItem="UdX-vj-sIG" secondAttribute="leading" constant="16" id="Z6O-n1-IXv"/>
+                            <constraint firstItem="UdX-vj-sIG" firstAttribute="trailing" secondItem="VbP-zd-jwk" secondAttribute="trailing" constant="16" id="qI5-lU-6gg"/>
+                            <constraint firstItem="VbP-zd-jwk" firstAttribute="top" secondItem="8LC-Ul-Qyg" secondAttribute="bottom" constant="8" symbolic="YES" id="qIl-mw-30a"/>
+                            <constraint firstItem="8LC-Ul-Qyg" firstAttribute="top" secondItem="UdX-vj-sIG" secondAttribute="top" constant="16" id="vDe-gy-R53"/>
+                            <constraint firstItem="8LC-Ul-Qyg" firstAttribute="leading" secondItem="UdX-vj-sIG" secondAttribute="leading" constant="16" id="vtW-Mh-2YN"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="tFw-uA-WS4"/>
+                    <connections>
+                        <outlet property="gdriveIdLb" destination="8LC-Ul-Qyg" id="7xc-Rl-mEY"/>
+                        <outlet property="gdriveIdTb" destination="VbP-zd-jwk" id="FAl-JL-7OM"/>
+                        <outlet property="removeBt" destination="6lq-8U-YVx" id="VyO-ei-Ps2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Hqc-HR-QdR" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="7329" y="-691"/>
+        </scene>
     </scenes>
     <designables>
         <designable name="EIn-wk-PS1">
@@ -2954,6 +3104,7 @@
         <image name="house.fill" catalog="system" width="128" height="104"/>
         <image name="ic_batchedit" width="24" height="24"/>
         <image name="ic_error" width="24" height="24"/>
+        <image name="ic_gdrive" width="24" height="24"/>
         <image name="line.3.horizontal" width="14" height="7"/>
         <image name="logo" width="92" height="52"/>
         <image name="onboarding-app_hand" width="518" height="627"/>

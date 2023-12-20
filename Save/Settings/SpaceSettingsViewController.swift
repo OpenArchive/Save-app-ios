@@ -60,10 +60,16 @@ class SpaceSettingsViewController: BaseViewController {
                             SelectedSpace.store(tx)
 
                             DispatchQueue.main.async {
+                                self?.afterSpaceRemoved()
+
                                 self?.dismiss(nil)
                             }
                         }
                 })
             ])
+    }
+
+    func afterSpaceRemoved() {
+        // Ignored in default implementation.
     }
 }

@@ -18,6 +18,7 @@ def shared_pods
     pod 'CrossroadRegex', :git => 'https://github.com/crossroadlabs/Regex.git', tag: '1.2.0'
     pod 'CleanInsightsSDK', '~> 2.6'
     pod 'LegacyUTType', '~> 0.1'
+    pod 'GoogleAPIClientForREST/Drive', '~> 3.3'
     pod 'LibProofMode/PrivacyProtected',
         # :git => 'https://gitlab.com/guardianproject/proofmode/libproofmode-ios.git', :branch => 'main'
         :git => 'https://gitlab.com/threeletteracronym/libproofmode-ios.git', :branch => 'external_passphrase'
@@ -30,6 +31,7 @@ def app_only
     pod 'SDCAlertView', '~> 12.0'
     pod 'TLPhotoPicker', :git => 'https://github.com/tladesignz/TLPhotoPicker.git' # '~> 2.1'
     pod 'OrbotKit', '~> 1.1'
+    pod 'GoogleSignIn', '~> 7.0'
 end
 
 target 'Save' do

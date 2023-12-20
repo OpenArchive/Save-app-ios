@@ -46,7 +46,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
         Db.bgRwConn?.read { tx in
             if tx.find(where: { (_: DropboxSpace) in true }) == nil {
                 button = BigButton.create(
-                    icon: DropboxSpace.favIcon?.withRenderingMode(.alwaysTemplate),
+                    icon: DropboxSpace.favIcon,
                     title: DropboxSpace.defaultPrettyName,
                     subtitle: String(format: NSLocalizedString("Upload to %@", comment: ""), DropboxSpace.defaultPrettyName),
                     target: self,
@@ -58,7 +58,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
 
             if tx.find(where: { (_: IaSpace) in true }) == nil {
                 button = BigButton.create(
-                    icon: IaSpace.favIcon?.withRenderingMode(.alwaysTemplate),
+                    icon: IaSpace.favIcon,
                     title: IaSpace.defaultPrettyName,
                     subtitle: String(format: NSLocalizedString("Upload to %@", comment: ""), IaSpace.defaultPrettyName),
                     target: self,
@@ -68,6 +68,16 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
                     equalHeight: true)
             }
         }
+
+//        button = BigButton.create(
+//            icon: GdriveSpace.favIcon,
+//            title: GdriveSpace.defaultPrettyName,
+//            subtitle: String(format: NSLocalizedString("Upload to %@", comment: ""), GdriveSpace.defaultPrettyName),
+//            target: self,
+//            action: #selector(newGdrive),
+//            container: container,
+//            above: button,
+//            equalHeight: true)
 
         button.bottomAnchor.constraint(lessThanOrEqualTo: container.bottomAnchor, constant: -16).isActive = true
     }
@@ -85,5 +95,9 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
 
     @IBAction func newIa() {
         delegate?.next(UIStoryboard.main.instantiate(IaWizardViewController.self), pos: 1)
+    }
+
+    @IBAction func newGdrive() {
+        delegate?.next(UIStoryboard.main.instantiate(GdriveWizardViewController.self), pos: 1)
     }
 }

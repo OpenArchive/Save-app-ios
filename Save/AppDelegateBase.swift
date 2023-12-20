@@ -11,6 +11,7 @@ import UserNotifications
 import SwiftyDropbox
 import CleanInsightsSDK
 import LibProofMode
+import GoogleSignIn
 
 class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
@@ -69,6 +70,8 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         cleanCache()
 
         setUpDropbox()
+
+        setUpGdrive()
 
         UIFont.setUpMontserrat()
 
@@ -177,6 +180,10 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                 OrbotManager.shared.received(token: token)
             }
 
+            return true
+        }
+
+        if GIDSignIn.sharedInstance.handle(url) {
             return true
         }
 
@@ -313,6 +320,17 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         DropboxClientsManager.setupWithAppKey(
             Constants.dropboxKey,
             transportClient: DropboxConduit.transportClient(unauthorized: true))
+    }
+
+    func setUpGdrive() {
+        GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
+            if error != nil || user == nil {
+                // Signed out
+            }
+            else {
+                // Signed in
+            }
+        }
     }
 
     func setUpOrbot() {

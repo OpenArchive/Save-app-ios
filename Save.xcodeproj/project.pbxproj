@@ -101,6 +101,12 @@
 		A026C34622C641EB007B1C5B /* IaScrapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */; };
 		A029AF622B33057200FCCB3A /* CcSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C6B3082AFD11C400304187 /* CcSelector.swift */; };
 		A029AF652B330B6A00FCCB3A /* LinkRow-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029AF642B330B4A00FCCB3A /* LinkRow-extension.swift */; };
+		A029AF672B3315F400FCCB3A /* GdriveSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029AF662B33154B00FCCB3A /* GdriveSpace.swift */; };
+		A029AF682B3315F500FCCB3A /* GdriveSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029AF662B33154B00FCCB3A /* GdriveSpace.swift */; };
+		A029AF692B3315F600FCCB3A /* GdriveSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029AF662B33154B00FCCB3A /* GdriveSpace.swift */; };
+		A029AF6C2B3328E400FCCB3A /* GdriveWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029AF6A2B33202D00FCCB3A /* GdriveWizardViewController.swift */; };
+		A029AF6D2B3328E400FCCB3A /* GdriveWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029AF6A2B33202D00FCCB3A /* GdriveWizardViewController.swift */; };
+		A029AF6E2B332FFD00FCCB3A /* GdriveSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029AF6B2B33268200FCCB3A /* GdriveSettingsViewController.swift */; };
 		A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029F6822118715700C4EF6D /* AssetFactory.swift */; };
 		A029F6842118715700C4EF6D /* AssetFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029F6822118715700C4EF6D /* AssetFactory.swift */; };
 		A02DB29A29B647390090ECF6 /* URL+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02DB29929B647390090ECF6 /* URL+Utils.swift */; };
@@ -556,6 +562,9 @@
 		A025171822C2126B00EEFBD9 /* DuplicateFolderAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateFolderAlert.swift; sourceTree = "<group>"; };
 		A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaScrapeViewController.swift; sourceTree = "<group>"; };
 		A029AF642B330B4A00FCCB3A /* LinkRow-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LinkRow-extension.swift"; sourceTree = "<group>"; };
+		A029AF662B33154B00FCCB3A /* GdriveSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GdriveSpace.swift; sourceTree = "<group>"; };
+		A029AF6A2B33202D00FCCB3A /* GdriveWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GdriveWizardViewController.swift; sourceTree = "<group>"; };
+		A029AF6B2B33268200FCCB3A /* GdriveSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GdriveSettingsViewController.swift; sourceTree = "<group>"; };
 		A029F6822118715700C4EF6D /* AssetFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AssetFactory.swift; sourceTree = "<group>"; };
 		A02BC66D2400195C007B05AB /* NSError+from.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSError+from.swift"; sourceTree = "<group>"; };
 		A02DB29929B647390090ECF6 /* URL+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "URL+Utils.swift"; sourceTree = "<group>"; };
@@ -1078,6 +1087,7 @@
 				A0AC29EA2B10C0DD0054D5F4 /* SpaceSettingsViewController.swift */,
 				A0AC29EC2B10CAC30054D5F4 /* WebDavSettingsViewController.swift */,
 				A0AC29E62B10B7380054D5F4 /* DropboxSettingsViewController.swift */,
+				A029AF6B2B33268200FCCB3A /* GdriveSettingsViewController.swift */,
 				A0AC29E82B10BFCD0054D5F4 /* IaSettingsViewController.swift */,
 				A0A9F1902AF0193D007D284A /* FoldersViewController.swift */,
 				A0E2720B224E33D000CB7113 /* EditFolderViewController.swift */,
@@ -1108,6 +1118,7 @@
 				A0C797E822807DF00009751A /* SelectedCollection.swift */,
 				A0A192DC21F208DA009A8CF0 /* Space.swift */,
 				A056555623F6D67E00DE0168 /* DropboxSpace.swift */,
+				A029AF662B33154B00FCCB3A /* GdriveSpace.swift */,
 				A0362194220DB2CA003C21DC /* IaSpace.swift */,
 				A0362197220DB384003C21DC /* WebDavSpace.swift */,
 				A0E2BC712226AA10006D33E3 /* SelectedSpace.swift */,
@@ -1174,6 +1185,7 @@
 				A037D7012B0CCC6300C77706 /* SpaceTypeViewController.swift */,
 				A077F7692B0FB580004A4B34 /* WebDavWizardViewController.swift */,
 				A0AC29E02B10A2B20054D5F4 /* DropboxWizardViewController.swift */,
+				A029AF6A2B33202D00FCCB3A /* GdriveWizardViewController.swift */,
 				A013A9362B0D0488003476ED /* IaWizardViewController.swift */,
 				A056ACA62B0E649C00995FDF /* SpaceSuccessViewController.swift */,
 				A052A48E230D53D800E72594 /* IaInfoAlert.swift */,
@@ -1710,6 +1722,7 @@
 				A0FB4DB321F8799100B46099 /* SpacesView.swift in Sources */,
 				A056555823F6D8A300DE0168 /* DropboxSpace.swift in Sources */,
 				A056555D23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */,
+				A029AF682B3315F500FCCB3A /* GdriveSpace.swift in Sources */,
 				A071290C2111DE3C007A432A /* Asset.swift in Sources */,
 				A045D1FC224D02AA008FF8C1 /* TitleCell.swift in Sources */,
 				A05DF975282C0E13003FADA2 /* DavResponse.swift in Sources */,
@@ -1770,9 +1783,11 @@
 				A0102DA12B18EEF80054D3D4 /* FlagInfoAlert.swift in Sources */,
 				A0102DA22B18EF000054D3D4 /* UploadInfoAlert.swift in Sources */,
 				A09B538A23266F02005266C2 /* SpaceCell.swift in Sources */,
+				A029AF692B3315F600FCCB3A /* GdriveSpace.swift in Sources */,
 				A0102D632B18E2480054D3D4 /* SecureEnclave.swift in Sources */,
 				A0102DA52B18EF2F0054D3D4 /* ImageViewController.swift in Sources */,
 				A09B538B23266F02005266C2 /* Constants.m in Sources */,
+				A029AF6D2B3328E400FCCB3A /* GdriveWizardViewController.swift in Sources */,
 				A05DF98E282C118A003FADA2 /* FileInfo.swift in Sources */,
 				A09B538C23266F02005266C2 /* WebDavSpace.swift in Sources */,
 				A0102D7D2B18EC090054D3D4 /* MainViewController.swift in Sources */,
@@ -1971,6 +1986,7 @@
 				A059E647223AE9FB00ABC621 /* UploadManager.swift in Sources */,
 				A0E1A68121EE7BE900E4F6B7 /* MenuItemCell.swift in Sources */,
 				A00A8D45220C63B20083F0CB /* ProjectsView.swift in Sources */,
+				A029AF672B3315F400FCCB3A /* GdriveSpace.swift in Sources */,
 				A010D3A022D4A3F200FAB433 /* BatchInfoAlert.swift in Sources */,
 				A056ACA72B0E649C00995FDF /* SpaceSuccessViewController.swift in Sources */,
 				A098980622369F8100022851 /* ManagementViewController.swift in Sources */,
@@ -1999,6 +2015,7 @@
 				A0DC0FAC233914BD00C4969A /* MovieIndicator.swift in Sources */,
 				A05471DB2296C8FD009FEA93 /* UITableView+separatorView.swift in Sources */,
 				A052A48F230D53D800E72594 /* IaInfoAlert.swift in Sources */,
+				A029AF6E2B332FFD00FCCB3A /* GdriveSettingsViewController.swift in Sources */,
 				A0AC29E12B10A2B20054D5F4 /* DropboxWizardViewController.swift in Sources */,
 				A0FE2C1E22E1E8D200C5443F /* Error+friendlyMessage.swift in Sources */,
 				A05CFCCA292D2DA40045991A /* BrowseDropboxViewController.swift in Sources */,
@@ -2034,6 +2051,7 @@
 				A0E12C1A2B028EC300892AC8 /* UploadInfoAlert.swift in Sources */,
 				A05DF988282C0F92003FADA2 /* AEXMLParser.swift in Sources */,
 				A05DF978282C0E54003FADA2 /* AEXMLDocument.swift in Sources */,
+				A029AF6C2B3328E400FCCB3A /* GdriveWizardViewController.swift in Sources */,
 				A056555C23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */,
 				A0631B552203022100B3E90D /* BaseTableViewController.swift in Sources */,
 				A0E2720C224E33D000CB7113 /* EditFolderViewController.swift in Sources */,
