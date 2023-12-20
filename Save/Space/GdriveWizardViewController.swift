@@ -60,13 +60,16 @@ class GdriveWizardViewController: BaseViewController, WizardDelegatable {
             let result: GIDSignInResult
 
             do {
-                result = try await GIDSignIn.sharedInstance.signIn(withPresenting: self)
+                result = try await GIDSignIn.sharedInstance.signIn(
+                    withPresenting: self, hint: nil, additionalScopes: [kGTLRAuthScopeDrive])
             }
             catch {
                 AlertHelper.present(self, message: error.friendlyMessage)
 
                 return
             }
+
+            GdriveConduit.user = result.user
 
             let space = GdriveSpace(userId: result.user.userID, accessToken: result.user.accessToken.tokenString)
             space.email = result.user.profile?.email

@@ -16,7 +16,7 @@ extension BrowseViewController.Folder {
             return nil
         }
 
-        self.init(name, original.modifiedTime?.date, original)
+        self.init(name, original.modifiedTime?.date ?? original.createdTime?.date, original)
     }
 }
 
@@ -28,9 +28,14 @@ class BrowseGdriveViewController: BrowseViewController {
             folders.removeAll()
 
             let query = GTLRDriveQuery_FilesList.query()
-            query.spaces = "appDataFolder,drive"
+            query.spaces = "drive"
             query.corpora = "user,allTeamDrives"
-            query.q = "mimeType = 'application/vnd.google-apps.folder'"
+            query.q = "mimeType='application/vnd.google-apps.folder' and trashed=false"
+            query.includeItemsFromAllDrives = true
+            query.supportsAllDrives = true
+            query.orderBy = "name_natural"
+            query.pageSize = 999
+            query.fields = "files(id,name,modifiedTime,createdTime)"
 
             GdriveConduit.service.executeQuery(query) { a, result, error in
                 if let error = error {
@@ -44,7 +49,7 @@ class BrowseGdriveViewController: BrowseViewController {
                 }
 
                 for file in folders.files ?? [] {
-                    if let folder = Folder(file) {
+                    if file.trashed == nil || file.trashed! == 0, let folder = Folder(file) {
                         self.folders.append(folder)
                     }
                 }

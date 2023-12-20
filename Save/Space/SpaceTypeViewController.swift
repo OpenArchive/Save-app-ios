@@ -67,17 +67,19 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
                     above: button,
                     equalHeight: true)
             }
-        }
 
-//        button = BigButton.create(
-//            icon: GdriveSpace.favIcon,
-//            title: GdriveSpace.defaultPrettyName,
-//            subtitle: String(format: NSLocalizedString("Upload to %@", comment: ""), GdriveSpace.defaultPrettyName),
-//            target: self,
-//            action: #selector(newGdrive),
-//            container: container,
-//            above: button,
-//            equalHeight: true)
+//            if tx.find(where: { (_: GdriveSpace) in true }) == nil {
+//                button = BigButton.create(
+//                    icon: GdriveSpace.favIcon,
+//                    title: GdriveSpace.defaultPrettyName,
+//                    subtitle: String(format: NSLocalizedString("Upload to %@", comment: ""), GdriveSpace.defaultPrettyName),
+//                    target: self,
+//                    action: #selector(newGdrive),
+//                    container: container,
+//                    above: button,
+//                    equalHeight: true)
+//            }
+        }
 
         button.bottomAnchor.constraint(lessThanOrEqualTo: container.bottomAnchor, constant: -16).isActive = true
     }

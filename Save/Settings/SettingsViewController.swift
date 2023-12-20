@@ -76,12 +76,7 @@ class SettingsViewController: UIViewController {
         let space = SelectedSpace.space
 
         if let icon = space?.favIcon?.resizeFit(to: .icon) {
-            if space is IaSpace || space is DropboxSpace {
-                serverIv.image = icon.withRenderingMode(.alwaysTemplate)
-            }
-            else {
-                serverIv.image = icon.withRenderingMode(.alwaysOriginal)
-            }
+            serverIv.image = icon.withRenderingMode(space is WebDavSpace ? .alwaysOriginal : .alwaysTemplate)
         }
         else if let icon = SelectedSpace.defaultFavIcon?.resizeFit(to: .icon) {
             serverIv.image = icon.withRenderingMode(.alwaysTemplate)
