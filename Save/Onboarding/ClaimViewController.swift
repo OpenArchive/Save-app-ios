@@ -48,4 +48,12 @@ class ClaimViewController: UIViewController {
             nextBt?.text = NSLocalizedString("Get Started", comment: "")
         }
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        // Force to Montserrat-Black again, after we destroyed it with the appearance proxy.
+        // Needs to run here, otherwise, it'll be too early and the appearance proxy will win again.
+        claimLb?.fontName = UIFont.blackFontName
+    }
 }

@@ -14,6 +14,7 @@ extension UIFont {
     static let boldFontName = "Montserrat-Bold"
     static let italicFontName = "Montserrat-MediumItalic"
     static let boldItalicFontName = "Montserrat-BoldItalic"
+    static let blackFontName = "Montserrat-Black"
 
     static let baseSizes: [UIFont.TextStyle: CGFloat] = [
         .body: 17,
