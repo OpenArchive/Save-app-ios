@@ -19,6 +19,8 @@ import GoogleAPIClientForREST
  References:
  https://developers.google.com/identity/sign-in/ios/sign-in?hl=de
  https://developers.google.com/drive/api/reference/rest/v2/files/list?hl=de
+ https://medium.com/@kgleong/uploading-files-to-google-drive-using-the-google-ios-sdk-fcad3e9d6c07
+ https://uynguyen.github.io/2019/02/15/Integrate-Google-Drive-to-iOS-app/
 
  Google Cloud console:
  https://console.cloud.google.com/apis/credentials?project=openarchive-1120
