@@ -56,22 +56,36 @@ class GdriveWizardViewController: BaseViewController, WizardDelegatable {
     }
 
     @IBAction func next() {
+        let space = GdriveSpace()
+
+        Self.authenticate(self, space: space) { [weak self] in
+            CleanInsights.shared.measure(event: "backend", "new", forCampaign: "upload_fails", name: "Google Drive")
+
+            let vc = UIStoryboard.main.instantiate(SpaceSuccessViewController.self)
+            vc.spaceName = space.prettyName
+
+            self?.delegate?.next(vc, pos: 2)
+        }
+    }
+
+    class func authenticate(_ vc: UIViewController, space: GdriveSpace, _ success: @escaping () -> Void) {
         Task {
             let result: GIDSignInResult
 
             do {
                 result = try await GIDSignIn.sharedInstance.signIn(
-                    withPresenting: self, hint: nil, additionalScopes: [kGTLRAuthScopeDrive])
+                    withPresenting: vc, hint: nil, additionalScopes: [kGTLRAuthScopeDrive])
             }
             catch {
-                AlertHelper.present(self, message: error.friendlyMessage)
+                AlertHelper.present(vc, message: error.friendlyMessage)
 
                 return
             }
 
             GdriveConduit.user = result.user
 
-            let space = GdriveSpace(userId: result.user.userID, accessToken: result.user.accessToken.tokenString)
+            space.username = result.user.userID
+            space.password = result.user.accessToken.tokenString
             space.email = result.user.profile?.email
 
             SelectedSpace.space = space
@@ -82,12 +96,7 @@ class GdriveWizardViewController: BaseViewController, WizardDelegatable {
                 tx.setObject(space)
             }
 
-            CleanInsights.shared.measure(event: "backend", "new", forCampaign: "upload_fails", name: "Google Drive")
-
-            let vc = UIStoryboard.main.instantiate(SpaceSuccessViewController.self)
-            vc.spaceName = space.prettyName
-
-            delegate?.next(vc, pos: 2)
+            success()
         }
     }
 }

@@ -1657,7 +1657,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wV4-q4-odx" customClass="TextBox" customModule="Save" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wV4-q4-odx" customClass="TextBox" customModule="Save" customModuleProvider="target">
                                 <rect key="frame" x="16" y="44.5" width="288" height="38"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -1671,13 +1671,13 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Secret Key" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ire-uE-9Yh">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Secret Key" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Ire-uE-9Yh">
                                 <rect key="frame" x="16" y="90.5" width="288" height="20.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Qur-at-Xbp" customClass="TextBox" customModule="Save" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Qur-at-Xbp" customClass="TextBox" customModule="Save" customModuleProvider="target">
                                 <rect key="frame" x="16" y="119" width="288" height="38"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -2160,7 +2160,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gyS-ll-MIR" customClass="TextBox" customModule="Save" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gyS-ll-MIR" customClass="TextBox" customModule="Save" customModuleProvider="target">
                                                 <rect key="frame" x="16" y="111.5" width="288" height="38"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -2174,13 +2174,13 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Secret Key" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OOJ-dW-NJo">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Secret Key" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OOJ-dW-NJo">
                                                 <rect key="frame" x="16" y="157.5" width="288" height="20.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Hg6-9N-wum" customClass="TextBox" customModule="Save" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Hg6-9N-wum" customClass="TextBox" customModule="Save" customModuleProvider="target">
                                                 <rect key="frame" x="16" y="186" width="288" height="38"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -2194,7 +2194,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qq5-R8-hER">
+                                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Qq5-R8-hER">
                                                 <rect key="frame" x="96" y="284" width="128" height="35"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="128" id="1Us-Rr-brl"/>
@@ -2205,7 +2205,7 @@
                                                     <action selector="acquireKeys" destination="XFE-uE-IXo" eventType="touchUpInside" id="Qpa-zY-nZC"/>
                                                 </connections>
                                             </button>
-                                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="If you do not have existing keys, learn how to acquire keys." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Agm-bY-ukH">
+                                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="If you do not have existing keys, learn how to acquire keys." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Agm-bY-ukH">
                                                 <rect key="frame" x="16" y="327" width="288" height="30.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                                 <nil key="textColor"/>
@@ -2434,7 +2434,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="i5c-IQ-gVj" customClass="TextBox" customModule="Save" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="i5c-IQ-gVj" customClass="TextBox" customModule="Save" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="131.5" width="280" height="38"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -2448,7 +2448,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="gbc-cc-P6S" customClass="TextBox" customModule="Save" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gbc-cc-P6S" customClass="TextBox" customModule="Save" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="177.5" width="280" height="38"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -2462,13 +2462,13 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Account" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="13Y-3C-Tmj">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Account" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="13Y-3C-Tmj">
                                                 <rect key="frame" x="20" y="223.5" width="280" height="20.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jrm-jl-jzP" customClass="TextBox" customModule="Save" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="jrm-jl-jzP" customClass="TextBox" customModule="Save" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="252" width="280" height="38"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -2482,7 +2482,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="97a-9J-Qj6" customClass="TextBox" customModule="Save" customModuleProvider="target">
+                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="97a-9J-Qj6" customClass="TextBox" customModule="Save" customModuleProvider="target">
                                                 <rect key="frame" x="20" y="298" width="280" height="37"/>
                                                 <userDefinedRuntimeAttributes>
                                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -2497,7 +2497,7 @@
                                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isSecureTextEntry" value="YES"/>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Wt9-5i-bpl">
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Wt9-5i-bpl">
                                                 <rect key="frame" x="251" y="343" width="51" height="31"/>
                                                 <color key="onTintColor" name="Accent"/>
                                             </switch>
@@ -2507,7 +2507,7 @@
                                                 <nil key="textColor"/>
                                                 <nil key="highlightedColor"/>
                                             </label>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1000" ambiguous="YES" text="Use Upload Chunking (Nextcloud Only)" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2tF-Hc-78E">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" verticalCompressionResistancePriority="1000" text="Use Upload Chunking (Nextcloud Only)" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="2tF-Hc-78E">
                                                 <rect key="frame" x="20" y="343" width="223" height="42.5"/>
                                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                                 <nil key="textColor"/>
@@ -2727,7 +2727,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="FQ1-YR-fIP" customClass="TextBox" customModule="Save" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="FQ1-YR-fIP" customClass="TextBox" customModule="Save" customModuleProvider="target">
                                 <rect key="frame" x="16" y="44.5" width="288" height="38"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -2789,7 +2789,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="wK7-dZ-iUa" customClass="TextBox" customModule="Save" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="wK7-dZ-iUa" customClass="TextBox" customModule="Save" customModuleProvider="target">
                                 <rect key="frame" x="16" y="44.5" width="288" height="38"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -2803,7 +2803,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="k79-cl-kgf" customClass="TextBox" customModule="Save" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="k79-cl-kgf" customClass="TextBox" customModule="Save" customModuleProvider="target">
                                 <rect key="frame" x="16" y="90.5" width="288" height="38"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -2817,13 +2817,13 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" text="Account" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UBp-OB-rCI">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Account" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="UBp-OB-rCI">
                                 <rect key="frame" x="16" y="136.5" width="288" height="20.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="s1y-iy-zaQ" customClass="TextBox" customModule="Save" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s1y-iy-zaQ" customClass="TextBox" customModule="Save" customModuleProvider="target">
                                 <rect key="frame" x="16" y="165" width="288" height="38"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -2837,7 +2837,7 @@
                                     </userDefinedRuntimeAttribute>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="e73-tP-i16" customClass="TextBox" customModule="Save" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="e73-tP-i16" customClass="TextBox" customModule="Save" customModuleProvider="target">
                                 <rect key="frame" x="16" y="211" width="288" height="37"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -2852,7 +2852,7 @@
                                     <userDefinedRuntimeAttribute type="boolean" keyPath="isSecureTextEntry" value="YES"/>
                                 </userDefinedRuntimeAttributes>
                             </view>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" ambiguous="YES" text="Use Upload Chunking (Nextcloud Only)" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ov3-sS-CWS">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" horizontalCompressionResistancePriority="250" text="Use Upload Chunking (Nextcloud Only)" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ov3-sS-CWS">
                                 <rect key="frame" x="16" y="256" width="231" height="42.5"/>
                                 <fontDescription key="fontDescription" style="UICTFontTextStyleHeadline"/>
                                 <nil key="textColor"/>
@@ -2873,7 +2873,7 @@
                                     <action selector="remove" destination="WA0-0x-5gX" eventType="touchUpInside" id="fYJ-HG-7Oc"/>
                                 </connections>
                             </button>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="i1b-Zh-N2m">
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="i1b-Zh-N2m">
                                 <rect key="frame" x="255" y="256" width="51" height="31"/>
                                 <color key="onTintColor" name="Accent"/>
                             </switch>
@@ -3031,7 +3031,7 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="VbP-zd-jwk" customClass="TextBox" customModule="Save" customModuleProvider="target">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="VbP-zd-jwk" customClass="TextBox" customModule="Save" customModuleProvider="target">
                                 <rect key="frame" x="16" y="44.5" width="288" height="38"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
@@ -3054,6 +3054,18 @@
                                     <action selector="remove" destination="K9l-Jy-OOR" eventType="touchUpInside" id="2ej-nk-IVA"/>
                                 </connections>
                             </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q6v-6W-Fm7">
+                                <rect key="frame" x="176" y="497" width="128" height="35"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="128" id="ae4-kj-czK"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Authenticate"/>
+                                <connections>
+                                    <action selector="authenticate" destination="K9l-Jy-OOR" eventType="touchUpInside" id="be7-q1-A0k"/>
+                                    <action selector="next" destination="3t4-vV-9Ku" eventType="touchUpInside" id="PCa-51-Hfc"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="UdX-vj-sIG"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -3062,6 +3074,9 @@
                             <constraint firstItem="UdX-vj-sIG" firstAttribute="trailing" secondItem="8LC-Ul-Qyg" secondAttribute="trailing" constant="16" id="JLW-ct-s3c"/>
                             <constraint firstItem="6lq-8U-YVx" firstAttribute="centerX" secondItem="BvE-2E-L81" secondAttribute="centerX" id="Snn-KC-ZGs"/>
                             <constraint firstItem="VbP-zd-jwk" firstAttribute="leading" secondItem="UdX-vj-sIG" secondAttribute="leading" constant="16" id="Z6O-n1-IXv"/>
+                            <constraint firstItem="UdX-vj-sIG" firstAttribute="bottom" secondItem="Q6v-6W-Fm7" secondAttribute="bottom" constant="16" id="ZrZ-tY-Z30"/>
+                            <constraint firstItem="Q6v-6W-Fm7" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="UdX-vj-sIG" secondAttribute="leading" constant="16" id="gGp-h7-HBh"/>
+                            <constraint firstItem="UdX-vj-sIG" firstAttribute="trailing" secondItem="Q6v-6W-Fm7" secondAttribute="trailing" constant="16" id="pEH-hk-38j"/>
                             <constraint firstItem="UdX-vj-sIG" firstAttribute="trailing" secondItem="VbP-zd-jwk" secondAttribute="trailing" constant="16" id="qI5-lU-6gg"/>
                             <constraint firstItem="VbP-zd-jwk" firstAttribute="top" secondItem="8LC-Ul-Qyg" secondAttribute="bottom" constant="8" symbolic="YES" id="qIl-mw-30a"/>
                             <constraint firstItem="8LC-Ul-Qyg" firstAttribute="top" secondItem="UdX-vj-sIG" secondAttribute="top" constant="16" id="vDe-gy-R53"/>
@@ -3070,6 +3085,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="tFw-uA-WS4"/>
                     <connections>
+                        <outlet property="authenticateBt" destination="Q6v-6W-Fm7" id="WZd-xb-bA1"/>
                         <outlet property="gdriveIdLb" destination="8LC-Ul-Qyg" id="7xc-Rl-mEY"/>
                         <outlet property="gdriveIdTb" destination="VbP-zd-jwk" id="FAl-JL-7OM"/>
                         <outlet property="removeBt" destination="6lq-8U-YVx" id="VyO-ei-Ps2"/>
@@ -3080,18 +3096,10 @@
             <point key="canvasLocation" x="7329" y="-691"/>
         </scene>
     </scenes>
-    <designables>
-        <designable name="EIn-wk-PS1">
-            <size key="intrinsicContentSize" width="19.5" height="20"/>
-        </designable>
-        <designable name="dVf-uc-nQr">
-            <size key="intrinsicContentSize" width="19.5" height="20"/>
-        </designable>
-    </designables>
     <color key="tintColor" red="0.0" green="0.70398116438356162" blue="0.64921339897260277" alpha="1" colorSpace="calibratedRGB"/>
     <resources>
         <image name="InternetArchiveLogo" width="76" height="86"/>
-        <image name="arrow.right" catalog="system" width="32" height="32"/>
+        <image name="arrow.right" catalog="system" width="128" height="95"/>
         <image name="camera" catalog="system" width="128" height="93"/>
         <image name="check-mark" width="12" height="12"/>
         <image name="chevron.left" catalog="system" width="97" height="128"/>
@@ -3111,8 +3119,8 @@
         <image name="person.crop.circle" catalog="system" width="128" height="123"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="save-open-archive-logo" width="145" height="120"/>
-        <image name="server.rack" width="16" height="13"/>
         <image name="server.rack" catalog="system" width="128" height="93"/>
+        <image name="server.rack" width="16" height="13"/>
         <image name="text.append" catalog="system" width="128" height="99"/>
         <image name="trash" catalog="system" width="117" height="128"/>
         <namedColor name="Accent">

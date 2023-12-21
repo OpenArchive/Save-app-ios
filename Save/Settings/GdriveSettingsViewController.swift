@@ -27,6 +27,12 @@ class GdriveSettingsViewController: SpaceSettingsViewController {
         }
     }
 
+    @IBOutlet weak var authenticateBt: UIButton! {
+        didSet {
+            authenticateBt.setTitle(NSLocalizedString("Authenticate", comment: ""))
+        }
+    }
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,10 +46,26 @@ class GdriveSettingsViewController: SpaceSettingsViewController {
 
         navigationItem.title = GdriveSpace.defaultPrettyName
 
-        gdriveIdTb.text = (space as? GdriveSpace)?.email ?? space?.username
+        updateUi()
     }
 
     override func afterSpaceRemoved() {
         GIDSignIn.sharedInstance.signOut()
+    }
+
+
+    @IBAction func authenticate() {
+        GdriveWizardViewController.authenticate(self, space: space as! GdriveSpace) { [weak self] in
+            self?.updateUi()
+        }
+    }
+
+    private func updateUi() {
+        let ok = GdriveConduit.user != nil
+
+        gdriveIdTb.text = (space as? GdriveSpace)?.email ?? space?.username
+        gdriveIdTb.status = ok ? .good : .bad
+
+        authenticateBt.toggle(!ok)
     }
 }
