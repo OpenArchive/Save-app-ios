@@ -615,10 +615,15 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                     return false
                 }
 
-                // First attach object chain to upload before next call,
+                // First attach object chain to upload before next calls,
                 // otherwise, that will trigger more DB reads and with that
                 // a deadlock.
                 upload.preheat(tx)
+
+                // Do not try uploading to Google Drive before the user is properly logged into Google.
+                if upload.asset?.space is GdriveSpace && GdriveConduit.user == nil {
+                    return false
+                }
 
                 // Look at next, if it's not ready, yet.
                 guard upload.isReady else {

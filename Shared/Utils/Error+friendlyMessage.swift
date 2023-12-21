@@ -24,6 +24,52 @@ extension Error {
             }
         }
 
+        // Google Driver errors
+        if (self as NSError).userInfo["data_content_type"] as? String == "application/json; charset=UTF-8",
+           let data = (self as NSError).userInfo["data"] as? Data,
+           let googleError = try? JSONDecoder().decode(GoogleErrorWrapper.self, from: data)
+        {
+            return googleError.error.description
+        }
+
         return localizedDescription
+    }
+}
+
+struct GoogleErrorWrapper: Codable {
+
+    let error: GoogleError
+}
+
+struct GoogleError: Codable, CustomStringConvertible {
+
+    let code: Int?
+
+    let message: String?
+
+    let domain: String?
+
+    let reason: String?
+
+    let errors: [GoogleError]?
+
+    var description: String {
+        var pieces = [String]()
+
+        let message = message ?? errors?.first?.message
+
+        if let code = code ?? errors?.first?.code {
+            pieces.append("code=\(code)")
+        }
+
+        if let domain = domain ?? errors?.first?.domain {
+            pieces.append("domain=\(domain)")
+        }
+
+        if let reason = reason ?? errors?.first?.reason {
+            pieces.append("reason=\(reason)")
+        }
+
+        return "\(message ?? "") (\(pieces.joined(separator: ", ")))"
     }
 }

@@ -64,6 +64,22 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
             }
         }
 
+        var mimeType: String {
+            switch self {
+            case .thumb:
+                return "image/jpeg"
+
+            case .meta, .proofJson:
+                return "application/json"
+
+            case .signature, .proofCsvSignature, .proofJsonSignature:
+                return "application/pgp-signature"
+
+            case .proofCsv:
+                return "text/csv"
+            }
+        }
+
         func url(_ name: String) -> URL? {
             Self.base?.appendingPathComponent(name).appendingPathExtension(self.rawValue)
         }
@@ -206,7 +222,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     */
     fileprivate(set) var filename: String {
         get {
-            if let filename = _filename {
+            if let filename = _filename, !filename.isEmpty {
                 return filename
             }
 

@@ -35,21 +35,22 @@ class Conduit {
      - parameter asset: The `Asset` the `Conduit` is for.
     */
     class func get(for asset: Asset, _ backgroundSession: URLSession, _ foregroundSession: URLSession) -> Conduit? {
-        if let space = asset.space {
-            if space is WebDavSpace {
-                return WebDavConduit(asset, backgroundSession, foregroundSession)
-            }
+        switch asset.space {
+        case is WebDavSpace:
+            return WebDavConduit(asset, backgroundSession, foregroundSession)
 
-            if space is DropboxSpace {
-                return DropboxConduit(asset, backgroundSession, foregroundSession)
-            }
+        case is DropboxSpace:
+            return DropboxConduit(asset, backgroundSession, foregroundSession)
 
-            if space is IaSpace {
-                return IaConduit(asset, backgroundSession, foregroundSession)
-            }
+        case is IaSpace:
+            return IaConduit(asset, backgroundSession, foregroundSession)
+
+        case is GdriveSpace:
+            return GdriveConduit(asset, backgroundSession, foregroundSession)
+
+        default:
+            return nil
         }
-
-        return nil
     }
 
     /**
