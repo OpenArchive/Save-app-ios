@@ -1,1 +1,6 @@
-- Neues UI-Design.
+- Google Drive-Unterstützung hinzugefügt.
+- Überall wird die Schriftart "Montserrat" verwendet.
+- Einige Farben für bessere Lesbarkeit korrigiert.
+- Bessere Anzeige des Download-Fortschritts mit Prozentangabe.
+- Aktualisierte Übersetzungen.
+- Eine Menge kleinerer UI-Korrekturen.

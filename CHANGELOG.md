@@ -1,5 +1,13 @@
 # Changelog
 
+# 3.1.0
+- Google Drive support.
+- Use "Montserrat" font everywhere.
+- Fixed some colors for better readability.
+- Better download progress display with percentage.
+- Updated translations.
+- Lots of minor UI fixes.
+
 # 3.0.0
 - UI redesign.
 

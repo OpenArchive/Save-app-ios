@@ -1,1 +1,6 @@
-- Refonte de l'interface utilisateur.
+- Prise en charge de Google Drive.
+- Utilisation de la police "Montserrat" partout.
+- Correction de certaines couleurs pour une meilleure lisibilité.
+- Meilleur affichage de la progression du téléchargement avec un pourcentage.
+- Mise à jour des traductions.
+- Beaucoup de corrections mineures de l'interface utilisateur.
