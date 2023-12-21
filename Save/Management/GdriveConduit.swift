@@ -15,6 +15,14 @@ import GoogleAPIClientForREST
  if a file exists or not before trying to upload anything.
 
  If a file exists but has the wrong size then we need to delete the old one.
+
+ References:
+ https://developers.google.com/identity/sign-in/ios/sign-in?hl=de
+ https://developers.google.com/drive/api/reference/rest/v2/files/list?hl=de
+
+ Google Cloud console:
+ https://console.cloud.google.com/apis/credentials?project=openarchive-1120
+
  */
 class GdriveConduit: Conduit {
 
