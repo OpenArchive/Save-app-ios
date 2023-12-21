@@ -120,9 +120,8 @@ class DropboxConduit: Conduit {
     /**
      Tests, if a folder exists and if not, creates it.
 
-     - parameter folder: Folder with path relative to WebDav endpoint.
+     - parameter folder: Folder with path relative to Dropbox endpoint.
      - parameter progress: The overall progress object.
-     - parameter provider: A `WebDavFileProvider`. Optional. Defaults to `self.provider`.
      If an error was returned, it is from the creation attempt.
      */
     private func create(folder: URL, _ progress: Progress) -> Error? {
