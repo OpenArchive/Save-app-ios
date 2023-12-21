@@ -424,6 +424,8 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             }
         }
 
+        AddInfoAlert.presentIfNeeded(self)
+
         assetPicker.pickMedia()
     }
 

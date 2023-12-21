@@ -91,6 +91,9 @@
 /* No comment provided by engineer. */
 "Add notes (optional)" = "Add notes (optional)";
 
+/* No comment provided by engineer. */
+"Add Other Media" = "Add Other Media";
+
 /* DarkroomHelper */
 "Add People" = "Ajouter des personnes";
 
@@ -384,6 +387,9 @@
 
 /* MainViewController */
 "Please go to the Settings app to grant this app access to your photo library, if you want to upload photos or videos." = "Veuillez vous rendre dans l’appli Réglages pour autoriser l’accès de votre photothèque à cette appli, si vous souhaitez téléverser des photos ou des vidéos.";
+
+/* placeholder is '+' */
+"Press and hold the %@ button to select other files than photos and movies." = "Press and hold the %@ button to select other files than photos and movies.";
 
 /* No comment provided by engineer. */
 "Press and hold to select and edit multiple media." = "Press and hold to select and edit multiple media.";

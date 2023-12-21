@@ -19,6 +19,7 @@ class Settings {
     private static let kProofMode = "proof_mode"
     private static let kProofModeEncryptedPassphrase = "proof_mode_encrypted_passphrase"
     private static let kFirstRunDone = "already_run"
+    private static let kFirstAddDone = "first_add_done"
     private static let kFirstFlaggedDone = "first_flagged_done"
     private static let kFirstBatchEditDone = "first_batch_edit_done"
     private static let kIaShownFirstTime = "ia_shown_first_time"
@@ -128,6 +129,15 @@ class Settings {
 
 
     // MARK: InfoAlerts
+
+    class var firstAddDone: Bool {
+        get {
+            defaults?.bool(forKey: kFirstAddDone) ?? false
+        }
+        set {
+            defaults?.set(newValue, forKey: kFirstAddDone)
+        }
+    }
 
     class var firstFlaggedDone: Bool {
         get {
