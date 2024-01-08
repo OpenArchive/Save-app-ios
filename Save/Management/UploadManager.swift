@@ -58,6 +58,12 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     */
     static let maxRetries = 10
 
+    var waiting: Bool {
+        globalPause || 
+        (reachability?.connection ?? Reachability.Connection.unavailable == .unavailable) ||
+        (Settings.useOrbot && OrbotManager.shared.status == .stopped)
+    }
+
     private var current: Upload?
 
     var reachability: Reachability? = {

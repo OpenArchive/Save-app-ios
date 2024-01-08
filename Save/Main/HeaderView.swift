@@ -36,7 +36,12 @@ class HeaderView: UICollectionReusableView {
                 assetCountLb.text = "  \(Formatters.format(uploaded))  "
             }
             else if collection?.closed != nil {
-                infoLb.text = NSLocalizedString("Uploading…", comment: "")
+                if UploadManager.shared.waiting {
+                    infoLb.text = NSLocalizedString("Waiting…", comment: "")
+                }
+                else {
+                    infoLb.text = NSLocalizedString("Uploading…", comment: "")
+                }
 
                 let total = collection?.assets.count ?? 0
                 let uploaded = collection?.uploadedAssetsCount ?? 0

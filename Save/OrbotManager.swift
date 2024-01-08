@@ -160,17 +160,17 @@ class OrbotManager: OrbotStatusChangeListener {
     }
 
     /**
-     Shows an alert, if
-
-     - app is set up to only use Orbot,
-     - Orbot is *not* running,
-     - there are uploads in the queue.
+     Shows an alert, if there are uploads in the queue AND (
+        app is set up to only upload via Wi-Fi OR (
+            app is set up to only use Orbot AND Orbot is *not* running
+        )
+     ).
 
      - parameter count: Number of uploads in the queue. If `nil`, method will try find out itself. Beware of database issues when crossing threads!
      - parameter completed: Callback after user interaction or immediately, when no alert is shown.
      */
-    func alertOrbotStopped(count: UInt? = nil, _ completed: (() -> Void)? = nil) {
-        guard Settings.useOrbot && status == .stopped,
+    func alertCannotUpload(count: Int? = nil, _ completed: (() -> Void)? = nil) {
+        guard Settings.wifiOnly || (Settings.useOrbot && status == .stopped),
               let topVc = UIApplication.shared.delegate?.window??.rootViewController?.top
         else {
             completed?()
@@ -181,8 +181,8 @@ class OrbotManager: OrbotStatusChangeListener {
         var ownCount = count ?? 0
 
         if count == nil {
-            Db.bgRwConn?.read { transaction in
-                ownCount = transaction.numberOfKeys(inCollection: Upload.collection)
+            Db.bgRwConn?.read { tx in
+                ownCount = UploadsView.countUploading(tx)
             }
         }
 
@@ -192,16 +192,37 @@ class OrbotManager: OrbotStatusChangeListener {
             return
         }
 
-        AlertHelper.present(
-            topVc,
-            message: String(format: NSLocalizedString(
-                "Uploads are blocked until you start %1$@ or allow uploads without %1$@ again.",
-                comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName),
-            title: String(format: NSLocalizedString("%@ not running", comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName),
-            actions: [
-                AlertHelper.cancelAction(NSLocalizedString("Ignore", comment: ""), handler: { _ in
+        let message: String
+        let title: String
+        var actions = [
+            AlertHelper.cancelAction(NSLocalizedString("Ignore", comment: ""), handler: { _ in
+                completed?()
+            })]
+
+        if Settings.wifiOnly {
+            message = NSLocalizedString(
+                "Uploads are blocked until you connect to a Wi-Fi network or allow uploads over a mobile connection again.",
+                comment: "")
+
+            title = NSLocalizedString("Wi-Fi not connected", comment: "")
+
+            actions.append(
+                AlertHelper.destructiveAction(NSLocalizedString("Allow any connection", comment: ""), handler: { _ in
+                    Settings.wifiOnly = false
+
+                    NotificationCenter.default.post(name: .uploadManagerDataUsageChange, object: Settings.wifiOnly)
+
                     completed?()
-                }),
+                }))
+        }
+        else {
+            message = String(format: NSLocalizedString(
+                "Uploads are blocked until you start %1$@ or allow uploads without %1$@ again.",
+                comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName)
+
+            title = String(format: NSLocalizedString("%@ not running", comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName)
+
+            actions.append(
                 AlertHelper.defaultAction(
                     String(format: NSLocalizedString(
                         "Start %@", comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName),
@@ -209,7 +230,9 @@ class OrbotManager: OrbotStatusChangeListener {
                         OrbotKit.shared.open(.start(callback: nil))
 
                         completed?()
-                    }),
+                    }))
+
+            actions.append(
                 AlertHelper.destructiveAction(
                     String(format: NSLocalizedString(
                         "Allow without %@", comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName),
@@ -219,8 +242,10 @@ class OrbotManager: OrbotStatusChangeListener {
                         self?.stop()
 
                         completed?()
-                    })
-            ])
+                    }))
+        }
+
+        AlertHelper.present(topVc, message: message, title: title, actions: actions)
     }
 
 

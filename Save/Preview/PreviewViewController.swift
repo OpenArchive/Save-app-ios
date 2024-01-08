@@ -211,10 +211,10 @@ class PreviewViewController: UIViewController,
                     order += 1
                 }
 
-                let count = tx.numberOfKeys(inCollection: Upload.collection)
+                let count = UploadsView.countUploading(tx)
 
                 DispatchQueue.main.async {
-                    OrbotManager.shared.alertOrbotStopped(count: count) { [weak self] in
+                    OrbotManager.shared.alertCannotUpload(count: count) { [weak self] in
                         self?.navigationController?.popViewController(animated: true)
                     }
                 }

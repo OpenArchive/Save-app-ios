@@ -104,6 +104,9 @@
 "Allow 3rd-Party Keyboards" = "Permitir Teclados de 3eras Partes";
 
 /* No comment provided by engineer. */
+"Allow any connection" = "Allow any connection";
+
+/* No comment provided by engineer. */
 "Allow anyone to remix and share?" = "¿Permitir que cualquiera cambie y comparta?";
 
 /* No comment provided by engineer. */
@@ -583,6 +586,9 @@
 /* ManagementViewController */
 "Uploading…" = "Subiendo...";
 
+/* No comment provided by engineer. */
+"Uploads are blocked until you connect to a Wi-Fi network or allow uploads over a mobile connection again." = "Uploads are blocked until you connect to a Wi-Fi network or allow uploads over a mobile connection again.";
+
 /* Placeholder is 'Orbot' */
 "Uploads are blocked until you start %1$@ or allow uploads without %1$@ again." = "Las cargas están bloqueadas hasta que inicies %1$@ o permitas subir sin %1$@ nuevamente.";
 
@@ -612,6 +618,9 @@
 
 /* No comment provided by engineer. */
 "When you flag an item, it is routed into a subfolder within the chosen folder on the private server." = "Cuando marcas un ítem, se envía a una subcarpeta dentro de la carpeta elegida en el servidor privado.";
+
+/* No comment provided by engineer. */
+"Wi-Fi not connected" = "Wi-Fi not connected";
 
 /* ConsentViewController */
 "With your permission, we'll run a check each time you encounter an error while uploading." = "Con su permiso, realizaremos una verificación cada vez que encuentres un error mientras cargas.";

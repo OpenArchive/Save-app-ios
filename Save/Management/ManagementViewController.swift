@@ -323,7 +323,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
             DispatchQueue.main.async {
                 titleView.title.text = self?.count == 0
                     ? NSLocalizedString("Done", comment: "")
-                    : (left > 0
+                    : (left > 0 && !UploadManager.shared.waiting
                        ? NSLocalizedString("Uploading…", comment: "")
                        : NSLocalizedString("Waiting…", comment: ""))
                 titleView.subtitle.text = String.localizedStringWithFormat(NSLocalizedString("%u left", comment: "#bc-ignore!"), left)
