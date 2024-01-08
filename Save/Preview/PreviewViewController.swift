@@ -34,6 +34,8 @@ class PreviewViewController: UIViewController,
 
     private lazy var assetPicker = AssetPicker(self)
 
+    private lazy var flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -241,18 +243,14 @@ class PreviewViewController: UIViewController,
     @IBAction func editAssets() {
         let count = collectionView.numberOfSelectedItems
 
-        if count == 1 {
-            if let indexPath = collectionView.indexPathsForSelectedItems?.first {
-                // Trigger deselection, so edit mode UI goes away.
-                collectionView.deselectItem(at: indexPath, animated: false)
-                collectionView(collectionView, didDeselectItemAt: indexPath)
+        if count < 2 {
+            let indexPath = collectionView.indexPathsForSelectedItems?.first ?? IndexPath(row: 0, section: 0)
 
-                // Trigger selection, so DarkroomViewController gets pushed.
-                collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredVertically)
-                collectionView(collectionView, didSelectItemAt: indexPath)
-            }
+            // Trigger selection, so DarkroomViewController gets pushed.
+            collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredVertically)
+            collectionView(collectionView, didSelectItemAt: indexPath)
         }
-        else if count > 1 {
+        else {
             performSegue(withIdentifier: Self.segueShowBatchEdit, sender: getSelectedAssets())
         }
     }
@@ -310,14 +308,13 @@ class PreviewViewController: UIViewController,
      - parameter selected: true, to show icons for editing, false to show icon for adding.
      */
     private func toggleToolbar(_ selected: Bool, animated: Bool = true) {
-        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        var items: [UIBarButtonItem] = [editBt, flexibleSpace, addBt, flexibleSpace]
 
         if selected {
-            toolbar.setItems([editBt, flexibleSpace, deleteBt], animated: animated)
+            items.append(deleteBt)
         }
-        else {
-            toolbar.setItems([flexibleSpace, addBt, flexibleSpace], animated: animated)
-        }
+
+        toolbar.setItems(items, animated: animated)
     }
 
     private func getSelectedAssets() -> [Asset] {
