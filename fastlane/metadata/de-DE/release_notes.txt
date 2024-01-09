@@ -1,4 +1,3 @@
-- Google Drive-Unterstützung hinzugefügt.
 - Überall wird die Schriftart "Montserrat" verwendet.
 - Einige Farben für bessere Lesbarkeit korrigiert.
 - Bessere Anzeige des Download-Fortschritts mit Prozentangabe.

@@ -1,4 +1,3 @@
-- Prise en charge de Google Drive.
 - Utilisation de la police "Montserrat" partout.
 - Correction de certaines couleurs pour une meilleure lisibilité.
 - Meilleur affichage de la progression du téléchargement avec un pourcentage.

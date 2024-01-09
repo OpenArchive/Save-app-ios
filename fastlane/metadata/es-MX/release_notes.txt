@@ -1,4 +1,3 @@
-- Compatibilidad con Google Drive.
 - Uso de la fuente "Montserrat" en todas partes.
 - Corregidos algunos colores para mejorar la legibilidad.
 - Mejor visualización del progreso de descarga con porcentaje.

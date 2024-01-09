@@ -1,4 +1,3 @@
-- Google Drive desteği.
 - Her yerde "Montserrat" yazı tipini kullanın.
 - Daha iyi okunabilirlik için bazı renkler düzeltildi.
 - Yüzde ile daha iyi indirme ilerleme göstergesi.

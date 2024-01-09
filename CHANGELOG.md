@@ -1,7 +1,7 @@
 # Changelog
 
 # 3.1.0
-- Google Drive support.
+- Google Drive support. (Disabled until app is verified by Google.)
 - Use "Montserrat" font everywhere.
 - Fixed some colors for better readability.
 - Better download progress display with percentage.

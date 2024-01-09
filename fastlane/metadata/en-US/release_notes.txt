@@ -1,4 +1,3 @@
-- Google Drive support.
 - Use "Montserrat" font everywhere.
 - Fixed some colors for better readability.
 - Better download progress display with percentage.

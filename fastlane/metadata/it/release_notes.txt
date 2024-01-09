@@ -1,4 +1,3 @@
-- Supporto per Google Drive.
 - Utilizzare ovunque il font "Montserrat".
 - Corretti alcuni colori per una migliore leggibilità.
 - Migliore visualizzazione dell'avanzamento del download con la percentuale.
