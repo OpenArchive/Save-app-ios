@@ -92,7 +92,7 @@ class ProofModeSettingsViewController: FormViewController {
 
                     if key == nil {
                         // Force key creation.
-                        (self?.form.rowBy(tag: "lock_app") as? SwitchRow)?.value = true
+                        SecureEnclave.createKey()
 
                         key = SecureEnclave.loadKey()
                     }

@@ -137,14 +137,22 @@ class GeneralSettingsViewController: FormViewController {
                     $0.title = NSLocalizedString("Lock App with Device Passcode", comment: "")
                 }
 
-                $0.value = SecureEnclave.loadKey() != nil
+                $0.cellStyle = .subtitle
+
                 $0.cell.switchControl.onTintColor = .accent
                 $0.cell.textLabel?.numberOfLines = 0
-
-                $0.disabled = .function(["proof_mode_key_encryption"], { form in
-                    Settings.proofModeEncryptedPassphrase != nil
-                })
+                $0.cell.detailTextLabel?.numberOfLines = 0
             }
+            .cellUpdate({ cell, row in
+                if row.isDisabled {
+                    cell.detailTextLabel?.text = NSLocalizedString(
+                        "You cannot disable this as long as you have your ProofMode key secured.",
+                        comment: "")
+                }
+                else {
+                    cell.detailTextLabel?.text = nil
+                }
+            })
             .onChange { [weak self] row in
                 let newValue: Bool
 
@@ -253,7 +261,16 @@ class GeneralSettingsViewController: FormViewController {
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
         form.delegate = nil
+
         form.rowBy(tag: "health_checks")?.value = consent?.state == .granted || consent?.state == .notStarted
+
+        if let lockAppRow = form.rowBy(tag: "lock_app") as? SwitchRow {
+            lockAppRow.value = SecureEnclave.loadKey() != nil
+
+            lockAppRow.disabled = .init(booleanLiteral: Settings.proofModeEncryptedPassphrase != nil)
+            lockAppRow.evaluateDisabled()
+        }
+
         form.delegate = self
     }
 }

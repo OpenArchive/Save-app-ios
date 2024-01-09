@@ -133,6 +133,18 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                     Proof.shared.passphrase = passphrase
 
                     verified = passphrase != nil
+
+                    if !verified {
+                        // This key cannot decrypt the passphare. Remove the passphrase,
+                        // so, during the next iteration of the loop, we can verify
+                        // the user normally. Otherwise, the user would be locked out forever.
+                        //
+                        // This situation could have been achieved by the user through
+                        // a bug, which was introduced during the redesign, where the
+                        // settings form was split into two pieces and the form row
+                        // dependencies didn't work anymore.
+                        Settings.proofModeEncryptedPassphrase = nil
+                    }
                 }
                 else {
                     let nonce = SecureEnclave.getNonce()

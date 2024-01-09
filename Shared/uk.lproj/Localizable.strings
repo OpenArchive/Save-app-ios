@@ -625,6 +625,9 @@
 /* ConsentViewController */
 "With your permission, we'll run a check each time you encounter an error while uploading." = "З вашого дозволу ми запускатимемо перевірку щоразу, коли ви зіткнетеся з помилкою під час вивантаження.";
 
+/* No comment provided by engineer. */
+"You cannot disable this as long as you have your ProofMode key secured." = "You cannot disable this as long as you have your ProofMode key secured.";
+
 /* Placeholder is a server type or name */
 "You have successfully connected to %@!" = "Ви успішно під'єдналися до%@!";
 
