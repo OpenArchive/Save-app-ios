@@ -60,8 +60,15 @@ class SettingsViewController: UIViewController {
         didSet {
             versionLb.text = String(format: NSLocalizedString("Version %1$@, build %2$@", comment: ""),
                                     Bundle.main.version, Bundle.main.build)
+
+            let gr = UITapGestureRecognizer(target: self, action: #selector(toggleExperimentalGoogleDrive))
+            versionLb.addGestureRecognizer(gr)
+
+            versionLb.isUserInteractionEnabled = true
         }
     }
+
+    private var counter = 0
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -129,6 +136,18 @@ class SettingsViewController: UIViewController {
     @IBAction func privacyPolicy() {
         if let url = URL(string: "https://open-archive.org/privacy") {
             UIApplication.shared.open(url, options: [:])
+        }
+    }
+
+    @IBAction func toggleExperimentalGoogleDrive() {
+        counter += 1
+
+        if counter > 2 {
+            Settings.experimentalGoogleDrive = !Settings.experimentalGoogleDrive
+
+            AlertHelper.present(self, message: Settings.experimentalGoogleDrive ? "enabled" : "disabled", title: "Google Drive")
+
+            counter = 0
         }
     }
 }
