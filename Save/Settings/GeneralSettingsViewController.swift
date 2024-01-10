@@ -32,7 +32,6 @@ class GeneralSettingsViewController: FormViewController {
         form
         +++ Section(NSLocalizedString("Connectivity & Data", comment: ""))
 
-        +++ Section("")
         <<< SwitchRow() {
             $0.title = NSLocalizedString("Only upload media when you are connected to Wi-Fi", comment: "")
             $0.value = Settings.wifiOnly
@@ -61,7 +60,6 @@ class GeneralSettingsViewController: FormViewController {
 
         +++ Section(NSLocalizedString("Metadata", comment: ""))
 
-        +++ Section("")
         <<< ButtonRow {
             $0.title = NSLocalizedString("ProofMode", comment: "")
             $0.presentationMode = .show(controllerProvider: .callback(builder: {
@@ -71,7 +69,6 @@ class GeneralSettingsViewController: FormViewController {
 
         +++ Section(NSLocalizedString("Security", comment: ""))
 
-        +++ Section("")
         <<< SwitchRow() {
             $0.title = String(format: NSLocalizedString(
                 "Transfer via %@ only", comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName)
@@ -212,7 +209,6 @@ class GeneralSettingsViewController: FormViewController {
         form
         +++ Section(NSLocalizedString("Health Checks", comment: ""))
 
-        +++ Section("")
         <<< SwitchRow("health_checks") {
             $0.title = NSLocalizedString("Health Checks", comment: "")
 

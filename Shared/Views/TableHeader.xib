@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="20037" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="20020"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
@@ -18,18 +19,19 @@
                     <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
                     <subviews>
                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hHe-8b-neL">
-                            <rect key="frame" x="16" y="32" width="351" height="14"/>
+                            <rect key="frame" x="16" y="46" width="351" height="0.0"/>
                             <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                             <color key="textColor" red="0.0" green="0.70398116440000003" blue="0.64921339899999997" alpha="1" colorSpace="calibratedRGB"/>
                             <nil key="highlightedColor"/>
                         </label>
                     </subviews>
                     <viewLayoutGuide key="safeArea" id="KIn-p9-fs7"/>
+                    <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                     <constraints>
                         <constraint firstItem="hHe-8b-neL" firstAttribute="leading" secondItem="lTL-yd-SyY" secondAttribute="leading" constant="16" id="1ot-cg-fOu"/>
                         <constraint firstAttribute="trailing" secondItem="hHe-8b-neL" secondAttribute="trailing" constant="8" id="R1K-LA-bjT"/>
-                        <constraint firstItem="hHe-8b-neL" firstAttribute="top" secondItem="lTL-yd-SyY" secondAttribute="top" constant="32" id="WDc-8v-FiH"/>
-                        <constraint firstItem="KIn-p9-fs7" firstAttribute="bottom" relation="lessThanOrEqual" secondItem="hHe-8b-neL" secondAttribute="bottom" constant="8" id="i7U-6C-Wel"/>
+                        <constraint firstItem="hHe-8b-neL" firstAttribute="top" relation="greaterThanOrEqual" secondItem="KIn-p9-fs7" secondAttribute="top" constant="8" id="WDc-8v-FiH"/>
+                        <constraint firstItem="KIn-p9-fs7" firstAttribute="bottom" secondItem="hHe-8b-neL" secondAttribute="bottom" constant="8" id="i7U-6C-Wel"/>
                     </constraints>
                 </view>
             </subviews>
@@ -48,4 +50,9 @@
             <point key="canvasLocation" x="124" y="52.623688155922046"/>
         </view>
     </objects>
+    <resources>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

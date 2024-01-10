@@ -83,7 +83,6 @@ class FoldersViewController: FormViewController {
             <<< cc.learnMoreRow
 
             +++ Section(NSLocalizedString("Active Folders", comment: ""))
-            +++ Section("")
 
             projectsSection = form.last
 
