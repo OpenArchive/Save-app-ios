@@ -238,6 +238,9 @@
 /* No comment provided by engineer. */
 "Files" = "فایل ها";
 
+/* Google Drive! Please provide same translation as Google uses! */
+"Files Shared With Me" = "Files Shared With Me";
+
 /* FlagInfoAlert */
 "Flag Significant Content" = "نشانه‌گذاری محتوای مهم";
 
@@ -330,6 +333,9 @@
 
 /* No comment provided by engineer. */
 "Metadata" = "فرا داده";
+
+/* Google Drive! Please provide same translation as Google uses! */
+"My Drive" = "My Drive";
 
 /* No comment provided by engineer. */
 "My Media" = "My Media";

@@ -238,6 +238,9 @@
 /* No comment provided by engineer. */
 "Files" = "Dosyalar";
 
+/* Google Drive! Please provide same translation as Google uses! */
+"Files Shared With Me" = "Files Shared With Me";
+
 /* FlagInfoAlert */
 "Flag Significant Content" = "Önemli içerik olarak işaretle";
 
@@ -330,6 +333,9 @@
 
 /* No comment provided by engineer. */
 "Metadata" = "Üst veriler";
+
+/* Google Drive! Please provide same translation as Google uses! */
+"My Drive" = "My Drive";
 
 /* No comment provided by engineer. */
 "My Media" = "Ortamlarım";

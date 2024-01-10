@@ -238,6 +238,9 @@
 /* No comment provided by engineer. */
 "Files" = "Archivos";
 
+/* Google Drive! Please provide same translation as Google uses! */
+"Files Shared With Me" = "Files Shared With Me";
+
 /* FlagInfoAlert */
 "Flag Significant Content" = "Marcar Contenido Importante";
 
@@ -330,6 +333,9 @@
 
 /* No comment provided by engineer. */
 "Metadata" = "Metadatos";
+
+/* Google Drive! Please provide same translation as Google uses! */
+"My Drive" = "My Drive";
 
 /* No comment provided by engineer. */
 "My Media" = "Mis medios";

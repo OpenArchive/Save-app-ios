@@ -30,11 +30,11 @@ class BrowseViewController: BaseTableViewController {
 
     private var loading = true
 
-    private var error: Error?
+    var headers = [String]()
 
-    var folders = [Folder]()
+    var data = [[Any]]()
 
-    private var selected: Int?
+    private var selected: IndexPath?
 
 
     override func viewDidLoad() {
@@ -56,37 +56,40 @@ class BrowseViewController: BaseTableViewController {
     // MARK: UITableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return data.count
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section > 0 {
-            return error == nil ? 0 : 1
-        }
-
-        return folders.count
+        return data[section].count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section > 0 {
+        let item = data[indexPath.section][indexPath.row]
+
+        if let error = item as? Error {
             let cell = tableView.dequeueReusableCell(withIdentifier: MenuItemCell.reuseId,
                                                  for: indexPath) as! MenuItemCell
 
-            return cell.set(error!)
+            return cell.set(error)
         }
 
         let cell = tableView.dequeueReusableCell(withIdentifier: FolderCell.reuseId,
                                                  for: indexPath) as! FolderCell
 
-        cell.set(folder: folders[indexPath.row])
+        if let folder = item as? Folder {
+            cell.set(folder: folder)
+        }
 
-        cell.accessoryType = indexPath.row == selected ? .checkmark : .none
+        cell.accessoryType = indexPath.section == selected?.section && indexPath.row == selected?.row ? .checkmark : .none
 
         return cell
     }
 
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        if indexPath.section > 0 || error != nil {
+        guard indexPath.section < data.count 
+                && indexPath.row < data[indexPath.section].count
+                && data[indexPath.section][indexPath.row] is Folder
+        else {
             return nil
         }
 
@@ -97,20 +100,24 @@ class BrowseViewController: BaseTableViewController {
         var rows = [indexPath]
 
         if let selected = selected {
-            rows.append(IndexPath(row: selected, section: indexPath.section))
+            rows.append(selected)
         }
 
-        selected = indexPath.row
+        selected = indexPath
         navigationItem.rightBarButtonItem?.isEnabled = true
 
         tableView.reloadRows(at: rows, with: .none)
+    }
+
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return section < headers.count && !headers[section].isEmpty ? headers[section] : nil
     }
 
 
     // MARK: UITableViewDelegate
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 0
+        return section < headers.count && !headers[section].isEmpty ? TableHeader.reducedHeight : 0
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -122,7 +129,6 @@ class BrowseViewController: BaseTableViewController {
 
     func beginWork(_ block: () -> Void) {
         loading = true
-        error = nil
 
         DispatchQueue.main.async {
             self.workingOverlay.isHidden = false
@@ -131,9 +137,8 @@ class BrowseViewController: BaseTableViewController {
         block()
     }
 
-    func endWork(_ error: Error?) {
+    func endWork() {
         self.loading = false
-        self.error = error
 
         DispatchQueue.main.async {
             self.tableView.reloadData()
@@ -143,10 +148,18 @@ class BrowseViewController: BaseTableViewController {
 
     func loadFolders() {
         beginWork {
-            folders.removeAll()
+            data.removeAll()
 
             if let space = SelectedSpace.space as? WebDavSpace, let url = space.url {
                 space.session.info(url) { info, error in
+                    if let error = error {
+                        self.data.append([error])
+
+                        return
+                    }
+
+                    var folders = [Folder]()
+
                     let files = info.dropFirst().sorted(by: {
                         $0.modifiedDate ?? $0.creationDate ?? Date(timeIntervalSince1970: 0)
                         > $1.modifiedDate ?? $1.creationDate ?? Date(timeIntervalSince1970: 0)
@@ -154,15 +167,17 @@ class BrowseViewController: BaseTableViewController {
 
                     for file in files {
                         if file.type == .directory && !file.isHidden {
-                            self.folders.append(Folder(file))
+                            folders.append(Folder(file))
                         }
                     }
 
-                    self.endWork(error)
+                    self.data.append(folders)
+
+                    self.endWork()
                 }
             }
             else {
-                self.endWork(nil)
+                self.endWork()
             }
         }
     }
@@ -172,18 +187,22 @@ class BrowseViewController: BaseTableViewController {
 
     @objc private func done() {
         guard let selected = selected,
-            let space = SelectedSpace.space else {
+              let space = SelectedSpace.space,
+              selected.section < data.count
+                && selected.row < data[selected.section].count,
+              let folder = data[selected.section][selected.row] as? Folder
+        else {
             return
         }
 
         let alert = DuplicateFolderAlert(nil)
 
-        if alert.exists(spaceId: space.id, name: folders[selected].name) {
+        if alert.exists(spaceId: space.id, name: folder.name) {
             present(alert, animated: true)
             return
         }
 
-        let project = Project(name: folders[selected].name, space: space)
+        let project = Project(name: folder.name, space: space)
 
         Db.writeConn?.setObject(project)
 

@@ -25,22 +25,55 @@ class BrowseGdriveViewController: BrowseViewController {
 
     override func loadFolders() {
         beginWork {
-            folders.removeAll()
+            data.removeAll()
+            headers.removeAll()
 
             GdriveConduit.list(type: GdriveConduit.folderMimeType) { files, error in
                 if let error = error {
                     debugPrint("[\(String(describing: type(of: self)))] error=\(error)")
 
-                    return self.endWork(error)
+                    self.data.append([error])
+
+                    return self.endWork()
                 }
+
+                var myDrive = [Folder]()
+                var sharedWithMe = [Folder]()
 
                 for file in files {
                     if file.trashed == nil || file.trashed! == 0, let folder = Folder(file) {
-                        self.folders.append(folder)
+                        if file.parents?.isEmpty ?? true {
+                            sharedWithMe.append(folder)
+                        }
+                        else {
+                            // If the parent is also in our list, ignore that folder
+                            // since it's not a root folder.
+                            if files.contains(where: { f in file.parents?.contains(where: { $0 == f.identifier }) ?? false }) {
+                                continue
+                            }
+
+                            myDrive.append(folder)
+                        }
                     }
                 }
 
-                self.endWork(nil)
+                if !myDrive.isEmpty {
+                    self.headers.append(NSLocalizedString(
+                        "My Drive",
+                        comment: "Google Drive! Please provide same translation as Google uses!"))
+
+                    self.data.append(myDrive)
+                }
+
+                if !sharedWithMe.isEmpty {
+                    self.headers.append(NSLocalizedString(
+                        "Files Shared With Me",
+                        comment: "Google Drive! Please provide same translation as Google uses!"))
+
+                    self.data.append(sharedWithMe)
+                }
+
+                self.endWork()
             }
         }
     }

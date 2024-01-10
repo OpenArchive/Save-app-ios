@@ -20,14 +20,14 @@ class BrowseDropboxViewController: BrowseViewController {
 
     override func loadFolders() {
         beginWork {
-            folders.removeAll()
+            data.removeAll()
 
             if let client = DropboxConduit.client {
                 client.files.listFolder(path: "", includeNonDownloadableFiles: false)
                     .response(completionHandler: dropboxCompletionHandler)
             }
             else {
-                self.endWork(nil)
+                self.endWork()
             }
         }
     }
@@ -36,12 +36,23 @@ class BrowseDropboxViewController: BrowseViewController {
         if let error = error {
             debugPrint("[\(String(describing: type(of: self)))] error=\(error)")
 
-            return self.endWork(NSError.from(error))
+            if let error = NSError.from(error) {
+                data.insert([error], at: 0)
+            }
+
+            return self.endWork()
         }
 
         for entry in result?.entries ?? [] {
             if let entry = entry as? Files.FolderMetadata {
-                self.folders.append(Folder(entry))
+                if var folders = self.data.last as? [Folder] {
+                    folders.append(Folder(entry))
+
+                    self.data[self.data.count - 1] = folders
+                }
+                else {
+                    self.data.append([Folder(entry)])
+                }
             }
         }
 
@@ -50,7 +61,7 @@ class BrowseDropboxViewController: BrowseViewController {
                 .response(completionHandler: dropboxCompletionHandler)
         }
         else {
-            self.endWork(nil)
+            self.endWork()
         }
     }
 }
