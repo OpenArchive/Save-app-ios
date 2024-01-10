@@ -74,7 +74,7 @@ class GdriveWizardViewController: BaseViewController, WizardDelegatable {
 
             do {
                 result = try await GIDSignIn.sharedInstance.signIn(
-                    withPresenting: vc, hint: nil, additionalScopes: [kGTLRAuthScopeDriveFile, kGTLRAuthScopeDriveReadonly])
+                    withPresenting: vc, hint: nil, additionalScopes: [kGTLRAuthScopeDriveFile, kGTLRAuthScopeDriveMetadataReadonly])
             }
             catch {
                 AlertHelper.present(vc, message: error.friendlyMessage)
