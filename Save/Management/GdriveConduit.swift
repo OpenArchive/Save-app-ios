@@ -146,7 +146,8 @@ class GdriveConduit: Conduit {
             progress.completedUnitCount = 10
 
             DispatchQueue.global(qos: .background).async {
-                self.upload(file, of: filesize, name: self.asset.filename, type: self.asset.mimeType, parentId: parentId, progress)
+                self.upload(file, of: filesize, name: self.asset.filename, type: self.asset.mimeType, 
+                            parentId: parentId, useBackgroundSession: true, progress)
                 { error in
                     self.done(uploadId, error: error, url: to)
                 }
@@ -364,16 +365,19 @@ class GdriveConduit: Conduit {
      - parameter name: The name of  the file on the server.
      - parameter type: The MIME type of the file.
      - parameter parentId: The destination folder ID on the Google Drive server.
+     - parameter useBackgroundSession: If a background session should be used for upload. Defaults to `false`. Only use for the main file to upload.
      - parameter progress: The main progress to report on.
      - parameter completionHandler: The callback to call when the copy is done,
      or when an error happened.
      */
     private func upload(_ file: URL, of filesize: Int64, 
                         name: String, type: String, parentId: String,
+                        useBackgroundSession: Bool = false,
                         _ progress: Progress, pendingUnitCount: Int64? = nil,
                         _ completion: URLSession.SimpleCompletionHandler? = nil)
     {
         let params = GTLRUploadParameters(fileURL: file, mimeType: type)
+        params.useBackgroundSession = useBackgroundSession
 
         upload(params, filesize, name, type, parentId, progress, pendingUnitCount, completion)
     }
@@ -415,13 +419,14 @@ class GdriveConduit: Conduit {
 
         let query = GTLRDriveQuery_FilesCreate.query(withObject: f, uploadParameters: params)
 
-        Self.service.uploadProgressBlock = { _, uploaded, total in
+        query.executionParameters.uploadProgressBlock = { _, uploaded, total in
             p.completedUnitCount = Int64(uploaded)
             p.totalUnitCount = Int64(total)
         }
 
         Self.service.executeQuery(query) { _, result, error in
-            Self.service.uploadProgressBlock = nil
+            p.completedUnitCount = p.totalUnitCount
+
             completion?(error)
         }
     }
