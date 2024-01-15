@@ -27,7 +27,7 @@ class GdriveSpace: Space, Item {
 
     // MARK: GdriveSpace
 
-    static let favIcon = UIImage(named: "ic_gdrive")?.withRenderingMode(.alwaysTemplate)
+    static let favIcon = UIImage(named: "ic_gdrive")?.withRenderingMode(.alwaysOriginal)
 
     // Google Drive doesn't support parallel access to different accounts,
     // so there's only ever going to be one GdriveSpace, which this

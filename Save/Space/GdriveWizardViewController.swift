@@ -19,7 +19,7 @@ class GdriveWizardViewController: BaseViewController, WizardDelegatable {
         didSet {
             iconIv.image = .icGdrive
                 .resizeFit(to: .icon)?
-                .withRenderingMode(.alwaysTemplate)
+                .withRenderingMode(.alwaysOriginal)
         }
     }
 

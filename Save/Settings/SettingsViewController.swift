@@ -83,7 +83,7 @@ class SettingsViewController: UIViewController {
         let space = SelectedSpace.space
 
         if let icon = space?.favIcon?.resizeFit(to: .icon) {
-            serverIv.image = icon.withRenderingMode(space is WebDavSpace ? .alwaysOriginal : .alwaysTemplate)
+            serverIv.image = icon.withRenderingMode(space is WebDavSpace || space is GdriveSpace ? .alwaysOriginal : .alwaysTemplate)
         }
         else if let icon = SelectedSpace.defaultFavIcon?.resizeFit(to: .icon) {
             serverIv.image = icon.withRenderingMode(.alwaysTemplate)

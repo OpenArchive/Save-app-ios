@@ -71,7 +71,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
             if Settings.experimentalGoogleDrive && tx.find(where: { (_: GdriveSpace) in true }) == nil {
                 button = BigButton.create(
                     icon: GdriveSpace.favIcon,
-                    title: GdriveSpace.defaultPrettyName,
+                    title: "\(GdriveSpace.defaultPrettyName)™", // First time should show a "tm". See https://developers.google.com/drive/api/guides/branding
                     subtitle: String(format: NSLocalizedString("Upload to %@", comment: ""), GdriveSpace.defaultPrettyName),
                     target: self,
                     action: #selector(newGdrive),
