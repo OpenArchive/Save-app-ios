@@ -141,7 +141,7 @@ class GeneralSettingsViewController: FormViewController {
                 $0.cell.detailTextLabel?.numberOfLines = 0
             }
             .cellUpdate({ cell, row in
-                if row.isDisabled {
+                if row.isDisabled && Settings.proofModeEncryptedPassphrase != nil {
                     cell.detailTextLabel?.text = NSLocalizedString(
                         "You cannot disable this as long as you have your ProofMode key secured.",
                         comment: "")
@@ -172,14 +172,10 @@ class GeneralSettingsViewController: FormViewController {
                     row.evaluateDisabled()
 
                     self?.form.delegate = self // Enable callback again.
-
-                    // Also disable this one.
-                    if let pmkeRow = self?.form.rowBy(tag: "proof_mode_key_encryption") as? SwitchRow {
-                        pmkeRow.value = false
-                        pmkeRow.disabled = true
-                        pmkeRow.evaluateDisabled()
-                    }
                 }
+
+                // Fix spacing issues due to changes in number of displayed text lines.
+                row.reload()
             }
         }
 
@@ -265,6 +261,9 @@ class GeneralSettingsViewController: FormViewController {
 
             lockAppRow.disabled = .init(booleanLiteral: Settings.proofModeEncryptedPassphrase != nil)
             lockAppRow.evaluateDisabled()
+
+            // Fix spacing issues due to changes in number of displayed text lines.
+            lockAppRow.reload()
         }
 
         form.delegate = self
