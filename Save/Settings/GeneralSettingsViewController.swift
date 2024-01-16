@@ -175,7 +175,8 @@ class GeneralSettingsViewController: FormViewController {
                 }
 
                 // Fix spacing issues due to changes in number of displayed text lines.
-                row.reload()
+                // Don't just reload the row, headings might get chopped.
+                self?.tableView.reloadData()
             }
         }
 
@@ -263,7 +264,8 @@ class GeneralSettingsViewController: FormViewController {
             lockAppRow.evaluateDisabled()
 
             // Fix spacing issues due to changes in number of displayed text lines.
-            lockAppRow.reload()
+            // Don't just reload the row, headings might get chopped.
+            tableView.reloadData()
         }
 
         form.delegate = self
