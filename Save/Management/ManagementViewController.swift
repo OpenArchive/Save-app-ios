@@ -167,7 +167,13 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
             return false
         }
 
-        return getUpload(indexPath)?.state != .uploading
+        switch getUpload(indexPath)?.state {
+        case .pending, .paused:
+            return true
+
+        default:
+            return false
+        }
     }
 
     /**
@@ -241,62 +247,20 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
      Will be called, when something changed the database.
      */
     @objc func yapDatabaseModified(notification: Notification) {
-        var needsUpdate = false
+        // DO NOT ANIMATE. Crash could occur:
+        // uncaught exception 'NSInternalInconsistencyException',
+        // reason: 'Cannot animate inserted cell because it already has an animation
 
-        if let changes = readConn?.getChanges(mappings) {
-            if changes.forceFull {
-                // No animation. Otherwise this can happen:
-                // NSInternalInconsistencyException, reason: 'Cannot animate reordering cell because it already has an animation'
-                tableView.reloadSections([1], with: .none)
+        // ALSO: Don't try to use detailed delete/insert/move/update support.
+        // It will also only lead to the same crashes when the user tries to reorder things.
+        // Probably a race condition with the reorder animation triggered by the user drag?
 
-                needsUpdate = true
-            }
-            else if !changes.rowChanges.isEmpty {
-                tableView.beginUpdates()
+        // ALSO: Only reload the full table. Trying to only reload a section will only
+        // lead to NSInternalInconsistencyExceptions, eventually, too.
 
-                // NOTE: Sections other than 0 are ignored, because `UploadsView`
-                // also tracks changes in `Asset`s, so `UploadManager` can update
-                // its referenced assets, when their status changes.
-                // (Needed, when movie import takes longer as the user hits upload.)
+        if readConn?.hasChanges(mappings) ?? false {
+            tableView.reloadData()
 
-                for change in changes.rowChanges {
-                    switch change.type {
-                    case .delete:
-                        if let indexPath = change.indexPath, indexPath.section == 0 {
-                            tableView.deleteRows(at: [transform(indexPath)], with: .fade)
-                            needsUpdate = true
-                        }
-
-                    case .insert:
-                        if let newIndexPath = change.newIndexPath, newIndexPath.section == 0 {
-                            tableView.insertRows(at: [transform(newIndexPath)], with: .fade)
-                            needsUpdate = true
-                        }
-
-                    case .move:
-                        if let indexPath = change.indexPath, let newIndexPath = change.newIndexPath,
-                            indexPath.section == 0 && newIndexPath.section == 0 
-                        {
-                            tableView.reloadRows(at: [transform(indexPath), transform(newIndexPath)], with: .none)
-                            needsUpdate = true
-                        }
-
-                    case .update:
-                        if let indexPath = change.indexPath, indexPath.section == 0 {
-                            tableView.reloadRows(at: [transform(indexPath)], with: .none)
-                            needsUpdate = true
-                        }
-
-                    @unknown default:
-                        break
-                    }
-                }
-
-                tableView.endUpdates()
-            }
-        }
-
-        if needsUpdate {
             updateTitle()
             setButton()
         }
@@ -345,10 +309,6 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
 
     private func getUpload(_ indexPath: IndexPath) -> Upload? {
         readConn?.object(at: IndexPath(row: indexPath.row, section: 0), in: mappings)
-    }
-
-    private func transform(_ indexPath: IndexPath) -> IndexPath {
-        IndexPath(row: indexPath.row, section: indexPath.section + 1)
     }
 
     /*
