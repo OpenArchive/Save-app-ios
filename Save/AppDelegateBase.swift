@@ -19,18 +19,6 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 
     var uploadManager: UploadManager?
 
-    lazy var curtain: UIWindow? = {
-        guard let scene = window?.windowScene else {
-            return nil
-        }
-
-        let window = UIWindow(windowScene: scene)
-        window.rootViewController = UIStoryboard.main.instantiate(ClaimViewController.self)
-        window.windowLevel = .alert
-
-        return window
-    }()
-
     private var hadResigned = false
 
 
@@ -85,7 +73,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
 
         if Settings.hideContent {
-            curtain?.isHidden = false
+            BlurredSnapshot.create(window)
             hadResigned = true
         }
     }
@@ -118,7 +106,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     func applicationDidBecomeActive(_ application: UIApplication) {
 
         if Settings.hideContent && hadResigned {
-            curtain?.isHidden = true
+            BlurredSnapshot.remove()
         }
 
         // Note: If restart is slow (and even crashes), it could be, that

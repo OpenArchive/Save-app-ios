@@ -396,6 +396,9 @@
 		A0D1014022CCFA1B0068D047 /* IaConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D1013F22CCFA1B0068D047 /* IaConduit.swift */; };
 		A0D58DCE20E51517005A2F34 /* Asset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D58DCD20E51517005A2F34 /* Asset.swift */; };
 		A0D6F5562B347F7E00A03788 /* AddInfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D6F5552B347F7E00A03788 /* AddInfoAlert.swift */; };
+		A0D76ACE2B580E2100389F64 /* BlurredSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D76ACD2B580E2100389F64 /* BlurredSnapshot.swift */; };
+		A0D76ACF2B580E2100389F64 /* BlurredSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D76ACD2B580E2100389F64 /* BlurredSnapshot.swift */; };
+		A0D76AD02B580E2100389F64 /* BlurredSnapshot.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D76ACD2B580E2100389F64 /* BlurredSnapshot.swift */; };
 		A0DA7627282D0F300039438A /* Date+rfcString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DA7626282D0F300039438A /* Date+rfcString.swift */; };
 		A0DA7628282D0F300039438A /* Date+rfcString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DA7626282D0F300039438A /* Date+rfcString.swift */; };
 		A0DA7629282D0F300039438A /* Date+rfcString.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DA7626282D0F300039438A /* Date+rfcString.swift */; };
@@ -747,6 +750,7 @@
 		A0D1013F22CCFA1B0068D047 /* IaConduit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaConduit.swift; sourceTree = "<group>"; };
 		A0D58DCD20E51517005A2F34 /* Asset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Asset.swift; sourceTree = "<group>"; };
 		A0D6F5552B347F7E00A03788 /* AddInfoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddInfoAlert.swift; sourceTree = "<group>"; };
+		A0D76ACD2B580E2100389F64 /* BlurredSnapshot.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlurredSnapshot.swift; sourceTree = "<group>"; };
 		A0DA7626282D0F300039438A /* Date+rfcString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Date+rfcString.swift"; sourceTree = "<group>"; };
 		A0DC0FAB233914BD00C4969A /* MovieIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MovieIndicator.swift; sourceTree = "<group>"; };
 		A0DE78AE21F76D2200B6B68B /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
@@ -851,6 +855,7 @@
 				A006AF3328198752007637DD /* AlertHelper.swift */,
 				A08F2CED2AFE8784004D7EA7 /* AssetPicker.swift */,
 				A0FA93402277387D0086D276 /* Bundle+displayName.swift */,
+				A0D76ACD2B580E2100389F64 /* BlurredSnapshot.swift */,
 				A0AC29E22B10A4CE0054D5F4 /* CGSize+Utils.swift */,
 				A006A6AB282973C10029E49B /* DispatchGroup+waitSignal.swift */,
 				A092C0EF223A8D4B003EB0AA /* DoneDelegate.swift */,
@@ -1711,6 +1716,7 @@
 				A0C475B4211474A50012937E /* Formatters.swift in Sources */,
 				A0362196220DB2CA003C21DC /* IaSpace.swift in Sources */,
 				A05F79FF22EEFA9F003DBB74 /* RuleFilename.swift in Sources */,
+				A0D76ACF2B580E2100389F64 /* BlurredSnapshot.swift in Sources */,
 				A0AC29E42B10A4CE0054D5F4 /* CGSize+Utils.swift in Sources */,
 				A006A6AD282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */,
 				A0E9069422CB7D16008CD81B /* SelectedView.swift in Sources */,
@@ -1861,6 +1867,7 @@
 				A09B53B623266F02005266C2 /* ProjectsView.swift in Sources */,
 				A0102DA02B18EEED0054D3D4 /* BatchEditViewController.swift in Sources */,
 				A09B53B923266F02005266C2 /* TitleCell.swift in Sources */,
+				A0D76AD02B580E2100389F64 /* BlurredSnapshot.swift in Sources */,
 				A05DF982282C0F48003FADA2 /* AEXMLOptions.swift in Sources */,
 				A056BE1E2857457E00F354B6 /* UIFont+Montserrat.swift in Sources */,
 				A0102D942B18EE490054D3D4 /* SpaceTypeViewController.swift in Sources */,
@@ -1977,6 +1984,7 @@
 				A0AC29E72B10B7380054D5F4 /* DropboxSettingsViewController.swift in Sources */,
 				A026C34622C641EB007B1C5B /* IaScrapeViewController.swift in Sources */,
 				A07E8A4222958D0600E9FFAA /* SlideViewController.swift in Sources */,
+				A0D76ACE2B580E2100389F64 /* BlurredSnapshot.swift in Sources */,
 				A08F2CEE2AFE8784004D7EA7 /* AssetPicker.swift in Sources */,
 				A03236352B0BB8F100D95BC3 /* AppAddFolderViewController.swift in Sources */,
 				A0E27209224E335400CB7113 /* NewFolderViewController.swift in Sources */,
