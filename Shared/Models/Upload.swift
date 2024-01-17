@@ -11,11 +11,24 @@ import YapDatabase
 
 class Upload: NSObject, Item, YapDatabaseRelationshipNode {
 
-    enum State {
+    enum State: CustomStringConvertible {
         case paused
         case pending
         case uploading
         case uploaded
+
+        var description: String {
+            switch self {
+            case .paused:
+                return "paused"
+            case .pending:
+                return "pending"
+            case .uploading:
+                return "uploading"
+            case .uploaded:
+                return "uploaded"
+            }
+        }
     }
 
     // MARK: Item

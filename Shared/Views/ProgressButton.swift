@@ -38,6 +38,8 @@ class ProgressButton: UIView {
             case .uploading:
                 cl.end = progress
             }
+
+            setNeedsDisplay()
         }
     }
 
@@ -53,6 +55,8 @@ class ProgressButton: UIView {
             if state == .uploading {
                 circleLayer.end = progress
             }
+
+            setNeedsDisplay()
         }
     }
 

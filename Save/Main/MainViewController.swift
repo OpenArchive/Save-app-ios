@@ -274,12 +274,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.reuseId, for: indexPath) as! ImageCell
 
-        cell.asset = assetsReadConn?.object(at: indexPath, in: assetsMappings)
+        let asset: Asset? = assetsReadConn?.object(at: indexPath, in: assetsMappings)
 
-        if !(cell.asset?.isUploaded ?? true) {
-            cell.upload = uploadsReadConn?.find(where: { $0.assetId == cell.asset?.id })
-            cell.viewController = self
-        }
+        cell.set(asset, !(asset?.isUploaded ?? true) ? uploadsReadConn?.find(where: { $0.assetId == asset?.id }) : nil)
 
         return cell
     }
@@ -509,10 +506,19 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                     continue
                 }
 
-                DispatchQueue.main.async {
-                    UIView.performWithoutAnimation { // Less flickering: no fading animation.
-                        // Make sure, section header is reloaded, always.
-                        self.collectionView.reloadSections([indexPath.section])
+                if upload.state == .uploaded {
+                    // Make sure, section header is reloaded, when an upload is finished.
+                    DispatchQueue.main.async {
+                        UIView.performWithoutAnimation { // Less flickering: no fading animation.
+                            self.collectionView.reloadSections([indexPath.section])
+                        }
+                    }
+                }
+                else {
+                    DispatchQueue.main.async {
+                        UIView.performWithoutAnimation { // Less flickering: no fading animation.
+                            self.collectionView.reloadItems(at: [indexPath])
+                        }
                     }
                 }
             }
