@@ -22,7 +22,7 @@ class TableHeader: UITableViewHeaderFooterView {
         return 54
     }
 
-    static let reducedHeight: CGFloat = 24
+    static let reducedHeight: CGFloat = 32
 
     override init(reuseIdentifier: String?) {
         super.init(reuseIdentifier: reuseIdentifier)
