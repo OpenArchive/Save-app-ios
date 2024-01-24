@@ -170,7 +170,8 @@ class OrbotManager: OrbotStatusChangeListener {
      - parameter completed: Callback after user interaction or immediately, when no alert is shown.
      */
     func alertCannotUpload(count: Int? = nil, _ completed: (() -> Void)? = nil) {
-        guard Settings.wifiOnly || (Settings.useOrbot && status == .stopped),
+        guard (Settings.wifiOnly && UploadManager.shared.reachability?.connection == .unavailable)
+                || (Settings.useOrbot && status == .stopped),
               let topVc = UIApplication.shared.delegate?.window??.rootViewController?.top
         else {
             completed?()
@@ -202,7 +203,7 @@ class OrbotManager: OrbotStatusChangeListener {
         if Settings.wifiOnly {
             message = NSLocalizedString(
                 "Uploads are blocked until you connect to a Wi-Fi network or allow uploads over a mobile connection again.",
-                comment: "")
+                comment: "") + "\n" // Ugly fix for text which is slightly cut off in English in the SDCAlertview due to its use of a UIScrollView container.
 
             title = NSLocalizedString("Wi-Fi not connected", comment: "")
 
