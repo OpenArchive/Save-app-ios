@@ -82,6 +82,18 @@ class GdriveWizardViewController: BaseViewController, WizardDelegatable {
                 return
             }
 
+            guard let scopes = result.user.grantedScopes,
+                  scopes.contains(kGTLRAuthScopeDriveFile) && scopes.contains(kGTLRAuthScopeDriveMetadataReadonly)
+            else {
+                AlertHelper.present(vc, message: String(
+                    format: NSLocalizedString(
+                        "%1$@ cannot work properly if you don't allow it to write to your %2$@ and let it read existing folders. Please try the authorization again and make sure to grant *all* the access rights listed.",
+                        comment: "First placeholder is 'Save', second is 'Google Drive'."),
+                    Bundle.main.displayName, GdriveSpace.defaultPrettyName))
+
+                return
+            }
+
             GdriveConduit.user = result.user
 
             space.username = result.user.userID

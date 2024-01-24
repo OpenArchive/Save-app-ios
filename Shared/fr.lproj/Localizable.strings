@@ -1,3 +1,6 @@
+/* First placeholder is 'Save', second is 'Google Drive'. */
+"%1$@ cannot work properly if you don't allow it to write to your %2$@ and let it read existing folders. Please try the authorization again and make sure to grant *all* the access rights listed." = "%1$@ cannot work properly if you don't allow it to write to your %2$@ and let it read existing folders. Please try the authorization again and make sure to grant *all* the access rights listed.";
+
 /* First placeholder is app name, second is 'Internet Archive' */
 "%1$@ needs your %2$@ account's API keys to upload media." = "%1$@ needs your %2$@ account's API keys to upload media.";
 

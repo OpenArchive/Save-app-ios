@@ -11,7 +11,7 @@ import UIKit
 class AppAddFolderViewController: AddFolderViewController {
 
     override var noBrowse: Bool {
-        SelectedSpace.space is IaSpace
+        SelectedSpace.space is IaSpace || (SelectedSpace.space is GdriveSpace && !GdriveConduit.canReadFolders)
     }
 
 
