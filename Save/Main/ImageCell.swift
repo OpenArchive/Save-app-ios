@@ -12,8 +12,9 @@ class ImageCell: UICollectionViewCell {
 
     static let reuseId = "imageCell"
 
-    private var blurView: UIVisualEffectView?
-    
+    private var blurViewDark: UIVisualEffectView?
+    private var blurViewLight: UIVisualEffectView?
+
     @IBOutlet weak var imgView: UIImageView!
     @IBOutlet weak var progress: ProgressButton!
     @IBOutlet weak var errorIcon: UIImageView!
@@ -46,17 +47,30 @@ class ImageCell: UICollectionViewCell {
         imgView.image = asset?.getThumbnail()
 
         if highlightNonUploaded && !(asset?.isUploaded ?? false) && !UIAccessibility.isReduceTransparencyEnabled {
-            if blurView == nil {
-                blurView = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
-                blurView?.alpha = 0.35
-                blurView?.frame = imgView.bounds
-                blurView?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
-            }
+            if upload?.state == .uploading || upload?.state == .pending && upload?.error == nil {
+                if blurViewDark == nil {
+                    blurViewDark = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
+                    blurViewDark?.alpha = 0.65
+                    blurViewDark?.frame = imgView.bounds
+                    blurViewDark?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                }
 
-            imgView.addSubview(blurView!)
+                imgView.addSubview(blurViewDark!)
+            }
+            else {
+                if blurViewLight == nil {
+                    blurViewLight = UIVisualEffectView(effect: UIBlurEffect(style: .extraLight))
+                    blurViewLight?.alpha = 0.35
+                    blurViewLight?.frame = imgView.bounds
+                    blurViewLight?.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+                }
+
+                imgView.addSubview(blurViewLight!)
+            }
         }
         else {
-            blurView?.removeFromSuperview()
+            blurViewDark?.removeFromSuperview()
+            blurViewLight?.removeFromSuperview()
         }
 
         if asset?.isAv ?? false {
