@@ -32,7 +32,7 @@ class Collection: NSObject, Item, YapDatabaseRelationshipNode {
     }
 
     func compare(_ rhs: Collection) -> ComparisonResult {
-        return (closed ?? created).compare(rhs.closed ?? rhs.created)
+        (closed ?? created).compare(rhs.closed ?? rhs.created)
     }
 
     var id: String
@@ -72,11 +72,11 @@ class Collection: NSObject, Item, YapDatabaseRelationshipNode {
     private(set) var uploaded: Date?
 
     var name: String? {
-        return Formatters.timestamp.string(from: created)
+        Formatters.timestamp.string(from: created)
     }
 
     var isOpen: Bool {
-        return closed == nil && uploaded == nil
+        closed == nil && uploaded == nil
     }
 
     /**
@@ -89,31 +89,11 @@ class Collection: NSObject, Item, YapDatabaseRelationshipNode {
     var assets = [Asset]()
 
     var uploadedAssetsCount: Int {
-        get {
-            var uploaded = 0
-
-            for asset in assets {
-                if asset.isUploaded {
-                    uploaded += 1
-                }
-            }
-
-            return uploaded
-        }
+        assets.reduce(0) { $0 + ($1.isUploaded ? 1 : 0) }
     }
 
     var waitingAssetsCount: Int {
-        get {
-            var waiting = 0
-
-            for asset in assets {
-                if !asset.isUploaded {
-                    waiting += 1
-                }
-            }
-
-            return waiting
-        }
+        assets.reduce(0) { $0 + ($1.isUploaded ? 0 : 1) }
     }
 
 
