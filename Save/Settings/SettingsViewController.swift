@@ -104,7 +104,7 @@ class SettingsViewController: UIViewController {
     }
 
     @IBAction func server() {
-        let segue: String
+        let segue: String?
 
         switch SelectedSpace.space {
         case is IaSpace:
@@ -116,11 +116,16 @@ class SettingsViewController: UIViewController {
         case is GdriveSpace:
             segue = Self.gdriveSettingsSegue
 
-        default:
+        case is WebDavSpace:
             segue = Self.webDavSettingsSegue
+
+        default:
+            segue = nil
         }
 
-        performSegue(withIdentifier: segue, sender: nil)
+        if let segue = segue {
+            performSegue(withIdentifier: segue, sender: nil)
+        }
     }
 
     @IBAction func folder() {
