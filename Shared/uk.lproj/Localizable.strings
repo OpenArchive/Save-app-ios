@@ -7,8 +7,14 @@
 /* First placeholder is app name */
 "%1$@ only connects to WebDAV-compatible servers, e.g. Nextcloud and ownCloud." = "%1$@ з'єднується лише з WebDAV-сумісними серверами, як-от Nextcloud і ownCloud.";
 
+/* Placeholder 1 is 'Google', placeholder 2 is 'Google Drive', placeholder 3 is 'Save' */
+"%1$@'s APIs allow you to access and send media to your existing folders in %2$@ via %3$@. Although %1$@ will store and see your data sent via %3$@ and %3$@ will be able to see your %2$@ folders if/when you select from existing folders, %3$@ does not store that information, which is removed immediately after selecting a folder." = "%1$@'s APIs allow you to access and send media to your existing folders in %2$@ via %3$@. Although %1$@ will store and see your data sent via %3$@ and %3$@ will be able to see your %2$@ folders if/when you select from existing folders, %3$@ does not store that information, which is removed immediately after selecting a folder.";
+
 /* both are integer numbers meaning 'x of n' */
 "%1$@/%2$@" = "%1$@/%2$@";
+
+/* HANDLE WITH CARE: This text is enforced by Google. If in doubt, how to translate correctly, leave it alone! Placeholder 1 is 'Save', placeholder 2 is 'Google', placeholder 3 is non-translatable 'Google API Services User Data Policy' */
+"%1$@’s use and transfer of information received from %2$@ APIs to any other app adheres to %3$@, including the Limited Use requirements." = "%1$@’s use and transfer of information received from %2$@ APIs to any other app adheres to %3$@, including the Limited Use requirements.";
 
 /* Placeholder is 'Orbot' */
 "%@ could not be opened!" = "%@ не вдалося запустити!";

@@ -54,6 +54,26 @@ extension NSMutableAttributedString {
 
         return self
     }
+
+    @discardableResult
+    func link(part: (any StringProtocol)? = nil, href: any StringProtocol, into textView: UITextView?) -> Self {
+        let range: Range<String.Index>
+
+        if let part = part, let partRange = string.range(of: part) {
+            range = partRange
+        }
+        else {
+            range = startIndex ..< endIndex
+        }
+
+        addAttributes(
+            [.link: href,
+             .font: UIFont.montserrat(similarTo: textView?.font, with: .traitBold),
+             .underlineStyle: NSUnderlineStyle.single.rawValue],
+            range: NSRange(range, in: string))
+
+        return self
+    }
 }
 
 extension NSAttributedString {

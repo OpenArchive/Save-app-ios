@@ -34,7 +34,41 @@ class GdriveWizardViewController: BaseViewController, WizardDelegatable {
             subtitleLb.text = String(
                 format: NSLocalizedString("Sign in with %@.",
                                           comment: "Placeholder is 'Google'"),
-                "Google")
+                GdriveSpace.googleName)
+        }
+    }
+
+    @IBOutlet weak var disclaimerTv: UITextView! {
+        didSet {
+            // The document behind the link is english-only, this is its title.
+            // Hence we do not translate it.
+            let linkText = "Google API Services User Data Policy"
+
+            // Beware: This line is forced upon us by Google. DO NOT CHANGE without prior consultation
+            // of the Google terms!
+            let line1 = String(
+                format: NSLocalizedString(
+                    "%1$@’s use and transfer of information received from %2$@ APIs to any other app adheres to %3$@, including the Limited Use requirements.",
+                    comment: "HANDLE WITH CARE: This text is enforced by Google. If in doubt, how to translate correctly, leave it alone! Placeholder 1 is 'Save', placeholder 2 is 'Google', placeholder 3 is non-translatable 'Google API Services User Data Policy'"),
+                Bundle.main.displayName,
+                GdriveSpace.googleName,
+                linkText)
+
+            let line2 = String(
+                format: NSLocalizedString(
+                    "%1$@'s APIs allow you to access and send media to your existing folders in %2$@ via %3$@. Although %1$@ will store and see your data sent via %3$@ and %3$@ will be able to see your %2$@ folders if/when you select from existing folders, %3$@ does not store that information, which is removed immediately after selecting a folder.",
+                    comment: "Placeholder 1 is 'Google', placeholder 2 is 'Google Drive', placeholder 3 is 'Save'"),
+                GdriveSpace.googleName,
+                GdriveSpace.defaultPrettyName,
+                Bundle.main.displayName)
+
+            let text = NSMutableAttributedString(
+                string: "\(line1)\n\n\(line2)",
+                attributes: [.font: UIFont.montserrat(similarTo: disclaimerTv.font)])
+
+            text.link(part: linkText, href: "https://developers.google.com/terms/api-services-user-data-policy", into: disclaimerTv)
+
+            disclaimerTv.attributedText = text
         }
     }
 
