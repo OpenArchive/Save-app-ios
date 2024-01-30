@@ -77,6 +77,11 @@ class GdriveWizardViewController: BaseViewController, WizardDelegatable {
                     withPresenting: vc, hint: nil, additionalScopes: [kGTLRAuthScopeDriveFile, kGTLRAuthScopeDriveMetadataReadonly])
             }
             catch {
+                // "The user canceled the sign-in flow." - Don't show an error dialog in this case.
+                if (error as NSError).domain == "com.google.GIDSignIn" && (error as NSError).code == -5 {
+                    return
+                }
+
                 AlertHelper.present(vc, message: error.friendlyMessage)
 
                 return
