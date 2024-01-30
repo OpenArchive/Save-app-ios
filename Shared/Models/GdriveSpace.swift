@@ -27,6 +27,8 @@ class GdriveSpace: Space, Item {
 
     // MARK: GdriveSpace
 
+    static let googleName = "Google"
+
     static let favIcon = UIImage(named: "ic_gdrive")?.withRenderingMode(.alwaysOriginal)
 
     // Google Drive doesn't support parallel access to different accounts,

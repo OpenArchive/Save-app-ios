@@ -14,14 +14,14 @@ class GdriveSettingsViewController: SpaceSettingsViewController {
     @IBOutlet weak var gdriveIdLb: UILabel! {
         didSet {
             gdriveIdLb.text = String(format: NSLocalizedString("%@ ID", comment: "Placeholder is 'Google'"),
-                                      "Google")
+                                     GdriveSpace.googleName)
         }
     }
 
     @IBOutlet weak var gdriveIdTb: TextBox! {
         didSet {
             gdriveIdTb.placeholder = String(format: NSLocalizedString("%@ ID", comment: "Placeholder is 'Google'"),
-                                            "Google")
+                                            GdriveSpace.googleName)
             gdriveIdTb.status = .good
             gdriveIdTb.isEnabled = false
         }

@@ -150,7 +150,8 @@ class SettingsViewController: UIViewController {
         if counter > 2 {
             Settings.experimentalGoogleDrive = !Settings.experimentalGoogleDrive
 
-            AlertHelper.present(self, message: Settings.experimentalGoogleDrive ? "enabled" : "disabled", title: "Google Drive")
+            AlertHelper.present(self, message: Settings.experimentalGoogleDrive ? "enabled" : "disabled",
+                                title: GdriveSpace.defaultPrettyName)
 
             counter = 0
         }
