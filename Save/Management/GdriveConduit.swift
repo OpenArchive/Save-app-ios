@@ -39,10 +39,6 @@ class GdriveConduit: Conduit {
         return service
     }
 
-    class var canReadFolders: Bool {
-        user?.grantedScopes?.contains(kGTLRAuthScopeDriveMetadataReadonly) ?? false
-    }
-
     class func list(type: String? = nil, filter name: String? = nil, parentId: String? = nil,
                     completion: ((_ files: [GTLRDrive_File], _ error: Error?) -> Void)?)
     {

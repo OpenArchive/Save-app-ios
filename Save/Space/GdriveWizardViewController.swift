@@ -56,7 +56,7 @@ class GdriveWizardViewController: BaseViewController, WizardDelegatable {
 
             let line2 = String(
                 format: NSLocalizedString(
-                    "%1$@'s APIs allow you to access and send media to your existing folders in %2$@ via %3$@. Although %1$@ will store and see your data sent via %3$@ and %3$@ will be able to see your %2$@ folders if/when you select from existing folders, %3$@ does not store that information, which is removed immediately after selecting a folder.",
+                    "%1$@'s APIs allow you to send media to your %2$@ via %3$@. %3$@, however, cannot see or access anything on your %2$@, which you didn't create with %3$@ in the first place.",
                     comment: "Placeholder 1 is 'Google', placeholder 2 is 'Google Drive', placeholder 3 is 'Save'"),
                 GdriveSpace.googleName,
                 GdriveSpace.defaultPrettyName,
@@ -108,11 +108,16 @@ class GdriveWizardViewController: BaseViewController, WizardDelegatable {
 
             do {
                 result = try await GIDSignIn.sharedInstance.signIn(
-                    withPresenting: vc, hint: nil, additionalScopes: [kGTLRAuthScopeDriveFile, kGTLRAuthScopeDriveMetadataReadonly])
+                    withPresenting: vc, hint: nil, additionalScopes: [kGTLRAuthScopeDriveFile])
             }
             catch {
-                // "The user canceled the sign-in flow." - Don't show an error dialog in this case.
-                if (error as NSError).domain == "com.google.GIDSignIn" && (error as NSError).code == -5 {
+                let error = error as NSError
+                print(error)
+
+                // Don't show an error dialog in this case:
+                // -1: "access_denied" -: The user hit the "Cancel" button on the website.
+                // -5: "The user canceled the sign-in flow.": The user hit the iOS "Cancel" button in the top left.
+                if error.domain == "com.google.GIDSignIn" && (error.code == -1 || error.code == -5) {
                     return
                 }
 
@@ -121,12 +126,11 @@ class GdriveWizardViewController: BaseViewController, WizardDelegatable {
                 return
             }
 
-            guard let scopes = result.user.grantedScopes,
-                  scopes.contains(kGTLRAuthScopeDriveFile) && scopes.contains(kGTLRAuthScopeDriveMetadataReadonly)
+            guard result.user.grantedScopes?.contains(kGTLRAuthScopeDriveFile) ?? false
             else {
                 AlertHelper.present(vc, message: String(
                     format: NSLocalizedString(
-                        "%1$@ cannot work properly if you don't allow it to write to your %2$@ and let it read existing folders. Please try the authorization again and make sure to grant *all* the access rights listed.",
+                        "%1$@ cannot work properly if you don't allow it to write to your %2$@. Please try the authorization again and make sure to grant *all* the access permissions listed.",
                         comment: "First placeholder is 'Save', second is 'Google Drive'."),
                     Bundle.main.displayName, GdriveSpace.defaultPrettyName))
 

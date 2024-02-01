@@ -1,5 +1,5 @@
 /* First placeholder is 'Save', second is 'Google Drive'. */
-"%1$@ cannot work properly if you don't allow it to write to your %2$@ and let it read existing folders. Please try the authorization again and make sure to grant *all* the access rights listed." = "%1$@ cannot work properly if you don't allow it to write to your %2$@ and let it read existing folders. Please try the authorization again and make sure to grant *all* the access rights listed.";
+"%1$@ cannot work properly if you don't allow it to write to your %2$@. Please try the authorization again and make sure to grant *all* the access permissions listed." = "%1$@ cannot work properly if you don't allow it to write to your %2$@. Please try the authorization again and make sure to grant *all* the access permissions listed.";
 
 /* First placeholder is app name, second is 'Internet Archive' */
 "%1$@ needs your %2$@ account's API keys to upload media." = "%1$@ ortam yükleyebilmek için %2$@ hesabınızın API anahtarlarına gerek duyuyor.";
@@ -8,7 +8,7 @@
 "%1$@ only connects to WebDAV-compatible servers, e.g. Nextcloud and ownCloud." = "%1$@ yalnızca Nextcloud ve ownCloud gibi WebDAV uyumlu sunucularla bağlantı kurabilir.";
 
 /* Placeholder 1 is 'Google', placeholder 2 is 'Google Drive', placeholder 3 is 'Save' */
-"%1$@'s APIs allow you to access and send media to your existing folders in %2$@ via %3$@. Although %1$@ will store and see your data sent via %3$@ and %3$@ will be able to see your %2$@ folders if/when you select from existing folders, %3$@ does not store that information, which is removed immediately after selecting a folder." = "%1$@'s APIs allow you to access and send media to your existing folders in %2$@ via %3$@. Although %1$@ will store and see your data sent via %3$@ and %3$@ will be able to see your %2$@ folders if/when you select from existing folders, %3$@ does not store that information, which is removed immediately after selecting a folder.";
+"%1$@'s APIs allow you to send media to your %2$@ via %3$@. %3$@, however, cannot see or access anything on your %2$@, which you didn't create with %3$@ in the first place." = "%1$@'s APIs allow you to send media to your %2$@ via %3$@. %3$@, however, cannot see or access anything on your %2$@, which you didn't create with %3$@ in the first place.";
 
 /* both are integer numbers meaning 'x of n' */
 "%1$@/%2$@" = "%1$@/%2$@";
