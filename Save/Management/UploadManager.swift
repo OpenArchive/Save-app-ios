@@ -440,18 +440,18 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 collection?.setUploadedNow()
             }
 
-            Db.writeConn?.readWrite { transaction in
-                transaction.replace(upload, forKey: id, inCollection: Upload.collection)
+            Db.writeConn?.readWrite { tx in
+                tx.replace(upload)
 
                 if let collection = collection {
-                    transaction.replace(collection, forKey: collection.id, inCollection: Collection.collection)
+                    tx.replace(collection)
                 }
 
                 if let space = space {
-                    transaction.replace(space, forKey: space.id, inCollection: Space.collection)
+                    tx.replace(space, forKey: space.id, inCollection: Space.collection)
                 }
 
-                transaction.replace(asset, forKey: asset.id, inCollection: Asset.collection)
+                tx.replace(asset)
             }
 
             self.current = nil
@@ -517,6 +517,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         queue.async {
             self.debug("#uploadNext")
 
+            self.cleanup()
+
             if self.globalPause {
                 self.debug("#uploadNext globally paused")
 
@@ -563,16 +565,16 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
             upload.error = nil
 
-            Db.writeConn?.readWrite { transaction in
+            Db.writeConn?.readWrite { tx in
                 if let collection = asset.collection,
-                    collection.closed == nil {
-                    
+                   collection.closed == nil
+                {
                     collection.close()
 
-                    transaction.replace(collection, forKey: collection.id, inCollection: Collection.collection)
+                    tx.replace(collection)
                 }
 
-                transaction.replace(upload, forKey: upload.id, inCollection: Upload.collection)
+                tx.replace(upload)
             }
         }
     }
@@ -649,7 +651,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                             upload.cancel()
                             upload.paused = true
 
-                            tx.replace(upload, forKey: upload.id, inCollection: Upload.collection)
+                            tx.replace(upload)
                         }
                     }
 
@@ -713,7 +715,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                         }
                     }
 
-                    tx.replace(upload, forKey: id, inCollection: Upload.collection)
+                    tx.replace(upload)
                 }
             }
         }
@@ -726,11 +728,11 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
      */
     private func storeCurrent() {
         if let upload = current {
-            Db.writeConn?.readWrite { transaction in
+            Db.writeConn?.readWrite { tx in
                 // Could be, that our cache is out of sync with the database,
                 // due to background upload not triggering a `yapDatabaseModified` callback.
                 // Don't write non-existing objects into it: use `replace` instead of `setObject`.
-                transaction.replace(upload, forKey: upload.id, inCollection: Upload.collection)
+                tx.replace(upload)
             }
         }
     }
@@ -741,6 +743,35 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         if backgroundTask != .invalid {
             UIApplication.shared.endBackgroundTask(backgroundTask)
             backgroundTask = .invalid
+        }
+    }
+
+    /**
+     For unknown reasons, race conditions happen, where uploads finish but assets never get marked as uploaded.
+
+     Also, finished `Upload`s are accrued over time which are not needed anymore.
+     */
+    private func cleanup() {
+        debug("#cleanup")
+
+        Db.writeConn?.readWrite { tx in
+            // 1. Find all uploaded `Upload` objects. They need to be removed.
+            for upload in tx.findAll(where: { $0.state == .uploaded }) as [Upload] {
+                upload.preheat(tx, deep: false)
+
+                // 2. Check, if corresponding `Asset` is properly marked as "uploaded".
+                // If not, fix this.
+                if let asset = upload.asset, !asset.isUploaded {
+                    // Cannot recover destination URL here, but we need to set something,
+                    // so asset is marked uploaded and original file is deleted.
+                    // The URL is unused currently, anyway.
+                    asset.setUploaded(URL(fileURLWithPath: "/"))
+                    tx.replace(asset)
+                }
+
+                // 3. Finally remove the finished `Upload`.
+                tx.remove(upload)
+            }
         }
     }
 }

@@ -42,8 +42,6 @@ class ImageCell: UICollectionViewCell {
         self.asset = asset
         self.upload = upload
 
-        print("[\(String(describing: type(of: self)))] name=\(asset?.filename ?? "(nil)"), asset.id=\(asset?.id ?? "(nil)"), upload.assetId=\(upload?.assetId ?? "(nil)"), state=\(upload?.state.description ?? "(nil)"), progress=\(upload?.progress ?? 0)")
-
         imgView.image = asset?.getThumbnail()
 
         if highlightNonUploaded && !(asset?.isUploaded ?? false) && !UIAccessibility.isReduceTransparencyEnabled {

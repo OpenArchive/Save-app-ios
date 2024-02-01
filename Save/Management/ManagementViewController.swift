@@ -190,7 +190,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
             for upload in uploads {
                 if upload.order != i {
                     upload.order = i
-                    tx.replace(upload, forKey: upload.id, inCollection: Upload.collection)
+                    tx.replace(upload)
                 }
 
                 i += 1

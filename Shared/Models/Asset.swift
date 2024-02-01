@@ -583,17 +583,24 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
      - returns: self for fluency.
     */
     @discardableResult
-    func remove(_ callback: (() -> Void)? = nil) -> Asset {
+    func remove(_ tx: YapDatabaseReadWriteTransaction? = nil, _ callback: (() -> Void)? = nil) -> Asset {
         if isImporting {
             AssetFactory.imageManager.cancelImageRequest(phImageRequestId)
         }
 
-        Db.writeConn?.asyncReadWrite { tx in
+        let block = { (tx: YapDatabaseReadWriteTransaction) in
             tx.remove(self)
 
             if let callback = callback {
                 DispatchQueue.main.async(execute: callback)
             }
+        }
+
+        if let tx = tx {
+            block(tx)
+        }
+        else {
+            Db.writeConn?.asyncReadWrite(block)
         }
 
         return self

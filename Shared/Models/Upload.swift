@@ -237,8 +237,10 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
         Db.writeConn?.asyncReadWrite { tx in
             tx.remove(self)
 
-            if let assetId = self.assetId {
-                tx.removeObject(forKey: assetId, inCollection: Asset.collection)
+            if let assetId = self.assetId,
+               let asset: Asset = tx.object(for: assetId)
+            {
+                asset.remove(tx)
             }
 
             // Reorder uploads.
@@ -247,7 +249,7 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
                 if upload.order != index {
                     upload.order = index
 
-                    tx.replace(upload, forKey: upload.id, inCollection: collection)
+                    tx.replace(upload)
                 }
             }
 

@@ -356,6 +356,10 @@ extension YapDatabaseReadWriteTransaction {
         setObject(object, forKey: object.id, inCollection: T.collection)
     }
 
+    func replace<T: Item>(_ object: T) {
+        replace(object, forKey: object.id, inCollection: T.collection)
+    }
+
     func remove<T: Item>(_ object: T) {
         removeObject(forKey: object.id, inCollection: T.collection)
     }
