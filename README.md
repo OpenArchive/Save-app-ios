@@ -29,7 +29,7 @@ Thank you very much, folks!
 
 ## Copyright
 
-2019 - 2023 OpenArchive
+2019 - 2024 OpenArchive
 https://open-archive.org/
 
 ## Contributing
