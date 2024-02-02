@@ -68,7 +68,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
                     equalHeight: true)
             }
 
-            if Settings.experimentalGoogleDrive && tx.find(where: { (_: GdriveSpace) in true }) == nil {
+            if tx.find(where: { (_: GdriveSpace) in true }) == nil {
                 button = BigButton.create(
                     icon: GdriveSpace.favIcon,
                     title: "\(GdriveSpace.defaultPrettyName)™", // First time should show a "tm". See https://developers.google.com/drive/api/guides/branding

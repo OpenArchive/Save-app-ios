@@ -183,7 +183,4 @@ class Settings {
             defaults?.set(newValue, forKey: kFirstFolderDone)
         }
     }
-
-    // TODO: Remove, when Google Drive support is finally verified by Google.
-    static var experimentalGoogleDrive = false
 }

@@ -61,7 +61,7 @@ class SettingsViewController: UIViewController {
             versionLb.text = String(format: NSLocalizedString("Version %1$@, build %2$@", comment: ""),
                                     Bundle.main.version, Bundle.main.build)
 
-            let gr = UITapGestureRecognizer(target: self, action: #selector(toggleExperimentalGoogleDrive))
+            let gr = UITapGestureRecognizer(target: self, action: #selector(toggleEasterEgg))
             versionLb.addGestureRecognizer(gr)
 
             versionLb.isUserInteractionEnabled = true
@@ -144,16 +144,16 @@ class SettingsViewController: UIViewController {
         }
     }
 
-    @IBAction func toggleExperimentalGoogleDrive() {
-        counter += 1
-
-        if counter > 2 {
-            Settings.experimentalGoogleDrive = !Settings.experimentalGoogleDrive
-
-            AlertHelper.present(self, message: Settings.experimentalGoogleDrive ? "enabled" : "disabled",
-                                title: GdriveSpace.defaultPrettyName)
-
-            counter = 0
-        }
+    @IBAction func toggleEasterEgg() {
+//        counter += 1
+//
+//        if counter > 2 {
+//            Settings.easterEgg = !Settings.easterEgg
+//
+//            AlertHelper.present(self, message: Settings.easterEgg ? "enabled" : "disabled",
+//                                title: "Easter Egg")
+//
+//            counter = 0
+//        }
     }
 }

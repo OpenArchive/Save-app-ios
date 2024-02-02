@@ -112,7 +112,6 @@ class GdriveWizardViewController: BaseViewController, WizardDelegatable {
             }
             catch {
                 let error = error as NSError
-                print(error)
 
                 // Don't show an error dialog in this case:
                 // -1: "access_denied" -: The user hit the "Cancel" button on the website.
@@ -132,7 +131,7 @@ class GdriveWizardViewController: BaseViewController, WizardDelegatable {
                     format: NSLocalizedString(
                         "%1$@ cannot work properly if you don't allow it to write to your %2$@. Please try the authorization again and make sure to grant *all* the access permissions listed.",
                         comment: "First placeholder is 'Save', second is 'Google Drive'."),
-                    Bundle.main.displayName, GdriveSpace.defaultPrettyName))
+                    Bundle.main.displayName, GdriveSpace.defaultPrettyName) + "\n")
 
                 return
             }
