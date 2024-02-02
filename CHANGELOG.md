@@ -1,5 +1,14 @@
 # Changelog
 
+# 3.2.0
+- Added Google Drive support.
+- Fixed a problem with the dependency between Face ID/Touch ID app unlock and ProofMode secured key.
+- Fixed crash when reordering uploads.
+- Improved upload progress display.
+- Show blurred image, when app hiding is active.
+- Fixed problem, where assets never display as uploaded, even though they are uploaded.
+- Translation updates.
+
 # 3.1.0
 - Google Drive support. (Disabled until app is verified by Google.)
 - Use "Montserrat" font everywhere.

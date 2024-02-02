@@ -1,5 +1,7 @@
-- Use "Montserrat" font everywhere.
-- Fixed some colors for better readability.
-- Better download progress display with percentage.
-- Updated translations.
-- Lots of minor UI fixes.
+- Added Google Drive support.
+- Fixed a problem with the dependency between Face ID/Touch ID app unlock and ProofMode secured key.
+- Fixed crash when reordering uploads.
+- Improved upload progress display.
+- Show blurred image, when app hiding is active.
+- Fixed problem, where assets never display as uploaded, even though they are uploaded.
+- Translation updates.

@@ -1,5 +1,7 @@
-- Utilisation de la police "Montserrat" partout.
-- Correction de certaines couleurs pour une meilleure lisibilité.
-- Meilleur affichage de la progression du téléchargement avec un pourcentage.
-- Mise à jour des traductions.
-- Beaucoup de corrections mineures de l'interface utilisateur.
+- Ajout de la prise en charge de Google Drive.
+- Correction d'un problème de dépendance entre le déverrouillage de l'application Face ID/Touch ID et la clé sécurisée ProofMode.
+- Correction d'un problème lors de la réorganisation des téléchargements.
+- Amélioration de l'affichage de la progression du téléchargement.
+- Affichage d'une image floue lorsque le masquage de l'application est actif.
+- Correction d'un problème où les actifs ne s'affichent jamais comme téléchargés, même s'ils le sont.
+- Mises à jour des traductions.
