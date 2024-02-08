@@ -64,7 +64,8 @@ class GdriveWizardViewController: BaseViewController, WizardDelegatable {
 
             let text = NSMutableAttributedString(
                 string: "\(line1)\n\n\(line2)",
-                attributes: [.font: UIFont.montserrat(similarTo: disclaimerTv.font)])
+                attributes: [.font: UIFont.montserrat(similarTo: disclaimerTv.font),
+                             .foregroundColor: UIColor.label])
 
             text.link(part: linkText, href: "https://developers.google.com/terms/api-services-user-data-policy", into: disclaimerTv)
 
