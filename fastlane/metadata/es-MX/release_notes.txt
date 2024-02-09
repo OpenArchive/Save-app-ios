@@ -1,7 +1,2 @@
-- Se ha añadido compatibilidad con Google Drive.
-- Se ha corregido un problema con la dependencia entre el desbloqueo de la aplicación Face ID/Touch ID y la clave segura ProofMode.
-- Se ha corregido un fallo al reordenar las subidas.
-- Mejora de la visualización del progreso de carga.
-- Se muestra la imagen borrosa cuando la ocultación de la aplicación está activada.
-- Se ha solucionado un problema por el que los activos nunca se mostraban como cargados, aunque lo estuvieran.
-- Actualizaciones de traducción.
+- Corregido el color del texto de renuncia de Google Drive en modo oscuro.
+- Mejorados los mensajes de error de Dropbox.

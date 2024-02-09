@@ -1,7 +1,2 @@
-- Unterstützung für Google Drive hinzugefügt.
-- Ein Problem mit der Abhängigkeit zwischen Face ID/Touch ID App-Entsperrung und ProofMode-gesichertem Schlüssel wurde behoben.
-- Absturz beim Neuordnen von Uploads behoben.
-- Verbesserte Anzeige des Upload-Fortschritts.
-- Anzeige eines unscharfen Bildes, wenn das Verstecken der App aktiv ist.
-- Problem behoben, bei dem Assets nie als hochgeladen angezeigt wurden, obwohl sie hochgeladen waren.
-- Aktualisierungen der Übersetzung.
+- Die Textfarbe des Google Drive Haftungsausschlusses im dunklen Modus wurde korrigiert.
+- Verbesserte Dropbox-Fehlermeldungen.

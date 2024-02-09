@@ -1,7 +1,2 @@
-- Google Drive desteği eklendi.
-- Face ID/Touch ID uygulama kilidi açma ve ProofMode güvenli anahtarı arasındaki bağımlılıkla ilgili bir sorun düzeltildi.
-- Yüklemeleri yeniden sıralarken oluşan çökme düzeltildi.
-- Yükleme ilerleme ekranı iyileştirildi.
-- Uygulama gizleme etkin olduğunda bulanık görüntü göster.
-- Varlıkların yüklenmiş olmalarına rağmen hiçbir zaman yüklenmiş olarak görüntülenmemesi sorunu düzeltildi.
-- Çeviri güncellemeleri.
+- Karanlık moddayken Google Drive sorumluluk reddi metin rengi düzeltildi.
+- Dropbox hata mesajları iyileştirildi.

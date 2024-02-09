@@ -1,5 +1,9 @@
 # Changelog
 
+# 3.2.1
+- Fixed Google Drive disclaimer text color when in dark mode.
+- Improved Dropbox error messages.
+
 # 3.2.0
 - Added Google Drive support.
 - Fixed a problem with the dependency between Face ID/Touch ID app unlock and ProofMode secured key.

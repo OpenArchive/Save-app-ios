@@ -1,7 +1,2 @@
-- Added Google Drive support.
-- Fixed a problem with the dependency between Face ID/Touch ID app unlock and ProofMode secured key.
-- Fixed crash when reordering uploads.
-- Improved upload progress display.
-- Show blurred image, when app hiding is active.
-- Fixed problem, where assets never display as uploaded, even though they are uploaded.
-- Translation updates.
+- Fixed Google Drive disclaimer text color when in dark mode.
+- Improved Dropbox error messages.

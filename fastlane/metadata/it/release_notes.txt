@@ -1,7 +1,2 @@
-- Aggiunto il supporto per Google Drive.
-- Risolto un problema di dipendenza tra lo sblocco dell'app Face ID/Touch ID e la chiave protetta ProofMode.
-- Corretto l'arresto anomalo durante il riordino dei caricamenti.
-- Migliorata la visualizzazione dell'avanzamento del caricamento.
-- Mostra l'immagine sfocata quando è attivo il nascondimento dell'app.
-- Corretto il problema per cui le risorse non vengono mai visualizzate come caricate, anche se lo sono.
-- Aggiornamenti delle traduzioni.
+- Corretto il colore del testo del disclaimer di Google Drive in modalità scura.
+- Migliorati i messaggi di errore di Dropbox.
