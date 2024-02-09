@@ -24,7 +24,7 @@ extension Error {
             }
         }
 
-        // Google Driver errors
+        // Google Drive errors
         if (self as NSError).userInfo["data_content_type"] as? String == "application/json; charset=UTF-8",
            let data = (self as NSError).userInfo["data"] as? Data,
            let googleError = try? JSONDecoder().decode(GoogleErrorWrapper.self, from: data)
