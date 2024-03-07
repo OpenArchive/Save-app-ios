@@ -13,9 +13,9 @@ PODS:
   - Eureka (5.4.0)
   - FavIcon (3.1.0)
   - FontBlaster (5.3.0)
-  - GoogleAPIClientForREST/Core (3.3.0):
+  - GoogleAPIClientForREST/Core (3.5.1):
     - GTMSessionFetcher/Full (< 4.0, >= 1.6.1)
-  - GoogleAPIClientForREST/Drive (3.3.0):
+  - GoogleAPIClientForREST/Drive (3.5.1):
     - GoogleAPIClientForREST/Core
     - GTMSessionFetcher/Full (< 4.0, >= 1.6.1)
   - GoogleSignIn (7.0.0):
@@ -25,11 +25,11 @@ PODS:
   - GTMAppAuth (2.0.0):
     - AppAuth/Core (~> 1.6)
     - GTMSessionFetcher/Core (< 4.0, >= 1.5)
-  - GTMSessionFetcher/Core (3.2.0)
-  - GTMSessionFetcher/Full (3.2.0):
+  - GTMSessionFetcher/Core (3.3.1)
+  - GTMSessionFetcher/Full (3.3.1):
     - GTMSessionFetcher/Core
   - LegacyUTType (0.1.0)
-  - LibProofMode/PrivacyProtected (0.1.1):
+  - LibProofMode (0.1.9):
     - DeviceKit (~> 4.0)
     - LegacyUTType (~> 0.1)
     - ObjectivePGP (~> 0.99)
@@ -160,7 +160,7 @@ DEPENDENCIES:
   - GoogleAPIClientForREST/Drive (~> 3.3)
   - GoogleSignIn (~> 7.0)
   - LegacyUTType (~> 0.1)
-  - LibProofMode/PrivacyProtected (from `https://gitlab.com/threeletteracronym/libproofmode-ios.git`, branch `external_passphrase`)
+  - LibProofMode (from `https://gitlab.com/guardianproject/proofmode/libproofmode-ios.git`, branch `main`)
   - MBProgressHUD (~> 1.2)
   - OrbotKit (~> 1.1)
   - ReachabilitySwift (~> 5.0)
@@ -201,8 +201,8 @@ EXTERNAL SOURCES:
     :branch: swift-5
     :git: https://github.com/tladesignz/FavIcon.git
   LibProofMode:
-    :branch: external_passphrase
-    :git: https://gitlab.com/threeletteracronym/libproofmode-ios.git
+    :branch: main
+    :git: https://gitlab.com/guardianproject/proofmode/libproofmode-ios.git
   SwiftyDropbox:
     :branch: session_config
     :git: https://github.com/tladesignz/SwiftyDropbox.git
@@ -219,8 +219,8 @@ CHECKOUT OPTIONS:
     :commit: ad3139c820078d3fe8ad6beac486846a82e66b81
     :git: https://github.com/tladesignz/FavIcon.git
   LibProofMode:
-    :commit: 987b4e0c17172181cd940e803c765f7e17c3b04e
-    :git: https://gitlab.com/threeletteracronym/libproofmode-ios.git
+    :commit: d5b160af288db2d5c6486fb269374b7f8516d5da
+    :git: https://gitlab.com/guardianproject/proofmode/libproofmode-ios.git
   SwiftyDropbox:
     :commit: ae66d3b5a31a0a51bb360052e0985b8678f68b6a
     :git: https://github.com/tladesignz/SwiftyDropbox.git
@@ -241,12 +241,12 @@ SPEC CHECKSUMS:
   Eureka: fadaa9fa3d6e402d3c60f78f24edf3d7bafc9c29
   FavIcon: 57f172cc9880265915c1aba226a2538b722c83fd
   FontBlaster: 941f89d735a29e1c7d24e7a90d3e16939ef1609a
-  GoogleAPIClientForREST: ebbe8e40acdd2587c6b38fcc0fd955fbe69e3ddd
+  GoogleAPIClientForREST: 8ec5b7f116fe00e2c13a4a6d5efe9928afb811f1
   GoogleSignIn: b232380cf495a429b8095d3178a8d5855b42e842
   GTMAppAuth: 99fb010047ba3973b7026e45393f51f27ab965ae
-  GTMSessionFetcher: 41b9ef0b4c08a6db4b7eb51a21ae5183ec99a2c8
+  GTMSessionFetcher: 8a1b34ad97ebe6f909fb8b9b77fba99943007556
   LegacyUTType: 827291c20ad7361a47ace7bcdd1652a607fe4108
-  LibProofMode: 6621c76256876f2e22e8bd336cf48f3d04dade3e
+  LibProofMode: eec37e3cea714b73e742bb04dec9b881c1145938
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   ObjectivePGP: 5b023e0a73c9edb89a5d333e5e9ce89ec7740772
   OrbotKit: 5e69508dee1943144fefa18a197fbf2030dfbe36
@@ -258,6 +258,6 @@ SPEC CHECKSUMS:
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
   YapDatabase: c9924a3d45245d6878d0bf8172cb22a8522aa012
 
-PODFILE CHECKSUM: 617feefeced5531a52f4834562b728f795b11a50
+PODFILE CHECKSUM: 54678d12832f013364c73b4c46551f6939268250
 
-COCOAPODS: 1.14.3
+COCOAPODS: 1.15.2
