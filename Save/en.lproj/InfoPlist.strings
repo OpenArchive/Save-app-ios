@@ -9,3 +9,4 @@ NSCameraUsageDescription = "Please grant this app access to your camera, if you 
 NSMicrophoneUsageDescription = "Please grant this app access to your microphone, if you directly want to take videos.";
 NSPhotoLibraryUsageDescription = "Please grant this app access to your camera roll, if you want to upload photos or videos.";
 NSFaceIDUsageDescription = "Needed, if you want to unlock the app with Face ID.";
+NSLocationWhenInUseUsageDescription = "Please grant this app access to your location, if you want ProofMode to generate all proof possible.";

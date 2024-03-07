@@ -103,7 +103,7 @@ class AssetFactory {
     class func load(from phasset: PHAsset, into asset: Asset, _ resultHandler: ResultHandler? = nil) {
 
         // Try to acquire a proper address from metadata.
-        Geocoder.shared.fetchAddress(from: phasset) { address in
+        LocationMananger.shared.fetchAddress(from: phasset) { address in
             if let address = address {
                 asset.update() { ma in
                     ma.location = address
@@ -430,7 +430,7 @@ class AssetFactory {
             let longitude = gps[kCGImagePropertyGPSLongitude] as? Double
         {
             // Try to acquire a proper address from metadata.
-            Geocoder.shared.fetchAddress(from: CLLocation(latitude: latitude, longitude: longitude)) { address in
+            LocationMananger.shared.fetchAddress(from: CLLocation(latitude: latitude, longitude: longitude)) { address in
                 if let address = address {
                     asset.update { asset in
                         asset.location = address

@@ -10,6 +10,7 @@ import UIKit
 import CoreLocation
 import Photos
 import Contacts
+import LibProofMode
 
 /**
  Facility to fetch addresses from given `CLLocation`s or `PHAsset` metadata.
@@ -19,7 +20,7 @@ import Contacts
 
  We use a 1-second loop to check for work
  */
-class Geocoder {
+class LocationMananger {
 
     /**
      - parameter address: A localized address string for a given location.
@@ -27,6 +28,12 @@ class Geocoder {
         geocoding was unsuccessful.
     */
     typealias CompletionHandler = (_ address: String?) -> Void
+
+
+    var status: CLAuthorizationStatus {
+        LibProofMode.LocationManager.shared.authorizationStatus
+    }
+
 
     private class Work {
         let location: CLLocation
@@ -39,15 +46,16 @@ class Geocoder {
     }
 
 
-    static let shared = Geocoder()
+    static let shared = LocationMananger()
 
-    private let gc = CLGeocoder()
+    private lazy var gc = CLGeocoder()
 
-    private let queue = DispatchQueue(label: "\(Bundle.main.bundleIdentifier!).\(String(describing: Geocoder.self))")
+    private let queue = DispatchQueue(label: "\(Bundle.main.bundleIdentifier!).\(String(describing: LocationMananger.self))")
 
     private var working = false
 
     private var work = [Work]()
+
 
     /**
      Fetch the address for a `CLLocation` object. (Known as "reverse geocoding".)
@@ -92,6 +100,23 @@ class Geocoder {
         else {
             completionHandler(nil)
         }
+    }
+
+    /**
+     Request authorization, if not determined, yet.
+
+     Otherwise, just return the authorization state immediately.
+
+     - parameter callback: Optional callback receiving the current authorization state, potentially after asking the user.
+     */
+    func requestAuthorization(_ callback: ((_ status: CLAuthorizationStatus) -> Void)? = nil) {
+        if status == .notDetermined {
+            LibProofMode.LocationManager.shared.getPermission(callback: callback ?? { _ in })
+
+            return
+        }
+
+        callback?(status)
     }
 
 

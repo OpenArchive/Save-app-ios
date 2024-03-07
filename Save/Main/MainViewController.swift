@@ -195,6 +195,14 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         assetsReadConn?.update(mappings: assetsMappings)
 
         Db.add(observer: self, #selector(yapDatabaseModified))
+
+        // In case, the user only allowed temporary location authorization,
+        // ask again, only once after app start.
+        if Settings.proofMode && LocationMananger.shared.status == .notDetermined {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                LocationMananger.shared.requestAuthorization()
+            }
+        }
     }
 
     override func viewWillAppear(_ animated: Bool) {

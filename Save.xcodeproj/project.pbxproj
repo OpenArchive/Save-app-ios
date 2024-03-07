@@ -259,7 +259,7 @@
 		A09AD1202AC2F94000DE8085 /* SideMenuViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A09AD11E2AC2F94000DE8085 /* SideMenuViewController.xib */; };
 		A09AD1212AC2F94000DE8085 /* SideMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A09AD11F2AC2F94000DE8085 /* SideMenuViewController.swift */; };
 		A09B537623266D69005266C2 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A09B537523266D69005266C2 /* Assets.xcassets */; };
-		A09B537D23266F02005266C2 /* Geocoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BBEF8822846F310071EE93 /* Geocoder.swift */; };
+		A09B537D23266F02005266C2 /* LocationMananger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BBEF8822846F310071EE93 /* LocationMananger.swift */; };
 		A09B537E23266F02005266C2 /* IaSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0362194220DB2CA003C21DC /* IaSpace.swift */; };
 		A09B538023266F02005266C2 /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A004E24B20EBCF1700A1D5F5 /* Formatters.swift */; };
 		A09B538123266F02005266C2 /* AssetsByCollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0FB4DB421F89FD500B46099 /* AssetsByCollectionView.swift */; };
@@ -372,8 +372,8 @@
 		A0AFCF1022300E41005E57FD /* MultilineTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */; };
 		A0B645C422B7AD2E00BBE3FF /* TitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0B645C322B7ABFE00BBE3FF /* TitleCell.xib */; };
 		A0B645C522B7AD2E00BBE3FF /* TitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0B645C322B7ABFE00BBE3FF /* TitleCell.xib */; };
-		A0BBEF8922846F310071EE93 /* Geocoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BBEF8822846F310071EE93 /* Geocoder.swift */; };
-		A0BBEF8A22846F310071EE93 /* Geocoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BBEF8822846F310071EE93 /* Geocoder.swift */; };
+		A0BBEF8922846F310071EE93 /* LocationMananger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BBEF8822846F310071EE93 /* LocationMananger.swift */; };
+		A0BBEF8A22846F310071EE93 /* LocationMananger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BBEF8822846F310071EE93 /* LocationMananger.swift */; };
 		A0BF451A27DF5EE800DBB629 /* ProofModeSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BF451927DF5EE800DBB629 /* ProofModeSettingsViewController.swift */; };
 		A0C475B4211474A50012937E /* Formatters.swift in Sources */ = {isa = PBXBuildFile; fileRef = A004E24B20EBCF1700A1D5F5 /* Formatters.swift */; };
 		A0C475B5211474A70012937E /* RegexUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */; };
@@ -719,7 +719,7 @@
 		A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineTitle.swift; sourceTree = "<group>"; };
 		A0B645C322B7ABFE00BBE3FF /* TitleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TitleCell.xib; sourceTree = "<group>"; };
 		A0BA76E52111FA130009801D /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
-		A0BBEF8822846F310071EE93 /* Geocoder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Geocoder.swift; sourceTree = "<group>"; };
+		A0BBEF8822846F310071EE93 /* LocationMananger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMananger.swift; sourceTree = "<group>"; };
 		A0BF451927DF5EE800DBB629 /* ProofModeSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProofModeSettingsViewController.swift; sourceTree = "<group>"; };
 		A0C0732B20EE7AB600EA48F0 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		A0C475B6211481710012937E /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
@@ -861,7 +861,7 @@
 				A092C0EF223A8D4B003EB0AA /* DoneDelegate.swift */,
 				A0FE2C1D22E1E8D200C5443F /* Error+friendlyMessage.swift */,
 				A004E24B20EBCF1700A1D5F5 /* Formatters.swift */,
-				A0BBEF8822846F310071EE93 /* Geocoder.swift */,
+				A0BBEF8822846F310071EE93 /* LocationMananger.swift */,
 				A003DDFA2B14C56300443561 /* NSAttributedString+Utils.swift */,
 				A02BC66D2400195C007B05AB /* NSError+from.swift */,
 				A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */,
@@ -1678,7 +1678,7 @@
 				A025171A22C2126C00EEFBD9 /* DuplicateFolderAlert.swift in Sources */,
 				A0A6819729D7118C002D9F21 /* TTTLocationFormatter.m in Sources */,
 				A0DA7628282D0F300039438A /* Date+rfcString.swift in Sources */,
-				A0BBEF8A22846F310071EE93 /* Geocoder.swift in Sources */,
+				A0BBEF8A22846F310071EE93 /* LocationMananger.swift in Sources */,
 				A0E321FF228EFE7100F2E9BD /* InfoBox.swift in Sources */,
 				A0A192DE21F208DA009A8CF0 /* Space.swift in Sources */,
 				A0E2720A224E335400CB7113 /* NewFolderViewController.swift in Sources */,
@@ -1771,7 +1771,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A09B537D23266F02005266C2 /* Geocoder.swift in Sources */,
+				A09B537D23266F02005266C2 /* LocationMananger.swift in Sources */,
 				A09B537E23266F02005266C2 /* IaSpace.swift in Sources */,
 				A09B538023266F02005266C2 /* Formatters.swift in Sources */,
 				A09B538123266F02005266C2 /* AssetsByCollectionView.swift in Sources */,
@@ -1927,7 +1927,7 @@
 				A0AC29E92B10BFCD0054D5F4 /* IaSettingsViewController.swift in Sources */,
 				A056BE1C2857457E00F354B6 /* UIFont+Montserrat.swift in Sources */,
 				A0E739D820E4C85D00DB31E1 /* AppDelegate.swift in Sources */,
-				A0BBEF8922846F310071EE93 /* Geocoder.swift in Sources */,
+				A0BBEF8922846F310071EE93 /* LocationMananger.swift in Sources */,
 				A0362195220DB2CA003C21DC /* IaSpace.swift in Sources */,
 				A0E1A67C21EE7A5C00E4F6B7 /* GeneralSettingsViewController.swift in Sources */,
 				A004E24C20EBCF1700A1D5F5 /* Formatters.swift in Sources */,

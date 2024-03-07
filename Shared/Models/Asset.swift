@@ -666,9 +666,26 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         item.proofFolder = Files.base
         item.proofFilesBaseName = id
 
+        var showLocation = false
+        var showMobileNetwork = false
+
+        // If this is an asset we imported via the picker,
+        // (we know that, because otherwise we wouldn't have a `phAssetId` reference.)
+        // and the creation date isn't older than 5 minutes, we assume, this
+        // photo was shot in-app, or at least on this device.
+        // In that case, we do want location and network proof, too.
+        if let timeSinceNow = phAsset?.creationDate?.timeIntervalSinceNow,
+           timeSinceNow < 0 // Needs to be older than now, anything else is a weird glitch we ignore.
+            && timeSinceNow > -5 * 60 // Not older then 5 minutes.
+        {
+            showLocation = true
+            showMobileNetwork = true
+        }
+
         Proof.shared.process(
             mediaItem: item,
-            options: .init(showDeviceIds: true, showLocation: false, showMobileNetwork: false, notarizationProviders: []))
+            options: .init(showDeviceIds: true, showLocation: showLocation,
+                           showMobileNetwork: showMobileNetwork, notarizationProviders: []))
         { _ in
             completed()
         }

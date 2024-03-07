@@ -32,20 +32,26 @@ class ProofModeSettingsViewController: FormViewController {
         .onChange { [weak self] row in
             Settings.proofMode = row.value ?? false
 
-            // Create key immediately, if not existing, so users can export right away.
-            if Settings.proofMode && !(URL.proofModePrivateKey?.exists ?? false) {
+            if Settings.proofMode {
+                // Request location access used for fresh `PHAsset`s.
+                Save.LocationMananger.shared.requestAuthorization { status in
 
-                // If this is the first time, we create the key securely right away.
-                if Settings.proofModeEncryptedPassphrase == nil {
-                    if let pmkeRow = self?.form.rowBy(tag: "proof_mode_key_encryption") as? SwitchRow {
-                        pmkeRow.value = true
-                        pmkeRow.updateCell()
+                    // Create key immediately, if not existing, so users can export right away.
+                    if !(URL.proofModePrivateKey?.exists ?? false) {
+
+                        // If this is the first time, we create the key securely right away.
+                        if Settings.proofModeEncryptedPassphrase == nil {
+                            if let pmkeRow = self?.form.rowBy(tag: "proof_mode_key_encryption") as? SwitchRow {
+                                pmkeRow.value = true
+                                pmkeRow.updateCell()
+                            }
+                        }
+
+                        Proof.shared.initializeWithDefaultKeys()
+
+                        self?.form.rowBy(tag: "proof_mode_key_share")?.evaluateDisabled()
                     }
                 }
-
-                Proof.shared.initializeWithDefaultKeys()
-
-                self?.form.rowBy(tag: "proof_mode_key_share")?.evaluateDisabled()
             }
         }
 

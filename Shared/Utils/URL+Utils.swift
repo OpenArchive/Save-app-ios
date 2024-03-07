@@ -7,14 +7,28 @@
 //
 
 import Foundation
+import LibProofMode
 
 extension URL {
 
-    static let proofModePrivateKey = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        .first?.appendingPathComponent("pkr.asc")
+    static var proofModePrivateKey: URL? {
+        Proof.shared.defaultDocumentFolder?.appendingPathComponent("pkr.asc")
+    }
 
-    static let proofModePublicKey = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)
-        .first?.appendingPathComponent("pub.asc")
+    static var proofModePublicKey: URL? {
+        guard let url = Proof.shared.defaultDocumentFolder?.appendingPathComponent("pub.asc") else {
+            return nil
+        }
+
+        // Workaround for newer ProofMode versions, which don't store the public
+        // key file anymore. We need it, hence we create it here.
+        if !url.exists {
+            let key = Proof.shared.getPublicKeyString()
+            try? key?.write(to: url, atomically: true, encoding: .ascii)
+        }
+
+        return url
+    }
 
     var exists: Bool {
         (try? checkResourceIsReachable()) ?? false
