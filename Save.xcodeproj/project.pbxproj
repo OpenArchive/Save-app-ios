@@ -135,6 +135,7 @@
 		A037D7022B0CCC6300C77706 /* SpaceTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A037D7012B0CCC6300C77706 /* SpaceTypeViewController.swift */; };
 		A04255CE22944C1B0048E00C /* UIStoryboard+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04255CD22944C1B0048E00C /* UIStoryboard+Utils.swift */; };
 		A04255CF22944C1B0048E00C /* UIStoryboard+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A04255CD22944C1B0048E00C /* UIStoryboard+Utils.swift */; };
+		A044B6B62B9F60E4007B29A7 /* Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = A044B6B52B9F60E4007B29A7 /* Info.plist */; };
 		A0457E6720EF96FB00B8FBCB /* StringUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6620EF96FB00B8FBCB /* StringUtils.swift */; };
 		A0457E6920EFB57C00B8FBCB /* RegexUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */; };
 		A045BF052B2B109D00C01D39 /* ProgressButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = A045BF042B2B109D00C01D39 /* ProgressButton.swift */; };
@@ -592,6 +593,7 @@
 		A037D7012B0CCC6300C77706 /* SpaceTypeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceTypeViewController.swift; sourceTree = "<group>"; };
 		A03EE8DA224CEE63008A0281 /* SpacesListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = SpacesListCell.xib; sourceTree = "<group>"; };
 		A04255CD22944C1B0048E00C /* UIStoryboard+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIStoryboard+Utils.swift"; sourceTree = "<group>"; };
+		A044B6B52B9F60E4007B29A7 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0457E6620EF96FB00B8FBCB /* StringUtils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringUtils.swift; sourceTree = "<group>"; };
 		A0457E6820EFB57C00B8FBCB /* RegexUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegexUtils.swift; sourceTree = "<group>"; };
 		A045BF042B2B109D00C01D39 /* ProgressButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProgressButton.swift; sourceTree = "<group>"; };
@@ -689,7 +691,6 @@
 		A09AD11F2AC2F94000DE8085 /* SideMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SideMenuViewController.swift; sourceTree = "<group>"; };
 		A09B537523266D69005266C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A09B540E23266F02005266C2 /* Save Screenshots.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Save Screenshots.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		A09B540F23266F03005266C2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = "/Users/berhart/workspace/gp/openarchive-ios/Info.plist"; sourceTree = "<absolute>"; };
 		A09B541323267119005266C2 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A09B5415232671D0005266C2 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A09B5418232673E2005266C2 /* AppDelegateBase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegateBase.swift; sourceTree = "<group>"; };
@@ -1061,7 +1062,7 @@
 				A080538E22E85C460031D4B5 /* Screenshots.swift */,
 				A011D559233A1F630032304A /* PreviewViewController+Screenshots.swift */,
 				A09B541323267119005266C2 /* Assets.xcassets */,
-				A09B540F23266F03005266C2 /* Info.plist */,
+				A044B6B52B9F60E4007B29A7 /* Info.plist */,
 			);
 			path = "Save Screenshots";
 			sourceTree = "<group>";
@@ -1487,6 +1488,7 @@
 				A03236302B0BB46B00D95BC3 /* AddFolderViewController.xib in Resources */,
 				A09B53F123266F02005266C2 /* SpacesListCell.xib in Resources */,
 				A0DB02542B2C7D11001BF79E /* Montserrat-MediumItalic.ttf in Resources */,
+				A044B6B62B9F60E4007B29A7 /* Info.plist in Resources */,
 				A09B53F323266F02005266C2 /* Montserrat-Black.ttf in Resources */,
 				A09B53F423266F02005266C2 /* Localizable.strings in Resources */,
 				A0102DA72B18F0A30054D3D4 /* Main.storyboard in Resources */,
@@ -2271,7 +2273,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Save/Save.entitlements;
 				CODE_SIGN_STYLE = Manual;
-				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
+				INFOPLIST_FILE = "Save Screenshots/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -2296,7 +2298,7 @@
 				CODE_SIGN_ENTITLEMENTS = Save/Save.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				INFOPLIST_FILE = "$(SRCROOT)/Info.plist";
+				INFOPLIST_FILE = "Save Screenshots/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
