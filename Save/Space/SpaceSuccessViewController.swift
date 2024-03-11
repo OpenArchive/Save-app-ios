@@ -8,7 +8,9 @@
 
 import UIKit
 
-class SpaceSuccessViewController: BaseViewController {
+class SpaceSuccessViewController: BaseViewController, WizardDelegatable {
+
+    weak var delegate: WizardDelegate?
 
     var spaceName = ""
 
@@ -32,6 +34,6 @@ class SpaceSuccessViewController: BaseViewController {
     }
 
     @IBAction func done() {
-        dismiss(animated: true)
+        delegate?.dismiss(success: true)
     }
 }

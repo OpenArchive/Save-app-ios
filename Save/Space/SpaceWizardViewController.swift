@@ -13,6 +13,8 @@ protocol WizardDelegate: AnyObject {
     func back()
 
     func next(_ vc: UIViewController, pos: Int)
+
+    func dismiss(success: Bool)
 }
 
 protocol WizardDelegatable: AnyObject {
@@ -21,6 +23,8 @@ protocol WizardDelegatable: AnyObject {
 }
 
 class SpaceWizardViewController: BasePageViewController, WizardDelegate {
+
+    weak var delegate: MainViewController?
 
     private lazy var viewControllers: [UIViewController] = [UIStoryboard.main.instantiate(SpaceTypeViewController.self)]
 
@@ -70,6 +74,14 @@ class SpaceWizardViewController: BasePageViewController, WizardDelegate {
         pageVc.setViewControllers([vc], direction: getDirection(), animated: true)
 
         pageControl.currentPage = page
+    }
+
+    func dismiss(success: Bool) {
+        dismiss(animated: true)
+
+        if success {
+            delegate?.addFolder()
+        }
     }
 
 

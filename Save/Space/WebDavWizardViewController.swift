@@ -12,7 +12,7 @@ import FavIcon
 
 class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBoxDelegate {
 
-    var delegate: WizardDelegate?
+    weak var delegate: WizardDelegate?
 
 
     @IBOutlet weak var iconIv: UIImageView!

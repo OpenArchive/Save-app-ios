@@ -11,7 +11,7 @@ import SwiftyDropbox
 
 class DropboxWizardViewController: BaseViewController, WizardDelegatable {
 
-    var delegate: WizardDelegate?
+    weak var delegate: WizardDelegate?
 
     @IBOutlet weak var iconIv: UIImageView! {
         didSet {

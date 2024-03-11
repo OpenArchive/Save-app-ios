@@ -13,7 +13,7 @@ import CleanInsightsSDK
 
 class GdriveWizardViewController: BaseViewController, WizardDelegatable {
 
-    var delegate: WizardDelegate?
+    weak var delegate: WizardDelegate?
 
     @IBOutlet weak var iconIv: UIImageView! {
         didSet {

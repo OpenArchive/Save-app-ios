@@ -236,6 +236,20 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         updateManageBt()
     }
 
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        super.prepare(for: segue, sender: sender)
+
+        // Make sure, the `SpaceWizardViewController` calls us back on success,
+        // so we can make the user select/create a folder right after
+        // connecting the server.
+        if segue.identifier == Self.segueConnectSpace,
+           let navC = segue.destination as? UINavigationController,
+           let vc = navC.viewControllers.first as? SpaceWizardViewController
+        {
+            vc.delegate = self
+        }
+    }
+
     /**
      Workaround for the filtered view, which potentially got reset by the share
      extension's `Db#setup` call.
