@@ -154,9 +154,6 @@
 /* ManagementViewController */
 "Back" = "بازگشت";
 
-/* No comment provided by engineer. */
-"Before adding media, create a new folder first." = "Before adding media, create a new folder first.";
-
 /* DataUsageViewController */
 "Better Quality" = "کیفیت بهتر";
 
@@ -569,7 +566,7 @@
 "To get started, connect to a server to store your media." = "To get started, connect to a server to store your media.";
 
 /* No comment provided by engineer. */
-"To get started, please create a folder" = "To get started, please create a folder";
+"To get started, please add a folder" = "To get started, please add a folder";
 
 /* Placeholder is 'Orbot' */
 "Transfer via %@ only" = "Transfer via %@ only";

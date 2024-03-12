@@ -19,11 +19,7 @@ class FolderInfoAlert: InfoAlert {
     }
 
     override class var title: String {
-        NSLocalizedString("To get started, please create a folder", comment: "")
-    }
-
-    override class var message: String {
-        NSLocalizedString("Before adding media, create a new folder first.", comment: "")
+        NSLocalizedString("To get started, please add a folder", comment: "")
     }
 
     override class var buttonTitle: String {
