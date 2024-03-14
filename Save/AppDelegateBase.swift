@@ -12,6 +12,8 @@ import SwiftyDropbox
 import CleanInsightsSDK
 import LibProofMode
 import GoogleSignIn
+import TorManager
+import OrbotKit
 
 class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
@@ -63,7 +65,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 
         UIFont.setUpMontserrat()
 
-        setUpOrbot()
+        setUpOrbotAndTor()
 
         return true
     }
@@ -333,10 +335,18 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         }
     }
 
-    func setUpOrbot() {
+    func setUpOrbotAndTor() {
         if Settings.useOrbot {
             OrbotManager.shared.start()
         }
+        else {
+            // Always set up Orbot API token, so TorManager can work around Orbot, if need be.
+            OrbotKit.shared.apiToken = Settings.orbotApiToken
+        }
+
+        // Always initialize TorManager, so PT_STATE directory gets set and users
+        // can fetch bridges before they switch on Tor.
+        _ = TorManager.shared
 
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             OrbotManager.shared.alertCannotUpload()
@@ -393,4 +403,9 @@ extension CleanInsights {
 
     static var shared = try! CleanInsights(
         jsonConfigurationFile: Bundle.main.url(forResource: "cleaninsights-dev", withExtension: "json")!)
+}
+
+extension TorManager {
+
+    static let shared = TorManager(directory: .groupDir!.appendingPathComponent("tor", isDirectory: true))
 }

@@ -17,10 +17,7 @@ class Db {
     private static let DB_NAME = "open-archive.sqlite"
 
     private static var shared: YapDatabase? = {
-        if let path = FileManager.default
-            .containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroup)?
-            .appendingPathComponent(DB_NAME) 
-        {
+        if let path = URL.groupDir?.appendingPathComponent(DB_NAME) {
 //            print("[\(String(describing: Db.self))] path=\(path)")
 
             let options = YapDatabaseOptions()

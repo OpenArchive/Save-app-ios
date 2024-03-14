@@ -9,6 +9,7 @@
 import OrbotKit
 import YapDatabase
 import SDCAlertView
+import TorManager
 
 extension Notification.Name {
 
@@ -107,16 +108,6 @@ class OrbotManager: OrbotStatusChangeListener {
             return
         }
 
-        var urlc: URLComponents?
-
-        if let urlType = (Bundle.main.infoDictionary?["CFBundleURLTypes"] as? [[String: Any]])?.first {
-            if let scheme = (urlType["CFBundleURLSchemes"] as? [String])?.first {
-                urlc = URLComponents()
-                urlc?.scheme = scheme
-                urlc?.path = "token-callback"
-            }
-        }
-
         AlertHelper.present(
             topVc,
             message: String(
@@ -128,31 +119,49 @@ class OrbotManager: OrbotStatusChangeListener {
             actions: [
                 AlertHelper.cancelAction(),
                 AlertHelper.defaultAction(NSLocalizedString("Request API Access", comment: ""), handler: { [weak self] _ in
-
-                    OrbotKit.shared.open(.requestApiToken(callback: urlc?.url)) { success in
-                        if !success {
-                            AlertHelper.present(topVc, message: String(format: NSLocalizedString(
-                                "%@ could not be opened!", comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName))
-                        }
-                        else {
-                            self?.tokenAlert = AlertHelper.build(title: NSLocalizedString("Access Token", comment: ""), actions: [AlertHelper.cancelAction()])
-
-                            if let alert = self?.tokenAlert {
-                                AlertHelper.addTextField(alert, placeholder: NSLocalizedString("Paste API token here", comment: ""))
-
-                                alert.addAction(AlertHelper.defaultAction() { _ in
-                                    Settings.orbotApiToken = self?.tokenAlert?.textFields?.first?.text ?? ""
-
-                                    if !Settings.orbotApiToken.isEmpty {
-                                        onSuccess?()
-                                    }
-                                })
-
-                                topVc.present(alert, animated: false)
-                            }
-                        }
-                    }
+                    self?.requestToken(onSuccess)
                 })])
+    }
+
+    func requestToken(_ onSuccess: (() -> Void)? = nil) {
+        guard let topVc = UIApplication.shared.delegate?.window??.rootViewController?.top else {
+            return
+        }
+
+        var urlc: URLComponents?
+
+        if let urlType = (Bundle.main.infoDictionary?["CFBundleURLTypes"] as? [[String: Any]])?.first {
+            if let scheme = (urlType["CFBundleURLSchemes"] as? [String])?.first {
+                urlc = URLComponents()
+                urlc?.scheme = scheme
+                urlc?.path = "token-callback"
+            }
+        }
+
+        OrbotKit.shared.open(.requestApiToken(needBypass: true, callback: urlc?.url)) { [weak self] success in
+            if !success {
+                AlertHelper.present(topVc, message: String(format: NSLocalizedString(
+                    "%@ could not be opened!", comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName))
+            }
+            else {
+                let alert = AlertHelper.build(title: NSLocalizedString("Access Token", comment: ""), actions: [AlertHelper.cancelAction()])
+                self?.tokenAlert = alert
+
+                AlertHelper.addTextField(alert, placeholder: NSLocalizedString("Paste API token here", comment: ""))
+
+                alert.addAction(AlertHelper.defaultAction() { _ in
+                    Settings.orbotApiToken = self?.tokenAlert?.textFields?.first?.text ?? ""
+
+                    self?.tokenAlert = nil
+
+                    if !Settings.orbotApiToken.isEmpty {
+                        onSuccess?()
+                    }
+                })
+
+                topVc.present(alert, animated: false)
+            }
+        }
     }
 
     func received(token: String) {
@@ -171,7 +180,8 @@ class OrbotManager: OrbotStatusChangeListener {
      */
     func alertCannotUpload(count: Int? = nil, _ completed: (() -> Void)? = nil) {
         guard (Settings.wifiOnly && UploadManager.shared.reachability?.connection == .unavailable)
-                || (Settings.useOrbot && status == .stopped),
+                || (Settings.useOrbot && status == .stopped)
+                || (Settings.useTor && !TorManager.shared.connected),
               let topVc = UIApplication.shared.delegate?.window??.rootViewController?.top
         else {
             completed?()
@@ -216,7 +226,7 @@ class OrbotManager: OrbotStatusChangeListener {
                     completed?()
                 }))
         }
-        else {
+        else if Settings.useOrbot {
             message = String(format: NSLocalizedString(
                 "Uploads are blocked until you start %1$@ or allow uploads without %1$@ again.",
                 comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName)
@@ -241,6 +251,38 @@ class OrbotManager: OrbotStatusChangeListener {
                         Settings.useOrbot = false
 
                         self?.stop()
+
+                        completed?()
+                    }))
+        }
+        else {
+            message = String(format: NSLocalizedString(
+                "Uploads are blocked until you start %1$@ or allow uploads without %1$@ again.",
+                comment: "Placeholder is 'Tor'"), TorManager.torName)
+
+            title = String(format: NSLocalizedString("%@ not running", comment: "Placeholder is 'Tor'"), TorManager.torName)
+
+            actions.append(
+                AlertHelper.defaultAction(
+                    String(format: NSLocalizedString(
+                        "Start %@", comment: "Placeholder is 'Tor'"), TorManager.torName),
+                    handler: { _ in
+                        // Trigger display of `TorStartViewController` to start up Tor.
+                        if let navC = UIApplication.shared.delegate?.window??.rootViewController as? MainNavigationController {
+                            navC.setRoot()
+                        }
+
+                        completed?()
+                    }))
+
+            actions.append(
+                AlertHelper.destructiveAction(
+                    String(format: NSLocalizedString(
+                        "Allow without %@", comment: "Placeholder is 'Tor'"), TorManager.torName),
+                    handler: { _ in
+                        Settings.useTor = false
+
+                        TorManager.shared.stop()
 
                         completed?()
                     }))

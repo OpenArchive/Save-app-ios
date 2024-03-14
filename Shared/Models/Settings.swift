@@ -14,8 +14,7 @@ class Settings {
     private static let kHighCompression = "high_compression"
     private static let kUseTor = "use_tor"
     private static let kOrbotApiToken = "orbotApiToken"
-    private static let kTransport = "transport"
-    private static let kCustomBridges = "custom_bridges"
+    private static let kUseOwnTor = "use_own_tor"
     private static let kProofMode = "proof_mode"
     private static let kProofModeEncryptedPassphrase = "proof_mode_encrypted_passphrase"
     private static let kFirstRunDone = "already_run"
@@ -70,12 +69,12 @@ class Settings {
         }
     }
 
-    class var customBridges: [String]? {
+    class var useTor: Bool {
         get {
-            defaults?.stringArray(forKey: kCustomBridges)
+            defaults?.bool(forKey: kUseOwnTor) ?? false
         }
         set {
-            defaults?.set(newValue, forKey: kCustomBridges)
+            defaults?.set(newValue, forKey: kUseOwnTor)
         }
     }
 

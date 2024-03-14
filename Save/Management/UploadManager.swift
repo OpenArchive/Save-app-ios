@@ -13,6 +13,7 @@ import Regex
 import CleanInsightsSDK
 import BackgroundTasks
 import Photos
+import TorManager
 
 extension Notification.Name {
     static let uploadManagerPause = Notification.Name("uploadManagerPause")
@@ -61,7 +62,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     var waiting: Bool {
         globalPause || 
         (reachability?.connection ?? Reachability.Connection.unavailable == .unavailable) ||
-        (Settings.useOrbot && OrbotManager.shared.status == .stopped)
+        (Settings.useOrbot && OrbotManager.shared.status == .stopped) ||
+        (Settings.useTor && !TorManager.shared.connected)
     }
 
     private var current: Upload?
@@ -540,6 +542,12 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
             if Settings.useOrbot && OrbotManager.shared.status == .stopped {
                 self.debug("#uploadNext should use Orbot, but Orbot not started")
+
+                return self.endBackgroundTask(.noData)
+            }
+
+            if Settings.useTor && !TorManager.shared.connected {
+                self.debug("#uploadNext should use built-in Tor, but Tor not started")
 
                 return self.endBackgroundTask(.noData)
             }

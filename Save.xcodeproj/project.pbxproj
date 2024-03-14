@@ -441,6 +441,7 @@
 		A0E321FD228EFDA200F2E9BD /* InfoBox.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E321FC228EFDA200F2E9BD /* InfoBox.xib */; };
 		A0E321FE228EFDA200F2E9BD /* InfoBox.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E321FC228EFDA200F2E9BD /* InfoBox.xib */; };
 		A0E321FF228EFE7100F2E9BD /* InfoBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E321FA228EFA8800F2E9BD /* InfoBox.swift */; };
+		A0E5B7B92BA334BB00285CEE /* TorStartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E5B7B82BA334BB00285CEE /* TorStartViewController.swift */; };
 		A0E739D820E4C85D00DB31E1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E739D720E4C85D00DB31E1 /* AppDelegate.swift */; };
 		A0E739DD20E4C85D00DB31E1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DB20E4C85D00DB31E1 /* Main.storyboard */; };
 		A0E739DF20E4C85E00DB31E1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DE20E4C85E00DB31E1 /* Assets.xcassets */; };
@@ -770,6 +771,7 @@
 		A0E321F8228EDBE900F2E9BD /* DarkroomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkroomViewController.swift; sourceTree = "<group>"; };
 		A0E321FA228EFA8800F2E9BD /* InfoBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoBox.swift; sourceTree = "<group>"; };
 		A0E321FC228EFDA200F2E9BD /* InfoBox.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = InfoBox.xib; sourceTree = "<group>"; };
+		A0E5B7B82BA334BB00285CEE /* TorStartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TorStartViewController.swift; sourceTree = "<group>"; };
 		A0E739D420E4C85D00DB31E1 /* Save.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Save.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A0E739D720E4C85D00DB31E1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A0E739DC20E4C85D00DB31E1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -1224,6 +1226,14 @@
 			path = Projects;
 			sourceTree = "<group>";
 		};
+		A0E5B7B72BA3349B00285CEE /* Tor */ = {
+			isa = PBXGroup;
+			children = (
+				A0E5B7B82BA334BB00285CEE /* TorStartViewController.swift */,
+			);
+			path = Tor;
+			sourceTree = "<group>";
+		};
 		A0E739CB20E4C85D00DB31E1 = {
 			isa = PBXGroup;
 			children = (
@@ -1254,6 +1264,7 @@
 			isa = PBXGroup;
 			children = (
 				A07E8A3E2295759D00E9FFAA /* Onboarding */,
+				A0E5B7B72BA3349B00285CEE /* Tor */,
 				A01A7B732200FF2500E18DE0 /* Main */,
 				A0C6B3072AFD116800304187 /* Settings */,
 				A05CFCC8292D2C630045991A /* Projects */,
@@ -1337,6 +1348,7 @@
 				A09B53E523266F02005266C2 /* Resources */,
 				A09B540923266F02005266C2 /* Embed Foundation Extensions */,
 				45127F73FD3506FD4EAB3F78 /* [CP] Embed Pods Frameworks */,
+				B7F02755FC29FD699595027A /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1358,6 +1370,7 @@
 				A0E739D220E4C85D00DB31E1 /* Resources */,
 				A07129092111CC90007A432A /* Embed Foundation Extensions */,
 				BB3D751BA726F0626F98ECB5 /* [CP] Embed Pods Frameworks */,
+				114F7438B4E327EA8AF57BC8 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1539,6 +1552,23 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
+		114F7438B4E327EA8AF57BC8 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Save/Pods-Save-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Save/Pods-Save-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Save/Pods-Save-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
 		2C2CC73ED7E31DD78998CD0B /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1596,6 +1626,23 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "if [ -f /opt/homebrew/bin/bartycrouch ]; then\n    /opt/homebrew/bin/bartycrouch update -x\n    /opt/homebrew/bin/bartycrouch lint -x\nelse\n    echo \"warning: BartyCrouch not installed. Download it form https://github.com/Flinesoft/BartyCrouch\"\nfi\n";
+		};
+		B7F02755FC29FD699595027A /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots-resources.sh\"\n";
+			showEnvVarsInLog = 0;
 		};
 		BB3D751BA726F0626F98ECB5 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1955,6 +2002,7 @@
 				A025171922C2126C00EEFBD9 /* DuplicateFolderAlert.swift in Sources */,
 				A006A6A8282950D00029E49B /* UIBackgroundFetchResult+description.swift in Sources */,
 				A037D6F82B0CAA0300C77706 /* FolderInfoAlert.swift in Sources */,
+				A0E5B7B92BA334BB00285CEE /* TorStartViewController.swift in Sources */,
 				A08C2CE621F0B46C008ACA3E /* FormViewController.swift in Sources */,
 				A0F7FDE722494E2F006610F0 /* RemoveProjectAlert.swift in Sources */,
 				A094EA4B282AD110006CE059 /* DropboxConduit.swift in Sources */,

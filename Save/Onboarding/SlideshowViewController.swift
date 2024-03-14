@@ -8,6 +8,7 @@
 
 import UIKit
 import OrbotKit
+import TorManager
 
 class SlideshowViewController: BasePageViewController, SlideViewControllerDelegate
 {
@@ -52,30 +53,26 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
             text: { _ in
                 String(
                     format: NSLocalizedString(
-                        "Automatically upload over TLS (Transport Layer Security) and use %@ to protect your media in transit.",
-                        comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName)
+                        "Automatically upload over TLS (Transport Layer Security) and use %1$@ or a built-in %2$@ to protect your media in transit.",
+                        comment: "Placeholder 1 is 'Orbot', placeholder 2 is 'Tor'"), OrbotKit.orbotName, TorManager.torName)
             },
             text2: { view in
                 let linkText: String
-                let text: String
 
                 if OrbotKit.shared.installed {
                     linkText = String(format: NSLocalizedString(
-                        "Enable \"Transfer via %@ only\"",
-                        comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName)
-
-                    text = NSLocalizedString(
-                        "%@ for advanced network security.",
-                        comment: "Placeholder is your translation of 'Enable \"Transfer via Orbot only\"'")
+                        "Enable \"Transfer via %1$@ or built-in %2$@ only\"",
+                        comment: "Placeholder 1 is 'Orbot', placeholder 2 is 'Tor'"), OrbotKit.orbotName, TorManager.torName)
                 }
                 else {
-                    linkText = String(format: NSLocalizedString("Install %@", comment: "Placeholder is 'Orbot'"), 
-                                      OrbotKit.orbotName)
-
-                    text = NSLocalizedString(
-                        "%@ to enable advanced network security.",
-                        comment: "Placeholder is your translation of 'Enable Orbot'")
+                    linkText = String(format: NSLocalizedString(
+                        "Enable \"Transfer via built-in %@ only\"",
+                        comment: "Placeholder is 'Tor'"), TorManager.torName)
                 }
+
+                let text = NSLocalizedString(
+                    "%@ for advanced network security.",
+                    comment: "Placeholder is your translation of 'Enable \"Transfer via Orbot or built-in Tor only\"'")
 
                 return String(format: text, linkText)
                     .attributed
@@ -159,16 +156,41 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
             return
         }
 
-        if !OrbotKit.shared.installed {
-            UIApplication.shared.open(OrbotManager.appStoreLink)
+        if OrbotKit.shared.installed {
+            AlertHelper.present(
+                self,
+                message: String(format: NSLocalizedString(
+                    "Use %1$@ or the built-in %2$@?",
+                    comment: "Placeholder 1 is 'Orbot', placeholder 2 is 'Tor'"),
+                                OrbotKit.orbotName, TorManager.torName) + "\n\n" /* workaround for stupid display errors in SDCAlertViewController */,
+                title: String(format: NSLocalizedString(
+                    "%1$@ or built-in %2$@",
+                    comment: "Placeholder 1 is 'Orbot', placeholder 2 is 'Tor'"),
+                              OrbotKit.orbotName, TorManager.torName),
+                actions: [
+                    AlertHelper.defaultAction(
+                        String(format: NSLocalizedString("Use %@", comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName),
+                        handler: {_ in
+                            OrbotManager.shared.alertToken { [weak self] in
+                                Settings.useOrbot = true
+                                OrbotManager.shared.start()
+
+                                self?.skip()
+                            }
+                        }),
+                    AlertHelper.defaultAction(
+                        String(format: NSLocalizedString("Use %@", comment: "Placeholder is 'Tor'"), TorManager.torName),
+                        handler: { [weak self] _ in
+                            Settings.useTor = true
+
+                            self?.skip()
+                        })
+                ])
         }
         else {
-            OrbotManager.shared.alertToken { [weak self] in
-                Settings.useOrbot = true
-                OrbotManager.shared.start()
+            Settings.useTor = true
 
-                self?.skip()
-            }
+            skip()
         }
     }
 

@@ -10,8 +10,10 @@ import UIKit
 import Eureka
 import CleanInsightsSDK
 import OrbotKit
+import IPtProxyUI
+import TorManager
 
-class GeneralSettingsViewController: FormViewController {
+class GeneralSettingsViewController: FormViewController, BridgesConfDelegate {
 
     private static let compressionOptions = [
         NSLocalizedString("Better Quality", comment: ""),
@@ -69,10 +71,13 @@ class GeneralSettingsViewController: FormViewController {
 
         +++ Section(NSLocalizedString("Security", comment: ""))
 
-        <<< SwitchRow() {
+        <<< SwitchRow("use_orbot") {
             $0.title = String(format: NSLocalizedString(
                 "Transfer via %@ only", comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName)
             $0.value = Settings.useOrbot
+            $0.disabled = .function(["use_tor"], { form in
+                (form.rowBy(tag: "use_tor") as? SwitchRow)?.value ?? false
+            })
 
             $0.cellStyle = .subtitle
 
@@ -88,37 +93,102 @@ class GeneralSettingsViewController: FormViewController {
         .onChange { row in
             let newValue = row.value ?? false
 
-            if newValue != Settings.useOrbot {
-                if newValue {
-                    if !OrbotManager.shared.installed {
-                        row.value = false
+            guard newValue != Settings.useOrbot else {
+                return
+            }
+
+            if newValue {
+                if !OrbotManager.shared.installed {
+                    row.value = false
+                    row.updateCell()
+
+                    OrbotManager.shared.alertOrbotNotInstalled()
+                }
+                else if Settings.orbotApiToken.isEmpty {
+                    row.value = false
+                    row.updateCell()
+
+                    OrbotManager.shared.alertToken {
+                        row.value = true
                         row.updateCell()
 
-                        OrbotManager.shared.alertOrbotNotInstalled()
-                    }
-                    else if Settings.orbotApiToken.isEmpty {
-                        row.value = false
-                        row.updateCell()
-
-                        OrbotManager.shared.alertToken {
-                            row.value = true
-                            row.updateCell()
-
-                            Settings.useOrbot = true
-                            OrbotManager.shared.start()
-                        }
-                    }
-                    else {
                         Settings.useOrbot = true
                         OrbotManager.shared.start()
                     }
                 }
                 else {
-                    Settings.useOrbot = false
-                    OrbotManager.shared.stop()
+                    Settings.useOrbot = true
+                    OrbotManager.shared.start()
                 }
             }
+            else {
+                Settings.useOrbot = false
+                OrbotManager.shared.stop()
+            }
         }
+
+        <<< SwitchRow("use_tor") {
+            $0.title = String(format: NSLocalizedString("Transfer via built-in %@ only", comment: ""), TorManager.torName)
+            $0.value = Settings.useTor
+            $0.disabled = .function(["use_orbot"], { form in
+                (form.rowBy(tag: "use_orbot") as? SwitchRow)?.value ?? false
+            })
+
+            $0.cellStyle = .subtitle
+
+            $0.cell.switchControl.onTintColor = .accent
+            $0.cell.textLabel?.numberOfLines = 0
+            $0.cell.detailTextLabel?.numberOfLines = 0
+        }
+        .cellUpdate({ cell, row in
+            cell.detailTextLabel?.text = String(
+                format: NSLocalizedString(
+                    "%1$@ starts its own %2$@ and uses that for transfer. Don't mix with %3$@!",
+                    comment: "Placeholder 1 is 'Save', placeholder 2 is 'Tor', placeholder 3 is 'Orbot'"),
+                Bundle.main.displayName, TorManager.torName, OrbotKit.orbotName)
+        })
+        .onChange({ [weak self] row in
+            let newValue = row.value ?? false
+
+            guard newValue != Settings.useTor else {
+                return
+            }
+
+            if newValue {
+                Settings.useTor = true
+
+                if !TorManager.shared.connected {
+                    // Trigger display of `TorStartViewController` to start Tor.
+                    if let navC = self?.navigationController as? MainNavigationController {
+                        navC.setRoot()
+                    }
+                }
+            }
+            else {
+                Settings.useTor = false
+                TorManager.shared.stop()
+            }
+        })
+
+        <<< ButtonRow() {
+            $0.title = NSLocalizedString("Bridge Configuration", bundle: .iPtProxyUI, comment: "#bc-ignore!")
+            $0.disabled = .function(["use_orbot"], { form in
+                (form.rowBy(tag: "use_orbot") as? SwitchRow)?.value ?? false
+            })
+        }
+        .onCellSelection({ [weak self] _, row in
+            guard !row.isDisabled else {
+                return
+            }
+
+            let vc = BridgesConfViewController()
+            vc.delegate = self
+            let navC = UINavigationController(rootViewController: vc)
+
+            self?.present(navC, animated: true)
+        })
+
+        +++ Section()
 
         if SecureEnclave.deviceSecured() {
             form.last!
@@ -267,5 +337,32 @@ class GeneralSettingsViewController: FormViewController {
         }
 
         form.delegate = self
+    }
+
+
+    // MARK: BridgesConfDelegate
+
+    var transport: IPtProxyUI.Transport {
+        get {
+            IPtProxyUI.Settings.transport
+        }
+        set {
+            IPtProxyUI.Settings.transport = newValue
+        }
+    }
+
+    var customBridges: [String]? {
+        get {
+            IPtProxyUI.Settings.customBridges
+        }
+        set {
+            IPtProxyUI.Settings.customBridges = newValue
+        }
+    }
+
+    func save() {
+        DispatchQueue.global(qos: .userInitiated).async {
+            TorManager.shared.reconfigureBridges()
+        }
     }
 }
