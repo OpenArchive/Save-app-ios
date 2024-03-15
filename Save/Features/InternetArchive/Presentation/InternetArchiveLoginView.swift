@@ -20,7 +20,7 @@ struct InternetArchiveLoginView: View  {
 
 struct InternetArchiveLoginContent: View {
     
-    @EnvironmentObject var state: InternetArchiveLoginState
+    @EnvironmentObject var state: InternetArchiveLoginViewState
     var store: any Store<InternetArchiveLoginViewModel.Action>
     
     var body: some View {
@@ -28,8 +28,8 @@ struct InternetArchiveLoginContent: View {
         VStack {
             Text("Hello Internet Archive")
             
-            TextField("Username", text: $state.userName).padding()
-            TextField("Password", text: $state.password).padding()
+            TextField("Username", text: state.userName).padding()
+            TextField("Password", text: state.password).padding()
             
             if (state.isLoginError) {
                 Text("Invalid username or password").foregroundColor(.red)

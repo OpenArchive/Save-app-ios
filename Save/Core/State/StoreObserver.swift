@@ -8,15 +8,19 @@
 
 import Combine
 
-class StateListener<Action> : Notifier, Listener {
+class StoreObserver<Action> : Notifier, Listener {
     private let actions = PassthroughSubject<Action, Never>()
-    private var cancellables = Set<AnyCancellable>()
+    private var scope: StoreScope
+    
+    init(scope: StoreScope) {
+        self.scope = scope
+    }
     
     func notify(_ action: Action) {
         actions.send(action)
     }
     
     func listen(_ onAction: @escaping (Action) -> Void) {
-        actions.sink(receiveValue: onAction).store(in: &cancellables)
+        actions.sink(receiveValue: onAction).store(in: &scope)
     }
 }

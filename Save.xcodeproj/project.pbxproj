@@ -489,11 +489,16 @@
 		E4A8E77E2BA2661900DCE99E /* InternetArchiveLoginUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E77D2BA2661900DCE99E /* InternetArchiveLoginUseCase.swift */; };
 		E4A8E7802BA26AEA00DCE99E /* InternetArchiveLoginState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E77F2BA26AEA00DCE99E /* InternetArchiveLoginState.swift */; };
 		E4A8E7832BA26C1000DCE99E /* StateDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7822BA26C1000DCE99E /* StateDispatcher.swift */; };
-		E4A8E7852BA36DDB00DCE99E /* StateListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7842BA36DDB00DCE99E /* StateListener.swift */; };
+		E4A8E7852BA36DDB00DCE99E /* StoreObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7842BA36DDB00DCE99E /* StoreObserver.swift */; };
 		E4A8E7872BA3762900DCE99E /* Effects.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7862BA3762900DCE99E /* Effects.swift */; };
 		E4A8E7892BA3788D00DCE99E /* Dispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7882BA3788D00DCE99E /* Dispatcher.swift */; };
 		E4A8E78B2BA378AE00DCE99E /* Stateful.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E78A2BA378AE00DCE99E /* Stateful.swift */; };
 		E4A8E78D2BA37AA100DCE99E /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E78C2BA37AA100DCE99E /* Store.swift */; };
+		E4A8E7912BA4B58300DCE99E /* StateStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7902BA4B58300DCE99E /* StateStore.swift */; };
+		E4A8E7932BA4B5AD00DCE99E /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7922BA4B5AD00DCE99E /* Observer.swift */; };
+		E4A8E7952BA4B84700DCE99E /* Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7942BA4B84700DCE99E /* Reducer.swift */; };
+		E4A8E7982BA4BAAF00DCE99E /* ScopedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7972BA4BAAF00DCE99E /* ScopedViewModel.swift */; };
+		E4A8E79D2BA4C8F000DCE99E /* Scope.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E79C2BA4C8F000DCE99E /* Scope.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -833,11 +838,16 @@
 		E4A8E77D2BA2661900DCE99E /* InternetArchiveLoginUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveLoginUseCase.swift; sourceTree = "<group>"; };
 		E4A8E77F2BA26AEA00DCE99E /* InternetArchiveLoginState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveLoginState.swift; sourceTree = "<group>"; };
 		E4A8E7822BA26C1000DCE99E /* StateDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateDispatcher.swift; sourceTree = "<group>"; };
-		E4A8E7842BA36DDB00DCE99E /* StateListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateListener.swift; sourceTree = "<group>"; };
+		E4A8E7842BA36DDB00DCE99E /* StoreObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreObserver.swift; sourceTree = "<group>"; };
 		E4A8E7862BA3762900DCE99E /* Effects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Effects.swift; sourceTree = "<group>"; };
 		E4A8E7882BA3788D00DCE99E /* Dispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatcher.swift; sourceTree = "<group>"; };
 		E4A8E78A2BA378AE00DCE99E /* Stateful.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stateful.swift; sourceTree = "<group>"; };
 		E4A8E78C2BA37AA100DCE99E /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		E4A8E7902BA4B58300DCE99E /* StateStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateStore.swift; sourceTree = "<group>"; };
+		E4A8E7922BA4B5AD00DCE99E /* Observer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
+		E4A8E7942BA4B84700DCE99E /* Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reducer.swift; sourceTree = "<group>"; };
+		E4A8E7972BA4BAAF00DCE99E /* ScopedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopedViewModel.swift; sourceTree = "<group>"; };
+		E4A8E79C2BA4C8F000DCE99E /* Scope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scope.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1396,6 +1406,7 @@
 		E4A8E7632BA2516B00DCE99E /* Core */ = {
 			isa = PBXGroup;
 			children = (
+				E4A8E7962BA4BA9A00DCE99E /* Presentation */,
 				E4A8E7812BA26C0400DCE99E /* State */,
 				E4A8E7642BA2517200DCE99E /* Infrastructure */,
 			);
@@ -1465,13 +1476,25 @@
 			isa = PBXGroup;
 			children = (
 				E4A8E7822BA26C1000DCE99E /* StateDispatcher.swift */,
-				E4A8E7842BA36DDB00DCE99E /* StateListener.swift */,
+				E4A8E7842BA36DDB00DCE99E /* StoreObserver.swift */,
 				E4A8E7862BA3762900DCE99E /* Effects.swift */,
 				E4A8E7882BA3788D00DCE99E /* Dispatcher.swift */,
 				E4A8E78A2BA378AE00DCE99E /* Stateful.swift */,
 				E4A8E78C2BA37AA100DCE99E /* Store.swift */,
+				E4A8E7902BA4B58300DCE99E /* StateStore.swift */,
+				E4A8E7922BA4B5AD00DCE99E /* Observer.swift */,
+				E4A8E7942BA4B84700DCE99E /* Reducer.swift */,
+				E4A8E79C2BA4C8F000DCE99E /* Scope.swift */,
 			);
 			path = State;
+			sourceTree = "<group>";
+		};
+		E4A8E7962BA4BA9A00DCE99E /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E7972BA4BAAF00DCE99E /* ScopedViewModel.swift */,
+			);
+			path = Presentation;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2144,6 +2167,7 @@
 				A0FA93412277387D0086D276 /* Bundle+displayName.swift in Sources */,
 				A025171922C2126C00EEFBD9 /* DuplicateFolderAlert.swift in Sources */,
 				E4A8E7612BA2284900DCE99E /* InternetArchiveLoginResponse.swift in Sources */,
+				E4A8E7932BA4B5AD00DCE99E /* Observer.swift in Sources */,
 				A006A6A8282950D00029E49B /* UIBackgroundFetchResult+description.swift in Sources */,
 				A037D6F82B0CAA0300C77706 /* FolderInfoAlert.swift in Sources */,
 				A08C2CE621F0B46C008ACA3E /* FormViewController.swift in Sources */,
@@ -2165,6 +2189,8 @@
 				E4A8E7892BA3788D00DCE99E /* Dispatcher.swift in Sources */,
 				A0D58DCE20E51517005A2F34 /* Asset.swift in Sources */,
 				A0AC29EB2B10C0DD0054D5F4 /* SpaceSettingsViewController.swift in Sources */,
+				E4A8E7952BA4B84700DCE99E /* Reducer.swift in Sources */,
+				E4A8E7982BA4BAAF00DCE99E /* ScopedViewModel.swift in Sources */,
 				A0E9069322CB7D16008CD81B /* SelectedView.swift in Sources */,
 				A04255CE22944C1B0048E00C /* UIStoryboard+Utils.swift in Sources */,
 				A0DA7627282D0F300039438A /* Date+rfcString.swift in Sources */,
@@ -2199,6 +2225,7 @@
 				A02DB29A29B647390090ECF6 /* URL+Utils.swift in Sources */,
 				A05275142211A91300BDB14B /* CollectionsView.swift in Sources */,
 				A07129102111E4F1007A432A /* Db.swift in Sources */,
+				E4A8E7912BA4B58300DCE99E /* StateStore.swift in Sources */,
 				A059E647223AE9FB00ABC621 /* UploadManager.swift in Sources */,
 				A0E1A68121EE7BE900E4F6B7 /* MenuItemCell.swift in Sources */,
 				A00A8D45220C63B20083F0CB /* ProjectsView.swift in Sources */,
@@ -2230,6 +2257,7 @@
 				A05C582A21EF94FC00141633 /* BaseViewController.swift in Sources */,
 				A050AA492225DF4000AE5D15 /* SpacesListCell.swift in Sources */,
 				A05DF98C282C118A003FADA2 /* FileInfo.swift in Sources */,
+				E4A8E79D2BA4C8F000DCE99E /* Scope.swift in Sources */,
 				A0656ABA21F9BFB800070C4B /* MainNavigationController.swift in Sources */,
 				A076790227BE89E900609630 /* UIButton+Utils.swift in Sources */,
 				A0DC0FAC233914BD00C4969A /* MovieIndicator.swift in Sources */,
@@ -2280,7 +2308,7 @@
 				A05DF978282C0E54003FADA2 /* AEXMLDocument.swift in Sources */,
 				A029AF6C2B3328E400FCCB3A /* GdriveWizardViewController.swift in Sources */,
 				A056555C23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */,
-				E4A8E7852BA36DDB00DCE99E /* StateListener.swift in Sources */,
+				E4A8E7852BA36DDB00DCE99E /* StoreObserver.swift in Sources */,
 				A0631B552203022100B3E90D /* BaseTableViewController.swift in Sources */,
 				A0E2720C224E33D000CB7113 /* EditFolderViewController.swift in Sources */,
 				A0457E6920EFB57C00B8FBCB /* RegexUtils.swift in Sources */,

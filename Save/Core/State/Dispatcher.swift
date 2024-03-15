@@ -11,15 +11,3 @@ protocol Dispatcher<Action> {
     
     func dispatch(_ action: Action)
 }
-
-protocol Notifier<Action> {
-    associatedtype Action
-    
-    func notify(_ action: Action)
-}
-
-protocol Listener<Action> {
-    associatedtype Action
-    
-    func listen(_ onAction: @escaping (Action) -> Void)
-}

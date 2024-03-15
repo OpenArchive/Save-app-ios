@@ -8,30 +8,30 @@
 
 import Combine
 
-typealias Reducer<State, Action> = (State, Action) -> State
-
 class StateDispatcher<State, Action>: Dispatcher, Stateful {
     
-    private let reducer: Reducer<State,Action>
+    private var reducer: Reducer<State,Action>
     private let effects: Effects<State, Action>
     
     private(set) var state: State
     
-    private var cancellables = Set<AnyCancellable>()
+    private var scope: StoreScope
     
     init(
+        scope: StoreScope,
         initialState: State,
         reducer: @escaping Reducer<State, Action>,
         effects: @escaping Effects<State, Action>
     ) {
+        self.scope = scope
         self.state = initialState
         self.reducer = reducer
         self.effects = effects
     }
     
     func dispatch(_ action: Action) {
-        state = reducer(state, action)
+       state = reducer(state, action)
         
-        effects(state, action).store(in: &cancellables)
+        effects(state, action).store(in: &scope)
     }
 }

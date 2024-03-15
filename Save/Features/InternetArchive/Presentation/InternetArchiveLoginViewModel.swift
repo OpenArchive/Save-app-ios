@@ -12,26 +12,48 @@ import SwiftUI
 import CleanInsightsSDK
 
 class InternetArchiveLoginViewModel : ObservableObject, Stateful {
-    
     typealias Action = LoginAction
-    typealias State = InternetArchiveLoginState
+    typealias State = InternetArchiveLoginViewState
     
-    private let repository: InternetArchiveRepository
+    // all publishers are stored in the provided scope
+    let scope: StoreScope
     
+    private let useCase: InternetArchiveLoginUseCase
+    
+    // The store:
+    //  - allows the view model to be observed via actions
+    //  - keeps state unidirectional and read only
+    //  - ensures all background effects are scoped
     private(set) lazy var store = {
-        StateStore<InternetArchiveLoginState, Action>(
+        StateStore(
+            scope: scope,
             initialState: InternetArchiveLoginState(),
-            reducer: self.reduce,
+            reducer: combine(self.reduce, self.update),
             effects: self.effects
         )
     }()
 
-    private(set) lazy var state: InternetArchiveLoginState = { self.store.state }()
-    
-    init(repository: InternetArchiveRepository) {
-        self.repository = repository
+    // View State holds the custom SwiftUI binding for the store
+    // essentially an observable mapping
+    lazy var state = {
+        InternetArchiveLoginViewState(
+            userName: Binding(
+                get: { self.store.state.userName },
+                set: { email in self.store.dispatch(.UpdateEmail(email)) }
+            ),
+            password: Binding(
+                get: { self.store.state.password },
+                set: { pwd in self.store.dispatch(.UpdatePassword(pwd)) }
+            )
+        )
+    }()
+            
+    init(scope: StoreScope, useCase: InternetArchiveLoginUseCase) {
+        self.scope = scope
+        self.useCase = useCase
     }
 
+    // updates read-only state, copying structs is effecient in swift
     private func reduce(state: InternetArchiveLoginState, action: Action) -> InternetArchiveLoginState {
         return switch action {
         case .UpdateEmail(let value):
@@ -43,37 +65,27 @@ class InternetArchiveLoginViewModel : ObservableObject, Stateful {
         }
     }
     
-    private func effects(state: InternetArchiveLoginState, action: Action) -> AnyCancellable {
+    // updates the binding view state to trigger UI changes
+    private func update(state: InternetArchiveLoginState, action: Action) -> InternetArchiveLoginState {
+        self.state.isLoginError = state.isLoginError
+        self.state.isValid = state.isValid
+        return state
+    }
+    
+    // applies side effects to store state and returns a value to keep in scope
+    private func effects(state: InternetArchiveLoginState, action: Action) -> Scoped {
         return switch action {
         case .Login:
-            // TODO: use case
-            repository.login(email: state.userName, password: state.password)
-                .sink(receiveCompletion: { result in
-                    switch result {
-                    case .finished:
-                        self.store.notify(.LoggedIn)
-                    case .failure(_):
-                        self.store.dispatch(.LoginError)
-                    }
-                }, receiveValue: { result in
-                    
-                    let space = IaSpace(accessKey: result.auth.access, secretKey: result.auth.secret)
-
-                    SelectedSpace.space = space
-
-                    Db.writeConn?.asyncReadWrite() { tx in
-                        SelectedSpace.store(tx)
-
-                        tx.setObject(space)
-                    }
-
-                    CleanInsights.shared.measure(event: "backend", "new", forCampaign: "upload_fails", name: space.name)
-
-                })
+            useCase(email: state.userName, password: state.password, completion: { result in
+                switch result {
+                case .success:
+                    self.store.notify(.LoggedIn)
+                case .failure(_):
+                    self.store.dispatch(.LoginError)
+                }
+            })
         default:
             emptyEffect()
         }
     }
-    
-    
 }

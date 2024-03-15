@@ -16,7 +16,7 @@ class InternetArchiveLoginViewController : UIHostingController<InternetArchiveLo
     
     weak var delegate: WizardDelegate?
     
-    let viewModel: InternetArchiveLoginViewModel = Container.shared.internetArchiveViewModel()
+    private var viewModel: InternetArchiveLoginViewModel = Container.shared.internetArchiveViewModel(StoreScope())
 
     required init?(coder: NSCoder) {
         super.init(coder: coder, rootView: InternetArchiveLoginView(viewModel: viewModel))
@@ -27,8 +27,8 @@ class InternetArchiveLoginViewController : UIHostingController<InternetArchiveLo
         self.delegate = delegate
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         viewModel.store.listen { action in
             switch action {
             case .LoggedIn:
@@ -39,6 +39,12 @@ class InternetArchiveLoginViewController : UIHostingController<InternetArchiveLo
                 break
             }
         }
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        
+        viewModel.scope.cancel()
     }
     
     private func onLogin() {

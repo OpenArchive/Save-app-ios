@@ -6,12 +6,44 @@
 //  Copyright © 2024 Open Archive. All rights reserved.
 //
 
-import Foundation
-
+import CleanInsightsSDK
+import Combine
 
 class InternetArchiveLoginUseCase {
+
+    private let repository: InternetArchiveRepository
     
-    func invoke(email: String, password: String, completion: @escaping (Result<Void, Error>) -> Void) {
-        
+    init(repository: InternetArchiveRepository) {
+        self.repository = repository
+    }
+    
+    func callAsFunction(
+        email: String,
+        password: String, 
+        completion: @escaping (Result<Void, Error>) -> Void
+    ) -> AnyCancellable {
+        return repository.login(email: email, password: password)
+            .sink(receiveCompletion: { result in
+                switch result {
+                case .finished:
+                    completion(.success(()))
+                case .failure(let err):
+                    completion(.failure(err))
+                }
+            }, receiveValue: { result in
+                
+                let space = IaSpace(accessKey: result.auth.access, secretKey: result.auth.secret)
+
+                SelectedSpace.space = space
+
+                Db.writeConn?.asyncReadWrite() { tx in
+                    SelectedSpace.store(tx)
+
+                    tx.setObject(space)
+                }
+
+                CleanInsights.shared.measure(event: "backend", "new", forCampaign: "upload_fails", name: space.name)
+
+            })
     }
 }

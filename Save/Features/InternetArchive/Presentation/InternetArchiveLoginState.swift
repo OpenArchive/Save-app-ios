@@ -8,9 +8,9 @@
 
 import SwiftUI
 
-class InternetArchiveLoginState: ObservableObject {
-    @Published var userName: String = ""
-    @Published var password: String = ""
+class InternetArchiveLoginState {
+    private(set) var userName: String = ""
+    private(set) var password: String = ""
     private(set) var isLoginError: Bool = false
     private(set) var isValid: Bool = false
     
@@ -20,12 +20,36 @@ class InternetArchiveLoginState: ObservableObject {
          isLoginError: Bool? = nil,
          isValid: Bool? = nil
     ) -> InternetArchiveLoginState {
-        var copy = self
+        let copy = self
         copy.userName = userName ?? self.userName
         copy.password = password ?? self.password
         copy.isLoginError = isLoginError ?? self.isLoginError
         copy.isValid = isValid ?? self.isValid
         return copy
+    }
+}
+
+// binds state to the swift UI
+class InternetArchiveLoginViewState: ObservableObject {
+    // Two-way bindings
+    var userName: Binding<String>
+    var password: Binding<String>
+    
+    // One-way bindings
+    var isValid: Bool = false {
+        willSet {
+            objectWillChange.send()
+        }
+    }
+    var isLoginError: Bool = false {
+        willSet {
+            objectWillChange.send()
+        }
+    }
+    
+    init(userName: Binding<String>, password: Binding<String>) {
+        self.userName = userName
+        self.password = password
     }
 }
 
