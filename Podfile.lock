@@ -11,6 +11,7 @@ PODS:
   - CrossroadRegex (1.2.0)
   - DeviceKit (4.9.0)
   - Eureka (5.4.0)
+  - Factory (2.3.1)
   - FavIcon (3.1.0)
   - FontBlaster (5.3.0)
   - GoogleAPIClientForREST/Core (3.5.1):
@@ -155,6 +156,7 @@ DEPENDENCIES:
   - CleanInsightsSDK (~> 2.6)
   - CrossroadRegex (from `https://github.com/crossroadlabs/Regex.git`, tag `1.2.0`)
   - Eureka (~> 5.3)
+  - Factory
   - FavIcon (from `https://github.com/tladesignz/FavIcon.git`, branch `swift-5`)
   - FontBlaster (~> 5.2)
   - GoogleAPIClientForREST/Drive (~> 3.3)
@@ -179,6 +181,7 @@ SPEC REPOS:
     - CleanInsightsSDK
     - DeviceKit
     - Eureka
+    - Factory
     - FontBlaster
     - GoogleAPIClientForREST
     - GoogleSignIn
@@ -239,6 +242,7 @@ SPEC CHECKSUMS:
   CrossroadRegex: 9af32b4b4dc6ff404c87647ef1bc68ea711cc570
   DeviceKit: 847709bf70b78fd9ab765bd571fb9f5f815c3fc1
   Eureka: fadaa9fa3d6e402d3c60f78f24edf3d7bafc9c29
+  Factory: 0aaf52d866846f0d50f42442cc39a91b8f6a07e0
   FavIcon: 57f172cc9880265915c1aba226a2538b722c83fd
   FontBlaster: 941f89d735a29e1c7d24e7a90d3e16939ef1609a
   GoogleAPIClientForREST: 8ec5b7f116fe00e2c13a4a6d5efe9928afb811f1
@@ -258,6 +262,6 @@ SPEC CHECKSUMS:
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
   YapDatabase: c9924a3d45245d6878d0bf8172cb22a8522aa012
 
-PODFILE CHECKSUM: 54678d12832f013364c73b4c46551f6939268250
+PODFILE CHECKSUM: 273056e5c0cda8f6a99d87cd6656b41be03ee398
 
 COCOAPODS: 1.15.2

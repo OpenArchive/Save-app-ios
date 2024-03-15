@@ -9,13 +9,13 @@
 // git update-index --skip-worktree Shared/Config.xcconfig
 // git update-index --no-skip-worktree Shared/Config.xcconfig
 
-OA_APP_BUNDLE_ID[config=Debug] =
-OA_EXT_BUNDLE_ID[config=Debug] =
-OA_SCS_BUNDLE_ID[config=Debug] =
-OA_APP_GROUP[config=Debug] =
-DEVELOPMENT_TEAM[config=Debug] =
-PROVISIONING_PROFILE_SPECIFIER_MAIN[config=Debug] =
-PROVISIONING_PROFILE_SPECIFIER_SHARE_EXTENSION[config=Debug] =
+OA_APP_BUNDLE_ID[config=Debug] = org.open-archive.save.debug
+OA_EXT_BUNDLE_ID[config=Debug] = org.open-archive.save.debug.ShareExtension
+OA_SCS_BUNDLE_ID[config=Debug] = org.open-archive.save.debug.Screenshots
+OA_APP_GROUP[config=Debug] = group.org.open-archive.save.debug
+DEVELOPMENT_TEAM[config=Debug] = FKL5L3E8N8
+PROVISIONING_PROFILE_SPECIFIER_MAIN[config=Debug] = save Debug Distribution
+PROVISIONING_PROFILE_SPECIFIER_SHARE_EXTENSION[config=Debug] = save Debug Share Extension Distribution
 PROVISIONING_PROFILE_SPECIFIER_SCREENSHOTS[config=Debug] =
 
 OA_APP_BUNDLE_ID[config=Release] = org.open-archive.save

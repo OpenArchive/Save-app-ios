@@ -474,6 +474,26 @@
 		A0FE2C2422E1FE7C00C5443F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0FE2C2622E1FE7C00C5443F /* Localizable.strings */; };
 		A0FE2C2A22E20C5A00C5443F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0FE2C2C22E20C5A00C5443F /* InfoPlist.strings */; };
 		DC04FCF6E9ABDAA58A07B9B0 /* Pods_Save.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 850EC262E1F87BDADC4D0989 /* Pods_Save.framework */; };
+		E4A8E75C2BA227CB00DCE99E /* InternetArchiveRemoteSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E75B2BA227CB00DCE99E /* InternetArchiveRemoteSource.swift */; };
+		E4A8E75F2BA2283C00DCE99E /* InternetArchiveLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E75E2BA2283C00DCE99E /* InternetArchiveLoginRequest.swift */; };
+		E4A8E7612BA2284900DCE99E /* InternetArchiveLoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7602BA2284900DCE99E /* InternetArchiveLoginResponse.swift */; };
+		E4A8E7672BA2519500DCE99E /* DataSourceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7662BA2519500DCE99E /* DataSourceError.swift */; };
+		E4A8E7692BA2522C00DCE99E /* Dictionary+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7682BA2522C00DCE99E /* Dictionary+Utils.swift */; };
+		E4A8E76B2BA2533500DCE99E /* InternetArchiveRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E76A2BA2533500DCE99E /* InternetArchiveRepository.swift */; };
+		E4A8E76E2BA255E800DCE99E /* InternetArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E76D2BA255E800DCE99E /* InternetArchive.swift */; };
+		E4A8E7712BA259AF00DCE99E /* InternetArchiveMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7702BA259AF00DCE99E /* InternetArchiveMapper.swift */; };
+		E4A8E7742BA25BCA00DCE99E /* InternetArchiveLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7732BA25BCA00DCE99E /* InternetArchiveLoginView.swift */; };
+		E4A8E7762BA25C0D00DCE99E /* InternetArchiveLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7752BA25C0D00DCE99E /* InternetArchiveLoginViewController.swift */; };
+		E4A8E7782BA260A800DCE99E /* InternetArchiveLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7772BA260A800DCE99E /* InternetArchiveLoginViewModel.swift */; };
+		E4A8E77B2BA2627D00DCE99E /* InternetArchiveFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E77A2BA2627D00DCE99E /* InternetArchiveFeature.swift */; };
+		E4A8E77E2BA2661900DCE99E /* InternetArchiveLoginUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E77D2BA2661900DCE99E /* InternetArchiveLoginUseCase.swift */; };
+		E4A8E7802BA26AEA00DCE99E /* InternetArchiveLoginState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E77F2BA26AEA00DCE99E /* InternetArchiveLoginState.swift */; };
+		E4A8E7832BA26C1000DCE99E /* StateDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7822BA26C1000DCE99E /* StateDispatcher.swift */; };
+		E4A8E7852BA36DDB00DCE99E /* StateListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7842BA36DDB00DCE99E /* StateListener.swift */; };
+		E4A8E7872BA3762900DCE99E /* Effects.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7862BA3762900DCE99E /* Effects.swift */; };
+		E4A8E7892BA3788D00DCE99E /* Dispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7882BA3788D00DCE99E /* Dispatcher.swift */; };
+		E4A8E78B2BA378AE00DCE99E /* Stateful.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E78A2BA378AE00DCE99E /* Stateful.swift */; };
+		E4A8E78D2BA37AA100DCE99E /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E78C2BA37AA100DCE99E /* Store.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -798,6 +818,26 @@
 		AAF278D72999D4B24346F09C /* Pods_Save_Screenshots.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Save_Screenshots.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		BB8795B24EAF01D5B012DD8C /* Pods_ShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CA30E05DD5BF148755E45BAB /* Pods-ShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareExtension.release.xcconfig"; path = "Target Support Files/Pods-ShareExtension/Pods-ShareExtension.release.xcconfig"; sourceTree = "<group>"; };
+		E4A8E75B2BA227CB00DCE99E /* InternetArchiveRemoteSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveRemoteSource.swift; sourceTree = "<group>"; };
+		E4A8E75E2BA2283C00DCE99E /* InternetArchiveLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveLoginRequest.swift; sourceTree = "<group>"; };
+		E4A8E7602BA2284900DCE99E /* InternetArchiveLoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveLoginResponse.swift; sourceTree = "<group>"; };
+		E4A8E7662BA2519500DCE99E /* DataSourceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceError.swift; sourceTree = "<group>"; };
+		E4A8E7682BA2522C00DCE99E /* Dictionary+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Utils.swift"; sourceTree = "<group>"; };
+		E4A8E76A2BA2533500DCE99E /* InternetArchiveRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveRepository.swift; sourceTree = "<group>"; };
+		E4A8E76D2BA255E800DCE99E /* InternetArchive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchive.swift; sourceTree = "<group>"; };
+		E4A8E7702BA259AF00DCE99E /* InternetArchiveMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveMapper.swift; sourceTree = "<group>"; };
+		E4A8E7732BA25BCA00DCE99E /* InternetArchiveLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveLoginView.swift; sourceTree = "<group>"; };
+		E4A8E7752BA25C0D00DCE99E /* InternetArchiveLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveLoginViewController.swift; sourceTree = "<group>"; };
+		E4A8E7772BA260A800DCE99E /* InternetArchiveLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveLoginViewModel.swift; sourceTree = "<group>"; };
+		E4A8E77A2BA2627D00DCE99E /* InternetArchiveFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveFeature.swift; sourceTree = "<group>"; };
+		E4A8E77D2BA2661900DCE99E /* InternetArchiveLoginUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveLoginUseCase.swift; sourceTree = "<group>"; };
+		E4A8E77F2BA26AEA00DCE99E /* InternetArchiveLoginState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveLoginState.swift; sourceTree = "<group>"; };
+		E4A8E7822BA26C1000DCE99E /* StateDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateDispatcher.swift; sourceTree = "<group>"; };
+		E4A8E7842BA36DDB00DCE99E /* StateListener.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateListener.swift; sourceTree = "<group>"; };
+		E4A8E7862BA3762900DCE99E /* Effects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Effects.swift; sourceTree = "<group>"; };
+		E4A8E7882BA3788D00DCE99E /* Dispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatcher.swift; sourceTree = "<group>"; };
+		E4A8E78A2BA378AE00DCE99E /* Stateful.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stateful.swift; sourceTree = "<group>"; };
+		E4A8E78C2BA37AA100DCE99E /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -889,6 +929,7 @@
 				A05DF97F282C0F48003FADA2 /* AEXMLOptions.swift */,
 				A05DF983282C0F6E003FADA2 /* AEXMLError.swift */,
 				A05DF987282C0F92003FADA2 /* AEXMLParser.swift */,
+				E4A8E7682BA2522C00DCE99E /* Dictionary+Utils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1253,6 +1294,8 @@
 		A0E739D620E4C85D00DB31E1 /* Save */ = {
 			isa = PBXGroup;
 			children = (
+				E4A8E7632BA2516B00DCE99E /* Core */,
+				E4A8E7542BA2275D00DCE99E /* Features */,
 				A07E8A3E2295759D00E9FFAA /* Onboarding */,
 				A01A7B732200FF2500E18DE0 /* Main */,
 				A0C6B3072AFD116800304187 /* Settings */,
@@ -1284,6 +1327,151 @@
 				BB8795B24EAF01D5B012DD8C /* Pods_ShareExtension.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E4A8E7542BA2275D00DCE99E /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E7552BA2276A00DCE99E /* InternetArchive */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		E4A8E7552BA2276A00DCE99E /* InternetArchive */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E7792BA2626900DCE99E /* Module */,
+				E4A8E7722BA25B9600DCE99E /* Presentation */,
+				E4A8E7582BA2278B00DCE99E /* Domain */,
+				E4A8E7562BA2277500DCE99E /* Infrastructure */,
+			);
+			path = InternetArchive;
+			sourceTree = "<group>";
+		};
+		E4A8E7562BA2277500DCE99E /* Infrastructure */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E76F2BA2576C00DCE99E /* Mapping */,
+				E4A8E75D2BA2282900DCE99E /* Model */,
+				E4A8E75A2BA2279E00DCE99E /* Repository */,
+				E4A8E7592BA2279700DCE99E /* DataSource */,
+			);
+			path = Infrastructure;
+			sourceTree = "<group>";
+		};
+		E4A8E7582BA2278B00DCE99E /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E77C2BA2660300DCE99E /* UseCase */,
+				E4A8E76C2BA255C900DCE99E /* Model */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		E4A8E7592BA2279700DCE99E /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E75B2BA227CB00DCE99E /* InternetArchiveRemoteSource.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
+		E4A8E75A2BA2279E00DCE99E /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E76A2BA2533500DCE99E /* InternetArchiveRepository.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		E4A8E75D2BA2282900DCE99E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E75E2BA2283C00DCE99E /* InternetArchiveLoginRequest.swift */,
+				E4A8E7602BA2284900DCE99E /* InternetArchiveLoginResponse.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		E4A8E7632BA2516B00DCE99E /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E7812BA26C0400DCE99E /* State */,
+				E4A8E7642BA2517200DCE99E /* Infrastructure */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		E4A8E7642BA2517200DCE99E /* Infrastructure */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E7652BA2517A00DCE99E /* DataSource */,
+			);
+			path = Infrastructure;
+			sourceTree = "<group>";
+		};
+		E4A8E7652BA2517A00DCE99E /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E7662BA2519500DCE99E /* DataSourceError.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
+		E4A8E76C2BA255C900DCE99E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E76D2BA255E800DCE99E /* InternetArchive.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		E4A8E76F2BA2576C00DCE99E /* Mapping */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E7702BA259AF00DCE99E /* InternetArchiveMapper.swift */,
+			);
+			path = Mapping;
+			sourceTree = "<group>";
+		};
+		E4A8E7722BA25B9600DCE99E /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E7732BA25BCA00DCE99E /* InternetArchiveLoginView.swift */,
+				E4A8E7752BA25C0D00DCE99E /* InternetArchiveLoginViewController.swift */,
+				E4A8E7772BA260A800DCE99E /* InternetArchiveLoginViewModel.swift */,
+				E4A8E77F2BA26AEA00DCE99E /* InternetArchiveLoginState.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		E4A8E7792BA2626900DCE99E /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E77A2BA2627D00DCE99E /* InternetArchiveFeature.swift */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
+		E4A8E77C2BA2660300DCE99E /* UseCase */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E77D2BA2661900DCE99E /* InternetArchiveLoginUseCase.swift */,
+			);
+			path = UseCase;
+			sourceTree = "<group>";
+		};
+		E4A8E7812BA26C0400DCE99E /* State */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E7822BA26C1000DCE99E /* StateDispatcher.swift */,
+				E4A8E7842BA36DDB00DCE99E /* StateListener.swift */,
+				E4A8E7862BA3762900DCE99E /* Effects.swift */,
+				E4A8E7882BA3788D00DCE99E /* Dispatcher.swift */,
+				E4A8E78A2BA378AE00DCE99E /* Stateful.swift */,
+				E4A8E78C2BA37AA100DCE99E /* Store.swift */,
+			);
+			path = State;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1930,6 +2118,7 @@
 				A0BBEF8922846F310071EE93 /* LocationMananger.swift in Sources */,
 				A0362195220DB2CA003C21DC /* IaSpace.swift in Sources */,
 				A0E1A67C21EE7A5C00E4F6B7 /* GeneralSettingsViewController.swift in Sources */,
+				E4A8E7872BA3762900DCE99E /* Effects.swift in Sources */,
 				A004E24C20EBCF1700A1D5F5 /* Formatters.swift in Sources */,
 				A0FB4DB521F89FD500B46099 /* AssetsByCollectionView.swift in Sources */,
 				A0A192E021F23B61009A8CF0 /* Constants+Swift.swift in Sources */,
@@ -1942,6 +2131,7 @@
 				A0C797E922807DF00009751A /* SelectedCollection.swift in Sources */,
 				A013A9372B0D0488003476ED /* IaWizardViewController.swift in Sources */,
 				A00A8D47220C7EDD0083F0CB /* AbcFilteredByProjectView.swift in Sources */,
+				E4A8E75C2BA227CB00DCE99E /* InternetArchiveRemoteSource.swift in Sources */,
 				A0958DEE291AA37700D917C0 /* SecureEnclave.swift in Sources */,
 				A0F3DF4E2B160DE1005D860E /* IaGuideViewController.swift in Sources */,
 				A003DDFB2B14C56300443561 /* NSAttributedString+Utils.swift in Sources */,
@@ -1953,14 +2143,17 @@
 				A045D201224D07C3008FF8C1 /* ButtonCell.swift in Sources */,
 				A0FA93412277387D0086D276 /* Bundle+displayName.swift in Sources */,
 				A025171922C2126C00EEFBD9 /* DuplicateFolderAlert.swift in Sources */,
+				E4A8E7612BA2284900DCE99E /* InternetArchiveLoginResponse.swift in Sources */,
 				A006A6A8282950D00029E49B /* UIBackgroundFetchResult+description.swift in Sources */,
 				A037D6F82B0CAA0300C77706 /* FolderInfoAlert.swift in Sources */,
 				A08C2CE621F0B46C008ACA3E /* FormViewController.swift in Sources */,
 				A0F7FDE722494E2F006610F0 /* RemoveProjectAlert.swift in Sources */,
 				A094EA4B282AD110006CE059 /* DropboxConduit.swift in Sources */,
+				E4A8E7742BA25BCA00DCE99E /* InternetArchiveLoginView.swift in Sources */,
 				A0F1364F227256F4008A22BF /* YapDatabase+Utils.swift in Sources */,
 				A0BF451A27DF5EE800DBB629 /* ProofModeSettingsViewController.swift in Sources */,
 				A0DE78B221F771A700B6B68B /* BaseFolderViewController.swift in Sources */,
+				E4A8E7762BA25C0D00DCE99E /* InternetArchiveLoginViewController.swift in Sources */,
 				A052A492230D546F00E72594 /* InfoAlert.swift in Sources */,
 				A00DC98A22315D4F004F07E0 /* ImageViewController.swift in Sources */,
 				A01A7B722200F2D700E18DE0 /* HeaderView.swift in Sources */,
@@ -1969,6 +2162,7 @@
 				A0CBFCAA2AC5B6F4005A78BF /* SideMenuItemCell.swift in Sources */,
 				A08F2CEC2AFE6F2E004D7EA7 /* PreviewCell.swift in Sources */,
 				A0E321FB228EFA8800F2E9BD /* InfoBox.swift in Sources */,
+				E4A8E7892BA3788D00DCE99E /* Dispatcher.swift in Sources */,
 				A0D58DCE20E51517005A2F34 /* Asset.swift in Sources */,
 				A0AC29EB2B10C0DD0054D5F4 /* SpaceSettingsViewController.swift in Sources */,
 				A0E9069322CB7D16008CD81B /* SelectedView.swift in Sources */,
@@ -1977,6 +2171,8 @@
 				A0E321F9228EDBE900F2E9BD /* DarkroomViewController.swift in Sources */,
 				A05F79FE22EEFA9F003DBB74 /* RuleFilename.swift in Sources */,
 				A045D1F6224CFFB4008FF8C1 /* SelectedSpaceCell.swift in Sources */,
+				E4A8E77E2BA2661900DCE99E /* InternetArchiveLoginUseCase.swift in Sources */,
+				E4A8E7802BA26AEA00DCE99E /* InternetArchiveLoginState.swift in Sources */,
 				A077732A22786BF500291F5D /* RemoveAssetAlert.swift in Sources */,
 				A0357D1122CF901800292077 /* BatchEditViewController.swift in Sources */,
 				A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */,
@@ -1985,8 +2181,10 @@
 				A026C34622C641EB007B1C5B /* IaScrapeViewController.swift in Sources */,
 				A07E8A4222958D0600E9FFAA /* SlideViewController.swift in Sources */,
 				A0D76ACE2B580E2100389F64 /* BlurredSnapshot.swift in Sources */,
+				E4A8E76E2BA255E800DCE99E /* InternetArchive.swift in Sources */,
 				A08F2CEE2AFE8784004D7EA7 /* AssetPicker.swift in Sources */,
 				A03236352B0BB8F100D95BC3 /* AppAddFolderViewController.swift in Sources */,
+				E4A8E7692BA2522C00DCE99E /* Dictionary+Utils.swift in Sources */,
 				A0E27209224E335400CB7113 /* NewFolderViewController.swift in Sources */,
 				A029AF742B33368700FCCB3A /* GdriveConduit.swift in Sources */,
 				A05DF980282C0F48003FADA2 /* AEXMLOptions.swift in Sources */,
@@ -2009,12 +2207,15 @@
 				A056ACA72B0E649C00995FDF /* SpaceSuccessViewController.swift in Sources */,
 				A098980622369F8100022851 /* ManagementViewController.swift in Sources */,
 				A045D1FB224D02AA008FF8C1 /* TitleCell.swift in Sources */,
+				E4A8E76B2BA2533500DCE99E /* InternetArchiveRepository.swift in Sources */,
 				A092C0F0223A8D4B003EB0AA /* DoneDelegate.swift in Sources */,
 				A0A192DD21F208DA009A8CF0 /* Space.swift in Sources */,
 				A0E1A68921EE873200E4F6B7 /* TableHeader.swift in Sources */,
 				A0AC057F224CE8C7008B9249 /* TableWithSpacesViewController.swift in Sources */,
 				A045BF052B2B109D00C01D39 /* ProgressButton.swift in Sources */,
 				A0F7FDDF224936C8006610F0 /* TintedImageView.swift in Sources */,
+				E4A8E75F2BA2283C00DCE99E /* InternetArchiveLoginRequest.swift in Sources */,
+				E4A8E78D2BA37AA100DCE99E /* Store.swift in Sources */,
 				A0AC29ED2B10CAC30054D5F4 /* WebDavSettingsViewController.swift in Sources */,
 				A013A9392B0D12D6003476ED /* TextBox.swift in Sources */,
 				A0AC29E32B10A4CE0054D5F4 /* CGSize+Utils.swift in Sources */,
@@ -2025,6 +2226,7 @@
 				A0AFCF0D22300279005E57FD /* PreviewViewController.swift in Sources */,
 				A0457E6720EF96FB00B8FBCB /* StringUtils.swift in Sources */,
 				A006AF3428198752007637DD /* AlertHelper.swift in Sources */,
+				E4A8E78B2BA378AE00DCE99E /* Stateful.swift in Sources */,
 				A05C582A21EF94FC00141633 /* BaseViewController.swift in Sources */,
 				A050AA492225DF4000AE5D15 /* SpacesListCell.swift in Sources */,
 				A05DF98C282C118A003FADA2 /* FileInfo.swift in Sources */,
@@ -2039,6 +2241,7 @@
 				A05CFCCA292D2DA40045991A /* BrowseDropboxViewController.swift in Sources */,
 				A01128E62AE6CB34000848DB /* SettingsViewController.swift in Sources */,
 				A056555723F6D8A100DE0168 /* DropboxSpace.swift in Sources */,
+				E4A8E7712BA259AF00DCE99E /* InternetArchiveMapper.swift in Sources */,
 				A09898082236A7B100022851 /* UploadCell.swift in Sources */,
 				A0C797E6228063280009751A /* AbcFilteredByCollectionView.swift in Sources */,
 				A0FB4DC021F8EBDD00B46099 /* ImageCell.swift in Sources */,
@@ -2065,14 +2268,19 @@
 				A0D1013E22CCF4140068D047 /* WebDavConduit.swift in Sources */,
 				A0AFCF0F22300E41005E57FD /* MultilineTitle.swift in Sources */,
 				A03236312B0BB46B00D95BC3 /* AddFolderViewController.swift in Sources */,
+				E4A8E7782BA260A800DCE99E /* InternetArchiveLoginViewModel.swift in Sources */,
 				A037D7022B0CCC6300C77706 /* SpaceTypeViewController.swift in Sources */,
 				A0102DAB2B18FC470054D3D4 /* UIImage+Utils.swift in Sources */,
+				E4A8E7672BA2519500DCE99E /* DataSourceError.swift in Sources */,
+				E4A8E7832BA26C1000DCE99E /* StateDispatcher.swift in Sources */,
 				A0A9F1912AF0193D007D284A /* FoldersViewController.swift in Sources */,
+				E4A8E77B2BA2627D00DCE99E /* InternetArchiveFeature.swift in Sources */,
 				A0E12C1A2B028EC300892AC8 /* UploadInfoAlert.swift in Sources */,
 				A05DF988282C0F92003FADA2 /* AEXMLParser.swift in Sources */,
 				A05DF978282C0E54003FADA2 /* AEXMLDocument.swift in Sources */,
 				A029AF6C2B3328E400FCCB3A /* GdriveWizardViewController.swift in Sources */,
 				A056555C23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */,
+				E4A8E7852BA36DDB00DCE99E /* StateListener.swift in Sources */,
 				A0631B552203022100B3E90D /* BaseTableViewController.swift in Sources */,
 				A0E2720C224E33D000CB7113 /* EditFolderViewController.swift in Sources */,
 				A0457E6920EFB57C00B8FBCB /* RegexUtils.swift in Sources */,
@@ -2441,7 +2649,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Save/Save.entitlements;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 66TK5X82D7;
 				INFOPLIST_FILE = Save/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2450,7 +2660,7 @@
 				MARKETING_VERSION = "$(MARKETING_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(OA_APP_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "$(PROVISIONING_PROFILE_SPECIFIER_MAIN)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Save-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2465,8 +2675,9 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Save/Save.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = 66TK5X82D7;
 				INFOPLIST_FILE = Save/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2475,7 +2686,7 @@
 				MARKETING_VERSION = "$(MARKETING_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(OA_APP_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "$(PROVISIONING_PROFILE_SPECIFIER_MAIN)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Save-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

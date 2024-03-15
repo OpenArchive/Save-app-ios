@@ -96,7 +96,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
     }
 
     @IBAction func newIa() {
-        delegate?.next(UIStoryboard.main.instantiate(IaWizardViewController.self), pos: 1)
+        delegate?.next(InternetArchiveLoginViewController(delegate), pos: 1)
     }
 
     @IBAction func newGdrive() {
