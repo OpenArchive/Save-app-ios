@@ -25,18 +25,9 @@ enum SaveError: Error, LocalizedError {
     }
 }
 
-extension URLSession {
+extension URLSessionConfiguration {
 
-    typealias SimpleCompletionHandler = (_ error: Error?) -> Void
-
-    class func withImprovedConf(configuration: URLSessionConfiguration? = nil,
-                                delegate: URLSessionDelegate? = nil,
-                                delegateQueue: OperationQueue? = nil) -> URLSession
-    {
-        URLSession(configuration: improvedConf(configuration), delegate: delegate, delegateQueue: delegateQueue)
-    }
-
-    class func improvedConf(_ conf: URLSessionConfiguration? = nil) -> URLSessionConfiguration {
+    class func improved(_ conf: URLSessionConfiguration? = nil) -> URLSessionConfiguration {
         let conf = conf ?? URLSessionConfiguration.ephemeral
 
         conf.sharedContainerIdentifier = Constants.appGroup
@@ -53,6 +44,11 @@ extension URLSession {
 
         return conf
     }
+}
+
+extension URLSession {
+
+    typealias SimpleCompletionHandler = (_ error: Error?) -> Void
 
     @discardableResult
     func upload(_ file: URL, to: URL, method: String? = "PUT", headers: [String: String]? = nil,

@@ -107,7 +107,9 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             conf.isDiscretionary = false
             conf.shouldUseExtendedBackgroundIdleMode = true
 
-            _backgroundSession = URLSession.withImprovedConf(configuration: conf, delegate: self)
+            _backgroundSession = URLSession(
+                configuration: Self.improvedSessionConf(conf),
+                delegate: self, delegateQueue: nil)
         }
 
         return _backgroundSession!
@@ -119,10 +121,23 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     */
     private var foregroundSession: URLSession {
         if _foregroundSession == nil {
-            _foregroundSession = URLSession.withImprovedConf(delegate: self)
+            _foregroundSession = URLSession(
+                configuration: Self.improvedSessionConf(),
+                delegate: self, delegateQueue: nil)
         }
 
         return _foregroundSession!
+    }
+
+
+    public class func improvedSessionConf(_ conf: URLSessionConfiguration? = nil) -> URLSessionConfiguration {
+        let conf = URLSessionConfiguration.improved(conf)
+
+        if Settings.useTor {
+            conf.connectionProxyDictionary = TorManager.shared.torSocks5ProxyConf
+        }
+
+        return conf
     }
 
 
@@ -138,6 +153,11 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         else {
             restart()
         }
+    }
+
+    func reinitSession() {
+        _backgroundSession = nil
+        _foregroundSession = nil
     }
 
     /**

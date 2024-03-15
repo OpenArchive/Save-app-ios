@@ -19,7 +19,7 @@ class DropboxConduit: Conduit {
 
         return DropboxTransportClient(
             accessToken: accessToken, baseHosts: nil, userAgent: nil, selectUser: nil,
-            config: URLSession.improvedConf())
+            config: UploadManager.improvedSessionConf())
     }
 
     class var client: DropboxClient? {

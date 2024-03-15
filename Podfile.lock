@@ -56,7 +56,7 @@ PODS:
     - Tor/Core
   - Tor/GeoIP (408.10.1):
     - Tor/CTor
-  - TorManager (0.3.0):
+  - TorManager (0.3.1):
     - IPtProxyUI (~> 4.3)
     - OrbotKit (~> 1.1)
     - Tor/GeoIP (~> 408.10)
@@ -283,7 +283,7 @@ SPEC CHECKSUMS:
   SwiftyDropbox: 073c7e0852bf50d858163140f56d0a1133b79b48
   TLPhotoPicker: 2e7caa72ec0cb29d1c85543b252a02d56aeede01
   Tor: 4aa4aee031f892efa43d1afb01c90565990c6312
-  TorManager: aa5f49e29b75725ebcb488b816f468933f6926bb
+  TorManager: 807c0f9c70923faead3a4f5f3b921b0b4b498f17
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
   YapDatabase: c9924a3d45245d6878d0bf8172cb22a8522aa012

@@ -17,6 +17,9 @@ class AppAddFolderViewController: AddFolderViewController {
 
     override func browse() {
         switch SelectedSpace.space {
+        case is WebDavSpace:
+            navigationController?.pushViewController(BrowseWebDavViewController(), animated: true)
+
         case is DropboxSpace:
             navigationController?.pushViewController(BrowseDropboxViewController(), animated: true)
 

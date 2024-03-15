@@ -61,7 +61,6 @@
 		A0102D922B18EE2D0054D3D4 /* Conduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D1013B22CCF2DA0068D047 /* Conduit.swift */; };
 		A0102D932B18EE360054D3D4 /* SpaceWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A037D6FA2B0CB9E900C77706 /* SpaceWizardViewController.swift */; };
 		A0102D942B18EE490054D3D4 /* SpaceTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A037D7012B0CCC6300C77706 /* SpaceTypeViewController.swift */; };
-		A0102D952B18EE530054D3D4 /* WebDavWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A077F7692B0FB580004A4B34 /* WebDavWizardViewController.swift */; };
 		A0102D962B18EE710054D3D4 /* ProofModeSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BF451927DF5EE800DBB629 /* ProofModeSettingsViewController.swift */; };
 		A0102D972B18EE850054D3D4 /* DropboxWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29E02B10A2B20054D5F4 /* DropboxWizardViewController.swift */; };
 		A0102D982B18EE880054D3D4 /* IaWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A013A9362B0D0488003476ED /* IaWizardViewController.swift */; };
@@ -452,6 +451,7 @@
 		A0F13650227256F4008A22BF /* YapDatabase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1364E227256F4008A22BF /* YapDatabase+Utils.swift */; };
 		A0F3DF4E2B160DE1005D860E /* IaGuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F3DF4D2B160DE1005D860E /* IaGuideViewController.swift */; };
 		A0F3DF502B160E1E005D860E /* IaGuideSlideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F3DF4F2B160E1E005D860E /* IaGuideSlideViewController.swift */; };
+		A0F4096A2BA463950069549B /* BrowseWebDavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F409692BA463950069549B /* BrowseWebDavViewController.swift */; };
 		A0F7FDDC22491C6C006610F0 /* Flag.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDB22491C6C006610F0 /* Flag.swift */; };
 		A0F7FDDD22491C6C006610F0 /* Flag.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDB22491C6C006610F0 /* Flag.swift */; };
 		A0F7FDDF224936C8006610F0 /* TintedImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDE224936C8006610F0 /* TintedImageView.swift */; };
@@ -782,6 +782,7 @@
 		A0F1364E227256F4008A22BF /* YapDatabase+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YapDatabase+Utils.swift"; sourceTree = "<group>"; };
 		A0F3DF4D2B160DE1005D860E /* IaGuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaGuideViewController.swift; sourceTree = "<group>"; };
 		A0F3DF4F2B160E1E005D860E /* IaGuideSlideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaGuideSlideViewController.swift; sourceTree = "<group>"; };
+		A0F409692BA463950069549B /* BrowseWebDavViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseWebDavViewController.swift; sourceTree = "<group>"; };
 		A0F7FDDB22491C6C006610F0 /* Flag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flag.swift; sourceTree = "<group>"; };
 		A0F7FDDE224936C8006610F0 /* TintedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintedImageView.swift; sourceTree = "<group>"; };
 		A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RemoveProjectAlert.swift; sourceTree = "<group>"; };
@@ -988,6 +989,7 @@
 			isa = PBXGroup;
 			children = (
 				A03236342B0BB8F100D95BC3 /* AppAddFolderViewController.swift */,
+				A0F409692BA463950069549B /* BrowseWebDavViewController.swift */,
 				A05CFCC9292D2C6E0045991A /* BrowseDropboxViewController.swift */,
 				A029AF702B33353600FCCB3A /* BrowseGdriveViewController.swift */,
 				A037D6F72B0CAA0300C77706 /* FolderInfoAlert.swift */,
@@ -1921,7 +1923,6 @@
 				A09B53BA23266F02005266C2 /* DoneDelegate.swift in Sources */,
 				A09B53BB23266F02005266C2 /* Space.swift in Sources */,
 				A0102D642B18E25F0054D3D4 /* AssetPicker.swift in Sources */,
-				A0102D952B18EE530054D3D4 /* WebDavWizardViewController.swift in Sources */,
 				A09B53BD23266F02005266C2 /* TableHeader.swift in Sources */,
 				A09B53BF23266F02005266C2 /* TableWithSpacesViewController.swift in Sources */,
 				A09B53C023266F02005266C2 /* TintedImageView.swift in Sources */,
@@ -1977,6 +1978,7 @@
 				A0BBEF8922846F310071EE93 /* LocationMananger.swift in Sources */,
 				A0362195220DB2CA003C21DC /* IaSpace.swift in Sources */,
 				A0E1A67C21EE7A5C00E4F6B7 /* GeneralSettingsViewController.swift in Sources */,
+				A0F4096A2BA463950069549B /* BrowseWebDavViewController.swift in Sources */,
 				A004E24C20EBCF1700A1D5F5 /* Formatters.swift in Sources */,
 				A0FB4DB521F89FD500B46099 /* AssetsByCollectionView.swift in Sources */,
 				A0A192E021F23B61009A8CF0 /* Constants+Swift.swift in Sources */,
