@@ -30,7 +30,7 @@ class StateDispatcher<State, Action>: Dispatcher, Stateful {
     }
     
     func dispatch(_ action: Action) {
-       state = reducer(state, action)
+        state = reducer(state, action)
         
         effects(state, action).store(in: &scope)
     }

@@ -52,7 +52,7 @@ class InternetArchiveLoginViewModel : ObservableObject, Stateful {
         self.scope = scope
         self.useCase = useCase
     }
-
+    
     // updates read-only state, copying structs is effecient in swift
     private func reduce(state: InternetArchiveLoginState, action: Action) -> InternetArchiveLoginState {
         return switch action {
@@ -65,10 +65,12 @@ class InternetArchiveLoginViewModel : ObservableObject, Stateful {
         }
     }
     
-    // updates the binding view state to trigger UI changes
+    // updates the binding view one-way state to trigger UI changes
     private func update(state: InternetArchiveLoginState, action: Action) -> InternetArchiveLoginState {
-        self.state.isLoginError = state.isLoginError
-        self.state.isValid = state.isValid
+        DispatchQueue.main.async {
+            self.state.isLoginError = state.isLoginError
+            self.state.isValid = state.isValid
+        }
         return state
     }
     
