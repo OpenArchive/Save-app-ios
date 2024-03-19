@@ -648,3 +648,7 @@
 
 /* IaInfoAlert */
 "You will need to log in to or create an Internet Archive account in order to send and preserve %@ media at the Internet Archive." = "You will need to log in to or create an Internet Archive account in order to send and preserve %@ media at the Internet Archive.";
+
+"Internet Archive" = "Internet Archive";
+
+"Upload your media to a public server." = "Upload your media to a public server.";

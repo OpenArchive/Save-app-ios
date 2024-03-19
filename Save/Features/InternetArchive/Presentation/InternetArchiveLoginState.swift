@@ -13,18 +13,21 @@ class InternetArchiveLoginState {
     private(set) var password: String = ""
     private(set) var isLoginError: Bool = false
     private(set) var isValid: Bool = false
+    private(set) var isBusy: Bool = false
     
     func copy(
          userName: String? = nil,
          password: String? = nil,
          isLoginError: Bool? = nil,
-         isValid: Bool? = nil
+         isValid: Bool? = nil,
+         isBusy: Bool? = nil
     ) -> InternetArchiveLoginState {
         let copy = self
         copy.userName = userName ?? self.userName
         copy.password = password ?? self.password
         copy.isLoginError = isLoginError ?? self.isLoginError
         copy.isValid = isValid ?? self.isValid
+        copy.isBusy = isBusy ?? self.isBusy
         return copy
     }
 }
@@ -46,6 +49,11 @@ class InternetArchiveLoginViewState: ObservableObject {
             objectWillChange.send()
         }
     }
+    var isBusy: Bool = false {
+        willSet {
+            objectWillChange.send()
+        }
+    }
     
     init(userName: Binding<String>, password: Binding<String>) {
         self.userName = userName
@@ -60,4 +68,5 @@ enum LoginAction {
     case Cancel
     case UpdateEmail(_ value: String)
     case UpdatePassword(_ value: String)
+    case CreateAccount
 }

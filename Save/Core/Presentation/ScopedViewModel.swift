@@ -8,6 +8,6 @@
 
 import Foundation
 
-class ScopedViewModel {
-    var scope = StoreScope()
+protocol ScopedViewModel {
+    var scope: StoreScope { get }
 }

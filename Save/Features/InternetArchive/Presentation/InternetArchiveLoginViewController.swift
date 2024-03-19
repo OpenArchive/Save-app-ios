@@ -50,10 +50,11 @@ class InternetArchiveLoginViewController : UIHostingController<InternetArchiveLo
     private func onLogin() {
         let vc = UIStoryboard.main.instantiate(SpaceSuccessViewController.self)
         vc.spaceName = IaSpace.defaultPrettyName
-        delegate?.next(vc, pos: 2)
+        self.delegate?.next(vc, pos: 2)
+    
     }
     
     private func onCancel() {
-        delegate?.back()
+        self.delegate?.back()
     }
 }
