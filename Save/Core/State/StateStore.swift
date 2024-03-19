@@ -13,7 +13,7 @@ class StateStore<State, Action>: Stateful, Store {
     
     init(scope: StoreScope, initialState: State, reducer:  @escaping Reducer<State, Action>, effects: @escaping Effects<State, Action>) {
         self.dispatcher = StateDispatcher(scope: scope, initialState: initialState, reducer: reducer, effects: effects)
-        self.listener = StoreObserver<Action>(scope: scope)
+        self.listener = StoreObserver<Action>()
     }
     
     lazy var state: State = { self.dispatcher.state }()
@@ -30,7 +30,7 @@ class StateStore<State, Action>: Stateful, Store {
         listener.notify(action)
     }
     
-    func listen(_ onAction: @escaping (Action) -> Void) {
-        listener.listen(onAction)
+    func listen(_ onAction: @escaping (Action) -> Void) -> Scoped {
+        return listener.listen(onAction)
     }
 }

@@ -14,6 +14,8 @@ class InternetArchiveLoginViewController : UIHostingController<InternetArchiveLo
     
     typealias Action = LoginAction
     
+    private var listenScope = StoreScope()
+    
     weak var delegate: WizardDelegate?
     
     private var viewModel: InternetArchiveLoginViewModel = Container.shared.internetArchiveViewModel(StoreScope())
@@ -22,9 +24,8 @@ class InternetArchiveLoginViewController : UIHostingController<InternetArchiveLo
         super.init(coder: coder, rootView: InternetArchiveLoginView(viewModel: viewModel))
     }
     
-    required init(_ delegate: WizardDelegate?) {
+    required init() {
         super.init(rootView: InternetArchiveLoginView(viewModel: viewModel))
-        self.delegate = delegate
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -38,7 +39,7 @@ class InternetArchiveLoginViewController : UIHostingController<InternetArchiveLo
             default:
                 break
             }
-        }
+        }.store(in: &listenScope)
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -51,7 +52,6 @@ class InternetArchiveLoginViewController : UIHostingController<InternetArchiveLo
         let vc = UIStoryboard.main.instantiate(SpaceSuccessViewController.self)
         vc.spaceName = IaSpace.defaultPrettyName
         self.delegate?.next(vc, pos: 2)
-    
     }
     
     private func onCancel() {

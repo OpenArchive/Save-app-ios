@@ -23,6 +23,7 @@ struct InternetArchiveLoginContent: View {
     @EnvironmentObject var state: InternetArchiveLoginViewState
     var store: any Store<InternetArchiveLoginViewModel.Action>
     @State private var isShowPassword = false
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         
@@ -89,20 +90,21 @@ struct InternetArchiveLoginContent: View {
                     Text(LocalizedStringKey("Cancel"))
                 }).padding().frame(maxWidth: .infinity).foregroundColor(.accent)
                 
-                if (state.isBusy) {
-                    ActivityIndicator(style: .medium, animate: .constant(true)).foregroundColor(.accent)
-                } else {
-                    Button(action: {
-                        store.dispatch(.Login)
-                    }, label: {
+                Button(action: {
+                    store.dispatch(.Login)
+                }, label: {
+                    
+                    if (state.isBusy) {
+                        ActivityIndicator(style: .medium, animate: .constant(true))
+                    } else {
                         Text(LocalizedStringKey("Login"))
-                    })
-                    .padding()
-                    .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
-                    .background(Color.accent)
-                    .foregroundColor(.black)
-                    .cornerRadius(12)
-                }
+                    }
+                })
+                .padding()
+                .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
+                .background(Color.accent)
+                .foregroundColor(.black)
+                .cornerRadius(12)
             }.padding()
         }.frame(maxWidth: .infinity, maxHeight: .infinity)
     }

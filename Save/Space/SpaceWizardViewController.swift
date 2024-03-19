@@ -71,9 +71,10 @@ class SpaceWizardViewController: BasePageViewController, WizardDelegate {
         // Hide navigation bar on success scene.
         navigationController?.setNavigationBarHidden(pos > 1, animated: true)
 
-        pageVc.setViewControllers([vc], direction: getDirection(), animated: true)
-
-        pageControl.currentPage = page
+        pageVc.setViewControllers([vc], direction: getDirection(), animated: true) {_ in
+            
+            self.pageControl.currentPage = self.page
+        }
     }
 
     func dismiss(success: Bool) {
