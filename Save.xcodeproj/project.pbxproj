@@ -369,6 +369,8 @@
 		A0AFCF0D22300279005E57FD /* PreviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF0C22300279005E57FD /* PreviewViewController.swift */; };
 		A0AFCF0F22300E41005E57FD /* MultilineTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */; };
 		A0AFCF1022300E41005E57FD /* MultilineTitle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */; };
+		A0B132DC2BAAFF8F00340BA5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A0B132DB2BAAFD4E00340BA5 /* PrivacyInfo.xcprivacy */; };
+		A0B132DD2BAAFF9000340BA5 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A0B132DB2BAAFD4E00340BA5 /* PrivacyInfo.xcprivacy */; };
 		A0B645C422B7AD2E00BBE3FF /* TitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0B645C322B7ABFE00BBE3FF /* TitleCell.xib */; };
 		A0B645C522B7AD2E00BBE3FF /* TitleCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0B645C322B7ABFE00BBE3FF /* TitleCell.xib */; };
 		A0BBEF8922846F310071EE93 /* LocationMananger.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BBEF8822846F310071EE93 /* LocationMananger.swift */; };
@@ -718,6 +720,7 @@
 		A0AC29EC2B10CAC30054D5F4 /* WebDavSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDavSettingsViewController.swift; sourceTree = "<group>"; };
 		A0AFCF0C22300279005E57FD /* PreviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewViewController.swift; sourceTree = "<group>"; };
 		A0AFCF0E22300E41005E57FD /* MultilineTitle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MultilineTitle.swift; sourceTree = "<group>"; };
+		A0B132DB2BAAFD4E00340BA5 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		A0B645C322B7ABFE00BBE3FF /* TitleCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = TitleCell.xib; sourceTree = "<group>"; };
 		A0BA76E52111FA130009801D /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		A0BBEF8822846F310071EE93 /* LocationMananger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationMananger.swift; sourceTree = "<group>"; };
@@ -1027,6 +1030,7 @@
 				A0057A0527D25EEA00A14532 /* cleaninsights-prod.json */,
 				A0FE2C2622E1FE7C00C5443F /* Localizable.strings */,
 				A09CC29027E0B16500D6415D /* Localizable.stringsdict */,
+				A0B132DB2BAAFD4E00340BA5 /* PrivacyInfo.xcprivacy */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -1482,6 +1486,7 @@
 				A0C475B7211488BF0012937E /* Assets.xcassets in Resources */,
 				A0FE2C2422E1FE7C00C5443F /* Localizable.strings in Resources */,
 				A045D1E9224CF24F008FF8C1 /* SpacesListCell.xib in Resources */,
+				A0B132DD2BAAFF9000340BA5 /* PrivacyInfo.xcprivacy in Resources */,
 				A0E321FE228EFDA200F2E9BD /* InfoBox.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1543,6 +1548,7 @@
 				A05471D82296B77D009FEA93 /* Montserrat-Bold.ttf in Resources */,
 				A0E739DF20E4C85E00DB31E1 /* Assets.xcassets in Resources */,
 				A0E739DD20E4C85D00DB31E1 /* Main.storyboard in Resources */,
+				A0B132DC2BAAFF8F00340BA5 /* PrivacyInfo.xcprivacy in Resources */,
 				A045D1F4224CFFAE008FF8C1 /* SelectedSpaceCell.xib in Resources */,
 				A07678F627BE7F0E00609630 /* cleaninsights-dev.json in Resources */,
 				A05471D62296B77D009FEA93 /* Montserrat-Regular.ttf in Resources */,
