@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-class InternetArchiveLoginState {
+struct InternetArchiveLoginState {
     private(set) var userName: String = ""
     private(set) var password: String = ""
     private(set) var isLoginError: Bool = false
@@ -22,7 +22,7 @@ class InternetArchiveLoginState {
          isValid: Bool? = nil,
          isBusy: Bool? = nil
     ) -> InternetArchiveLoginState {
-        let copy = self
+        var copy = self
         copy.userName = userName ?? self.userName
         copy.password = password ?? self.password
         copy.isLoginError = isLoginError ?? self.isLoginError
@@ -30,38 +30,19 @@ class InternetArchiveLoginState {
         copy.isBusy = isBusy ?? self.isBusy
         return copy
     }
-}
-
-// binds state to the swift UI
-class InternetArchiveLoginViewState: ObservableObject {
-    // Two-way bindings
-    var userName: Binding<String>
-    var password: Binding<String>
     
-    // One-way bindings
-    var isValid: Bool = false {
-        willSet {
-            objectWillChange.send()
-        }
-    }
-    var isLoginError: Bool = false {
-        willSet {
-            objectWillChange.send()
-        }
-    }
-    var isBusy: Bool = false {
-        willSet {
-            objectWillChange.send()
-        }
-    }
-    
-    init(userName: Binding<String>, password: Binding<String>) {
-        self.userName = userName
-        self.password = password
+    struct Bindings {
+        // Two-way bindings
+        var userName: Binding<String>
+        var password: Binding<String>
+        let isLoginError: Bool
+        let isBusy: Bool
+        let isValid: Bool
     }
 }
 
-enum LoginAction {
+
+enum InternetArchiveLoginAction {
     case Login
     case LoggedIn
     case LoginError

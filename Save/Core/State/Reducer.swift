@@ -6,11 +6,11 @@
 //  Copyright © 2024 Open Archive. All rights reserved.
 //
 
-typealias Reducer<State, Action> = (State, Action) -> State
+typealias Reducer<State, Action> = (State, Action) -> State?
 
 
 func combine<S, A>(_ first: @escaping Reducer<S, A>, _ second: @escaping Reducer<S, A>) -> Reducer<S, A> {
     return { state, action in
-        second(first(state, action), action)
+        second(first(state, action) ?? state, action)
     }
 }

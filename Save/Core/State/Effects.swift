@@ -8,8 +8,4 @@
 
 import Combine
 
-typealias Effects<State, Action> = (State, Action) -> AnyCancellable
-
-func emptyEffect() -> AnyCancellable {
-    return Empty<Void, Never>().sink { _ in }
-}
+typealias Effects<State, Action> = (State, Action) -> Scoped?

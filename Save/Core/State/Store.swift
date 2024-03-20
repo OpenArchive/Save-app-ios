@@ -7,6 +7,6 @@
 //
 import Combine
 
-protocol Store<Action>: Dispatcher, Notifier, Listener {
+protocol Store<Action>: Dispatcher, Notifier, Listener, ObservableObject {
     func callAsFunction(_ action: Action)
 }

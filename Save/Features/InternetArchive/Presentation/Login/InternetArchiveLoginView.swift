@@ -14,16 +14,19 @@ struct InternetArchiveLoginView: View  {
     @ObservedObject var viewModel: InternetArchiveLoginViewModel
     
     var body: some View {
-        InternetArchiveLoginContent(store: viewModel.store).environmentObject(viewModel.state)
+        InternetArchiveLoginContent(
+            state: viewModel.state(),
+            dispatch: viewModel.store.dispatch
+        )
     }
 }
 
 struct InternetArchiveLoginContent: View {
     
-    @EnvironmentObject var state: InternetArchiveLoginViewState
-    var store: any Store<InternetArchiveLoginViewModel.Action>
+    let state: InternetArchiveLoginState.Bindings
+    let dispatch: Dispatch<InternetArchiveLoginAction>
+    
     @State private var isShowPassword = false
-    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         
@@ -75,7 +78,7 @@ struct InternetArchiveLoginContent: View {
             HStack(alignment: .center) {
                 Text(LocalizedStringKey("No Account?"))
                 Button(action: {
-                    store.dispatch(.CreateAccount)
+                    dispatch(.CreateAccount)
                 }) {
                     Text(LocalizedStringKey("Create Account"))
                 }.foregroundColor(.accent)
@@ -85,21 +88,22 @@ struct InternetArchiveLoginContent: View {
             
             HStack(alignment: .bottom) {
                 Button(action: {
-                    store.notify(.Cancel)
+                    dispatch(.Cancel)
                 }, label: {
                     Text(LocalizedStringKey("Cancel"))
                 }).padding().frame(maxWidth: .infinity).foregroundColor(.accent)
                 
                 Button(action: {
-                    store.dispatch(.Login)
+                    dispatch(.Login)
                 }, label: {
                     
                     if (state.isBusy) {
-                        ActivityIndicator(style: .medium, animate: .constant(true))
+                        ActivityIndicator(style: .medium, animate: .constant(true)).foregroundColor(.black)
                     } else {
                         Text(LocalizedStringKey("Login"))
                     }
                 })
+                .disabled(!state.isValid)
                 .padding()
                 .frame(maxWidth: /*@START_MENU_TOKEN@*/.infinity/*@END_MENU_TOKEN@*/)
                 .background(Color.accent)
@@ -111,9 +115,17 @@ struct InternetArchiveLoginContent: View {
 }
 
 struct InternetArchiveLoginView_Previews: PreviewProvider {
+    static let state = InternetArchiveLoginState()
+    
     static var previews: some View {
-        let viewModel = Container.shared.internetArchiveViewModel(StoreScope())
-        
-        InternetArchiveLoginView(viewModel: viewModel)
+        InternetArchiveLoginContent(
+            state: InternetArchiveLoginState.Bindings(
+                userName: Binding.constant(state.userName),
+                password: Binding.constant(state.password),
+                isLoginError: true,
+                isBusy: false,
+                isValid: true
+            )
+        ) { _ in }
     }
 }

@@ -21,7 +21,8 @@ class InternetArchiveLoginUseCase {
         email: String,
         password: String, 
         completion: @escaping (Result<Void, Error>) -> Void
-    ) -> AnyCancellable {
+    ) -> Scoped? {
+        
         return repository.login(email: email, password: password)
             .sink(receiveCompletion: { result in
                 switch result {
@@ -33,7 +34,11 @@ class InternetArchiveLoginUseCase {
             }, receiveValue: { result in
                 
                 let space = IaSpace(accessKey: result.auth.access, secretKey: result.auth.secret)
-
+                
+                let encoder = JSONEncoder()
+                if let data = try? encoder.encode(result.metaData) {
+                    space.metaData = String(data: data, encoding: .utf8)
+                }
                 SelectedSpace.space = space
 
                 Db.writeConn?.asyncReadWrite() { tx in

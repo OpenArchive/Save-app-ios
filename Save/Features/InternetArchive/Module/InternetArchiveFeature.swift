@@ -33,9 +33,15 @@ extension Container {
         }
     }
     
-    var internetArchiveViewModel: ParameterFactory<StoreScope, InternetArchiveLoginViewModel> {
+    var internetArchiveLoginViewModel: Factory<InternetArchiveLoginViewModel> {
         self {
-            InternetArchiveLoginViewModel(scope: $0, useCase: self.internetArchiveLoginUseCase())
+            InternetArchiveLoginViewModel(useCase: self.internetArchiveLoginUseCase())
+        }
+    }
+    
+    var internetArchiveDetailViewModel: ParameterFactory<Space, InternetArchiveDetailViewModel> {
+        self {
+            InternetArchiveDetailViewModel(space: $0)
         }
     }
 }

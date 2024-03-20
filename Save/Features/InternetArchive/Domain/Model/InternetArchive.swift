@@ -12,7 +12,7 @@ struct InternetArchive {
     let metaData: MetaData
     let auth: Auth
     
-    struct MetaData {
+    struct MetaData : Encodable, Decodable {
         let screenName: String
         let userName: String
         let email: String

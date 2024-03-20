@@ -104,11 +104,12 @@ class SettingsViewController: UIViewController {
     }
 
     @IBAction func server() {
-        let segue: String?
+        var segue: String? = nil
 
         switch SelectedSpace.space {
-        case is IaSpace:
-            segue = Self.iaSettingsSegue
+        case let space as IaSpace:
+            self.navigationController?.pushViewController(InternetArchiveDetailsController(space: space), animated: true)
+            //segue = Self.iaSettingsSegue
 
         case is DropboxSpace:
             segue = Self.dropboxSettingsSegue

@@ -55,7 +55,6 @@ class Space: NSObject {
         return NSLocalizedString("Private Server", comment: "")
     }
 
-
     var name: String?
     var url: URL?
     var favIcon: UIImage?

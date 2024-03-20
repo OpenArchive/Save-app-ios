@@ -497,7 +497,7 @@
 		E4A8E7912BA4B58300DCE99E /* StateStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7902BA4B58300DCE99E /* StateStore.swift */; };
 		E4A8E7932BA4B5AD00DCE99E /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7922BA4B5AD00DCE99E /* Observer.swift */; };
 		E4A8E7952BA4B84700DCE99E /* Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7942BA4B84700DCE99E /* Reducer.swift */; };
-		E4A8E7982BA4BAAF00DCE99E /* ScopedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7972BA4BAAF00DCE99E /* ScopedViewModel.swift */; };
+		E4A8E7982BA4BAAF00DCE99E /* StoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7972BA4BAAF00DCE99E /* StoreViewModel.swift */; };
 		E4A8E79D2BA4C8F000DCE99E /* Scope.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E79C2BA4C8F000DCE99E /* Scope.swift */; };
 		E4A8E7A02BA9157500DCE99E /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E79F2BA9157500DCE99E /* ActivityIndicator.swift */; };
 		E4A8E7A12BA916B000DCE99E /* GdriveConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029AF732B33368700FCCB3A /* GdriveConduit.swift */; };
@@ -529,7 +529,16 @@
 		E4A8E7BB2BA9180600DCE99E /* DataSourceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7662BA2519500DCE99E /* DataSourceError.swift */; };
 		E4A8E7BC2BA9183700DCE99E /* Dictionary+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7682BA2522C00DCE99E /* Dictionary+Utils.swift */; };
 		E4A8E7BD2BA9184700DCE99E /* InternetArchiveFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E77A2BA2627D00DCE99E /* InternetArchiveFeature.swift */; };
-		E4A8E7BE2BA919CE00DCE99E /* ScopedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7972BA4BAAF00DCE99E /* ScopedViewModel.swift */; };
+		E4A8E7BE2BA919CE00DCE99E /* StoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7972BA4BAAF00DCE99E /* StoreViewModel.swift */; };
+		E4A8E7C22BA9FDAA00DCE99E /* InternetArchiveDetailState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7C12BA9FDAA00DCE99E /* InternetArchiveDetailState.swift */; };
+		E4A8E7C32BA9FDAD00DCE99E /* InternetArchiveDetailState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7C12BA9FDAA00DCE99E /* InternetArchiveDetailState.swift */; };
+		E4A8E7C52BA9FDEC00DCE99E /* InternetArchiveDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7C42BA9FDEC00DCE99E /* InternetArchiveDetailViewModel.swift */; };
+		E4A8E7C62BA9FDEC00DCE99E /* InternetArchiveDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7C42BA9FDEC00DCE99E /* InternetArchiveDetailViewModel.swift */; };
+		E4A8E7C82BAA022200DCE99E /* InternetArchiveDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7C72BAA022200DCE99E /* InternetArchiveDetailsController.swift */; };
+		E4A8E7C92BAA022200DCE99E /* InternetArchiveDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7C72BAA022200DCE99E /* InternetArchiveDetailsController.swift */; };
+		E4A8E7CB2BAA029400DCE99E /* InternetArchiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7CA2BAA029400DCE99E /* InternetArchiveDetailView.swift */; };
+		E4A8E7CC2BAA029400DCE99E /* InternetArchiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7CA2BAA029400DCE99E /* InternetArchiveDetailView.swift */; };
+		E4A8E7D12BAA602900DCE99E /* ViewModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7D02BAA602900DCE99E /* ViewModelController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -877,9 +886,14 @@
 		E4A8E7902BA4B58300DCE99E /* StateStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateStore.swift; sourceTree = "<group>"; };
 		E4A8E7922BA4B5AD00DCE99E /* Observer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
 		E4A8E7942BA4B84700DCE99E /* Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reducer.swift; sourceTree = "<group>"; };
-		E4A8E7972BA4BAAF00DCE99E /* ScopedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScopedViewModel.swift; sourceTree = "<group>"; };
+		E4A8E7972BA4BAAF00DCE99E /* StoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreViewModel.swift; sourceTree = "<group>"; };
 		E4A8E79C2BA4C8F000DCE99E /* Scope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scope.swift; sourceTree = "<group>"; };
 		E4A8E79F2BA9157500DCE99E /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
+		E4A8E7C12BA9FDAA00DCE99E /* InternetArchiveDetailState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveDetailState.swift; sourceTree = "<group>"; };
+		E4A8E7C42BA9FDEC00DCE99E /* InternetArchiveDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveDetailViewModel.swift; sourceTree = "<group>"; };
+		E4A8E7C72BAA022200DCE99E /* InternetArchiveDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveDetailsController.swift; sourceTree = "<group>"; };
+		E4A8E7CA2BAA029400DCE99E /* InternetArchiveDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveDetailView.swift; sourceTree = "<group>"; };
+		E4A8E7D02BAA602900DCE99E /* ViewModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1480,10 +1494,8 @@
 		E4A8E7722BA25B9600DCE99E /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
-				E4A8E7732BA25BCA00DCE99E /* InternetArchiveLoginView.swift */,
-				E4A8E7752BA25C0D00DCE99E /* InternetArchiveLoginViewController.swift */,
-				E4A8E7772BA260A800DCE99E /* InternetArchiveLoginViewModel.swift */,
-				E4A8E77F2BA26AEA00DCE99E /* InternetArchiveLoginState.swift */,
+				E4A8E7C02BA9F8B500DCE99E /* Details */,
+				E4A8E7BF2BA9F8A500DCE99E /* Login */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -1525,7 +1537,8 @@
 			isa = PBXGroup;
 			children = (
 				E4A8E79E2BA9156800DCE99E /* Components */,
-				E4A8E7972BA4BAAF00DCE99E /* ScopedViewModel.swift */,
+				E4A8E7972BA4BAAF00DCE99E /* StoreViewModel.swift */,
+				E4A8E7D02BAA602900DCE99E /* ViewModelController.swift */,
 			);
 			path = Presentation;
 			sourceTree = "<group>";
@@ -1536,6 +1549,28 @@
 				E4A8E79F2BA9157500DCE99E /* ActivityIndicator.swift */,
 			);
 			path = Components;
+			sourceTree = "<group>";
+		};
+		E4A8E7BF2BA9F8A500DCE99E /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E7752BA25C0D00DCE99E /* InternetArchiveLoginViewController.swift */,
+				E4A8E7772BA260A800DCE99E /* InternetArchiveLoginViewModel.swift */,
+				E4A8E77F2BA26AEA00DCE99E /* InternetArchiveLoginState.swift */,
+				E4A8E7732BA25BCA00DCE99E /* InternetArchiveLoginView.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		E4A8E7C02BA9F8B500DCE99E /* Details */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E7C72BAA022200DCE99E /* InternetArchiveDetailsController.swift */,
+				E4A8E7C42BA9FDEC00DCE99E /* InternetArchiveDetailViewModel.swift */,
+				E4A8E7C12BA9FDAA00DCE99E /* InternetArchiveDetailState.swift */,
+				E4A8E7CA2BAA029400DCE99E /* InternetArchiveDetailView.swift */,
+			);
+			path = Details;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -2030,6 +2065,7 @@
 				A0102D852B18EC910054D3D4 /* AppAddFolderViewController.swift in Sources */,
 				A09B538223266F02005266C2 /* Constants+Swift.swift in Sources */,
 				A09B538323266F02005266C2 /* ActiveProjectsView.swift in Sources */,
+				E4A8E7CC2BAA029400DCE99E /* InternetArchiveDetailView.swift in Sources */,
 				E4A8E7AB2BA917DE00DCE99E /* InternetArchiveMapper.swift in Sources */,
 				A09B5416232671D1005266C2 /* AppDelegate.swift in Sources */,
 				E4A8E7A92BA917D600DCE99E /* InternetArchiveLoginUseCase.swift in Sources */,
@@ -2040,6 +2076,7 @@
 				A02DB29C29B647390090ECF6 /* URL+Utils.swift in Sources */,
 				A0102D7E2B18EC380054D3D4 /* SideMenuViewController.swift in Sources */,
 				A09B538423266F02005266C2 /* SpacesView.swift in Sources */,
+				E4A8E7C32BA9FDAD00DCE99E /* InternetArchiveDetailState.swift in Sources */,
 				A09B538523266F02005266C2 /* RoundedImageView.swift in Sources */,
 				A0102D9D2B18EED70054D3D4 /* DarkroomViewController.swift in Sources */,
 				A0A6819829D7118C002D9F21 /* TTTLocationFormatter.m in Sources */,
@@ -2079,7 +2116,7 @@
 				A0102D892B18ECCB0054D3D4 /* DropboxConduit.swift in Sources */,
 				A09B538F23266F02005266C2 /* DuplicateFolderAlert.swift in Sources */,
 				A09B539123266F02005266C2 /* Screenshots.swift in Sources */,
-				E4A8E7BE2BA919CE00DCE99E /* ScopedViewModel.swift in Sources */,
+				E4A8E7BE2BA919CE00DCE99E /* StoreViewModel.swift in Sources */,
 				A0102D8B2B18ECDE0054D3D4 /* SpaceSuccessViewController.swift in Sources */,
 				A09B539223266F02005266C2 /* FormViewController.swift in Sources */,
 				A006A6AE282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */,
@@ -2171,6 +2208,7 @@
 				A09B53CD23266F02005266C2 /* AbcFilteredByCollectionView.swift in Sources */,
 				A0102D822B18EC710054D3D4 /* ImageCell.swift in Sources */,
 				A0102D8F2B18EE060054D3D4 /* GeneralSettingsViewController.swift in Sources */,
+				E4A8E7C92BAA022200DCE99E /* InternetArchiveDetailsController.swift in Sources */,
 				A0102D912B18EE180054D3D4 /* EditFolderViewController.swift in Sources */,
 				A0DC0FAE233914BD00C4969A /* MovieIndicator.swift in Sources */,
 				A09B53D223266F02005266C2 /* BaseCell.swift in Sources */,
@@ -2191,6 +2229,7 @@
 				A09B53DB23266F02005266C2 /* Upload.swift in Sources */,
 				A09B53DD23266F02005266C2 /* MultilineTitle.swift in Sources */,
 				A09B53DF23266F02005266C2 /* BaseTableViewController.swift in Sources */,
+				E4A8E7C62BA9FDEC00DCE99E /* InternetArchiveDetailViewModel.swift in Sources */,
 				A0102D9A2B18EEA20054D3D4 /* WebDavConduit.swift in Sources */,
 				A0102DAD2B18FC470054D3D4 /* UIImage+Utils.swift in Sources */,
 				E4A8E7B02BA917FB00DCE99E /* ActivityIndicator.swift in Sources */,
@@ -2242,6 +2281,7 @@
 				A006A6A8282950D00029E49B /* UIBackgroundFetchResult+description.swift in Sources */,
 				A037D6F82B0CAA0300C77706 /* FolderInfoAlert.swift in Sources */,
 				A08C2CE621F0B46C008ACA3E /* FormViewController.swift in Sources */,
+				E4A8E7C22BA9FDAA00DCE99E /* InternetArchiveDetailState.swift in Sources */,
 				A0F7FDE722494E2F006610F0 /* RemoveProjectAlert.swift in Sources */,
 				A094EA4B282AD110006CE059 /* DropboxConduit.swift in Sources */,
 				E4A8E7742BA25BCA00DCE99E /* InternetArchiveLoginView.swift in Sources */,
@@ -2261,8 +2301,9 @@
 				A0D58DCE20E51517005A2F34 /* Asset.swift in Sources */,
 				A0AC29EB2B10C0DD0054D5F4 /* SpaceSettingsViewController.swift in Sources */,
 				E4A8E7952BA4B84700DCE99E /* Reducer.swift in Sources */,
-				E4A8E7982BA4BAAF00DCE99E /* ScopedViewModel.swift in Sources */,
+				E4A8E7982BA4BAAF00DCE99E /* StoreViewModel.swift in Sources */,
 				A0E9069322CB7D16008CD81B /* SelectedView.swift in Sources */,
+				E4A8E7CB2BAA029400DCE99E /* InternetArchiveDetailView.swift in Sources */,
 				A04255CE22944C1B0048E00C /* UIStoryboard+Utils.swift in Sources */,
 				A0DA7627282D0F300039438A /* Date+rfcString.swift in Sources */,
 				A0E321F9228EDBE900F2E9BD /* DarkroomViewController.swift in Sources */,
@@ -2281,6 +2322,7 @@
 				E4A8E76E2BA255E800DCE99E /* InternetArchive.swift in Sources */,
 				A08F2CEE2AFE8784004D7EA7 /* AssetPicker.swift in Sources */,
 				A03236352B0BB8F100D95BC3 /* AppAddFolderViewController.swift in Sources */,
+				E4A8E7C82BAA022200DCE99E /* InternetArchiveDetailsController.swift in Sources */,
 				E4A8E7692BA2522C00DCE99E /* Dictionary+Utils.swift in Sources */,
 				A0E27209224E335400CB7113 /* NewFolderViewController.swift in Sources */,
 				A029AF742B33368700FCCB3A /* GdriveConduit.swift in Sources */,
@@ -2317,6 +2359,7 @@
 				A0AC29ED2B10CAC30054D5F4 /* WebDavSettingsViewController.swift in Sources */,
 				A013A9392B0D12D6003476ED /* TextBox.swift in Sources */,
 				A0AC29E32B10A4CE0054D5F4 /* CGSize+Utils.swift in Sources */,
+				E4A8E7D12BAA602900DCE99E /* ViewModelController.swift in Sources */,
 				A0AC06AC2201D00100BD5FBA /* FolderCell.swift in Sources */,
 				A07E8A40229575B600E9FFAA /* SlideshowViewController.swift in Sources */,
 				A006A6AC282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */,
@@ -2331,6 +2374,7 @@
 				E4A8E79D2BA4C8F000DCE99E /* Scope.swift in Sources */,
 				A0656ABA21F9BFB800070C4B /* MainNavigationController.swift in Sources */,
 				A076790227BE89E900609630 /* UIButton+Utils.swift in Sources */,
+				E4A8E7C52BA9FDEC00DCE99E /* InternetArchiveDetailViewModel.swift in Sources */,
 				E4A8E7A02BA9157500DCE99E /* ActivityIndicator.swift in Sources */,
 				A0DC0FAC233914BD00C4969A /* MovieIndicator.swift in Sources */,
 				A05471DB2296C8FD009FEA93 /* UITableView+separatorView.swift in Sources */,

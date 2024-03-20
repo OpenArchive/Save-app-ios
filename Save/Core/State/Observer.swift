@@ -15,6 +15,6 @@ protocol Notifier<Action> {
 protocol Listener<Action> {
     associatedtype Action
     
-    func listen(_ onAction: @escaping (Action) -> Void) -> Scoped
+    func listen(_ onAction: @escaping (Action) -> Void)
 }
 

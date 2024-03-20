@@ -11,3 +11,5 @@ protocol Dispatcher<Action> {
     
     func dispatch(_ action: Action)
 }
+
+typealias Dispatch<Action> = (Action) -> Void

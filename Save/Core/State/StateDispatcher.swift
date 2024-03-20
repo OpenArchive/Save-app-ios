@@ -8,20 +8,20 @@
 
 import Combine
 
-class StateDispatcher<State, Action>: Dispatcher, Stateful {
+class StateDispatcher<State, Action>: Dispatcher, Stateful, ObservableObject {
     
-    private var reducer: Reducer<State,Action>
-    private let effects: Effects<State, Action>
+    var reducer: Reducer<State,Action>?
+    var effects: Effects<State, Action>?
     
-    private(set) var state: State
+    @Published private(set) var state: State
     
     private var scope: StoreScope
     
     init(
-        scope: StoreScope,
+        scope: StoreScope = StoreScope(),
         initialState: State,
-        reducer: @escaping Reducer<State, Action>,
-        effects: @escaping Effects<State, Action>
+        reducer: Reducer<State, Action>? = nil,
+        effects: Effects<State, Action>? = nil
     ) {
         self.scope = scope
         self.state = initialState
@@ -30,8 +30,13 @@ class StateDispatcher<State, Action>: Dispatcher, Stateful {
     }
     
     func dispatch(_ action: Action) {
-        state = reducer(state, action)
+        if let state = reducer?(self.state, action) {
+            self.objectWillChange.send()
+            self.state = state
+        }
         
-        effects(state, action).store(in: &scope)
+        if let effect = effects?(self.state, action) {
+           effect.store(in: &scope)
+        }
     }
 }

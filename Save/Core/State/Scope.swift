@@ -11,7 +11,6 @@ typealias Scoped = AnyCancellable
 
 typealias StoreScope = Set<Scoped>
 
-
 extension StoreScope {
     func cancel() {
         forEach { scope in scope.cancel() }
