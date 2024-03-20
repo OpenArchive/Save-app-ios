@@ -95,7 +95,7 @@
 "Add a location (optional)" = "Add a location (optional)";
 
 /* No comment provided by engineer. */
-"Add Another Account" = "Add Another Account";
+"Add Folder" = "Add Folder";
 
 /* No comment provided by engineer. */
 "Add media using:" = "Add media using:";
@@ -108,6 +108,9 @@
 
 /* DarkroomHelper */
 "Add People" = "Add People";
+
+/* No comment provided by engineer. */
+"Add Server" = "Add Server";
 
 /* ShareExtension.MainViewController */
 "Adding…" = "Adding…";
@@ -510,6 +513,9 @@
 
 /* PrivateServerViewController */
 "Server URL" = "Server URL";
+
+/* No comment provided by engineer. */
+"Servers" = "Servers";
 
 /* No comment provided by engineer. */
 "Set the same Creative Commons license for ALL folders on this server." = "Set the same Creative Commons license for ALL folders on this server.";
