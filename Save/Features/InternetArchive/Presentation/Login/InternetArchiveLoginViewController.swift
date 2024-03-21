@@ -33,8 +33,8 @@ class InternetArchiveLoginViewController : ViewModelController<InternetArchiveLo
         
         viewModel?.store.listen { [weak self] action in
             switch action {
-            case .LoggedIn:
-                self?.onLogin()
+            case .Next:
+                self?.onNext()
             case .Cancel:
                 self?.onCancel()
             default:
@@ -43,7 +43,7 @@ class InternetArchiveLoginViewController : ViewModelController<InternetArchiveLo
         }
     }
     
-    private func onLogin() {
+    private func onNext() {
         let vc = UIStoryboard.main.instantiate(SpaceSuccessViewController.self)
         vc.spaceName = IaSpace.defaultPrettyName
         self.delegate?.next(vc, pos: 2)

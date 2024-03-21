@@ -22,7 +22,6 @@ class ViewModelController<State, Action, ViewModel: StoreViewModel<State, Action
         super.init(coder: aDecoder)
     }
     
-    
     /**
      Dismisses ourselves, animated.
      Handles being in a `UINavigationController` gracefully.

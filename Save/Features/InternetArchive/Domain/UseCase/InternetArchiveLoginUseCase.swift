@@ -24,6 +24,7 @@ class InternetArchiveLoginUseCase {
     ) -> Scoped? {
         
         return repository.login(email: email, password: password)
+            .receive(on: DispatchQueue.global())
             .sink(receiveCompletion: { result in
                 switch result {
                 case .finished:

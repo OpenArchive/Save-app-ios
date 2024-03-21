@@ -6,7 +6,7 @@
 //  Copyright © 2024 Open Archive. All rights reserved.
 //
 
-class InternetArchiveDetailState : ObservableObject {
+struct InternetArchiveDetailState {
     private(set) var screenName: String = ""
     private(set) var userName: String = ""
     private(set) var email: String = ""
@@ -16,7 +16,7 @@ class InternetArchiveDetailState : ObservableObject {
         userName: String? = nil,
         email: String? = nil
     ) -> InternetArchiveDetailState {
-        let copy = self
+        var copy = self
         copy.screenName = screenName ?? self.screenName
         copy.userName = userName ?? self.userName
         copy.email = email ?? self.email

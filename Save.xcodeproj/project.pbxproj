@@ -539,6 +539,7 @@
 		E4A8E7CB2BAA029400DCE99E /* InternetArchiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7CA2BAA029400DCE99E /* InternetArchiveDetailView.swift */; };
 		E4A8E7CC2BAA029400DCE99E /* InternetArchiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7CA2BAA029400DCE99E /* InternetArchiveDetailView.swift */; };
 		E4A8E7D12BAA602900DCE99E /* ViewModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7D02BAA602900DCE99E /* ViewModelController.swift */; };
+		E4A8E7D32BACB85C00DCE99E /* ViewModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7D02BAA602900DCE99E /* ViewModelController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -2202,6 +2203,7 @@
 				A09B53C723266F02005266C2 /* SpacesListCell.swift in Sources */,
 				A05DF986282C0F6E003FADA2 /* AEXMLError.swift in Sources */,
 				A09B53C923266F02005266C2 /* UITableView+separatorView.swift in Sources */,
+				E4A8E7D32BACB85C00DCE99E /* ViewModelController.swift in Sources */,
 				A09B53CB23266F02005266C2 /* Error+friendlyMessage.swift in Sources */,
 				E4A8E7AE2BA917F200DCE99E /* InternetArchiveRepository.swift in Sources */,
 				E4A8E7AF2BA917F200DCE99E /* InternetArchiveRemoteSource.swift in Sources */,

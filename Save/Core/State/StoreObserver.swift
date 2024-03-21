@@ -22,12 +22,6 @@ class StoreObserver<Action> : Notifier, Listener {
     }
     
     func listen(_ onAction: @escaping (Action) -> Void) {
-        actions.receive(on: DispatchQueue.main).sink(receiveValue: { action in 
-            DispatchQueue.global().async {
-                DispatchQueue.main.async {
-                    onAction(action)
-                }
-            }
-        }).store(in: &scope)
+        actions.receive(on: DispatchQueue.main).sink(receiveValue: onAction).store(in: &scope)
     }
 }

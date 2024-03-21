@@ -24,7 +24,7 @@ class StoreViewModel<State, Action> : ObservableObject {
         
         self.store = StateStore(initialState: initialState, reducer: reducer, effects: effects)
         
-        self.scope.insert(self.store.objectWillChange.sink { [weak self] _ in
+        self.scope.insert(self.store.objectWillChange.receive(on: DispatchQueue.main).sink { [weak self] _ in
             self?.objectWillChange.send()
         })
     }

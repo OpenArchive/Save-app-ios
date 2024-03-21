@@ -25,15 +25,15 @@ struct InternetArchiveDetailContent: View {
     
     var body: some View {
         VStack(alignment: .leading) {
-            Text(LocalizedStringKey("Username")).font(.caption)
+            Text(LocalizedStringKey("Username")).font(.caption).padding(.horizontal).padding(.top)
             Text(state.userName).font(.body)
                 .padding()
             
-            Text(LocalizedStringKey("Screen Name")).font(.caption)
+            Text(LocalizedStringKey("Screen Name")).font(.caption).padding(.horizontal)
             Text(state.screenName).font(.body)
                 .padding()
             
-            Text(LocalizedStringKey("Email")).font(.caption)
+            Text(LocalizedStringKey("Email")).font(.caption).padding(.horizontal)
             Text(state.email).font(.body)
                 .padding()
             
@@ -68,7 +68,11 @@ struct InternetArchiveDetailContent: View {
 }
 
 struct InternetArchiveDetailView_Previews: PreviewProvider {
-    static let state = InternetArchiveDetailState()
+    static let state = InternetArchiveDetailState(
+        screenName: "ABC User", 
+        userName: "@abc_user1",
+        email: "abc@example.com"
+    )
     
     static var previews: some View {
         InternetArchiveDetailContent(state: state) { _ in }

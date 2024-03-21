@@ -47,18 +47,19 @@ class SpaceWizardViewController: BasePageViewController, WizardDelegate {
         page = 0
 
         let vc = viewControllers[page]
+        
         (vc as? WizardDelegatable)?.delegate = self
 
-        pageVc.setViewControllers([vc], direction: getDirection(forward: false), animated: true)
-
-        pageControl.currentPage = page
+        pageVc.setViewControllers([vc], direction: getDirection(forward: false), animated: true) { _ in
+            self.pageControl.currentPage = self.page
+        }
     }
 
     func next(_ vc: UIViewController, pos: Int) {
         (vc as? WizardDelegatable)?.delegate = self
-
+        
         assert(pos <= viewControllers.count, "\(String(describing: type(of: self)))#next: pos cannot be bigger than \(viewControllers.count)")
-
+        
         if pos < viewControllers.count {
             viewControllers[pos] = vc
             page = pos
@@ -67,13 +68,13 @@ class SpaceWizardViewController: BasePageViewController, WizardDelegate {
             viewControllers.append(vc)
             page = pos
         }
-
-        // Hide navigation bar on success scene.
-        navigationController?.setNavigationBarHidden(pos > 1, animated: true)
-
-        pageVc.setViewControllers([vc], direction: getDirection(), animated: true)
         
-        self.pageControl.currentPage = self.page
+        // Hide navigation bar on success scene.
+        self.navigationController?.setNavigationBarHidden(pos > 1, animated: true)
+        
+        self.pageVc.setViewControllers([vc], direction: self.getDirection(), animated: true) { _ in
+            self.pageControl.currentPage = self.page
+        }
     }
 
     func dismiss(success: Bool) {
@@ -90,7 +91,7 @@ class SpaceWizardViewController: BasePageViewController, WizardDelegate {
     override func pageViewController(_ pageViewController: UIPageViewController, 
                             viewControllerBefore viewController: UIViewController) -> UIViewController?
     {
-        if let i = viewControllers.firstIndex(of: viewController), i > 0 && i < 2 /* Do not allow paging back from success scene */ {
+        if let i = viewControllers.firstIndex(of: viewController), i > 0  && i < 2 /*Do not allow paging back from success scene */ {
             return viewControllers[i - 1]
         }
 

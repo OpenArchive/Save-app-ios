@@ -46,6 +46,7 @@ enum InternetArchiveLoginAction {
     case Login
     case LoggedIn
     case LoginError
+    case Next
     case Cancel
     case UpdateEmail(_ value: String)
     case UpdatePassword(_ value: String)

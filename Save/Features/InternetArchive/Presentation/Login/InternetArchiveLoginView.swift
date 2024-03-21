@@ -27,14 +27,20 @@ struct InternetArchiveLoginContent: View {
     let dispatch: Dispatch<InternetArchiveLoginAction>
     
     @State private var isShowPassword = false
+    @Environment(\.colorScheme) var colorScheme
     
     var body: some View {
         
         VStack(alignment: .center) {
             HStack {
+                Circle().fill(colorScheme == .dark ? Color.white : Color.pillBackground)
+                    .frame(width: 80, height: 80)
+                    .overlay(
                 Image("InternetArchiveLogo")
                     .resizable()
+                    .aspectRatio(contentMode: .fit)
                     .frame(width: 48, height: 48)
+                    ).padding(.trailing, 6)
                 VStack(alignment: .leading) {
                     Text(LocalizedStringKey("Internet Archive")).font(.headline)
                     Text(LocalizedStringKey("Upload your media to a public server.")).font(.subheadline)
@@ -115,16 +121,22 @@ struct InternetArchiveLoginContent: View {
 }
 
 struct InternetArchiveLoginView_Previews: PreviewProvider {
-    static let state = InternetArchiveLoginState()
+    static let state = InternetArchiveLoginState(
+        userName: "abcuser",
+        password: "abc",
+        isLoginError: true,
+        isValid: true,
+        isBusy: false
+    )
     
     static var previews: some View {
         InternetArchiveLoginContent(
             state: InternetArchiveLoginState.Bindings(
                 userName: Binding.constant(state.userName),
                 password: Binding.constant(state.password),
-                isLoginError: true,
-                isBusy: false,
-                isValid: true
+                isLoginError: state.isLoginError,
+                isBusy: state.isBusy,
+                isValid: state.isValid
             )
         ) { _ in }
     }
