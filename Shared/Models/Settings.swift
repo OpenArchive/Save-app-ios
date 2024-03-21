@@ -51,9 +51,20 @@ class Settings {
         }
     }
 
+    /**
+     We're not officially supporting Orbot anymore, since our users are confused by
+     that.
+
+     Hence this will always return `false`.
+     However, we cannot ignore Orbot completely, since, if somebody has Orbot installed and
+     running, we would run Tor-over-Tor which is not working mostly.
+
+     So we keep this stuff around for now and for the case, that it might turn out, that our users aren't as
+     confused as we thought, after all and want this feature back.
+     */
     class var useOrbot: Bool {
         get {
-            defaults?.bool(forKey: kUseTor) ?? false
+            false //defaults?.bool(forKey: kUseTor) ?? false
         }
         set {
             defaults?.set(newValue, forKey: kUseTor)

@@ -71,68 +71,9 @@ class GeneralSettingsViewController: FormViewController, BridgesConfDelegate {
 
         +++ Section(NSLocalizedString("Security", comment: ""))
 
-        <<< SwitchRow("use_orbot") {
-            $0.title = String(format: NSLocalizedString(
-                "Transfer via %@ only", comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName)
-            $0.value = Settings.useOrbot
-            $0.disabled = .function(["use_tor"], { form in
-                (form.rowBy(tag: "use_tor") as? SwitchRow)?.value ?? false
-            })
-
-            $0.cellStyle = .subtitle
-
-            $0.cell.switchControl.onTintColor = .accent
-            $0.cell.textLabel?.numberOfLines = 0
-            $0.cell.detailTextLabel?.numberOfLines = 0
-        }
-        .cellUpdate({ cell, row in
-            cell.detailTextLabel?.text = String(format: NSLocalizedString(
-                "%@ routes all traffic through the Tor network",
-                comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName)
-        })
-        .onChange { row in
-            let newValue = row.value ?? false
-
-            guard newValue != Settings.useOrbot else {
-                return
-            }
-
-            if newValue {
-                if !OrbotManager.shared.installed {
-                    row.value = false
-                    row.updateCell()
-
-                    OrbotManager.shared.alertOrbotNotInstalled()
-                }
-                else if Settings.orbotApiToken.isEmpty {
-                    row.value = false
-                    row.updateCell()
-
-                    OrbotManager.shared.alertToken {
-                        row.value = true
-                        row.updateCell()
-
-                        Settings.useOrbot = true
-                        OrbotManager.shared.start()
-                    }
-                }
-                else {
-                    Settings.useOrbot = true
-                    OrbotManager.shared.start()
-                }
-            }
-            else {
-                Settings.useOrbot = false
-                OrbotManager.shared.stop()
-            }
-        }
-
-        <<< SwitchRow("use_tor") {
-            $0.title = String(format: NSLocalizedString("Transfer via built-in %@ only", comment: ""), TorManager.torName)
+        <<< SwitchRow() {
+            $0.title = String(format: NSLocalizedString("Transfer via %@ only", comment: ""), TorManager.torName)
             $0.value = Settings.useTor
-            $0.disabled = .function(["use_orbot"], { form in
-                (form.rowBy(tag: "use_orbot") as? SwitchRow)?.value ?? false
-            })
 
             $0.cellStyle = .subtitle
 
@@ -143,9 +84,9 @@ class GeneralSettingsViewController: FormViewController, BridgesConfDelegate {
         .cellUpdate({ cell, row in
             cell.detailTextLabel?.text = String(
                 format: NSLocalizedString(
-                    "%1$@ starts its own %2$@ and uses that for transfer. Don't mix with %3$@!",
-                    comment: "Placeholder 1 is 'Save', placeholder 2 is 'Tor', placeholder 3 is 'Orbot'"),
-                Bundle.main.displayName, TorManager.torName, OrbotKit.orbotName)
+                    "Enable %1$@ to protect your media in transit.",
+                    comment: "Placeholder 1 is 'Tor'"),
+                TorManager.torName)
         })
         .onChange({ [weak self] row in
             let newValue = row.value ?? false
@@ -155,14 +96,34 @@ class GeneralSettingsViewController: FormViewController, BridgesConfDelegate {
             }
 
             if newValue {
-                Settings.useTor = true
-
-                if !TorManager.shared.connected {
-                    // Trigger display of `TorStartViewController` to start Tor.
-                    if let navC = self?.navigationController as? MainNavigationController {
-                        navC.setRoot()
-                    }
+                guard let self = self else {
+                    return
                 }
+
+                AlertHelper.present(
+                    self,
+                    message: String(
+                        format: NSLocalizedString(
+                            "Please disable or uninstall any other %1$@ apps or services.",
+                            comment: "Placeholder 1 is 'Tor'"),
+                        TorManager.torName) + "\n\n",
+                    title: nil,
+                    actions: [
+                        AlertHelper.defaultAction(handler: { _ in
+                            Settings.useTor = true
+
+                            if !TorManager.shared.connected {
+                                // Trigger display of `TorStartViewController` to start Tor.
+                                if let navC = self.navigationController as? MainNavigationController {
+                                    navC.setRoot()
+                                }
+                            }
+                        }),
+                        AlertHelper.cancelAction(handler: { _ in
+                            row.value = Settings.useTor
+                            row.updateCell()
+                        })
+                    ])
             }
             else {
                 Settings.useTor = false
@@ -172,9 +133,6 @@ class GeneralSettingsViewController: FormViewController, BridgesConfDelegate {
 
         <<< ButtonRow() {
             $0.title = NSLocalizedString("Bridge Configuration", bundle: .iPtProxyUI, comment: "#bc-ignore!")
-            $0.disabled = .function(["use_orbot"], { form in
-                (form.rowBy(tag: "use_orbot") as? SwitchRow)?.value ?? false
-            })
         }
         .onCellSelection({ [weak self] _, row in
             guard !row.isDisabled else {

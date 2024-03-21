@@ -34,5 +34,4 @@ class FolderInfoAlert: InfoAlert {
             Settings.firstFolderDone = newValue
         }
     }
-
 }

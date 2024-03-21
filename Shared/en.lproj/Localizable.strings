@@ -7,12 +7,6 @@
 /* First placeholder is app name */
 "%1$@ only connects to WebDAV-compatible servers, e.g. Nextcloud and ownCloud." = "%1$@ only connects to WebDAV-compatible servers, e.g. Nextcloud and ownCloud.";
 
-/* Placeholder 1 is 'Orbot', placeholder 2 is 'Tor' */
-"%1$@ or built-in %2$@" = "%1$@ or built-in %2$@";
-
-/* Placeholder 1 is 'Save', placeholder 2 is 'Tor', placeholder 3 is 'Orbot' */
-"%1$@ starts its own %2$@ and uses that for transfer. Don't mix with %3$@!" = "%1$@ starts its own %2$@ and uses that for transfer. Don't mix with %3$@!";
-
 /* Placeholder 1 is 'Google', placeholder 2 is 'Google Drive', placeholder 3 is 'Save' */
 "%1$@'s APIs allow you to send media to your %2$@ via %3$@. %3$@, however, cannot see or access anything on your %2$@, which you didn't create with %3$@ in the first place." = "%1$@'s APIs allow you to send media to your %2$@ via %3$@. %3$@, however, cannot see or access anything on your %2$@, which you didn't create with %3$@ in the first place.";
 
@@ -51,9 +45,6 @@
 
 /* ConsentViewController */
 "%@ Number of retries" = "%@ Number of retries";
-
-/* Placeholder is 'Orbot' */
-"%@ routes all traffic through the Tor network" = "%@ routes all traffic through the Tor network";
 
 /* ConsentViewController */
 "%@ Size and type of media" = "%@ Size and type of media";
@@ -154,8 +145,8 @@
 /* No comment provided by engineer. */
 "Authenticate your media with a SHA-256 cryptographic verification hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload." = "Authenticate your media with a SHA-256 cryptographic verification hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload.";
 
-/* Placeholder 1 is 'Orbot', placeholder 2 is 'Tor' */
-"Automatically upload over TLS (Transport Layer Security) and use %1$@ or a built-in %2$@ to protect your media in transit." = "Automatically upload over TLS (Transport Layer Security) and use %1$@ or a built-in %2$@ to protect your media in transit.";
+/* Placeholder 1 is 'Tor' */
+"Automatically upload over TLS (Transport Layer Security) and enable %1$@ (The Onion Router) in-app to protect your media in transit." = "Automatically upload over TLS (Transport Layer Security) and enable %1$@ (The Onion Router) in-app to protect your media in transit.";
 
 /* ManagementViewController */
 "Back" = "Back";
@@ -229,11 +220,11 @@
 /* No comment provided by engineer. */
 "Edit Multiple" = "Edit Multiple";
 
-/* Placeholder 1 is 'Orbot', placeholder 2 is 'Tor' */
-"Enable \"Transfer via %1$@ or built-in %2$@ only\"" = "Enable \"Transfer via %1$@ or built-in %2$@ only\"";
+/* Placeholder 1 is 'Tor' */
+"Enable %1$@ to protect your media in transit." = "Enable %1$@ to protect your media in transit.";
 
 /* Placeholder is 'Tor' */
-"Enable \"Transfer via built-in %@ only\"" = "Enable \"Transfer via built-in %@ only\"";
+"Enable \"Transfer via %@ only\"" = "Enable \"Transfer via %@ only\"";
 
 /* MiscSettingsViewController */
 "Enable ProofMode" = "Enable ProofMode";
@@ -402,6 +393,9 @@
 
 /* No comment provided by engineer. */
 "Please choose another name/folder or use the existing one instead." = "Please choose another name/folder or use the existing one instead.";
+
+/* Placeholder 1 is 'Tor' */
+"Please disable or uninstall any other %1$@ apps or services." = "Please disable or uninstall any other %1$@ apps or services.";
 
 /* MainViewController */
 "Please go to the Settings app to grant this app access to your camera, if you want to upload photos or videos." = "Please go to the Settings app to grant this app access to your camera, if you want to upload photos or videos.";
@@ -583,11 +577,8 @@
 /* No comment provided by engineer. */
 "To get started, please add a folder" = "To get started, please add a folder";
 
-/* Placeholder is 'Orbot' */
-"Transfer via %@ only" = "Transfer via %@ only";
-
 /* No comment provided by engineer. */
-"Transfer via built-in %@ only" = "Transfer via built-in %@ only";
+"Transfer via %@ only" = "Transfer via %@ only";
 
 /* No comment provided by engineer. */
 "Unarchive Folder" = "Unarchive Folder";
@@ -621,12 +612,6 @@
 
 /* Placeholder is 'Orbot' */
 "Uploads are blocked until you start %1$@ or allow uploads without %1$@ again." = "Uploads are blocked until you start %1$@ or allow uploads without %1$@ again.";
-
-/* Placeholder 1 is 'Orbot', placeholder 2 is 'Tor' */
-"Use %1$@ or the built-in %2$@?" = "Use %1$@ or the built-in %2$@?";
-
-/* Placeholder is 'Orbot' */
-"Use %@" = "Use %@";
 
 /* No comment provided by engineer. */
 "Use Upload Chunking (Nextcloud Only)" = "Use Upload Chunking (Nextcloud Only)";

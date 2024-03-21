@@ -16,6 +16,16 @@ extension Notification.Name {
     static let orbotStopped = Notification.Name("\(Bundle.main.bundleIdentifier!).orbotStopped")
 }
 
+/**
+ We're not officially supporting Orbot anymore, since our users are confused by
+ that.
+
+ However, we cannot ignore Orbot completely, since, if somebody has Orbot installed and
+ running, we would run Tor-over-Tor which is not working mostly.
+
+ So we keep this stuff around for now and for the case, that it might turn out, that our users aren't as
+ confused as we thought, after all and want this feature back.
+ */
 class OrbotManager: OrbotStatusChangeListener {
 
     static let shared = OrbotManager()
