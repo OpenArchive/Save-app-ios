@@ -169,6 +169,8 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 
+        TorManager.shared.stop()
+
         cleanCache()
     }
 
