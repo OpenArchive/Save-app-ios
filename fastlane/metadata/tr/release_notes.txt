@@ -1,2 +1,4 @@
-- Karanlık moddayken Google Drive sorumluluk reddi metin rengi düzeltildi.
-- Dropbox hata mesajları iyileştirildi.
+- Orbot desteği yerleşik bir Tor ile değiştirildi.
+- Yeni oluşturulan varlıklarda ProofMode'da konum ve baz istasyonu verilerinin kullanımı eklendi.
+- Sunucu seçim menüsü geliştirildi.
+- Küçük kullanıcı arayüzü değişiklikleri.

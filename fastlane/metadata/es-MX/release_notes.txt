@@ -1,2 +1,4 @@
-- Corregido el color del texto de renuncia de Google Drive en modo oscuro.
-- Mejorados los mensajes de error de Dropbox.
+- Reemplazado el soporte de Orbot con un Tor incorporado.
+- Añadido el uso de datos de localización y torres de telefonía en ProofMode en activos recién creados.
+- Menú de selección de servidor mejorado.
+- Cambios menores en la interfaz de usuario.
