@@ -8,6 +8,7 @@
 
 import UIKit
 import OrbotKit
+import TorManager
 
 class SlideshowViewController: BasePageViewController, SlideViewControllerDelegate
 {
@@ -52,30 +53,17 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
             text: { _ in
                 String(
                     format: NSLocalizedString(
-                        "Automatically upload over TLS (Transport Layer Security) and use %@ to protect your media in transit.",
-                        comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName)
+                        "Automatically upload over TLS (Transport Layer Security) and enable %1$@ (The Onion Router) in-app to protect your media in transit.",
+                        comment: "Placeholder 1 is 'Tor'"), TorManager.torName)
             },
             text2: { view in
-                let linkText: String
-                let text: String
+                let linkText = String(format: NSLocalizedString(
+                    "Enable \"Transfer via %@ only\"",
+                    comment: "Placeholder is 'Tor'"), TorManager.torName)
 
-                if OrbotKit.shared.installed {
-                    linkText = String(format: NSLocalizedString(
-                        "Enable \"Transfer via %@ only\"",
-                        comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName)
-
-                    text = NSLocalizedString(
-                        "%@ for advanced network security.",
-                        comment: "Placeholder is your translation of 'Enable \"Transfer via Orbot only\"'")
-                }
-                else {
-                    linkText = String(format: NSLocalizedString("Install %@", comment: "Placeholder is 'Orbot'"), 
-                                      OrbotKit.orbotName)
-
-                    text = NSLocalizedString(
-                        "%@ to enable advanced network security.",
-                        comment: "Placeholder is your translation of 'Enable Orbot'")
-                }
+                let text = NSLocalizedString(
+                    "%@ for advanced network security.",
+                    comment: "Placeholder is your translation of 'Enable \"Transfer via Orbot or built-in Tor only\"'")
 
                 return String(format: text, linkText)
                     .attributed
@@ -159,17 +147,9 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
             return
         }
 
-        if !OrbotKit.shared.installed {
-            UIApplication.shared.open(OrbotManager.appStoreLink)
-        }
-        else {
-            OrbotManager.shared.alertToken { [weak self] in
-                Settings.useOrbot = true
-                OrbotManager.shared.start()
+        Settings.useTor = true
 
-                self?.skip()
-            }
-        }
+        skip()
     }
 
 

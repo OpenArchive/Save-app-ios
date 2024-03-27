@@ -28,16 +28,14 @@ class SideMenuItemCell: UITableViewCell {
         iconLeadingConstraint.constant = 8
 
         icon.image = space?.favIcon ?? SelectedSpace.defaultFavIcon
-        icon.tintColor = .label
+        icon.tintColor = select ? .accent : .label
 
         nameLb.text = space?.prettyName ?? Bundle.main.displayName
-        nameLb.textColor = .label
-
-        contentView.backgroundColor = select ? .accent : .secondarySystemBackground
+        nameLb.textColor = select ? .accent : .label
     }
 
     func apply(_ project: Project?, select: Bool) {
-        iconLeadingConstraint.constant = 8
+        iconLeadingConstraint.constant = 24
 
         icon.image = UIImage(systemName: select ? "folder.fill" : "folder")?.withRenderingMode(.alwaysTemplate)
         icon.tintColor = select ? .accent : .label
@@ -49,12 +47,12 @@ class SideMenuItemCell: UITableViewCell {
     }
 
     func applyAdd() {
-        iconLeadingConstraint.constant = 24
+        iconLeadingConstraint.constant = 8
 
         icon.image = UIImage(systemName: "plus")?.withRenderingMode(.alwaysTemplate)
         icon.tintColor = .label
 
-        nameLb.text = NSLocalizedString("Add Another Account", comment: "")
+        nameLb.text = NSLocalizedString("Add Server", comment: "")
         nameLb.textColor = .label
 
         contentView.backgroundColor = .secondarySystemBackground

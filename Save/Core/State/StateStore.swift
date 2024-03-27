@@ -17,9 +17,12 @@ class StateStore<State, Action>: Store {
         self.dispatcher = StateDispatcher(initialState: initialState, reducer: reducer, effects: effects)
         self.listener = StoreObserver<Action>()
         
-        self.scope.insert(self.dispatcher.objectWillChange.receive(on: DispatchQueue.main).sink { [weak self] _ in
-            self?.objectWillChange.send()
-        })
+        self.dispatcher.objectWillChange
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.objectWillChange.send()
+            }
+            .store(in: &self.scope)
     }
     
     func dispatch(_ action: Action) {

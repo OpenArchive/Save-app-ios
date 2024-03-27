@@ -10,8 +10,10 @@ import UIKit
 import Eureka
 import CleanInsightsSDK
 import OrbotKit
+import IPtProxyUI
+import TorManager
 
-class GeneralSettingsViewController: FormViewController {
+class GeneralSettingsViewController: FormViewController, BridgesConfDelegate {
 
     private static let compressionOptions = [
         NSLocalizedString("Better Quality", comment: ""),
@@ -70,9 +72,8 @@ class GeneralSettingsViewController: FormViewController {
         +++ Section(NSLocalizedString("Security", comment: ""))
 
         <<< SwitchRow() {
-            $0.title = String(format: NSLocalizedString(
-                "Transfer via %@ only", comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName)
-            $0.value = Settings.useOrbot
+            $0.title = String(format: NSLocalizedString("Transfer via %@ only", comment: ""), TorManager.torName)
+            $0.value = Settings.useTor
 
             $0.cellStyle = .subtitle
 
@@ -81,44 +82,71 @@ class GeneralSettingsViewController: FormViewController {
             $0.cell.detailTextLabel?.numberOfLines = 0
         }
         .cellUpdate({ cell, row in
-            cell.detailTextLabel?.text = String(format: NSLocalizedString(
-                "%@ routes all traffic through the Tor network",
-                comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName)
+            cell.detailTextLabel?.text = String(
+                format: NSLocalizedString(
+                    "Enable %1$@ to protect your media in transit.",
+                    comment: "Placeholder 1 is 'Tor'"),
+                TorManager.torName)
         })
-        .onChange { row in
+        .onChange({ [weak self] row in
             let newValue = row.value ?? false
 
-            if newValue != Settings.useOrbot {
-                if newValue {
-                    if !OrbotManager.shared.installed {
-                        row.value = false
-                        row.updateCell()
-
-                        OrbotManager.shared.alertOrbotNotInstalled()
-                    }
-                    else if Settings.orbotApiToken.isEmpty {
-                        row.value = false
-                        row.updateCell()
-
-                        OrbotManager.shared.alertToken {
-                            row.value = true
-                            row.updateCell()
-
-                            Settings.useOrbot = true
-                            OrbotManager.shared.start()
-                        }
-                    }
-                    else {
-                        Settings.useOrbot = true
-                        OrbotManager.shared.start()
-                    }
-                }
-                else {
-                    Settings.useOrbot = false
-                    OrbotManager.shared.stop()
-                }
+            guard newValue != Settings.useTor else {
+                return
             }
+
+            if newValue {
+                guard let self = self else {
+                    return
+                }
+
+                AlertHelper.present(
+                    self,
+                    message: String(
+                        format: NSLocalizedString(
+                            "Please disable or uninstall any other %1$@ apps or services.",
+                            comment: "Placeholder 1 is 'Tor'"),
+                        TorManager.torName) + "\n\n",
+                    title: nil,
+                    actions: [
+                        AlertHelper.defaultAction(handler: { _ in
+                            Settings.useTor = true
+
+                            if !TorManager.shared.connected {
+                                // Trigger display of `TorStartViewController` to start Tor.
+                                if let navC = self.navigationController as? MainNavigationController {
+                                    navC.setRoot()
+                                }
+                            }
+                        }),
+                        AlertHelper.cancelAction(handler: { _ in
+                            row.value = Settings.useTor
+                            row.updateCell()
+                        })
+                    ])
+            }
+            else {
+                Settings.useTor = false
+                TorManager.shared.stop()
+            }
+        })
+
+        <<< ButtonRow() {
+            $0.title = NSLocalizedString("Bridge Configuration", bundle: .iPtProxyUI, comment: "#bc-ignore!")
         }
+        .onCellSelection({ [weak self] _, row in
+            guard !row.isDisabled else {
+                return
+            }
+
+            let vc = BridgesConfViewController()
+            vc.delegate = self
+            let navC = UINavigationController(rootViewController: vc)
+
+            self?.present(navC, animated: true)
+        })
+
+        +++ Section()
 
         if SecureEnclave.deviceSecured() {
             form.last!
@@ -267,5 +295,32 @@ class GeneralSettingsViewController: FormViewController {
         }
 
         form.delegate = self
+    }
+
+
+    // MARK: BridgesConfDelegate
+
+    var transport: IPtProxyUI.Transport {
+        get {
+            IPtProxyUI.Settings.transport
+        }
+        set {
+            IPtProxyUI.Settings.transport = newValue
+        }
+    }
+
+    var customBridges: [String]? {
+        get {
+            IPtProxyUI.Settings.customBridges
+        }
+        set {
+            IPtProxyUI.Settings.customBridges = newValue
+        }
+    }
+
+    func save() {
+        DispatchQueue.global(qos: .userInitiated).async {
+            TorManager.shared.reconfigureBridges()
+        }
     }
 }

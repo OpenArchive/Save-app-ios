@@ -25,22 +25,6 @@ class WebDavSpace: Space, Item {
     }
 
 
-    // MARK: Space
-
-    override var username: String? {
-        didSet {
-            // If the username changes, the session needs to be recreated!
-            _session = nil
-        }
-    }
-
-    override var password: String? {
-        didSet {
-            // If the password changes, the session needs to be recreated!
-            _session = nil
-        }
-    }
-
     var credential: URLCredential? {
         if let username = username,
            let password = password
@@ -50,26 +34,6 @@ class WebDavSpace: Space, Item {
 
         return nil
     }
-
-    /**
-     Creates an ephemeral foreground session without caching and which already contains BASIC auth credentials.
-
-     Don't use this for uploads. This is only useful for foreground UI interaction!
-     */
-    var session: URLSession {
-        if _session == nil {
-            let conf = URLSessionConfiguration.ephemeral
-
-            if let basicAuth = credential?.basicAuth {
-                conf.httpAdditionalHeaders = ["Authorization": basicAuth]
-            }
-
-            _session = URLSession.withImprovedConf(configuration: conf)
-        }
-
-        return _session!
-    }
-    private var _session: URLSession?
 
 
     override init(name: String? = nil, url: URL? = nil, favIcon: UIImage? = nil,

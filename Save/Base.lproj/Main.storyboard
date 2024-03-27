@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3f6-u4-WuB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="32700.99.1234" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3f6-u4-WuB">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22684"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -143,7 +143,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mX4-L9-fca">
-                                <rect key="frame" x="16" y="352" width="216" height="99.5"/>
+                                <rect key="frame" x="16" y="352" width="216" height="124.5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="hvg-50-O1E"/>
                                 </constraints>
@@ -152,7 +152,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="250" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LOG-Gh-tpR">
-                                <rect key="frame" x="16" y="459.5" width="216" height="108.5"/>
+                                <rect key="frame" x="16" y="484.5" width="216" height="83.5"/>
                                 <string key="text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam</string>
                                 <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="17"/>
                                 <nil key="highlightedColor"/>
@@ -599,7 +599,7 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VpT-Ct-gHj">
-                                        <rect key="frame" x="229" y="15.5" width="71" height="43"/>
+                                        <rect key="frame" x="229" y="17.5" width="71" height="39.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title="Settings" image="gearshape">
@@ -1374,6 +1374,89 @@
                 </pongPressGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1598" y="114"/>
+        </scene>
+        <!--Tor Start View Controller-->
+        <scene sceneID="tMK-wJ-TWZ">
+            <objects>
+                <viewController storyboardIdentifier="TorStartViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="MB8-vt-knj" customClass="TorStartViewController" customModule="Save" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="7Gs-5W-iIL">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Starting Tor…" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1Os-Wb-YF6">
+                                <rect key="frame" x="16" y="36" width="288" height="33.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="NZK-mq-Tb5">
+                                <rect key="frame" x="16" y="101.5" width="288" height="4"/>
+                            </progressView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Error" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZPF-4R-JEn">
+                                <rect key="frame" x="16" y="145.5" width="288" height="20.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <color key="textColor" name="Warning"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7pO-Ak-ucT">
+                                <rect key="frame" x="127.5" y="174" width="65" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="gray" title="Retry"/>
+                                <connections>
+                                    <action selector="retry" destination="MB8-vt-knj" eventType="touchUpInside" id="dO9-UL-fXW"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iEw-VZ-MdO">
+                                <rect key="frame" x="69.5" y="266.5" width="181.5" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="filled" title="Bridge Configuration"/>
+                                <connections>
+                                    <action selector="configure" destination="MB8-vt-knj" eventType="touchUpInside" id="zqr-95-WSm"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="0UD-F0-r3b">
+                                <rect key="frame" x="91.5" y="493" width="137" height="35"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" title="Stop Using Tor"/>
+                                <connections>
+                                    <action selector="stop" destination="MB8-vt-knj" eventType="touchUpInside" id="vzm-Zc-Od1"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="WC1-dz-uc7"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="1Os-Wb-YF6" firstAttribute="leading" secondItem="WC1-dz-uc7" secondAttribute="leading" constant="16" id="9K8-Vt-L86"/>
+                            <constraint firstItem="WC1-dz-uc7" firstAttribute="trailing" secondItem="1Os-Wb-YF6" secondAttribute="trailing" constant="16" id="9at-eF-Jdn"/>
+                            <constraint firstItem="1Os-Wb-YF6" firstAttribute="top" secondItem="WC1-dz-uc7" secondAttribute="top" constant="16" id="Bit-uA-2eh"/>
+                            <constraint firstItem="ZPF-4R-JEn" firstAttribute="leading" secondItem="WC1-dz-uc7" secondAttribute="leading" constant="16" id="Etz-zE-USw"/>
+                            <constraint firstItem="WC1-dz-uc7" firstAttribute="trailing" secondItem="ZPF-4R-JEn" secondAttribute="trailing" constant="16" id="G86-2r-Fbe"/>
+                            <constraint firstItem="iEw-VZ-MdO" firstAttribute="centerX" secondItem="7Gs-5W-iIL" secondAttribute="centerX" id="HS9-5H-JiW"/>
+                            <constraint firstItem="NZK-mq-Tb5" firstAttribute="top" secondItem="1Os-Wb-YF6" secondAttribute="bottom" constant="32" id="IXF-iL-Puu"/>
+                            <constraint firstItem="iEw-VZ-MdO" firstAttribute="centerY" secondItem="7Gs-5W-iIL" secondAttribute="centerY" priority="250" id="RI5-si-y6X"/>
+                            <constraint firstItem="WC1-dz-uc7" firstAttribute="bottom" secondItem="0UD-F0-r3b" secondAttribute="bottom" constant="40" id="SgF-Ff-yXK"/>
+                            <constraint firstItem="NZK-mq-Tb5" firstAttribute="leading" secondItem="WC1-dz-uc7" secondAttribute="leading" constant="16" id="Tzc-Wh-shV"/>
+                            <constraint firstItem="WC1-dz-uc7" firstAttribute="trailing" secondItem="NZK-mq-Tb5" secondAttribute="trailing" constant="16" id="aQP-ow-i6o"/>
+                            <constraint firstItem="0UD-F0-r3b" firstAttribute="centerX" secondItem="7Gs-5W-iIL" secondAttribute="centerX" id="h0s-JZ-2Bk"/>
+                            <constraint firstItem="iEw-VZ-MdO" firstAttribute="top" relation="greaterThanOrEqual" secondItem="7pO-Ak-ucT" secondAttribute="bottom" constant="8" id="hoI-kK-Sxd"/>
+                            <constraint firstItem="7pO-Ak-ucT" firstAttribute="centerX" secondItem="7Gs-5W-iIL" secondAttribute="centerX" id="vV8-2Y-68I"/>
+                            <constraint firstItem="ZPF-4R-JEn" firstAttribute="top" secondItem="NZK-mq-Tb5" secondAttribute="bottom" constant="40" id="woR-Jr-0QJ"/>
+                            <constraint firstItem="7pO-Ak-ucT" firstAttribute="top" secondItem="ZPF-4R-JEn" secondAttribute="bottom" constant="8" id="yFT-0A-Jn2"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" id="B1c-Bn-x7m"/>
+                    <connections>
+                        <outlet property="configBt" destination="iEw-VZ-MdO" id="zg9-Er-hKF"/>
+                        <outlet property="errorLb" destination="ZPF-4R-JEn" id="aUl-1q-IOR"/>
+                        <outlet property="progress" destination="NZK-mq-Tb5" id="GRG-ZH-5U7"/>
+                        <outlet property="retryBt" destination="7pO-Ak-ucT" id="omg-mE-YVc"/>
+                        <outlet property="stopBt" destination="0UD-F0-r3b" id="vXC-9n-y8A"/>
+                        <outlet property="titleLb" destination="1Os-Wb-YF6" id="vas-Jh-gdR"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ykV-Fj-pD4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-369.375" y="911.61971830985919"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="d2u-9y-mSc">
@@ -3112,43 +3195,38 @@ Google's APIs allow you to access and send media to your existing folders in Goo
             <point key="canvasLocation" x="7329" y="-691"/>
         </scene>
     </scenes>
-    <designables>
-        <designable name="EIn-wk-PS1">
-            <size key="intrinsicContentSize" width="19.5" height="20"/>
-        </designable>
-        <designable name="dVf-uc-nQr">
-            <size key="intrinsicContentSize" width="19.5" height="20"/>
-        </designable>
-    </designables>
     <color key="tintColor" red="0.0" green="0.70398116438356162" blue="0.64921339897260277" alpha="1" colorSpace="calibratedRGB"/>
     <resources>
         <image name="InternetArchiveLogo" width="76" height="86"/>
         <image name="arrow.right" catalog="system" width="128" height="95"/>
         <image name="camera" catalog="system" width="128" height="93"/>
-        <image name="check-mark" width="12" height="12"/>
+        <image name="check-mark" width="9" height="9"/>
         <image name="chevron.left" catalog="system" width="97" height="128"/>
         <image name="chevron.right" catalog="system" width="97" height="128"/>
         <image name="dropbox-icon" width="260" height="260"/>
         <image name="flag" catalog="system" width="128" height="121"/>
         <image name="folder" catalog="system" width="128" height="96"/>
-        <image name="gearshape" width="15" height="14"/>
+        <image name="gearshape" width="11" height="11"/>
         <image name="hands-mobile" width="525" height="458"/>
         <image name="house.fill" catalog="system" width="128" height="104"/>
         <image name="ic_batchedit" width="24" height="24"/>
         <image name="ic_error" width="24" height="24"/>
         <image name="ic_gdrive" width="128" height="128"/>
-        <image name="line.3.horizontal" width="14" height="7"/>
+        <image name="line.3.horizontal" width="11" height="5"/>
         <image name="logo" width="92" height="52"/>
         <image name="onboarding-app_hand" width="518" height="627"/>
         <image name="person.crop.circle" catalog="system" width="128" height="123"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="save-open-archive-logo" width="145" height="120"/>
-        <image name="server.rack" width="16" height="13"/>
+        <image name="server.rack" width="12" height="10"/>
         <image name="server.rack" catalog="system" width="128" height="93"/>
         <image name="text.append" catalog="system" width="128" height="99"/>
         <image name="trash" catalog="system" width="117" height="128"/>
         <namedColor name="Accent">
             <color red="0.0" green="0.70588235294117652" blue="0.65098039215686276" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
+        <namedColor name="Warning">
+            <color red="0.9137254901960784" green="0.74117647058823533" blue="0.027450980392156862" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
         <namedColor name="menu-background">
             <color red="0.0" green="0.70588235294117652" blue="0.65098039215686276" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

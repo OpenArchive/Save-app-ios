@@ -14,8 +14,7 @@ class Settings {
     private static let kHighCompression = "high_compression"
     private static let kUseTor = "use_tor"
     private static let kOrbotApiToken = "orbotApiToken"
-    private static let kTransport = "transport"
-    private static let kCustomBridges = "custom_bridges"
+    private static let kUseOwnTor = "use_own_tor"
     private static let kProofMode = "proof_mode"
     private static let kProofModeEncryptedPassphrase = "proof_mode_encrypted_passphrase"
     private static let kFirstRunDone = "already_run"
@@ -52,9 +51,20 @@ class Settings {
         }
     }
 
+    /**
+     We're not officially supporting Orbot anymore, since our users are confused by
+     that.
+
+     Hence this will always return `false`.
+     However, we cannot ignore Orbot completely, since, if somebody has Orbot installed and
+     running, we would run Tor-over-Tor which is not working mostly.
+
+     So we keep this stuff around for now and for the case, that it might turn out, that our users aren't as
+     confused as we thought, after all and want this feature back.
+     */
     class var useOrbot: Bool {
         get {
-            defaults?.bool(forKey: kUseTor) ?? false
+            false //defaults?.bool(forKey: kUseTor) ?? false
         }
         set {
             defaults?.set(newValue, forKey: kUseTor)
@@ -70,12 +80,12 @@ class Settings {
         }
     }
 
-    class var customBridges: [String]? {
+    class var useTor: Bool {
         get {
-            defaults?.stringArray(forKey: kCustomBridges)
+            defaults?.bool(forKey: kUseOwnTor) ?? false
         }
         set {
-            defaults?.set(newValue, forKey: kCustomBridges)
+            defaults?.set(newValue, forKey: kUseOwnTor)
         }
     }
 

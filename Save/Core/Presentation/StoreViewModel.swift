@@ -9,7 +9,7 @@
 import SwiftUI
 
 class StoreViewModel<State, Action> : ObservableObject {
-
+    
     private(set) var store: StateStore<State, Action>
     
     private var scope: StoreScope
@@ -24,9 +24,12 @@ class StoreViewModel<State, Action> : ObservableObject {
         
         self.store = StateStore(initialState: initialState, reducer: reducer, effects: effects)
         
-        self.scope.insert(self.store.objectWillChange.receive(on: DispatchQueue.main).sink { [weak self] _ in
-            self?.objectWillChange.send()
-        })
+        self.store.objectWillChange
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.objectWillChange.send()
+            }
+            .store(in: &self.scope)
     }
 }
 

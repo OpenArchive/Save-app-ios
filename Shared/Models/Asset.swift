@@ -30,9 +30,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         case proofJson = "proof.json"
         case proofJsonSignature = "proof.json.asc"
 
-        static let base = FileManager.default.containerURL(
-            forSecurityApplicationGroupIdentifier: Constants.appGroup)?
-            .appendingPathComponent(Asset.collection)
+        static let base = URL.groupDir?.appendingPathComponent(Asset.collection)
 
         var isProof: Bool {
             switch self {

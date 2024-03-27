@@ -6,6 +6,8 @@
 //  Copyright © 2024 Open Archive. All rights reserved.
 //
 
+import Combine
+
 protocol Notifier<Action> {
     associatedtype Action
     
@@ -17,4 +19,3 @@ protocol Listener<Action> {
     
     func listen(_ onAction: @escaping (Action) -> Void)
 }
-

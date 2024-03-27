@@ -149,7 +149,7 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
         workingOverlay.isHidden = false
 
         // Do a test request to check validity of space configuration.
-        space.session.info(space.url!) { [weak self] info, error in
+        URLSession(configuration: UploadManager.improvedSessionConf()).info(space.url!, credential: space.credential) { [weak self] info, error in
             DispatchQueue.main.async {
                 self?.workingOverlay.isHidden = true
 
@@ -188,7 +188,7 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
         urlTb.text = url?.absoluteString
 
         if let baseUrl = Formatters.URLFormatter.fix(url: urlTb.text, baseOnly: true) {
-            FavIcon.downloadSession = URLSession.withImprovedConf()
+            FavIcon.downloadSession = URLSession(configuration: UploadManager.improvedSessionConf())
 
             try! FavIcon.downloadPreferred(baseUrl) { [weak self] result in
                 if case let .success(image) = result {

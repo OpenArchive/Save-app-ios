@@ -46,14 +46,8 @@
 /* ConsentViewController */
 "%@ Number of retries" = "%@ Number of retries";
 
-/* Placeholder is 'Orbot' */
-"%@ routes all traffic through the Tor network" = "%@ routes all traffic through the Tor network";
-
 /* ConsentViewController */
 "%@ Size and type of media" = "%@ Size and type of media";
-
-/* Placeholder is your translation of 'Enable Orbot' */
-"%@ to enable advanced network security." = "%@ to enable advanced network security.";
 
 /* No comment provided by engineer. */
 "\"Chunking\" uploads media in pieces so you don't have to restart your upload if your connection is interrupted." = "\"Chunking\" uploads media in pieces so you don't have to restart your upload if your connection is interrupted.";
@@ -92,7 +86,7 @@
 "Add a location (optional)" = "Add a location (optional)";
 
 /* No comment provided by engineer. */
-"Add Another Account" = "Add Another Account";
+"Add Folder" = "Aggiungi cartella";
 
 /* No comment provided by engineer. */
 "Add media using:" = "Add media using:";
@@ -105,6 +99,9 @@
 
 /* DarkroomHelper */
 "Add People" = "Aggiungi Persone";
+
+/* No comment provided by engineer. */
+"Add Server" = "Add Server";
 
 /* ShareExtension.MainViewController */
 "Adding…" = "Aggiungendo...";
@@ -148,8 +145,8 @@
 /* No comment provided by engineer. */
 "Authenticate your media with a SHA-256 cryptographic verification hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload." = "Authenticate your media with a SHA-256 cryptographic verification hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload.";
 
-/* Placeholder is 'Orbot' */
-"Automatically upload over TLS (Transport Layer Security) and use %@ to protect your media in transit." = "Automatically upload over TLS (Transport Layer Security) and use %@ to protect your media in transit.";
+/* Placeholder 1 is 'Tor' */
+"Automatically upload over TLS (Transport Layer Security) and enable %1$@ (The Onion Router) in-app to protect your media in transit." = "Automatically upload over TLS (Transport Layer Security) and enable %1$@ (The Onion Router) in-app to protect your media in transit.";
 
 /* ManagementViewController */
 "Back" = "Indietro";
@@ -223,7 +220,10 @@
 /* No comment provided by engineer. */
 "Edit Multiple" = "Edit Multiple";
 
-/* Placeholder is 'Orbot' */
+/* Placeholder 1 is 'Tor' */
+"Enable %1$@ to protect your media in transit." = "Enable %1$@ to protect your media in transit.";
+
+/* Placeholder is 'Tor' */
 "Enable \"Transfer via %@ only\"" = "Enable \"Transfer via %@ only\"";
 
 /* MiscSettingsViewController */
@@ -310,9 +310,6 @@
 /* Error+friendlyMessage */
 "Incorrect username or password" = "Nome utente o password errati";
 
-/* Placeholder is 'Orbot' */
-"Install %@" = "Install %@";
-
 /* HeaderView */
 "Just now" = "Proprio Ora";
 
@@ -396,6 +393,9 @@
 
 /* No comment provided by engineer. */
 "Please choose another name/folder or use the existing one instead." = "Please choose another name/folder or use the existing one instead.";
+
+/* Placeholder 1 is 'Tor' */
+"Please disable or uninstall any other %1$@ apps or services." = "Please disable or uninstall any other %1$@ apps or services.";
 
 /* MainViewController */
 "Please go to the Settings app to grant this app access to your camera, if you want to upload photos or videos." = "Please go to the Settings app to grant this app access to your camera, if you want to upload photos or videos.";
@@ -509,6 +509,9 @@
 "Server URL" = "Server URL";
 
 /* No comment provided by engineer. */
+"Servers" = "Servers";
+
+/* No comment provided by engineer. */
 "Set the same Creative Commons license for ALL folders on this server." = "Set the same Creative Commons license for ALL folders on this server.";
 
 /* No comment provided by engineer. */
@@ -544,6 +547,9 @@
 /* Placeholder is 'Orbot' */
 "Start %@" = "Start %@";
 
+/* Placeholder is 'Tor' */
+"Starting %@…" = "Starting %@…";
+
 /* Placeholder is 'Internet Archive' */
 "Step 1: Log into the %@. If you don't have an account, create one." = "Step 1: Log into the %@. If you don't have an account, create one.";
 
@@ -552,6 +558,9 @@
 
 /* No comment provided by engineer. */
 "Step 3: Generate your API keys by selecting the box and it will auto-load in the app!" = "Step 3: Generate your API keys by selecting the box and it will auto-load in the app!";
+
+/* Placeholder is 'Tor' */
+"Stop Using %@" = "Stop Using %@";
 
 /* Southwest Direction Abbreviation */
 "SW" = "SW";
@@ -568,7 +577,7 @@
 /* No comment provided by engineer. */
 "To get started, please add a folder" = "To get started, please add a folder";
 
-/* Placeholder is 'Orbot' */
+/* No comment provided by engineer. */
 "Transfer via %@ only" = "Transfer via %@ only";
 
 /* No comment provided by engineer. */

@@ -1,5 +1,11 @@
 # Changelog
 
+# 3.3.0
+- Replaced Orbot support with a built-in Tor.
+- Added usage of location and cell tower data in ProofMode on freshly created assets.
+- Improved server selection menu.
+- Minor UI changes.
+
 # 3.2.1
 - Fixed Google Drive disclaimer text color when in dark mode.
 - Improved Dropbox error messages.

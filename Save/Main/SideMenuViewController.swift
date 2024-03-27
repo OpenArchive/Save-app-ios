@@ -54,16 +54,17 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
             header.accessibilityIdentifier = "viewHeader"
         }
     }
-    @IBOutlet weak var spaceIcon: UIImageView!
-    @IBOutlet weak var spaceLb: UILabel!
+
+    @IBOutlet weak var headerLb: UILabel! {
+        didSet {
+            headerLb.text = NSLocalizedString("Servers", comment: "")
+        }
+    }
     @IBOutlet weak var toggleIcon: UIImageView!
     @IBOutlet weak var spacesTable: UITableView!
 
-    @IBOutlet weak var spacesTableHeight: NSLayoutConstraint! {
-        didSet {
-            spacesTableHeight.constant = 0
-        }
-    }
+    @IBOutlet weak var spaceIcon: UIImageView!
+    @IBOutlet weak var spaceLb: UILabel!
 
     @IBOutlet weak var projectsTable: UITableView!
 
@@ -73,9 +74,9 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
 
-    @IBOutlet weak var newFolderBt: UIButton! {
+    @IBOutlet weak var addFolderBt: UIButton! {
         didSet {
-            newFolderBt.setTitle(NSLocalizedString("New Folder", comment: ""))
+            addFolderBt.setTitle(NSLocalizedString("Add Folder", comment: ""))
         }
     }
 
@@ -184,22 +185,24 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
     @IBAction func toggleSpaces() {
-        if spacesTableHeight.constant <= 0 {
-            let height = spacesTable.contentSize.height
-                + spacesTable.contentInset.top
-                + spacesTable.contentInset.bottom
+        if spacesTable.isHidden {
+            spacesTable.alpha = 0
+            spacesTable.isHidden = false
 
             UIView.animate(withDuration: 0.25) {
-                self.spacesTableHeight.constant = height
+                self.spacesTable.alpha = 1
                 self.spacesTable.superview?.layoutIfNeeded()
             }
 
             setToggleIcon(true)
         }
         else {
-            UIView.animate(withDuration: 0.25) {
-                self.spacesTableHeight.constant = 0
+            UIView.animate(withDuration: 0.25, animations: {
+                self.spacesTable.layer.opacity = 0
                 self.spacesTable.superview?.layoutIfNeeded()
+            }) { _ in
+                self.spacesTable.isHidden = true
+                self.spacesTable.alpha = 1
             }
 
             setToggleIcon(false)
@@ -235,7 +238,7 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
             UIView.animate(withDuration: 0.25, animations: {
                 self.view.alpha = 0
                 self.menuContentWidth.constant = 0
-                self.spacesTableHeight.constant = 0
+                self.spacesTable.alpha = 0
                 self.setToggleIcon(false)
 
                 self.view.layoutIfNeeded()
@@ -243,6 +246,8 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
                 completion?(finished)
 
                 self.view.alpha = 1
+                self.spacesTable.isHidden = true
+                self.spacesTable.alpha = 1
             }
         }
     }

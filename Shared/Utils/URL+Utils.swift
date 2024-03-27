@@ -11,6 +11,10 @@ import LibProofMode
 
 extension URL {
 
+    static var groupDir: URL? {
+        FileManager.default.containerURL(forSecurityApplicationGroupIdentifier: Constants.appGroup)
+    }
+
     static var proofModePrivateKey: URL? {
         Proof.shared.defaultDocumentFolder?.appendingPathComponent("pkr.asc")
     }
