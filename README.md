@@ -2,14 +2,10 @@
 
 https://open-archive.org/save/
 
-Save by OpenArchive enables you to safely preserve, organize, and share your mobile media. 
+Save by OpenArchive enables you to safely share, archive, and verify your mobile media.
 
-Designed with and for newsrooms, human rights defenders, and archivists, Save keeps you in control of your mobile media at all times.
+Designed with and for eyewitnesses, human rights defenders, archivists, citizen journalists, large NGOs, and newsrooms, Save helps people preserve truth to power. Save protects human rights by leveraging a suite of privacy-enhancing technologies to safeguard your media and identity in the event of internet shutdowns, surveillance, device confiscations, content takedowns, limited bandwidth, and data loss.
 
-## Author
-
-Benjamin Erhart, Die Netzarchitekten e.U.
-https://die.netzarchitekten.com/
 
 ## Translators
 
@@ -72,9 +68,7 @@ pod install
 open Save.xcworkspace
 ```
 
-Then fill in the missing build configuration in [Shared/Config.xcconfig](Shared/Config.xcconfig)!
-
-Now you should be able to build.
+Once this is done, you should be able to build.
 
 
 ### Internet Archive S3 reference:
