@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CleanInsightsSDK
 
 protocol AnalyticsCellDelegate: AnyObject {
 

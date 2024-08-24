@@ -10,7 +10,6 @@ import UIKit
 import YapDatabase
 import Reachability
 import Regex
-import CleanInsightsSDK
 import BackgroundTasks
 import Photos
 import TorManager
@@ -205,7 +204,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             if let upload = self.current,
                 upload.hasProgressChanged() {
 
-                self.debug("#progress tracker changed for \(upload))")
+                log.debug("#progress tracker changed for \(upload))")
 
                 // Update internal _progress to latest progress, so #hasProgressChanged
                 // doesn't trigger anymore.
@@ -237,7 +236,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
      This handles a finished file upload task, but ignores metadata files and file chunks.
     */
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
-        debug("#task:didCompleteWithError task=\(task), state=\(self.getTaskStateName(task.state)), url=\(task.originalRequest?.url?.absoluteString ?? "nil") error=\(String(describing: error))")
+        log.debug("#task:didCompleteWithError task=\(task), state=\(self.getTaskStateName(task.state)), url=\(task.originalRequest?.url?.absoluteString ?? "nil") error=\(String(describing: error))")
 
         // Ignore incomplete tasks. Ignore canceled tasks.
         guard task.state == .completed,
@@ -334,7 +333,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     @objc func pause(notification: Notification) {
         let id = notification.object as? String
 
-        debug("#pause id=\(id ?? "globally")")
+        log.debug("#pause id=\(id ?? "globally")")
 
         queue.async {
             if let id = id {
@@ -356,7 +355,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     @objc func unpause(notification: Notification) {
         let id = notification.object as? String
 
-        debug("#unpause id=\(id ?? "globally")")
+        log.debug("#unpause id=\(id ?? "globally")")
 
         queue.async {
             if let id = id {
@@ -392,13 +391,13 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
      - parameter url: The URL the file was saved to.
      */
     private func done(_ id: String?, _ error: Error?, _ url: URL? = nil, synchronous: Bool = false) {
-        debug("#done")
+        log.debug("#done")
 
         guard let id = id else {
             return endBackgroundTask(.failed)
         }
 
-        debug("#done id=\(id), error=\(String(describing: error)), url=\(url?.absoluteString ?? "nil")")
+        log.debug("#done id=\(id), error=\(String(describing: error)), url=\(url?.absoluteString ?? "nil")")
 
         let work: () -> Void = {
             guard id == self.current?.id,
@@ -441,11 +440,11 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                             "retries": String(upload.tries),
                             "network": self.reachability?.connection.description]
 
-                        if let json = try? JSONEncoder().encode(data) {
-                            CleanInsights.shared.measure(
-                                event: "upload", "upload_failed", forCampaign: "upload_fails",
-                                name: String(data: json, encoding: .utf8))
-                        }
+//                        if let json = try? JSONEncoder().encode(data) {
+//                            CleanInsights.shared.measure(
+//                                event: "upload", "upload_failed", forCampaign: "upload_fails",
+//                                name: String(data: json, encoding: .utf8))
+//                        }
                     }
                 }
 
@@ -499,7 +498,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     @objc func dataUsageChanged(notification: Notification) {
         let wifiOnly = notification.object as? Bool ?? false
 
-        debug("#dataUsageChanged wifiOnly=\(wifiOnly)")
+        log.debug("#dataUsageChanged wifiOnly=\(wifiOnly)")
 
         reachability?.allowsCellularConnection = !wifiOnly
 
@@ -510,7 +509,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
      Network status changed.
      */
     @objc func reachabilityChanged(notification: Notification) {
-        debug("#reachabilityChanged connection=\(reachability?.connection ?? .unavailable)")
+        log.debug("#reachabilityChanged connection=\(reachability?.connection ?? .unavailable)")
 
         if reachability?.connection ?? .unavailable != .unavailable {
             uploadNext()
@@ -518,7 +517,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     }
 
     @objc func orbotStopped(notification: Notification) {
-        debug("#orbotStopped")
+        log.debug("#orbotStopped")
 
         current?.cancel()
 
@@ -537,55 +536,51 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         }
 
         queue.async {
-            self.debug("#uploadNext")
+            log.debug("#uploadNext")
 
             self.cleanup()
 
             if self.globalPause {
-                self.debug("#uploadNext globally paused")
+                log.debug("#uploadNext globally paused")
 
                 return self.endBackgroundTask(.noData)
             }
 
             if self.reachability?.connection ?? Reachability.Connection.unavailable == .unavailable {
-                self.debug("#uploadNext no connection")
+                log.debug("#uploadNext no connection")
 
                 return self.endBackgroundTask(.noData)
             }
 
             // Check if there's currently an item uploading which is not paused and not already uploaded.
             if !(self.current?.paused ?? true) && self.current?.state != .uploaded {
-                self.debug("#uploadNext already one uploading")
+                log.debug("#uploadNext already one uploading")
 
                 return self.endBackgroundTask(.noData)
             }
 
             if Settings.useOrbot && OrbotManager.shared.status == .stopped {
-                self.debug("#uploadNext should use Orbot, but Orbot not started")
+                log.debug("#uploadNext should use Orbot, but Orbot not started")
 
                 return self.endBackgroundTask(.noData)
             }
 
             if Settings.useTor && !TorManager.shared.connected {
-                self.debug("#uploadNext should use built-in Tor, but Tor not started")
+                log.debug("#uploadNext should use built-in Tor, but Tor not started. Deferring upload.")
 
                 return self.endBackgroundTask(.noData)
             }
 
-            guard let upload = self.getNext(),
-                  let asset = upload.asset
-            else {
-                self.debug("#uploadNext nothing to upload")
+            guard let upload = self.getNext(), let asset = upload.asset else {
+                log.debug("#uploadNext nothing to upload")
 
                 return self.endBackgroundTask(.noData)
             }
 
-            self.debug("#uploadNext try upload=\(upload)")
+            log.debug("#uploadNext try upload=\(upload)")
 
             let space = upload.asset?.space
             let name = space is WebDavSpace ? "WebDAV" : upload.asset?.space?.name
-
-            CleanInsights.shared.measure(event: "upload", "try_upload", forCampaign: "upload_fails", name: name)
 
             upload.liveProgress = Conduit
                 .get(for: asset, self.backgroundSession, self.foregroundSession)?
@@ -610,11 +605,11 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
     // MARK: Private Methods
 
-    private func debug(_ text: String) {
-        #if DEBUG
-        print("[\(String(describing: type(of: self)))] \(text)")
-        #endif
-    }
+//    private func log.debug(_ text: String) {
+//        #if DEBUG
+//        print("[\(String(describing: type(of: self)))] \(text)")
+//        #endif
+//    }
 
     private func getTaskStateName(_ state: URLSessionTask.State) -> String {
         switch state {
@@ -766,7 +761,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     }
 
     private func endBackgroundTask(_ result: UIBackgroundFetchResult) {
-        debug("#endBackgroundTask result=\(result)")
+        log.debug("#endBackgroundTask result=\(result)")
 
         if backgroundTask != .invalid {
             UIApplication.shared.endBackgroundTask(backgroundTask)
@@ -780,7 +775,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
      Also, finished `Upload`s are accrued over time which are not needed anymore.
      */
     private func cleanup() {
-        debug("#cleanup")
+        log.debug("#cleanup")
 
         Db.writeConn?.readWrite { tx in
             // 1. Find all uploaded `Upload` objects. They need to be removed.

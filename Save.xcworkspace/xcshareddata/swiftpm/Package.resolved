@@ -1,0 +1,33 @@
+{
+  "originHash" : "9c3cb69b34678bb64a7554e51f31610f30ef9746664b8d51778b7fec58283645",
+  "pins" : [
+    {
+      "identity" : "swift-log",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/apple/swift-log",
+      "state" : {
+        "revision" : "9cb486020ebf03bfa5b5df985387a14a98744537",
+        "version" : "1.6.1"
+      }
+    },
+    {
+      "identity" : "swift-log-swiftybeaver",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ShivaHuang/swift-log-SwiftyBeaver",
+      "state" : {
+        "branch" : "master",
+        "revision" : "7b6f329f47530583546be82bb14060aba888cd43"
+      }
+    },
+    {
+      "identity" : "swiftybeaver",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/SwiftyBeaver/SwiftyBeaver.git",
+      "state" : {
+        "revision" : "12b5acf96d98f91d50de447369bd18df74600f1a",
+        "version" : "1.9.6"
+      }
+    }
+  ],
+  "version" : 3
+}

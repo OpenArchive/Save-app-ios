@@ -37,6 +37,5 @@ class SelectedView: UIView {
     private func setup() {
         layer.borderColor = UIColor.accent.cgColor
         layer.borderWidth = 10
-        layer.cornerRadius = 15
     }
 }

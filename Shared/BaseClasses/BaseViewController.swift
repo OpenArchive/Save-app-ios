@@ -28,7 +28,7 @@ open class BaseViewController: UIViewController {
                        name: UIResponder.keyboardWillShowNotification,
                        object: nil)
         
-        nc.addObserver(self, selector: #selector(keyboardWillBeHidden(notification:)),
+        nc.addObserver(self, selector: #selector(keyboardWillHide(notification:)),
                        name: UIResponder.keyboardWillHideNotification,
                        object: nil)
     }
@@ -65,9 +65,7 @@ open class BaseViewController: UIViewController {
      - parameter notification: The calling notification.
     */
     @objc open func keyboardWillShow(notification: Notification) {
-        if let scrollView = scrollView,
-           let kbSize = getKeyboardSize(notification)
-        {
+        if let scrollView = scrollView, let kbSize = getKeyboardSize(notification) {
             if originalInsets == nil {
                 originalInsets = scrollView.contentInset
             }
@@ -87,7 +85,7 @@ open class BaseViewController: UIViewController {
      
      - parameter notification: A `keyboardWillHideNotification`. Ignored.
      */
-    @objc open func keyboardWillBeHidden(notification: Notification) {
+    @objc open func keyboardWillHide(notification: Notification) {
         scrollView?.contentInset = originalInsets ?? .zero
         scrollView?.scrollIndicatorInsets = originalInsets ?? .zero
         

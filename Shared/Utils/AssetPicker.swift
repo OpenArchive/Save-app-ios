@@ -92,9 +92,7 @@ class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPic
     // MARK: TLPhotosPickerViewControllerDelegate
 
     func dismissPhotoPicker(withPHAssets assets: [PHAsset]) {
-        guard let collection = (delegate as? AssetPickerDelegate)?.currentCollection,
-              assets.count > 0
-        else {
+        guard let collection = (delegate as? AssetPickerDelegate)?.currentCollection, assets.count > 0 else {
             return
         }
 

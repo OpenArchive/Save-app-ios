@@ -1,7 +1,4 @@
 //
-//  FoldersViewController.swift
-//  Save
-//
 //  Created by Benjamin Erhart on 30.10.23.
 //  Copyright © 2023 Open Archive. All rights reserved.
 //
@@ -54,6 +51,9 @@ class FoldersViewController: FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        tableView.backgroundColor = .saveBackground
+        tableView.separatorStyle = .none
+        
         navigationItem.title = archived
             ? NSLocalizedString("Archived Folders", comment: "")
             : NSLocalizedString("Folders", comment: "")
@@ -80,7 +80,7 @@ class FoldersViewController: FormViewController {
 
             <<< cc.licenseRow
 
-            <<< cc.learnMoreRow
+//            <<< cc.learnMoreRow
 
             +++ Section(NSLocalizedString("Active Folders", comment: ""))
 

@@ -82,10 +82,12 @@ Carthage/Build
 # For more information about the recommended setup visit:
 # https://docs.fastlane.tools/best-practices/source-control/#source-control
 
+fastlane/.env.default
 fastlane/report.xml
 fastlane/Preview.html
 fastlane/screenshots/**/*.png
 fastlane/test_output
+fastlane/metadata/*
 
 # Code Injection
 #
@@ -133,22 +135,6 @@ playground.xcworkspace
 #
 # Add this line if you want to avoid checking in source code from Carthage dependencies.
 # Carthage/Checkouts
-
-
-# fastlane
-#
-# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
-# screenshots whenever they are needed.
-# For more information about the recommended setup visit:
-# https://docs.fastlane.tools/best-practices/source-control/#source-control
-
-# snapshot generated screenshots
-fastlane/screenshots
-
-# metadata containing sensitive data
-fastlane/metadata/review_information
-fastlane/metadata/trade_representative_contact_information
-
 
 ### Xcode ###
 # Xcode

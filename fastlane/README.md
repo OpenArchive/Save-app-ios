@@ -15,37 +15,53 @@ For _fastlane_ installation instructions, see [Installing _fastlane_](https://do
 
 ## iOS
 
-### ios app_icon
+### ios test
 
 ```sh
-[bundle exec] fastlane ios app_icon
+[bundle exec] fastlane ios test
 ```
 
-Generate app icon
+Run unit tests
 
-### ios screenshots
+### ios local
 
 ```sh
-[bundle exec] fastlane ios screenshots
+[bundle exec] fastlane ios local
 ```
 
-Generate new localized screenshots
+Build for local testing
 
-### ios upload_metadata
+### ios prepare
 
 ```sh
-[bundle exec] fastlane ios upload_metadata
+[bundle exec] fastlane ios prepare
 ```
 
-Upload App Store Metadata
+Prepare the app for dev or build
 
-### ios upload_screenshots
+### ios tf
 
 ```sh
-[bundle exec] fastlane ios upload_screenshots
+[bundle exec] fastlane ios tf
 ```
 
-Upload App Store Screenshots
+Build and upload to TestFlight for internal testing
+
+### ios beta
+
+```sh
+[bundle exec] fastlane ios beta
+```
+
+Build and upload to TestFlight for internal and external testing
+
+### ios release
+
+```sh
+[bundle exec] fastlane ios release
+```
+
+Build and upload to the App Store
 
 ----
 

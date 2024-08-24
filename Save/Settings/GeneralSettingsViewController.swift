@@ -1,92 +1,245 @@
 //
-//  GeneralSettingsViewController.swift
-//  OpenArchive
-//
 //  Created by Benjamin Erhart on 15.01.19.
 //  Copyright © 2019 Open Archive. All rights reserved.
 //
 
 import UIKit
-import Eureka
-import CleanInsightsSDK
+
 import OrbotKit
+import Eureka
 import IPtProxyUI
+import LibProofMode
+import SnapKit
 import TorManager
 
-class GeneralSettingsViewController: FormViewController, BridgesConfDelegate {
-
-    private static let compressionOptions = [
-        NSLocalizedString("Better Quality", comment: ""),
-        NSLocalizedString("Smaller Size", comment: "")]
-
-    private static let campaignId = "upload_fails"
-
-    private var consent: CampaignConsent? {
-        CleanInsights.shared.consent(forCampaign: Self.campaignId)
+class SectionHeaderView: UIView {
+    let label = UILabel()
+    let separator = UIView()
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        
+        label.textAlignment = .left
+        
+        separator.backgroundColor = .saveLabelMuted
+        
+        self.addSubview(label)
+        self.addSubview(separator)
+        
+        label.snp.makeConstraints { (make) in
+            make.top.equalToSuperview().offset(20)
+            make.leading.trailing.equalToSuperview().inset(20)
+        }
+        
+        separator.snp.makeConstraints { (make) in
+            make.top.equalTo(label.snp.bottom)
+            make.bottom.equalToSuperview()
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(0.25)
+        }
     }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
 
+class GeneralSettingsViewController: Eureka.FormViewController, BridgesConfDelegate {
+    
+    private let compressionOptions = [
+        NSLocalizedString("Higher quality", comment: ""),
+        NSLocalizedString("Smaller size", comment: "")]
+    
+    private let interfaceStyleOptions = [
+        NSLocalizedString("Device default", comment: ""),
+        NSLocalizedString("Light", comment: ""),
+        NSLocalizedString("Dark", comment: "")]
+    
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.navigationBar.barStyle = .black
+        
+        setNeedsStatusBarAppearanceUpdate()
+        
+        form.delegate = nil
 
+        if let lockAppRow = form.rowBy(tag: "lock_app") as? SwitchRow {
+            lockAppRow.disabled = .init(booleanLiteral: Settings.proofModeEncryptedPassphrase != nil)
+            lockAppRow.evaluateDisabled()
+            lockAppRow.reload()
+        }
+
+        form.delegate = self
+    }
+    
+    func sectionWithTitle(_ title: String) -> Section {
+        return Section() { section in
+            var header = HeaderFooterView<SectionHeaderView>(.class)
+            header.height = {50}
+            header.onSetupView = { (view, section) in
+                view.label.attributedText = NSMutableAttributedString().sectionTitle(title)
+            }
+            section.header = header
+        }
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
+        nil
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForFooterInSection section: Int) -> CGFloat {
+        CGFloat.leastNormalMagnitude
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        navigationItem.title = NSLocalizedString("General", comment: "")
-
+        
+        tableView.backgroundColor = .saveBackground
+        tableView.separatorStyle = .none
+        
+        ActionSheetRow<String>.defaultCellUpdate = { (cell, row) in
+            cell.backgroundColor = .clear
+            cell.textLabel?.textColor = .saveLabel
+            cell.textLabel?.font = .normalMedium
+            cell.detailTextLabel?.textColor = .saveLabelMuted
+            cell.detailTextLabel?.font = .normalMedium
+        }
+        
+        ButtonRow.defaultCellUpdate = { (cell, row) in
+            cell.backgroundColor = .clear
+            cell.textLabel?.textColor = .saveLabel
+            cell.textLabel?.font = .normalMedium
+        }
+        
+        PushRow<String>.defaultCellUpdate = { (cell, row) in
+            cell.backgroundColor = .clear
+            cell.textLabel?.textColor = .saveLabel
+            cell.textLabel?.font = .normalMedium
+            cell.detailTextLabel?.textColor = .saveLabelMuted
+            cell.detailTextLabel?.font = .normalMedium
+        }
+        
+        SwitchRow.defaultCellUpdate = { (cell, row) in
+            cell.backgroundColor = .clear
+            cell.textLabel?.textColor = .saveLabel
+            cell.textLabel?.font = .normalMedium
+            cell.detailTextLabel?.textColor = .saveLabelMuted
+            cell.detailTextLabel?.font = .normalSmall
+            cell.switchControl.onTintColor = .saveHighlight
+            cell.switchControl.thumbTintColor = .colorOnPrimary
+        }
+        
+        // MARK: Secure
+        //
+        
         form
-        +++ Section(NSLocalizedString("Connectivity & Data", comment: ""))
+        +++ sectionWithTitle("Secure")
 
-        <<< SwitchRow() {
-            $0.title = NSLocalizedString("Only upload media when you are connected to Wi-Fi", comment: "")
-            $0.value = Settings.wifiOnly
-
+        form.last!
+        <<< SwitchRow("lock_app") {
+            $0.cellStyle = .subtitle
+            $0.value = Settings.usePasscode
             $0.cell.textLabel?.numberOfLines = 0
-            $0.cell.switchControl.onTintColor = .accent
+            $0.title = NSLocalizedString("Lock app with passcode", comment: "")
         }
-        .onChange { row in
-            Settings.wifiOnly = row.value ?? false
-
-            NotificationCenter.default.post(name: .uploadManagerDataUsageChange, object: Settings.wifiOnly)
+        .cellUpdate({ cell, row in
+            if row.isDisabled && Settings.proofModeEncryptedPassphrase != nil {
+                cell.detailTextLabel?.text = NSLocalizedString(
+                    "You cannot disable this as long as you have your ProofMode key secured.",
+                    comment: "")
+            } 
+//            else {
+//                cell.detailTextLabel?.attributedText = NSMutableAttributedString()
+//                    .normalSmall("Foo", color: .saveLabelMuted)
+//            }
+        })
+        .onChange { [weak self] row in
+            guard let strongSelf = self else { return }
+            
+            if row.value == true {
+                strongSelf.presentSetPasscodeScreen()
+            }
         }
-
+        
+        // MARK: Archive
+        //
+        form
+        +++ sectionWithTitle("Archive")
+        
         <<< PushRow<String>() {
-            $0.title = NSLocalizedString("Media Compression", comment: "")
-            $0.value = Self.compressionOptions[Settings.highCompression ? 1 : 0]
-
-            $0.selectorTitle = $0.title
-            $0.options = Self.compressionOptions
-
+            $0.cellStyle = .subtitle
             $0.cell.textLabel?.numberOfLines = 0
+            $0.title = NSLocalizedString("Media Servers", comment: "")
+        }
+        .onCellSelection { (cell, row) in
+            cell.setSelected(false, animated: true)
+        }
+        .cellUpdate { (cell, row) in
+            cell.detailTextLabel?.attributedText = NSMutableAttributedString()
+                .normalSmall("Manage your meda storage services", color: .saveLabelMuted)
+        }
+        .onCellSelection({ [weak self] (cell, row) in
+            cell.setSelected(false, animated: true)
+            
+            let vc = SpaceTypeViewController()
+            
+            self?.present(vc, animated: true)
+        })
+        
+        <<< ActionSheetRow<String>() {
+            $0.selectorTitle = $0.title
+            $0.options = compressionOptions
+            $0.value = compressionOptions[Settings.highCompression ? 1 : 0]
+            $0.cell.textLabel?.numberOfLines = 0
+            $0.title = NSLocalizedString("Media Compression", comment: "")
+        }
+        .onCellSelection { (cell, row) in
+            cell.setSelected(false, animated: true)
         }
         .onChange { row in
-            Settings.highCompression = row.value == Self.compressionOptions[1]
+            Settings.highCompression = row.value == self.compressionOptions[1]
         }
-
-        +++ Section(NSLocalizedString("Metadata", comment: ""))
+        
+        // MARK: Verify
+        //
+        +++ sectionWithTitle("Verify")
 
         <<< ButtonRow {
             $0.title = NSLocalizedString("ProofMode", comment: "")
-            $0.presentationMode = .show(controllerProvider: .callback(builder: {
+            $0.presentationMode = .presentModally(controllerProvider: .callback(builder: {
                 ProofModeSettingsViewController()
             }), onDismiss: nil)
         }
 
-        +++ Section(NSLocalizedString("Security", comment: ""))
+        // MARK: Encrypt
+        //
+        +++ sectionWithTitle("Encrypt")
 
-        <<< SwitchRow() {
-            $0.title = String(format: NSLocalizedString("Transfer via %@ only", comment: ""), TorManager.torName)
+        <<< SwitchRow("isTorEnabled") {
+            $0.disabled = true
+            $0.title = String(format: NSLocalizedString("Transfer via %@ only (coming soon)", comment: ""), TorManager.torName)
             $0.value = Settings.useTor
 
             $0.cellStyle = .subtitle
 
             $0.cell.switchControl.onTintColor = .accent
-            $0.cell.textLabel?.numberOfLines = 0
             $0.cell.detailTextLabel?.numberOfLines = 0
+            $0.cell.textLabel?.numberOfLines = 0
         }
         .cellUpdate({ cell, row in
-            cell.detailTextLabel?.text = String(
+            let str = String(
                 format: NSLocalizedString(
                     "Enable %1$@ to protect your media in transit.",
                     comment: "Placeholder 1 is 'Tor'"),
                 TorManager.torName)
+            
+            cell.detailTextLabel?.attributedText = NSMutableAttributedString()
+                .normalSmall(str, color: .saveLabelMuted)
         })
         .onChange({ [weak self] row in
             let newValue = row.value ?? false
@@ -131,175 +284,74 @@ class GeneralSettingsViewController: FormViewController, BridgesConfDelegate {
             }
         })
 
-        <<< ButtonRow() {
-            $0.title = NSLocalizedString("Bridge Configuration", bundle: .iPtProxyUI, comment: "#bc-ignore!")
+        // MARK: Bridge Configuration
+        //
+        <<< PushRow<String>() {
+            $0.title = NSLocalizedString("Bridge Configuration",
+                                         bundle: .iPtProxyUI,
+                                         comment: "#bc-ignore!")
+            $0.hidden = Condition.function(["isTorEnabled"], { (form) in
+                return !((form.rowBy(tag: "isTorEnabled") as? SwitchRow)?.value ?? false)
+            })
         }
-        .onCellSelection({ [weak self] _, row in
+        .onCellSelection({ [weak self] (cell, row) in
             guard !row.isDisabled else {
                 return
             }
 
+            cell.setSelected(false, animated: true)
+            
             let vc = BridgesConfViewController()
             vc.delegate = self
             let navC = UINavigationController(rootViewController: vc)
 
             self?.present(navC, animated: true)
         })
-
-        +++ Section()
-
-        if SecureEnclave.deviceSecured() {
-            form.last!
-            <<< SwitchRow("lock_app") {
-                switch SecureEnclave.biometryType() {
-                case .touchID:
-                    $0.title = NSLocalizedString("Lock App with Touch ID or Device Passcode", comment: "")
-
-                case .faceID:
-                    $0.title = NSLocalizedString("Lock App with Face ID or Device Passcode", comment: "")
-
-                default:
-                    $0.title = NSLocalizedString("Lock App with Device Passcode", comment: "")
-                }
-
-                $0.cellStyle = .subtitle
-
-                $0.cell.switchControl.onTintColor = .accent
-                $0.cell.textLabel?.numberOfLines = 0
-                $0.cell.detailTextLabel?.numberOfLines = 0
-            }
-            .cellUpdate({ cell, row in
-                if row.isDisabled && Settings.proofModeEncryptedPassphrase != nil {
-                    cell.detailTextLabel?.text = NSLocalizedString(
-                        "You cannot disable this as long as you have your ProofMode key secured.",
-                        comment: "")
-                }
-                else {
-                    cell.detailTextLabel?.text = nil
-                }
-            })
-            .onChange { [weak self] row in
-                let newValue: Bool
-
-                if row.value ?? false {
-                    newValue = SecureEnclave.createKey() != nil
-                }
-                else {
-                    newValue = !SecureEnclave.removeKey()
-                }
-
-                // Seems, we can't create a key. Maybe running on a simulator?
-                if newValue != row.value {
-                    // Quirky way of disabling the onChange callback to avoid an endless loop.
-                    self?.form.delegate = nil
-
-                    row.value = newValue
-                    row.updateCell()
-
-                    row.disabled = true
-                    row.evaluateDisabled()
-
-                    self?.form.delegate = self // Enable callback again.
-                }
-
-                // Fix spacing issues due to changes in number of displayed text lines.
-                row.reload()
-            }
-        }
-
-        form.last!
+        
+        +++ sectionWithTitle("General")
+        
         <<< SwitchRow() {
-            $0.title = NSLocalizedString("Allow 3rd-Party Keyboards", comment: "")
-            $0.value = Settings.thirdPartyKeyboards
-
+            $0.title = NSLocalizedString("Only upload media when you are connected to Wi-Fi", comment: "")
+            $0.value = Settings.wifiOnly
+            
+            $0.cell.textLabel?.numberOfLines = 0
             $0.cell.switchControl.onTintColor = .accent
+        }
+        .onChange { row in
+            Settings.wifiOnly = row.value ?? false
+            NotificationCenter.default.post(name: .uploadManagerDataUsageChange, object: Settings.wifiOnly)
+        }
+        
+        // MARK: Theme
+        //
+        <<< ActionSheetRow<String>() {
+            $0.title = NSLocalizedString("Theme", comment: "")
+            $0.value = interfaceStyleOptions[Settings.interfaceStyle.rawValue]
+            $0.options = interfaceStyleOptions
             $0.cell.textLabel?.numberOfLines = 0
         }
-        .onChange({ row in
-            Settings.thirdPartyKeyboards = row.value ?? false
-        })
-
-        <<< SwitchRow() {
-            $0.title = NSLocalizedString("Hide App Content when in Background", comment: "")
-            $0.value = Settings.hideContent
-
-            $0.cell.switchControl.onTintColor = .accent
-            $0.cell.textLabel?.numberOfLines = 0
+        .onCellSelection { (cell, row) in
+            cell.setSelected(false, animated: true)
         }
-        .onChange({ row in
-            Settings.hideContent = row.value ?? false
-        })
-
-        form
-        +++ Section(NSLocalizedString("Health Checks", comment: ""))
-
-        <<< SwitchRow("health_checks") {
-            $0.title = NSLocalizedString("Health Checks", comment: "")
-
-            $0.cellStyle = .subtitle
-
-            $0.cell.switchControl.onTintColor = .accent
-            $0.cell.textLabel?.numberOfLines = 0
-            $0.cell.detailTextLabel?.numberOfLines = 0
-        }
-        .cellUpdate { [weak self] cell, row in
-            let end = self?.consent?.end
-
-            cell.detailTextLabel?.text = row.value == true && end != nil
-                ? String(format: NSLocalizedString("Consent expires on %@.", comment: ""),
-                         Formatters.format(end!))
-                : NSLocalizedString("Help improve the app by running health checks when uploads fail.", comment: "")
-        }
-        .onChange { [weak self] row in
-            if row.value == true {
-                self?.navigationController?.pushViewController(ConsentViewController.new({ granted, _ in
-                    if granted {
-                        CleanInsights.shared.grant(campaign: Self.campaignId)
-                        CleanInsights.shared.grant(feature: .lang)
-
-                        self?.form.delegate = nil
-                        row.value = true
-                        self?.form.delegate = self
-
-                        self?.form.rowBy(tag: "health_checks")?.updateCell()
-                    }
-                    else {
-                        row.value = false // Will trigger #onChange again with other path.
-                    }
-                }), animated: true)
-            }
-            else {
-                CleanInsights.shared.deny(campaign: Self.campaignId)
-                self?.form.rowBy(tag: "health_checks")?.updateCell()
+        .onChange { row in
+            if row.value == self.interfaceStyleOptions[1] {
+                Utils.setLightMode()
+            } else if row.value == self.interfaceStyleOptions[2] {
+                Utils.setDarkMode()
+            } else {
+                Utils.setUnspecifiedMode()
             }
         }
     }
-
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        navigationController?.setNavigationBarHidden(false, animated: animated)
-
-        form.delegate = nil
-
-        form.rowBy(tag: "health_checks")?.value = consent?.state == .granted || consent?.state == .notStarted
-
-        if let lockAppRow = form.rowBy(tag: "lock_app") as? SwitchRow {
-            lockAppRow.value = SecureEnclave.loadKey() != nil
-
-            lockAppRow.disabled = .init(booleanLiteral: Settings.proofModeEncryptedPassphrase != nil)
-            lockAppRow.evaluateDisabled()
-
-            // Fix spacing issues due to changes in number of displayed text lines.
-            lockAppRow.reload()
+    
+    @objc func didTapPrivacyPolicyButton() {
+        if let url = URL(string: "https://open-archive.org/privacy") {
+            UIApplication.shared.open(url, options: [:])
         }
-
-        form.delegate = self
     }
-
-
+    
     // MARK: BridgesConfDelegate
-
+    
     var transport: IPtProxyUI.Transport {
         get {
             IPtProxyUI.Settings.transport
@@ -308,7 +360,7 @@ class GeneralSettingsViewController: FormViewController, BridgesConfDelegate {
             IPtProxyUI.Settings.transport = newValue
         }
     }
-
+    
     var customBridges: [String]? {
         get {
             IPtProxyUI.Settings.customBridges
@@ -317,10 +369,39 @@ class GeneralSettingsViewController: FormViewController, BridgesConfDelegate {
             IPtProxyUI.Settings.customBridges = newValue
         }
     }
-
+    
     func save() {
         DispatchQueue.global(qos: .userInitiated).async {
             TorManager.shared.reconfigureBridges()
         }
+    }
+    
+    func presentSetPasscodeScreen(animated: Bool = true) {
+        var options = ALOptions()
+        options.isSensorsEnabled = false
+        options.onSuccessfulDismiss = { (mode: ALMode?) in
+            if let mode = mode {
+                print("Password \(String(describing: mode))d successfully")
+                Settings.usePasscode = true
+                
+                if let lockAppRow = self.form.rowBy(tag: "lock_app") as? SwitchRow {
+                    lockAppRow.reload()
+                }
+            } else {
+                print("User Cancelled")
+                
+                Settings.usePasscode = false
+                
+                if let lockAppRow = self.form.rowBy(tag: "lock_app") as? SwitchRow {
+                    lockAppRow.value = false
+                    lockAppRow.reload()
+                }
+            }
+        }
+        options.onFailedAttempt = { (mode: ALMode?) in
+            print("Failed to \(String(describing: mode))")
+        }
+        
+        AppLocker.present(with: .create, and: options, animated: animated)
     }
 }

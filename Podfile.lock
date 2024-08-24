@@ -1,5 +1,4 @@
 PODS:
-  - Alamofire (5.4.4)
   - AlignedCollectionViewFlowLayout (1.1.2)
   - AppAuth (1.7.3):
     - AppAuth/Core (= 1.7.3)
@@ -7,7 +6,6 @@ PODS:
   - AppAuth/Core (1.7.3)
   - AppAuth/ExternalUserAgent (1.7.3):
     - AppAuth/Core
-  - CleanInsightsSDK (2.7.0)
   - CrossroadRegex (1.2.0)
   - DeviceKit (4.9.0)
   - Eureka (5.4.0)
@@ -48,8 +46,9 @@ PODS:
   - ProgressHUD (14.1.1)
   - ReachabilitySwift (5.0.0)
   - SDCAlertView (12.0.3)
-  - SwiftyDropbox (9.2.0):
-    - Alamofire (~> 5.4.3)
+  - SelectionList (1.4.3)
+  - SnapKit (5.7.1)
+  - SweeterSwift (1.2.4)
   - TLPhotoPicker (2.1.9)
   - Tor/Core (408.10.1)
   - Tor/CTor (408.10.1):
@@ -62,6 +61,7 @@ PODS:
     - Tor/GeoIP (~> 408.10)
   - UIImage-Resize (1.0.1)
   - UIImageViewAlignedSwift (0.8.2)
+  - Valet (4.2.0)
   - YapDatabase (4.1):
     - YapDatabase/Standard (= 4.1)
   - YapDatabase/Standard (4.1):
@@ -171,7 +171,6 @@ PODS:
 
 DEPENDENCIES:
   - AlignedCollectionViewFlowLayout (~> 1.1)
-  - CleanInsightsSDK (~> 2.6)
   - CrossroadRegex (from `https://github.com/crossroadlabs/Regex.git`, tag `1.2.0`)
   - Eureka (~> 5.3)
   - FavIcon (from `https://github.com/tladesignz/FavIcon.git`, branch `swift-5`)
@@ -184,19 +183,20 @@ DEPENDENCIES:
   - OrbotKit (~> 1.1)
   - ReachabilitySwift (~> 5.0)
   - SDCAlertView (~> 12.0)
-  - SwiftyDropbox (from `https://github.com/tladesignz/SwiftyDropbox.git`, branch `session_config`)
+  - SelectionList
+  - SnapKit (~> 5)
+  - SweeterSwift
   - TLPhotoPicker (from `https://github.com/tladesignz/TLPhotoPicker.git`)
   - TorManager (~> 0.3)
   - UIImage-Resize (~> 1.0)
   - UIImageViewAlignedSwift (~> 0.8)
+  - Valet
   - YapDatabase (from `https://github.com/tladesignz/YapDatabase.git`)
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
-    - Alamofire
     - AlignedCollectionViewFlowLayout
     - AppAuth
-    - CleanInsightsSDK
     - DeviceKit
     - Eureka
     - FontBlaster
@@ -213,10 +213,14 @@ SPEC REPOS:
     - ProgressHUD
     - ReachabilitySwift
     - SDCAlertView
+    - SelectionList
+    - SnapKit
+    - SweeterSwift
     - Tor
     - TorManager
     - UIImage-Resize
     - UIImageViewAlignedSwift
+    - Valet
 
 EXTERNAL SOURCES:
   CrossroadRegex:
@@ -228,9 +232,6 @@ EXTERNAL SOURCES:
   LibProofMode:
     :branch: main
     :git: https://gitlab.com/guardianproject/proofmode/libproofmode-ios.git
-  SwiftyDropbox:
-    :branch: session_config
-    :git: https://github.com/tladesignz/SwiftyDropbox.git
   TLPhotoPicker:
     :git: https://github.com/tladesignz/TLPhotoPicker.git
   YapDatabase:
@@ -246,9 +247,6 @@ CHECKOUT OPTIONS:
   LibProofMode:
     :commit: d5b160af288db2d5c6486fb269374b7f8516d5da
     :git: https://gitlab.com/guardianproject/proofmode/libproofmode-ios.git
-  SwiftyDropbox:
-    :commit: ae66d3b5a31a0a51bb360052e0985b8678f68b6a
-    :git: https://github.com/tladesignz/SwiftyDropbox.git
   TLPhotoPicker:
     :commit: 91abdc52e241936bbad850736af7dcb9adcd389d
     :git: https://github.com/tladesignz/TLPhotoPicker.git
@@ -257,10 +255,8 @@ CHECKOUT OPTIONS:
     :git: https://github.com/tladesignz/YapDatabase.git
 
 SPEC CHECKSUMS:
-  Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
   AlignedCollectionViewFlowLayout: ee2ef451e741ec08f8e0967d828001e2f051c20a
   AppAuth: a13994980c1ec792f7e2e665acd4d4aa6be43240
-  CleanInsightsSDK: 758f2c056ad4602304fefb2711b94e70607a96f1
   CrossroadRegex: 9af32b4b4dc6ff404c87647ef1bc68ea711cc570
   DeviceKit: 847709bf70b78fd9ab765bd571fb9f5f815c3fc1
   Eureka: fadaa9fa3d6e402d3c60f78f24edf3d7bafc9c29
@@ -280,14 +276,17 @@ SPEC CHECKSUMS:
   ProgressHUD: abb9136ae23c85204236828562cb9a8ec98efb44
   ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
   SDCAlertView: cec2dd84906b1fb30490ea59f50d1666f797be6f
-  SwiftyDropbox: 073c7e0852bf50d858163140f56d0a1133b79b48
+  SelectionList: 239bf78cd023f8a8f4e6cd82fd936c17ba665b81
+  SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
+  SweeterSwift: e6bea24d601e7e5aa4f74bc87d022cffe58e848f
   TLPhotoPicker: 2e7caa72ec0cb29d1c85543b252a02d56aeede01
   Tor: 4aa4aee031f892efa43d1afb01c90565990c6312
   TorManager: 807c0f9c70923faead3a4f5f3b921b0b4b498f17
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
+  Valet: 371e7c0b0387f0659bb23ddd255c4718ca1f0ef9
   YapDatabase: c9924a3d45245d6878d0bf8172cb22a8522aa012
 
-PODFILE CHECKSUM: 77e8b4c446c26c756ca3548295ff8b5f43115a3a
+PODFILE CHECKSUM: 65784208228a01f97e8f139a9088524eb03c160e
 
 COCOAPODS: 1.15.2

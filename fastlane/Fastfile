@@ -1,55 +1,90 @@
-# This file contains the fastlane.tools configuration
-# You can find the documentation at https://docs.fastlane.tools
-#
-# For a list of all available actions, check out
-#
-#     https://docs.fastlane.tools/actions
-#
-# For a list of all available plugins, check out
-#
-#     https://docs.fastlane.tools/plugins/available-plugins
-#
-
-# Uncomment the line if you want fastlane to automatically update itself
-# update_fastlane
-
-default_platform(:ios)
+default_platform :ios
 
 platform :ios do
-  desc "Generate app icon"
-  lane :app_icon do
-    appicon(
-      appicon_image_file: 'fastlane/metadata/app_icon.png',
-      appicon_devices: [:ipad, :iphone, :ios_marketing],
-      appicon_path: "OpenArchive/Assets.xcassets"
+#  before_all do
+#    setup_circle_ci
+#    cocoapods
+#  end
+
+  desc "Run unit tests"
+  lane :test do
+    scan
+  end
+
+  desc "Build for local testing"
+  lane :local do
+    app_store_connect_api_key
+    sync_code_signing
+    increment_build_number_in_xcodeproj(
+		scheme: "Save - Release"
+	)
+    build_ios_app
+  end
+
+  desc "Prepare the app for dev or build"
+  lane :prepare do
+    produce(
+        app_identifier: "org.open-archive.save",
+        app_name: "Save",
+        skip_itc: true
+    )
+    match(
+        app_identifier: ["org.open-archive.save"],
+        type: "development",
+    )
+    match(
+        app_identifier: ["org.open-archive.save",
+"org.open-archive.save.extension"],
+        type: "appstore",
     )
   end
 
-  desc "Generate new localized screenshots"
-  lane :screenshots do
-    capture_screenshots(workspace: "Save.xcworkspace", scheme: "Screenshots")
+  desc "Build and upload to TestFlight for internal testing"
+  lane :tf do
+    app_store_connect_api_key
+    sync_code_signing
+    increment_build_number_in_xcodeproj
+    build_ios_app(
+      export_options: {
+        provisioningProfiles: {
+          "org.open-archive.save" => "match AppStore org.open-archive.save",
+          "org.open-archive.save.extension" => "match AppStore
+org.open-archive.save.ShareExtension",
+        }
+      }
+    )
+    add_git_tag
+    push_to_git_remote
+    upload_to_testflight
+    # upload_symbols_to_crashlytics
   end
 
-  desc "Upload App Store Metadata"
-  lane :upload_metadata do
-    deliver(
-      skip_binary_upload: true,
-      skip_app_version_update: true,
-
-      skip_screenshots: true,
-
-      force: true,
+  desc "Build and upload to TestFlight for internal and external testing"
+  lane :beta do
+    app_store_connect_api_key
+    sync_code_signing
+    increment_build_number_in_xcodeproj
+    build_ios_app
+    add_git_tag
+    push_to_git_remote
+    upload_to_testflight(
+        distribute_external: true,
+        groups: "Beta Testers",
+        submit_beta_review: true
     )
+    # upload_symbols_to_crashlytics
   end
 
-  desc "Upload App Store Screenshots"
-  lane :upload_screenshots do
-    deliver(
-      skip_binary_upload: true,
-      skip_app_version_update: true,
-
-      skip_metadata: true,
-      overwrite_screenshots: true,
-    )
+  desc "Build and upload to the App Store"
+  lane :release do
+    ensure_no_debug_code(text: "FIXME")
+    app_store_connect_api_key
+    sync_code_signing
+    increment_build_number_in_xcodeproj
+    build_ios_app
+    add_git_tag
+    push_to_git_remote
+    upload_to_app_store
+    # upload_symbols_to_crashlytics
   end
 end

@@ -28,7 +28,7 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
 
     private static let slides = [
         SlideViewController.Slide(
-            heading: NSLocalizedString("Share", comment: "").localizedUppercase,
+            heading: NSLocalizedString("Secure", comment: "").localizedUppercase,
             text: NSLocalizedString(
                 "Upload verified media to your chosen server. Add a Creative Commons license to communicate your intentions for future use.",
                 comment: ""),
@@ -162,7 +162,7 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
             navC.setRoot()
 
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                (navC.topViewController as? MainViewController)?.addSpace()
+//                (navC.topViewController as? MainViewController)?.addSpace()
             }
         }
     }

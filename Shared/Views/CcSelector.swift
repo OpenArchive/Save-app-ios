@@ -64,7 +64,7 @@ class CcSelector {
 
     let licenseRow = LinkRow() {
         $0.cell.textLabel?.adjustsFontSizeToFitWidth = true
-
+        $0.cell.backgroundColor = .clear
         $0.hidden = "$cc != true"
     }
 

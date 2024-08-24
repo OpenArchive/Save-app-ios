@@ -10,8 +10,7 @@ import UIKit
 import YapDatabase
 
 class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,
-                          UINavigationControllerDelegate, SideMenuDelegate,
-                          AssetPickerDelegate
+                          UINavigationControllerDelegate, AssetPickerDelegate, PasscodeLockViewControllerDelegate
 {
 
     private static let segueConnectSpace = "connectSpaceSegue"
@@ -22,18 +21,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     @IBOutlet weak var removeBt: UIButton! {
         didSet {
             removeBt.isHidden = true
-        }
-    }
-
-    @IBOutlet weak var menuBt: UIButton! {
-        didSet {
-            menuBt.accessibilityIdentifier = "btMenu"
-        }
-    }
-
-    @IBOutlet weak var menu: UIView! {
-        didSet {
-            menu.isHidden = true
         }
     }
 
@@ -69,13 +56,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
     @IBOutlet weak var collectionView: UICollectionView!
 
-    @IBOutlet weak var bottomMenu: UIView! {
-        didSet {
-            // Only round top corners.
-            bottomMenu.layer.cornerRadius = 9
-            bottomMenu.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        }
-    }
+    @IBOutlet weak var bottomMenu: UIView! 
 
     @IBOutlet weak var myMediaBt: UIButton! {
         didSet {
@@ -126,14 +107,14 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
     }
 
-    var selectedProject: Project? {
-        get {
-            sideMenu.selectedProject
-        }
-        set {
-            sideMenu.selectedProject = newValue
-        }
-    }
+//    var selectedProject: Project? {
+//        get {
+//            sideMenu.selectedProject
+//        }
+//        set {
+//            sideMenu.selectedProject = newValue
+//        }
+//    }
 
     private lazy var uploadsReadConn = Db.newLongLivedReadConn()
 
@@ -152,38 +133,35 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     private lazy var assetsReadConn = Db.newLongLivedReadConn()
 
     private lazy var assetsMappings = AbcFilteredByProjectView.createMappings()
-
+    
+    var picker = UIImagePickerController()
+    
     private var inEditMode = false
 
-    private lazy var sideMenu: SideMenuViewController = {
-        let vc = SideMenuViewController()
-        vc.delegate = self
-        vc.projectsConn = projectsReadConn
-        vc.projectsMappings = projectsMappings
-
-        addChild(vc)
-        menu.addSubview(vc.view)
-
-        vc.view.translatesAutoresizingMaskIntoConstraints = false
-        vc.view.leadingAnchor.constraint(equalTo: menu.leadingAnchor).isActive = true
-        vc.view.topAnchor.constraint(equalTo: menu.topAnchor).isActive = true
-        vc.view.trailingAnchor.constraint(equalTo: menu.trailingAnchor).isActive = true
-        vc.view.bottomAnchor.constraint(equalTo: menu.bottomAnchor).isActive = true
-
-        vc.didMove(toParent: self)
-
-        return vc
-    }()
-
-    private lazy var settingsVc: SettingsViewController = {
-        let vc = UIStoryboard.main.instantiate(SettingsViewController.self)
-
-        return vc
+    private lazy var settingsVc: UIViewController = {
+        return GeneralSettingsViewController()
     }()
 
     private lazy var assetPicker = AssetPicker(self)
 
-
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+    }
+    
+    func checkPasscode() {
+        if KeychainManager.shared.getPasscode() == nil {
+            // No passcode set, prompt to set one
+            presentSetPasscodeScreen()
+        } else {
+            // Passcode exists, present lock screen
+            presentPasscodeLockScreen()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -203,6 +181,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 LocationMananger.shared.requestAuthorization()
             }
         }
+        
+        myMediaBt.setImage(UIImage(systemName: "photo.fill"))
+        settingsBt.setImage(UIImage(systemName: "gearshape"))
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -229,11 +210,11 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
         // When we add while in edit mode, the edit mode is still on, but nothing is selected.
         // Fix this situation.
-        if inEditMode && collectionView.numberOfSelectedItems < 1 {
-            toggleMode()
-        }
+//        if inEditMode && collectionView.numberOfSelectedItems < 1 {
+//            toggleMode()
+//        }
 
-        updateManageBt()
+//        updateManageBt()
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -353,121 +334,68 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
     }
 
-
-    // MARK: SideMenuDelegate
-
-    func hideMenu() {
-        toggleMenu(false)
-    }
-
-    func selected(project: Project?) {
-        toggleMenu(false)
-
-        if AbcFilteredByProjectView.projectId != project?.id {
-            toggleMode(newMode: false)
-        }
-
-        updateProject()
-    }
-
-    func addSpace() {
-        toggleMenu(false) { [weak self] _ in
-            self?.performSegue(withIdentifier: Self.segueConnectSpace, sender: self)
-        }
-    }
-
-
     // MARK: Actions
 
     @IBAction func hideSettings() {
-        toggleMenu(false) { _ in
-            self.container.hide(animated: true) { _ in
-                self.settingsVc.view.removeFromSuperview()
-                self.settingsVc.removeFromParent()
-            }
+        myMediaBt.setImage(UIImage(systemName: "photo.fill"))
+        settingsBt.setImage(UIImage(systemName: "gearshape"))
+        
+        self.container.hide(animated: true) { _ in
+            self.settingsVc.view.removeFromSuperview()
+            self.settingsVc.removeFromParent()
         }
     }
 
     @IBAction func showSettings() {
-        toggleMenu(false) { _ in
-            self.container.addSubview(self.settingsVc.view)
+        myMediaBt.setImage(UIImage(systemName: "photo"))
+        settingsBt.setImage(UIImage(systemName: "gearshape.fill"))
+        
+        self.container.addSubview(self.settingsVc.view)
 
-            self.container.translatesAutoresizingMaskIntoConstraints = false
-            self.settingsVc.view.translatesAutoresizingMaskIntoConstraints = false
+        self.container.translatesAutoresizingMaskIntoConstraints = false
+        self.settingsVc.view.translatesAutoresizingMaskIntoConstraints = false
 
-            self.container.topAnchor.constraint(equalTo: self.settingsVc.view.topAnchor).isActive = true
-            self.container.bottomAnchor.constraint(equalTo: self.settingsVc.view.bottomAnchor).isActive = true
-            self.container.leadingAnchor.constraint(equalTo: self.settingsVc.view.leadingAnchor).isActive = true
-            self.container.trailingAnchor.constraint(equalTo: self.settingsVc.view.trailingAnchor).isActive = true
+        self.container.topAnchor.constraint(equalTo: self.settingsVc.view.topAnchor).isActive = true
+        self.container.bottomAnchor.constraint(equalTo: self.settingsVc.view.bottomAnchor).isActive = true
+        self.container.leadingAnchor.constraint(equalTo: self.settingsVc.view.leadingAnchor).isActive = true
+        self.container.trailingAnchor.constraint(equalTo: self.settingsVc.view.trailingAnchor).isActive = true
 
-            self.addChild(self.settingsVc)
-            self.settingsVc.didMove(toParent: self)
+        self.addChild(self.settingsVc)
+        self.settingsVc.didMove(toParent: self)
 
-            self.container.show2(animated: true)
-        }
+        self.container.show2(animated: true)
     }
 
-    @IBAction func toggleMenu() {
-        if menu.isHidden {
-            sideMenu.reload()
-        }
+//    @IBAction func toggleMenu() {
+//        if menu.isHidden {
+//            sideMenu.reload()
+//        }
+//
+//        toggleMenu(menu.isHidden)
+//    }
 
-        toggleMenu(menu.isHidden)
-    }
-
-    @IBAction func addFolder() {
-        toggleMode(newMode: false)
-
-        toggleMenu(false) { _ in
-            if SelectedSpace.available {
-                let vc = UINavigationController(rootViewController: AppAddFolderViewController())
-                vc.modalPresentationStyle = .popover
-                vc.popoverPresentationController?.sourceView = self.menuBt
-                vc.popoverPresentationController?.sourceRect = self.menuBt.bounds
-
-                self.present(vc, animated: true)
-            }
-            else {
-                self.performSegue(withIdentifier: Self.segueConnectSpace, sender: self)
-            }
-        }
-    }
+//    @IBAction func addFolder() {
+//        toggleMode(newMode: false)
+//
+//        toggleMenu(false) { _ in
+//            if SelectedSpace.available {
+//                let vc = UINavigationController(rootViewController: AppAddFolderViewController())
+//                vc.modalPresentationStyle = .popover
+//                vc.popoverPresentationController?.sourceView = self.menuBt
+//                vc.popoverPresentationController?.sourceRect = self.menuBt.bounds
+//
+//                self.present(vc, animated: true)
+//            }
+//            else {
+//                self.performSegue(withIdentifier: Self.segueConnectSpace, sender: self)
+//            }
+//        }
+//    }
 
     @IBAction func add() {
-        closeAddMenu()
-
-        // Don't allow to add assets without a space or a project.
-        if selectedProject == nil {
-            return FolderInfoAlert.presentIfNeeded(self) { [weak self] in
-                self?.addFolder()
-            }
+        getImageFromUser() { (image, error) in
+            log.debug("Got media!")
         }
-
-        AddInfoAlert.presentIfNeeded(self)
-
-        assetPicker.pickMedia()
-    }
-
-    @IBAction func showAddMenu() {
-        addMenu.show2(animated: true)
-    }
-
-    @IBAction func closeAddMenu() {
-        addMenu.hide(animated: true)
-    }
-
-    /**
-     Deactivated, was deemed too confusing.
-     */
-    @IBAction func addDocument() {
-        closeAddMenu()
-
-        // Don't allow to add assets without a space or a project.
-        if selectedProject == nil {
-            return addFolder()
-        }
-
-        assetPicker.pickDocuments()
     }
 
     @IBAction func longPressItem(_ sender: UILongPressGestureRecognizer) {
@@ -501,11 +429,14 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     // MARK: AssetPickerDelegate
 
     var currentCollection: Collection? {
-        selectedProject?.currentCollection
+        return nil // selectedProject?.currentCollection
     }
 
     func picked() {
-        performSegue(withIdentifier: Self.segueShowPreview, sender: nil)
+        dismiss(animated: true)
+//        {
+//            self.performSegue(withIdentifier: Self.segueShowPreview, sender: nil)
+//        }
     }
 
 
@@ -555,7 +486,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             // because config changes happen in popovers.
 
             updateSpace()
-            sideMenu.reload()
             updateProject()
         }
 
@@ -564,7 +494,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         if let changes = collectionsReadConn?.getChanges(collectionsMappings) {
             // We need to recognize changes in `Collection` objects used in the
             // section headers.
-            forceFull = changes.forceFull || changes.rowChanges.contains(where: { $0.type == .update && $0.finalGroup == selectedProject?.id })
+            forceFull = changes.forceFull // || changes.rowChanges.contains(where: { $0.type == .update && $0.finalGroup == selectedProject?.id })
         }
 
         // Always, always, always force a full reload if anything changed.
@@ -584,9 +514,14 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 return
             }
 
-            self.folderAssetCountLb.text = "  \(Formatters.format(self.assetsMappings.numberOfItemsInAllGroups()))  "
+            let count = Formatters.format(self.assetsMappings.numberOfItemsInAllGroups())
+            
+            self.folderAssetCountLb.text = "  \(count)  "
 
+            log.debug("countChanged = \(countChanged) count = \(count)")
+            
             if self.collectionView.isHidden != (self.numberOfSections(in: self.collectionView) < 1) {
+                log.debug("xxx")
                 self.collectionView.toggle(self.collectionView.isHidden, animated: true)
             }
         }
@@ -647,52 +582,21 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     private func updateSpace() {
         if let space = SelectedSpace.space {
             spaceFavIcon.image = space.favIcon
-            sideMenu.space = space
         }
         else {
             spaceFavIcon.image = SelectedSpace.defaultFavIcon
-            sideMenu.space = nil
-        }
-
-        if !container.isHidden {
-            settingsVc.reload()
         }
     }
 
     private func updateProject() {
-        let project = selectedProject
-
-        AbcFilteredByProjectView.updateFilter(project?.id)
-
-        folderNameLb.text = project?.name
+//        let project = selectedProject
+//
+//        AbcFilteredByProjectView.updateFilter(project?.id)
+//
+//        folderNameLb.text = project?.name
     }
 
     private func getSelectedAssets() -> [Asset] {
         assetsReadConn?.objects(at: collectionView.indexPathsForSelectedItems, in: assetsMappings) ?? []
-    }
-
-    private func toggleMenu(_ toggle: Bool, _ completion: ((_ finished: Bool) -> Void)? = nil) {
-        guard menu.isHidden != !toggle else {
-            completion?(true)
-            return
-        }
-
-        if toggle {
-            if !SelectedSpace.available {
-                addSpace()
-            }
-            else {
-                menu.isHidden = false
-
-                sideMenu.animate(toggle, completion)
-            }
-        }
-        else {
-            sideMenu.animate(toggle) { finished in
-                self.menu.isHidden = true
-
-                completion?(finished)
-            }
-        }
     }
 }

@@ -34,7 +34,6 @@ class Db {
 
         Space.fixArchiverName() // Needed for screenshot testing.
         WebDavSpace.fixArchiverName()
-        DropboxSpace.fixArchiverName()
         IaSpace.fixArchiverName()
         GdriveSpace.fixArchiverName()
         shared?.setObjectPolicy(.copy, forCollection: Space.collection)

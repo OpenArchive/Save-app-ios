@@ -13,7 +13,6 @@ import Eureka
  Own base class of Eureka's FormViewController which adds our own base style:
 
  - UITableView.Style.plain instead of .grouped
- - White background
  - No trailing empty cells
  - Own special header
  */
@@ -34,22 +33,22 @@ class FormViewController: Eureka.FormViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        if #available(iOS 15.0, *) {
-            tableView.sectionHeaderTopPadding = 0
-        }
-
-        tableView.register(TableHeader.nib, forHeaderFooterViewReuseIdentifier: TableHeader.reuseId)
-
-        if #available(iOS 13.0, *) {
-            tableView?.backgroundColor = .systemBackground
-        }
-        else {
-            tableView?.backgroundColor = .white
-        }
-        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
-
-        view.tintColor = .accent
-        NavigationAccessoryView.appearance().tintColor = .accent
+//        if #available(iOS 15.0, *) {
+//            tableView.sectionHeaderTopPadding = 0
+//        }
+//
+//        tableView.register(TableHeader.nib, forHeaderFooterViewReuseIdentifier: TableHeader.reuseId)
+//
+//        if #available(iOS 13.0, *) {
+//            tableView?.backgroundColor = .systemBackground
+//        }
+//        else {
+//            tableView?.backgroundColor = .white
+//        }
+//        tableView.tableFooterView = UIView(frame: CGRect(x: 0, y: 0, width: tableView.frame.size.width, height: 1))
+//
+//        view.tintColor = .accent
+//        NavigationAccessoryView.appearance().tintColor = .accent
     }
 
     override func keyboardWillShow(_ notification: Notification) {
@@ -64,13 +63,13 @@ class FormViewController: Eureka.FormViewController {
 
     // MARK: UITableViewDelegate
 
-    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> TableHeader? {
-        return tableView.dequeueReusableHeaderFooterView(withIdentifier: TableHeader.reuseId) as? TableHeader
-    }
-
-    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return TableHeader.reducedHeight
-    }
+//    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> TableHeader? {
+//        return tableView.dequeueReusableHeaderFooterView(withIdentifier: TableHeader.reuseId) as? TableHeader
+//    }
+//
+//    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+//        return TableHeader.reducedHeight
+//    }
 
 
     // MARK: Actions

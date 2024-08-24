@@ -261,7 +261,9 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
      Shall be called, when something changes the database.
      */
     @objc func yapDatabaseModified(notification: Notification) {
+        // log.debug("modified")
         if spacesConn?.hasChanges(spacesMappings) ?? false {
+            log.debug("reloading")
             spacesTable.reloadData()
         }
     }

@@ -114,7 +114,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         animateDuringKeyboardMovement(notification)
     }
 
-    override func keyboardWillBeHidden(notification: Notification) {
+    override func keyboardWillHide(notification: Notification) {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .done, target: self, action: #selector(dismiss(_:)))
 

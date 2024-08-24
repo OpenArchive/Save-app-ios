@@ -12,7 +12,6 @@ class SettingsViewController: UIViewController {
 
     private static let webDavSettingsSegue = "webDavSettingsSegue"
     private static let iaSettingsSegue = "iaSettingsSegue"
-    private static let dropboxSettingsSegue = "dropboxSettingsSegue"
     private static let gdriveSettingsSegue = "gdriveSettingsSegue"
 
     @IBOutlet weak var generalBt: UIButton! {
@@ -109,9 +108,6 @@ class SettingsViewController: UIViewController {
         switch SelectedSpace.space {
         case is IaSpace:
             segue = Self.iaSettingsSegue
-
-        case is DropboxSpace:
-            segue = Self.dropboxSettingsSegue
 
         case is GdriveSpace:
             segue = Self.gdriveSettingsSegue

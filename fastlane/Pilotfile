@@ -1,0 +1,3 @@
+distribute_external(true)
+expire_previous_builds(true)
+notify_external_testers(true)

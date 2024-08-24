@@ -10,7 +10,7 @@ import UIKit
 import Eureka
 import LibProofMode
 
-class ProofModeSettingsViewController: FormViewController {
+class ProofModeSettingsViewController: Eureka.FormViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +28,7 @@ class ProofModeSettingsViewController: FormViewController {
         }
         .cellUpdate { cell, _ in
             cell.detailTextLabel?.text = NSLocalizedString("Capture extra metadata and notarize all media.", comment: "")
+            cell.detailTextLabel?.textColor = .mediumContrastForeground
         }
         .onChange { [weak self] row in
             Settings.proofMode = row.value ?? false
@@ -73,11 +74,16 @@ class ProofModeSettingsViewController: FormViewController {
                 $0.cell.switchControl.onTintColor = .accent
                 $0.cell.textLabel?.numberOfLines = 0
                 $0.cell.detailTextLabel?.numberOfLines = 0
+                
+                $0.hidden = Condition.function(["proof_mode"], { (form) in
+                    return !((form.rowBy(tag: "proof_mode") as? SwitchRow)?.value ?? false)
+                })
             }
             .cellUpdate { cell, _ in
                 cell.detailTextLabel?.text = NSLocalizedString(
                     "Changing this will create a new key! If you exported and signed that one before, you will need to do it again with the new one.",
                     comment: "")
+                cell.detailTextLabel?.textColor = .mediumContrastForeground
             }
             .onChange { [weak self] row in
                 let update = { (passphrase: String?) in
@@ -133,8 +139,8 @@ class ProofModeSettingsViewController: FormViewController {
         form
         +++ ButtonRow("proof_mode_key_share") {
             $0.title = NSLocalizedString("Share ProofMode Public Key", comment: "")
-            $0.disabled = .function([], { form in
-                !(URL.proofModePublicKey?.exists ?? false)
+            $0.hidden = Condition.function(["proof_mode"], { (form) in
+                return !((form.rowBy(tag: "proof_mode") as? SwitchRow)?.value ?? false)
             })
         }
         .onCellSelection({ [weak self] cell, row in

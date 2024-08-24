@@ -8,12 +8,35 @@
 
 import UIKit
 import UserNotifications
-import SwiftyDropbox
-import CleanInsightsSDK
+
 import LibProofMode
+import Logging
+import LoggingSwiftyBeaver
 import GoogleSignIn
 import TorManager
 import OrbotKit
+
+let transitioningDelegate = CustomTransitioningDelegate()
+
+let feedbackGenerator = UIImpactFeedbackGenerator()
+
+let log: Logger = {
+    Logger(label: "org.open-archive.Save") { (label) in
+        let console: ConsoleDestination = {
+            let destination = ConsoleDestination()
+            destination.levelColor.debug = "🦋 "
+            destination.levelColor.info = "🍀 "
+            destination.levelColor.warning = "💥 "
+            destination.levelColor.error = "💀 "
+            destination.format = "$DHH:mm:ss.SSS$d $C$L$c $N.$F:$l - $M"
+            return destination
+        }()
+        
+        return SwiftyBeaver.LogHandler(label, destinations: [
+            console
+        ])
+    }
+}()
 
 class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
@@ -52,20 +75,18 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         UNUserNotificationCenter.current().delegate = self
 
         window?.tintColor = .accent
+        
+        Utils.setInterfaceStyle(Settings.interfaceStyle)
 
         Db.setup()
 
         uploadManager = UploadManager.shared
 
-        cleanCache()
-
-        setUpDropbox()
-
         setUpGdrive()
 
         UIFont.setUpMontserrat()
 
-        setUpOrbotAndTor()
+        // setUpOrbotAndTor()
 
         return true
     }
@@ -83,8 +104,6 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-
-        CleanInsights.shared.persist()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -170,8 +189,6 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
 
         TorManager.shared.stop()
-
-        cleanCache()
     }
 
     func application(_ app: UIApplication, open url: URL,
@@ -189,59 +206,6 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 
         if GIDSignIn.sharedInstance.handle(url) {
             return true
-        }
-
-        DropboxClientsManager.handleRedirectURL(url) { [weak self] authResult in
-            switch authResult {
-            case .success(let token):
-                debugPrint("[\(String(describing: type(of: self)))] dropbox auth success")
-
-                let space = DropboxSpace()
-                space.username = token.uid
-                space.password = token.accessToken
-                SelectedSpace.space = space
-
-                CleanInsights.shared.measure(event: "backend", "new", forCampaign: "upload_fails", name: space.name)
-
-                let group = DispatchGroup()
-                group.enter()
-
-                Db.writeConn?.asyncReadWrite() { tx in
-                    SelectedSpace.store(tx)
-
-                    tx.setObject(space)
-
-                    group.leave()
-                }
-
-                DispatchQueue.global(qos: .background).async {
-                    group.wait()
-
-                    DropboxConduit.client?.users?.getCurrentAccount().response(completionHandler: { account, error in
-                        space.email = account?.email
-
-                        Db.writeConn?.setObject(space)
-                    })
-                }
-
-                if let navC = self?.mainVc?.presentedViewController as? UINavigationController,
-                   let vc = navC.viewControllers.first as? SpaceWizardViewController
-                {
-                    let successVc = UIStoryboard.main.instantiate(SpaceSuccessViewController.self)
-                    successVc.spaceName = DropboxSpace.defaultPrettyName
-
-                    vc.next(successVc, pos: 2)
-                }
-
-            case .cancel, .none:
-                debugPrint("[\(String(describing: type(of: self)))] dropbox auth cancelled")
-                // Nothing to do. User cancelled. Dropbox authentication scene should close automatically.
-
-            case .error(let error, let description):
-                debugPrint("[\(String(describing: type(of: self)))] dropbox auth error=\(error), description=\(description ?? "nil")")
-                // Nothing to do. User bailed out after login.
-                // Dropbox authentication scene should close automatically.
-            }
         }
 
         return true
@@ -310,7 +274,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                 // When launching, the app needs some time to initialize everything,
                 // otherwise it will crash.
                 DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    mainVc.selectedProject = project
+//                    mainVc.selectedProject = project
                     mainVc.updateFilter()
                     mainVc.picked()
                 }
@@ -318,12 +282,6 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         }
 
         completionHandler()
-    }
-
-    func setUpDropbox() {
-        DropboxClientsManager.setupWithAppKey(
-            Constants.dropboxKey,
-            transportClient: DropboxConduit.transportClient(unauthorized: true))
     }
 
     func setUpGdrive() {
@@ -354,57 +312,6 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
             OrbotManager.shared.alertCannotUpload()
         }
     }
-
-    /**
-     Somehow SwiftyDropbox still leaves traces in the URL cache, even, if we configure it to not cache anything.
-
-     So, we clean the cache here as a last resort.
-
-     Additionally, when Dropbox authentication is done via a web view, there's also remnants we try to remove here.
-     */
-    func cleanCache() 
-    {
-        // This will clean the contents of the Cache.db file, but unfortunately not
-        // backup copies, which also exist.
-        URLCache.shared.removeAllCachedResponses()
-
-        let fm = FileManager.default
-
-        if let id = Bundle.main.bundleIdentifier,
-           let cache = fm.urls(for: .cachesDirectory, in: .userDomainMask).first?.appendingPathComponent(id),
-           cache.exists
-        {
-            do {
-                // Try to remove *all* URL cache files.
-                try fm.removeItem(at: cache)
-            }
-            catch {
-                debugPrint(error)
-            }
-        }
-
-        // Remove cached files from Dropbox web authentication.
-        if let safariLib = fm.urls(for: .libraryDirectory, in: .userDomainMask).first?
-            .appendingPathComponent("..")
-            .appendingPathComponent("SystemData")
-            .appendingPathComponent("com.apple.SafariViewService")
-            .appendingPathComponent("Library"),
-           safariLib.exists
-        {
-            do {
-                try fm.removeItem(at: safariLib)
-            }
-            catch {
-                debugPrint(error)
-            }
-        }
-    }
-}
-
-extension CleanInsights {
-
-    static var shared = try! CleanInsights(
-        jsonConfigurationFile: Bundle.main.url(forResource: "cleaninsights-dev", withExtension: "json")!)
 }
 
 extension TorManager {
