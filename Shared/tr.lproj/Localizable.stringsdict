@@ -18,38 +18,6 @@
 			<string>%u öge</string>
 		</dict>
 	</dict>
-	<key>%2$u of %1$u item(s) uploaded</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@text@</string>
-		<key>text</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%2$u / %1$u öge yüklendi</string>
-			<key>other</key>
-			<string>%2$u / %1$u öge yüklendi</string>
-		</dict>
-	</dict>
-	<key>%u Item(s) Uploaded</key>
-	<dict>
-		<key>NSStringLocalizedFormatKey</key>
-		<string>%#@items_uploaded@</string>
-		<key>items_uploaded</key>
-		<dict>
-			<key>NSStringFormatSpecTypeKey</key>
-			<string>NSStringPluralRuleType</string>
-			<key>NSStringFormatValueTypeKey</key>
-			<string>u</string>
-			<key>one</key>
-			<string>%u öge yüklendi</string>
-			<key>other</key>
-			<string>%u öge yüklendi</string>
-		</dict>
-	</dict>
 	<key>%u Item(s) Selected</key>
 	<dict>
 		<key>NSStringLocalizedFormatKey</key>
