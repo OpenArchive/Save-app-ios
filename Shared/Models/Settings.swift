@@ -26,6 +26,7 @@ class Settings {
     private static let kThirdPartyKeyboards = "third_party_keyboards"
     private static let kHideContent = "hide_content"
     private static let kFirstFolderDone = "first_folder_done"
+    private static let kInterfaceStyle = "interface_style"
 
     private class var defaults: UserDefaults? {
         UserDefaults(suiteName: Constants.suiteName)
@@ -33,6 +34,16 @@ class Settings {
 
     // MARK: Operating Settings
 
+    class var interfaceStyle: UIUserInterfaceStyle {
+        get {
+            let val = defaults?.integer(forKey: kInterfaceStyle) ?? 0
+            return UIUserInterfaceStyle(rawValue: val) ?? .unspecified
+        }
+        set {
+            defaults?.set(newValue.rawValue, forKey: kInterfaceStyle)
+        }
+    }
+    
     class var wifiOnly: Bool {
         get {
             defaults?.bool(forKey: kWifiOnly) ?? false

@@ -11,7 +11,7 @@ import UIKit
 class AddFolderViewController: BaseViewController {
 
     var noBrowse: Bool {
-        SelectedSpace.space is IaSpace || SelectedSpace.space is DropboxSpace
+        SelectedSpace.space is IaSpace
     }
 
 

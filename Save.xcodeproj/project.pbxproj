@@ -9,6 +9,20 @@
 /* Begin PBXBuildFile section */
 		6C7C2C3525A4B8B8BC2F0728 /* Pods_ShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BB8795B24EAF01D5B012DD8C /* Pods_ShareExtension.framework */; };
 		83983C39A73BA40904C637BF /* Pods_Save_Screenshots.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = AAF278D72999D4B24346F09C /* Pods_Save_Screenshots.framework */; };
+		99FAAEBE2CCAC1F600C05DFC /* NSMutableAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99FAAEBD2CCAC1F600C05DFC /* NSMutableAttributedString.swift */; };
+		99FAAEBF2CCAC1F600C05DFC /* NSMutableAttributedString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99FAAEBD2CCAC1F600C05DFC /* NSMutableAttributedString.swift */; };
+		99FAAEC12CCBFF4900C05DFC /* UIFontExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99FAAEC02CCBFF1000C05DFC /* UIFontExtensions.swift */; };
+		99FAAEC22CCBFF4900C05DFC /* UIFontExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99FAAEC02CCBFF1000C05DFC /* UIFontExtensions.swift */; };
+		99FAAEC42CCC002300C05DFC /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99FAAEC32CCC001900C05DFC /* UIColorExtensions.swift */; };
+		99FAAEC52CCC002300C05DFC /* UIColorExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99FAAEC32CCC001900C05DFC /* UIColorExtensions.swift */; };
+		99FAAEC72CCC136600C05DFC /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99FAAEC62CCC136300C05DFC /* Utils.swift */; };
+		99FAAEC82CCC136600C05DFC /* Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99FAAEC62CCC136300C05DFC /* Utils.swift */; };
+		99FAAECA2CCC14D500C05DFC /* IntExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99FAAEC92CCC14D000C05DFC /* IntExtensions.swift */; };
+		99FAAECB2CCC14D500C05DFC /* IntExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99FAAEC92CCC14D000C05DFC /* IntExtensions.swift */; };
+		99FAAECD2CCC155400C05DFC /* FloatExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99FAAECC2CCC155100C05DFC /* FloatExtensions.swift */; };
+		99FAAECE2CCC155400C05DFC /* FloatExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99FAAECC2CCC155100C05DFC /* FloatExtensions.swift */; };
+		99FAAED02CCC158300C05DFC /* DoubleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99FAAECF2CCC157F00C05DFC /* DoubleExtensions.swift */; };
+		99FAAED12CCC158300C05DFC /* DoubleExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 99FAAECF2CCC157F00C05DFC /* DoubleExtensions.swift */; };
 		A003DDFB2B14C56300443561 /* NSAttributedString+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A003DDFA2B14C56300443561 /* NSAttributedString+Utils.swift */; };
 		A003DDFC2B14C56300443561 /* NSAttributedString+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A003DDFA2B14C56300443561 /* NSAttributedString+Utils.swift */; };
 		A003DDFD2B14C56300443561 /* NSAttributedString+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A003DDFA2B14C56300443561 /* NSAttributedString+Utils.swift */; };
@@ -29,7 +43,6 @@
 		A0102D642B18E25F0054D3D4 /* AssetPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A08F2CED2AFE8784004D7EA7 /* AssetPicker.swift */; };
 		A0102D662B18E2A80054D3D4 /* CcSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C6B3082AFD11C400304187 /* CcSelector.swift */; };
 		A0102D672B18E2C60054D3D4 /* LinkRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C6B30A2AFD1CCF00304187 /* LinkRow.swift */; };
-		A0102D692B18E2E40054D3D4 /* DropboxSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555623F6D67E00DE0168 /* DropboxSpace.swift */; };
 		A0102D6B2B18E4260054D3D4 /* NSError+from.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02BC66D2400195C007B05AB /* NSError+from.swift */; };
 		A0102D762B18EA460054D3D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A09B537523266D69005266C2 /* Assets.xcassets */; };
 		A0102D772B18EAC80054D3D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DE20E4C85E00DB31E1 /* Assets.xcassets */; };
@@ -49,12 +62,10 @@
 		A0102D852B18EC910054D3D4 /* AppAddFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03236342B0BB8F100D95BC3 /* AppAddFolderViewController.swift */; };
 		A0102D862B18EC9B0054D3D4 /* FolderInfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A037D6F72B0CAA0300C77706 /* FolderInfoAlert.swift */; };
 		A0102D872B18ECA80054D3D4 /* InfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A052A490230D546F00E72594 /* InfoAlert.swift */; };
-		A0102D892B18ECCB0054D3D4 /* DropboxConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555923F6D9D600DE0168 /* DropboxConduit.swift */; };
 		A0102D8A2B18ECD30054D3D4 /* ClaimViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A020C12223C602A700F219DA /* ClaimViewController.swift */; };
 		A0102D8B2B18ECDE0054D3D4 /* SpaceSuccessViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056ACA62B0E649C00995FDF /* SpaceSuccessViewController.swift */; };
 		A0102D8C2B18ED080054D3D4 /* SideMenuItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0CBFCA82AC5B6F4005A78BF /* SideMenuItemCell.swift */; };
 		A0102D8D2B18ED0B0054D3D4 /* SideMenuItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0CBFCA72AC5B6F4005A78BF /* SideMenuItemCell.xib */; };
-		A0102D8E2B18EDAD0054D3D4 /* BrowseDropboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05CFCC9292D2C6E0045991A /* BrowseDropboxViewController.swift */; };
 		A0102D8F2B18EE060054D3D4 /* GeneralSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A67B21EE7A5C00E4F6B7 /* GeneralSettingsViewController.swift */; };
 		A0102D902B18EE0C0054D3D4 /* FoldersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0A9F1902AF0193D007D284A /* FoldersViewController.swift */; };
 		A0102D912B18EE180054D3D4 /* EditFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E2720B224E33D000CB7113 /* EditFolderViewController.swift */; };
@@ -62,12 +73,10 @@
 		A0102D932B18EE360054D3D4 /* SpaceWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A037D6FA2B0CB9E900C77706 /* SpaceWizardViewController.swift */; };
 		A0102D942B18EE490054D3D4 /* SpaceTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A037D7012B0CCC6300C77706 /* SpaceTypeViewController.swift */; };
 		A0102D962B18EE710054D3D4 /* ProofModeSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BF451927DF5EE800DBB629 /* ProofModeSettingsViewController.swift */; };
-		A0102D972B18EE850054D3D4 /* DropboxWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29E02B10A2B20054D5F4 /* DropboxWizardViewController.swift */; };
 		A0102D982B18EE880054D3D4 /* IaWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A013A9362B0D0488003476ED /* IaWizardViewController.swift */; };
 		A0102D992B18EE970054D3D4 /* IaScrapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */; };
 		A0102D9A2B18EEA20054D3D4 /* WebDavConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D1013D22CCF4140068D047 /* WebDavConduit.swift */; };
 		A0102D9B2B18EEA60054D3D4 /* IaConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D1013F22CCFA1B0068D047 /* IaConduit.swift */; };
-		A0102D9C2B18EEC30054D3D4 /* ConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A076790527BEA31200609630 /* ConsentViewController.swift */; };
 		A0102D9D2B18EED70054D3D4 /* DarkroomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E321F8228EDBE900F2E9BD /* DarkroomViewController.swift */; };
 		A0102D9E2B18EEDE0054D3D4 /* DarkroomHelper.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0212FCB22D35ADC009079DC /* DarkroomHelper.swift */; };
 		A0102D9F2B18EEE80054D3D4 /* BatchInfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A010D39F22D4A3F200FAB433 /* BatchInfoAlert.swift */; };
@@ -75,7 +84,6 @@
 		A0102DA12B18EEF80054D3D4 /* FlagInfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E321F5228EBE6A00F2E9BD /* FlagInfoAlert.swift */; };
 		A0102DA22B18EF000054D3D4 /* UploadInfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E12C192B028CEE00892AC8 /* UploadInfoAlert.swift */; };
 		A0102DA32B18EF090054D3D4 /* ManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A098980522369F8100022851 /* ManagementViewController.swift */; };
-		A0102DA42B18EF160054D3D4 /* AnalyticsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07678FD27BE84AC00609630 /* AnalyticsCell.swift */; };
 		A0102DA52B18EF2F0054D3D4 /* ImageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A00DC98922315D4F004F07E0 /* ImageViewController.swift */; };
 		A0102DA72B18F0A30054D3D4 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DB20E4C85D00DB31E1 /* Main.storyboard */; };
 		A0102DA82B18F1180054D3D4 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0102D5A2B18E1430054D3D4 /* XCTest.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -168,8 +176,6 @@
 		A05471DC2296C8FD009FEA93 /* UITableView+separatorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05471DA2296C8FD009FEA93 /* UITableView+separatorView.swift */; };
 		A0552050222566CE00B9645F /* UIView+utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A055204F222566CE00B9645F /* UIView+utils.swift */; };
 		A0552051222566CE00B9645F /* UIView+utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A055204F222566CE00B9645F /* UIView+utils.swift */; };
-		A056555723F6D8A100DE0168 /* DropboxSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555623F6D67E00DE0168 /* DropboxSpace.swift */; };
-		A056555823F6D8A300DE0168 /* DropboxSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555623F6D67E00DE0168 /* DropboxSpace.swift */; };
 		A056555C23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */; };
 		A056555D23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */; };
 		A056555E23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */; };
@@ -183,7 +189,6 @@
 		A059E647223AE9FB00ABC621 /* UploadManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A059E646223AE9FB00ABC621 /* UploadManager.swift */; };
 		A05C582A21EF94FC00141633 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05C582921EF94FC00141633 /* BaseViewController.swift */; };
 		A05C582B21EF95A800141633 /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05C582921EF94FC00141633 /* BaseViewController.swift */; };
-		A05CFCCA292D2DA40045991A /* BrowseDropboxViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05CFCC9292D2C6E0045991A /* BrowseDropboxViewController.swift */; };
 		A05DF974282C0E13003FADA2 /* DavResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05DF973282C0E13003FADA2 /* DavResponse.swift */; };
 		A05DF975282C0E13003FADA2 /* DavResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05DF973282C0E13003FADA2 /* DavResponse.swift */; };
 		A05DF976282C0E13003FADA2 /* DavResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05DF973282C0E13003FADA2 /* DavResponse.swift */; };
@@ -223,11 +228,9 @@
 		A07678F627BE7F0E00609630 /* cleaninsights-dev.json in Resources */ = {isa = PBXBuildFile; fileRef = A07678F527BE7F0E00609630 /* cleaninsights-dev.json */; };
 		A07678F727BE7F0E00609630 /* cleaninsights-dev.json in Resources */ = {isa = PBXBuildFile; fileRef = A07678F527BE7F0E00609630 /* cleaninsights-dev.json */; };
 		A07678F827BE7F0E00609630 /* cleaninsights-dev.json in Resources */ = {isa = PBXBuildFile; fileRef = A07678F527BE7F0E00609630 /* cleaninsights-dev.json */; };
-		A07678FE27BE854D00609630 /* AnalyticsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07678FD27BE84AC00609630 /* AnalyticsCell.swift */; };
 		A076790227BE89E900609630 /* UIButton+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A076790127BE89E900609630 /* UIButton+Utils.swift */; };
 		A076790327BE89E900609630 /* UIButton+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A076790127BE89E900609630 /* UIButton+Utils.swift */; };
 		A076790427BE89E900609630 /* UIButton+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A076790127BE89E900609630 /* UIButton+Utils.swift */; };
-		A076790627BEA31200609630 /* ConsentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A076790527BEA31200609630 /* ConsentViewController.swift */; };
 		A077732A22786BF500291F5D /* RemoveAssetAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A077732922786BCA00291F5D /* RemoveAssetAlert.swift */; };
 		A077F76A2B0FB580004A4B34 /* WebDavWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A077F7692B0FB580004A4B34 /* WebDavWizardViewController.swift */; };
 		A07E8A40229575B600E9FFAA /* SlideshowViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A07E8A3F229575B600E9FFAA /* SlideshowViewController.swift */; };
@@ -246,7 +249,6 @@
 		A094EA48282A8C24006CE059 /* URLSession+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3728199687007637DD /* URLSession+Utils.swift */; };
 		A094EA49282A8C25006CE059 /* URLSession+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3728199687007637DD /* URLSession+Utils.swift */; };
 		A094EA4A282A8C25006CE059 /* URLSession+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A006AF3728199687007637DD /* URLSession+Utils.swift */; };
-		A094EA4B282AD110006CE059 /* DropboxConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A056555923F6D9D600DE0168 /* DropboxConduit.swift */; };
 		A094EA4D282AD23D006CE059 /* NSError+from.swift in Sources */ = {isa = PBXBuildFile; fileRef = A02BC66D2400195C007B05AB /* NSError+from.swift */; };
 		A0958DEE291AA37700D917C0 /* SecureEnclave.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0958DED291AA37700D917C0 /* SecureEnclave.swift */; };
 		A098980622369F8100022851 /* ManagementViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A098980522369F8100022851 /* ManagementViewController.swift */; };
@@ -358,11 +360,9 @@
 		A0AC06B02201E30E00BD5FBA /* WorkingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC06AF2201E30E00BD5FBA /* WorkingOverlay.swift */; };
 		A0AC06B22201E5B900BD5FBA /* WorkingOverlay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC06AF2201E30E00BD5FBA /* WorkingOverlay.swift */; };
 		A0AC06B42201E94000BD5FBA /* MenuItemCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0AC06B32201E94000BD5FBA /* MenuItemCell.xib */; };
-		A0AC29E12B10A2B20054D5F4 /* DropboxWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29E02B10A2B20054D5F4 /* DropboxWizardViewController.swift */; };
 		A0AC29E32B10A4CE0054D5F4 /* CGSize+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29E22B10A4CE0054D5F4 /* CGSize+Utils.swift */; };
 		A0AC29E42B10A4CE0054D5F4 /* CGSize+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29E22B10A4CE0054D5F4 /* CGSize+Utils.swift */; };
 		A0AC29E52B10A4CE0054D5F4 /* CGSize+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29E22B10A4CE0054D5F4 /* CGSize+Utils.swift */; };
-		A0AC29E72B10B7380054D5F4 /* DropboxSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29E62B10B7380054D5F4 /* DropboxSettingsViewController.swift */; };
 		A0AC29E92B10BFCD0054D5F4 /* IaSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29E82B10BFCD0054D5F4 /* IaSettingsViewController.swift */; };
 		A0AC29EB2B10C0DD0054D5F4 /* SpaceSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29EA2B10C0DD0054D5F4 /* SpaceSettingsViewController.swift */; };
 		A0AC29ED2B10CAC30054D5F4 /* WebDavSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29EC2B10CAC30054D5F4 /* WebDavSettingsViewController.swift */; };
@@ -542,6 +542,13 @@
 		44AFA989BDA3869A70BB7E55 /* Pods-Save Screenshots.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Save Screenshots.debug.xcconfig"; path = "Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots.debug.xcconfig"; sourceTree = "<group>"; };
 		55755FCDBFC0E37C3412516C /* Pods-ShareExtension.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareExtension.debug.xcconfig"; path = "Target Support Files/Pods-ShareExtension/Pods-ShareExtension.debug.xcconfig"; sourceTree = "<group>"; };
 		850EC262E1F87BDADC4D0989 /* Pods_Save.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Save.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		99FAAEBD2CCAC1F600C05DFC /* NSMutableAttributedString.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NSMutableAttributedString.swift; sourceTree = "<group>"; };
+		99FAAEC02CCBFF1000C05DFC /* UIFontExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIFontExtensions.swift; sourceTree = "<group>"; };
+		99FAAEC32CCC001900C05DFC /* UIColorExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIColorExtensions.swift; sourceTree = "<group>"; };
+		99FAAEC62CCC136300C05DFC /* Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utils.swift; sourceTree = "<group>"; };
+		99FAAEC92CCC14D000C05DFC /* IntExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IntExtensions.swift; sourceTree = "<group>"; };
+		99FAAECC2CCC155100C05DFC /* FloatExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatExtensions.swift; sourceTree = "<group>"; };
+		99FAAECF2CCC157F00C05DFC /* DoubleExtensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DoubleExtensions.swift; sourceTree = "<group>"; };
 		A003DDFA2B14C56300443561 /* NSAttributedString+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "NSAttributedString+Utils.swift"; sourceTree = "<group>"; };
 		A004E24B20EBCF1700A1D5F5 /* Formatters.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Formatters.swift; sourceTree = "<group>"; };
 		A0057A0527D25EEA00A14532 /* cleaninsights-prod.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "cleaninsights-prod.json"; sourceTree = "<group>"; };
@@ -630,8 +637,6 @@
 		A05471B32296B77D009FEA93 /* Montserrat-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Montserrat-Bold.ttf"; sourceTree = "<group>"; };
 		A05471DA2296C8FD009FEA93 /* UITableView+separatorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITableView+separatorView.swift"; sourceTree = "<group>"; };
 		A055204F222566CE00B9645F /* UIView+utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+utils.swift"; sourceTree = "<group>"; };
-		A056555623F6D67E00DE0168 /* DropboxSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSpace.swift; sourceTree = "<group>"; };
-		A056555923F6D9D600DE0168 /* DropboxConduit.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxConduit.swift; sourceTree = "<group>"; };
 		A056555B23F6F57B00DE0168 /* UIViewController+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Utils.swift"; sourceTree = "<group>"; };
 		A056ACA22B0E4DE000995FDF /* BasePageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasePageViewController.swift; sourceTree = "<group>"; };
 		A056ACA62B0E649C00995FDF /* SpaceSuccessViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceSuccessViewController.swift; sourceTree = "<group>"; };
@@ -643,7 +648,6 @@
 		A058628520E4FDBF00EE2F14 /* Podfile.lock */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Podfile.lock; sourceTree = "<group>"; };
 		A059E646223AE9FB00ABC621 /* UploadManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UploadManager.swift; sourceTree = "<group>"; };
 		A05C582921EF94FC00141633 /* BaseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
-		A05CFCC9292D2C6E0045991A /* BrowseDropboxViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseDropboxViewController.swift; sourceTree = "<group>"; };
 		A05DF973282C0E13003FADA2 /* DavResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DavResponse.swift; sourceTree = "<group>"; };
 		A05DF977282C0E54003FADA2 /* AEXMLDocument.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AEXMLDocument.swift; sourceTree = "<group>"; };
 		A05DF97B282C0E7C003FADA2 /* AEXMLElement.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AEXMLElement.swift; sourceTree = "<group>"; };
@@ -663,9 +667,7 @@
 		A07129122111F4D5007A432A /* Save.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Save.entitlements; sourceTree = "<group>"; };
 		A07129132111F4F8007A432A /* ShareExtension.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = ShareExtension.entitlements; sourceTree = "<group>"; };
 		A07678F527BE7F0E00609630 /* cleaninsights-dev.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "cleaninsights-dev.json"; sourceTree = "<group>"; };
-		A07678FD27BE84AC00609630 /* AnalyticsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AnalyticsCell.swift; sourceTree = "<group>"; };
 		A076790127BE89E900609630 /* UIButton+Utils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIButton+Utils.swift"; sourceTree = "<group>"; };
-		A076790527BEA31200609630 /* ConsentViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConsentViewController.swift; sourceTree = "<group>"; };
 		A07727442345FA7C00366ADD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		A07727452345FA7C00366ADD /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = fr; path = fr.lproj/Localizable.strings; sourceTree = "<group>"; };
 		A077277D2346203A00366ADD /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/InfoPlist.strings; sourceTree = "<group>"; };
@@ -712,9 +714,7 @@
 		A0AC06AB2201D00100BD5FBA /* FolderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FolderCell.swift; sourceTree = "<group>"; };
 		A0AC06AF2201E30E00BD5FBA /* WorkingOverlay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WorkingOverlay.swift; sourceTree = "<group>"; };
 		A0AC06B32201E94000BD5FBA /* MenuItemCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MenuItemCell.xib; sourceTree = "<group>"; };
-		A0AC29E02B10A2B20054D5F4 /* DropboxWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxWizardViewController.swift; sourceTree = "<group>"; };
 		A0AC29E22B10A4CE0054D5F4 /* CGSize+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGSize+Utils.swift"; sourceTree = "<group>"; };
-		A0AC29E62B10B7380054D5F4 /* DropboxSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DropboxSettingsViewController.swift; sourceTree = "<group>"; };
 		A0AC29E82B10BFCD0054D5F4 /* IaSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaSettingsViewController.swift; sourceTree = "<group>"; };
 		A0AC29EA2B10C0DD0054D5F4 /* SpaceSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpaceSettingsViewController.swift; sourceTree = "<group>"; };
 		A0AC29EC2B10CAC30054D5F4 /* WebDavSettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebDavSettingsViewController.swift; sourceTree = "<group>"; };
@@ -855,6 +855,19 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
+		99FAAEBC2CCAC1EA00C05DFC /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				99FAAECF2CCC157F00C05DFC /* DoubleExtensions.swift */,
+				99FAAECC2CCC155100C05DFC /* FloatExtensions.swift */,
+				99FAAEC92CCC14D000C05DFC /* IntExtensions.swift */,
+				99FAAEC32CCC001900C05DFC /* UIColorExtensions.swift */,
+				99FAAEC02CCBFF1000C05DFC /* UIFontExtensions.swift */,
+				99FAAEBD2CCAC1F600C05DFC /* NSMutableAttributedString.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		A004E24620EBC89200A1D5F5 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -910,6 +923,7 @@
 		A01A7B732200FF2500E18DE0 /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				99FAAEC62CCC136300C05DFC /* Utils.swift */,
 				A0FB4DBD21F8CC2300B46099 /* MainViewController.swift */,
 				A0FB4DBF21F8EBDD00B46099 /* ImageCell.swift */,
 				A01A7B712200F2D700E18DE0 /* HeaderView.swift */,
@@ -993,7 +1007,6 @@
 			children = (
 				A03236342B0BB8F100D95BC3 /* AppAddFolderViewController.swift */,
 				A0F409692BA463950069549B /* BrowseWebDavViewController.swift */,
-				A05CFCC9292D2C6E0045991A /* BrowseDropboxViewController.swift */,
 				A029AF702B33353600FCCB3A /* BrowseGdriveViewController.swift */,
 				A037D6F72B0CAA0300C77706 /* FolderInfoAlert.swift */,
 			);
@@ -1049,13 +1062,10 @@
 			isa = PBXGroup;
 			children = (
 				A098980522369F8100022851 /* ManagementViewController.swift */,
-				A07678FD27BE84AC00609630 /* AnalyticsCell.swift */,
 				A09898072236A7B100022851 /* UploadCell.swift */,
-				A076790527BEA31200609630 /* ConsentViewController.swift */,
 				A059E646223AE9FB00ABC621 /* UploadManager.swift */,
 				A0D1013B22CCF2DA0068D047 /* Conduit.swift */,
 				A0D1013D22CCF4140068D047 /* WebDavConduit.swift */,
-				A056555923F6D9D600DE0168 /* DropboxConduit.swift */,
 				A0D1013F22CCFA1B0068D047 /* IaConduit.swift */,
 				A029AF732B33368700FCCB3A /* GdriveConduit.swift */,
 			);
@@ -1108,7 +1118,6 @@
 				A0BF451927DF5EE800DBB629 /* ProofModeSettingsViewController.swift */,
 				A0AC29EA2B10C0DD0054D5F4 /* SpaceSettingsViewController.swift */,
 				A0AC29EC2B10CAC30054D5F4 /* WebDavSettingsViewController.swift */,
-				A0AC29E62B10B7380054D5F4 /* DropboxSettingsViewController.swift */,
 				A029AF6B2B33268200FCCB3A /* GdriveSettingsViewController.swift */,
 				A0AC29E82B10BFCD0054D5F4 /* IaSettingsViewController.swift */,
 				A0A9F1902AF0193D007D284A /* FoldersViewController.swift */,
@@ -1139,7 +1148,6 @@
 				A071290F2111E4F1007A432A /* Db.swift */,
 				A0C797E822807DF00009751A /* SelectedCollection.swift */,
 				A0A192DC21F208DA009A8CF0 /* Space.swift */,
-				A056555623F6D67E00DE0168 /* DropboxSpace.swift */,
 				A029AF662B33154B00FCCB3A /* GdriveSpace.swift */,
 				A0362194220DB2CA003C21DC /* IaSpace.swift */,
 				A0362197220DB384003C21DC /* WebDavSpace.swift */,
@@ -1206,7 +1214,6 @@
 				A037D6FA2B0CB9E900C77706 /* SpaceWizardViewController.swift */,
 				A037D7012B0CCC6300C77706 /* SpaceTypeViewController.swift */,
 				A077F7692B0FB580004A4B34 /* WebDavWizardViewController.swift */,
-				A0AC29E02B10A2B20054D5F4 /* DropboxWizardViewController.swift */,
 				A029AF6A2B33202D00FCCB3A /* GdriveWizardViewController.swift */,
 				A013A9362B0D0488003476ED /* IaWizardViewController.swift */,
 				A056ACA62B0E649C00995FDF /* SpaceSuccessViewController.swift */,
@@ -1269,6 +1276,7 @@
 		A0E739D620E4C85D00DB31E1 /* Save */ = {
 			isa = PBXGroup;
 			children = (
+				99FAAEBC2CCAC1EA00C05DFC /* Extensions */,
 				A07E8A3E2295759D00E9FFAA /* Onboarding */,
 				A0E5B7B72BA3349B00285CEE /* Tor */,
 				A01A7B732200FF2500E18DE0 /* Main */,
@@ -1790,7 +1798,6 @@
 				A029F6842118715700C4EF6D /* AssetFactory.swift in Sources */,
 				A0C475C021149B040012937E /* MainViewController.swift in Sources */,
 				A0FB4DB321F8799100B46099 /* SpacesView.swift in Sources */,
-				A056555823F6D8A300DE0168 /* DropboxSpace.swift in Sources */,
 				A056555D23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */,
 				A029AF682B3315F500FCCB3A /* GdriveSpace.swift in Sources */,
 				A071290C2111DE3C007A432A /* Asset.swift in Sources */,
@@ -1860,6 +1867,7 @@
 				A029AF6D2B3328E400FCCB3A /* GdriveWizardViewController.swift in Sources */,
 				A05DF98E282C118A003FADA2 /* FileInfo.swift in Sources */,
 				A09B538C23266F02005266C2 /* WebDavSpace.swift in Sources */,
+				99FAAECD2CCC155400C05DFC /* FloatExtensions.swift in Sources */,
 				A0102D7D2B18EC090054D3D4 /* MainViewController.swift in Sources */,
 				A0102D872B18ECA80054D3D4 /* InfoAlert.swift in Sources */,
 				A013A93B2B0D12D6003476ED /* TextBox.swift in Sources */,
@@ -1869,17 +1877,15 @@
 				A0102D7A2B18EB2A0054D3D4 /* PreviewCell.swift in Sources */,
 				A011D55A233A1F630032304A /* PreviewViewController+Screenshots.swift in Sources */,
 				A09B538D23266F02005266C2 /* ButtonCell.swift in Sources */,
+				99FAAEC22CCBFF4900C05DFC /* UIFontExtensions.swift in Sources */,
 				A09B538E23266F02005266C2 /* Bundle+displayName.swift in Sources */,
 				A0102D662B18E2A80054D3D4 /* CcSelector.swift in Sources */,
-				A0102D692B18E2E40054D3D4 /* DropboxSpace.swift in Sources */,
-				A0102D892B18ECCB0054D3D4 /* DropboxConduit.swift in Sources */,
 				A09B538F23266F02005266C2 /* DuplicateFolderAlert.swift in Sources */,
 				A09B539123266F02005266C2 /* Screenshots.swift in Sources */,
 				A0102D8B2B18ECDE0054D3D4 /* SpaceSuccessViewController.swift in Sources */,
 				A09B539223266F02005266C2 /* FormViewController.swift in Sources */,
 				A006A6AE282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */,
 				A0102D982B18EE880054D3D4 /* IaWizardViewController.swift in Sources */,
-				A0102D8E2B18EDAD0054D3D4 /* BrowseDropboxViewController.swift in Sources */,
 				A0102D672B18E2C60054D3D4 /* LinkRow.swift in Sources */,
 				A05DF976282C0E13003FADA2 /* DavResponse.swift in Sources */,
 				A09B539423266F02005266C2 /* YapDatabase+Utils.swift in Sources */,
@@ -1903,6 +1909,7 @@
 				A0DB025A2B2C9216001BF79E /* RemoveAssetAlert.swift in Sources */,
 				A09B53A823266F02005266C2 /* WorkingOverlay.swift in Sources */,
 				A0DA7629282D0F300039438A /* Date+rfcString.swift in Sources */,
+				99FAAED12CCC158300C05DFC /* DoubleExtensions.swift in Sources */,
 				A09B53AC23266F02005266C2 /* NewFolderViewController.swift in Sources */,
 				A0CA19C52821849D0082BD7C /* SnapshotHelper.swift in Sources */,
 				A006A6AA282950D00029E49B /* UIBackgroundFetchResult+description.swift in Sources */,
@@ -1917,6 +1924,7 @@
 				A09B53B223266F02005266C2 /* CollectionsView.swift in Sources */,
 				A09B53B323266F02005266C2 /* Db.swift in Sources */,
 				A09B53B523266F02005266C2 /* MenuItemCell.swift in Sources */,
+				99FAAEC72CCC136600C05DFC /* Utils.swift in Sources */,
 				A0DB02592B2C8F24001BF79E /* AlertHelper.swift in Sources */,
 				A0102D992B18EE970054D3D4 /* IaScrapeViewController.swift in Sources */,
 				A09B53B623266F02005266C2 /* ProjectsView.swift in Sources */,
@@ -1925,16 +1933,18 @@
 				A0D76AD02B580E2100389F64 /* BlurredSnapshot.swift in Sources */,
 				A05DF982282C0F48003FADA2 /* AEXMLOptions.swift in Sources */,
 				A056BE1E2857457E00F354B6 /* UIFont+Montserrat.swift in Sources */,
+				99FAAEBE2CCAC1F600C05DFC /* NSMutableAttributedString.swift in Sources */,
 				A0102D942B18EE490054D3D4 /* SpaceTypeViewController.swift in Sources */,
+				99FAAEC52CCC002300C05DFC /* UIColorExtensions.swift in Sources */,
 				A09B53BA23266F02005266C2 /* DoneDelegate.swift in Sources */,
 				A09B53BB23266F02005266C2 /* Space.swift in Sources */,
 				A0102D642B18E25F0054D3D4 /* AssetPicker.swift in Sources */,
 				A09B53BD23266F02005266C2 /* TableHeader.swift in Sources */,
+				99FAAECA2CCC14D500C05DFC /* IntExtensions.swift in Sources */,
 				A09B53BF23266F02005266C2 /* TableWithSpacesViewController.swift in Sources */,
 				A09B53C023266F02005266C2 /* TintedImageView.swift in Sources */,
 				A0102D8A2B18ECD30054D3D4 /* ClaimViewController.swift in Sources */,
 				A09B53C123266F02005266C2 /* FolderCell.swift in Sources */,
-				A0102D972B18EE850054D3D4 /* DropboxWizardViewController.swift in Sources */,
 				A05DF97E282C0E7C003FADA2 /* AEXMLElement.swift in Sources */,
 				A09B53C323266F02005266C2 /* UploadsView.swift in Sources */,
 				A09B53C523266F02005266C2 /* StringUtils.swift in Sources */,
@@ -1949,7 +1959,6 @@
 				A0102D912B18EE180054D3D4 /* EditFolderViewController.swift in Sources */,
 				A0DC0FAE233914BD00C4969A /* MovieIndicator.swift in Sources */,
 				A09B53D223266F02005266C2 /* BaseCell.swift in Sources */,
-				A0102DA42B18EF160054D3D4 /* AnalyticsCell.swift in Sources */,
 				A076790427BE89E900609630 /* UIButton+Utils.swift in Sources */,
 				A05DF97A282C0E54003FADA2 /* AEXMLDocument.swift in Sources */,
 				A0102D8C2B18ED080054D3D4 /* SideMenuItemCell.swift in Sources */,
@@ -1966,7 +1975,6 @@
 				A09B53DF23266F02005266C2 /* BaseTableViewController.swift in Sources */,
 				A0102D9A2B18EEA20054D3D4 /* WebDavConduit.swift in Sources */,
 				A0102DAD2B18FC470054D3D4 /* UIImage+Utils.swift in Sources */,
-				A0102D9C2B18EEC30054D3D4 /* ConsentViewController.swift in Sources */,
 				A09B53E123266F02005266C2 /* RegexUtils.swift in Sources */,
 				A0102D812B18EC540054D3D4 /* HeaderView.swift in Sources */,
 			);
@@ -1999,6 +2007,7 @@
 				A00A8D47220C7EDD0083F0CB /* AbcFilteredByProjectView.swift in Sources */,
 				A0958DEE291AA37700D917C0 /* SecureEnclave.swift in Sources */,
 				A0F3DF4E2B160DE1005D860E /* IaGuideViewController.swift in Sources */,
+				99FAAEBF2CCAC1F600C05DFC /* NSMutableAttributedString.swift in Sources */,
 				A003DDFB2B14C56300443561 /* NSAttributedString+Utils.swift in Sources */,
 				A0A3D9C72226D8DB00BB5A19 /* SpaceCell.swift in Sources */,
 				A09AD1212AC2F94000DE8085 /* SideMenuViewController.swift in Sources */,
@@ -2013,7 +2022,6 @@
 				A0E5B7B92BA334BB00285CEE /* TorStartViewController.swift in Sources */,
 				A08C2CE621F0B46C008ACA3E /* FormViewController.swift in Sources */,
 				A0F7FDE722494E2F006610F0 /* RemoveProjectAlert.swift in Sources */,
-				A094EA4B282AD110006CE059 /* DropboxConduit.swift in Sources */,
 				A0F1364F227256F4008A22BF /* YapDatabase+Utils.swift in Sources */,
 				A0BF451A27DF5EE800DBB629 /* ProofModeSettingsViewController.swift in Sources */,
 				A0DE78B221F771A700B6B68B /* BaseFolderViewController.swift in Sources */,
@@ -2030,14 +2038,15 @@
 				A0E9069322CB7D16008CD81B /* SelectedView.swift in Sources */,
 				A04255CE22944C1B0048E00C /* UIStoryboard+Utils.swift in Sources */,
 				A0DA7627282D0F300039438A /* Date+rfcString.swift in Sources */,
+				99FAAEC12CCBFF4900C05DFC /* UIFontExtensions.swift in Sources */,
 				A0E321F9228EDBE900F2E9BD /* DarkroomViewController.swift in Sources */,
 				A05F79FE22EEFA9F003DBB74 /* RuleFilename.swift in Sources */,
 				A045D1F6224CFFB4008FF8C1 /* SelectedSpaceCell.swift in Sources */,
 				A077732A22786BF500291F5D /* RemoveAssetAlert.swift in Sources */,
 				A0357D1122CF901800292077 /* BatchEditViewController.swift in Sources */,
 				A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */,
+				99FAAED02CCC158300C05DFC /* DoubleExtensions.swift in Sources */,
 				A0AC06B02201E30E00BD5FBA /* WorkingOverlay.swift in Sources */,
-				A0AC29E72B10B7380054D5F4 /* DropboxSettingsViewController.swift in Sources */,
 				A026C34622C641EB007B1C5B /* IaScrapeViewController.swift in Sources */,
 				A07E8A4222958D0600E9FFAA /* SlideViewController.swift in Sources */,
 				A0D76ACE2B580E2100389F64 /* BlurredSnapshot.swift in Sources */,
@@ -2049,7 +2058,9 @@
 				A0212FCC22D35ADC009079DC /* DarkroomHelper.swift in Sources */,
 				A0D1013C22CCF2DA0068D047 /* Conduit.swift in Sources */,
 				A0552050222566CE00B9645F /* UIView+utils.swift in Sources */,
+				99FAAEC82CCC136600C05DFC /* Utils.swift in Sources */,
 				A0E321F6228EBE6A00F2E9BD /* FlagInfoAlert.swift in Sources */,
+				99FAAECB2CCC14D500C05DFC /* IntExtensions.swift in Sources */,
 				A037D6FE2B0CC32000C77706 /* BigButton.swift in Sources */,
 				A05DF97C282C0E7C003FADA2 /* AEXMLElement.swift in Sources */,
 				A0212FCE22D374CA009079DC /* UICollectionView+selection.swift in Sources */,
@@ -2060,6 +2071,7 @@
 				A059E647223AE9FB00ABC621 /* UploadManager.swift in Sources */,
 				A0E1A68121EE7BE900E4F6B7 /* MenuItemCell.swift in Sources */,
 				A00A8D45220C63B20083F0CB /* ProjectsView.swift in Sources */,
+				99FAAECE2CCC155400C05DFC /* FloatExtensions.swift in Sources */,
 				A029AF672B3315F400FCCB3A /* GdriveSpace.swift in Sources */,
 				A010D3A022D4A3F200FAB433 /* BatchInfoAlert.swift in Sources */,
 				A056ACA72B0E649C00995FDF /* SpaceSuccessViewController.swift in Sources */,
@@ -2090,18 +2102,14 @@
 				A05471DB2296C8FD009FEA93 /* UITableView+separatorView.swift in Sources */,
 				A052A48F230D53D800E72594 /* IaInfoAlert.swift in Sources */,
 				A029AF6E2B332FFD00FCCB3A /* GdriveSettingsViewController.swift in Sources */,
-				A0AC29E12B10A2B20054D5F4 /* DropboxWizardViewController.swift in Sources */,
 				A0FE2C1E22E1E8D200C5443F /* Error+friendlyMessage.swift in Sources */,
-				A05CFCCA292D2DA40045991A /* BrowseDropboxViewController.swift in Sources */,
 				A01128E62AE6CB34000848DB /* SettingsViewController.swift in Sources */,
-				A056555723F6D8A100DE0168 /* DropboxSpace.swift in Sources */,
 				A09898082236A7B100022851 /* UploadCell.swift in Sources */,
 				A0C797E6228063280009751A /* AbcFilteredByCollectionView.swift in Sources */,
 				A0FB4DC021F8EBDD00B46099 /* ImageCell.swift in Sources */,
 				A05DF974282C0E13003FADA2 /* DavResponse.swift in Sources */,
 				A0D1014022CCFA1B0068D047 /* IaConduit.swift in Sources */,
 				A037D6FC2B0CB9E900C77706 /* SpaceWizardViewController.swift in Sources */,
-				A076790627BEA31200609630 /* ConsentViewController.swift in Sources */,
 				A0E1A68721EE834D00E4F6B7 /* BaseCell.swift in Sources */,
 				A029AF712B33353600FCCB3A /* BrowseGdriveViewController.swift in Sources */,
 				A0F7FDDC22491C6C006610F0 /* Flag.swift in Sources */,
@@ -2112,7 +2120,6 @@
 				A0FB4DBE21F8CC2300B46099 /* MainViewController.swift in Sources */,
 				A0F3DF502B160E1E005D860E /* IaGuideSlideViewController.swift in Sources */,
 				A0DE78AF21F76D2200B6B68B /* Project.swift in Sources */,
-				A07678FE27BE854D00609630 /* AnalyticsCell.swift in Sources */,
 				A056ACA32B0E4DE000995FDF /* BasePageViewController.swift in Sources */,
 				A0C6B30B2AFD1CCF00304187 /* LinkRow.swift in Sources */,
 				A0D6F5562B347F7E00A03788 /* AddInfoAlert.swift in Sources */,
@@ -2125,6 +2132,7 @@
 				A0102DAB2B18FC470054D3D4 /* UIImage+Utils.swift in Sources */,
 				A0A9F1912AF0193D007D284A /* FoldersViewController.swift in Sources */,
 				A0E12C1A2B028EC300892AC8 /* UploadInfoAlert.swift in Sources */,
+				99FAAEC42CCC002300C05DFC /* UIColorExtensions.swift in Sources */,
 				A05DF988282C0F92003FADA2 /* AEXMLParser.swift in Sources */,
 				A05DF978282C0E54003FADA2 /* AEXMLDocument.swift in Sources */,
 				A029AF6C2B3328E400FCCB3A /* GdriveWizardViewController.swift in Sources */,
@@ -2230,6 +2238,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 137;
 				INFOPLIST_FILE = Screenshots/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2252,6 +2261,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 137;
 				INFOPLIST_FILE = Screenshots/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2275,7 +2285,12 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = ShareExtension/ShareExtension.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 137;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = YF7TV4HW2S;
 				INFOPLIST_FILE = ShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2283,10 +2298,15 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = "$(MARKETING_VERSION)";
-				PRODUCT_BUNDLE_IDENTIFIER = "$(OA_EXT_BUNDLE_ID)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.open-archive.save.extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "$(PROVISIONING_PROFILE_SPECIFIER_SHARE_EXTENSION)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore org.open-archive.save.extension";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Save-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2299,8 +2319,12 @@
 			buildSettings = {
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = ShareExtension/ShareExtension.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 137;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = YF7TV4HW2S;
 				INFOPLIST_FILE = ShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2308,10 +2332,15 @@
 					"@executable_path/../../Frameworks",
 				);
 				MARKETING_VERSION = "$(MARKETING_VERSION)";
-				PRODUCT_BUNDLE_IDENTIFIER = "$(OA_EXT_BUNDLE_ID)";
+				PRODUCT_BUNDLE_IDENTIFIER = "org.open-archive.save.extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "$(PROVISIONING_PROFILE_SPECIFIER_SHARE_EXTENSION)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore org.open-archive.save.extension";
 				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Save-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2327,6 +2356,7 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Save/Save.entitlements;
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 137;
 				INFOPLIST_FILE = "Save Screenshots/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2352,6 +2382,7 @@
 				CODE_SIGN_ENTITLEMENTS = Save/Save.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 137;
 				INFOPLIST_FILE = "Save Screenshots/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2497,16 +2528,30 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Save/Save.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 137;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = YF7TV4HW2S;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"COCOAPODS=1",
+					"$(inherited)",
+				);
 				INFOPLIST_FILE = Save/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = "$(MARKETING_VERSION)";
-				PRODUCT_BUNDLE_IDENTIFIER = "$(OA_APP_BUNDLE_ID)";
+				MARKETING_VERSION = 3.4.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.open-archive.save";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "$(PROVISIONING_PROFILE_SPECIFIER_MAIN)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore org.open-archive.save";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Save-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -2521,17 +2566,27 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Save/Save.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 137;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = YF7TV4HW2S;
+				GCC_PREPROCESSOR_DEFINITIONS = "COCOAPODS=1";
 				INFOPLIST_FILE = Save/Info.plist;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = "$(MARKETING_VERSION)";
-				PRODUCT_BUNDLE_IDENTIFIER = "$(OA_APP_BUNDLE_ID)";
+				MARKETING_VERSION = 3.4.0;
+				PRODUCT_BUNDLE_IDENTIFIER = "org.open-archive.save";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "$(PROVISIONING_PROFILE_SPECIFIER_MAIN)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore org.open-archive.save";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Save-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";

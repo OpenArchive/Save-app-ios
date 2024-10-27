@@ -18,7 +18,7 @@ class Db {
 
     private static var shared: YapDatabase? = {
         if let path = URL.groupDir?.appendingPathComponent(DB_NAME) {
-//            print("[\(String(describing: Db.self))] path=\(path)")
+            print("[\(String(describing: Db.self))] path=\(path)")
 
             let options = YapDatabaseOptions()
             options.enableMultiProcessSupport = true
@@ -34,7 +34,6 @@ class Db {
 
         Space.fixArchiverName() // Needed for screenshot testing.
         WebDavSpace.fixArchiverName()
-        DropboxSpace.fixArchiverName()
         IaSpace.fixArchiverName()
         GdriveSpace.fixArchiverName()
         shared?.setObjectPolicy(.copy, forCollection: Space.collection)

@@ -1,41 +1,39 @@
 PODS:
-  - Alamofire (5.4.4)
   - AlignedCollectionViewFlowLayout (1.1.2)
-  - AppAuth (1.7.3):
-    - AppAuth/Core (= 1.7.3)
-    - AppAuth/ExternalUserAgent (= 1.7.3)
-  - AppAuth/Core (1.7.3)
-  - AppAuth/ExternalUserAgent (1.7.3):
+  - AppAuth (1.7.5):
+    - AppAuth/Core (= 1.7.5)
+    - AppAuth/ExternalUserAgent (= 1.7.5)
+  - AppAuth/Core (1.7.5)
+  - AppAuth/ExternalUserAgent (1.7.5):
     - AppAuth/Core
-  - CleanInsightsSDK (2.7.0)
   - CrossroadRegex (1.2.0)
   - DeviceKit (4.9.0)
-  - Eureka (5.4.0)
+  - Eureka (5.5.0)
   - FavIcon (3.1.0)
   - FontBlaster (5.3.0)
-  - GoogleAPIClientForREST/Core (3.5.1):
+  - GoogleAPIClientForREST/Core (3.5.5):
     - GTMSessionFetcher/Full (< 4.0, >= 1.6.1)
-  - GoogleAPIClientForREST/Drive (3.5.1):
+  - GoogleAPIClientForREST/Drive (3.5.5):
     - GoogleAPIClientForREST/Core
     - GTMSessionFetcher/Full (< 4.0, >= 1.6.1)
-  - GoogleSignIn (7.0.0):
-    - AppAuth (~> 1.5)
-    - GTMAppAuth (< 3.0, >= 1.3)
-    - GTMSessionFetcher/Core (< 4.0, >= 1.1)
-  - GTMAppAuth (2.0.0):
-    - AppAuth/Core (~> 1.6)
-    - GTMSessionFetcher/Core (< 4.0, >= 1.5)
-  - GTMSessionFetcher/Core (3.3.1)
-  - GTMSessionFetcher/Full (3.3.1):
+  - GoogleSignIn (7.1.0):
+    - AppAuth (< 2.0, >= 1.7.3)
+    - GTMAppAuth (< 5.0, >= 4.1.1)
+    - GTMSessionFetcher/Core (~> 3.3)
+  - GTMAppAuth (4.1.1):
+    - AppAuth/Core (~> 1.7)
+    - GTMSessionFetcher/Core (< 4.0, >= 3.3)
+  - GTMSessionFetcher/Core (3.5.0)
+  - GTMSessionFetcher/Full (3.5.0):
     - GTMSessionFetcher/Core
-  - IPtProxy (3.4.0)
-  - IPtProxyUI (4.3.1):
+  - IPtProxy (3.8.1)
+  - IPtProxyUI (4.6.2):
     - Eureka (~> 5.3)
-    - IPtProxy (~> 3.4.0)
-    - IPtProxyUI/App (= 4.3.1)
-  - IPtProxyUI/App (4.3.1):
+    - IPtProxy (~> 3.8.1)
+    - IPtProxyUI/App (= 4.6.2)
+  - IPtProxyUI/App (4.6.2):
     - Eureka (~> 5.3)
-    - IPtProxy (~> 3.4.0)
+    - IPtProxy (~> 3.8.1)
     - ProgressHUD (~> 14.1)
   - LegacyUTType (0.1.0)
   - LibProofMode (0.1.9):
@@ -46,20 +44,20 @@ PODS:
   - ObjectivePGP (0.99.4)
   - OrbotKit (1.1.0)
   - ProgressHUD (14.1.1)
-  - ReachabilitySwift (5.0.0)
-  - SDCAlertView (12.0.3)
-  - SwiftyDropbox (9.2.0):
-    - Alamofire (~> 5.4.3)
+  - ReachabilitySwift (5.2.4)
+  - SDCAlertView (12.0.4)
+  - SnapKit (5.7.1)
+  - SweeterSwift (1.2.5)
   - TLPhotoPicker (2.1.9)
-  - Tor/Core (408.10.1)
-  - Tor/CTor (408.10.1):
+  - Tor/Core (408.12.2)
+  - Tor/CTor (408.12.2):
     - Tor/Core
-  - Tor/GeoIP (408.10.1):
+  - Tor/GeoIP (408.12.2):
     - Tor/CTor
-  - TorManager (0.3.1):
-    - IPtProxyUI (~> 4.3)
+  - TorManager (0.3.2):
+    - IPtProxyUI (~> 4.6)
     - OrbotKit (~> 1.1)
-    - Tor/GeoIP (~> 408.10)
+    - Tor/GeoIP (~> 408.12)
   - UIImage-Resize (1.0.1)
   - UIImageViewAlignedSwift (0.8.2)
   - YapDatabase (4.1):
@@ -171,7 +169,6 @@ PODS:
 
 DEPENDENCIES:
   - AlignedCollectionViewFlowLayout (~> 1.1)
-  - CleanInsightsSDK (~> 2.6)
   - CrossroadRegex (from `https://github.com/crossroadlabs/Regex.git`, tag `1.2.0`)
   - Eureka (~> 5.3)
   - FavIcon (from `https://github.com/tladesignz/FavIcon.git`, branch `swift-5`)
@@ -183,8 +180,9 @@ DEPENDENCIES:
   - MBProgressHUD (~> 1.2)
   - OrbotKit (~> 1.1)
   - ReachabilitySwift (~> 5.0)
-  - SDCAlertView (~> 12.0)
-  - SwiftyDropbox (from `https://github.com/tladesignz/SwiftyDropbox.git`, branch `session_config`)
+  - SDCAlertView
+  - SnapKit
+  - SweeterSwift
   - TLPhotoPicker (from `https://github.com/tladesignz/TLPhotoPicker.git`)
   - TorManager (~> 0.3)
   - UIImage-Resize (~> 1.0)
@@ -193,10 +191,8 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/CocoaPods/Specs.git:
-    - Alamofire
     - AlignedCollectionViewFlowLayout
     - AppAuth
-    - CleanInsightsSDK
     - DeviceKit
     - Eureka
     - FontBlaster
@@ -213,6 +209,8 @@ SPEC REPOS:
     - ProgressHUD
     - ReachabilitySwift
     - SDCAlertView
+    - SnapKit
+    - SweeterSwift
     - Tor
     - TorManager
     - UIImage-Resize
@@ -228,9 +226,6 @@ EXTERNAL SOURCES:
   LibProofMode:
     :branch: main
     :git: https://gitlab.com/guardianproject/proofmode/libproofmode-ios.git
-  SwiftyDropbox:
-    :branch: session_config
-    :git: https://github.com/tladesignz/SwiftyDropbox.git
   TLPhotoPicker:
     :git: https://github.com/tladesignz/TLPhotoPicker.git
   YapDatabase:
@@ -246,9 +241,6 @@ CHECKOUT OPTIONS:
   LibProofMode:
     :commit: d5b160af288db2d5c6486fb269374b7f8516d5da
     :git: https://gitlab.com/guardianproject/proofmode/libproofmode-ios.git
-  SwiftyDropbox:
-    :commit: ae66d3b5a31a0a51bb360052e0985b8678f68b6a
-    :git: https://github.com/tladesignz/SwiftyDropbox.git
   TLPhotoPicker:
     :commit: 91abdc52e241936bbad850736af7dcb9adcd389d
     :git: https://github.com/tladesignz/TLPhotoPicker.git
@@ -257,37 +249,36 @@ CHECKOUT OPTIONS:
     :git: https://github.com/tladesignz/YapDatabase.git
 
 SPEC CHECKSUMS:
-  Alamofire: f3b09a368f1582ab751b3fff5460276e0d2cf5c9
   AlignedCollectionViewFlowLayout: ee2ef451e741ec08f8e0967d828001e2f051c20a
-  AppAuth: a13994980c1ec792f7e2e665acd4d4aa6be43240
-  CleanInsightsSDK: 758f2c056ad4602304fefb2711b94e70607a96f1
+  AppAuth: 501c04eda8a8d11f179dbe8637b7a91bb7e5d2fa
   CrossroadRegex: 9af32b4b4dc6ff404c87647ef1bc68ea711cc570
   DeviceKit: 847709bf70b78fd9ab765bd571fb9f5f815c3fc1
-  Eureka: fadaa9fa3d6e402d3c60f78f24edf3d7bafc9c29
+  Eureka: 1c18c7fcd8f772cc2ca42d6be36292dffa77eecb
   FavIcon: 57f172cc9880265915c1aba226a2538b722c83fd
   FontBlaster: 941f89d735a29e1c7d24e7a90d3e16939ef1609a
-  GoogleAPIClientForREST: 8ec5b7f116fe00e2c13a4a6d5efe9928afb811f1
-  GoogleSignIn: b232380cf495a429b8095d3178a8d5855b42e842
-  GTMAppAuth: 99fb010047ba3973b7026e45393f51f27ab965ae
-  GTMSessionFetcher: 8a1b34ad97ebe6f909fb8b9b77fba99943007556
-  IPtProxy: dfaa1f21006ca758f9966548f1869a8e29e7b72e
-  IPtProxyUI: 0e8ebcca4aa89812f1b16591e18732dc3c7aecd1
+  GoogleAPIClientForREST: 2aa369923c028ae5d0c1521809813f47d9299c4e
+  GoogleSignIn: d4281ab6cf21542b1cfaff85c191f230b399d2db
+  GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
+  GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
+  IPtProxy: d7e37d1faa9b2608b8b5b2743b1a4ae3eb723c5e
+  IPtProxyUI: 20e0a6a51bc203f34a35f281a902e4e1ceded86a
   LegacyUTType: 827291c20ad7361a47ace7bcdd1652a607fe4108
   LibProofMode: eec37e3cea714b73e742bb04dec9b881c1145938
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
   ObjectivePGP: 5b023e0a73c9edb89a5d333e5e9ce89ec7740772
   OrbotKit: 5e69508dee1943144fefa18a197fbf2030dfbe36
   ProgressHUD: abb9136ae23c85204236828562cb9a8ec98efb44
-  ReachabilitySwift: 985039c6f7b23a1da463388634119492ff86c825
-  SDCAlertView: cec2dd84906b1fb30490ea59f50d1666f797be6f
-  SwiftyDropbox: 073c7e0852bf50d858163140f56d0a1133b79b48
+  ReachabilitySwift: 32793e867593cfc1177f5d16491e3a197d2fccda
+  SDCAlertView: 051ba84cc526eddd546c8b716d41ac08d1577ac1
+  SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
+  SweeterSwift: 12f5b24e2410ea63e71f1ac089f8235eb5a12ecc
   TLPhotoPicker: 2e7caa72ec0cb29d1c85543b252a02d56aeede01
-  Tor: 4aa4aee031f892efa43d1afb01c90565990c6312
-  TorManager: 807c0f9c70923faead3a4f5f3b921b0b4b498f17
+  Tor: 19907fc430953434a233c7532166d6409b9d509b
+  TorManager: 6fc235fa58955b5681a8e4a0d3f5721e8dcbf9a5
   UIImage-Resize: fa776860f10e6900bbaf53a73e494bdceaaccc77
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
   YapDatabase: c9924a3d45245d6878d0bf8172cb22a8522aa012
 
-PODFILE CHECKSUM: 77e8b4c446c26c756ca3548295ff8b5f43115a3a
+PODFILE CHECKSUM: ba499a88d5ff779abd1972da1568d287d526506f
 
 COCOAPODS: 1.15.2

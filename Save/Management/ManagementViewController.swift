@@ -8,9 +8,8 @@
 
 import UIKit
 import YapDatabase
-import CleanInsightsSDK
 
-class ManagementViewController: BaseTableViewController, UploadCellDelegate, AnalyticsCellDelegate {
+class ManagementViewController: BaseTableViewController, UploadCellDelegate {
 
     var delegate: DoneDelegate?
 
@@ -75,10 +74,6 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
     // MARK: UITableViewDelegate
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
-            return AnalyticsCell.height
-        }
-
         return UploadCell.height
     }
 
@@ -94,28 +89,10 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate, Ana
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if section == 0 {
-            switch CleanInsights.shared.state(ofCampaign: "upload_fails") {
-            case .unknown, .expired:
-                return 1
-
-            default:
-                return 0
-            }
-        }
-
         return count
     }
 
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        if indexPath.section == 0 {
-            let cell = tableView.dequeueReusableCell(withIdentifier: AnalyticsCell.reuseId, for: indexPath) as! AnalyticsCell
-
-            cell.delegate = self
-
-            return cell
-        }
-
         let cell = tableView.dequeueReusableCell(withIdentifier: UploadCell.reuseId, for: indexPath) as! UploadCell
 
         cell.upload = getUpload(indexPath)

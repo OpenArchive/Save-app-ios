@@ -39,9 +39,6 @@ class Conduit {
         case is WebDavSpace:
             return WebDavConduit(asset, backgroundSession, foregroundSession)
 
-        case is DropboxSpace:
-            return DropboxConduit(asset, backgroundSession, foregroundSession)
-
         case is IaSpace:
             return IaConduit(asset, backgroundSession, foregroundSession)
 

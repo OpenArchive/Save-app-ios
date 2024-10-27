@@ -20,9 +20,6 @@ class AppAddFolderViewController: AddFolderViewController {
         case is WebDavSpace:
             navigationController?.pushViewController(BrowseWebDavViewController(), animated: true)
 
-        case is DropboxSpace:
-            navigationController?.pushViewController(BrowseDropboxViewController(), animated: true)
-
         case is GdriveSpace:
             navigationController?.pushViewController(BrowseGdriveViewController(), animated: true)
 

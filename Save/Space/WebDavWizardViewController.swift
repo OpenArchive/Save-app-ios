@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CleanInsightsSDK
 import FavIcon
 
 class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBoxDelegate {
@@ -169,8 +168,6 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
 
                         tx.setObject(space)
                     }
-
-                    CleanInsights.shared.measure(event: "backend", "new", forCampaign: "upload_fails", name: "WebDAV")
 
                     let vc = UIStoryboard.main.instantiate(SpaceSuccessViewController.self)
                     vc.spaceName = space.prettyName

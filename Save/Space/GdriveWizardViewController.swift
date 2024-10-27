@@ -9,7 +9,6 @@
 import UIKit
 import GoogleSignIn
 import GoogleAPIClientForREST
-import CleanInsightsSDK
 
 class GdriveWizardViewController: BaseViewController, WizardDelegatable {
 
@@ -94,8 +93,6 @@ class GdriveWizardViewController: BaseViewController, WizardDelegatable {
         let space = GdriveSpace()
 
         Self.authenticate(self, space: space) { [weak self] in
-            CleanInsights.shared.measure(event: "backend", "new", forCampaign: "upload_fails", name: "Google Drive")
-
             let vc = UIStoryboard.main.instantiate(SpaceSuccessViewController.self)
             vc.spaceName = space.prettyName
 

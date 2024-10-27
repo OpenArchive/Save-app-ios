@@ -32,9 +32,6 @@ class SelectedSpaceCell: BaseCell {
             if let name = space?.authorName, !name.isEmpty {
                 userNameLb.text = name
             }
-            else if let email = (space as? DropboxSpace)?.email, !email.isEmpty {
-                userNameLb.text = email
-            }
             else {
                 userNameLb.text = space?.username
             }

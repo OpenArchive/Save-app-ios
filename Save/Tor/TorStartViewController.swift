@@ -10,7 +10,6 @@ import UIKit
 import TorManager
 import IPtProxyUI
 import OrbotKit
-import SwiftyDropbox
 
 class TorStartViewController: UIViewController, BridgesConfDelegate {
 
@@ -99,8 +98,6 @@ class TorStartViewController: UIViewController, BridgesConfDelegate {
                     else {
                         // Make sure, all `URLSession`s use the Tor SOCKS5 proxy from now on.
                         UploadManager.shared.reinitSession()
-                        DropboxClientsManager.resetClients()
-
                         self?.dismiss()
                     }
                 }

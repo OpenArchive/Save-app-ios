@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CleanInsightsSDK
 
 class IaWizardViewController: UIViewController, WizardDelegatable, ScrapeDelegate {
 
@@ -148,8 +147,6 @@ class IaWizardViewController: UIViewController, WizardDelegatable, ScrapeDelegat
 
             tx.setObject(space)
         }
-
-        CleanInsights.shared.measure(event: "backend", "new", forCampaign: "upload_fails", name: space.name)
 
         let vc = UIStoryboard.main.instantiate(SpaceSuccessViewController.self)
         vc.spaceName = IaSpace.defaultPrettyName

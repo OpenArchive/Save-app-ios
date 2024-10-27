@@ -8,8 +8,6 @@
 
 import UIKit
 import UserNotifications
-import SwiftyDropbox
-import CleanInsightsSDK
 import LibProofMode
 import GoogleSignIn
 import TorManager
@@ -59,8 +57,6 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 
         cleanCache()
 
-        setUpDropbox()
-
         setUpGdrive()
 
         UIFont.setUpMontserrat()
@@ -83,8 +79,6 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-
-        CleanInsights.shared.persist()
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -191,59 +185,6 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
             return true
         }
 
-        DropboxClientsManager.handleRedirectURL(url) { [weak self] authResult in
-            switch authResult {
-            case .success(let token):
-                debugPrint("[\(String(describing: type(of: self)))] dropbox auth success")
-
-                let space = DropboxSpace()
-                space.username = token.uid
-                space.password = token.accessToken
-                SelectedSpace.space = space
-
-                CleanInsights.shared.measure(event: "backend", "new", forCampaign: "upload_fails", name: space.name)
-
-                let group = DispatchGroup()
-                group.enter()
-
-                Db.writeConn?.asyncReadWrite() { tx in
-                    SelectedSpace.store(tx)
-
-                    tx.setObject(space)
-
-                    group.leave()
-                }
-
-                DispatchQueue.global(qos: .background).async {
-                    group.wait()
-
-                    DropboxConduit.client?.users?.getCurrentAccount().response(completionHandler: { account, error in
-                        space.email = account?.email
-
-                        Db.writeConn?.setObject(space)
-                    })
-                }
-
-                if let navC = self?.mainVc?.presentedViewController as? UINavigationController,
-                   let vc = navC.viewControllers.first as? SpaceWizardViewController
-                {
-                    let successVc = UIStoryboard.main.instantiate(SpaceSuccessViewController.self)
-                    successVc.spaceName = DropboxSpace.defaultPrettyName
-
-                    vc.next(successVc, pos: 2)
-                }
-
-            case .cancel, .none:
-                debugPrint("[\(String(describing: type(of: self)))] dropbox auth cancelled")
-                // Nothing to do. User cancelled. Dropbox authentication scene should close automatically.
-
-            case .error(let error, let description):
-                debugPrint("[\(String(describing: type(of: self)))] dropbox auth error=\(error), description=\(description ?? "nil")")
-                // Nothing to do. User bailed out after login.
-                // Dropbox authentication scene should close automatically.
-            }
-        }
-
         return true
     }
 
@@ -318,12 +259,6 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         }
 
         completionHandler()
-    }
-
-    func setUpDropbox() {
-        DropboxClientsManager.setupWithAppKey(
-            Constants.dropboxKey,
-            transportClient: DropboxConduit.transportClient(unauthorized: true))
     }
 
     func setUpGdrive() {
@@ -401,13 +336,6 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     }
 }
 
-extension CleanInsights {
-
-    static var shared = try! CleanInsights(
-        jsonConfigurationFile: Bundle.main.url(forResource: "cleaninsights-dev", withExtension: "json")!)
-}
-
 extension TorManager {
-
     static let shared = TorManager(directory: .groupDir!.appendingPathComponent("tor", isDirectory: true))
 }

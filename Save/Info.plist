@@ -32,6 +32,8 @@
 	</array>
 	<key>CFBundleVersion</key>
 	<string>$(CURRENT_PROJECT_VERSION)</string>
+	<key>GIDClientID</key>
+	<string>$(GOOGLE_CLIENT_ID).apps.googleusercontent.com</string>
 	<key>ITSAppUsesNonExemptEncryption</key>
 	<false/>
 	<key>LSApplicationCategoryType</key>
@@ -48,12 +50,12 @@
 	<string>Please grant this app access to your camera, if you directly want to take photos or videos.</string>
 	<key>NSFaceIDUsageDescription</key>
 	<string>Needed, if you want to unlock the app with Face ID.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Please grant this app access to your location, if you want ProofMode to generate all proof possible.</string>
 	<key>NSMicrophoneUsageDescription</key>
 	<string>Please grant this app access to your microphone, if you directly want to take videos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Please grant this app access to your camera roll, if you want to upload photos or videos.</string>
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Please grant this app access to your location, if you want ProofMode to generate all proof possible.</string>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>
@@ -76,7 +78,5 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
-	<key>GIDClientID</key>
-	<string>$(GOOGLE_CLIENT_ID).apps.googleusercontent.com</string>
 </dict>
 </plist>

@@ -110,9 +110,6 @@ class SettingsViewController: UIViewController {
         case is IaSpace:
             segue = Self.iaSettingsSegue
 
-        case is DropboxSpace:
-            segue = Self.dropboxSettingsSegue
-
         case is GdriveSpace:
             segue = Self.gdriveSettingsSegue
 

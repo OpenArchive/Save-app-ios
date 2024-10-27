@@ -10,7 +10,6 @@ import UIKit
 import YapDatabase
 import Reachability
 import Regex
-import CleanInsightsSDK
 import BackgroundTasks
 import Photos
 import TorManager
@@ -440,12 +439,6 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                             "type": upload.asset?.uti.identifier,
                             "retries": String(upload.tries),
                             "network": self.reachability?.connection.description]
-
-                        if let json = try? JSONEncoder().encode(data) {
-                            CleanInsights.shared.measure(
-                                event: "upload", "upload_failed", forCampaign: "upload_fails",
-                                name: String(data: json, encoding: .utf8))
-                        }
                     }
                 }
 
@@ -584,8 +577,6 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
             let space = upload.asset?.space
             let name = space is WebDavSpace ? "WebDAV" : upload.asset?.space?.name
-
-            CleanInsights.shared.measure(event: "upload", "try_upload", forCampaign: "upload_fails", name: name)
 
             upload.liveProgress = Conduit
                 .get(for: asset, self.backgroundSession, self.foregroundSession)?
