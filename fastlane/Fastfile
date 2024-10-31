@@ -16,9 +16,17 @@ platform :ios do
     app_store_connect_api_key
     sync_code_signing
     increment_build_number_in_xcodeproj(
-		scheme: "save-debug"
-	)
-    build_ios_app
+        scheme: "save-release"
+    )
+    build_ios_app(
+      scheme: "save-release",
+      export_options: {
+        provisioningProfiles: {
+          "org.open-archive.save" => "match AppStore org.open-archive.save",
+          "org.open-archive.save.extension" => "match AppStore org.open-archive.save.extension",
+        }
+      }
+    )
   end
 
   desc "Prepare the app for dev or build"

@@ -99,66 +99,66 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         uploadManager?.restart()
     }
 
-    func applicationDidBecomeActive(_ application: UIApplication) {
-
-        if Settings.hideContent && hadResigned {
-            BlurredSnapshot.remove()
-        }
-
-        // Note: If restart is slow (and even crashes), it could be, that
-        // #applicationDidEnterBackground isn't finished, yet!
-
-        if !verified, let privateKey = SecureEnclave.loadKey() {
-            var counter = 0
-
-            repeat {
-                if let encryptedPassphrase = Settings.proofModeEncryptedPassphrase {
-                    let passphrase = SecureEnclave.decrypt(encryptedPassphrase, with: privateKey)
-                    Proof.shared.passphrase = passphrase
-
-                    verified = passphrase != nil
-
-                    if !verified {
-                        // This key cannot decrypt the passphare. Remove the passphrase,
-                        // so, during the next iteration of the loop, we can verify
-                        // the user normally. Otherwise, the user would be locked out forever.
-                        //
-                        // This situation could have been achieved by the user through
-                        // a bug, which was introduced during the redesign, where the
-                        // settings form was split into two pieces and the form row
-                        // dependencies didn't work anymore.
-                        Settings.proofModeEncryptedPassphrase = nil
-                    }
-                }
-                else {
-                    let nonce = SecureEnclave.getNonce()
-
-                    verified = SecureEnclave.verify(
-                        nonce, signature: SecureEnclave.sign(nonce, with: privateKey),
-                        with: SecureEnclave.getPublicKey(privateKey))
-                }
-
-                counter += 1
-            } while !verified && counter < 3
-
-            if !verified {
-                applicationWillResignActive(application)
-                applicationDidEnterBackground(application)
-                applicationWillTerminate(application)
-
-                exit(0)
-            }
-
-            // Always return here, as the SecureEnclave operations will always
-            // trigger a user identification and therefore the app becomes inactive
-            // and then active again. So #applicationDidBecomeActive will be
-            // called again. Therefore, we store the result of the verification
-            // in an object property and check that on re-entry.
-            return
-        }
-
-        verified = false
-    }
+//    func applicationDidBecomeActive(_ application: UIApplication) {
+//
+//        if Settings.hideContent && hadResigned {
+//            BlurredSnapshot.remove()
+//        }
+//
+//        // Note: If restart is slow (and even crashes), it could be, that
+//        // #applicationDidEnterBackground isn't finished, yet!
+//
+//        if !verified, let privateKey = SecureEnclave.loadKey() {
+//            var counter = 0
+//
+//            repeat {
+//                if let encryptedPassphrase = Settings.proofModeEncryptedPassphrase {
+//                    let passphrase = SecureEnclave.decrypt(encryptedPassphrase, with: privateKey)
+//                    Proof.shared.passphrase = passphrase
+//
+//                    verified = passphrase != nil
+//
+//                    if !verified {
+//                        // This key cannot decrypt the passphare. Remove the passphrase,
+//                        // so, during the next iteration of the loop, we can verify
+//                        // the user normally. Otherwise, the user would be locked out forever.
+//                        //
+//                        // This situation could have been achieved by the user through
+//                        // a bug, which was introduced during the redesign, where the
+//                        // settings form was split into two pieces and the form row
+//                        // dependencies didn't work anymore.
+//                        Settings.proofModeEncryptedPassphrase = nil
+//                    }
+//                }
+//                else {
+//                    let nonce = SecureEnclave.getNonce()
+//
+//                    verified = SecureEnclave.verify(
+//                        nonce, signature: SecureEnclave.sign(nonce, with: privateKey),
+//                        with: SecureEnclave.getPublicKey(privateKey))
+//                }
+//
+//                counter += 1
+//            } while !verified && counter < 3
+//
+//            if !verified {
+//                applicationWillResignActive(application)
+//                applicationDidEnterBackground(application)
+//                applicationWillTerminate(application)
+//
+//                exit(0)
+//            }
+//
+//            // Always return here, as the SecureEnclave operations will always
+//            // trigger a user identification and therefore the app becomes inactive
+//            // and then active again. So #applicationDidBecomeActive will be
+//            // called again. Therefore, we store the result of the verification
+//            // in an object property and check that on re-entry.
+//            return
+//        }
+//
+//        verified = false
+//    }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.

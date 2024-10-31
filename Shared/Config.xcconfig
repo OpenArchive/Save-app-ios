@@ -19,7 +19,7 @@ PROVISIONING_PROFILE_SPECIFIER_SHARE_EXTENSION[config=Debug] =
 PROVISIONING_PROFILE_SPECIFIER_SCREENSHOTS[config=Debug] =
 
 OA_APP_BUNDLE_ID[config=Release] = org.open-archive.save
-OA_EXT_BUNDLE_ID[config=Release] = org.open-archive.save.extensions
+OA_EXT_BUNDLE_ID[config=Release] = org.open-archive.save.extension
 OA_SCS_BUNDLE_ID[config=Release] = org.open-archive.save.Screenshots
 OA_APP_GROUP[config=Release] = group.org.open-archive.save.ios
 DEVELOPMENT_TEAM[config=Release] = QSU424W5UW

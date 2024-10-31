@@ -119,15 +119,15 @@ class GeneralSettingsViewController: FormViewController {
         
         form.delegate = nil
         
-        if let lockAppRow = form.rowBy(tag: "lock_app") as? SwitchRow {
-            lockAppRow.value = SecureEnclave.loadKey() != nil
-            
-            lockAppRow.disabled = .init(booleanLiteral: Settings.proofModeEncryptedPassphrase != nil)
-            lockAppRow.evaluateDisabled()
-            
-            // Fix spacing issues due to changes in number of displayed text lines.
-            lockAppRow.reload()
-        }
+//        if let lockAppRow = form.rowBy(tag: "lock_app") as? SwitchRow {
+//            lockAppRow.value = SecureEnclave.loadKey() != nil
+//            
+//            lockAppRow.disabled = .init(booleanLiteral: Settings.proofModeEncryptedPassphrase != nil)
+//            lockAppRow.evaluateDisabled()
+//            
+//            // Fix spacing issues due to changes in number of displayed text lines.
+//            lockAppRow.reload()
+//        }
         
         form.delegate = self
     }

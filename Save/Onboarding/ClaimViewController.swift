@@ -16,7 +16,6 @@ class ClaimViewController: UIViewController {
                 format: NSLocalizedString("Share%1$@Archive%1$@Verify%1$@Encrypt",
                                           comment: "Placeholders will be replaced by newline"),
                 "\n")
-                .localizedUppercase
                 .attributed
 
             text.colorize(with: .accent, index: text.startIndex)
