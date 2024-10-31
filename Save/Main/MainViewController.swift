@@ -385,6 +385,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 self.settingsVc.view.removeFromSuperview()
                 self.settingsVc.removeFromParent()
             }
+            
+            self.myMediaBt.setImage(UIImage(systemName: "photo.fill"))
+            self.settingsBt.setImage(UIImage(systemName: "gearshape"))
         }
     }
 
@@ -404,6 +407,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             self.settingsVc.didMove(toParent: self)
 
             self.container.show2(animated: true)
+            
+            self.myMediaBt.setImage(UIImage(systemName: "photo"))
+            self.settingsBt.setImage(UIImage(systemName: "gearshape.fill"))
         }
     }
 

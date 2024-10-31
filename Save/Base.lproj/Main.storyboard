@@ -568,9 +568,9 @@
                                 <rect key="frame" x="0.0" y="494" width="320" height="74"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QIU-V8-v7v">
-                                        <rect key="frame" x="20" y="12.5" width="79" height="49"/>
+                                        <rect key="frame" x="20" y="10" width="79" height="54.5"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="house.fill" catalog="system" imagePlacement="top" title="My Media" titleAlignment="center">
+                                        <buttonConfiguration key="configuration" style="plain" image="photo.fill" catalog="system" imagePlacement="top" title="My Media" imagePadding="6" titleAlignment="center">
                                             <fontDescription key="titleFontDescription" style="UICTFontTextStyleCaption1"/>
                                             <color key="baseForegroundColor" systemColor="labelColor"/>
                                         </buttonConfiguration>
@@ -599,14 +599,14 @@
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VpT-Ct-gHj">
-                                        <rect key="frame" x="229" y="17.5" width="71" height="39.5"/>
+                                        <rect key="frame" x="229" y="14.5" width="71" height="45.5"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title="Settings" image="gearshape">
                                             <color key="titleColor" systemColor="labelColor"/>
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration"/>
                                         </state>
-                                        <buttonConfiguration key="configuration" style="plain" image="gearshape" imagePlacement="top" title="Settings">
+                                        <buttonConfiguration key="configuration" style="plain" image="gearshape" imagePlacement="top" title="Settings" imagePadding="6">
                                             <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage"/>
                                             <fontDescription key="titleFontDescription" style="UICTFontTextStyleCaption1"/>
                                             <color key="baseForegroundColor" systemColor="labelColor"/>
@@ -2873,7 +2873,6 @@ Google's APIs allow you to access and send media to your existing folders in Goo
         <image name="folder" catalog="system" width="128" height="96"/>
         <image name="gearshape" width="11" height="11"/>
         <image name="hands-mobile" width="525" height="458"/>
-        <image name="house.fill" catalog="system" width="128" height="104"/>
         <image name="ic_batchedit" width="24" height="24"/>
         <image name="ic_error" width="24" height="24"/>
         <image name="ic_gdrive" width="128" height="128"/>
@@ -2881,10 +2880,11 @@ Google's APIs allow you to access and send media to your existing folders in Goo
         <image name="logo" width="92" height="52"/>
         <image name="onboarding-app_hand" width="518" height="627"/>
         <image name="person.crop.circle" catalog="system" width="128" height="123"/>
+        <image name="photo.fill" catalog="system" width="128" height="93"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="save-open-archive-logo" width="145" height="120"/>
-        <image name="server.rack" catalog="system" width="128" height="93"/>
         <image name="server.rack" width="12" height="10"/>
+        <image name="server.rack" catalog="system" width="128" height="93"/>
         <image name="text.append" catalog="system" width="128" height="101"/>
         <image name="trash" catalog="system" width="117" height="128"/>
         <namedColor name="Accent">
