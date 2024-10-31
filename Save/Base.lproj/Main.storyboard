@@ -1116,6 +1116,9 @@
                         <rect key="frame" x="0.0" y="0.0" width="320" height="56"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
+                    <connections>
+                        <segue destination="0g1-QI-lHG" kind="relationship" relationship="rootViewController" id="XF7-lB-1TY"/>
+                    </connections>
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uHK-lK-UmY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
@@ -2691,12 +2694,178 @@ Google's APIs allow you to access and send media to your existing folders in Goo
             </objects>
             <point key="canvasLocation" x="7329" y="-691"/>
         </scene>
+        <!--Management View Controller-->
+        <scene sceneID="FdY-YF-akS">
+            <objects>
+                <tableViewController id="0g1-QI-lHG" customClass="ManagementViewController" customModule="Save" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" allowsSelection="NO" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" id="tNT-Sj-TWK">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="548"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="analyticsCell" rowHeight="104" id="taA-Uh-xTv" customClass="AnalyticsCell" customModule="Save" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="50" width="320" height="104"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="taA-Uh-xTv" id="VYc-Wf-n5B">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="104"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Run health checks to help improve uploading." textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" adjustsFontForContentSizeCategory="YES" translatesAutoresizingMaskIntoConstraints="NO" id="oPJ-c7-202">
+                                            <rect key="frame" x="16" y="11" width="288" height="42"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="EiJ-Re-tFb">
+                                            <rect key="frame" x="180" y="61" width="30" height="32"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleTitle3"/>
+                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                            <state key="normal" title="OK"/>
+                                            <connections>
+                                                <action selector="ok" destination="taA-Uh-xTv" eventType="touchUpInside" id="ubo-72-XVA"/>
+                                            </connections>
+                                        </button>
+                                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="q61-Gw-TTe">
+                                            <rect key="frame" x="226" y="61" width="78" height="32"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                            <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                            <state key="normal" title="No Thanks"/>
+                                            <connections>
+                                                <action selector="decline" destination="taA-Uh-xTv" eventType="touchUpInside" id="EjZ-cR-gLN"/>
+                                            </connections>
+                                        </button>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="oPJ-c7-202" firstAttribute="top" secondItem="VYc-Wf-n5B" secondAttribute="topMargin" id="0BG-fI-Olb"/>
+                                        <constraint firstItem="EiJ-Re-tFb" firstAttribute="top" secondItem="oPJ-c7-202" secondAttribute="bottom" constant="8" id="Bdh-4d-uo1"/>
+                                        <constraint firstItem="oPJ-c7-202" firstAttribute="leading" secondItem="VYc-Wf-n5B" secondAttribute="leadingMargin" id="K9R-9O-d2X"/>
+                                        <constraint firstItem="oPJ-c7-202" firstAttribute="trailing" secondItem="VYc-Wf-n5B" secondAttribute="trailingMargin" id="Meh-RD-qlr"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="EiJ-Re-tFb" secondAttribute="bottom" id="UYh-J8-l7b"/>
+                                        <constraint firstAttribute="bottomMargin" secondItem="q61-Gw-TTe" secondAttribute="bottom" id="aKY-HT-ujQ"/>
+                                        <constraint firstItem="EiJ-Re-tFb" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="VYc-Wf-n5B" secondAttribute="leadingMargin" constant="16" id="aeZ-aP-Gqb"/>
+                                        <constraint firstAttribute="trailingMargin" secondItem="q61-Gw-TTe" secondAttribute="trailing" id="fH4-Qd-A6M"/>
+                                        <constraint firstItem="q61-Gw-TTe" firstAttribute="leading" secondItem="EiJ-Re-tFb" secondAttribute="trailing" constant="16" id="gUA-Lr-v3s"/>
+                                        <constraint firstItem="q61-Gw-TTe" firstAttribute="top" secondItem="oPJ-c7-202" secondAttribute="bottom" constant="8" id="wsV-iM-Cn7"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="declineBt" destination="q61-Gw-TTe" id="8LE-Bn-4hX"/>
+                                    <outlet property="okBt" destination="EiJ-Re-tFb" id="xYq-CO-zPh"/>
+                                    <outlet property="textLb" destination="oPJ-c7-202" id="ckG-zi-lX1"/>
+                                </connections>
+                            </tableViewCell>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="uploadCell" rowHeight="64" id="SGc-pv-oiB" customClass="UploadCell" customModule="Save" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="154" width="320" height="64"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="SGc-pv-oiB" id="gyP-A7-iHd">
+                                    <rect key="frame" x="0.0" y="0.0" width="320" height="64"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <view opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="aZl-O8-Mu4" customClass="ProgressButton" customModule="Save" customModuleProvider="target">
+                                            <rect key="frame" x="16" y="20" width="24" height="24"/>
+                                            <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="24" id="BZG-ig-HSX"/>
+                                                <constraint firstAttribute="width" constant="24" id="bb4-I9-jfk"/>
+                                            </constraints>
+                                            <userDefinedRuntimeAttributes>
+                                                <userDefinedRuntimeAttribute type="number" keyPath="lineWidth">
+                                                    <real key="value" value="3"/>
+                                                </userDefinedRuntimeAttribute>
+                                            </userDefinedRuntimeAttributes>
+                                        </view>
+                                        <button hidden="YES" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3F5-nT-gRL">
+                                            <rect key="frame" x="16" y="20" width="24" height="24"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="24" id="M2b-gX-Mza"/>
+                                                <constraint firstAttribute="width" constant="24" id="wWV-ir-nyY"/>
+                                            </constraints>
+                                            <state key="normal" image="ic_error"/>
+                                            <connections>
+                                                <action selector="showError" destination="SGc-pv-oiB" eventType="touchUpInside" id="Ah2-yV-kKa"/>
+                                            </connections>
+                                        </button>
+                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="check-mark" translatesAutoresizingMaskIntoConstraints="NO" id="MAw-In-yAP">
+                                            <rect key="frame" x="16" y="20" width="24" height="24"/>
+                                            <constraints>
+                                                <constraint firstAttribute="height" constant="24" id="feQ-gZ-bRf"/>
+                                                <constraint firstAttribute="width" constant="24" id="hNr-Wz-NOk"/>
+                                            </constraints>
+                                        </imageView>
+                                        <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="QjT-2S-aEa">
+                                            <rect key="frame" x="48" y="11" width="42" height="42"/>
+                                            <constraints>
+                                                <constraint firstAttribute="width" secondItem="QjT-2S-aEa" secondAttribute="height" multiplier="1:1" id="pVh-87-P3h"/>
+                                            </constraints>
+                                        </imageView>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="OjE-OQ-JjP">
+                                            <rect key="frame" x="98" y="11" width="206" height="20.5"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                            <nil key="textColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="12 MB" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontForContentSizeCategory="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="jEH-Gq-Jm6">
+                                            <rect key="frame" x="98" y="39.5" width="206" height="19.5"/>
+                                            <fontDescription key="fontDescription" style="UICTFontTextStyleCallout"/>
+                                            <color key="textColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                    </subviews>
+                                    <constraints>
+                                        <constraint firstItem="OjE-OQ-JjP" firstAttribute="trailing" secondItem="gyP-A7-iHd" secondAttribute="trailingMargin" id="3xD-Ek-J6W"/>
+                                        <constraint firstItem="MAw-In-yAP" firstAttribute="leading" secondItem="gyP-A7-iHd" secondAttribute="leadingMargin" id="6Sr-nY-KBG"/>
+                                        <constraint firstItem="QjT-2S-aEa" firstAttribute="leading" secondItem="aZl-O8-Mu4" secondAttribute="trailing" constant="8" id="8DB-Q9-4Mh"/>
+                                        <constraint firstItem="OjE-OQ-JjP" firstAttribute="leading" secondItem="QjT-2S-aEa" secondAttribute="trailing" constant="8" id="9TN-Eb-XJw"/>
+                                        <constraint firstItem="OjE-OQ-JjP" firstAttribute="top" secondItem="gyP-A7-iHd" secondAttribute="topMargin" id="DgK-Ez-xLG"/>
+                                        <constraint firstItem="MAw-In-yAP" firstAttribute="centerY" secondItem="gyP-A7-iHd" secondAttribute="centerY" id="EQm-Zu-CeU"/>
+                                        <constraint firstItem="jEH-Gq-Jm6" firstAttribute="trailing" secondItem="gyP-A7-iHd" secondAttribute="trailingMargin" id="HWm-yU-dqR"/>
+                                        <constraint firstItem="3F5-nT-gRL" firstAttribute="centerY" secondItem="gyP-A7-iHd" secondAttribute="centerY" id="LKm-Pv-cb2"/>
+                                        <constraint firstItem="QjT-2S-aEa" firstAttribute="top" secondItem="gyP-A7-iHd" secondAttribute="topMargin" id="RXZ-l3-4ci"/>
+                                        <constraint firstItem="3F5-nT-gRL" firstAttribute="leading" secondItem="gyP-A7-iHd" secondAttribute="leadingMargin" id="Vdf-bY-pGj"/>
+                                        <constraint firstItem="aZl-O8-Mu4" firstAttribute="leading" secondItem="gyP-A7-iHd" secondAttribute="leadingMargin" id="XyD-3m-C24"/>
+                                        <constraint firstItem="jEH-Gq-Jm6" firstAttribute="top" secondItem="OjE-OQ-JjP" secondAttribute="bottom" constant="8" id="e9b-ah-ddq"/>
+                                        <constraint firstItem="aZl-O8-Mu4" firstAttribute="centerY" secondItem="gyP-A7-iHd" secondAttribute="centerY" id="gP8-jx-xhQ"/>
+                                        <constraint firstItem="OjE-OQ-JjP" firstAttribute="leading" secondItem="jEH-Gq-Jm6" secondAttribute="leading" id="iLK-wG-CeI"/>
+                                        <constraint firstItem="QjT-2S-aEa" firstAttribute="bottom" secondItem="gyP-A7-iHd" secondAttribute="bottomMargin" id="r9V-CB-P63"/>
+                                    </constraints>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="done" destination="MAw-In-yAP" id="mTp-tk-YgY"/>
+                                    <outlet property="errorBt" destination="3F5-nT-gRL" id="5fm-Rc-0G6"/>
+                                    <outlet property="nameLb" destination="OjE-OQ-JjP" id="oUw-oE-ic1"/>
+                                    <outlet property="progress" destination="aZl-O8-Mu4" id="Gxk-9R-Do4"/>
+                                    <outlet property="sizeLb" destination="jEH-Gq-Jm6" id="kYp-iE-rzx"/>
+                                    <outlet property="thumbnail" destination="QjT-2S-aEa" id="AMy-Of-8n9"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="0g1-QI-lHG" id="njy-9G-aIg"/>
+                            <outlet property="delegate" destination="0g1-QI-lHG" id="4Zu-lA-lN4"/>
+                        </connections>
+                    </tableView>
+                    <navigationItem key="navigationItem" id="3Mm-PF-JxH">
+                        <barButtonItem key="leftBarButtonItem" title="Back" id="G4c-ap-yUI">
+                            <connections>
+                                <action selector="done" destination="0g1-QI-lHG" id="27p-mt-ERD"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="backBt" destination="G4c-ap-yUI" id="Bsd-Df-U5N"/>
+                    </connections>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="vWx-lB-Mkr" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1597.5" y="911.61971830985919"/>
+        </scene>
     </scenes>
     <color key="tintColor" red="0.0" green="0.70398116438356162" blue="0.64921339897260277" alpha="1" colorSpace="calibratedRGB"/>
     <resources>
         <image name="InternetArchiveLogo" width="76" height="86"/>
         <image name="arrow.right" catalog="system" width="128" height="95"/>
         <image name="camera" catalog="system" width="128" height="93"/>
+        <image name="check-mark" width="9" height="9"/>
         <image name="chevron.left" catalog="system" width="97" height="128"/>
         <image name="chevron.right" catalog="system" width="97" height="128"/>
         <image name="flag" catalog="system" width="128" height="121"/>
@@ -2713,8 +2882,8 @@ Google's APIs allow you to access and send media to your existing folders in Goo
         <image name="person.crop.circle" catalog="system" width="128" height="123"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="save-open-archive-logo" width="145" height="120"/>
-        <image name="server.rack" catalog="system" width="128" height="93"/>
         <image name="server.rack" width="12" height="10"/>
+        <image name="server.rack" catalog="system" width="128" height="93"/>
         <image name="text.append" catalog="system" width="128" height="101"/>
         <image name="trash" catalog="system" width="117" height="128"/>
         <namedColor name="Accent">

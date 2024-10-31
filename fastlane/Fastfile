@@ -66,7 +66,13 @@ platform :ios do
     )
     add_git_tag
     push_to_git_remote
-    upload_to_testflight
+    upload_to_testflight(
+      groups: "Beta Group",
+	  distribute_external: true,
+	  notify_external_testers: true,
+      expire_previous_builds: true,
+      changelog: prompt(text: "Changelog: ")
+)
     # upload_symbols_to_crashlytics
   end
 
