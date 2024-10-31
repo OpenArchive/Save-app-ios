@@ -2347,6 +2347,7 @@
                         <outlet property="nextcloudLb" destination="2tF-Hc-78E" id="s87-yl-aGP"/>
                         <outlet property="nextcloudSw" destination="Wt9-5i-bpl" id="uVl-Xd-jeU"/>
                         <outlet property="passwordTb" destination="97a-9J-Qj6" id="kXF-lx-XmW"/>
+                        <outlet property="scrollView" destination="uOD-i0-dq6" id="3x9-lC-s9u"/>
                         <outlet property="serverLb" destination="GzS-H2-y9Y" id="QPe-Cf-6L0"/>
                         <outlet property="subtitleLb" destination="M34-xQ-vD9" id="Bdz-0t-ff1"/>
                         <outlet property="titleLb" destination="PEt-pF-AHz" id="k1n-q3-mcG"/>
@@ -2882,8 +2883,8 @@ Google's APIs allow you to access and send media to your existing folders in Goo
         <image name="person.crop.circle" catalog="system" width="128" height="123"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="save-open-archive-logo" width="145" height="120"/>
-        <image name="server.rack" width="12" height="10"/>
         <image name="server.rack" catalog="system" width="128" height="93"/>
+        <image name="server.rack" width="12" height="10"/>
         <image name="text.append" catalog="system" width="128" height="101"/>
         <image name="trash" catalog="system" width="117" height="128"/>
         <namedColor name="Accent">

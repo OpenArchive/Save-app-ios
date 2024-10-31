@@ -108,7 +108,6 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
         }
     }
 
-
     private lazy var workingOverlay: WorkingOverlay = {
         return WorkingOverlay().addToSuperview(navigationController?.view ?? view)
     }()
@@ -126,6 +125,9 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
         // Do any additional setup after loading the view.
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
 
     @IBAction func back() {
         delegate?.back()
@@ -178,7 +180,51 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
         }
     }
 
-
+    override func keyboardWillShow(notification: Notification) {
+        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
+            return
+        }
+        
+        // Convert keyboard frame to scrollView's coordinate space
+        let keyboardFrameInWindow = keyboardSize
+        let scrollViewFrameInWindow = scrollView.convert(scrollView.bounds, to: nil)
+        
+        // Calculate the intersection of the keyboard and scrollView
+        let intersection = scrollViewFrameInWindow.intersection(keyboardFrameInWindow)
+        
+        // If there's no intersection, we don't need any padding
+        if intersection.isNull {
+            scrollView.contentInset = .zero
+            scrollView.scrollIndicatorInsets = .zero
+            return
+        }
+        
+        // Only add the height of the overlapping area as bottom inset
+        let contentInsets = UIEdgeInsets(
+            top: 0.0,
+            left: 0.0,
+            bottom: intersection.height,
+            right: 0.0
+        )
+        
+        // Adjust scroll view content insets
+        scrollView.contentInset = contentInsets
+        scrollView.scrollIndicatorInsets = contentInsets
+        
+        // If there's an active text field, scroll to make it visible
+        if let activeField = view.findFirstResponder() as? UITextField {
+            let rect = activeField.convert(activeField.bounds, to: scrollView)
+            // Add some extra padding to ensure the text field isn't right at the keyboard
+            let visibleRect = CGRect(
+                x: rect.origin.x,
+                y: rect.origin.y,
+                width: rect.width,
+                height: rect.height + 20 // Extra padding
+            )
+            scrollView.scrollRectToVisible(visibleRect, animated: true)
+        }
+    }
+    
     // MARK: TextBoxDelegate
 
     func textBox(didUpdate textBox: TextBox) {

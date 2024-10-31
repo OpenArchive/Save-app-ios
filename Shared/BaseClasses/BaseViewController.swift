@@ -14,7 +14,7 @@ import UIKit
  */
 open class BaseViewController: UIViewController {
     
-    @IBOutlet public var scrollView: UIScrollView?
+    @IBOutlet public var scrollView: UIScrollView!
     
     private var originalInsets: UIEdgeInsets?
     
