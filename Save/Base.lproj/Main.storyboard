@@ -143,7 +143,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="mX4-L9-fca">
-                                <rect key="frame" x="16" y="352" width="216" height="124.5"/>
+                                <rect key="frame" x="16" y="352" width="216" height="99.5"/>
                                 <constraints>
                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="hvg-50-O1E"/>
                                 </constraints>
@@ -152,7 +152,7 @@
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="250" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LOG-Gh-tpR">
-                                <rect key="frame" x="16" y="484.5" width="216" height="83.5"/>
+                                <rect key="frame" x="16" y="459.5" width="216" height="108.5"/>
                                 <string key="text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam</string>
                                 <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="17"/>
                                 <nil key="highlightedColor"/>
@@ -449,6 +449,11 @@
                                     <constraint firstItem="dIV-uA-I3m" firstAttribute="top" secondItem="a1a-GU-jmb" secondAttribute="bottom" constant="8" symbolic="YES" id="qeX-1U-jqG"/>
                                 </constraints>
                             </view>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="welcome_arrow" translatesAutoresizingMaskIntoConstraints="NO" id="Neb-2j-hxC">
+                                <rect key="frame" x="160" y="348.5" width="100" height="123.5"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <color key="tintColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </imageView>
                             <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="cdB-Ih-Rhb">
                                 <rect key="frame" x="16" y="124" width="288" height="358"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
@@ -724,7 +729,9 @@
                         <constraints>
                             <constraint firstItem="hnS-Bv-Svc" firstAttribute="leading" secondItem="vgM-P6-FLk" secondAttribute="leading" id="0nu-VX-kBy"/>
                             <constraint firstAttribute="bottom" secondItem="Bhs-Ln-YUb" secondAttribute="bottom" id="5Ha-6k-0PD"/>
+                            <constraint firstItem="Neb-2j-hxC" firstAttribute="leading" secondItem="5dc-h7-E3x" secondAttribute="centerX" id="5fl-Jo-W4N"/>
                             <constraint firstItem="Ydb-Rt-cQy" firstAttribute="centerX" secondItem="vgM-P6-FLk" secondAttribute="centerX" id="5u0-Bo-PAu"/>
+                            <constraint firstItem="qfO-EJ-P6h" firstAttribute="top" secondItem="Neb-2j-hxC" secondAttribute="bottom" constant="10" id="8Bf-6O-SzQ"/>
                             <constraint firstItem="cdB-Ih-Rhb" firstAttribute="top" secondItem="AyW-lX-T0b" secondAttribute="bottom" id="AKS-6U-jjP"/>
                             <constraint firstItem="Ydb-Rt-cQy" firstAttribute="bottom" secondItem="VEn-ta-I3v" secondAttribute="bottom" id="Drr-fU-lbj"/>
                             <constraint firstItem="Ydb-Rt-cQy" firstAttribute="width" secondItem="VEn-ta-I3v" secondAttribute="width" id="JBL-Tt-s3Y"/>
@@ -754,6 +761,7 @@
                             <constraint firstAttribute="trailing" secondItem="InD-HF-ni8" secondAttribute="trailing" id="t2c-H2-hcU"/>
                             <constraint firstItem="vgM-P6-FLk" firstAttribute="trailing" secondItem="cdB-Ih-Rhb" secondAttribute="trailing" constant="16" id="tzz-2E-Mhp"/>
                             <constraint firstItem="5dc-h7-E3x" firstAttribute="centerY" secondItem="cdB-Ih-Rhb" secondAttribute="centerY" priority="750" constant="-40" id="uKL-S5-Tev"/>
+                            <constraint firstItem="Neb-2j-hxC" firstAttribute="top" secondItem="5dc-h7-E3x" secondAttribute="bottom" constant="10" id="w6s-Nz-epy"/>
                             <constraint firstItem="Bhs-Ln-YUb" firstAttribute="leading" secondItem="VEn-ta-I3v" secondAttribute="leading" id="wc6-OI-0xK"/>
                             <constraint firstItem="AyW-lX-T0b" firstAttribute="top" secondItem="hpS-2l-dcc" secondAttribute="bottom" constant="8" id="zrs-Zm-RdH"/>
                         </constraints>
@@ -2893,10 +2901,11 @@ Google's APIs allow you to access and send media to your existing folders in Goo
         <image name="photo.fill" catalog="system" width="128" height="93"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="save-open-archive-logo" width="145" height="120"/>
-        <image name="server.rack" catalog="system" width="128" height="93"/>
         <image name="server.rack" width="12" height="10"/>
+        <image name="server.rack" catalog="system" width="128" height="93"/>
         <image name="text.append" catalog="system" width="128" height="101"/>
         <image name="trash" catalog="system" width="117" height="128"/>
+        <image name="welcome_arrow" width="100" height="279"/>
         <namedColor name="Accent">
             <color red="0.0" green="0.70588235294117652" blue="0.65098039215686276" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
