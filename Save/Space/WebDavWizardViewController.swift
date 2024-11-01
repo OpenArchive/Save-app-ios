@@ -43,6 +43,7 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
             urlTb.delegate = self
             urlTb.autocorrectionType = .no
             urlTb.autocapitalizationType = .none
+            urlTb.textField.returnKeyType = .next
         }
     }
 
@@ -52,6 +53,7 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
             nameTb.delegate = self
             nameTb.autocorrectionType = .no
             nameTb.autocapitalizationType = .none
+            nameTb.textField.returnKeyType = .next
         }
     }
 
@@ -67,6 +69,7 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
             usernameTb.delegate = self
             usernameTb.autocorrectionType = .no
             usernameTb.autocapitalizationType = .none
+            usernameTb.textField.returnKeyType = .next
         }
     }
 
@@ -77,6 +80,7 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
             passwordTb.autocorrectionType = .no
             passwordTb.autocapitalizationType = .none
             passwordTb.status = .reveal
+            passwordTb.textField.returnKeyType = .done
         }
     }
 
@@ -256,7 +260,6 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
 
         default:
             dismissKeyboard()
-
             next()
         }
 

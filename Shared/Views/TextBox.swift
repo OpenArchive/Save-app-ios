@@ -133,8 +133,9 @@ class TextBox: UIView, UITextFieldDelegate {
 
     // MARK: Private Properties
 
-    private lazy var textField: UITextField = {
+    lazy var textField: UITextField = {
         let view = UITextField()
+        view.returnKeyType = .next
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clearButtonMode = .whileEditing
         view.delegate = self
