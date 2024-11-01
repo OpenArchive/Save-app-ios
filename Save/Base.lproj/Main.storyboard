@@ -419,7 +419,7 @@
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="5dc-h7-E3x">
-                                <rect key="frame" x="60" y="194" width="200" height="150.5"/>
+                                <rect key="frame" x="60" y="188" width="200" height="150.5"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Welcome!" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="a1a-GU-jmb">
                                         <rect key="frame" x="0.0" y="0.0" width="200" height="41"/>
@@ -450,7 +450,7 @@
                                 </constraints>
                             </view>
                             <collectionView hidden="YES" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" dataMode="prototypes" translatesAutoresizingMaskIntoConstraints="NO" id="cdB-Ih-Rhb">
-                                <rect key="frame" x="16" y="124" width="288" height="370"/>
+                                <rect key="frame" x="16" y="124" width="288" height="358"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                 <collectionViewFlowLayout key="collectionViewLayout" minimumLineSpacing="3" minimumInteritemSpacing="3" id="21E-IJ-odh">
                                     <size key="itemSize" width="80" height="80"/>
@@ -562,10 +562,10 @@
                                 </connections>
                             </collectionView>
                             <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hnS-Bv-Svc">
-                                <rect key="frame" x="0.0" y="124" width="320" height="370"/>
+                                <rect key="frame" x="0.0" y="124" width="320" height="358"/>
                             </view>
                             <view clipsSubviews="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="qfO-EJ-P6h">
-                                <rect key="frame" x="0.0" y="494" width="320" height="74"/>
+                                <rect key="frame" x="0.0" y="482" width="320" height="74"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QIU-V8-v7v">
                                         <rect key="frame" x="20" y="10" width="79" height="54.5"/>
@@ -627,6 +627,13 @@
                                     <constraint firstItem="QIU-V8-v7v" firstAttribute="centerY" secondItem="YSG-EE-2gJ" secondAttribute="centerY" id="fi2-ZU-ReK"/>
                                     <constraint firstAttribute="trailing" secondItem="VpT-Ct-gHj" secondAttribute="trailing" constant="20" symbolic="YES" id="gRU-qD-e2J"/>
                                     <constraint firstItem="YSG-EE-2gJ" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="QIU-V8-v7v" secondAttribute="trailing" constant="8" symbolic="YES" id="iZV-dI-t4d"/>
+                                </constraints>
+                            </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ydb-Rt-cQy" userLabel="Bottom Menu Padding">
+                                <rect key="frame" x="0.0" y="556" width="320" height="12"/>
+                                <color key="backgroundColor" name="menu-background"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="12" id="93x-2f-ciT"/>
                                 </constraints>
                             </view>
                             <view hidden="YES" alpha="0.84999999999999998" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="InD-HF-ni8">
@@ -717,7 +724,10 @@
                         <constraints>
                             <constraint firstItem="hnS-Bv-Svc" firstAttribute="leading" secondItem="vgM-P6-FLk" secondAttribute="leading" id="0nu-VX-kBy"/>
                             <constraint firstAttribute="bottom" secondItem="Bhs-Ln-YUb" secondAttribute="bottom" id="5Ha-6k-0PD"/>
+                            <constraint firstItem="Ydb-Rt-cQy" firstAttribute="centerX" secondItem="vgM-P6-FLk" secondAttribute="centerX" id="5u0-Bo-PAu"/>
                             <constraint firstItem="cdB-Ih-Rhb" firstAttribute="top" secondItem="AyW-lX-T0b" secondAttribute="bottom" id="AKS-6U-jjP"/>
+                            <constraint firstItem="Ydb-Rt-cQy" firstAttribute="bottom" secondItem="VEn-ta-I3v" secondAttribute="bottom" id="Drr-fU-lbj"/>
+                            <constraint firstItem="Ydb-Rt-cQy" firstAttribute="width" secondItem="VEn-ta-I3v" secondAttribute="width" id="JBL-Tt-s3Y"/>
                             <constraint firstItem="Fbx-Lc-Aho" firstAttribute="centerY" secondItem="hpS-2l-dcc" secondAttribute="centerY" id="K8s-82-TmT"/>
                             <constraint firstItem="vgM-P6-FLk" firstAttribute="top" secondItem="Bhs-Ln-YUb" secondAttribute="top" id="PGz-tU-21B"/>
                             <constraint firstAttribute="trailing" secondItem="qfO-EJ-P6h" secondAttribute="trailing" id="Q7Y-qj-erX"/>
@@ -730,7 +740,7 @@
                             <constraint firstItem="InD-HF-ni8" firstAttribute="top" secondItem="VEn-ta-I3v" secondAttribute="top" id="be8-uw-zxe"/>
                             <constraint firstItem="5dc-h7-E3x" firstAttribute="centerX" secondItem="VEn-ta-I3v" secondAttribute="centerX" id="bkv-l7-TAq"/>
                             <constraint firstItem="gz7-kv-s2C" firstAttribute="centerY" secondItem="hpS-2l-dcc" secondAttribute="centerY" id="blE-2q-bJ8"/>
-                            <constraint firstAttribute="bottom" secondItem="qfO-EJ-P6h" secondAttribute="bottom" id="c78-Qc-pKj"/>
+                            <constraint firstAttribute="bottom" secondItem="qfO-EJ-P6h" secondAttribute="bottom" constant="12" id="c78-Qc-pKj"/>
                             <constraint firstItem="Fbx-Lc-Aho" firstAttribute="leading" secondItem="gz7-kv-s2C" secondAttribute="trailing" constant="24" id="clK-3b-C8A"/>
                             <constraint firstAttribute="trailing" secondItem="Bhs-Ln-YUb" secondAttribute="trailing" id="dY4-Fy-Hbj"/>
                             <constraint firstItem="vgM-P6-FLk" firstAttribute="trailing" secondItem="hnS-Bv-Svc" secondAttribute="trailing" id="h6M-Vg-QmD"/>
@@ -2883,8 +2893,8 @@ Google's APIs allow you to access and send media to your existing folders in Goo
         <image name="photo.fill" catalog="system" width="128" height="93"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="save-open-archive-logo" width="145" height="120"/>
-        <image name="server.rack" width="12" height="10"/>
         <image name="server.rack" catalog="system" width="128" height="93"/>
+        <image name="server.rack" width="12" height="10"/>
         <image name="text.append" catalog="system" width="128" height="101"/>
         <image name="trash" catalog="system" width="117" height="128"/>
         <namedColor name="Accent">
