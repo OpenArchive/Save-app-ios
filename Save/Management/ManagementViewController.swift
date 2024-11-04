@@ -85,7 +85,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
     // MARK: UITableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
-        return 2
+        return 1
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
