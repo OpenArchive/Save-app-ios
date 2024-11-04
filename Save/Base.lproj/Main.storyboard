@@ -882,25 +882,13 @@
                             </button>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Cpd-AK-jKO">
                                 <rect key="frame" x="0.0" y="98" width="320" height="394"/>
-                                <subviews>
-                                    <view alpha="0.69999999999999996" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PDk-Rp-dFQ">
-                                        <rect key="frame" x="0.0" y="0.0" width="320" height="394"/>
-                                        <color key="backgroundColor" systemColor="viewFlipsideBackgroundColor"/>
-                                    </view>
-                                </subviews>
-                                <constraints>
-                                    <constraint firstAttribute="bottom" secondItem="PDk-Rp-dFQ" secondAttribute="bottom" id="6JP-m2-J3Z"/>
-                                    <constraint firstAttribute="trailing" secondItem="PDk-Rp-dFQ" secondAttribute="trailing" id="Ctt-Ft-Eku"/>
-                                    <constraint firstItem="PDk-Rp-dFQ" firstAttribute="leading" secondItem="Cpd-AK-jKO" secondAttribute="leading" id="Rj4-rv-3Vm"/>
-                                    <constraint firstItem="PDk-Rp-dFQ" firstAttribute="top" secondItem="Cpd-AK-jKO" secondAttribute="top" id="Vmk-z3-VlB"/>
-                                </constraints>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="h89-7R-kf9"/>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <gestureRecognizers/>
                         <constraints>
-                            <constraint firstItem="Cpd-AK-jKO" firstAttribute="top" relation="greaterThanOrEqual" secondItem="h89-7R-kf9" secondAttribute="top" id="1q3-OY-Lkt"/>
                             <constraint firstItem="p3T-VI-YwW" firstAttribute="top" secondItem="h89-7R-kf9" secondAttribute="top" id="968-BJ-E4O"/>
                             <constraint firstItem="Cpd-AK-jKO" firstAttribute="trailing" secondItem="h89-7R-kf9" secondAttribute="trailing" id="EO5-Dl-YeT"/>
                             <constraint firstItem="h89-7R-kf9" firstAttribute="bottom" secondItem="p3T-VI-YwW" secondAttribute="bottom" id="EZh-zX-KZh"/>
@@ -936,8 +924,8 @@
                         <outlet property="counterLb" destination="t8I-5E-O1R" id="L9d-dH-8Zj"/>
                         <outlet property="flagIv" destination="dVf-uc-nQr" id="LsL-cb-teU"/>
                         <outlet property="forwardBt" destination="e32-y6-Qbz" id="OWq-pV-yAi"/>
-                        <outlet property="infos" destination="Cpd-AK-jKO" id="5V7-p5-7ic"/>
-                        <outlet property="infosBottom" destination="TVT-L4-uB4" id="OBa-s5-Xdf"/>
+                        <outlet property="infoView" destination="Cpd-AK-jKO" id="5V7-p5-7ic"/>
+                        <outlet property="infoViewBottomConstraint" destination="TVT-L4-uB4" id="6ge-O1-JPS"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4pd-W2-vaz" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2901,8 +2889,8 @@ Google's APIs allow you to access and send media to your existing folders in Goo
         <image name="photo.fill" catalog="system" width="128" height="93"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="save-open-archive-logo" width="145" height="120"/>
-        <image name="server.rack" width="12" height="10"/>
         <image name="server.rack" catalog="system" width="128" height="93"/>
+        <image name="server.rack" width="12" height="10"/>
         <image name="text.append" catalog="system" width="128" height="101"/>
         <image name="trash" catalog="system" width="117" height="128"/>
         <image name="welcome_arrow" width="100" height="279"/>

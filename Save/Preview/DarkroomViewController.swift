@@ -39,8 +39,8 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         }
     }
 
-    @IBOutlet weak var infos: UIView!
-    @IBOutlet weak var infosBottom: NSLayoutConstraint?
+    @IBOutlet weak var infoView: UIView!
+    @IBOutlet weak var infoViewBottomConstraint: NSLayoutConstraint?
 
 
     private let sc = SelectedCollection()
@@ -58,7 +58,6 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         let pageVc = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
         pageVc.dataSource = self
         pageVc.delegate = self
-
         return pageVc
     }()
 
@@ -71,18 +70,11 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         container.addSubview(pageVc.view)
         pageVc.view.frame = container.bounds
         pageVc.didMove(toParent: self)
-
-        // Use the new keyboard layout guide, if available, that's more reliable
-        // than any calculation.
-        if #available(iOS 15.0, *) {
-            infosBottom?.isActive = false
-            infos.bottomAnchor.constraint(equalTo: infos.keyboardLayoutGuide.topAnchor).isActive = true
-        }
-
-        dh = DarkroomHelper(self, infos)
-
+        
+        dh = DarkroomHelper(self, infoView)
+        
         Db.add(observer: self, #selector(yapDatabaseModified))
-
+        
         refresh(animate: false)
     }
     
@@ -104,13 +96,12 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     override func keyboardWillShow(notification: Notification) {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .done, target: self, action: #selector(dismissKeyboard))
-
-        if let infosBottom = infosBottom,
-            let kbSize = getKeyboardSize(notification)
-        {
-            infosBottom.constant = view.bounds.maxY - kbSize.minY
+        
+        if let kbSize = getKeyboardSize(notification) {
+            let safeAreaBottom = view.safeAreaInsets.bottom
+            let viewMaxY = view.bounds.maxY - safeAreaBottom
+            infoViewBottomConstraint?.constant = viewMaxY - kbSize.minY
         }
-
         animateDuringKeyboardMovement(notification)
     }
 
@@ -118,7 +109,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .done, target: self, action: #selector(dismiss(_:)))
 
-        infosBottom?.constant = 0
+        infoViewBottomConstraint?.constant = 0
 
         animateDuringKeyboardMovement(notification)
     }

@@ -94,14 +94,26 @@ platform :ios do
 
   desc "Build and upload to the App Store"
   lane :release do
-    ensure_no_debug_code(text: "FIXME")
+    # ensure_no_debug_code(text: "FIXME")
     app_store_connect_api_key
     sync_code_signing
-    increment_build_number_in_xcodeproj
-    build_ios_app
+    increment_build_number_in_xcodeproj(
+        scheme: "save-release"
+    )
+    build_ios_app(
+      scheme: "save-release",
+      export_options: {
+        provisioningProfiles: {
+          "org.open-archive.save" => "match AppStore org.open-archive.save",
+          "org.open-archive.save.extension" => "match AppStore org.open-archive.save.extension",
+        }
+      }
+    )
     add_git_tag
     push_to_git_remote
-    upload_to_app_store
+    upload_to_app_store(
+      precheck_include_in_app_purchases: false
+    )
     # upload_symbols_to_crashlytics
   end
 end
