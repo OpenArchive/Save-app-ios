@@ -4,37 +4,29 @@
 //
 
 import Foundation
-
-import SweeterSwift
+import CoreGraphics
 
 extension Int {
-    var day: TimeInterval { return TimeInterval.day }
-    var days: TimeInterval { return TimeInterval.day * Double(self) }
+    var day: TimeInterval { TimeIntervalConstants.secondsInDay }
+    var days: TimeInterval { Double(self) * day }
     
-    var hour: TimeInterval { return TimeInterval.hour }
-    var hours: TimeInterval { return TimeInterval.hour * Double(self) }
+    var hour: TimeInterval { TimeIntervalConstants.secondsInHour }
+    var hours: TimeInterval { Double(self) * hour }
     
-    var minute: TimeInterval { return TimeInterval.minute }
-    var minutes: TimeInterval { return TimeInterval.minute * Double(self) }
+    var minute: TimeInterval { TimeIntervalConstants.secondsInMinute }
+    var minutes: TimeInterval { Double(self) * minute }
     
-    var second: TimeInterval { return 1 }
-    var seconds: TimeInterval { return Double(self) }
+    var second: TimeInterval { TimeIntervalConstants.secondsInSecond }
+    var seconds: TimeInterval { Double(self) }
     
     var percent: CGFloat {
-        return (CGFloat(self) / 100.0).rounded(toPlaces: 2)
+        (CGFloat(self) / GeneralConstants.percentBase).rounded(toPlaces:GeneralConstants.percentRoundedTo)
     }
     
     func spelledOut() -> String {
-        if self == 1 { return "one" }
-        if self == 2 { return "two" }
-        if self == 3 { return "three" }
-        if self == 4 { return "four" }
-        if self == 5 { return "five" }
-        if self == 6 { return "six" }
-        if self == 7 { return "seven" }
-        if self == 8 { return "eight" }
-        if self == 9 { return "nine" }
-        
+        if self >= GeneralConstants.minSpelledOutValue && self <= GeneralConstants.maxSpelledOutValue {
+            return NumberFormatter.localizedString(from: NSNumber(value: self), number: .spellOut)
+        }
         return String(self)
     }
 }
