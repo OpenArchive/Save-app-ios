@@ -140,10 +140,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
     }
 
     override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
-        if indexPath.section == 0 {
-            return false
-        }
-
+        
         switch getUpload(indexPath)?.state {
         case .pending, .paused:
             return true
