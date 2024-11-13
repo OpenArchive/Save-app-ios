@@ -132,10 +132,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
     }
 
     override func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
-        if indexPath.section == 0 {
-            return false
-        }
-
+        
         return true
     }
 
