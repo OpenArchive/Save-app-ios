@@ -118,9 +118,8 @@ class Utils {
     
     class func destructure(interval: TimeInterval) -> (days: Int, hours: Int, minutes: Int) {
         let numDays = floor(interval / .day)
-        let numHours = floor((interval - (numDays * .day)) / 3600.0)
-        let numMinutes = floor(((interval - (numDays * .day)) - (numHours * 3600.0)) / 60.0)
-        
+        let numHours = floor((interval - (numDays * .day)) / .hour)
+        let numMinutes = floor(((interval - (numDays * .day)) - (numHours * .hour)) / .minute)
         return (Int(numDays), Int(numHours), Int(numMinutes))
     }
     

@@ -9,5 +9,8 @@
 import Foundation
 
 extension TimeInterval {
-    static let day: TimeInterval = 86400.0 // Number of seconds in a day
+   
+    static let day: TimeInterval = TimeIntervalConstants.secondsInDay
+    static let hour: TimeInterval = TimeIntervalConstants.secondsInHour
+    static let minute: TimeInterval = TimeIntervalConstants.secondsInMinute
 }

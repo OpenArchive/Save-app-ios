@@ -7,24 +7,24 @@ import Foundation
 import CoreGraphics
 
 extension Int {
-    var day: TimeInterval { 24 * 60 * 60 }
+    var day: TimeInterval { TimeIntervalConstants.secondsInDay }
     var days: TimeInterval { Double(self) * day }
     
-    var hour: TimeInterval { 60 * 60 }
+    var hour: TimeInterval { TimeIntervalConstants.secondsInHour }
     var hours: TimeInterval { Double(self) * hour }
     
-    var minute: TimeInterval { 60 }
+    var minute: TimeInterval { TimeIntervalConstants.secondsInMinute }
     var minutes: TimeInterval { Double(self) * minute }
     
-    var second: TimeInterval { 1 }
+    var second: TimeInterval { TimeIntervalConstants.secondsInSecond }
     var seconds: TimeInterval { Double(self) }
     
     var percent: CGFloat {
-        (CGFloat(self) / 100).rounded(toPlaces: 2)
+        (CGFloat(self) / GeneralConstants.percentBase).rounded(toPlaces:GeneralConstants.numberTwo)
     }
     
     func spelledOut() -> String {
-        if self >= 1 && self <= 9 {
+        if self >= GeneralConstants.numberOne && self <= GeneralConstants.numberNine {
             return NumberFormatter.localizedString(from: NSNumber(value: self), number: .spellOut)
         }
         return String(self)
