@@ -20,11 +20,11 @@ extension Int {
     var seconds: TimeInterval { Double(self) }
     
     var percent: CGFloat {
-        (CGFloat(self) / GeneralConstants.percentBase).rounded(toPlaces:GeneralConstants.numberTwo)
+        (CGFloat(self) / GeneralConstants.percentBase).rounded(toPlaces:GeneralConstants.percentRoundedTo)
     }
     
     func spelledOut() -> String {
-        if self >= GeneralConstants.numberOne && self <= GeneralConstants.numberNine {
+        if self >= GeneralConstants.minSpelledOutValue && self <= GeneralConstants.maxSpelledOutValue {
             return NumberFormatter.localizedString(from: NSNumber(value: self), number: .spellOut)
         }
         return String(self)

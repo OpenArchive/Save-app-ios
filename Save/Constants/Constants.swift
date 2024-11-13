@@ -8,15 +8,17 @@
 
 import Foundation
 struct TimeIntervalConstants {
-    static let secondsInDay: TimeInterval = 86400.0  // 24 * 60 * 60
-    static let secondsInHour: TimeInterval = 3600.0  // 60 * 60
-    static let secondsInMinute: TimeInterval = 60.0  // 60
-    static let secondsInSecond: TimeInterval = 1.0   // 1
+    static let hoursInDay: Double = 24.0
+    static let minutuesInHour: Double = 60.0
+    static let secondsInDay: TimeInterval = hoursInDay * minutuesInHour * secondsInMinute
+    static let secondsInHour: TimeInterval = minutuesInHour * secondsInMinute
+    static let secondsInMinute: TimeInterval = 60.0
+    static let secondsInSecond: TimeInterval = 1.0
 }
 
 struct GeneralConstants {
     static let percentBase: CGFloat = 100.0
-    static let numberNine: Int = 9
-    static let numberOne: Int = 1
-    static let numberTwo:Int = 2
+    static let maxSpelledOutValue: Int = 9
+    static let minSpelledOutValue: Int = 1
+    static let percentRoundedTo:Int = 2
 }
