@@ -512,7 +512,7 @@
 "Servers" = "Servers";
 
 /* No comment provided by engineer. */
-"Set the same Creative Commons license for ALL folders on this server." = "Set the same Creative Commons license for ALL folders on this server.";
+"Set the same Creative Commons license for ALL folders on this server." = "Set creative commons licenses for folders on this server";
 
 /* No comment provided by engineer. */
 "Set unique Creative Commons licenses for EACH INDIVIDUAL folder on this server." = "Set unique Creative Commons licenses for EACH INDIVIDUAL folder on this server.";
