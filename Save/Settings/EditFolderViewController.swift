@@ -24,15 +24,15 @@ class EditFolderViewController: BaseFolderViewController {
 
     private lazy var ccEnabled = SelectedSpace.space?.license == nil
 
-    private lazy var cc = CcSelector(individual: ccEnabled)
+   // private lazy var cc = CcSelector(individual: ccEnabled)
 
     override func viewDidLoad() {
         navigationItem.title = project.name
 
         nameRow.value = project.name
 
-        cc.set(project.license, enabled: ccEnabled && project.active)
-
+     //   cc.set(project.license, enabled: ccEnabled && project.active)
+      
         form
         +++ Section(NSLocalizedString("Folder Name", comment: ""))
         +++ nameRow.cellUpdate { cell, row in
@@ -48,19 +48,19 @@ class EditFolderViewController: BaseFolderViewController {
             }
         }
 
-        +++ Section("")
-
-        <<< cc.ccSw.onChange(ccLicenseChanged)
-
-        <<< cc.remixSw.onChange(ccLicenseChanged)
-
-        <<< cc.shareAlikeSw.onChange(ccLicenseChanged)
-
-        <<< cc.commercialSw.onChange(ccLicenseChanged)
-
-        <<< cc.licenseRow
-
-        <<< cc.learnMoreRow
+//        +++ Section("")
+//
+//        <<< cc.ccSw.onChange(ccLicenseChanged)
+//
+//        <<< cc.remixSw.onChange(ccLicenseChanged)
+//
+//        <<< cc.shareAlikeSw.onChange(ccLicenseChanged)
+//
+//        <<< cc.commercialSw.onChange(ccLicenseChanged)
+//
+//        <<< cc.licenseRow
+//
+//        <<< cc.learnMoreRow
 
         +++ ButtonRow() {
             $0.title = NSLocalizedString("Remove from App", comment: "")
@@ -107,18 +107,18 @@ class EditFolderViewController: BaseFolderViewController {
     // MARK: UITableViewDelegate
 
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        // The second one has a title.
-        return section == 1 ? TableHeader.height : TableHeader.reducedHeight
+       
+        return section == 1 ? TableHeader.minSize : TableHeader.reducedHeight
     }
 
 
     // MARK: Private Methods
 
-    private func ccLicenseChanged(_ row: SwitchRow) {
-        project.license = cc.get()
-
-        if doStore {
-            store()
-        }
-    }
+//    private func ccLicenseChanged(_ row: SwitchRow) {
+//        project.license = cc.get()
+//
+//        if doStore {
+//            store()
+//        }
+//    }
 }
