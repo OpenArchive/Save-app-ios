@@ -13,7 +13,7 @@ class NewFolderViewController: BaseFolderViewController {
 
     private lazy var ccEnabled = SelectedSpace.space?.license == nil
 
-    private lazy var cc = CcSelector(individual: ccEnabled)
+  //  private lazy var cc = CcSelector(individual: ccEnabled)
 
 
     init() {
@@ -37,26 +37,26 @@ class NewFolderViewController: BaseFolderViewController {
             target: self, action: #selector(connect))
         navigationItem.rightBarButtonItem?.accessibilityIdentifier = "btDone"
 
-        cc.set(project.license, enabled: ccEnabled && project.active)
+       // cc.set(project.license, enabled: ccEnabled && project.active)
 
         form
         +++ nameRow.cellUpdate { cell, _ in
             self.enableDone()
         }
 
-        +++ Section("")
-
-        <<< cc.ccSw.onChange(ccLicenseChanged)
-
-        <<< cc.remixSw.onChange(ccLicenseChanged)
-
-        <<< cc.shareAlikeSw.onChange(ccLicenseChanged)
-
-        <<< cc.commercialSw.onChange(ccLicenseChanged)
-
-        <<< cc.licenseRow
-
-        <<< cc.learnMoreRow
+//        +++ Section("")
+//
+//        <<< cc.ccSw.onChange(ccLicenseChanged)
+//
+//        <<< cc.remixSw.onChange(ccLicenseChanged)
+//
+//        <<< cc.shareAlikeSw.onChange(ccLicenseChanged)
+//
+//        <<< cc.commercialSw.onChange(ccLicenseChanged)
+//
+//        <<< cc.licenseRow
+//
+//        <<< cc.learnMoreRow
 
         super.viewDidLoad()
     }
@@ -75,7 +75,7 @@ class NewFolderViewController: BaseFolderViewController {
 
     // MARK: Private Methods
 
-    private func ccLicenseChanged(_ row: SwitchRow) {
-        project.license = cc.get()
-    }
+//    private func ccLicenseChanged(_ row: SwitchRow) {
+//        project.license = cc.get()
+//    }
 }
