@@ -43,18 +43,18 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
             above: subtitleLb)
         button.accessibilityIdentifier = "viewPrivateServer"
 
-//        Db.bgRwConn?.read { tx in
-//            if tx.find(where: { (_: IaSpace) in true }) == nil {
-//                button = BigButton.create(
-//                    icon: IaSpace.favIcon,
-//                    title: IaSpace.defaultPrettyName,
-//                    subtitle: String(format: NSLocalizedString("Upload to %@", comment: ""), IaSpace.defaultPrettyName),
-//                    target: self,
-//                    action: #selector(newIa),
-//                    container: container,
-//                    above: button,
-//                    equalHeight: true)
-//            }
+        Db.bgRwConn?.read { tx in
+            if tx.find(where: { (_: IaSpace) in true }) == nil {
+                button = BigButton.create(
+                    icon: IaSpace.favIcon,
+                    title: IaSpace.defaultPrettyName,
+                    subtitle: String(format: NSLocalizedString("Upload to %@", comment: ""), IaSpace.defaultPrettyName),
+                    target: self,
+                    action: #selector(newIa),
+                    container: container,
+                    above: button,
+                    equalHeight: true)
+            }
 //
 //            if tx.find(where: { (_: GdriveSpace) in true }) == nil {
 //                button = BigButton.create(
@@ -67,7 +67,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
 //                    above: button,
 //                    equalHeight: true)
 //            }
-//        }
+       }
 
         button.bottomAnchor.constraint(lessThanOrEqualTo: container.bottomAnchor, constant: -16).isActive = true
     }
