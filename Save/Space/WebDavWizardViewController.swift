@@ -13,7 +13,6 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
 
     weak var delegate: WizardDelegate?
 
-
     @IBOutlet weak var iconIv: UIImageView!
 
     @IBOutlet weak var titleLb: UILabel! {
@@ -54,6 +53,7 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
             nameTb.autocorrectionType = .no
             nameTb.autocapitalizationType = .none
             nameTb.textField.returnKeyType = .next
+            nameTb.isHidden = true
         }
     }
 
@@ -143,7 +143,7 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
         }
 
         let space = WebDavSpace(
-            name: nameTb.text,
+            name: "",
             url: url,
             favIcon: iconLoaded ? iconIv.image : nil,
             username: usernameTb.text,
@@ -168,16 +168,14 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
                 }
                 else {
                     SelectedSpace.space = space
-
+                   
                     Db.writeConn?.asyncReadWrite() { tx in
                         SelectedSpace.store(tx)
-
                         tx.setObject(space)
                     }
 
-                    let vc = UIStoryboard.main.instantiate(SpaceSuccessViewController.self)
-                    vc.spaceName = space.prettyName
-
+                    let vc = UIStoryboard.main.instantiate(CreateCCLViewController.self)
+                    vc.space = space
                     self?.delegate?.next(vc, pos: 2)
                 }
             }

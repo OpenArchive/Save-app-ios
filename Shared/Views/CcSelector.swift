@@ -66,16 +66,20 @@ class CcSelector {
         $0.cell.textLabel?.adjustsFontSizeToFitWidth = true
 
         $0.hidden = "$cc != true"
-    }
+    }.cellUpdate { cell, row in
+        cell.textLabel?.font = UIFont.systemFont(ofSize: 14)
+     }
 
     let learnMoreRow = LinkRow() {
         $0.title = NSLocalizedString("Learn more about Creative Commons", comment: "")
         $0.value = URL(string: "https://creativecommons.org/about/cclicenses/")
-
+ 
         $0.cell.textLabel?.numberOfLines = 0
 
         $0.hidden = "$cc != true"
-    }
+    }.cellUpdate { cell, row in
+        cell.textLabel?.font = UIFont.systemFont(ofSize: 14)
+     }
 
 
     private let individual: Bool

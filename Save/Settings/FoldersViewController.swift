@@ -23,9 +23,6 @@ class FoldersViewController: FormViewController {
 
     private var hasArchived = false
 
-    private let cc = CcSelector(individual: false)
-
-
     override init() {
         archived = false
 
@@ -65,25 +62,13 @@ class FoldersViewController: FormViewController {
             projectsSection = form.last
         }
         else {
-            cc.set(SelectedSpace.space?.license)
 
             form
-            +++ Section("")
-
-            <<< cc.ccSw.onChange(ccLicenseChanged)
-
-            <<< cc.remixSw.onChange(ccLicenseChanged)
-
-            <<< cc.shareAlikeSw.onChange(ccLicenseChanged)
-
-            <<< cc.commercialSw.onChange(ccLicenseChanged)
-
-            <<< cc.licenseRow
-
-            <<< cc.learnMoreRow
-
-            +++ Section(NSLocalizedString("Active Folders", comment: ""))
-
+            +++ Section("Active Folders")
+            { section in
+                section.header?.height = { TableHeader.reducedHeight }
+            }
+          
             projectsSection = form.last
 
             form
@@ -148,29 +133,5 @@ class FoldersViewController: FormViewController {
 
         form.rowBy(tag: "archived")?.evaluateHidden()
     }
-
-
-    // MARK: Private Methods
-
-    private func ccLicenseChanged(_ row: SwitchRow) {
-        guard let space = SelectedSpace.space else {
-            _ = cc.get()
-
-            return
-        }
-
-        space.license = cc.get()
-
-        Db.writeConn?.asyncReadWrite { tx in
-            tx.setObject(space, forKey: space.id, inCollection: Space.collection)
-
-            let projects: [Project] = tx.findAll { $0.active && $0.spaceId == space.id }
-
-            for project in projects {
-                project.license = space.license
-
-                tx.setObject(project)
-            }
-        }
-    }
+    
 }
