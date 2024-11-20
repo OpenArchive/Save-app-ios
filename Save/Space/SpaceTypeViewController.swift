@@ -9,11 +9,11 @@
 import UIKit
 
 class SpaceTypeViewController: UIViewController, WizardDelegatable {
-
+    
     weak var delegate: WizardDelegate?
-
+    
     @IBOutlet weak var container: UIView!
-
+    
     @IBOutlet weak var titleLb: UILabel! {
         didSet {
             titleLb.text = NSLocalizedString(
@@ -21,7 +21,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
                 comment: "")
         }
     }
-
+    
     @IBOutlet weak var subtitleLb: UILabel! {
         didSet {
             subtitleLb.text = NSLocalizedString(
@@ -29,10 +29,10 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
                 comment: "")
         }
     }
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         var button = BigButton.create(
             icon: UIImage(systemName: "server.rack"),
             title: WebDavSpace.defaultPrettyName,
@@ -42,7 +42,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
             container: container,
             above: subtitleLb)
         button.accessibilityIdentifier = "viewPrivateServer"
-
+        
         Db.bgRwConn?.read { tx in
             if tx.find(where: { (_: IaSpace) in true }) == nil {
                 button = BigButton.create(
@@ -55,34 +55,34 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
                     above: button,
                     equalHeight: true)
             }
-//
-//            if tx.find(where: { (_: GdriveSpace) in true }) == nil {
-//                button = BigButton.create(
-//                    icon: GdriveSpace.favIcon,
-//                    title: "\(GdriveSpace.defaultPrettyName)™", // First time should show a "tm". See https://developers.google.com/drive/api/guides/branding
-//                    subtitle: String(format: NSLocalizedString("Upload to %@", comment: ""), GdriveSpace.defaultPrettyName),
-//                    target: self,
-//                    action: #selector(newGdrive),
-//                    container: container,
-//                    above: button,
-//                    equalHeight: true)
-//            }
-       }
-
+            //
+            //            if tx.find(where: { (_: GdriveSpace) in true }) == nil {
+            //                button = BigButton.create(
+            //                    icon: GdriveSpace.favIcon,
+            //                    title: "\(GdriveSpace.defaultPrettyName)™", // First time should show a "tm". See https://developers.google.com/drive/api/guides/branding
+            //                    subtitle: String(format: NSLocalizedString("Upload to %@", comment: ""), GdriveSpace.defaultPrettyName),
+            //                    target: self,
+            //                    action: #selector(newGdrive),
+            //                    container: container,
+            //                    above: button,
+            //                    equalHeight: true)
+            //            }
+        }
+        
         button.bottomAnchor.constraint(lessThanOrEqualTo: container.bottomAnchor, constant: -16).isActive = true
     }
-
-
+    
+    
     // MARK: Actions
-
+    
     @IBAction func newWebDav() {
         delegate?.next(UIStoryboard.main.instantiate(WebDavWizardViewController.self), pos: 1)
     }
-
+    
     @IBAction func newIa() {
         delegate?.next(UIStoryboard.main.instantiate(IaWizardViewController.self), pos: 1)
     }
-
+    
     @IBAction func newGdrive() {
         delegate?.next(UIStoryboard.main.instantiate(GdriveWizardViewController.self), pos: 1)
     }
