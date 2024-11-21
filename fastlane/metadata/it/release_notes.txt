@@ -1,4 +1,2 @@
-- Sostituito il supporto Orbot con un Tor integrato.
-- Aggiunto l'uso della posizione e dei dati delle torri cellulari in ProofMode sulle risorse appena create.
-- Migliorato il menu di selezione dei server.
-- Modifiche minori all'interfaccia utente.
+- Corretto il colore del testo del disclaimer di Google Drive in modalità scura.
+- Migliorati i messaggi di errore di Dropbox.

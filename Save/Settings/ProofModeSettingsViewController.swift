@@ -34,7 +34,7 @@ class ProofModeSettingsViewController: FormViewController {
 
             if Settings.proofMode {
                 // Request location access used for fresh `PHAsset`s.
-                Save.LocationMananger.shared.requestAuthorization { status in
+                LocationMananger.shared.requestAuthorization { status in
 
                     // Create key immediately, if not existing, so users can export right away.
                     if !(URL.proofModePrivateKey?.exists ?? false) {

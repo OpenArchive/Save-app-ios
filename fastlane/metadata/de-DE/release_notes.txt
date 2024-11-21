@@ -1,4 +1,2 @@
-- Die Orbot-Unterstützung wurde durch ein eingebautes Tor ersetzt.
-- Die Verwendung von Standort- und Funkmastdaten im ProofMode für neu erstellte Assets wurde hinzugefügt.
-- Verbessertes Server-Auswahlmenü.
-- Kleinere UI-Änderungen.
+- Die Textfarbe des Google Drive Haftungsausschlusses im dunklen Modus wurde korrigiert.
+- Verbesserte Dropbox-Fehlermeldungen.
