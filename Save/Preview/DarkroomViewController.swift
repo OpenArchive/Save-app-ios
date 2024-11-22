@@ -109,7 +109,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .done, target: self, action: #selector(dismiss(_:)))
 
-        infoViewBottomConstraint?.constant = 0
+        infoViewBottomConstraint?.constant = 10
 
         animateDuringKeyboardMovement(notification)
     }
