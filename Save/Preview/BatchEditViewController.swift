@@ -44,14 +44,12 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
             // Deactivate storyboard constraint if any
             infosBottom?.isActive = false
             keyboardConstraint = infos.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor)
-            
-            
-            keyboardConstraint?.constant = -20
+            keyboardConstraint?.constant = GeneralConstants.constraint_minus_20
             keyboardConstraint?.priority = .defaultHigh
             keyboardConstraint?.isActive = true
         } else {
             // Fallback for iOS < 15
-            infosBottom?.constant = 20
+            infosBottom?.constant = GeneralConstants.constraint_20
         }
         
         
@@ -87,11 +85,11 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
         )
         
         if #available(iOS 15.0, *) {
-            keyboardConstraint?.constant = 0
+            keyboardConstraint?.constant = GeneralConstants.zeroConstraint
             view.layoutIfNeeded()
         }
         else{
-            infosBottom?.constant = 0
+            infosBottom?.constant = GeneralConstants.zeroConstraint
             view.layoutIfNeeded()
         }
     }
@@ -102,11 +100,11 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
         
         animateDuringKeyboardMovement(notification)
         if #available(iOS 15.0, *) {
-            keyboardConstraint?.constant = -20
+            keyboardConstraint?.constant = GeneralConstants.constraint_minus_20
             view.layoutIfNeeded()
         }
         else{
-            infosBottom?.constant = 20
+            infosBottom?.constant = GeneralConstants.constraint_20
             view.layoutIfNeeded()
         }
     }
