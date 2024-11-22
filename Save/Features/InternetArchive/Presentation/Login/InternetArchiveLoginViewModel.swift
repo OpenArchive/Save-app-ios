@@ -9,7 +9,6 @@
 import Foundation
 import Combine
 import SwiftUI
-import CleanInsightsSDK
 
 class InternetArchiveLoginViewModel : StoreViewModel<InternetArchiveLoginState, InternetArchiveLoginAction> {
     typealias Action = InternetArchiveLoginAction

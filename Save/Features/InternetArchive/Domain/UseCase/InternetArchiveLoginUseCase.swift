@@ -6,7 +6,6 @@
 //  Copyright © 2024 Open Archive. All rights reserved.
 //
 
-import CleanInsightsSDK
 import Combine
 
 class InternetArchiveLoginUseCase {
@@ -47,8 +46,6 @@ class InternetArchiveLoginUseCase {
 
                     tx.setObject(space)
                 }
-
-                CleanInsights.shared.measure(event: "backend", "new", forCampaign: "upload_fails", name: space.name)
 
             })
     }
