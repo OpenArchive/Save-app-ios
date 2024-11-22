@@ -1,4 +1,2 @@
-- Remplacement de la prise en charge d'Orbot par un Tor intégré.
-- Ajout de l'utilisation des données relatives à la localisation et aux tours de téléphonie cellulaire en mode de preuve pour les biens nouvellement créés.
-- Amélioration du menu de sélection des serveurs.
-- Modifications mineures de l'interface utilisateur.
+- Correction de la couleur du texte de la clause de non-responsabilité de Google Drive en mode sombre.
+- Amélioration des messages d'erreur de Dropbox.

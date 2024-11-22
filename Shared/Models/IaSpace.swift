@@ -14,8 +14,12 @@ import UIKit
 class IaSpace: Space, Item {
 
     static let baseUrl = "https://s3.us.archive.org"
+    static let currentVersion = 1
 
-
+    
+    var version: Int = currentVersion
+    var metaData: String?
+    
     // MARK: Item
 
     override class func fixArchiverName() {
@@ -40,6 +44,12 @@ class IaSpace: Space, Item {
 
     required init?(coder decoder: NSCoder) {
         super.init(coder: decoder)
+        
+        let version = decoder.decodeInteger(forKey: "version")
+        
+        if (version >= 1) {
+            metaData = decoder.decodeObject(of: NSString.self, forKey: "metaData") as? String
+        }
     }
 
 
@@ -57,7 +67,7 @@ class IaSpace: Space, Item {
             // This is effectively read-only.
         }
     }
-
+   
     /**
      Don't store the favIcon in the database. It's bundled with the app anyway.
      */
@@ -74,7 +84,10 @@ class IaSpace: Space, Item {
         coder.encode(license, forKey: "license")
         coder.encode(tries, forKey: "tries")
         coder.encode(lastTry, forKey: "lastTry")
+        coder.encode(version, forKey: "version")
+        coder.encode(metaData, forKey: "metaData")
     }
+    
 
 
     // MARK: NSSecureCoding

@@ -22,6 +22,7 @@ def shared_pods
     pod 'LibProofMode',
         :git => 'https://gitlab.com/guardianproject/proofmode/libproofmode-ios.git', :branch => 'main'
         #:path => '../libproofmode-ios'
+    pod "Factory"
 end
 
 def app_only

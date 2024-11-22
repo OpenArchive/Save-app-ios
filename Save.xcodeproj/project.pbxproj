@@ -80,8 +80,7 @@
 		A0102D932B18EE360054D3D4 /* SpaceWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A037D6FA2B0CB9E900C77706 /* SpaceWizardViewController.swift */; };
 		A0102D942B18EE490054D3D4 /* SpaceTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A037D7012B0CCC6300C77706 /* SpaceTypeViewController.swift */; };
 		A0102D962B18EE710054D3D4 /* ProofModeSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BF451927DF5EE800DBB629 /* ProofModeSettingsViewController.swift */; };
-		A0102D982B18EE880054D3D4 /* IaWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A013A9362B0D0488003476ED /* IaWizardViewController.swift */; };
-		A0102D992B18EE970054D3D4 /* IaScrapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */; };
+		A0102D972B18EE850054D3D4 /* DropboxWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29E02B10A2B20054D5F4 /* DropboxWizardViewController.swift */; };
 		A0102D9A2B18EEA20054D3D4 /* WebDavConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D1013D22CCF4140068D047 /* WebDavConduit.swift */; };
 		A0102D9B2B18EEA60054D3D4 /* IaConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D1013F22CCFA1B0068D047 /* IaConduit.swift */; };
 		A0102D9D2B18EED70054D3D4 /* DarkroomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E321F8228EDBE900F2E9BD /* DarkroomViewController.swift */; };
@@ -101,7 +100,6 @@
 		A010D3A022D4A3F200FAB433 /* BatchInfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A010D39F22D4A3F200FAB433 /* BatchInfoAlert.swift */; };
 		A01128E62AE6CB34000848DB /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A01128E52AE6CB34000848DB /* SettingsViewController.swift */; };
 		A011D55A233A1F630032304A /* PreviewViewController+Screenshots.swift in Sources */ = {isa = PBXBuildFile; fileRef = A011D559233A1F630032304A /* PreviewViewController+Screenshots.swift */; };
-		A013A9372B0D0488003476ED /* IaWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A013A9362B0D0488003476ED /* IaWizardViewController.swift */; };
 		A013A9392B0D12D6003476ED /* TextBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A013A9382B0D12D6003476ED /* TextBox.swift */; };
 		A013A93A2B0D12D6003476ED /* TextBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A013A9382B0D12D6003476ED /* TextBox.swift */; };
 		A013A93B2B0D12D6003476ED /* TextBox.swift in Sources */ = {isa = PBXBuildFile; fileRef = A013A9382B0D12D6003476ED /* TextBox.swift */; };
@@ -112,7 +110,6 @@
 		A0212FCF22D374CA009079DC /* UICollectionView+selection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0212FCD22D374CA009079DC /* UICollectionView+selection.swift */; };
 		A025171922C2126C00EEFBD9 /* DuplicateFolderAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A025171822C2126B00EEFBD9 /* DuplicateFolderAlert.swift */; };
 		A025171A22C2126C00EEFBD9 /* DuplicateFolderAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A025171822C2126B00EEFBD9 /* DuplicateFolderAlert.swift */; };
-		A026C34622C641EB007B1C5B /* IaScrapeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */; };
 		A029AF622B33057200FCCB3A /* CcSelector.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0C6B3082AFD11C400304187 /* CcSelector.swift */; };
 		A029AF652B330B6A00FCCB3A /* LinkRow-extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029AF642B330B4A00FCCB3A /* LinkRow-extension.swift */; };
 		A029AF672B3315F400FCCB3A /* GdriveSpace.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029AF662B33154B00FCCB3A /* GdriveSpace.swift */; };
@@ -169,7 +166,6 @@
 		A050AA492225DF4000AE5D15 /* SpacesListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A050AA482225DF4000AE5D15 /* SpacesListCell.swift */; };
 		A05275142211A91300BDB14B /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05275132211A91300BDB14B /* CollectionsView.swift */; };
 		A05275152211A91300BDB14B /* CollectionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A05275132211A91300BDB14B /* CollectionsView.swift */; };
-		A052A48F230D53D800E72594 /* IaInfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A052A48E230D53D800E72594 /* IaInfoAlert.swift */; };
 		A052A492230D546F00E72594 /* InfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A052A490230D546F00E72594 /* InfoAlert.swift */; };
 		A05471CA2296B77D009FEA93 /* Montserrat-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A05471AC2296B77D009FEA93 /* Montserrat-Black.ttf */; };
 		A05471CB2296B77D009FEA93 /* Montserrat-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = A05471AC2296B77D009FEA93 /* Montserrat-Black.ttf */; };
@@ -458,8 +454,6 @@
 		A0E9069422CB7D16008CD81B /* SelectedView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E9069222CB7D16008CD81B /* SelectedView.swift */; };
 		A0F1364F227256F4008A22BF /* YapDatabase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1364E227256F4008A22BF /* YapDatabase+Utils.swift */; };
 		A0F13650227256F4008A22BF /* YapDatabase+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F1364E227256F4008A22BF /* YapDatabase+Utils.swift */; };
-		A0F3DF4E2B160DE1005D860E /* IaGuideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F3DF4D2B160DE1005D860E /* IaGuideViewController.swift */; };
-		A0F3DF502B160E1E005D860E /* IaGuideSlideViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F3DF4F2B160E1E005D860E /* IaGuideSlideViewController.swift */; };
 		A0F4096A2BA463950069549B /* BrowseWebDavViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F409692BA463950069549B /* BrowseWebDavViewController.swift */; };
 		A0F7FDDC22491C6C006610F0 /* Flag.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDB22491C6C006610F0 /* Flag.swift */; };
 		A0F7FDDD22491C6C006610F0 /* Flag.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDDB22491C6C006610F0 /* Flag.swift */; };
@@ -483,6 +477,72 @@
 		A0FE2C2322E1FE7C00C5443F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0FE2C2622E1FE7C00C5443F /* Localizable.strings */; };
 		A0FE2C2422E1FE7C00C5443F /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0FE2C2622E1FE7C00C5443F /* Localizable.strings */; };
 		A0FE2C2A22E20C5A00C5443F /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = A0FE2C2C22E20C5A00C5443F /* InfoPlist.strings */; };
+		E4A8E75C2BA227CB00DCE99E /* InternetArchiveRemoteSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E75B2BA227CB00DCE99E /* InternetArchiveRemoteSource.swift */; };
+		E4A8E75F2BA2283C00DCE99E /* InternetArchiveLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E75E2BA2283C00DCE99E /* InternetArchiveLoginRequest.swift */; };
+		E4A8E7612BA2284900DCE99E /* InternetArchiveLoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7602BA2284900DCE99E /* InternetArchiveLoginResponse.swift */; };
+		E4A8E7672BA2519500DCE99E /* DataSourceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7662BA2519500DCE99E /* DataSourceError.swift */; };
+		E4A8E7692BA2522C00DCE99E /* Dictionary+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7682BA2522C00DCE99E /* Dictionary+Utils.swift */; };
+		E4A8E76B2BA2533500DCE99E /* InternetArchiveRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E76A2BA2533500DCE99E /* InternetArchiveRepository.swift */; };
+		E4A8E76E2BA255E800DCE99E /* InternetArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E76D2BA255E800DCE99E /* InternetArchive.swift */; };
+		E4A8E7712BA259AF00DCE99E /* InternetArchiveMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7702BA259AF00DCE99E /* InternetArchiveMapper.swift */; };
+		E4A8E7742BA25BCA00DCE99E /* InternetArchiveLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7732BA25BCA00DCE99E /* InternetArchiveLoginView.swift */; };
+		E4A8E7762BA25C0D00DCE99E /* InternetArchiveLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7752BA25C0D00DCE99E /* InternetArchiveLoginViewController.swift */; };
+		E4A8E7782BA260A800DCE99E /* InternetArchiveLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7772BA260A800DCE99E /* InternetArchiveLoginViewModel.swift */; };
+		E4A8E77B2BA2627D00DCE99E /* InternetArchiveFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E77A2BA2627D00DCE99E /* InternetArchiveFeature.swift */; };
+		E4A8E77E2BA2661900DCE99E /* InternetArchiveLoginUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E77D2BA2661900DCE99E /* InternetArchiveLoginUseCase.swift */; };
+		E4A8E7802BA26AEA00DCE99E /* InternetArchiveLoginState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E77F2BA26AEA00DCE99E /* InternetArchiveLoginState.swift */; };
+		E4A8E7832BA26C1000DCE99E /* StateDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7822BA26C1000DCE99E /* StateDispatcher.swift */; };
+		E4A8E7852BA36DDB00DCE99E /* StoreObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7842BA36DDB00DCE99E /* StoreObserver.swift */; };
+		E4A8E7872BA3762900DCE99E /* Effects.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7862BA3762900DCE99E /* Effects.swift */; };
+		E4A8E7892BA3788D00DCE99E /* Dispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7882BA3788D00DCE99E /* Dispatcher.swift */; };
+		E4A8E78B2BA378AE00DCE99E /* Stateful.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E78A2BA378AE00DCE99E /* Stateful.swift */; };
+		E4A8E78D2BA37AA100DCE99E /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E78C2BA37AA100DCE99E /* Store.swift */; };
+		E4A8E7912BA4B58300DCE99E /* StateStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7902BA4B58300DCE99E /* StateStore.swift */; };
+		E4A8E7932BA4B5AD00DCE99E /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7922BA4B5AD00DCE99E /* Observer.swift */; };
+		E4A8E7952BA4B84700DCE99E /* Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7942BA4B84700DCE99E /* Reducer.swift */; };
+		E4A8E7982BA4BAAF00DCE99E /* StoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7972BA4BAAF00DCE99E /* StoreViewModel.swift */; };
+		E4A8E79D2BA4C8F000DCE99E /* Scope.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E79C2BA4C8F000DCE99E /* Scope.swift */; };
+		E4A8E7A02BA9157500DCE99E /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E79F2BA9157500DCE99E /* ActivityIndicator.swift */; };
+		E4A8E7A12BA916B000DCE99E /* GdriveConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029AF732B33368700FCCB3A /* GdriveConduit.swift */; };
+		E4A8E7A22BA916CC00DCE99E /* AddInfoAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D6F5552B347F7E00A03788 /* AddInfoAlert.swift */; };
+		E4A8E7A32BA9176200DCE99E /* RemoveProjectAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0F7FDE622494E2C006610F0 /* RemoveProjectAlert.swift */; };
+		E4A8E7A42BA9176B00DCE99E /* BrowseGdriveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A029AF702B33353600FCCB3A /* BrowseGdriveViewController.swift */; };
+		E4A8E7A52BA9177400DCE99E /* InternetArchiveLoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7752BA25C0D00DCE99E /* InternetArchiveLoginViewController.swift */; };
+		E4A8E7A62BA917A000DCE99E /* InternetArchiveLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7732BA25BCA00DCE99E /* InternetArchiveLoginView.swift */; };
+		E4A8E7A72BA917AA00DCE99E /* InternetArchiveLoginState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E77F2BA26AEA00DCE99E /* InternetArchiveLoginState.swift */; };
+		E4A8E7A82BA917CB00DCE99E /* InternetArchiveLoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7772BA260A800DCE99E /* InternetArchiveLoginViewModel.swift */; };
+		E4A8E7A92BA917D600DCE99E /* InternetArchiveLoginUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E77D2BA2661900DCE99E /* InternetArchiveLoginUseCase.swift */; };
+		E4A8E7AA2BA917D900DCE99E /* InternetArchive.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E76D2BA255E800DCE99E /* InternetArchive.swift */; };
+		E4A8E7AB2BA917DE00DCE99E /* InternetArchiveMapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7702BA259AF00DCE99E /* InternetArchiveMapper.swift */; };
+		E4A8E7AC2BA917E400DCE99E /* InternetArchiveLoginRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E75E2BA2283C00DCE99E /* InternetArchiveLoginRequest.swift */; };
+		E4A8E7AD2BA917E400DCE99E /* InternetArchiveLoginResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7602BA2284900DCE99E /* InternetArchiveLoginResponse.swift */; };
+		E4A8E7AE2BA917F200DCE99E /* InternetArchiveRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E76A2BA2533500DCE99E /* InternetArchiveRepository.swift */; };
+		E4A8E7AF2BA917F200DCE99E /* InternetArchiveRemoteSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E75B2BA227CB00DCE99E /* InternetArchiveRemoteSource.swift */; };
+		E4A8E7B02BA917FB00DCE99E /* ActivityIndicator.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E79F2BA9157500DCE99E /* ActivityIndicator.swift */; };
+		E4A8E7B12BA9180100DCE99E /* Scope.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E79C2BA4C8F000DCE99E /* Scope.swift */; };
+		E4A8E7B22BA9180100DCE99E /* StateStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7902BA4B58300DCE99E /* StateStore.swift */; };
+		E4A8E7B32BA9180100DCE99E /* Observer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7922BA4B5AD00DCE99E /* Observer.swift */; };
+		E4A8E7B42BA9180100DCE99E /* StoreObserver.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7842BA36DDB00DCE99E /* StoreObserver.swift */; };
+		E4A8E7B52BA9180100DCE99E /* StateDispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7822BA26C1000DCE99E /* StateDispatcher.swift */; };
+		E4A8E7B62BA9180100DCE99E /* Effects.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7862BA3762900DCE99E /* Effects.swift */; };
+		E4A8E7B72BA9180100DCE99E /* Dispatcher.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7882BA3788D00DCE99E /* Dispatcher.swift */; };
+		E4A8E7B82BA9180100DCE99E /* Store.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E78C2BA37AA100DCE99E /* Store.swift */; };
+		E4A8E7B92BA9180100DCE99E /* Stateful.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E78A2BA378AE00DCE99E /* Stateful.swift */; };
+		E4A8E7BA2BA9180100DCE99E /* Reducer.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7942BA4B84700DCE99E /* Reducer.swift */; };
+		E4A8E7BB2BA9180600DCE99E /* DataSourceError.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7662BA2519500DCE99E /* DataSourceError.swift */; };
+		E4A8E7BC2BA9183700DCE99E /* Dictionary+Utils.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7682BA2522C00DCE99E /* Dictionary+Utils.swift */; };
+		E4A8E7BD2BA9184700DCE99E /* InternetArchiveFeature.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E77A2BA2627D00DCE99E /* InternetArchiveFeature.swift */; };
+		E4A8E7BE2BA919CE00DCE99E /* StoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7972BA4BAAF00DCE99E /* StoreViewModel.swift */; };
+		E4A8E7C22BA9FDAA00DCE99E /* InternetArchiveDetailState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7C12BA9FDAA00DCE99E /* InternetArchiveDetailState.swift */; };
+		E4A8E7C32BA9FDAD00DCE99E /* InternetArchiveDetailState.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7C12BA9FDAA00DCE99E /* InternetArchiveDetailState.swift */; };
+		E4A8E7C52BA9FDEC00DCE99E /* InternetArchiveDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7C42BA9FDEC00DCE99E /* InternetArchiveDetailViewModel.swift */; };
+		E4A8E7C62BA9FDEC00DCE99E /* InternetArchiveDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7C42BA9FDEC00DCE99E /* InternetArchiveDetailViewModel.swift */; };
+		E4A8E7C82BAA022200DCE99E /* InternetArchiveDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7C72BAA022200DCE99E /* InternetArchiveDetailsController.swift */; };
+		E4A8E7C92BAA022200DCE99E /* InternetArchiveDetailsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7C72BAA022200DCE99E /* InternetArchiveDetailsController.swift */; };
+		E4A8E7CB2BAA029400DCE99E /* InternetArchiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7CA2BAA029400DCE99E /* InternetArchiveDetailView.swift */; };
+		E4A8E7CC2BAA029400DCE99E /* InternetArchiveDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7CA2BAA029400DCE99E /* InternetArchiveDetailView.swift */; };
+		E4A8E7D12BAA602900DCE99E /* ViewModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7D02BAA602900DCE99E /* ViewModelController.swift */; };
+		E4A8E7D32BACB85C00DCE99E /* ViewModelController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E4A8E7D02BAA602900DCE99E /* ViewModelController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -578,14 +638,12 @@
 		A011D558233A160D0032304A /* config */ = {isa = PBXFileReference; lastKnownFileType = text; path = config; sourceTree = "<group>"; };
 		A011D559233A1F630032304A /* PreviewViewController+Screenshots.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PreviewViewController+Screenshots.swift"; sourceTree = "<group>"; };
 		A012B09A27E49ECE002C2A1A /* fr */ = {isa = PBXFileReference; lastKnownFileType = text.plist.stringsdict; name = fr; path = fr.lproj/Localizable.stringsdict; sourceTree = "<group>"; };
-		A013A9362B0D0488003476ED /* IaWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaWizardViewController.swift; sourceTree = "<group>"; };
 		A013A9382B0D12D6003476ED /* TextBox.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextBox.swift; sourceTree = "<group>"; };
 		A01A7B712200F2D700E18DE0 /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		A020C12223C602A700F219DA /* ClaimViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ClaimViewController.swift; sourceTree = "<group>"; };
 		A0212FCB22D35ADC009079DC /* DarkroomHelper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DarkroomHelper.swift; sourceTree = "<group>"; };
 		A0212FCD22D374CA009079DC /* UICollectionView+selection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+selection.swift"; sourceTree = "<group>"; };
 		A025171822C2126B00EEFBD9 /* DuplicateFolderAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DuplicateFolderAlert.swift; sourceTree = "<group>"; };
-		A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaScrapeViewController.swift; sourceTree = "<group>"; };
 		A029AF642B330B4A00FCCB3A /* LinkRow-extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "LinkRow-extension.swift"; sourceTree = "<group>"; };
 		A029AF662B33154B00FCCB3A /* GdriveSpace.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GdriveSpace.swift; sourceTree = "<group>"; };
 		A029AF6A2B33202D00FCCB3A /* GdriveWizardViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GdriveWizardViewController.swift; sourceTree = "<group>"; };
@@ -622,7 +680,6 @@
 		A0485C2422AAF0CD00D5B176 /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		A050AA482225DF4000AE5D15 /* SpacesListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpacesListCell.swift; sourceTree = "<group>"; };
 		A05275132211A91300BDB14B /* CollectionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionsView.swift; sourceTree = "<group>"; };
-		A052A48E230D53D800E72594 /* IaInfoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaInfoAlert.swift; sourceTree = "<group>"; };
 		A052A490230D546F00E72594 /* InfoAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoAlert.swift; sourceTree = "<group>"; };
 		A052A493230D810300E72594 /* CHANGELOG.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = CHANGELOG.md; sourceTree = "<group>"; };
 		A05471A12296B77D009FEA93 /* OFL.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = OFL.txt; sourceTree = "<group>"; };
@@ -792,8 +849,6 @@
 		A0E739E320E4C85E00DB31E1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A0E9069222CB7D16008CD81B /* SelectedView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectedView.swift; sourceTree = "<group>"; };
 		A0F1364E227256F4008A22BF /* YapDatabase+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "YapDatabase+Utils.swift"; sourceTree = "<group>"; };
-		A0F3DF4D2B160DE1005D860E /* IaGuideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaGuideViewController.swift; sourceTree = "<group>"; };
-		A0F3DF4F2B160E1E005D860E /* IaGuideSlideViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IaGuideSlideViewController.swift; sourceTree = "<group>"; };
 		A0F409692BA463950069549B /* BrowseWebDavViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BrowseWebDavViewController.swift; sourceTree = "<group>"; };
 		A0F7FDDB22491C6C006610F0 /* Flag.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Flag.swift; sourceTree = "<group>"; };
 		A0F7FDDE224936C8006610F0 /* TintedImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TintedImageView.swift; sourceTree = "<group>"; };
@@ -815,6 +870,37 @@
 		B486E3D70C15CF62218C87C0 /* Pods_ShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EE311479141A909C9F586216 /* Pods_Save_Screenshots.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Save_Screenshots.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		EEB3C2C07AD93CBD6245A777 /* Pods-Save Screenshots.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Save Screenshots.debug.xcconfig"; path = "Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots.debug.xcconfig"; sourceTree = "<group>"; };
+		E4A8E75B2BA227CB00DCE99E /* InternetArchiveRemoteSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveRemoteSource.swift; sourceTree = "<group>"; };
+		E4A8E75E2BA2283C00DCE99E /* InternetArchiveLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveLoginRequest.swift; sourceTree = "<group>"; };
+		E4A8E7602BA2284900DCE99E /* InternetArchiveLoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveLoginResponse.swift; sourceTree = "<group>"; };
+		E4A8E7662BA2519500DCE99E /* DataSourceError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataSourceError.swift; sourceTree = "<group>"; };
+		E4A8E7682BA2522C00DCE99E /* Dictionary+Utils.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Dictionary+Utils.swift"; sourceTree = "<group>"; };
+		E4A8E76A2BA2533500DCE99E /* InternetArchiveRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveRepository.swift; sourceTree = "<group>"; };
+		E4A8E76D2BA255E800DCE99E /* InternetArchive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchive.swift; sourceTree = "<group>"; };
+		E4A8E7702BA259AF00DCE99E /* InternetArchiveMapper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveMapper.swift; sourceTree = "<group>"; };
+		E4A8E7732BA25BCA00DCE99E /* InternetArchiveLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveLoginView.swift; sourceTree = "<group>"; };
+		E4A8E7752BA25C0D00DCE99E /* InternetArchiveLoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveLoginViewController.swift; sourceTree = "<group>"; };
+		E4A8E7772BA260A800DCE99E /* InternetArchiveLoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveLoginViewModel.swift; sourceTree = "<group>"; };
+		E4A8E77A2BA2627D00DCE99E /* InternetArchiveFeature.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveFeature.swift; sourceTree = "<group>"; };
+		E4A8E77D2BA2661900DCE99E /* InternetArchiveLoginUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveLoginUseCase.swift; sourceTree = "<group>"; };
+		E4A8E77F2BA26AEA00DCE99E /* InternetArchiveLoginState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveLoginState.swift; sourceTree = "<group>"; };
+		E4A8E7822BA26C1000DCE99E /* StateDispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateDispatcher.swift; sourceTree = "<group>"; };
+		E4A8E7842BA36DDB00DCE99E /* StoreObserver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreObserver.swift; sourceTree = "<group>"; };
+		E4A8E7862BA3762900DCE99E /* Effects.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Effects.swift; sourceTree = "<group>"; };
+		E4A8E7882BA3788D00DCE99E /* Dispatcher.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Dispatcher.swift; sourceTree = "<group>"; };
+		E4A8E78A2BA378AE00DCE99E /* Stateful.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Stateful.swift; sourceTree = "<group>"; };
+		E4A8E78C2BA37AA100DCE99E /* Store.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Store.swift; sourceTree = "<group>"; };
+		E4A8E7902BA4B58300DCE99E /* StateStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StateStore.swift; sourceTree = "<group>"; };
+		E4A8E7922BA4B5AD00DCE99E /* Observer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observer.swift; sourceTree = "<group>"; };
+		E4A8E7942BA4B84700DCE99E /* Reducer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Reducer.swift; sourceTree = "<group>"; };
+		E4A8E7972BA4BAAF00DCE99E /* StoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreViewModel.swift; sourceTree = "<group>"; };
+		E4A8E79C2BA4C8F000DCE99E /* Scope.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Scope.swift; sourceTree = "<group>"; };
+		E4A8E79F2BA9157500DCE99E /* ActivityIndicator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ActivityIndicator.swift; sourceTree = "<group>"; };
+		E4A8E7C12BA9FDAA00DCE99E /* InternetArchiveDetailState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveDetailState.swift; sourceTree = "<group>"; };
+		E4A8E7C42BA9FDEC00DCE99E /* InternetArchiveDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveDetailViewModel.swift; sourceTree = "<group>"; };
+		E4A8E7C72BAA022200DCE99E /* InternetArchiveDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveDetailsController.swift; sourceTree = "<group>"; };
+		E4A8E7CA2BAA029400DCE99E /* InternetArchiveDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveDetailView.swift; sourceTree = "<group>"; };
+		E4A8E7D02BAA602900DCE99E /* ViewModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -937,6 +1023,7 @@
 				A05DF97F282C0F48003FADA2 /* AEXMLOptions.swift */,
 				A05DF983282C0F6E003FADA2 /* AEXMLError.swift */,
 				A05DF987282C0F92003FADA2 /* AEXMLParser.swift */,
+				E4A8E7682BA2522C00DCE99E /* Dictionary+Utils.swift */,
 			);
 			path = Utils;
 			sourceTree = "<group>";
@@ -1244,12 +1331,8 @@
 				A037D7012B0CCC6300C77706 /* SpaceTypeViewController.swift */,
 				A077F7692B0FB580004A4B34 /* WebDavWizardViewController.swift */,
 				A029AF6A2B33202D00FCCB3A /* GdriveWizardViewController.swift */,
-				A013A9362B0D0488003476ED /* IaWizardViewController.swift */,
 				A056ACA62B0E649C00995FDF /* SpaceSuccessViewController.swift */,
 				A052A48E230D53D800E72594 /* IaInfoAlert.swift */,
-				A026C34522C641EB007B1C5B /* IaScrapeViewController.swift */,
-				A0F3DF4D2B160DE1005D860E /* IaGuideViewController.swift */,
-				A0F3DF4F2B160E1E005D860E /* IaGuideSlideViewController.swift */,
 				6EA68F7A2CE7D7ED00E538C1 /* CreateCCLViewController.swift */,
 			);
 			path = Space;
@@ -1309,6 +1392,8 @@
 				6EA68F7C2CE7DD7300E538C1 /* Protocols */,
 				6EA68F752CE502F100E538C1 /* Constants */,
 				99FAAEBC2CCAC1EA00C05DFC /* Extensions */,
+				E4A8E7632BA2516B00DCE99E /* Core */,
+				E4A8E7542BA2275D00DCE99E /* Features */,
 				A07E8A3E2295759D00E9FFAA /* Onboarding */,
 				A0E5B7B72BA3349B00285CEE /* Tor */,
 				A01A7B732200FF2500E18DE0 /* Main */,
@@ -1341,6 +1426,194 @@
 				B486E3D70C15CF62218C87C0 /* Pods_ShareExtension.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		E4A8E7542BA2275D00DCE99E /* Features */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E7552BA2276A00DCE99E /* InternetArchive */,
+			);
+			path = Features;
+			sourceTree = "<group>";
+		};
+		E4A8E7552BA2276A00DCE99E /* InternetArchive */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E7792BA2626900DCE99E /* Module */,
+				E4A8E7722BA25B9600DCE99E /* Presentation */,
+				E4A8E7582BA2278B00DCE99E /* Domain */,
+				E4A8E7562BA2277500DCE99E /* Infrastructure */,
+			);
+			path = InternetArchive;
+			sourceTree = "<group>";
+		};
+		E4A8E7562BA2277500DCE99E /* Infrastructure */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E76F2BA2576C00DCE99E /* Mapping */,
+				E4A8E75D2BA2282900DCE99E /* Model */,
+				E4A8E75A2BA2279E00DCE99E /* Repository */,
+				E4A8E7592BA2279700DCE99E /* DataSource */,
+			);
+			path = Infrastructure;
+			sourceTree = "<group>";
+		};
+		E4A8E7582BA2278B00DCE99E /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E77C2BA2660300DCE99E /* UseCase */,
+				E4A8E76C2BA255C900DCE99E /* Model */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		E4A8E7592BA2279700DCE99E /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E75B2BA227CB00DCE99E /* InternetArchiveRemoteSource.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
+		E4A8E75A2BA2279E00DCE99E /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E76A2BA2533500DCE99E /* InternetArchiveRepository.swift */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		E4A8E75D2BA2282900DCE99E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E75E2BA2283C00DCE99E /* InternetArchiveLoginRequest.swift */,
+				E4A8E7602BA2284900DCE99E /* InternetArchiveLoginResponse.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		E4A8E7632BA2516B00DCE99E /* Core */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E7962BA4BA9A00DCE99E /* Presentation */,
+				E4A8E7812BA26C0400DCE99E /* State */,
+				E4A8E7642BA2517200DCE99E /* Infrastructure */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		E4A8E7642BA2517200DCE99E /* Infrastructure */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E7652BA2517A00DCE99E /* DataSource */,
+			);
+			path = Infrastructure;
+			sourceTree = "<group>";
+		};
+		E4A8E7652BA2517A00DCE99E /* DataSource */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E7662BA2519500DCE99E /* DataSourceError.swift */,
+			);
+			path = DataSource;
+			sourceTree = "<group>";
+		};
+		E4A8E76C2BA255C900DCE99E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E76D2BA255E800DCE99E /* InternetArchive.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		E4A8E76F2BA2576C00DCE99E /* Mapping */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E7702BA259AF00DCE99E /* InternetArchiveMapper.swift */,
+			);
+			path = Mapping;
+			sourceTree = "<group>";
+		};
+		E4A8E7722BA25B9600DCE99E /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E7C02BA9F8B500DCE99E /* Details */,
+				E4A8E7BF2BA9F8A500DCE99E /* Login */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		E4A8E7792BA2626900DCE99E /* Module */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E77A2BA2627D00DCE99E /* InternetArchiveFeature.swift */,
+			);
+			path = Module;
+			sourceTree = "<group>";
+		};
+		E4A8E77C2BA2660300DCE99E /* UseCase */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E77D2BA2661900DCE99E /* InternetArchiveLoginUseCase.swift */,
+			);
+			path = UseCase;
+			sourceTree = "<group>";
+		};
+		E4A8E7812BA26C0400DCE99E /* State */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E7822BA26C1000DCE99E /* StateDispatcher.swift */,
+				E4A8E7842BA36DDB00DCE99E /* StoreObserver.swift */,
+				E4A8E7862BA3762900DCE99E /* Effects.swift */,
+				E4A8E7882BA3788D00DCE99E /* Dispatcher.swift */,
+				E4A8E78A2BA378AE00DCE99E /* Stateful.swift */,
+				E4A8E78C2BA37AA100DCE99E /* Store.swift */,
+				E4A8E7902BA4B58300DCE99E /* StateStore.swift */,
+				E4A8E7922BA4B5AD00DCE99E /* Observer.swift */,
+				E4A8E7942BA4B84700DCE99E /* Reducer.swift */,
+				E4A8E79C2BA4C8F000DCE99E /* Scope.swift */,
+			);
+			path = State;
+			sourceTree = "<group>";
+		};
+		E4A8E7962BA4BA9A00DCE99E /* Presentation */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E79E2BA9156800DCE99E /* Components */,
+				E4A8E7972BA4BAAF00DCE99E /* StoreViewModel.swift */,
+				E4A8E7D02BAA602900DCE99E /* ViewModelController.swift */,
+			);
+			path = Presentation;
+			sourceTree = "<group>";
+		};
+		E4A8E79E2BA9156800DCE99E /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E79F2BA9157500DCE99E /* ActivityIndicator.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		E4A8E7BF2BA9F8A500DCE99E /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E7752BA25C0D00DCE99E /* InternetArchiveLoginViewController.swift */,
+				E4A8E7772BA260A800DCE99E /* InternetArchiveLoginViewModel.swift */,
+				E4A8E77F2BA26AEA00DCE99E /* InternetArchiveLoginState.swift */,
+				E4A8E7732BA25BCA00DCE99E /* InternetArchiveLoginView.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
+		E4A8E7C02BA9F8B500DCE99E /* Details */ = {
+			isa = PBXGroup;
+			children = (
+				E4A8E7C72BAA022200DCE99E /* InternetArchiveDetailsController.swift */,
+				E4A8E7C42BA9FDEC00DCE99E /* InternetArchiveDetailViewModel.swift */,
+				E4A8E7C12BA9FDAA00DCE99E /* InternetArchiveDetailState.swift */,
+				E4A8E7CA2BAA029400DCE99E /* InternetArchiveDetailView.swift */,
+			);
+			path = Details;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1872,7 +2145,10 @@
 				A0102D852B18EC910054D3D4 /* AppAddFolderViewController.swift in Sources */,
 				A09B538223266F02005266C2 /* Constants+Swift.swift in Sources */,
 				A09B538323266F02005266C2 /* ActiveProjectsView.swift in Sources */,
+				E4A8E7CC2BAA029400DCE99E /* InternetArchiveDetailView.swift in Sources */,
+				E4A8E7AB2BA917DE00DCE99E /* InternetArchiveMapper.swift in Sources */,
 				A09B5416232671D1005266C2 /* AppDelegate.swift in Sources */,
+				E4A8E7A92BA917D600DCE99E /* InternetArchiveLoginUseCase.swift in Sources */,
 				A0102D902B18EE0C0054D3D4 /* FoldersViewController.swift in Sources */,
 				A0102D932B18EE360054D3D4 /* SpaceWizardViewController.swift in Sources */,
 				A056555E23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */,
@@ -1880,6 +2156,7 @@
 				A02DB29C29B647390090ECF6 /* URL+Utils.swift in Sources */,
 				A0102D7E2B18EC380054D3D4 /* SideMenuViewController.swift in Sources */,
 				A09B538423266F02005266C2 /* SpacesView.swift in Sources */,
+				E4A8E7C32BA9FDAD00DCE99E /* InternetArchiveDetailState.swift in Sources */,
 				A09B538523266F02005266C2 /* RoundedImageView.swift in Sources */,
 				A0102D9D2B18EED70054D3D4 /* DarkroomViewController.swift in Sources */,
 				A0A6819829D7118C002D9F21 /* TTTLocationFormatter.m in Sources */,
@@ -1887,20 +2164,25 @@
 				A09B538623266F02005266C2 /* Settings.swift in Sources */,
 				A09B538723266F02005266C2 /* SelectedCollection.swift in Sources */,
 				A0102D7B2B18EB650054D3D4 /* AppDelegateBase.swift in Sources */,
+				E4A8E7A82BA917CB00DCE99E /* InternetArchiveLoginViewModel.swift in Sources */,
 				A0102D9E2B18EEDE0054D3D4 /* DarkroomHelper.swift in Sources */,
 				A09B538823266F02005266C2 /* AbcFilteredByProjectView.swift in Sources */,
+				E4A8E7BD2BA9184700DCE99E /* InternetArchiveFeature.swift in Sources */,
 				A0102DA12B18EEF80054D3D4 /* FlagInfoAlert.swift in Sources */,
 				A0102DA22B18EF000054D3D4 /* UploadInfoAlert.swift in Sources */,
 				A09B538A23266F02005266C2 /* SpaceCell.swift in Sources */,
 				A029AF692B3315F600FCCB3A /* GdriveSpace.swift in Sources */,
+				E4A8E7A22BA916CC00DCE99E /* AddInfoAlert.swift in Sources */,
 				A0102D632B18E2480054D3D4 /* SecureEnclave.swift in Sources */,
 				A0102DA52B18EF2F0054D3D4 /* ImageViewController.swift in Sources */,
 				A09B538B23266F02005266C2 /* Constants.m in Sources */,
 				A029AF6D2B3328E400FCCB3A /* GdriveWizardViewController.swift in Sources */,
+				E4A8E7A32BA9176200DCE99E /* RemoveProjectAlert.swift in Sources */,
 				A05DF98E282C118A003FADA2 /* FileInfo.swift in Sources */,
 				A09B538C23266F02005266C2 /* WebDavSpace.swift in Sources */,
 				99FAAECD2CCC155400C05DFC /* FloatExtensions.swift in Sources */,
 				A0102D7D2B18EC090054D3D4 /* MainViewController.swift in Sources */,
+				E4A8E7A52BA9177400DCE99E /* InternetArchiveLoginViewController.swift in Sources */,
 				A0102D872B18ECA80054D3D4 /* InfoAlert.swift in Sources */,
 				A013A93B2B0D12D6003476ED /* TextBox.swift in Sources */,
 				A0102D842B18EC890054D3D4 /* UploadErrorAlert.swift in Sources */,
@@ -1914,11 +2196,13 @@
 				A0102D662B18E2A80054D3D4 /* CcSelector.swift in Sources */,
 				A09B538F23266F02005266C2 /* DuplicateFolderAlert.swift in Sources */,
 				A09B539123266F02005266C2 /* Screenshots.swift in Sources */,
+				E4A8E7BE2BA919CE00DCE99E /* StoreViewModel.swift in Sources */,
 				A0102D8B2B18ECDE0054D3D4 /* SpaceSuccessViewController.swift in Sources */,
 				A09B539223266F02005266C2 /* FormViewController.swift in Sources */,
 				996831712CD4430300767D8F /* UIViewExtensions.swift in Sources */,
 				A006A6AE282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */,
-				A0102D982B18EE880054D3D4 /* IaWizardViewController.swift in Sources */,
+				A0102D8E2B18EDAD0054D3D4 /* BrowseDropboxViewController.swift in Sources */,
+				E4A8E7A72BA917AA00DCE99E /* InternetArchiveLoginState.swift in Sources */,
 				A0102D672B18E2C60054D3D4 /* LinkRow.swift in Sources */,
 				A05DF976282C0E13003FADA2 /* DavResponse.swift in Sources */,
 				A09B539423266F02005266C2 /* YapDatabase+Utils.swift in Sources */,
@@ -1936,10 +2220,13 @@
 				A09B53A023266F02005266C2 /* UIStoryboard+Utils.swift in Sources */,
 				A09B53A223266F02005266C2 /* RuleFilename.swift in Sources */,
 				A09B53A423266F02005266C2 /* SelectedSpaceCell.swift in Sources */,
+				E4A8E7A62BA917A000DCE99E /* InternetArchiveLoginView.swift in Sources */,
 				A05DF98A282C0F92003FADA2 /* AEXMLParser.swift in Sources */,
 				A056ACA52B0E4DE000995FDF /* BasePageViewController.swift in Sources */,
 				A09B53A723266F02005266C2 /* AssetFactory.swift in Sources */,
 				A0DB025A2B2C9216001BF79E /* RemoveAssetAlert.swift in Sources */,
+				E4A8E7AC2BA917E400DCE99E /* InternetArchiveLoginRequest.swift in Sources */,
+				E4A8E7AD2BA917E400DCE99E /* InternetArchiveLoginResponse.swift in Sources */,
 				A09B53A823266F02005266C2 /* WorkingOverlay.swift in Sources */,
 				A0DA7629282D0F300039438A /* Date+rfcString.swift in Sources */,
 				99FAAED12CCC158300C05DFC /* DoubleExtensions.swift in Sources */,
@@ -1948,6 +2235,17 @@
 				A006A6AA282950D00029E49B /* UIBackgroundFetchResult+description.swift in Sources */,
 				A09B53AF23266F02005266C2 /* UIView+utils.swift in Sources */,
 				A0102D802B18EC480054D3D4 /* SettingsViewController.swift in Sources */,
+				E4A8E7B12BA9180100DCE99E /* Scope.swift in Sources */,
+				E4A8E7B22BA9180100DCE99E /* StateStore.swift in Sources */,
+				E4A8E7B32BA9180100DCE99E /* Observer.swift in Sources */,
+				E4A8E7BC2BA9183700DCE99E /* Dictionary+Utils.swift in Sources */,
+				E4A8E7B42BA9180100DCE99E /* StoreObserver.swift in Sources */,
+				E4A8E7B52BA9180100DCE99E /* StateDispatcher.swift in Sources */,
+				E4A8E7B62BA9180100DCE99E /* Effects.swift in Sources */,
+				E4A8E7B72BA9180100DCE99E /* Dispatcher.swift in Sources */,
+				E4A8E7B82BA9180100DCE99E /* Store.swift in Sources */,
+				E4A8E7B92BA9180100DCE99E /* Stateful.swift in Sources */,
+				E4A8E7BA2BA9180100DCE99E /* Reducer.swift in Sources */,
 				A0102DA32B18EF090054D3D4 /* ManagementViewController.swift in Sources */,
 				A0E12C182B024C2F00892AC8 /* GradientView.swift in Sources */,
 				A045BF072B2B109D00C01D39 /* ProgressButton.swift in Sources */,
@@ -1959,7 +2257,7 @@
 				A09B53B523266F02005266C2 /* MenuItemCell.swift in Sources */,
 				99FAAEC72CCC136600C05DFC /* Utils.swift in Sources */,
 				A0DB02592B2C8F24001BF79E /* AlertHelper.swift in Sources */,
-				A0102D992B18EE970054D3D4 /* IaScrapeViewController.swift in Sources */,
+				E4A8E7A42BA9176B00DCE99E /* BrowseGdriveViewController.swift in Sources */,
 				A09B53B623266F02005266C2 /* ProjectsView.swift in Sources */,
 				A0102DA02B18EEED0054D3D4 /* BatchEditViewController.swift in Sources */,
 				A09B53B923266F02005266C2 /* TitleCell.swift in Sources */,
@@ -1975,6 +2273,7 @@
 				A09B53BD23266F02005266C2 /* TableHeader.swift in Sources */,
 				99FAAECA2CCC14D500C05DFC /* IntExtensions.swift in Sources */,
 				A09B53BF23266F02005266C2 /* TableWithSpacesViewController.swift in Sources */,
+				E4A8E7BB2BA9180600DCE99E /* DataSourceError.swift in Sources */,
 				A09B53C023266F02005266C2 /* TintedImageView.swift in Sources */,
 				A0102D8A2B18ECD30054D3D4 /* ClaimViewController.swift in Sources */,
 				A09B53C123266F02005266C2 /* FolderCell.swift in Sources */,
@@ -1985,10 +2284,14 @@
 				A09B53C723266F02005266C2 /* SpacesListCell.swift in Sources */,
 				A05DF986282C0F6E003FADA2 /* AEXMLError.swift in Sources */,
 				A09B53C923266F02005266C2 /* UITableView+separatorView.swift in Sources */,
+				E4A8E7D32BACB85C00DCE99E /* ViewModelController.swift in Sources */,
 				A09B53CB23266F02005266C2 /* Error+friendlyMessage.swift in Sources */,
+				E4A8E7AE2BA917F200DCE99E /* InternetArchiveRepository.swift in Sources */,
+				E4A8E7AF2BA917F200DCE99E /* InternetArchiveRemoteSource.swift in Sources */,
 				A09B53CD23266F02005266C2 /* AbcFilteredByCollectionView.swift in Sources */,
 				A0102D822B18EC710054D3D4 /* ImageCell.swift in Sources */,
 				A0102D8F2B18EE060054D3D4 /* GeneralSettingsViewController.swift in Sources */,
+				E4A8E7C92BAA022200DCE99E /* InternetArchiveDetailsController.swift in Sources */,
 				A0102D912B18EE180054D3D4 /* EditFolderViewController.swift in Sources */,
 				A0DC0FAE233914BD00C4969A /* MovieIndicator.swift in Sources */,
 				A09B53D223266F02005266C2 /* BaseCell.swift in Sources */,
@@ -1996,18 +2299,23 @@
 				A05DF97A282C0E54003FADA2 /* AEXMLDocument.swift in Sources */,
 				A0102D8C2B18ED080054D3D4 /* SideMenuItemCell.swift in Sources */,
 				A09B53D323266F02005266C2 /* Flag.swift in Sources */,
+				E4A8E7AA2BA917D900DCE99E /* InternetArchive.swift in Sources */,
 				A09B53D423266F02005266C2 /* SelectedSpace.swift in Sources */,
 				A0102D782B18EB100054D3D4 /* PreviewViewController.swift in Sources */,
 				A0102D9B2B18EEA60054D3D4 /* IaConduit.swift in Sources */,
 				A0102D6B2B18E4260054D3D4 /* NSError+from.swift in Sources */,
+				E4A8E7A12BA916B000DCE99E /* GdriveConduit.swift in Sources */,
 				A0102DA92B18F1800054D3D4 /* MainNavigationController.swift in Sources */,
 				A09B53D523266F02005266C2 /* Collection.swift in Sources */,
 				A09B53D823266F02005266C2 /* Project.swift in Sources */,
 				A09B53DB23266F02005266C2 /* Upload.swift in Sources */,
 				A09B53DD23266F02005266C2 /* MultilineTitle.swift in Sources */,
 				A09B53DF23266F02005266C2 /* BaseTableViewController.swift in Sources */,
+				E4A8E7C62BA9FDEC00DCE99E /* InternetArchiveDetailViewModel.swift in Sources */,
 				A0102D9A2B18EEA20054D3D4 /* WebDavConduit.swift in Sources */,
 				A0102DAD2B18FC470054D3D4 /* UIImage+Utils.swift in Sources */,
+				E4A8E7B02BA917FB00DCE99E /* ActivityIndicator.swift in Sources */,
+				A0102D9C2B18EEC30054D3D4 /* ConsentViewController.swift in Sources */,
 				A09B53E123266F02005266C2 /* RegexUtils.swift in Sources */,
 				A0102D812B18EC540054D3D4 /* HeaderView.swift in Sources */,
 			);
@@ -2025,6 +2333,7 @@
 				A0BBEF8922846F310071EE93 /* LocationMananger.swift in Sources */,
 				A0362195220DB2CA003C21DC /* IaSpace.swift in Sources */,
 				A0E1A67C21EE7A5C00E4F6B7 /* GeneralSettingsViewController.swift in Sources */,
+				E4A8E7872BA3762900DCE99E /* Effects.swift in Sources */,
 				A0F4096A2BA463950069549B /* BrowseWebDavViewController.swift in Sources */,
 				A004E24C20EBCF1700A1D5F5 /* Formatters.swift in Sources */,
 				A0FB4DB521F89FD500B46099 /* AssetsByCollectionView.swift in Sources */,
@@ -2036,10 +2345,9 @@
 				A0FA9346227757100086D276 /* Settings.swift in Sources */,
 				A05DF984282C0F6E003FADA2 /* AEXMLError.swift in Sources */,
 				A0C797E922807DF00009751A /* SelectedCollection.swift in Sources */,
-				A013A9372B0D0488003476ED /* IaWizardViewController.swift in Sources */,
 				A00A8D47220C7EDD0083F0CB /* AbcFilteredByProjectView.swift in Sources */,
+				E4A8E75C2BA227CB00DCE99E /* InternetArchiveRemoteSource.swift in Sources */,
 				A0958DEE291AA37700D917C0 /* SecureEnclave.swift in Sources */,
-				A0F3DF4E2B160DE1005D860E /* IaGuideViewController.swift in Sources */,
 				99FAAEBF2CCAC1F600C05DFC /* NSMutableAttributedString.swift in Sources */,
 				A003DDFB2B14C56300443561 /* NSAttributedString+Utils.swift in Sources */,
 				A0A3D9C72226D8DB00BB5A19 /* SpaceCell.swift in Sources */,
@@ -2050,14 +2358,20 @@
 				A045D201224D07C3008FF8C1 /* ButtonCell.swift in Sources */,
 				A0FA93412277387D0086D276 /* Bundle+displayName.swift in Sources */,
 				A025171922C2126C00EEFBD9 /* DuplicateFolderAlert.swift in Sources */,
+				E4A8E7612BA2284900DCE99E /* InternetArchiveLoginResponse.swift in Sources */,
+				E4A8E7932BA4B5AD00DCE99E /* Observer.swift in Sources */,
 				A006A6A8282950D00029E49B /* UIBackgroundFetchResult+description.swift in Sources */,
 				A037D6F82B0CAA0300C77706 /* FolderInfoAlert.swift in Sources */,
 				A0E5B7B92BA334BB00285CEE /* TorStartViewController.swift in Sources */,
 				A08C2CE621F0B46C008ACA3E /* FormViewController.swift in Sources */,
+				E4A8E7C22BA9FDAA00DCE99E /* InternetArchiveDetailState.swift in Sources */,
 				A0F7FDE722494E2F006610F0 /* RemoveProjectAlert.swift in Sources */,
+				A094EA4B282AD110006CE059 /* DropboxConduit.swift in Sources */,
+				E4A8E7742BA25BCA00DCE99E /* InternetArchiveLoginView.swift in Sources */,
 				A0F1364F227256F4008A22BF /* YapDatabase+Utils.swift in Sources */,
 				A0BF451A27DF5EE800DBB629 /* ProofModeSettingsViewController.swift in Sources */,
 				A0DE78B221F771A700B6B68B /* BaseFolderViewController.swift in Sources */,
+				E4A8E7762BA25C0D00DCE99E /* InternetArchiveLoginViewController.swift in Sources */,
 				A052A492230D546F00E72594 /* InfoAlert.swift in Sources */,
 				A00DC98A22315D4F004F07E0 /* ImageViewController.swift in Sources */,
 				A01A7B722200F2D700E18DE0 /* HeaderView.swift in Sources */,
@@ -2066,27 +2380,36 @@
 				A0CBFCAA2AC5B6F4005A78BF /* SideMenuItemCell.swift in Sources */,
 				A08F2CEC2AFE6F2E004D7EA7 /* PreviewCell.swift in Sources */,
 				A0E321FB228EFA8800F2E9BD /* InfoBox.swift in Sources */,
+				E4A8E7892BA3788D00DCE99E /* Dispatcher.swift in Sources */,
 				A0D58DCE20E51517005A2F34 /* Asset.swift in Sources */,
 				A0AC29EB2B10C0DD0054D5F4 /* SpaceSettingsViewController.swift in Sources */,
+				E4A8E7952BA4B84700DCE99E /* Reducer.swift in Sources */,
+				E4A8E7982BA4BAAF00DCE99E /* StoreViewModel.swift in Sources */,
 				A0E9069322CB7D16008CD81B /* SelectedView.swift in Sources */,
+				E4A8E7CB2BAA029400DCE99E /* InternetArchiveDetailView.swift in Sources */,
 				A04255CE22944C1B0048E00C /* UIStoryboard+Utils.swift in Sources */,
 				A0DA7627282D0F300039438A /* Date+rfcString.swift in Sources */,
 				99FAAEC12CCBFF4900C05DFC /* UIFontExtensions.swift in Sources */,
 				A0E321F9228EDBE900F2E9BD /* DarkroomViewController.swift in Sources */,
 				A05F79FE22EEFA9F003DBB74 /* RuleFilename.swift in Sources */,
 				A045D1F6224CFFB4008FF8C1 /* SelectedSpaceCell.swift in Sources */,
+				E4A8E77E2BA2661900DCE99E /* InternetArchiveLoginUseCase.swift in Sources */,
+				E4A8E7802BA26AEA00DCE99E /* InternetArchiveLoginState.swift in Sources */,
 				A077732A22786BF500291F5D /* RemoveAssetAlert.swift in Sources */,
 				A0357D1122CF901800292077 /* BatchEditViewController.swift in Sources */,
 				6EA68F7E2CE7DD9800E538C1 /* KeyboardHandling.swift in Sources */,
 				A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */,
 				99FAAED02CCC158300C05DFC /* DoubleExtensions.swift in Sources */,
 				A0AC06B02201E30E00BD5FBA /* WorkingOverlay.swift in Sources */,
-				A026C34622C641EB007B1C5B /* IaScrapeViewController.swift in Sources */,
 				6EA68F742CE4FD2500E538C1 /* TimeIntervalExtension.swift in Sources */,
+				A0AC29E72B10B7380054D5F4 /* DropboxSettingsViewController.swift in Sources */,
 				A07E8A4222958D0600E9FFAA /* SlideViewController.swift in Sources */,
 				A0D76ACE2B580E2100389F64 /* BlurredSnapshot.swift in Sources */,
+				E4A8E76E2BA255E800DCE99E /* InternetArchive.swift in Sources */,
 				A08F2CEE2AFE8784004D7EA7 /* AssetPicker.swift in Sources */,
 				A03236352B0BB8F100D95BC3 /* AppAddFolderViewController.swift in Sources */,
+				E4A8E7C82BAA022200DCE99E /* InternetArchiveDetailsController.swift in Sources */,
+				E4A8E7692BA2522C00DCE99E /* Dictionary+Utils.swift in Sources */,
 				A0E27209224E335400CB7113 /* NewFolderViewController.swift in Sources */,
 				A029AF742B33368700FCCB3A /* GdriveConduit.swift in Sources */,
 				A05DF980282C0F48003FADA2 /* AEXMLOptions.swift in Sources */,
@@ -2103,6 +2426,7 @@
 				A02DB29A29B647390090ECF6 /* URL+Utils.swift in Sources */,
 				A05275142211A91300BDB14B /* CollectionsView.swift in Sources */,
 				A07129102111E4F1007A432A /* Db.swift in Sources */,
+				E4A8E7912BA4B58300DCE99E /* StateStore.swift in Sources */,
 				A059E647223AE9FB00ABC621 /* UploadManager.swift in Sources */,
 				A0E1A68121EE7BE900E4F6B7 /* MenuItemCell.swift in Sources */,
 				A00A8D45220C63B20083F0CB /* ProjectsView.swift in Sources */,
@@ -2112,15 +2436,19 @@
 				A056ACA72B0E649C00995FDF /* SpaceSuccessViewController.swift in Sources */,
 				A098980622369F8100022851 /* ManagementViewController.swift in Sources */,
 				A045D1FB224D02AA008FF8C1 /* TitleCell.swift in Sources */,
+				E4A8E76B2BA2533500DCE99E /* InternetArchiveRepository.swift in Sources */,
 				A092C0F0223A8D4B003EB0AA /* DoneDelegate.swift in Sources */,
 				A0A192DD21F208DA009A8CF0 /* Space.swift in Sources */,
 				A0E1A68921EE873200E4F6B7 /* TableHeader.swift in Sources */,
 				A0AC057F224CE8C7008B9249 /* TableWithSpacesViewController.swift in Sources */,
 				A045BF052B2B109D00C01D39 /* ProgressButton.swift in Sources */,
 				A0F7FDDF224936C8006610F0 /* TintedImageView.swift in Sources */,
+				E4A8E75F2BA2283C00DCE99E /* InternetArchiveLoginRequest.swift in Sources */,
+				E4A8E78D2BA37AA100DCE99E /* Store.swift in Sources */,
 				A0AC29ED2B10CAC30054D5F4 /* WebDavSettingsViewController.swift in Sources */,
 				A013A9392B0D12D6003476ED /* TextBox.swift in Sources */,
 				A0AC29E32B10A4CE0054D5F4 /* CGSize+Utils.swift in Sources */,
+				E4A8E7D12BAA602900DCE99E /* ViewModelController.swift in Sources */,
 				A0AC06AC2201D00100BD5FBA /* FolderCell.swift in Sources */,
 				A07E8A40229575B600E9FFAA /* SlideshowViewController.swift in Sources */,
 				A006A6AC282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */,
@@ -2128,12 +2456,16 @@
 				A0AFCF0D22300279005E57FD /* PreviewViewController.swift in Sources */,
 				A0457E6720EF96FB00B8FBCB /* StringUtils.swift in Sources */,
 				A006AF3428198752007637DD /* AlertHelper.swift in Sources */,
+				E4A8E78B2BA378AE00DCE99E /* Stateful.swift in Sources */,
 				A05C582A21EF94FC00141633 /* BaseViewController.swift in Sources */,
 				A050AA492225DF4000AE5D15 /* SpacesListCell.swift in Sources */,
 				A05DF98C282C118A003FADA2 /* FileInfo.swift in Sources */,
 				996831702CD4430300767D8F /* UIViewExtensions.swift in Sources */,
+				E4A8E79D2BA4C8F000DCE99E /* Scope.swift in Sources */,
 				A0656ABA21F9BFB800070C4B /* MainNavigationController.swift in Sources */,
 				A076790227BE89E900609630 /* UIButton+Utils.swift in Sources */,
+				E4A8E7C52BA9FDEC00DCE99E /* InternetArchiveDetailViewModel.swift in Sources */,
+				E4A8E7A02BA9157500DCE99E /* ActivityIndicator.swift in Sources */,
 				A0DC0FAC233914BD00C4969A /* MovieIndicator.swift in Sources */,
 				A05471DB2296C8FD009FEA93 /* UITableView+separatorView.swift in Sources */,
 				6EA68F7B2CE7D7ED00E538C1 /* CreateCCLViewController.swift in Sources */,
@@ -2141,6 +2473,8 @@
 				A029AF6E2B332FFD00FCCB3A /* GdriveSettingsViewController.swift in Sources */,
 				A0FE2C1E22E1E8D200C5443F /* Error+friendlyMessage.swift in Sources */,
 				A01128E62AE6CB34000848DB /* SettingsViewController.swift in Sources */,
+				A056555723F6D8A100DE0168 /* DropboxSpace.swift in Sources */,
+				E4A8E7712BA259AF00DCE99E /* InternetArchiveMapper.swift in Sources */,
 				A09898082236A7B100022851 /* UploadCell.swift in Sources */,
 				A0C797E6228063280009751A /* AbcFilteredByCollectionView.swift in Sources */,
 				A0FB4DC021F8EBDD00B46099 /* ImageCell.swift in Sources */,
@@ -2156,7 +2490,6 @@
 				A077F76A2B0FB580004A4B34 /* WebDavWizardViewController.swift in Sources */,
 				6EA68F772CE5037900E538C1 /* Constants.swift in Sources */,
 				A0FB4DBE21F8CC2300B46099 /* MainViewController.swift in Sources */,
-				A0F3DF502B160E1E005D860E /* IaGuideSlideViewController.swift in Sources */,
 				A0DE78AF21F76D2200B6B68B /* Project.swift in Sources */,
 				A056ACA32B0E4DE000995FDF /* BasePageViewController.swift in Sources */,
 				A0C6B30B2AFD1CCF00304187 /* LinkRow.swift in Sources */,
@@ -2166,15 +2499,20 @@
 				A0D1013E22CCF4140068D047 /* WebDavConduit.swift in Sources */,
 				A0AFCF0F22300E41005E57FD /* MultilineTitle.swift in Sources */,
 				A03236312B0BB46B00D95BC3 /* AddFolderViewController.swift in Sources */,
+				E4A8E7782BA260A800DCE99E /* InternetArchiveLoginViewModel.swift in Sources */,
 				A037D7022B0CCC6300C77706 /* SpaceTypeViewController.swift in Sources */,
 				A0102DAB2B18FC470054D3D4 /* UIImage+Utils.swift in Sources */,
+				E4A8E7672BA2519500DCE99E /* DataSourceError.swift in Sources */,
+				E4A8E7832BA26C1000DCE99E /* StateDispatcher.swift in Sources */,
 				A0A9F1912AF0193D007D284A /* FoldersViewController.swift in Sources */,
+				E4A8E77B2BA2627D00DCE99E /* InternetArchiveFeature.swift in Sources */,
 				A0E12C1A2B028EC300892AC8 /* UploadInfoAlert.swift in Sources */,
 				99FAAEC42CCC002300C05DFC /* UIColorExtensions.swift in Sources */,
 				A05DF988282C0F92003FADA2 /* AEXMLParser.swift in Sources */,
 				A05DF978282C0E54003FADA2 /* AEXMLDocument.swift in Sources */,
 				A029AF6C2B3328E400FCCB3A /* GdriveWizardViewController.swift in Sources */,
 				A056555C23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */,
+				E4A8E7852BA36DDB00DCE99E /* StoreObserver.swift in Sources */,
 				A0631B552203022100B3E90D /* BaseTableViewController.swift in Sources */,
 				A0E2720C224E33D000CB7113 /* EditFolderViewController.swift in Sources */,
 				A0457E6920EFB57C00B8FBCB /* RegexUtils.swift in Sources */,
