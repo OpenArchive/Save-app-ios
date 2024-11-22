@@ -25,7 +25,7 @@ struct InternetArchiveLoginContent: View {
     
     let state: InternetArchiveLoginState.Bindings
     let dispatch: Dispatch<InternetArchiveLoginAction>
-    
+    @State private var keyboardOffset: CGFloat = 0
     @State private var isShowPassword = false
     @Environment(\.colorScheme) var colorScheme
     
@@ -36,20 +36,21 @@ struct InternetArchiveLoginContent: View {
                 Circle().fill(colorScheme == .dark ? Color.white : Color.pillBackground)
                     .frame(width: 80, height: 80)
                     .overlay(
-                Image("InternetArchiveLogo")
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
-                    .frame(width: 48, height: 48)
+                        Image("InternetArchiveLogo")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 48, height: 48)
                     ).padding(.trailing, 6)
                 VStack(alignment: .leading) {
                     Text(LocalizedStringKey("Internet Archive")).font(.headline)
-                    Text(LocalizedStringKey("Upload your media to a public server.")).font(.subheadline)
+                    Text(LocalizedStringKey("Upload your media to a free public or paid private account on the Internet Archive.")).font(.subheadline)
+                    
                 }
             }.padding()
             
             Spacer()
             
-            TextField(LocalizedStringKey("Enter a username..."), text: state.userName)
+            TextField(LocalizedStringKey("Username"), text: state.userName)
                 .padding()
                 .overlay(
                     RoundedRectangle(cornerRadius: 8)
@@ -86,7 +87,7 @@ struct InternetArchiveLoginContent: View {
                 Button(action: {
                     dispatch(.CreateAccount)
                 }) {
-                    Text(LocalizedStringKey("Create Account"))
+                    Text(LocalizedStringKey("Create one"))
                 }.foregroundColor(.accent)
             }
             
@@ -116,7 +117,27 @@ struct InternetArchiveLoginContent: View {
                 .foregroundColor(.black)
                 .cornerRadius(12)
             }.padding()
-        }.frame(maxWidth: .infinity, maxHeight: .infinity)
+        }.padding(.bottom, keyboardOffset)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .onAppear(perform: setupKeyboardObservers)
+            .onDisappear(perform: removeKeyboardObservers)
+            .animation(.easeOut(duration: 0.3))
+    }
+    private func setupKeyboardObservers() {
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillShowNotification, object: nil, queue: .main) { notification in
+            if let keyboardFrame = notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect {
+                self.keyboardOffset = keyboardFrame.height + 30
+            }
+        }
+        
+        NotificationCenter.default.addObserver(forName: UIResponder.keyboardWillHideNotification, object: nil, queue: .main) { _ in
+            self.keyboardOffset = 0
+        }
+    }
+    
+    private func removeKeyboardObservers() {
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
     }
 }
 
