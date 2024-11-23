@@ -21,4 +21,7 @@ struct GeneralConstants {
     static let maxSpelledOutValue: Int = 9
     static let minSpelledOutValue: Int = 1
     static let percentRoundedTo:Int = 2
+    static let constraint_minus_20: CGFloat = -20.0
+    static let constraint_20: CGFloat = 20.0
+    static let zeroConstraint: CGFloat = 0.0
 }
