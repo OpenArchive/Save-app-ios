@@ -74,7 +74,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         dh = DarkroomHelper(self, infoView)
         
         Db.add(observer: self, #selector(yapDatabaseModified))
-        
+        infoViewBottomConstraint?.constant = GeneralConstants.constraint_20
         refresh(animate: false)
     }
     
@@ -109,7 +109,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             barButtonSystemItem: .done, target: self, action: #selector(dismiss(_:)))
 
-        infoViewBottomConstraint?.constant = 0
+        infoViewBottomConstraint?.constant = GeneralConstants.constraint_20
 
         animateDuringKeyboardMovement(notification)
     }

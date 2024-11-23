@@ -23,4 +23,8 @@ struct GeneralConstants {
     static let percentRoundedTo:Int = 2
     static let constraint_30: CGFloat = 30.0
     static let constraint_zero: CGFloat = 0.0
+    static let constraint_minus_20: CGFloat = -20.0
+    static let constraint_20: CGFloat = 20.0
+    static let zeroConstraint: CGFloat = 0.0
+
 }
