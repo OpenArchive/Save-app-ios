@@ -23,19 +23,12 @@ class SectionHeaderView: UIView {
         separator.backgroundColor = .lightGray
         
         self.addSubview(label)
-//        self.addSubview(separator)
         
         label.snp.makeConstraints { (make) in
             make.leading.trailing.equalToSuperview().inset(20)
             make.top.bottom.equalToSuperview()
         }
         
-//        separator.snp.makeConstraints { (make) in
-//            make.top.equalTo(label.snp.bottom)
-//            make.bottom.equalToSuperview().inset(20)
-//            make.leading.trailing.equalToSuperview()
-//            make.height.equalTo(0.25)
-//        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -77,21 +70,20 @@ class GeneralSettingsViewController: FormViewController {
             NotificationCenter.default.post(name: .uploadManagerDataUsageChange, object: Settings.wifiOnly)
         }
         
-//        <<< PushRow<String>() {
-//            $0.title = NSLocalizedString("Media Compression", comment: "")
-//            $0.value = Self.compressionOptions[Settings.highCompression ? 1 : 0]
-//            
-//            $0.selectorTitle = $0.title
-//            $0.options = Self.compressionOptions
-//            
-//            $0.cell.textLabel?.numberOfLines = 0
-//        }
-//        .onChange { row in
-//            Settings.highCompression = row.value == Self.compressionOptions[1]
-//        }
+        +++ sectionWithTitle(NSLocalizedString("Meta Data", comment: ""))
         
+        <<< ButtonRow("proofmode") {
+            $0.title = NSLocalizedString("ProofMode", comment: "")
+
+            $0.presentationMode = .show(controllerProvider: .callback(builder: {
+                ProofModeSettingsViewController()
+            }), onDismiss: nil)
+
+        }
+
+       
         // MARK: Theme
-        //
+        +++ sectionWithTitle(NSLocalizedString("Presentation", comment: ""))
         <<< ActionSheetRow<String>() {
             $0.title = NSLocalizedString("Theme", comment: "")
             $0.value = interfaceStyleOptions[Settings.interfaceStyle.rawValue]
@@ -110,6 +102,7 @@ class GeneralSettingsViewController: FormViewController {
                 Utils.setUnspecifiedMode()
             }
         }
+       
     }
     
     override func viewWillAppear(_ animated: Bool) {
