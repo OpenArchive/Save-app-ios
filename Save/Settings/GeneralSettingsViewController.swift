@@ -90,6 +90,7 @@ class GeneralSettingsViewController: FormViewController {
 //            Settings.highCompression = row.value == Self.compressionOptions[1]
 //        }
         
+        
         // MARK: Theme
         //
         <<< ActionSheetRow<String>() {
@@ -110,6 +111,30 @@ class GeneralSettingsViewController: FormViewController {
                 Utils.setUnspecifiedMode()
             }
         }
+        +++ sectionWithTitle(NSLocalizedString("Secure", comment: ""))
+        <<< SwitchRow("lock_app") {
+            $0.title = NSLocalizedString("Lock App with passcode", comment: "")
+            $0.value = SecureEnclave.loadKey() != nil
+            $0.disabled = .init(booleanLiteral: Settings.proofModeEncryptedPassphrase != nil)
+            $0.cell.textLabel?.numberOfLines = 0
+        }
+        .onChange { row in
+            if row.value == true {
+                let pinCreateController = PinCreateController()
+                self.navigationController?.pushViewController(pinCreateController, animated: true)
+            } else {
+                let keyRemoved = SecureEnclave.removeKey()
+                UserDefaults.standard.set("", forKey: "encryptedAppPin")
+                
+                if keyRemoved {
+                    print("Secure key successfully removed.")
+                } else {
+                    print("Failed to remove the secure key.")
+                }
+            }
+            row.evaluateDisabled()
+        }
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -119,15 +144,11 @@ class GeneralSettingsViewController: FormViewController {
         
         form.delegate = nil
         
-//        if let lockAppRow = form.rowBy(tag: "lock_app") as? SwitchRow {
-//            lockAppRow.value = SecureEnclave.loadKey() != nil
-//            
-//            lockAppRow.disabled = .init(booleanLiteral: Settings.proofModeEncryptedPassphrase != nil)
-//            lockAppRow.evaluateDisabled()
-//            
-//            // Fix spacing issues due to changes in number of displayed text lines.
-//            lockAppRow.reload()
-//        }
+        if let lockAppRow = form.rowBy(tag: "lock_app") as? SwitchRow {
+            lockAppRow.value = SecureEnclave.loadKey() != nil
+            lockAppRow.evaluateDisabled()
+            lockAppRow.reload()
+        }
         
         form.delegate = self
     }

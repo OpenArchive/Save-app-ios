@@ -12,6 +12,7 @@ import LibProofMode
 import GoogleSignIn
 import TorManager
 import OrbotKit
+import SwiftUI
 
 class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
@@ -62,7 +63,6 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         UIFont.setUpMontserrat()
 
         setUpOrbotAndTor()
-
         return true
     }
 
@@ -82,6 +82,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
+        
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
 
         // `MainViewController#viewWillAppear` will not be called, when the
@@ -97,6 +98,10 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         // In that case, the `UploadManager` might need a restart, since it could
         // have been #stopped, due to running out of background time.
         uploadManager?.restart()
+        if(isSecureEnclaveKeyAvailable()){
+            showPinEntryScreen()
+        }
+       
     }
 
 //    func applicationDidBecomeActive(_ application: UIApplication) {
@@ -334,8 +339,41 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
             }
         }
     }
+   
 }
 
 extension TorManager {
     static let shared = TorManager(directory: .groupDir!.appendingPathComponent("tor", isDirectory: true))
+}
+extension AppDelegateBase {
+     func showPinEntryScreen() {
+        guard let rootVC = window?.rootViewController else { return }
+
+        // Check if PIN screen is already presented
+        if let presented = rootVC.presentedViewController,
+           presented is UIHostingController<PinLoginView> {
+            return
+        }
+
+        // Show the PIN screen
+        let pinEntryView = PinLoginView { isValid in
+            if isValid {
+                rootVC.dismiss(animated: true)
+            } else {
+                self.showPinEntryScreen()
+            }
+        }
+
+        let hostingController = UIHostingController(rootView: pinEntryView)
+        hostingController.modalPresentationStyle = .fullScreen
+        rootVC.present(hostingController, animated: true)
+    }
+    func isSecureEnclaveKeyAvailable() -> Bool {
+
+        guard UserDefaults.standard.data(forKey: Keys.encryptedAppPin) != nil else {
+            SecureEnclave.removeKey()
+            return false
+        }
+        return true
+    }
 }

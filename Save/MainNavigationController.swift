@@ -33,5 +33,13 @@ class MainNavigationController: UINavigationController {
                 [UIStoryboard.main.instantiate(ClaimViewController.self)],
                 animated: true)
         }
+        
+        DispatchQueue.main.async {
+                if let appDelegate = UIApplication.shared.delegate as? AppDelegateBase {
+                    if(appDelegate.isSecureEnclaveKeyAvailable()){
+                        appDelegate.showPinEntryScreen()
+                    }
+                }
+            }
     }
 }
