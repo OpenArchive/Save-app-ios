@@ -3,22 +3,11 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 54;
+	objectVersion = 70;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		3D9BAB37277858B6A12A3BDA /* Pods_Save_Screenshots.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EE311479141A909C9F586216 /* Pods_Save_Screenshots.framework */; };
-		0A5CE1EE41A361DE76F2AC5B /* (null) in Frameworks */ = {isa = PBXBuildFile; };
-		6E0EE5582CFA221E007185BB /* PinCreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0EE5572CFA221E007185BB /* PinCreateView.swift */; };
-		6E0EE5592CFA221E007185BB /* PinCreateView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0EE5572CFA221E007185BB /* PinCreateView.swift */; };
-		6E0EE55B2CFA2238007185BB /* PinCreateState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0EE55A2CFA2234007185BB /* PinCreateState.swift */; };
-		6E0EE55C2CFA2238007185BB /* PinCreateState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0EE55A2CFA2234007185BB /* PinCreateState.swift */; };
-		6E0EE55E2CFA225E007185BB /* PinCreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0EE55D2CFA224F007185BB /* PinCreateViewModel.swift */; };
-		6E0EE55F2CFA225E007185BB /* PinCreateViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0EE55D2CFA224F007185BB /* PinCreateViewModel.swift */; };
-		6E0EE5612CFA2270007185BB /* PinCreateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0EE5602CFA2264007185BB /* PinCreateController.swift */; };
-		6E0EE5622CFA2270007185BB /* PinCreateController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0EE5602CFA2264007185BB /* PinCreateController.swift */; };
-		6E0EE56D2CFAF4F7007185BB /* PinLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0EE56C2CFAF4F7007185BB /* PinLoginView.swift */; };
-		6E0EE56E2CFAF4F7007185BB /* PinLoginView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E0EE56C2CFAF4F7007185BB /* PinLoginView.swift */; };
 		6EA68F742CE4FD2500E538C1 /* TimeIntervalExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA68F732CE4FD2500E538C1 /* TimeIntervalExtension.swift */; };
 		6EA68F772CE5037900E538C1 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA68F762CE5037900E538C1 /* Constants.swift */; };
 		6EA68F7B2CE7D7ED00E538C1 /* CreateCCLViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6EA68F7A2CE7D7ED00E538C1 /* CreateCCLViewController.swift */; };
@@ -91,7 +80,6 @@
 		A0102D932B18EE360054D3D4 /* SpaceWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A037D6FA2B0CB9E900C77706 /* SpaceWizardViewController.swift */; };
 		A0102D942B18EE490054D3D4 /* SpaceTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A037D7012B0CCC6300C77706 /* SpaceTypeViewController.swift */; };
 		A0102D962B18EE710054D3D4 /* ProofModeSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0BF451927DF5EE800DBB629 /* ProofModeSettingsViewController.swift */; };
-		A0102D972B18EE850054D3D4 /* DropboxWizardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29E02B10A2B20054D5F4 /* DropboxWizardViewController.swift */; };
 		A0102D9A2B18EEA20054D3D4 /* WebDavConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D1013D22CCF4140068D047 /* WebDavConduit.swift */; };
 		A0102D9B2B18EEA60054D3D4 /* IaConduit.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0D1013F22CCFA1B0068D047 /* IaConduit.swift */; };
 		A0102D9D2B18EED70054D3D4 /* DarkroomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E321F8228EDBE900F2E9BD /* DarkroomViewController.swift */; };
@@ -616,11 +604,6 @@
 		082C3EBC8DCCEE99CA42460F /* Pods-ShareExtension.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ShareExtension.release.xcconfig"; path = "Target Support Files/Pods-ShareExtension/Pods-ShareExtension.release.xcconfig"; sourceTree = "<group>"; };
 		40FF963A27F31957D108A029 /* Pods_Save.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Save.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		52D439E242B51FCF7F2CC193 /* Pods-Save.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Save.debug.xcconfig"; path = "Target Support Files/Pods-Save/Pods-Save.debug.xcconfig"; sourceTree = "<group>"; };
-		6E0EE5572CFA221E007185BB /* PinCreateView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCreateView.swift; sourceTree = "<group>"; };
-		6E0EE55A2CFA2234007185BB /* PinCreateState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCreateState.swift; sourceTree = "<group>"; };
-		6E0EE55D2CFA224F007185BB /* PinCreateViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCreateViewModel.swift; sourceTree = "<group>"; };
-		6E0EE5602CFA2264007185BB /* PinCreateController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinCreateController.swift; sourceTree = "<group>"; };
-		6E0EE56C2CFAF4F7007185BB /* PinLoginView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinLoginView.swift; sourceTree = "<group>"; };
 		6EA68F732CE4FD2500E538C1 /* TimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtension.swift; sourceTree = "<group>"; };
 		6EA68F762CE5037900E538C1 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		6EA68F7A2CE7D7ED00E538C1 /* CreateCCLViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CreateCCLViewController.swift; sourceTree = "<group>"; };
@@ -884,8 +867,6 @@
 		ADF82FBF0730463CFD7AE499 /* Pods-Save.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Save.release.xcconfig"; path = "Target Support Files/Pods-Save/Pods-Save.release.xcconfig"; sourceTree = "<group>"; };
 		B01C5B93493267AA307E3CB2 /* Pods-Save Screenshots.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Save Screenshots.release.xcconfig"; path = "Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots.release.xcconfig"; sourceTree = "<group>"; };
 		B486E3D70C15CF62218C87C0 /* Pods_ShareExtension.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_ShareExtension.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EE311479141A909C9F586216 /* Pods_Save_Screenshots.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Save_Screenshots.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		EEB3C2C07AD93CBD6245A777 /* Pods-Save Screenshots.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Save Screenshots.debug.xcconfig"; path = "Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots.debug.xcconfig"; sourceTree = "<group>"; };
 		E4A8E75B2BA227CB00DCE99E /* InternetArchiveRemoteSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveRemoteSource.swift; sourceTree = "<group>"; };
 		E4A8E75E2BA2283C00DCE99E /* InternetArchiveLoginRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveLoginRequest.swift; sourceTree = "<group>"; };
 		E4A8E7602BA2284900DCE99E /* InternetArchiveLoginResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveLoginResponse.swift; sourceTree = "<group>"; };
@@ -917,10 +898,12 @@
 		E4A8E7C72BAA022200DCE99E /* InternetArchiveDetailsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveDetailsController.swift; sourceTree = "<group>"; };
 		E4A8E7CA2BAA029400DCE99E /* InternetArchiveDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InternetArchiveDetailView.swift; sourceTree = "<group>"; };
 		E4A8E7D02BAA602900DCE99E /* ViewModelController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelController.swift; sourceTree = "<group>"; };
+		EE311479141A909C9F586216 /* Pods_Save_Screenshots.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Save_Screenshots.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		EEB3C2C07AD93CBD6245A777 /* Pods-Save Screenshots.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Save Screenshots.debug.xcconfig"; path = "Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		6E0EE5632CFA7A0E007185BB /* Module */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Module; sourceTree = "<group>"; };
+		EA66707B2CFD24B100981DA0 /* Passcode */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Passcode; sourceTree = "<group>"; };
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -970,19 +953,6 @@
 				082C3EBC8DCCEE99CA42460F /* Pods-ShareExtension.release.xcconfig */,
 			);
 			path = Pods;
-			sourceTree = "<group>";
-		};
-		6E0EE5562CFA21B8007185BB /* PinLogin */ = {
-			isa = PBXGroup;
-			children = (
-				6E0EE5632CFA7A0E007185BB /* Module */,
-				6E0EE5602CFA2264007185BB /* PinCreateController.swift */,
-				6E0EE55D2CFA224F007185BB /* PinCreateViewModel.swift */,
-				6E0EE55A2CFA2234007185BB /* PinCreateState.swift */,
-				6E0EE5572CFA221E007185BB /* PinCreateView.swift */,
-				6E0EE56C2CFAF4F7007185BB /* PinLoginView.swift */,
-			);
-			path = PinLogin;
 			sourceTree = "<group>";
 		};
 		6EA68F752CE502F100E538C1 /* Constants */ = {
@@ -1365,7 +1335,6 @@
 				A077F7692B0FB580004A4B34 /* WebDavWizardViewController.swift */,
 				A029AF6A2B33202D00FCCB3A /* GdriveWizardViewController.swift */,
 				A056ACA62B0E649C00995FDF /* SpaceSuccessViewController.swift */,
-				A052A48E230D53D800E72594 /* IaInfoAlert.swift */,
 				6EA68F7A2CE7D7ED00E538C1 /* CreateCCLViewController.swift */,
 			);
 			path = Space;
@@ -1464,7 +1433,7 @@
 		E4A8E7542BA2275D00DCE99E /* Features */ = {
 			isa = PBXGroup;
 			children = (
-				6E0EE5562CFA21B8007185BB /* PinLogin */,
+				EA66707B2CFD24B100981DA0 /* Passcode */,
 				E4A8E7552BA2276A00DCE99E /* InternetArchive */,
 			);
 			path = Features;
@@ -1709,7 +1678,7 @@
 				A09B537823266F02005266C2 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				6E0EE5632CFA7A0E007185BB /* Module */,
+				EA66707B2CFD24B100981DA0 /* Passcode */,
 			);
 			name = "Save Screenshots";
 			productName = OpenArchive;
@@ -1734,7 +1703,7 @@
 				A07129042111CC90007A432A /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				6E0EE5632CFA7A0E007185BB /* Module */,
+				EA66707B2CFD24B100981DA0 /* Passcode */,
 			);
 			name = Save;
 			productName = OpenArchive;
@@ -2199,16 +2168,13 @@
 				E4A8E7C32BA9FDAD00DCE99E /* InternetArchiveDetailState.swift in Sources */,
 				A09B538523266F02005266C2 /* RoundedImageView.swift in Sources */,
 				A0102D9D2B18EED70054D3D4 /* DarkroomViewController.swift in Sources */,
-				6E0EE5622CFA2270007185BB /* PinCreateController.swift in Sources */,
 				A0A6819829D7118C002D9F21 /* TTTLocationFormatter.m in Sources */,
 				A0102D832B18EC810054D3D4 /* UploadCell.swift in Sources */,
-				6E0EE56E2CFAF4F7007185BB /* PinLoginView.swift in Sources */,
 				A09B538623266F02005266C2 /* Settings.swift in Sources */,
 				A09B538723266F02005266C2 /* SelectedCollection.swift in Sources */,
 				A0102D7B2B18EB650054D3D4 /* AppDelegateBase.swift in Sources */,
 				E4A8E7A82BA917CB00DCE99E /* InternetArchiveLoginViewModel.swift in Sources */,
 				A0102D9E2B18EEDE0054D3D4 /* DarkroomHelper.swift in Sources */,
-				6E0EE55F2CFA225E007185BB /* PinCreateViewModel.swift in Sources */,
 				A09B538823266F02005266C2 /* AbcFilteredByProjectView.swift in Sources */,
 				E4A8E7BD2BA9184700DCE99E /* InternetArchiveFeature.swift in Sources */,
 				A0102DA12B18EEF80054D3D4 /* FlagInfoAlert.swift in Sources */,
@@ -2244,11 +2210,9 @@
 				A09B539223266F02005266C2 /* FormViewController.swift in Sources */,
 				996831712CD4430300767D8F /* UIViewExtensions.swift in Sources */,
 				A006A6AE282973C10029E49B /* DispatchGroup+waitSignal.swift in Sources */,
-				A0102D8E2B18EDAD0054D3D4 /* BrowseDropboxViewController.swift in Sources */,
 				E4A8E7A72BA917AA00DCE99E /* InternetArchiveLoginState.swift in Sources */,
 				A0102D672B18E2C60054D3D4 /* LinkRow.swift in Sources */,
 				A05DF976282C0E13003FADA2 /* DavResponse.swift in Sources */,
-				6E0EE55B2CFA2238007185BB /* PinCreateState.swift in Sources */,
 				A09B539423266F02005266C2 /* YapDatabase+Utils.swift in Sources */,
 				A09B539523266F02005266C2 /* BaseFolderViewController.swift in Sources */,
 				A0102D7C2B18EBE70054D3D4 /* UploadManager.swift in Sources */,
@@ -2328,7 +2292,6 @@
 				A09B53C723266F02005266C2 /* SpacesListCell.swift in Sources */,
 				A05DF986282C0F6E003FADA2 /* AEXMLError.swift in Sources */,
 				A09B53C923266F02005266C2 /* UITableView+separatorView.swift in Sources */,
-				6E0EE5582CFA221E007185BB /* PinCreateView.swift in Sources */,
 				E4A8E7D32BACB85C00DCE99E /* ViewModelController.swift in Sources */,
 				A09B53CB23266F02005266C2 /* Error+friendlyMessage.swift in Sources */,
 				E4A8E7AE2BA917F200DCE99E /* InternetArchiveRepository.swift in Sources */,
@@ -2360,7 +2323,6 @@
 				A0102D9A2B18EEA20054D3D4 /* WebDavConduit.swift in Sources */,
 				A0102DAD2B18FC470054D3D4 /* UIImage+Utils.swift in Sources */,
 				E4A8E7B02BA917FB00DCE99E /* ActivityIndicator.swift in Sources */,
-				A0102D9C2B18EEC30054D3D4 /* ConsentViewController.swift in Sources */,
 				A09B53E123266F02005266C2 /* RegexUtils.swift in Sources */,
 				A0102D812B18EC540054D3D4 /* HeaderView.swift in Sources */,
 			);
@@ -2388,7 +2350,6 @@
 				A0FB4DBB21F8C9B600B46099 /* RoundedImageView.swift in Sources */,
 				A0A6819629D7118C002D9F21 /* TTTLocationFormatter.m in Sources */,
 				A0FA9346227757100086D276 /* Settings.swift in Sources */,
-				6E0EE55E2CFA225E007185BB /* PinCreateViewModel.swift in Sources */,
 				A05DF984282C0F6E003FADA2 /* AEXMLError.swift in Sources */,
 				A0C797E922807DF00009751A /* SelectedCollection.swift in Sources */,
 				A00A8D47220C7EDD0083F0CB /* AbcFilteredByProjectView.swift in Sources */,
@@ -2397,7 +2358,6 @@
 				99FAAEBF2CCAC1F600C05DFC /* NSMutableAttributedString.swift in Sources */,
 				A003DDFB2B14C56300443561 /* NSAttributedString+Utils.swift in Sources */,
 				A0A3D9C72226D8DB00BB5A19 /* SpaceCell.swift in Sources */,
-				6E0EE55C2CFA2238007185BB /* PinCreateState.swift in Sources */,
 				A09AD1212AC2F94000DE8085 /* SideMenuViewController.swift in Sources */,
 				A08750A92112099700BFAFE4 /* Constants.m in Sources */,
 				A0362198220DB384003C21DC /* WebDavSpace.swift in Sources */,
@@ -2413,7 +2373,6 @@
 				A08C2CE621F0B46C008ACA3E /* FormViewController.swift in Sources */,
 				E4A8E7C22BA9FDAA00DCE99E /* InternetArchiveDetailState.swift in Sources */,
 				A0F7FDE722494E2F006610F0 /* RemoveProjectAlert.swift in Sources */,
-				A094EA4B282AD110006CE059 /* DropboxConduit.swift in Sources */,
 				E4A8E7742BA25BCA00DCE99E /* InternetArchiveLoginView.swift in Sources */,
 				A0F1364F227256F4008A22BF /* YapDatabase+Utils.swift in Sources */,
 				A0BF451A27DF5EE800DBB629 /* ProofModeSettingsViewController.swift in Sources */,
@@ -2448,14 +2407,11 @@
 				A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */,
 				99FAAED02CCC158300C05DFC /* DoubleExtensions.swift in Sources */,
 				A0AC06B02201E30E00BD5FBA /* WorkingOverlay.swift in Sources */,
-				6E0EE5592CFA221E007185BB /* PinCreateView.swift in Sources */,
 				6EA68F742CE4FD2500E538C1 /* TimeIntervalExtension.swift in Sources */,
-				A0AC29E72B10B7380054D5F4 /* DropboxSettingsViewController.swift in Sources */,
 				A07E8A4222958D0600E9FFAA /* SlideViewController.swift in Sources */,
 				A0D76ACE2B580E2100389F64 /* BlurredSnapshot.swift in Sources */,
 				E4A8E76E2BA255E800DCE99E /* InternetArchive.swift in Sources */,
 				A08F2CEE2AFE8784004D7EA7 /* AssetPicker.swift in Sources */,
-				6E0EE5612CFA2270007185BB /* PinCreateController.swift in Sources */,
 				A03236352B0BB8F100D95BC3 /* AppAddFolderViewController.swift in Sources */,
 				E4A8E7C82BAA022200DCE99E /* InternetArchiveDetailsController.swift in Sources */,
 				E4A8E7692BA2522C00DCE99E /* Dictionary+Utils.swift in Sources */,
@@ -2493,7 +2449,6 @@
 				A045BF052B2B109D00C01D39 /* ProgressButton.swift in Sources */,
 				A0F7FDDF224936C8006610F0 /* TintedImageView.swift in Sources */,
 				E4A8E75F2BA2283C00DCE99E /* InternetArchiveLoginRequest.swift in Sources */,
-				6E0EE56D2CFAF4F7007185BB /* PinLoginView.swift in Sources */,
 				E4A8E78D2BA37AA100DCE99E /* Store.swift in Sources */,
 				A0AC29ED2B10CAC30054D5F4 /* WebDavSettingsViewController.swift in Sources */,
 				A013A9392B0D12D6003476ED /* TextBox.swift in Sources */,
@@ -2519,11 +2474,9 @@
 				A0DC0FAC233914BD00C4969A /* MovieIndicator.swift in Sources */,
 				A05471DB2296C8FD009FEA93 /* UITableView+separatorView.swift in Sources */,
 				6EA68F7B2CE7D7ED00E538C1 /* CreateCCLViewController.swift in Sources */,
-				A052A48F230D53D800E72594 /* IaInfoAlert.swift in Sources */,
 				A029AF6E2B332FFD00FCCB3A /* GdriveSettingsViewController.swift in Sources */,
 				A0FE2C1E22E1E8D200C5443F /* Error+friendlyMessage.swift in Sources */,
 				A01128E62AE6CB34000848DB /* SettingsViewController.swift in Sources */,
-				A056555723F6D8A100DE0168 /* DropboxSpace.swift in Sources */,
 				E4A8E7712BA259AF00DCE99E /* InternetArchiveMapper.swift in Sources */,
 				A09898082236A7B100022851 /* UploadCell.swift in Sources */,
 				A0C797E6228063280009751A /* AbcFilteredByCollectionView.swift in Sources */,
@@ -2663,8 +2616,10 @@
 		A05768DE22E0B67D00B39FCE /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 146;
+				DEVELOPMENT_TEAM = YF7TV4HW2S;
 				INFOPLIST_FILE = Screenshots/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -2676,7 +2631,7 @@
 				MTL_FAST_MATH = YES;
 				PRODUCT_BUNDLE_IDENTIFIER = "$(OA_SCS_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "$(PROVISIONING_PROFILE_SPECIFIER_SCREENSHOTS)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = "Save Screenshots";
@@ -2714,11 +2669,9 @@
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = ShareExtension/ShareExtension.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 146;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = YF7TV4HW2S;
+				DEVELOPMENT_TEAM = YF7TV4HW2S;
 				INFOPLIST_FILE = ShareExtension/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2729,7 +2682,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "org.open-archive.save.extension";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "match AppStore org.open-archive.save.extension";
 				SKIP_INSTALL = YES;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
@@ -2780,8 +2732,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = Save/Save.entitlements;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 146;
+				DEVELOPMENT_TEAM = YF7TV4HW2S;
 				INFOPLIST_FILE = "Save Screenshots/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2790,7 +2744,7 @@
 				MARKETING_VERSION = "$(MARKETING_VERSION)";
 				PRODUCT_BUNDLE_IDENTIFIER = "$(OA_APP_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "$(PROVISIONING_PROFILE_SPECIFIER_MAIN)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Save-Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
