@@ -120,7 +120,7 @@ class GeneralSettingsViewController: FormViewController {
         }
         .onChange { row in
             if row.value == true {
-                let pinCreateController = PinCreateController()
+                let pinCreateController = PasscodeSetupController()
                 self.navigationController?.pushViewController(pinCreateController, animated: true)
             } else {
                 let keyRemoved = SecureEnclave.removeKey()

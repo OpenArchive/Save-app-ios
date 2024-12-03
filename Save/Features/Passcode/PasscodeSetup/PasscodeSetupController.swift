@@ -11,16 +11,18 @@ import SwiftUI
 import UIKit
 import Factory
 
-class PinCreateController : ViewModelController<PinCreateState, PinCreateAction, PinCreateViewModel, PinCreateView>{
+class PasscodeSetupController : ViewModelController<PasscodeSetupState, PasscodeSetupAction, PasscodeSetupViewModel, PasscodeSetupView>{
     
-    typealias Action = PinCreateAction
+    typealias Action = PasscodeSetupAction
     
     
     required init() {
-        let viewModel = Container.shared.pinCreateViewModel()
+        let viewModel = Container.shared.passcodeSetupViewModel()
         super.init(
             viewModel: viewModel,
-            rootView: PinCreateView(viewModel: viewModel)
+            rootView: PasscodeSetupView(
+                viewModel: viewModel
+            )
         )
     }
     
@@ -33,10 +35,8 @@ class PinCreateController : ViewModelController<PinCreateState, PinCreateAction,
         navigationItem.title = NSLocalizedString("Setup Passcode", comment: "")
         viewModel?.store.listen { [weak self] action in
             switch action {
-            case .Next:
-                self?.onNext()
-            case .Cancel:
-                self?.onCancel()
+            case .OnComplete:
+                self?.onComplete()
             default:
                 break
             }
@@ -47,7 +47,7 @@ class PinCreateController : ViewModelController<PinCreateState, PinCreateAction,
         navigationController?.popViewController(animated: true)
     }
     
-    private func onCancel() {
+    private func onComplete() {
         navigationController?.popViewController(animated: true)
     }
 }

@@ -345,29 +345,33 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 extension TorManager {
     static let shared = TorManager(directory: .groupDir!.appendingPathComponent("tor", isDirectory: true))
 }
+
 extension AppDelegateBase {
+    
      func showPinEntryScreen() {
         guard let rootVC = window?.rootViewController else { return }
 
         // Check if PIN screen is already presented
         if let presented = rootVC.presentedViewController,
-           presented is UIHostingController<PinLoginView> {
+           presented is UIHostingController<PasscodeEntryView> {
             return
         }
 
         // Show the PIN screen
-        let pinEntryView = PinLoginView { isValid in
-            if isValid {
+        let pinEntryView = PasscodeEntryView(
+            onPasscodeSuccess: {
                 rootVC.dismiss(animated: true)
-            } else {
+            },
+            onExit: {
                 self.showPinEntryScreen()
             }
-        }
+        )
 
         let hostingController = UIHostingController(rootView: pinEntryView)
         hostingController.modalPresentationStyle = .fullScreen
         rootVC.present(hostingController, animated: true)
     }
+    
     func isSecureEnclaveKeyAvailable() -> Bool {
 
         guard UserDefaults.standard.data(forKey: Keys.encryptedAppPin) != nil else {

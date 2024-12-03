@@ -10,9 +10,9 @@ import Factory
 
 
 extension Container {
-    var pinCreateViewModel: Factory<PinCreateViewModel> {
+    var passcodeSetupViewModel: Factory<PasscodeSetupViewModel> {
         self {
-            PinCreateViewModel()
+            PasscodeSetupViewModel()
         }
     }
 }
