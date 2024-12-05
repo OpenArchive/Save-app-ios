@@ -70,7 +70,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
 
-        if Settings.hideContent {
+        if AppSettings.passcodeEnabled {
             BlurredSnapshot.create(window)
             hadResigned = true
         }
@@ -98,21 +98,21 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         // In that case, the `UploadManager` might need a restart, since it could
         // have been #stopped, due to running out of background time.
         uploadManager?.restart()
-        if(isSecureEnclaveKeyAvailable()){
-            showPinEntryScreen()
+        if(shouldShowAppPasscodeEntryScreen()){
+            showAppPasscodeEntryScreen()
         }
        
     }
 
-//    func applicationDidBecomeActive(_ application: UIApplication) {
-//
-//        if Settings.hideContent && hadResigned {
-//            BlurredSnapshot.remove()
-//        }
-//
-//        // Note: If restart is slow (and even crashes), it could be, that
-//        // #applicationDidEnterBackground isn't finished, yet!
-//
+    func applicationDidBecomeActive(_ application: UIApplication) {
+
+        if AppSettings.passcodeEnabled {
+            BlurredSnapshot.remove()
+        }
+
+        // Note: If restart is slow (and even crashes), it could be, that
+        // #applicationDidEnterBackground isn't finished, yet!
+
 //        if !verified, let privateKey = SecureEnclave.loadKey() {
 //            var counter = 0
 //
@@ -163,7 +163,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 //        }
 //
 //        verified = false
-//    }
+    }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
@@ -348,7 +348,7 @@ extension TorManager {
 
 extension AppDelegateBase {
     
-     func showPinEntryScreen() {
+     func showAppPasscodeEntryScreen() {
         guard let rootVC = window?.rootViewController else { return }
 
         // Check if PIN screen is already presented
@@ -356,28 +356,38 @@ extension AppDelegateBase {
            presented is UIHostingController<PasscodeEntryView> {
             return
         }
+         
+         // Define the onComplete closure to dismiss the screen or perform further actions
+         let onPasscodeSuccess = {
+             rootVC.dismiss(animated: true) {
+                 print("Passcode verified successfully!")
+                 // Perform further actions after passcode success, if needed
+             }
+         }
+         
+         let onExit = {
+             print("Exiting the application...")
+             UIControl().sendAction(#selector(NSXPCConnection.suspend), to: UIApplication.shared, for: nil)
+             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                 exit(0)
+             }
+         }
 
         // Show the PIN screen
-        let pinEntryView = PasscodeEntryView(
-            onPasscodeSuccess: {
-                rootVC.dismiss(animated: true)
-            },
-            onExit: {
-                self.showPinEntryScreen()
-            }
+         let passcodeEntryView = PasscodeEntryView(
+            onPasscodeSuccess: onPasscodeSuccess,
+            onExit: onExit
+//            onExit: {
+//                self.showAppPasscodeEntryScreen()
+//            }
         )
 
-        let hostingController = UIHostingController(rootView: pinEntryView)
+        let hostingController = UIHostingController(rootView: passcodeEntryView)
         hostingController.modalPresentationStyle = .fullScreen
         rootVC.present(hostingController, animated: true)
     }
     
-    func isSecureEnclaveKeyAvailable() -> Bool {
-
-        guard UserDefaults.standard.data(forKey: Keys.encryptedAppPin) != nil else {
-            SecureEnclave.removeKey()
-            return false
-        }
-        return true
+    func shouldShowAppPasscodeEntryScreen() -> Bool {
+        return AppSettings.passcodeEnabled
     }
 }

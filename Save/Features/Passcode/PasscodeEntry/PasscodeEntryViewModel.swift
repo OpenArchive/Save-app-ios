@@ -10,82 +10,113 @@ import SwiftUI
 import Combine
 
 class PasscodeEntryViewModel: ObservableObject {
+    
     @Published var passcode: String = ""
+    @Published var isProcessing: Bool = false
     @Published var shouldShake: Bool = false
-    @Published var errorMessage: String? = nil
-    @Published var isLockedOut: Bool = false
-    @Published var remainingAttempts: Int? = nil
-    @Published var lockoutTimer: Int = 0
     
-    private let pinLength = 6
-    private let maxAttempts = 5
-    private let lockoutDuration = 30 // in seconds
+    private let appConfig: AppConfig
+    private let repository: PasscodeRepository
     
-    private var failedAttempts = 0
-    private var cancellables = Set<AnyCancellable>()
+    private let onComplete: () -> Void
     
-    var onPasscodeSuccess: () -> Void
-    var onExit: () -> Void
-    
-    init(onPasscodeSuccess: @escaping () -> Void, onExit: @escaping () -> Void) {
-        self.onPasscodeSuccess = onPasscodeSuccess
-        self.onExit = onExit
+    init (
+        appConfig: AppConfig = .default,
+        passcodeRepository: PasscodeRepository = PasscodeRepository(),
+        onComplete: @escaping () -> Void
+    ) {
+        self.appConfig = appConfig
+        self.repository = passcodeRepository
+        self.onComplete = onComplete
     }
     
+    var passcodeLength: Int {
+        get { appConfig.passcodeLength }
+    }
+    
+    private var cancellable = Set<AnyCancellable>()
+    
+    
+    
     func onNumberClick(_ number: String) {
-        guard !isLockedOut else { return }
         
-        if passcode.count < pinLength {
-            passcode.append(number)
+        guard !isProcessing, passcode.count < appConfig.passcodeLength else { return }
+        
+        passcode += number
+        
+        if passcode.count == appConfig.passcodeLength {
+            
+            isProcessing = true
+            checkPasscode()
         }
         
-        if passcode.count == pinLength {
-            validatePasscode()
-        }
     }
     
     func onBackspaceClick() {
-        guard !isLockedOut, !passcode.isEmpty else { return }
+        guard !isProcessing, !passcode.isEmpty else { return }
         passcode.removeLast()
     }
     
-    private func validatePasscode() {
-        let correctPin = "123456" // Replace with actual validation logic
-        if passcode == correctPin {
-            onPasscodeSuccess()
-        } else {
-            failedAttempts += 1
-            if failedAttempts >= maxAttempts {
-                triggerLockout()
-            } else {
-                errorMessage = "Incorrect passcode. \(maxAttempts - failedAttempts) attempts remaining."
-                triggerShakeAnimation()
+    private func checkPasscode() {
+        // Delay 200 ms
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.2) {
+            
+            let (storedHash, salt) = self.repository.getPasscodeHashAndSalt()
+            
+            guard let storedHash, let salt else {
+                self.isProcessing = false
+                return
             }
+            
+            self.repository.hashPasscode(passcode: self.passcode, salt: salt).sink(
+                receiveCompletion: { completion in
+                    if case .failure(let error) = completion {
+                        print("Hashing error: \(error)")
+                        self.triggerShakeAnimation()
+                        self.passcode = ""
+                    }
+                },
+                receiveValue: { newHash in
+                    
+                    // Compare hashes in constant time
+                    if storedHash == newHash {
+                        self.passcodeSuccess()
+                    } else {
+                        self.triggerShakeAnimation()
+                    }
+                }
+            ).store(in: &self.cancellable)
+            
         }
-        passcode = ""
+    }
+    
+    private func passcodeSuccess() {
+        DispatchQueue.main.async {
+            self.isProcessing = false
+            self.passcode = ""
+            self.onComplete() // Notify UI about success
+        }
+    }
+    
+    private func resetState() {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+            self.isProcessing = false
+            self.passcode = ""
+        }
     }
     
     private func triggerShakeAnimation() {
-        shouldShake = true
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-            self.shouldShake = false
+        DispatchQueue.main.async {
+            self.shouldShake = true
         }
     }
     
-    private func triggerLockout() {
-        isLockedOut = true
-        lockoutTimer = lockoutDuration
-        
-        Timer.publish(every: 1, on: .main, in: .common)
-            .autoconnect()
-            .scan(lockoutDuration) { remaining, _ in remaining - 1 }
-            .sink { remaining in
-                self.lockoutTimer = remaining
-                if remaining <= 0 {
-                    self.isLockedOut = false
-                    self.failedAttempts = 0
-                }
-            }
-            .store(in: &cancellables)
+    func onAnimationCompleted() {
+        DispatchQueue.main.async {
+            self.shouldShake = false
+            self.resetState()
+        }
     }
+    
 }

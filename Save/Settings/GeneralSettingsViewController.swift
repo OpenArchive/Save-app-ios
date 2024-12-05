@@ -23,19 +23,19 @@ class SectionHeaderView: UIView {
         separator.backgroundColor = .lightGray
         
         self.addSubview(label)
-//        self.addSubview(separator)
+        //        self.addSubview(separator)
         
         label.snp.makeConstraints { (make) in
             make.leading.trailing.equalToSuperview().inset(20)
             make.top.bottom.equalToSuperview()
         }
         
-//        separator.snp.makeConstraints { (make) in
-//            make.top.equalTo(label.snp.bottom)
-//            make.bottom.equalToSuperview().inset(20)
-//            make.leading.trailing.equalToSuperview()
-//            make.height.equalTo(0.25)
-//        }
+        //        separator.snp.makeConstraints { (make) in
+        //            make.top.equalTo(label.snp.bottom)
+        //            make.bottom.equalToSuperview().inset(20)
+        //            make.leading.trailing.equalToSuperview()
+        //            make.height.equalTo(0.25)
+        //        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -54,6 +54,8 @@ class GeneralSettingsViewController: FormViewController {
         NSLocalizedString("Light", comment: ""),
         NSLocalizedString("Dark", comment: "")]
     
+    private var isUpdatingSwitchProgrammatically = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -67,7 +69,6 @@ class GeneralSettingsViewController: FormViewController {
         <<< SwitchRow() {
             $0.title = NSLocalizedString("Only upload media when you are connected to Wi-Fi", comment: "")
             $0.value = Settings.wifiOnly
-            
             $0.cell.textLabel?.numberOfLines = 0
             $0.cell.switchControl.onTintColor = .accent
         }
@@ -77,18 +78,18 @@ class GeneralSettingsViewController: FormViewController {
             NotificationCenter.default.post(name: .uploadManagerDataUsageChange, object: Settings.wifiOnly)
         }
         
-//        <<< PushRow<String>() {
-//            $0.title = NSLocalizedString("Media Compression", comment: "")
-//            $0.value = Self.compressionOptions[Settings.highCompression ? 1 : 0]
-//            
-//            $0.selectorTitle = $0.title
-//            $0.options = Self.compressionOptions
-//            
-//            $0.cell.textLabel?.numberOfLines = 0
-//        }
-//        .onChange { row in
-//            Settings.highCompression = row.value == Self.compressionOptions[1]
-//        }
+        //        <<< PushRow<String>() {
+        //            $0.title = NSLocalizedString("Media Compression", comment: "")
+        //            $0.value = Self.compressionOptions[Settings.highCompression ? 1 : 0]
+        //
+        //            $0.selectorTitle = $0.title
+        //            $0.options = Self.compressionOptions
+        //
+        //            $0.cell.textLabel?.numberOfLines = 0
+        //        }
+        //        .onChange { row in
+        //            Settings.highCompression = row.value == Self.compressionOptions[1]
+        //        }
         
         
         // MARK: Theme
@@ -114,27 +115,40 @@ class GeneralSettingsViewController: FormViewController {
         +++ sectionWithTitle(NSLocalizedString("Secure", comment: ""))
         <<< SwitchRow("lock_app") {
             $0.title = NSLocalizedString("Lock App with passcode", comment: "")
-            $0.value = SecureEnclave.loadKey() != nil
-            $0.disabled = .init(booleanLiteral: Settings.proofModeEncryptedPassphrase != nil)
+            $0.value = AppSettings.isPasscodeEnabled //SecureEnclave.loadKey() != nil
             $0.cell.textLabel?.numberOfLines = 0
         }
-        .onChange { row in
-            if row.value == true {
+        .onChange { [weak self] row in
+            
+            guard let self = self, !self.isUpdatingSwitchProgrammatically, let value = row.value else { return }
+            
+            if value {
+                
+                // Navigate to passcode setup screen
                 let pinCreateController = PasscodeSetupController()
                 self.navigationController?.pushViewController(pinCreateController, animated: true)
             } else {
-                let keyRemoved = SecureEnclave.removeKey()
-                UserDefaults.standard.set("", forKey: "encryptedAppPin")
-                
-                if keyRemoved {
-                    print("Secure key successfully removed.")
-                } else {
-                    print("Failed to remove the secure key.")
-                }
+                // Show confirmation dialog before disabling passcode
+                DialogHelper.showConfirmationAlert(
+                    title: NSLocalizedString("Remove Passcode", comment: ""),
+                    message: NSLocalizedString("Are you sure you want to remove the app passcode?", comment: ""),
+                    confirmButtonTitle: NSLocalizedString("Remove", comment: ""),
+                    cancelButtonTitle: NSLocalizedString("Cancel", comment: ""),
+                    onConfirm: {
+                        
+                        // Proceed with removing the passcode
+                        PasscodeRepository().clearPasscode()
+                        
+                        self.updateSwitch(row: row, value: false)
+                    },
+                    onCancel: {
+                        self.updateSwitch(row: row, value: true)
+                    },
+                    from: self
+                )
             }
-            row.evaluateDisabled()
         }
-
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -142,13 +156,13 @@ class GeneralSettingsViewController: FormViewController {
         
         navigationController?.setNavigationBarHidden(false, animated: animated)
         
-        form.delegate = nil
-        
-        if let lockAppRow = form.rowBy(tag: "lock_app") as? SwitchRow {
-            lockAppRow.value = SecureEnclave.loadKey() != nil
-            lockAppRow.evaluateDisabled()
-            lockAppRow.reload()
-        }
+        //        form.delegate = nil
+        //
+        //        if let lockAppRow = form.rowBy(tag: "lock_app") as? SwitchRow {
+        //            lockAppRow.value = AppPreferences.passcodeEnabled
+        //            lockAppRow.evaluateDisabled()
+        //            lockAppRow.reload()
+        //        }
         
         form.delegate = self
     }
@@ -196,5 +210,13 @@ class GeneralSettingsViewController: FormViewController {
             cell.switchControl.onTintColor = .saveHighlight
             cell.switchControl.thumbTintColor = .colorOnPrimary
         }
+    }
+    
+    /// Updates the switch row value programmatically while suppressing `onChange`.
+    private func updateSwitch(row: SwitchRow, value: Bool) {
+        isUpdatingSwitchProgrammatically = true
+        row.value = value
+        row.updateCell()
+        isUpdatingSwitchProgrammatically = false
     }
 }

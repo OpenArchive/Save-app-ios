@@ -28,7 +28,3 @@ struct GeneralConstants {
     static let zeroConstraint: CGFloat = 0.0
 
 }
-struct Keys{
-    static let encryptedAppPin:String = "encryptedAppPin"
-    
-}

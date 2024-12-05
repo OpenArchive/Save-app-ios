@@ -10,44 +10,63 @@ import Foundation
 import Combine
 import SwiftUI
 
-// create a AppConfig data class to store config constants
-struct AppConfig {
-    let passcodeLength: Int = 6
-}
-
 class PasscodeSetupViewModel : StoreViewModel<PasscodeSetupState, PasscodeSetupAction> {
     
     typealias State = PasscodeSetupState
     typealias Action = PasscodeSetupAction
     
+    private let appConfig: AppConfig
+    private let repository: PasscodeRepository
+    private var cancellable = Set<AnyCancellable>()
+    
     // Published properties for state binding
     @Published var passcode: String = ""
-    var confirmPasscode: String = ""
+    private var confirmPasscode: String = ""
     @Published var isConfirming: Bool = false
     @Published var isProcessing: Bool = false
     @Published var shouldShake: Bool = false
     
-    let appConfig: AppConfig
     
-    init(config: AppConfig = AppConfig()) {
+    
+    init(
+        config: AppConfig = .default,
+        repository: PasscodeRepository = PasscodeRepository()
+    ) {
         self.appConfig = config
+        self.repository = repository
         super.init(initialState: PasscodeSetupState(passcodeLength: config.passcodeLength))
         
         self.store.set(reducer: reduce)
-        self.store.set(effects: effect)
+        self.store.set(effects: effects)
     }
     
-    private func reduce(state: State, action: Action) -> State? {
+    private func reduce(state: State, action: Action) -> PasscodeSetupState? {
         return nil
     }
     
-    private func effect(state: State, action: Action) -> Scoped? {
-        return nil
-    }
-    
-
-    func onNumberClick(number: String) {
+    // applies side effects to store state and returns a value to keep in scope
+    private func effects(state: PasscodeSetupState, action: PasscodeSetupAction) -> Scoped? {
+        switch action {
             
+        case .OnNumberClick(let number):
+            break
+        case .OnBackspaceClick:
+            break
+        case .ProcessPasscodeEntry:
+            break
+        case .PasscodeSetSuccess:
+            break
+        case .PasscodeDoNotMatch:
+            break
+        case .OnComplete:
+            store.notify(.OnComplete)
+        }
+        return nil
+    }
+    
+    
+    func onNumberClick(number: String) {
+        
         guard !isProcessing, passcode.count < appConfig.passcodeLength else {
             return
         }
@@ -56,7 +75,7 @@ class PasscodeSetupViewModel : StoreViewModel<PasscodeSetupState, PasscodeSetupA
         
         if passcode.count == appConfig.passcodeLength {
             isProcessing = true
-            ProcessPasscodeEntry()
+            processPasscodeEntry()
         }
     }
     
@@ -64,12 +83,11 @@ class PasscodeSetupViewModel : StoreViewModel<PasscodeSetupState, PasscodeSetupA
         guard !isProcessing, !passcode.isEmpty else {
             return
         }
-        
         passcode.removeLast()
     }
     
- 
-    private func ProcessPasscodeEntry() {
+    
+    private func processPasscodeEntry() {
         
         if !isConfirming {
             
@@ -84,24 +102,54 @@ class PasscodeSetupViewModel : StoreViewModel<PasscodeSetupState, PasscodeSetupA
         } else {
             
             if passcode == confirmPasscode {
-                // hash passcode
-                // send event to ui (Passcode set)
+                hashPasscode()
             } else {
                 // send event to ui (Passcode do not match
-                shouldShake = true
-                //delay(500ms)
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    self.reset()
-                }
+                self.triggerShakeAnimation()
             }
         }
     }
     
-    private func reset() {
+    private func hashPasscode() {
+        // hash passcode
+        
+        let salt = repository.generateSalt()
+        
+        repository.hashPasscode(passcode: passcode, salt: salt)
+            .receive(on: DispatchQueue.main)
+            .sink(
+                receiveCompletion: { completion in
+                    if case .failure(let error) = completion {
+                        print("Hashing error: \(error)")
+                    }
+                    self.triggerShakeAnimation()
+                }, receiveValue: { hash in
+                    self.repository.storePasscodeHashAndSalt(hash: hash, salt: salt)
+                    print("Hashed passcode: \(hash)")
+                    // send event to ui (Passcode set)
+                    self.store.dispatcher.dispatch(.OnComplete)
+                })
+            .store(in: &cancellable)
+    }
+    
+    private func resetState() {
         passcode = ""
         confirmPasscode = ""
         isConfirming = false
         isProcessing = false
         shouldShake = false
+    }
+    
+    private func triggerShakeAnimation() {
+        DispatchQueue.main.async {
+            self.shouldShake = true
+        }
+    }
+    
+    func onAnimationCompleted() {
+        DispatchQueue.main.async {
+            self.shouldShake = false
+            self.resetState()
+        }
     }
 }

@@ -36,8 +36,8 @@ class MainNavigationController: UINavigationController {
         
         DispatchQueue.main.async {
                 if let appDelegate = UIApplication.shared.delegate as? AppDelegateBase {
-                    if(appDelegate.isSecureEnclaveKeyAvailable()){
-                        appDelegate.showPinEntryScreen()
+                    if(appDelegate.shouldShowAppPasscodeEntryScreen()){
+                        appDelegate.showAppPasscodeEntryScreen()
                     }
                 }
             }
