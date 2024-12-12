@@ -9,7 +9,6 @@ PODS:
   - CrossroadRegex (1.2.0)
   - DeviceKit (4.9.0)
   - Eureka (5.5.0)
-  - Factory (2.4.1)
   - FavIcon (3.1.0)
   - FontBlaster (5.3.0)
   - GoogleAPIClientForREST/Core (3.5.5):
@@ -48,6 +47,7 @@ PODS:
   - ReachabilitySwift (5.2.4)
   - SDCAlertView (12.0.4)
   - SnapKit (5.7.1)
+  - SweeterSwift (1.2.5)
   - TLPhotoPicker (2.1.9)
   - Tor/Core (408.12.2)
   - Tor/CTor (408.12.2):
@@ -171,7 +171,6 @@ DEPENDENCIES:
   - AlignedCollectionViewFlowLayout (~> 1.1)
   - CrossroadRegex (from `https://github.com/crossroadlabs/Regex.git`, tag `1.2.0`)
   - Eureka (~> 5.3)
-  - Factory
   - FavIcon (from `https://github.com/tladesignz/FavIcon.git`, branch `swift-5`)
   - FontBlaster (~> 5.2)
   - GoogleAPIClientForREST/Drive (~> 3.3)
@@ -183,6 +182,7 @@ DEPENDENCIES:
   - ReachabilitySwift (~> 5.0)
   - SDCAlertView
   - SnapKit
+  - SweeterSwift
   - TLPhotoPicker (from `https://github.com/tladesignz/TLPhotoPicker.git`)
   - TorManager (~> 0.3)
   - UIImage-Resize (~> 1.0)
@@ -195,7 +195,6 @@ SPEC REPOS:
     - AppAuth
     - DeviceKit
     - Eureka
-    - Factory
     - FontBlaster
     - GoogleAPIClientForREST
     - GoogleSignIn
@@ -211,6 +210,7 @@ SPEC REPOS:
     - ReachabilitySwift
     - SDCAlertView
     - SnapKit
+    - SweeterSwift
     - Tor
     - TorManager
     - UIImage-Resize
@@ -254,7 +254,6 @@ SPEC CHECKSUMS:
   CrossroadRegex: 9af32b4b4dc6ff404c87647ef1bc68ea711cc570
   DeviceKit: 847709bf70b78fd9ab765bd571fb9f5f815c3fc1
   Eureka: 1c18c7fcd8f772cc2ca42d6be36292dffa77eecb
-  Factory: 13e63ac988c73f13c55c251b0748a9518e078710
   FavIcon: 57f172cc9880265915c1aba226a2538b722c83fd
   FontBlaster: 941f89d735a29e1c7d24e7a90d3e16939ef1609a
   GoogleAPIClientForREST: 2aa369923c028ae5d0c1521809813f47d9299c4e
@@ -272,6 +271,7 @@ SPEC CHECKSUMS:
   ReachabilitySwift: 32793e867593cfc1177f5d16491e3a197d2fccda
   SDCAlertView: 051ba84cc526eddd546c8b716d41ac08d1577ac1
   SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
+  SweeterSwift: 12f5b24e2410ea63e71f1ac089f8235eb5a12ecc
   TLPhotoPicker: 2e7caa72ec0cb29d1c85543b252a02d56aeede01
   Tor: 19907fc430953434a233c7532166d6409b9d509b
   TorManager: 6fc235fa58955b5681a8e4a0d3f5721e8dcbf9a5
@@ -279,6 +279,6 @@ SPEC CHECKSUMS:
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
   YapDatabase: c9924a3d45245d6878d0bf8172cb22a8522aa012
 
-PODFILE CHECKSUM: 2968c9a5bd0650eb844021307f0337f323b7e3ef
+PODFILE CHECKSUM: ba499a88d5ff779abd1972da1568d287d526506f
 
-COCOAPODS: 1.16.2
+COCOAPODS: 1.15.2

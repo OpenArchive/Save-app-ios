@@ -12,10 +12,7 @@ struct InternetArchiveDetailView : View {
     @ObservedObject var viewModel: InternetArchiveDetailViewModel
     
     var body: some View {
-        InternetArchiveDetailContent(
-            state: viewModel.store.dispatcher.state,
-            dispatch: viewModel.store.dispatch
-        )
+        InternetArchiveDetailContent(state: viewModel.store.dispatcher.state, dispatch: viewModel.store.dispatch)
     }
 }
 
