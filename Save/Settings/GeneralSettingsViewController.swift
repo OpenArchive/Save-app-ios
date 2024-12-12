@@ -23,8 +23,7 @@ class SectionHeaderView: UIView {
         separator.backgroundColor = .lightGray
         
         self.addSubview(label)
-        //        self.addSubview(separator)
-        
+    
         label.snp.makeConstraints { (make) in
             make.leading.trailing.equalToSuperview().inset(20)
             make.top.bottom.equalToSuperview()
@@ -91,9 +90,20 @@ class GeneralSettingsViewController: FormViewController {
         //            Settings.highCompression = row.value == Self.compressionOptions[1]
         //        }
         
+        +++ sectionWithTitle(NSLocalizedString("Meta Data", comment: ""))
         
+        <<< ButtonRow("proofmode") {
+            $0.title = NSLocalizedString("ProofMode", comment: "")
+
+            $0.presentationMode = .show(controllerProvider: .callback(builder: {
+                ProofModeSettingsViewController()
+            }), onDismiss: nil)
+
+        }
+
+       
         // MARK: Theme
-        //
+        +++ sectionWithTitle(NSLocalizedString("Presentation", comment: ""))
         <<< ActionSheetRow<String>() {
             $0.title = NSLocalizedString("Theme", comment: "")
             $0.value = interfaceStyleOptions[Settings.interfaceStyle.rawValue]
@@ -112,43 +122,7 @@ class GeneralSettingsViewController: FormViewController {
                 Utils.setUnspecifiedMode()
             }
         }
-        +++ sectionWithTitle(NSLocalizedString("Secure", comment: ""))
-        <<< SwitchRow("lock_app") {
-            $0.title = NSLocalizedString("Lock App with passcode", comment: "")
-            $0.value = AppSettings.isPasscodeEnabled //SecureEnclave.loadKey() != nil
-            $0.cell.textLabel?.numberOfLines = 0
-        }
-        .onChange { [weak self] row in
-            
-            guard let self = self, !self.isUpdatingSwitchProgrammatically, let value = row.value else { return }
-            
-            if value {
-                
-                // Navigate to passcode setup screen
-                let pinCreateController = PasscodeSetupController()
-                self.navigationController?.pushViewController(pinCreateController, animated: true)
-            } else {
-                // Show confirmation dialog before disabling passcode
-                DialogHelper.showConfirmationAlert(
-                    title: NSLocalizedString("Remove Passcode", comment: ""),
-                    message: NSLocalizedString("Are you sure you want to remove the app passcode?", comment: ""),
-                    confirmButtonTitle: NSLocalizedString("Remove", comment: ""),
-                    cancelButtonTitle: NSLocalizedString("Cancel", comment: ""),
-                    onConfirm: {
-                        
-                        // Proceed with removing the passcode
-                        PasscodeRepository().clearPasscode()
-                        
-                        self.updateSwitch(row: row, value: false)
-                    },
-                    onCancel: {
-                        self.updateSwitch(row: row, value: true)
-                    },
-                    from: self
-                )
-            }
-        }
-        
+       
     }
     
     override func viewWillAppear(_ animated: Bool) {
