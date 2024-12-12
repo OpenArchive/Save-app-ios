@@ -48,7 +48,7 @@ struct PasscodeSetupContent: View {
     
     var body: some View {
         PasscodeContentWrapper(
-            title: isConfirming ? "Confirm Passcode" : "Enter Passcode",
+            title: isConfirming ? NSLocalizedString("Confirm Passcode",comment: "Confirm Passcode")  : NSLocalizedString("Enter Passcode",comment: "Enter Passcode"),
             passcode: passcode,
             passcodeLength: state.passcodeLength,
             shouldShake: shouldShake,

@@ -16,8 +16,8 @@ class DialogHelper {
     static func showConfirmationAlert(
         title: String,
         message: String,
-        confirmButtonTitle: String = "OK",
-        cancelButtonTitle: String = "Cancel",
+        confirmButtonTitle: String = NSLocalizedString("OK",comment: "ok"),
+        cancelButtonTitle: String = NSLocalizedString("Cancel",comment: "cancel"),
         onConfirm: @escaping () -> Void,
         onCancel: (() -> Void)? = nil,
         from viewController: UIViewController
@@ -40,8 +40,8 @@ class DialogHelper {
     static func createConfirmationAlert(
         title: String,
         message: String,
-        confirmButtonTitle: String = "OK",
-        cancelButtonTitle: String = "Cancel",
+        confirmButtonTitle: String = NSLocalizedString("OK",comment: "ok"),
+        cancelButtonTitle: String = NSLocalizedString("Cancel",comment: "cancel"),
         onConfirm: @escaping () -> Void,
         onCancel: (() -> Void)? = nil
     ) -> Alert {
