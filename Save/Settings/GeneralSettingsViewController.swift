@@ -23,12 +23,18 @@ class SectionHeaderView: UIView {
         separator.backgroundColor = .lightGray
         
         self.addSubview(label)
-        
+    
         label.snp.makeConstraints { (make) in
             make.leading.trailing.equalToSuperview().inset(20)
             make.top.bottom.equalToSuperview()
         }
         
+        //        separator.snp.makeConstraints { (make) in
+        //            make.top.equalTo(label.snp.bottom)
+        //            make.bottom.equalToSuperview().inset(20)
+        //            make.leading.trailing.equalToSuperview()
+        //            make.height.equalTo(0.25)
+        //        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -47,6 +53,8 @@ class GeneralSettingsViewController: FormViewController {
         NSLocalizedString("Light", comment: ""),
         NSLocalizedString("Dark", comment: "")]
     
+    private var isUpdatingSwitchProgrammatically = false
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -60,7 +68,6 @@ class GeneralSettingsViewController: FormViewController {
         <<< SwitchRow() {
             $0.title = NSLocalizedString("Only upload media when you are connected to Wi-Fi", comment: "")
             $0.value = Settings.wifiOnly
-            
             $0.cell.textLabel?.numberOfLines = 0
             $0.cell.switchControl.onTintColor = .accent
         }
@@ -69,6 +76,19 @@ class GeneralSettingsViewController: FormViewController {
             
             NotificationCenter.default.post(name: .uploadManagerDataUsageChange, object: Settings.wifiOnly)
         }
+        
+        //        <<< PushRow<String>() {
+        //            $0.title = NSLocalizedString("Media Compression", comment: "")
+        //            $0.value = Self.compressionOptions[Settings.highCompression ? 1 : 0]
+        //
+        //            $0.selectorTitle = $0.title
+        //            $0.options = Self.compressionOptions
+        //
+        //            $0.cell.textLabel?.numberOfLines = 0
+        //        }
+        //        .onChange { row in
+        //            Settings.highCompression = row.value == Self.compressionOptions[1]
+        //        }
         
         +++ sectionWithTitle(NSLocalizedString("Meta Data", comment: ""))
         
@@ -110,17 +130,13 @@ class GeneralSettingsViewController: FormViewController {
         
         navigationController?.setNavigationBarHidden(false, animated: animated)
         
-        form.delegate = nil
-        
-//        if let lockAppRow = form.rowBy(tag: "lock_app") as? SwitchRow {
-//            lockAppRow.value = SecureEnclave.loadKey() != nil
-//            
-//            lockAppRow.disabled = .init(booleanLiteral: Settings.proofModeEncryptedPassphrase != nil)
-//            lockAppRow.evaluateDisabled()
-//            
-//            // Fix spacing issues due to changes in number of displayed text lines.
-//            lockAppRow.reload()
-//        }
+        //        form.delegate = nil
+        //
+        //        if let lockAppRow = form.rowBy(tag: "lock_app") as? SwitchRow {
+        //            lockAppRow.value = AppPreferences.passcodeEnabled
+        //            lockAppRow.evaluateDisabled()
+        //            lockAppRow.reload()
+        //        }
         
         form.delegate = self
     }
@@ -168,5 +184,13 @@ class GeneralSettingsViewController: FormViewController {
             cell.switchControl.onTintColor = .saveHighlight
             cell.switchControl.thumbTintColor = .colorOnPrimary
         }
+    }
+    
+    /// Updates the switch row value programmatically while suppressing `onChange`.
+    private func updateSwitch(row: SwitchRow, value: Bool) {
+        isUpdatingSwitchProgrammatically = true
+        row.value = value
+        row.updateCell()
+        isUpdatingSwitchProgrammatically = false
     }
 }
