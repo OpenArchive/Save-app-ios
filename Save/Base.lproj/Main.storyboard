@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3f6-u4-WuB">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3f6-u4-WuB">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Image references" minToolsVersion="12.0"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -151,7 +151,7 @@
                                 <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="17"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <label opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="250" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LOG-Gh-tpR">
+                            <label hidden="YES" opaque="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="250" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="LOG-Gh-tpR">
                                 <rect key="frame" x="16" y="484.5" width="216" height="83.5"/>
                                 <string key="text">Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam</string>
                                 <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="17"/>
@@ -160,15 +160,27 @@
                                     <outletCollection property="gestureRecognizers" destination="RsM-LA-uIA" appends="YES" id="GHT-dU-GGE"/>
                                 </connections>
                             </label>
+                            <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="RiZ-O4-tye">
+                                <rect key="frame" x="16" y="352" width="216" height="124.5"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="80" id="gIi-Zf-GYq"/>
+                                </constraints>
+                                <string key="text">Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.</string>
+                                <color key="textColor" systemColor="labelColor"/>
+                                <fontDescription key="fontDescription" name="Montserrat-Regular" family="Montserrat" pointSize="17"/>
+                                <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
+                            </textView>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="8oJ-xp-FPn"/>
                         <constraints>
                             <constraint firstItem="LOG-Gh-tpR" firstAttribute="leading" secondItem="8oJ-xp-FPn" secondAttribute="leading" constant="16" id="388-cj-yw3"/>
-                            <constraint firstItem="kC3-Nk-Gjy" firstAttribute="leading" secondItem="Xtc-qd-Hr6" secondAttribute="trailing" constant="-8" symbolic="YES" id="4cg-42-57D"/>
+                            <constraint firstItem="kC3-Nk-Gjy" firstAttribute="leading" secondItem="Xtc-qd-Hr6" secondAttribute="trailing" constant="8" symbolic="YES" id="4cg-42-57D"/>
                             <constraint firstItem="kC3-Nk-Gjy" firstAttribute="width" secondItem="QfH-dc-X3C" secondAttribute="width" multiplier="0.25" id="4gS-ev-TNB"/>
                             <constraint firstItem="YVt-JP-CZ1" firstAttribute="leading" secondItem="Xtc-qd-Hr6" secondAttribute="trailing" constant="-8" symbolic="YES" id="565-5m-toM"/>
                             <constraint firstAttribute="bottom" secondItem="kC3-Nk-Gjy" secondAttribute="bottom" id="9mf-xM-uO6"/>
                             <constraint firstItem="Xtc-qd-Hr6" firstAttribute="leading" secondItem="8oJ-xp-FPn" secondAttribute="leading" constant="16" id="GE3-Sz-aae"/>
+                            <constraint firstItem="RiZ-O4-tye" firstAttribute="top" secondItem="mX4-L9-fca" secondAttribute="top" id="IJd-ST-suP"/>
                             <constraint firstItem="Xtc-qd-Hr6" firstAttribute="top" secondItem="8oJ-xp-FPn" secondAttribute="top" id="MRo-v6-9ti"/>
                             <constraint firstItem="LOG-Gh-tpR" firstAttribute="bottom" secondItem="8oJ-xp-FPn" secondAttribute="bottom" id="Mu1-ct-JHQ"/>
                             <constraint firstItem="mX4-L9-fca" firstAttribute="leading" secondItem="8oJ-xp-FPn" secondAttribute="leading" constant="16" id="OHn-K9-6d7"/>
@@ -179,8 +191,11 @@
                             <constraint firstItem="YVt-JP-CZ1" firstAttribute="width" secondItem="QfH-dc-X3C" secondAttribute="width" multiplier="0.5" id="h2d-YY-KCS"/>
                             <constraint firstAttribute="trailing" secondItem="kC3-Nk-Gjy" secondAttribute="trailing" id="hGR-Is-ZMv"/>
                             <constraint firstItem="8oJ-xp-FPn" firstAttribute="bottom" secondItem="YVt-JP-CZ1" secondAttribute="bottom" id="isM-gW-SZD"/>
-                            <constraint firstItem="kC3-Nk-Gjy" firstAttribute="leading" secondItem="mX4-L9-fca" secondAttribute="trailing" constant="-8" symbolic="YES" id="myC-1Q-bYo"/>
+                            <constraint firstItem="RiZ-O4-tye" firstAttribute="trailing" secondItem="mX4-L9-fca" secondAttribute="trailing" id="jyf-gb-5v8"/>
+                            <constraint firstItem="kC3-Nk-Gjy" firstAttribute="leading" secondItem="mX4-L9-fca" secondAttribute="trailing" constant="8" symbolic="YES" id="myC-1Q-bYo"/>
                             <constraint firstItem="YVt-JP-CZ1" firstAttribute="leading" secondItem="8oJ-xp-FPn" secondAttribute="leading" id="nW0-J8-ylo"/>
+                            <constraint firstItem="RiZ-O4-tye" firstAttribute="leading" secondItem="mX4-L9-fca" secondAttribute="leading" id="qLR-kd-3VC"/>
+                            <constraint firstItem="RiZ-O4-tye" firstAttribute="bottom" secondItem="mX4-L9-fca" secondAttribute="bottom" id="qoL-H6-AzO"/>
                             <constraint firstItem="mX4-L9-fca" firstAttribute="trailing" secondItem="YVt-JP-CZ1" secondAttribute="leading" constant="8" symbolic="YES" id="u1G-ql-AYz"/>
                             <constraint firstItem="YVt-JP-CZ1" firstAttribute="leading" secondItem="LOG-Gh-tpR" secondAttribute="trailing" constant="8" symbolic="YES" id="xNw-QA-xwV"/>
                             <constraint firstItem="Xtc-qd-Hr6" firstAttribute="top" secondItem="YVt-JP-CZ1" secondAttribute="bottom" constant="8" symbolic="YES" id="xPF-6B-H8J"/>
@@ -219,6 +234,7 @@
                     <connections>
                         <outlet property="headingLb" destination="Xtc-qd-Hr6" id="i0n-L9-Mc0"/>
                         <outlet property="illustrationImg" destination="YVt-JP-CZ1" id="VNc-nw-j9X"/>
+                        <outlet property="subtitleTextView" destination="RiZ-O4-tye" id="uCW-rq-tEf"/>
                         <outlet property="text2Lb" destination="LOG-Gh-tpR" id="p74-5u-y8G"/>
                         <outlet property="textLb" destination="mX4-L9-fca" id="4fn-ED-y0D"/>
                     </connections>
@@ -265,7 +281,7 @@
                                 <buttonConfiguration key="configuration" style="tinted" image="arrow.right" catalog="system"/>
                             </button>
                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="4" currentPage="1" translatesAutoresizingMaskIntoConstraints="NO" id="eaJ-9O-lJQ">
-                                <rect key="frame" x="16" y="502" width="134.5" height="26"/>
+                                <rect key="frame" x="16" y="502" width="92" height="26"/>
                                 <color key="pageIndicatorTintColor" systemColor="systemGray2Color"/>
                                 <color key="currentPageIndicatorTintColor" systemColor="labelColor"/>
                                 <connections>
@@ -1620,7 +1636,7 @@
                                 </constraints>
                             </imageView>
                             <pageControl opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="4" translatesAutoresizingMaskIntoConstraints="NO" id="xbe-Hw-1oI">
-                                <rect key="frame" x="93" y="122.5" width="134.5" height="26"/>
+                                <rect key="frame" x="114" y="122.5" width="92" height="26"/>
                                 <color key="pageIndicatorTintColor" systemColor="systemGray2Color"/>
                                 <color key="currentPageIndicatorTintColor" name="Accent"/>
                             </pageControl>
@@ -1740,7 +1756,7 @@
                                 <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                             </view>
                             <pageControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" numberOfPages="3" translatesAutoresizingMaskIntoConstraints="NO" id="Fsg-Nh-nlr">
-                                <rect key="frame" x="102" y="461" width="116.5" height="26"/>
+                                <rect key="frame" x="123" y="461" width="74" height="26"/>
                                 <color key="pageIndicatorTintColor" systemColor="systemGray2Color"/>
                                 <color key="currentPageIndicatorTintColor" name="Accent"/>
                             </pageControl>
@@ -2973,14 +2989,6 @@ Google's APIs allow you to access and send media to your existing folders in Goo
             <point key="canvasLocation" x="4841" y="-1460"/>
         </scene>
     </scenes>
-    <designables>
-        <designable name="EIn-wk-PS1">
-            <size key="intrinsicContentSize" width="19.5" height="20"/>
-        </designable>
-        <designable name="dVf-uc-nQr">
-            <size key="intrinsicContentSize" width="19.5" height="20"/>
-        </designable>
-    </designables>
     <color key="tintColor" red="0.0" green="0.70398116438356162" blue="0.64921339897260277" alpha="1" colorSpace="calibratedRGB"/>
     <resources>
         <image name="InternetArchiveLogo" width="76" height="86"/>
@@ -3005,7 +3013,7 @@ Google's APIs allow you to access and send media to your existing folders in Goo
         <image name="save-open-archive-logo" width="145" height="120"/>
         <image name="server.rack" catalog="system" width="128" height="93"/>
         <image name="server.rack" width="12" height="10"/>
-        <image name="text.append" catalog="system" width="128" height="99"/>
+        <image name="text.append" catalog="system" width="128" height="101"/>
         <image name="trash" catalog="system" width="117" height="128"/>
         <image name="welcome_arrow" width="100" height="279"/>
         <namedColor name="Accent">

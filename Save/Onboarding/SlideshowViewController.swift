@@ -29,48 +29,138 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
     private static let slides = [
         SlideViewController.Slide(
             heading: NSLocalizedString("Share", comment: "").localizedUppercase,
-            text: NSLocalizedString(
-                "Upload verified media to your chosen server. Add a Creative Commons license to communicate your intentions for future use.",
-                comment: ""),
-            illustration: "onboarding-hand"),
+            text: { _ in
+                let text = NSLocalizedString(
+                    "Send your media securely to private servers and lock the app with a pin.",
+                    comment: ""
+                )
+                return NSAttributedString(string: text, attributes: [
+                    .font: UIFont(name: "Montserrat-Regular", size: 14) ?? UIFont.systemFont(ofSize: 14),
+                    .foregroundColor: UIColor.black
+                ])
+            },
+            illustration: "onboarding-hand"
+        ),
 
         SlideViewController.Slide(
             heading: NSLocalizedString("Archive", comment: "").localizedUppercase,
-            text: NSLocalizedString(
-                "Keep your media safe and organized for the long-term and create in-app project folders that map to your personal or organizational media archive.",
-                comment: ""),
-            illustration: "onboarding-laptop"),
+            text: { _ in
+                // Create the main text
+                let attributedText = NSMutableAttributedString(string: NSLocalizedString(
+                    "Keep your media verifiable, safe and organized for the long-term by uploading it to private or public servers like Nextcloud or the Internet Archive. \nCommunicate your intentions for future use by adding a ",
+                    comment: ""
+                ), attributes: [
+                    .font: UIFont(name: "Montserrat-Regular", size: 14) ?? UIFont.systemFont(ofSize: 14),
+                    .foregroundColor: UIColor.black
+                ])
+                
+                // Create the link text
+                let linkText = NSLocalizedString("Creative Commons License.", comment: "creative commons license")
+                let linkAttributes: [NSAttributedString.Key: Any] = [
+                    .font: UIFont(name: "Montserrat-Regular", size: 14) ?? UIFont.systemFont(ofSize: 14),
+                    .underlineStyle: NSUnderlineStyle.single.rawValue,
+                    .foregroundColor: UIColor.black, // Black text color
+                    .link: URL(string: "https://creativecommons.org")! // Link to Creative Commons website
+                ]
+                
+                // Append the link text to the main text
+                attributedText.append(NSAttributedString(string: linkText, attributes: linkAttributes))
+                
+                return attributedText
+            },
+            illustration: "onboarding-laptop"
+        ),
+
 
         SlideViewController.Slide(
             heading: NSLocalizedString("Verify", comment: "").localizedUppercase,
-            text: NSLocalizedString(
-                "Authenticate your media with a SHA-256 cryptographic verification hash, and optional ProofMode. Add critical metadata like notes, people, and location with each upload.",
-                comment: ""),
-            illustration: "onboarding-handheld"),
+            text: { _ in
+                // Create the main text
+                let attributedText = NSMutableAttributedString(string: NSLocalizedString(
+                    "Authenticate and verify your media with sha256 hashes and ",
+                    comment: ""
+                ), attributes: [
+                    .font: UIFont(name: "Montserrat-Regular", size: 14) ?? UIFont.systemFont(ofSize: 14),
+                    .foregroundColor: UIColor.black
+                ])
+                
+                // Create the "ProofMode" link text
+                let linkText = NSLocalizedString("ProofMode.", comment: "ProofMode")
+                let linkAttributes: [NSAttributedString.Key: Any] = [
+                    .font: UIFont(name: "Montserrat-Regular", size: 14) ?? UIFont.systemFont(ofSize: 14),
+                    .underlineStyle: NSUnderlineStyle.single.rawValue,
+                    .foregroundColor: UIColor.black, // Ensure the color is black
+                    .link: URL(string: "https://proofmode.org")! // Add the URL for the clickable link
+                ]
+                
+                attributedText.append(NSAttributedString(string: linkText, attributes: linkAttributes))
+                
+                return attributedText
+            },
+            illustration: "onboarding-handheld"
+        ),
 
         SlideViewController.Slide(
             heading: NSLocalizedString("Encrypt", comment: "").localizedUppercase,
             text: { _ in
-                String(
-                    format: NSLocalizedString(
-                        "Automatically upload over TLS (Transport Layer Security) and enable %1$@ (The Onion Router) in-app to protect your media in transit.",
-                        comment: "Placeholder 1 is 'Tor'"), TorManager.torName)
-            },
-            text2: { view in
-                let linkText = String(format: NSLocalizedString(
-                    "Enable \"Transfer via %@ only\"",
-                    comment: "Placeholder is 'Tor'"), TorManager.torName)
+                // Localized string with placeholders for "Save" and "Tor"
+                let localizedString = NSLocalizedString(
+                    "%@ always uploads over TLS (Transport Layer Security) to protect your media in transit. \nTo further enhance security, enable %@ to prevent interception of your media from your phone to the server.",
+                    comment: "Describes the encryption feature"
+                )
 
-                let text = NSLocalizedString(
-                    "%@ for advanced network security.",
-                    comment: "Placeholder is your translation of 'Enable \"Transfer via Orbot or built-in Tor only\"'")
+                // Dynamic parts for "Save" and "Tor"
+                let saveText = NSLocalizedString("Save", comment: "Save")
+                let torText = NSLocalizedString("Tor", comment: "Tor")
+                let torUrl = URL(string: "https://www.torproject.org")!
 
-                return String(format: text, linkText)
-                    .attributed
-                    .link(part: linkText, into: view)
+                // Attributed string setup
+                let attributedText = NSMutableAttributedString()
+
+                // Font for all text
+                let montserratFont = UIFont(name: "Montserrat-Regular", size: 14) ?? UIFont.systemFont(ofSize: 14)
+                let blackColor = UIColor.black
+
+                // Bold and italic font for "Save"
+                let boldItalicFont = UIFont(descriptor: montserratFont.fontDescriptor
+                    .withSymbolicTraits([.traitBold, .traitItalic]) ?? montserratFont.fontDescriptor, size: 14)
+                let saveAttributed = NSAttributedString(string: saveText, attributes: [
+                    .font: boldItalicFont,
+                    .foregroundColor: blackColor
+                ])
+
+                // Link text for "Tor"
+                let torAttributes: [NSAttributedString.Key: Any] = [
+                    .font: montserratFont,
+                    .underlineStyle: NSUnderlineStyle.single.rawValue,
+                    .foregroundColor: blackColor,
+                    .link: torUrl
+                ]
+                let torAttributed = NSAttributedString(string: torText, attributes: torAttributes)
+
+                // Format the localized string
+                let localizedComponents = String(format: localizedString, "%@", "%@").components(separatedBy: "%@")
+                attributedText.append(NSAttributedString(string: localizedComponents[0], attributes: [
+                    .font: montserratFont,
+                    .foregroundColor: blackColor
+                ]))
+                attributedText.append(saveAttributed)
+                attributedText.append(NSAttributedString(string: localizedComponents[1], attributes: [
+                    .font: montserratFont,
+                    .foregroundColor: blackColor
+                ]))
+                attributedText.append(torAttributed)
+                attributedText.append(NSAttributedString(string: localizedComponents[2], attributes: [
+                    .font: montserratFont,
+                    .foregroundColor: blackColor
+                ]))
+
+                return attributedText
             },
-            illustration: "onboarding-onion"),
+            illustration: "onboarding-onion"
+        )
     ]
+
 
 
     override func viewDidLoad() {
