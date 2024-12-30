@@ -7,7 +7,6 @@
 //
 
 import UIKit
-
 class WebDavSettingsViewController: SpaceSettingsViewController, TextBoxDelegate {
 
     @IBOutlet weak var serverLb: UILabel! {

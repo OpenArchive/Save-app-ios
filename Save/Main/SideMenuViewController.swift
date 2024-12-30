@@ -11,12 +11,10 @@ import YapDatabase
 
 protocol SideMenuDelegate {
 
-    func hideMenu()
-
     func selected(project: Project?)
-
     func addSpace()
-
+    func selectSpace()
+    func pushPrivateServerSetting(space: Space,fromSetting: Bool)
     func addFolder()
 }
 
@@ -38,15 +36,6 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
 
-    var space: Space? {
-        get {
-            nil
-        }
-        set {
-            spaceIcon.image = newValue?.favIcon ?? SelectedSpace.defaultFavIcon
-            spaceLb.text = newValue?.prettyName ?? Bundle.main.displayName
-        }
-    }
 
 
     @IBOutlet weak var header: UIView! {
@@ -172,8 +161,6 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
             SelectedSpace.store()
 
             selectedProject = getProject(at: IndexPath(row: 0, section: 0))
-
-            delegate?.hideMenu()
         }
     }
 
@@ -181,7 +168,7 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
     // MARK: Actions
 
     @IBAction func hide() {
-        delegate?.hideMenu()
+       
     }
 
     @IBAction func toggleSpaces() {

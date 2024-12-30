@@ -7,7 +7,6 @@
 //
 
 import UIKit
-
 class AddFolderViewController: BaseViewController {
 
     var noBrowse: Bool {
@@ -70,7 +69,8 @@ class AddFolderViewController: BaseViewController {
 
 
     @IBAction func createNew() {
-        navigationController?.pushViewController(NewFolderViewController(), animated: true)
+      
+        navigationController?.pushViewController(AddFolderNewViewController(), animated: true)
     }
 
     @IBAction func browse() {

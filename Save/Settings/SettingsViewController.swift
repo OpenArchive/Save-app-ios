@@ -86,13 +86,13 @@ class SettingsViewController: UIViewController {
             serverIv.image = icon.withRenderingMode(space is WebDavSpace || space is GdriveSpace ? .alwaysOriginal : .alwaysTemplate)
         }
         else if let icon = SelectedSpace.defaultFavIcon?.resizeFit(to: .icon) {
-            serverIv.image = icon.withRenderingMode(.alwaysTemplate)
+          //  serverIv.image = icon.withRenderingMode(.alwaysTemplate)
         }
         else {
             serverIv.image = UIImage(systemName: "server.rack")?.withRenderingMode(.alwaysTemplate)
         }
 
-        serverBt.setTitle(space?.prettyName ?? NSLocalizedString("Server", comment: ""))
+     //   serverBt.setTitle(space?.prettyName ?? NSLocalizedString("Server", comment: ""))
     }
 
 
