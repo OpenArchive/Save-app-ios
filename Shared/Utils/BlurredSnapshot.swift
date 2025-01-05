@@ -9,38 +9,37 @@
 import UIKit
 
 class BlurredSnapshot: NSObject {
-    
-    private static var view: UIView?
-    
-    /**
-     Creates a blurred snapshot over the current window content.
-     Use this to block screenshots and recent apps preview.
-     */
-    @objc class func create(_ window: UIWindow?) {
-        guard view == nil, let window else { return }
-        
-        // Take a snapshot of current screen
-        if let snapshot = window.snapshotView(afterScreenUpdates: false) {
-            self.view = snapshot
-            
-            // Add a blur effect to the snapshot
-            let blurEffectView = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
-            blurEffectView.frame = snapshot.bounds
-            snapshot.addSubview(blurEffectView)
-            
-            // Add the blurred snapshot on top of the window
-            window.addSubview(snapshot)
-        }
 
-    }
-    
-    /**
-     Remove blurred snapshot again when coming back from background.
-     
-     Call this from AppDelegate#applicationDidBecomeActive:
-     */
-    @objc class func remove() {
-        view?.removeFromSuperview()
-        view = nil
-    }
+	private static var view: UIView?
+
+	/**
+	Blur current window content to increase privacy when in background.
+
+	Call this from AppDelegate#applicationWillResignActive:
+	*/
+	@objc class func create(_ window: UIWindow?) {
+		// Blur current content to increase privacy when in background.
+		if view == nil,
+			let window = window,
+			let view = window.snapshotView(afterScreenUpdates: false)
+		{
+			self.view = view
+
+			let vev = UIVisualEffectView(effect: UIBlurEffect(style: .regular))
+			vev.frame = view.bounds
+
+			view.addSubview(vev)
+			window.addSubview(view)
+		}
+	}
+
+	/**
+	Remove blurred snapshot again when coming back from background.
+
+	Call this from AppDelegate#applicationDidBecomeActive:
+	*/
+	@objc class func remove() {
+		view?.removeFromSuperview()
+		view = nil
+	}
 }
