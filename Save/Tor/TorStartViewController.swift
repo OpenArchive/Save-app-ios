@@ -144,7 +144,12 @@ class TorStartViewController: UIViewController, BridgesConfDelegate {
 
     func save() {
         DispatchQueue.global(qos: .userInitiated).async {
-            TorManager.shared.reconfigureBridges()
+            do{
+                try TorManager.shared.reconfigureBridges()
+            }
+            catch {
+                print("Error reconfiguring bridges: \(error)")
+            }
         }
     }
 
