@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 74;
+	objectVersion = 77;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -151,18 +151,18 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		EAB283182D02655C0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		EAB283182D02655C0023D594 /* Exceptions for "Save" folder in "Save" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
 			target = A0E739D320E4C85D00DB31E1 /* Save */;
 		};
-		EAB283192D02655C0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		EAB283192D02655C0023D594 /* Exceptions for "Save" folder in "Save Screenshots" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				/Localized/InfoPlist.strings,
-				/Localized/LaunchScreen.storyboard,
+				"/Localized: InfoPlist.strings",
+				"/Localized: LaunchScreen.storyboard",
 				AppDelegate.swift,
 				Constants/Constants.swift,
 				Extensions/TimeIntervalExtension.swift,
@@ -181,42 +181,42 @@
 			);
 			target = A09B537723266F02005266C2 /* Save Screenshots */;
 		};
-		EAB283202D02659C0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		EAB283202D02659C0023D594 /* Exceptions for "FormatterKit" folder in "Save" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				TTTLocationFormatter.m,
 			);
 			target = A0E739D320E4C85D00DB31E1 /* Save */;
 		};
-		EAB283212D02659C0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		EAB283212D02659C0023D594 /* Exceptions for "FormatterKit" folder in "ShareExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				TTTLocationFormatter.m,
 			);
 			target = A07128FA2111CC90007A432A /* ShareExtension */;
 		};
-		EAB283222D02659C0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		EAB283222D02659C0023D594 /* Exceptions for "FormatterKit" folder in "Save Screenshots" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				TTTLocationFormatter.m,
 			);
 			target = A09B537723266F02005266C2 /* Save Screenshots */;
 		};
-		EAB283592D0265A60023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		EAB283592D0265A60023D594 /* Exceptions for "BaseClasses" folder in "ShareExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				BasePageViewController.swift,
 			);
 			target = A07128FA2111CC90007A432A /* ShareExtension */;
 		};
-		EAB283F32D0265AB0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		EAB283F32D0265AB0023D594 /* Exceptions for "Utils" folder in "Save" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Request+debug.swift",
 			);
 			target = A0E739D320E4C85D00DB31E1 /* Save */;
 		};
-		EAB283F42D0265AB0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		EAB283F42D0265AB0023D594 /* Exceptions for "Utils" folder in "ShareExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AlertHelper.swift,
@@ -228,21 +228,21 @@
 			);
 			target = A07128FA2111CC90007A432A /* ShareExtension */;
 		};
-		EAB283F52D0265AB0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		EAB283F52D0265AB0023D594 /* Exceptions for "Utils" folder in "Save Screenshots" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Request+debug.swift",
 			);
 			target = A09B537723266F02005266C2 /* Save Screenshots */;
 		};
-		EAB284C82D0265B60023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		EAB284C82D0265B60023D594 /* Exceptions for "Views" folder in "Save" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"LinkRow-extension.swift",
 			);
 			target = A0E739D320E4C85D00DB31E1 /* Save */;
 		};
-		EAB284C92D0265B60023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		EAB284C92D0265B60023D594 /* Exceptions for "Views" folder in "ShareExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				LinkRow.swift,
@@ -250,14 +250,14 @@
 			);
 			target = A07128FA2111CC90007A432A /* ShareExtension */;
 		};
-		EAB284CA2D0265B60023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		EAB284CA2D0265B60023D594 /* Exceptions for "Views" folder in "Save Screenshots" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"LinkRow-extension.swift",
 			);
 			target = A09B537723266F02005266C2 /* Save Screenshots */;
 		};
-		EAB284F12D0265BC0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		EAB284F12D0265BC0023D594 /* Exceptions for "Montserrat" folder in "Save" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Montserrat-Black.ttf",
@@ -269,7 +269,7 @@
 			);
 			target = A0E739D320E4C85D00DB31E1 /* Save */;
 		};
-		EAB284F22D0265BC0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		EAB284F22D0265BC0023D594 /* Exceptions for "Montserrat" folder in "ShareExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Montserrat-Black.ttf",
@@ -281,7 +281,7 @@
 			);
 			target = A07128FA2111CC90007A432A /* ShareExtension */;
 		};
-		EAB284F32D0265BC0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		EAB284F32D0265BC0023D594 /* Exceptions for "Montserrat" folder in "Save Screenshots" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				"Montserrat-Black.ttf",
@@ -293,21 +293,21 @@
 			);
 			target = A09B537723266F02005266C2 /* Save Screenshots */;
 		};
-		EAB284F92D0265C40023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		EAB284F92D0265C40023D594 /* Exceptions for "ShareExtension" folder in "ShareExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				MainViewController.swift,
 			);
 			target = A07128FA2111CC90007A432A /* ShareExtension */;
 		};
-		EAB284FE2D0265C90023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		EAB284FE2D0265C90023D594 /* Exceptions for "Screenshots" folder in "Screenshots" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Screenshots.swift,
 			);
 			target = A05768D622E0B67D00B39FCE /* Screenshots */;
 		};
-		EAB2850A2D0265CE0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */ = {
+		EAB2850A2D0265CE0023D594 /* Exceptions for "Save Screenshots" folder in "Save Screenshots" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -317,17 +317,97 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		EAB282292D02655C0023D594 /* Save */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (EAB283182D02655C0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, EAB283192D02655C0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Save; sourceTree = "<group>"; };
-		EAB2831C2D02659C0023D594 /* FormatterKit */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (EAB283202D02659C0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, EAB283212D02659C0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, EAB283222D02659C0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = FormatterKit; sourceTree = "<group>"; };
-		EAB2832A2D0265A10023D594 /* Projects */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Projects; sourceTree = "<group>"; };
-		EAB283462D0265A60023D594 /* BaseClasses */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (EAB283592D0265A60023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = BaseClasses; sourceTree = "<group>"; };
-		EAB283802D0265AB0023D594 /* Utils */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (EAB283F32D0265AB0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, EAB283F42D0265AB0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, EAB283F52D0265AB0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Utils; sourceTree = "<group>"; };
-		EAB2840B2D0265AF0023D594 /* Models */ = {isa = PBXFileSystemSynchronizedRootGroup; explicitFileTypes = {}; explicitFolders = (); path = Models; sourceTree = "<group>"; };
-		EAB2846A2D0265B60023D594 /* Views */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (EAB284C82D0265B60023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, EAB284C92D0265B60023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, EAB284CA2D0265B60023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Views; sourceTree = "<group>"; };
-		EAB284DE2D0265BC0023D594 /* Montserrat */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (EAB284F12D0265BC0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, EAB284F22D0265BC0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, EAB284F32D0265BC0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Montserrat; sourceTree = "<group>"; };
-		EAB284F72D0265C40023D594 /* ShareExtension */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (EAB284F92D0265C40023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = ShareExtension; sourceTree = "<group>"; };
-		EAB284FC2D0265C90023D594 /* Screenshots */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (EAB284FE2D0265C90023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = Screenshots; sourceTree = "<group>"; };
-		EAB285042D0265CE0023D594 /* Save Screenshots */ = {isa = PBXFileSystemSynchronizedRootGroup; exceptions = (EAB2850A2D0265CE0023D594 /* PBXFileSystemSynchronizedBuildFileExceptionSet */, ); explicitFileTypes = {}; explicitFolders = (); path = "Save Screenshots"; sourceTree = "<group>"; };
+		EAB282292D02655C0023D594 /* Save */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				EAB283182D02655C0023D594 /* Exceptions for "Save" folder in "Save" target */,
+				EAB283192D02655C0023D594 /* Exceptions for "Save" folder in "Save Screenshots" target */,
+			);
+			path = Save;
+			sourceTree = "<group>";
+		};
+		EAB2831C2D02659C0023D594 /* FormatterKit */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				EAB283202D02659C0023D594 /* Exceptions for "FormatterKit" folder in "Save" target */,
+				EAB283212D02659C0023D594 /* Exceptions for "FormatterKit" folder in "ShareExtension" target */,
+				EAB283222D02659C0023D594 /* Exceptions for "FormatterKit" folder in "Save Screenshots" target */,
+			);
+			path = FormatterKit;
+			sourceTree = "<group>";
+		};
+		EAB2832A2D0265A10023D594 /* Projects */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Projects;
+			sourceTree = "<group>";
+		};
+		EAB283462D0265A60023D594 /* BaseClasses */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				EAB283592D0265A60023D594 /* Exceptions for "BaseClasses" folder in "ShareExtension" target */,
+			);
+			path = BaseClasses;
+			sourceTree = "<group>";
+		};
+		EAB283802D0265AB0023D594 /* Utils */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				EAB283F32D0265AB0023D594 /* Exceptions for "Utils" folder in "Save" target */,
+				EAB283F42D0265AB0023D594 /* Exceptions for "Utils" folder in "ShareExtension" target */,
+				EAB283F52D0265AB0023D594 /* Exceptions for "Utils" folder in "Save Screenshots" target */,
+			);
+			path = Utils;
+			sourceTree = "<group>";
+		};
+		EAB2840B2D0265AF0023D594 /* Models */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = Models;
+			sourceTree = "<group>";
+		};
+		EAB2846A2D0265B60023D594 /* Views */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				EAB284C82D0265B60023D594 /* Exceptions for "Views" folder in "Save" target */,
+				EAB284C92D0265B60023D594 /* Exceptions for "Views" folder in "ShareExtension" target */,
+				EAB284CA2D0265B60023D594 /* Exceptions for "Views" folder in "Save Screenshots" target */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		EAB284DE2D0265BC0023D594 /* Montserrat */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				EAB284F12D0265BC0023D594 /* Exceptions for "Montserrat" folder in "Save" target */,
+				EAB284F22D0265BC0023D594 /* Exceptions for "Montserrat" folder in "ShareExtension" target */,
+				EAB284F32D0265BC0023D594 /* Exceptions for "Montserrat" folder in "Save Screenshots" target */,
+			);
+			path = Montserrat;
+			sourceTree = "<group>";
+		};
+		EAB284F72D0265C40023D594 /* ShareExtension */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				EAB284F92D0265C40023D594 /* Exceptions for "ShareExtension" folder in "ShareExtension" target */,
+			);
+			path = ShareExtension;
+			sourceTree = "<group>";
+		};
+		EAB284FC2D0265C90023D594 /* Screenshots */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				EAB284FE2D0265C90023D594 /* Exceptions for "Screenshots" folder in "Screenshots" target */,
+			);
+			path = Screenshots;
+			sourceTree = "<group>";
+		};
+		EAB285042D0265CE0023D594 /* Save Screenshots */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				EAB2850A2D0265CE0023D594 /* Exceptions for "Save Screenshots" folder in "Save Screenshots" target */,
+			);
+			path = "Save Screenshots";
+			sourceTree = "<group>";
+		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -645,7 +725,7 @@
 				uk,
 			);
 			mainGroup = A0E739CB20E4C85D00DB31E1;
-			preferredProjectObjectVersion = 50;
+			preferredProjectObjectVersion = 77;
 			productRefGroup = A0E739D520E4C85D00DB31E1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
