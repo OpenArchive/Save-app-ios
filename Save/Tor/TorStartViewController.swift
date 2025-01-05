@@ -144,7 +144,13 @@ class TorStartViewController: UIViewController, BridgesConfDelegate {
 
     func save() {
         DispatchQueue.global(qos: .userInitiated).async {
-            TorManager.shared.reconfigureBridges()
+            do{
+                try  TorManager.shared.reconfigureBridges()
+            }catch let err{
+                let alert = UIAlertController(title: "Error", message: err.localizedDescription, preferredStyle: .alert)
+                alert.addAction(UIAlertAction(title: "OK", style: .default))
+                self.present(alert, animated: true)
+            }
         }
     }
 
