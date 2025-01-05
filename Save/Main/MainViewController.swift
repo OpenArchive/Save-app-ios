@@ -216,6 +216,8 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         let tapGestureServer = UITapGestureRecognizer(target: self, action: #selector(serverNameTapped))
         serverName.addGestureRecognizer(tapGestureServer)
         folderName.addGestureRecognizer(tapGesture)
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+               navigationItem.backBarButtonItem = backBarButtonItem
     }
     @objc func labelTapped() {
         FoloderList.reload()
@@ -295,14 +297,17 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
 
-        // Make sure, the `SpaceWizardViewController` calls us back on success,
-        // so we can make the user select/create a folder right after
-        // connecting the server.
+       
         if segue.identifier == Self.segueConnectSpace,
            let navC = segue.destination as? UINavigationController,
            let vc = navC.viewControllers.first as? SpaceWizardViewController
         {
             vc.delegate = self
+        }
+        if segue.identifier == Self.segueShowPrivateServerSetting{
+            
+            let vc = segue.destination as? WebDavSettingsViewController
+            vc?.space = privateServer
         }
        
        
@@ -478,12 +483,12 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     @IBAction func addFolder() {
       
             if SelectedSpace.available {
-                let vc = UINavigationController(rootViewController: AppAddFolderViewController())
-                vc.modalPresentationStyle = .popover
-                vc.popoverPresentationController?.sourceView = self.menuBt
-                vc.popoverPresentationController?.sourceRect = self.menuBt.bounds
-
-                self.present(vc, animated: true)
+                if SelectedSpace.space is IaSpace{
+                    self.navigationController?.pushViewController(AddFolderNewViewController(), animated: true)
+                }
+                else{
+                    self.navigationController?.pushViewController(SelectFolderTypeViewController(), animated: true)
+                }
             }
             else {
                 self.performSegue(withIdentifier: Self.segueConnectSpace, sender: self)
@@ -492,9 +497,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
 
     @IBAction func add() {
-        closeAddMenu()
-
-        // Don't allow to add assets without a space or a project.
+       
         if selectedProject == nil {
             return FolderInfoAlert.presentIfNeeded(self) { [weak self] in
                 self?.addFolder()

@@ -88,10 +88,15 @@ class AddFolderNewViewController:UIViewController {
             title: NSLocalizedString("Create", comment: ""), style: .done,
             target: self, action: #selector(connect))
         navigationItem.rightBarButtonItem?.accessibilityIdentifier = "btDone"
+        
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(dismissController))
+        navigationItem.leftBarButtonItem = backButton
         enableDone()
     }
     
-    
+    @objc private func dismissController() {
+        navigationController?.popViewController(animated: true)
+    }
     // MARK: - Setup UI
     
     private func setupUI() {

@@ -19,7 +19,13 @@
 		6E250F662D1E5B7F0069E237 /* EditFolderNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E250F642D1E5B7F0069E237 /* EditFolderNewViewController.swift */; };
 		6E250F682D1E6A080069E237 /* AddFolderNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E250F672D1E6A080069E237 /* AddFolderNewViewController.swift */; };
 		6E250F692D1E6A080069E237 /* AddFolderNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E250F672D1E6A080069E237 /* AddFolderNewViewController.swift */; };
-		6E250F6A2D22652D0069E237 /* AddFolderNewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E250F672D1E6A080069E237 /* AddFolderNewViewController.swift */; };
+		6E250F6C2D228B750069E237 /* SelectFolderTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E250F6B2D228B750069E237 /* SelectFolderTypeViewController.swift */; };
+		6E250F6D2D228B750069E237 /* SelectFolderTypeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E250F6B2D228B750069E237 /* SelectFolderTypeViewController.swift */; };
+		6E253A702D22BB0800A44BF1 /* FolderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC06AB2201D00100BD5FBA /* FolderCell.swift */; };
+		6E253A712D22BB2C00A44BF1 /* BrowseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC06A92201CFD800BD5FBA /* BrowseViewController.swift */; };
+		6E253A742D22BBFB00A44BF1 /* FolderCellNew.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E250F5B2D1D7C6F0069E237 /* FolderCellNew.swift */; };
+		6E253A762D24E30F00A44BF1 /* WebDavSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29EC2B10CAC30054D5F4 /* WebDavSettingsViewController.swift */; };
+		6E253A772D24E41700A44BF1 /* SpaceSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC29EA2B10C0DD0054D5F4 /* SpaceSettingsViewController.swift */; };
 		6E8DB04B2D14133100EE09A3 /* ServersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8DB04A2D14133100EE09A3 /* ServersViewController.swift */; };
 		6E8DB04C2D14133100EE09A3 /* ServersViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8DB04A2D14133100EE09A3 /* ServersViewController.swift */; };
 		6E8DB04E2D14145400EE09A3 /* ServersListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6E8DB04D2D14144700EE09A3 /* ServersListViewController.swift */; };
@@ -145,7 +151,6 @@
 		A032362F2B0BB46B00D95BC3 /* AddFolderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A032362C2B0BB46B00D95BC3 /* AddFolderViewController.xib */; };
 		A03236302B0BB46B00D95BC3 /* AddFolderViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A032362C2B0BB46B00D95BC3 /* AddFolderViewController.xib */; };
 		A03236312B0BB46B00D95BC3 /* AddFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A032362D2B0BB46B00D95BC3 /* AddFolderViewController.swift */; };
-		A03236322B0BB46B00D95BC3 /* AddFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A032362D2B0BB46B00D95BC3 /* AddFolderViewController.swift */; };
 		A03236332B0BB46B00D95BC3 /* AddFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A032362D2B0BB46B00D95BC3 /* AddFolderViewController.swift */; };
 		A03236352B0BB8F100D95BC3 /* AppAddFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A03236342B0BB8F100D95BC3 /* AppAddFolderViewController.swift */; };
 		A0357D1122CF901800292077 /* BatchEditViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0357D1022CF901800292077 /* BatchEditViewController.swift */; };
@@ -445,8 +450,6 @@
 		A0E1A68721EE834D00E4F6B7 /* BaseCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68621EE834D00E4F6B7 /* BaseCell.swift */; };
 		A0E1A68921EE873200E4F6B7 /* TableHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E1A68821EE873200E4F6B7 /* TableHeader.swift */; };
 		A0E271FE224E261100CB7113 /* BaseFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0DE78B121F771A700B6B68B /* BaseFolderViewController.swift */; };
-		A0E27200224E267800CB7113 /* BrowseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC06A92201CFD800BD5FBA /* BrowseViewController.swift */; };
-		A0E27201224E26A500CB7113 /* FolderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0AC06AB2201D00100BD5FBA /* FolderCell.swift */; };
 		A0E27204224E2A4D00CB7113 /* FolderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E27202224E2A4D00CB7113 /* FolderCell.xib */; };
 		A0E27205224E2A4D00CB7113 /* FolderCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = A0E27202224E2A4D00CB7113 /* FolderCell.xib */; };
 		A0E27209224E335400CB7113 /* NewFolderViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A0E27208224E335400CB7113 /* NewFolderViewController.swift */; };
@@ -631,6 +634,7 @@
 		6E250F612D1E44210069E237 /* SeverCellNew.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SeverCellNew.swift; sourceTree = "<group>"; };
 		6E250F642D1E5B7F0069E237 /* EditFolderNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditFolderNewViewController.swift; sourceTree = "<group>"; };
 		6E250F672D1E6A080069E237 /* AddFolderNewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddFolderNewViewController.swift; sourceTree = "<group>"; };
+		6E250F6B2D228B750069E237 /* SelectFolderTypeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SelectFolderTypeViewController.swift; sourceTree = "<group>"; };
 		6E8DB04A2D14133100EE09A3 /* ServersViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersViewController.swift; sourceTree = "<group>"; };
 		6E8DB04D2D14144700EE09A3 /* ServersListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServersListViewController.swift; sourceTree = "<group>"; };
 		6EA68F732CE4FD2500E538C1 /* TimeIntervalExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeIntervalExtension.swift; sourceTree = "<group>"; };
@@ -1271,6 +1275,7 @@
 				6E250F5E2D1E24550069E237 /* ServerListNewViewController.swift */,
 				6E250F642D1E5B7F0069E237 /* EditFolderNewViewController.swift */,
 				6E250F672D1E6A080069E237 /* AddFolderNewViewController.swift */,
+				6E250F6B2D228B750069E237 /* SelectFolderTypeViewController.swift */,
 			);
 			path = Settings;
 			sourceTree = "<group>";
@@ -2091,14 +2096,13 @@
 				A0F7FDDD22491C6C006610F0 /* Flag.swift in Sources */,
 				A0C797EA22807DF00009751A /* SelectedCollection.swift in Sources */,
 				A0FA93422277387D0086D276 /* Bundle+displayName.swift in Sources */,
-				A0E27201224E26A500CB7113 /* FolderCell.swift in Sources */,
 				A0FE2C1F22E1E8D200C5443F /* Error+friendlyMessage.swift in Sources */,
-				6E250F6A2D22652D0069E237 /* AddFolderNewViewController.swift in Sources */,
+				6E253A742D22BBFB00A44BF1 /* FolderCellNew.swift in Sources */,
+				6E253A712D22BB2C00A44BF1 /* BrowseViewController.swift in Sources */,
 				A0AC0580224CE8C7008B9249 /* TableWithSpacesViewController.swift in Sources */,
 				A0C7DC04224A40E5004B78FF /* ActiveProjectsView.swift in Sources */,
 				A0DC0FAD233914BD00C4969A /* MovieIndicator.swift in Sources */,
 				A05DF98D282C118A003FADA2 /* FileInfo.swift in Sources */,
-				A03236322B0BB46B00D95BC3 /* AddFolderViewController.swift in Sources */,
 				A00A8D48220C7EDD0083F0CB /* AbcFilteredByProjectView.swift in Sources */,
 				A076790327BE89E900609630 /* UIButton+Utils.swift in Sources */,
 				A098980B2236A9E800022851 /* UploadsView.swift in Sources */,
@@ -2145,7 +2149,6 @@
 				A08750AA2112099700BFAFE4 /* Constants.m in Sources */,
 				A05275152211A91300BDB14B /* CollectionsView.swift in Sources */,
 				A0AFCF1022300E41005E57FD /* MultilineTitle.swift in Sources */,
-				A0E27200224E267800CB7113 /* BrowseViewController.swift in Sources */,
 				A02DB29B29B647390090ECF6 /* URL+Utils.swift in Sources */,
 				A045BF062B2B109D00C01D39 /* ProgressButton.swift in Sources */,
 				A0A192E121F23B61009A8CF0 /* Constants+Swift.swift in Sources */,
@@ -2155,6 +2158,7 @@
 				A0C475B5211474A70012937E /* RegexUtils.swift in Sources */,
 				A0631B572203068900B3E90D /* MenuItemCell.swift in Sources */,
 				A0C797E7228063280009751A /* AbcFilteredByCollectionView.swift in Sources */,
+				6E253A702D22BB0800A44BF1 /* FolderCell.swift in Sources */,
 				A0DE78B021F76D2200B6B68B /* Project.swift in Sources */,
 				A0FB4DB621F89FD500B46099 /* AssetsByCollectionView.swift in Sources */,
 				A006A6A9282950D00029E49B /* UIBackgroundFetchResult+description.swift in Sources */,
@@ -2184,6 +2188,7 @@
 				6E250F592D1D7C470069E237 /* FolderListNewViewController.swift in Sources */,
 				A0102D902B18EE0C0054D3D4 /* FoldersViewController.swift in Sources */,
 				A0102D932B18EE360054D3D4 /* SpaceWizardViewController.swift in Sources */,
+				6E253A762D24E30F00A44BF1 /* WebDavSettingsViewController.swift in Sources */,
 				A056555E23F6F57B00DE0168 /* UIViewController+Utils.swift in Sources */,
 				A094EA4A282A8C25006CE059 /* URLSession+Utils.swift in Sources */,
 				A02DB29C29B647390090ECF6 /* URL+Utils.swift in Sources */,
@@ -2206,6 +2211,7 @@
 				A0102DA22B18EF000054D3D4 /* UploadInfoAlert.swift in Sources */,
 				A09B538A23266F02005266C2 /* SpaceCell.swift in Sources */,
 				A029AF692B3315F600FCCB3A /* GdriveSpace.swift in Sources */,
+				6E253A772D24E41700A44BF1 /* SpaceSettingsViewController.swift in Sources */,
 				E4A8E7A22BA916CC00DCE99E /* AddInfoAlert.swift in Sources */,
 				A0102D632B18E2480054D3D4 /* SecureEnclave.swift in Sources */,
 				A0102DA52B18EF2F0054D3D4 /* ImageViewController.swift in Sources */,
@@ -2340,6 +2346,7 @@
 				E4A8E7AA2BA917D900DCE99E /* InternetArchive.swift in Sources */,
 				A09B53D423266F02005266C2 /* SelectedSpace.swift in Sources */,
 				A0102D782B18EB100054D3D4 /* PreviewViewController.swift in Sources */,
+				6E250F6D2D228B750069E237 /* SelectFolderTypeViewController.swift in Sources */,
 				A0102D9B2B18EEA60054D3D4 /* IaConduit.swift in Sources */,
 				A0102D6B2B18E4260054D3D4 /* NSError+from.swift in Sources */,
 				E4A8E7A12BA916B000DCE99E /* GdriveConduit.swift in Sources */,
@@ -2437,6 +2444,7 @@
 				A077732A22786BF500291F5D /* RemoveAssetAlert.swift in Sources */,
 				A0357D1122CF901800292077 /* BatchEditViewController.swift in Sources */,
 				6EA68F7E2CE7DD9800E538C1 /* KeyboardHandling.swift in Sources */,
+				6E250F6C2D228B750069E237 /* SelectFolderTypeViewController.swift in Sources */,
 				A029F6832118715700C4EF6D /* AssetFactory.swift in Sources */,
 				99FAAED02CCC158300C05DFC /* DoubleExtensions.swift in Sources */,
 				A0AC06B02201E30E00BD5FBA /* WorkingOverlay.swift in Sources */,

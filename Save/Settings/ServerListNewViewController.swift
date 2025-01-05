@@ -77,7 +77,8 @@ class ServerListNewViewController: UIViewController, UITableViewDelegate, UITabl
             addButton.heightAnchor.constraint(equalToConstant: 56)
         ])
         Db.add(observer: self, #selector(yapDatabaseModified))
-        
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+               navigationItem.backBarButtonItem = backBarButtonItem
     
     }
     override func viewWillAppear(_ animated: Bool) {

@@ -8,9 +8,8 @@
 
 import UIKit
 
-class SpaceSuccessViewController: BaseViewController, WizardDelegatable {
+class SpaceSuccessViewController: BaseViewController {
 
-    weak var delegate: WizardDelegate?
 
     var spaceName = ""
 
@@ -26,7 +25,7 @@ class SpaceSuccessViewController: BaseViewController, WizardDelegatable {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        navigationItem.title = NSLocalizedString("Setup Complete", comment: "")
         titleLb.text = String(
             format: NSLocalizedString("You have successfully connected to %@!",
                                       comment: "Placeholder is a server type or name"),
@@ -34,6 +33,11 @@ class SpaceSuccessViewController: BaseViewController, WizardDelegatable {
     }
 
     @IBAction func done() {
-        delegate?.dismiss(success: true)
+        if let existingVC = navigationController?.viewControllers.first(where: { $0.isKind(of: type(of: MainViewController())) }) {
+            navigationController?.popToViewController(existingVC, animated: true)
+            } else {
+                navigationController?.setViewControllers([UIStoryboard.main.instantiate(MainViewController.self)],
+                                   animated: true)
+            }
     }
 }

@@ -124,8 +124,12 @@ class ServerCellNew: UITableViewCell {
             borderedContainer.layer.borderWidth = 1
             borderedContainer.layer.borderColor = UIColor.systemTeal.cgColor
         } else {
-            // Normal folder appearance
-            borderedContainer.backgroundColor = .white
+           
+            if traitCollection.userInterfaceStyle == .dark {
+                borderedContainer.backgroundColor = UIColor.black
+            } else {
+                borderedContainer.backgroundColor = UIColor.white
+            }
             borderedContainer.layer.borderWidth = 0
         }
     }

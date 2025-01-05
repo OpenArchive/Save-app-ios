@@ -27,7 +27,7 @@ class BrowseViewController: BaseTableViewController {
             self.init(original.name, original.modifiedDate ?? original.creationDate, original)
         }
     }
-
+   
     private var loading = true
 
     var headers = [String]()
@@ -39,7 +39,9 @@ class BrowseViewController: BaseTableViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        if #available(iOS 15.0, *) {
+            tableView.sectionHeaderTopPadding = 20
+        }
         navigationItem.title = NSLocalizedString("Browse Existing", comment: "")
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(
@@ -48,11 +50,17 @@ class BrowseViewController: BaseTableViewController {
         navigationItem.rightBarButtonItem?.isEnabled = false
 
         tableView.register(FolderCell.nib, forCellReuseIdentifier: FolderCell.reuseId)
-
+        let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(dismissController))
+       
+        tableView.separatorStyle = .none
+      
+        navigationItem.leftBarButtonItem = backButton
         loadFolders()
     }
 
-
+    @objc private func dismissController() {
+        navigationController?.popViewController(animated: true)
+    }
     // MARK: UITableViewDataSource
 
     override func numberOfSections(in tableView: UITableView) -> Int {
@@ -79,9 +87,14 @@ class BrowseViewController: BaseTableViewController {
         if let folder = item as? Folder {
             cell.set(folder: folder)
         }
+       
+        let isSelected = indexPath.section == selected?.section && indexPath.row == selected?.row
+           cell.updateBorder(isSelected: isSelected)
 
-        cell.accessoryType = indexPath.section == selected?.section && indexPath.row == selected?.row ? .checkmark : .none
+           // Set accessory type for the selected cell
+           cell.accessoryType = isSelected ? .checkmark : .none
 
+      
         return cell
     }
 
@@ -121,7 +134,8 @@ class BrowseViewController: BaseTableViewController {
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return indexPath.section > 0 ? MenuItemCell.height : FolderCell.height
+      //  return indexPath.section > 0 ? MenuItemCell.height : FolderCell.height
+        return 60
     }
 
 
@@ -204,7 +218,6 @@ class BrowseViewController: BaseTableViewController {
         let project = Project(name: folder.name, space: space)
 
         Db.writeConn?.setObject(project)
-
-        dismiss(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 }

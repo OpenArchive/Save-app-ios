@@ -42,7 +42,7 @@ class AddFolderViewController: BaseViewController {
            var stack = navigationController?.viewControllers
         {
             stack.removeAll { $0 is AddFolderViewController }
-            stack.append(NewFolderViewController())
+            stack.append(AddFolderNewViewController())
             navigationController?.setViewControllers(stack, animated: false)
 
             return

@@ -62,7 +62,6 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         UIFont.setUpMontserrat()
 
         setUpOrbotAndTor()
-
         return true
     }
 

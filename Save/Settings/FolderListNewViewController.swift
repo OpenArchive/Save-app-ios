@@ -82,7 +82,8 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
             addButton.widthAnchor.constraint(equalToConstant: 56),
             addButton.heightAnchor.constraint(equalToConstant: 56)
         ])
-      
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+               navigationItem.backBarButtonItem = backBarButtonItem
 
     
     }
@@ -118,7 +119,7 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
     // Add Button Action
     @objc func addFolder() {
        
-        self.navigationController?.pushViewController(AddFolderNewViewController(), animated: true)
+        delegate?.addFolder()
     }
     
     // Edit Button Action

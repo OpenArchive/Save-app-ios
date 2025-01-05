@@ -27,8 +27,11 @@ class InternetArchiveDetailsController : ViewModelController<InternetArchiveDeta
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationItem.title = viewModel?.space.prettyName
-        
+        self.navigationItem.title = NSLocalizedString("Edit Internet Archive" ,comment: "")
+        if #available(iOS 14.0, *) {
+            navigationItem.backButtonDisplayMode = .minimal
+        } else {
+        }
         viewModel?.store.listen { [weak self] action in
             switch action {
             case .Removed:
