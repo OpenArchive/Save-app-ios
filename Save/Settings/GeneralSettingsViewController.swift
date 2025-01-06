@@ -62,18 +62,23 @@ class GeneralSettingsViewController: FormViewController {
         
         setupDefaults()
         
-    //    navigationItem.title = NSLocalizedString("General", comment: "")
-        
         form
         +++ sectionWithTitle(NSLocalizedString("Secure", comment: ""))
         <<< SwitchRow() {
+            $0.tag = "lock_app"
             $0.title = NSLocalizedString("Lock app with passcode", comment: "")
-          
+            $0.value = AppSettings.isPasscodeEnabled
             $0.cell.switchControl.onTintColor = .accent
         }
         
         .onChange { row in
-           
+            if row.value == true {
+                let passcodeSetupController = PasscodeSetupController()
+                           self.navigationController?.pushViewController(passcodeSetupController, animated: true)
+                       } else {
+                          
+                           AppSettings.isPasscodeEnabled = false
+                       }
         }
         +++ sectionWithTitle(NSLocalizedString("Archive", comment: ""))
         <<< SubtitleRow() {
@@ -189,15 +194,10 @@ class GeneralSettingsViewController: FormViewController {
         
         form.delegate = nil
         
-//        if let lockAppRow = form.rowBy(tag: "lock_app") as? SwitchRow {
-//            lockAppRow.value = SecureEnclave.loadKey() != nil
-//            
-//            lockAppRow.disabled = .init(booleanLiteral: Settings.proofModeEncryptedPassphrase != nil)
-//            lockAppRow.evaluateDisabled()
-//            
-//            // Fix spacing issues due to changes in number of displayed text lines.
-//            lockAppRow.reload()
-//        }
+        if let lockAppRow = form.rowBy(tag: "lock_app") as? SwitchRow {
+            lockAppRow.value = AppSettings.isPasscodeEnabled
+            lockAppRow.reload()
+        }
         
         form.delegate = self
     }
