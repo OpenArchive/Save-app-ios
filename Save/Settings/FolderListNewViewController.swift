@@ -60,11 +60,22 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
         
         // Set up the Add Button
         addButton.setImage(UIImage(systemName: "plus"), for: .normal)
-        addButton.tintColor = .white
-        addButton.backgroundColor = UIColor.systemTeal
+        addButton.setTitle(NSLocalizedString("Add Folder", comment: ""), for: .normal) // Add space before title for padding
+        addButton.tintColor = .white // Tint color for the image
+        addButton.setTitleColor(.white, for: .normal) // Title color
+        if #available(iOS 15.0, *) {
+            addButton.backgroundColor = UIColor.systemMint
+        } else {
+            addButton.backgroundColor = UIColor.systemTeal
+        }
         addButton.layer.cornerRadius = 28
         addButton.translatesAutoresizingMaskIntoConstraints = false
+
         addButton.addTarget(self, action: #selector(addFolder), for: .touchUpInside)
+        addButton.contentHorizontalAlignment = .center
+        addButton.contentVerticalAlignment = .center
+        addButton.imageEdgeInsets = UIEdgeInsets(top: 0, left: -5, bottom: 0, right: 0) // Adjust spacing between image and text
+        addButton.titleEdgeInsets = UIEdgeInsets(top: 0, left: 5, bottom: 0, right: 0)
         view.addSubview(addButton)
         
         // Constraints for TableView
@@ -77,10 +88,10 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
         
         // Constraints for Add Button
         NSLayoutConstraint.activate([
-            addButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
+            addButton.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             addButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            addButton.widthAnchor.constraint(equalToConstant: 56),
-            addButton.heightAnchor.constraint(equalToConstant: 56)
+            addButton.heightAnchor.constraint(equalToConstant: 56),
+            addButton.widthAnchor.constraint(equalToConstant: 200)
         ])
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
                navigationItem.backBarButtonItem = backBarButtonItem

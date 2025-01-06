@@ -126,6 +126,7 @@ struct InternetArchiveDetailContent: View {
                            title: Text(LocalizedStringKey("Remove from App")),
                            message: Text(LocalizedStringKey("Are you sure you want to remove this server from the app?")),
                            primaryButton: .destructive(Text("Remove")) {
+                               dispatch(.Remove)
                            },
                            secondaryButton: .cancel()
                        )

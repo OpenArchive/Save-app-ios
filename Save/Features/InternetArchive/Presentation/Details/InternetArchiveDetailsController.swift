@@ -38,6 +38,8 @@ class InternetArchiveDetailsController : ViewModelController<InternetArchiveDeta
                 fallthrough
             case .Cancel:
                 self?.dismiss(completion: nil)
+            case .Remove:
+                self?.navigationController?.popViewController(animated: true)
             default: break
             }
         }
