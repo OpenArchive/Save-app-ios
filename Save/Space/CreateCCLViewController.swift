@@ -9,12 +9,14 @@
 import UIKit
 import Eureka
 import YapDatabase
-class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDelegate {
+class CreateCCLViewController: FormViewController,TextBoxDelegate {
     
     private var keyboardHandling: KeyboardHandling?
     private let cc = CcSelector(individual: false)
-    var delegate: WizardDelegate?
     var space: WebDavSpace?
+    var editSpace:Space?
+    var isFromCreateServer: Bool = false
+    weak var delegate: UpdateNameDelegate?
     @IBOutlet weak var nameTab: TextBox!{
         didSet {
             nameTab.placeholder = NSLocalizedString("Server Name (Optional)", comment: "")
@@ -29,25 +31,30 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
     @IBOutlet weak var titleLbl: UILabel!
     @IBOutlet weak var nextButton: UIButton!
     @IBOutlet weak var formContainer: UIView!
-    
     override func viewDidLoad() {
         super.viewDidLoad()
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+               navigationItem.backBarButtonItem = backBarButtonItem
         keyboardHandling = KeyboardHandling(scrollView: scrollView,viewController: self)
         setupForm()
+        if(!isFromCreateServer){
+            nameTab.text = editSpace?.name ?? ""
+        }
+        titleLbl.text = (isFromCreateServer) ? NSLocalizedString("Tell us little more about your new server", comment: "") : ""
+        nextButton.isHidden = !(isFromCreateServer)
+        navigationItem.title = (isFromCreateServer) ? NSLocalizedString("Select a License", comment: "")  : NSLocalizedString("Edit Private Server", comment: "")
         hideKeyboardOnOutsideTap()
     }
     
     private func setupForm() {
-        // Remove the form's default tableView and add it as a subview to `formContainerView`
         self.tableView?.removeFromSuperview()
         formContainer.addSubview(tableView!)
-        
-        // Constrain the form's tableView to fill the `formContainerView`
+
         tableView?.translatesAutoresizingMaskIntoConstraints = false
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = .clear
         tableView?.isScrollEnabled = false
         tableView?.showsVerticalScrollIndicator = false
-        
+        tableView.separatorStyle = .none
         
         NSLayoutConstraint.activate([
             tableView!.topAnchor.constraint(equalTo: formContainer.topAnchor),
@@ -55,11 +62,12 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
             tableView!.leadingAnchor.constraint(equalTo: formContainer.leadingAnchor),
             tableView!.trailingAnchor.constraint(equalTo: formContainer.trailingAnchor)
         ])
-        
-        // Define form sections and rows
+        if(!isFromCreateServer){
+            cc.set(editSpace?.license, enabled: true)
+        }
         form
         +++ Section(""){ section in
-            section.header?.height = { TableHeader.minSize } // Reduce header height to 1 point
+            section.header?.height = { TableHeader.minSize }
         }
         
         <<< cc.ccSw.onChange { [weak self] row in
@@ -96,35 +104,59 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
         view.endEditing(true)
     }
     private func ccLicenseChanged(_ row: SwitchRow) {
-        guard let space = SelectedSpace.space else {
-            _ = cc.get()
-            
-            return
-        }
-        
-        space.license = cc.get()
-        
-        Db.writeConn?.asyncReadWrite { tx in
-            tx.setObject(space, forKey: space.id, inCollection: Space.collection)
-            
-            let projects: [Project] = tx.findAll { $0.active && $0.spaceId == space.id }
-            
-            for project in projects {
-                project.license = space.license
+        if(isFromCreateServer){
+            guard let space = SelectedSpace.space else {
+                _ = cc.get()
                 
-                tx.setObject(project)
+                return
+            }
+            
+            space.license = cc.get()
+            
+            Db.writeConn?.asyncReadWrite { tx in
+                tx.setObject(space, forKey: space.id, inCollection: Space.collection)
+                
+                let projects: [Project] = tx.findAll { $0.active && $0.spaceId == space.id }
+                
+                for project in projects {
+                    project.license = space.license
+                    
+                    tx.setObject(project)
+                }
+            }
+        }
+        else{
+            guard let space = editSpace else {
+                _ = cc.get()
+                
+                return
+            }
+            
+            space.license = cc.get()
+           
+            Db.writeConn?.asyncReadWrite { tx in
+                tx.setObject(space, forKey: space.id, inCollection: Space.collection)
+                
+                let projects: [Project] = tx.findAll { $0.active && $0.spaceId == space.id }
+                
+                for project in projects {
+                    project.license = space.license
+                    
+                    tx.setObject(project)
+                }
             }
         }
     }
     
     @IBAction func onNextButtonTap(_ sender: Any) {
+       
         guard let space = SelectedSpace.space else {
             return
         }
         updateSpaceName(for: space.id, newName: nameTab.text ?? "")
         let vc = UIStoryboard.main.instantiate(SpaceSuccessViewController.self)
             vc.spaceName = space.prettyName
-            self.delegate?.next(vc, pos: 3)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func updateSpaceName(for spaceId: String, newName: String) {
@@ -144,7 +176,10 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
     // MARK: TextBoxDelegate
     
     func textBox(didUpdate textBox: TextBox) {
-        
+        if(!(isFromCreateServer)){
+            delegate?.updateName(nameTab.text ?? "")
+            updateSpaceName(for: editSpace?.id ?? "", newName: nameTab.text ?? "")
+        }
     }
     
     func textBox(shouldReturn textBox: TextBox) -> Bool {

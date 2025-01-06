@@ -9,9 +9,8 @@
 import UIKit
 import FavIcon
 
-class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBoxDelegate {
+class WebDavWizardViewController: BaseViewController, TextBoxDelegate {
 
-    weak var delegate: WizardDelegate?
 
     @IBOutlet weak var iconIv: UIImageView!
 
@@ -125,8 +124,9 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        navigationItem.title = NSLocalizedString("Add Private Server", comment: "")
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+               navigationItem.backBarButtonItem = backBarButtonItem
     }
     
     deinit {
@@ -134,7 +134,7 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
     }
 
     @IBAction func back() {
-        delegate?.back()
+        navigationController?.popViewController(animated: true)
     }
 
     @IBAction func next() {
@@ -176,7 +176,8 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
 
                     let vc = UIStoryboard.main.instantiate(CreateCCLViewController.self)
                     vc.space = space
-                    self?.delegate?.next(vc, pos: 2)
+                    vc.isFromCreateServer = true
+                    self?.navigationController?.pushViewController(vc, animated: true)
                 }
             }
         }

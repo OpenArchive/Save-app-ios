@@ -37,22 +37,18 @@ struct InternetArchiveLoginContent: View {
                 VStack {
                     HStack {
                         Circle().fill(colorScheme == .dark ? Color.white : Color.pillBackground)
-                            .frame(width: 80, height: 80)
+                            .frame(width: 50, height: 50)
                             .overlay(
                                 Image("InternetArchiveLogo")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(width: 48, height: 48)
+                                    .frame(width: 25, height: 25)
                             ).padding(.trailing, 6)
                         VStack(alignment: .leading) {
-                            Text(LocalizedStringKey("Internet Archive")).font(.headline)
                             Text(LocalizedStringKey("Upload your media to a free public or paid private account on the Internet Archive.")).font(.subheadline)
                         }
                     }
                     .padding()
-                    
-                    
-                    Spacer()
                     
                     TextField(LocalizedStringKey("Username"), text: state.userName)
                         .autocapitalization(.none)
@@ -80,7 +76,7 @@ struct InternetArchiveLoginContent: View {
                     )
                     .padding(.leading)
                     .padding(.trailing)
-                    //
+                  
                     Spacer()
                     
                     if (state.isLoginError) {
@@ -113,7 +109,7 @@ struct InternetArchiveLoginContent: View {
                             dispatch(.Login)
                         }, label: {
                             if (state.isBusy) {
-                                ActivityIndicator(style: .medium, animate: .constant(true)).foregroundColor(.black)
+                                ActivityIndicator(style: .medium, animate: .constant(true)).foregroundColor(.white)
                             } else {
                                 Text(LocalizedStringKey("Login"))
                             }
@@ -122,7 +118,7 @@ struct InternetArchiveLoginContent: View {
                         .padding()
                         .frame(maxWidth: .infinity)
                         .background(Color.accent)
-                        .foregroundColor(.black)
+                        .foregroundColor(.white)
                         .cornerRadius(12)
                     }
                     .padding()

@@ -8,11 +8,11 @@
 
 import UIKit
 
-class AppAddFolderViewController: AddFolderViewController {
+class AppAddFolderViewController: SelectFolderTypeViewController {
 
-    override var noBrowse: Bool {
-        SelectedSpace.space is IaSpace
-    }
+//    override var noBrowse: Bool {
+//        SelectedSpace.space is IaSpace
+//    }
 
 
     override func browse() {

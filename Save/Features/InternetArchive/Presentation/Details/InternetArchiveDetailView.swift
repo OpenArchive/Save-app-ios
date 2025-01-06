@@ -20,51 +20,126 @@ struct InternetArchiveDetailContent: View {
     
     let state: InternetArchiveDetailState
     let dispatch: Dispatch<InternetArchiveDetailAction>
-    
+    @Environment(\.colorScheme) var colorScheme
     @State private var showAlert = false
     
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(LocalizedStringKey("Username")).font(.caption).padding(.horizontal).padding(.top)
-            Text(state.userName).font(.body)
-                .padding()
+           VStack(alignment: .leading) {
+               Spacer().frame(maxHeight: 20)
+               HStack {
+                   Circle().fill(colorScheme == .dark ? Color.white : Color.pillBackground)
+                       .frame(width: 50, height: 50)
+                       .overlay(
+                           Image("InternetArchiveLogo")
+                               .resizable()
+                               .aspectRatio(contentMode: .fit)
+                               .frame(width: 25, height: 25)
+                       ).padding(.trailing, 6)
+                  
+                   Text(LocalizedStringKey("Upload your media to a free public or paid private account on the Internet Archive.")).font(.subheadline) .lineLimit(nil)
+                       .fixedSize(horizontal: false, vertical: true)
+                       .multilineTextAlignment(.leading)
+                   
+               }
+             
+               .padding()
+
+              
+               Group {
+                   Text(LocalizedStringKey("Username"))
+                       .font(.caption)
+                       .foregroundColor(.gray)
+                       .padding(.horizontal)
+                       .padding(.top, 4)
+
+                   Text(state.userName)
+                       .font(.body)
+                       .frame(maxWidth: .infinity, alignment: .leading)
+                       .padding()
+                       .background(
+                           RoundedRectangle(cornerRadius: 8)
+                               .fill(Color(UIColor.systemBackground))
+                              
+                               .shadow(color: Color.gray.opacity(0.2), radius: 2, x: 0, y: 1)
+                       )
+                       .padding(.horizontal)
+               }
+
             
-            Text(LocalizedStringKey("Screen Name")).font(.caption).padding(.horizontal)
-            Text(state.screenName).font(.body)
-                .padding()
-            
-            Text(LocalizedStringKey("Email")).font(.caption).padding(.horizontal)
-            Text(state.email).font(.body)
-                .padding()
-            
-            HStack {
-                Spacer()
-                Button(action: {
-                    showAlert = true
-                }) {
-                    Image(systemName: "trash")
-                    Text(LocalizedStringKey("Remove from App")).alert(isPresented: $showAlert) {
-                        Alert(
-                            title: Text(LocalizedStringKey("Are you sure?")),
-                            message: Text(
-                                String(
-                                    format:
-                                        NSLocalizedString("Removing this server will remove all contained thumbnails from the %@ app.", comment: "Placeholder is app name"),
-                                    arguments: [Bundle.main.displayName]
-                                )
-                            ),
-                            primaryButton: .destructive(Text(LocalizedStringKey("Remove Server"))) {
-                                dispatch(.Remove)
-                            },
-                            secondaryButton: .cancel()
-                        )
-                    }
-                }.foregroundColor(.red).padding()
-                Spacer()
-            }
-            Spacer()
-        }
-    }
+               Group {
+                   Text(LocalizedStringKey("Screen Name"))
+                       .font(.caption)
+                       .foregroundColor(.gray)
+                       .padding(.horizontal)
+
+                   Text(state.screenName)
+                       .font(.body)
+                       .frame(maxWidth: .infinity, alignment: .leading)
+                       .padding()
+                       .background(
+                           RoundedRectangle(cornerRadius: 8)
+                               .fill(Color(UIColor.systemBackground))
+                               .shadow(color: Color.gray.opacity(0.2), radius: 2, x: 0, y: 1)
+                       )
+                       .padding(.horizontal)
+               }
+
+             
+               Group {
+                   Text(LocalizedStringKey("Email"))
+                       .font(.caption)
+                       .foregroundColor(.gray)
+                       .padding(.horizontal)
+
+                   Text(state.email)
+                       .font(.body)
+                       .padding()
+                       .frame(maxWidth: .infinity, alignment: .leading)
+                       .background(
+                           RoundedRectangle(cornerRadius: 8)
+                               .fill(Color(UIColor.systemBackground))
+                               .shadow(color: Color.gray.opacity(0.2), radius: 2, x: 0, y: 1)
+                       )
+                       .padding(.horizontal)
+               }
+
+               Spacer()
+
+              
+               HStack {
+                   Spacer()
+                   Button(action: {
+                       showAlert = true
+                   }) {
+                       Text(LocalizedStringKey("Remove Media"))
+                           .font(.body)
+                           .bold()
+                           .frame(maxWidth: .infinity)
+                           .padding()
+                           .background(Color.red)
+                           .foregroundColor(.white)
+                           .cornerRadius(8)
+                           .padding(.horizontal)
+                   }
+                   .alert(isPresented: $showAlert) {
+                       Alert(
+                           title: Text(LocalizedStringKey("Remove from App")),
+                           message: Text(LocalizedStringKey("Are you sure you want to remove this server from the app?")),
+                           primaryButton: .destructive(Text("Remove")) {
+                               dispatch(.Remove)
+                           },
+                           secondaryButton: .cancel()
+                       )
+                   }
+                   Spacer()
+               }
+           
+               .padding(.bottom)
+           }    .background(
+            colorScheme == .dark ? Color.black : Color(UIColor.systemGroupedBackground)
+        )
+        
+       }
 }
 
 struct InternetArchiveDetailView_Previews: PreviewProvider {

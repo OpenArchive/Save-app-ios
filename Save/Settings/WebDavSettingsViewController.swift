@@ -7,8 +7,7 @@
 //
 
 import UIKit
-
-class WebDavSettingsViewController: SpaceSettingsViewController, TextBoxDelegate {
+class WebDavSettingsViewController: SpaceSettingsViewController, TextBoxDelegate,UpdateNameDelegate {
 
     @IBOutlet weak var serverLb: UILabel! {
         didSet {
@@ -73,19 +72,21 @@ class WebDavSettingsViewController: SpaceSettingsViewController, TextBoxDelegate
         }
     }
 
-
+    @IBAction func viewLicences(_ sender: Any) {
+        let storyboard = UIStoryboard(name: "Main", bundle: nil) // Replace "Main" with your storyboard name
+        if let viewController = storyboard.instantiateViewController(withIdentifier: "CreateCCLViewController") as? CreateCCLViewController {
+            viewController.isFromCreateServer = false
+            viewController.editSpace = space
+            viewController.delegate = self
+            self.navigationController?.pushViewController(viewController, animated: true)
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        if space == nil || !(space is WebDavSpace), let space = SelectedSpace.space as? WebDavSpace {
-            self.space = space
-        }
-        else {
-            return dismiss(nil)
-        }
-
-        navigationItem.title = space?.prettyName ?? WebDavSpace.defaultPrettyName
-
+        navigationItem.title = NSLocalizedString("Edit Private Server", comment: "")
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+               navigationItem.backBarButtonItem = backBarButtonItem
         urlTb.text = space?.url?.absoluteString
         nameTb.text = space?.name
         usernameTb.text = space?.username
@@ -106,8 +107,6 @@ class WebDavSettingsViewController: SpaceSettingsViewController, TextBoxDelegate
         space.name = name.isEmpty ? nil : name
 
         Db.writeConn?.setObject(space)
-
-        navigationItem.title = space.prettyName
     }
 
     func textBox(shouldReturn textBox: TextBox) -> Bool {
@@ -128,4 +127,10 @@ class WebDavSettingsViewController: SpaceSettingsViewController, TextBoxDelegate
 
         Db.writeConn?.setObject(space)
     }
+    func updateName(_ name: String) {
+        self.nameTb.text = name
+       }
+}
+protocol UpdateNameDelegate: AnyObject {
+    func updateName(_ name: String)
 }

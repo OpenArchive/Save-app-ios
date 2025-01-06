@@ -12,6 +12,7 @@ import LibProofMode
 import GoogleSignIn
 import TorManager
 import OrbotKit
+import SwiftUI
 
 class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
@@ -62,7 +63,6 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         UIFont.setUpMontserrat()
 
         setUpOrbotAndTor()
-
         return true
     }
 
@@ -70,7 +70,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
 
-        if Settings.hideContent {
+        if AppSettings.passcodeEnabled {
             BlurredSnapshot.create(window)
             hadResigned = true
         }
@@ -82,6 +82,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {
+        
         // Called as part of the transition from the background to the active state; here you can undo many of the changes made on entering the background.
 
         // `MainViewController#viewWillAppear` will not be called, when the
@@ -97,17 +98,21 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         // In that case, the `UploadManager` might need a restart, since it could
         // have been #stopped, due to running out of background time.
         uploadManager?.restart()
+        if(shouldShowAppPasscodeEntryScreen()){
+            showAppPasscodeEntryScreen()
+        }
+       
     }
 
-//    func applicationDidBecomeActive(_ application: UIApplication) {
-//
-//        if Settings.hideContent && hadResigned {
-//            BlurredSnapshot.remove()
-//        }
-//
-//        // Note: If restart is slow (and even crashes), it could be, that
-//        // #applicationDidEnterBackground isn't finished, yet!
-//
+    func applicationDidBecomeActive(_ application: UIApplication) {
+
+        if AppSettings.passcodeEnabled {
+            BlurredSnapshot.remove()
+        }
+
+        // Note: If restart is slow (and even crashes), it could be, that
+        // #applicationDidEnterBackground isn't finished, yet!
+
 //        if !verified, let privateKey = SecureEnclave.loadKey() {
 //            var counter = 0
 //
@@ -158,7 +163,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 //        }
 //
 //        verified = false
-//    }
+    }
 
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
@@ -297,7 +302,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 
      Additionally, when Dropbox authentication is done via a web view, there's also remnants we try to remove here.
      */
-    func cleanCache() 
+    func cleanCache()
     {
         // This will clean the contents of the Cache.db file, but unfortunately not
         // backup copies, which also exist.
@@ -334,8 +339,52 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
             }
         }
     }
+   
 }
 
 extension TorManager {
     static let shared = TorManager(directory: .groupDir!.appendingPathComponent("tor", isDirectory: true))
+}
+
+extension AppDelegateBase {
+    
+     func showAppPasscodeEntryScreen() {
+        guard let rootVC = window?.rootViewController else { return }
+
+        // Check if PIN screen is already presented
+        if let presented = rootVC.presentedViewController,
+           presented is UIHostingController<PasscodeEntryView> {
+            return
+        }
+         
+         // Define the onComplete closure to dismiss the screen or perform further actions
+         let onPasscodeSuccess = {
+             rootVC.dismiss(animated: true) {
+                 print("Passcode verified successfully!")
+                 // Perform further actions after passcode success, if needed
+             }
+         }
+         
+         let onExit = {
+             print("Exiting the application...")
+             UIControl().sendAction(#selector(NSXPCConnection.suspend), to: UIApplication.shared, for: nil)
+             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                 exit(0)
+             }
+         }
+
+        // Show the PIN screen
+         let passcodeEntryView = PasscodeEntryView(
+            onPasscodeSuccess: onPasscodeSuccess,
+            onExit: onExit
+        )
+
+        let hostingController = UIHostingController(rootView: passcodeEntryView)
+        hostingController.modalPresentationStyle = .fullScreen
+        rootVC.present(hostingController, animated: true)
+    }
+    
+    func shouldShowAppPasscodeEntryScreen() -> Bool {
+        return AppSettings.passcodeEnabled
+    }
 }
