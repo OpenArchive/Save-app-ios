@@ -13,77 +13,60 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                           UINavigationControllerDelegate,
                           AssetPickerDelegate, SideMenuDelegate
 {
+    // MARK: - IBOutlets
     @IBOutlet weak var removeButtonHeight: NSLayoutConstraint!{
         didSet {
             removeButtonHeight.constant = 0
         }}
-    
     @IBOutlet weak var titleContainerHeight: NSLayoutConstraint!
     @IBOutlet weak var titleContainer: UIView!
-    private static let segueConnectSpace = "connectSpaceSegue"
-    private static let segueShowPreview = "showPreviewSegue"
-    private static let segueShowPrivateServerSetting = "showPrivateServerSetting"
-
     @IBOutlet weak var titlescrollview: UIScrollView!
-    @IBOutlet weak var logo: UIImageView!
-
-    @IBOutlet weak var titleStackView: UIStackView! {
-        didSet {
-          
-        }
-    }
+    @IBOutlet weak var titleStackView: UIStackView!
     @IBOutlet weak var removeBt: UIButton! {
         didSet {
             removeBt.isHidden = true
         }
     }
-
+    //hidden
     @IBOutlet weak var menuBt: UIButton! {
         didSet {
             menuBt.accessibilityIdentifier = "btMenu"
         }
     }
     @IBOutlet weak var serverName: UILabel!
-    
     @IBOutlet weak var folderName: UILabel!
     @IBOutlet weak var menu: UIView! {
         didSet {
             menu.isHidden = true
         }
     }
-
+    
     @IBOutlet weak var spaceFavIcon: UIImageView!
     @IBOutlet weak var folderNameLb: UILabel!
-
     @IBOutlet weak var folderAssetCountLb: UILabel! {
         didSet {
             // iOS 17 fix: Is ignored, when only set in storyboard.
             folderAssetCountLb.clipsToBounds = true
         }
     }
-
     @IBOutlet weak var manageBt: UIButton! {
         didSet {
             manageBt.setTitle(NSLocalizedString("Edit", comment: ""))
             manageBt.accessibilityIdentifier = "btManageUploads"
         }
     }
-
     @IBOutlet weak var welcomeLb: UILabel! {
         didSet {
             welcomeLb.font = .montserrat(forTextStyle: .largeTitle, with: .traitBold)
             welcomeLb.text = NSLocalizedString("Welcome!", comment: "")
         }
     }
-
     @IBOutlet weak var hintLb: UILabel! {
         didSet {
             hintLb.text = NSLocalizedString("Press the button below to add media", comment: "")
         }
     }
-
     @IBOutlet weak var collectionView: UICollectionView!
-
     @IBOutlet weak var bottomMenu: UIView! {
         didSet {
             // Only round top corners.
@@ -91,7 +74,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             bottomMenu.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
         }
     }
-
+    
     @IBOutlet weak var myMediaBt: UIButton! {
         didSet {
             myMediaBt.setAttributedTitle(.init(
@@ -99,33 +82,29 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 attributes: [.font: UIFont.montserrat(forTextStyle: .caption1)]))
         }
     }
-
     @IBOutlet weak var container: UIView!
-
     @IBOutlet weak var addBt: UIButton! {
         didSet {
             addBt.setTitle("")
         }
     }
-
     @IBOutlet weak var addMenuLb: UILabel! {
         didSet {
             addMenuLb.text = NSLocalizedString("Add media using:", comment: "")
         }
     }
-
     @IBOutlet weak var addPhotosBt: UIButton! {
         didSet {
             addPhotosBt.setTitle(NSLocalizedString("Photo Gallery", comment: ""))
         }
     }
-
+    
     @IBOutlet weak var addFilesBt: UIButton! {
         didSet {
             addFilesBt.setTitle(NSLocalizedString("Files", comment: ""))
         }
     }
-
+    
     @IBOutlet weak var settingsBt: UIButton! {
         didSet {
             settingsBt.setAttributedTitle(.init(
@@ -134,13 +113,21 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             settingsBt.accessibilityIdentifier = "btSettings"
         }
     }
-
+    
     @IBOutlet weak var addMenu: UIView! {
         didSet {
             addMenu.hide()
         }
     }
-
+    
+    // MARK: - Static Properties
+    
+    private static let segueConnectSpace = "connectSpaceSegue"
+    private static let segueShowPreview = "showPreviewSegue"
+    private static let segueShowPrivateServerSetting = "showPrivateServerSetting"
+    
+    // MARK: - Instance Properties
+    
     var selectedProject: Project? {
         get {
             FoloderList.selectedProject
@@ -153,25 +140,25 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     var privateServer:Space? = nil
     
     private lazy var uploadsReadConn = Db.newLongLivedReadConn()
-
+    
     private lazy var uploadsMappings = YapDatabaseViewMappings(
         groups: UploadsView.groups, view: UploadsView.name)
-
+    
     private lazy var projectsReadConn = Db.newLongLivedReadConn()
-
+    
     private lazy var projectsMappings = YapDatabaseViewMappings(
         groups: ActiveProjectsView.groups, view: ActiveProjectsView.name)
-
+    
     private lazy var collectionsReadConn = Db.newLongLivedReadConn()
-
+    
     private lazy var collectionsMappings = CollectionsView.createMappings()
-
+    
     private lazy var assetsReadConn = Db.newLongLivedReadConn()
-
+    
     private lazy var assetsMappings = AbcFilteredByProjectView.createMappings()
-
+    
     private var inEditMode = false
-
+    
     private lazy var FoloderList: FolderListNewViewController = {
         let vc = FolderListNewViewController()
         vc.delegate = self
@@ -193,18 +180,18 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         return vc
     }()
     private lazy var assetPicker = AssetPicker(self)
-
-
+    
+    // MARK: - Lifecycle Methods
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         collectionView.allowsMultipleSelection = true
         uploadsReadConn?.update(mappings: uploadsMappings)
         projectsReadConn?.update(mappings: projectsMappings)
         collectionsReadConn?.update(mappings: collectionsMappings)
         assetsReadConn?.update(mappings: assetsMappings)
         Db.add(observer: self, #selector(yapDatabaseModified))
-
+        
         if Settings.proofMode && LocationMananger.shared.status == .notDetermined {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 LocationMananger.shared.requestAuthorization()
@@ -212,92 +199,39 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
         folderName.isUserInteractionEnabled = true
         serverName.isUserInteractionEnabled = true
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(labelTapped))
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(folderNameTapped))
         let tapGestureServer = UITapGestureRecognizer(target: self, action: #selector(serverNameTapped))
         serverName.addGestureRecognizer(tapGestureServer)
         folderName.addGestureRecognizer(tapGesture)
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-               navigationItem.backBarButtonItem = backBarButtonItem
+        navigationItem.backBarButtonItem = backBarButtonItem
     }
-    @objc func labelTapped() {
-        FoloderList.reload()
-        navigationController?.pushViewController(FoloderList, animated: true)
-    }
-    @objc func serverNameTapped() {
-        ServerList.fromSetting = false
-        navigationController?.pushViewController(ServerList, animated: true)
-    }
+    
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-      
-       
+        
+        
         uploadsReadConn?.update(mappings: uploadsMappings)
         projectsReadConn?.update(mappings: projectsMappings)
         collectionsReadConn?.update(mappings: collectionsMappings)
         assetsReadConn?.update(mappings: assetsMappings)
-
-        navigationController?.setNavigationBarHidden(false, animated: animated)
-
         
-           navigationController?.setNavigationBarHidden(false, animated: animated)
-
-           let appearance = UINavigationBarAppearance()
-           appearance.configureWithOpaqueBackground()
-        if #available(iOS 15.0, *) {
-            appearance.backgroundColor = UIColor.systemMint
-        } else {
-            appearance.backgroundColor = UIColor.systemTeal
-        }
-           appearance.titleTextAttributes = [
-               .foregroundColor: UIColor.white,
-               .font: UIFont.boldSystemFont(ofSize: 18)
-           ]
-           
-         
-           navigationController?.navigationBar.standardAppearance = appearance
-           navigationController?.navigationBar.scrollEdgeAppearance = appearance
-           navigationController?.navigationBar.compactAppearance = appearance
-           navigationController?.navigationBar.isTranslucent = false
-         
-        
-        appearance.titleTextAttributes = [
-            .foregroundColor: UIColor.white,
-            .font: UIFont.boldSystemFont(ofSize: 18)
-        ]
-
-      
-        navigationController?.navigationBar.tintColor = UIColor.white
-        let logoImageView = UIImageView(image: UIImage(named: "savelogo_w"))
-        logoImageView.contentMode = .scaleAspectFit
-
-        // Use a container for spacing
-        let containerView = UIView()
-        containerView.addSubview(logoImageView)
-
-        logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            logoImageView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
-            logoImageView.topAnchor.constraint(equalTo: containerView.topAnchor),
-            logoImageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5) // Add 10 points spacing
-        ])
-
-        self.navigationItem.titleView = containerView
-
+        configureNavigationBar()
         updateSpace()
         updateProject()
-
+        
         collectionView.toggle(numberOfSections(in: collectionView) != 0, animated: animated)
         if inEditMode && collectionView.numberOfSelectedItems < 1 {
             toggleMode()
         }
-
+        
         updateManageBt()
     }
-
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-
-       
+        
+        
         if segue.identifier == Self.segueConnectSpace,
            let navC = segue.destination as? UINavigationController,
            let vc = navC.viewControllers.first as? SpaceWizardViewController
@@ -309,77 +243,74 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             let vc = segue.destination as? WebDavSettingsViewController
             vc?.space = privateServer
         }
-       
-       
-       
+        
+        
+        
     }
-
-    /**
-     Workaround for the filtered view, which potentially got reset by the share
-     extension's `Db#setup` call.
-
-     Needs to be called from `AppDelegate#applicationWillEnterForeground`.
-    */
-    func updateFilter() {
-        ProjectsView.updateGrouping()
-
-        updateProject()
+    
+    // MARK: - Gesture Methods
+    @objc func folderNameTapped() {
+        FoloderList.reload()
+        navigationController?.pushViewController(FoloderList, animated: true)
     }
-
-
+    @objc func serverNameTapped() {
+        ServerList.fromSetting = false
+        navigationController?.pushViewController(ServerList, animated: true)
+    }
+    
     // MARK: UICollectionViewDataSource
-
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return Int(assetsMappings.numberOfItems(inSection: UInt(section)))
     }
-
+    
     func numberOfSections(in collectionView: UICollectionView) -> Int {
         return Int(assetsMappings.numberOfSections())
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind
-        kind: String, at indexPath: IndexPath) -> UICollectionReusableView 
+                        kind: String, at indexPath: IndexPath) -> UICollectionReusableView
     {
         let view = collectionView.dequeueReusableSupplementaryView(
             ofKind: kind, withReuseIdentifier: HeaderView.reuseId, for: indexPath) as! HeaderView
-
+        
         let group = assetsMappings.group(forSection: UInt(indexPath.section))
         let collection: Collection? = collectionsReadConn?.object(for: AssetsByCollectionView.collectionId(from: group))
-
+        
         // Fixed bug: YapDatabase caches these objects, therefore we need to clear
         // before we repopulate.
         collection?.assets.removeAll()
-
+        
         collection?.assets.append(contentsOf: assetsReadConn?.objects(in: indexPath.section, with: assetsMappings) ?? [])
-
+        
         view.collection = collection
-
+        
         return view
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.reuseId, for: indexPath) as! ImageCell
-
+        
         let asset: Asset? = assetsReadConn?.object(at: indexPath, in: assetsMappings)
-
+        
         cell.set(asset, !(asset?.isUploaded ?? true) ? uploadsReadConn?.find(where: { $0.assetId == asset?.id }) : nil)
-
+        
         return cell
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if inEditMode {
             return updateRemove()
         }
-
+        
         if let cell = collectionView.cellForItem(at: indexPath) as? ImageCell {
             if let upload = cell.upload {
                 collectionView.deselectItem(at: indexPath, animated: false)
-
+                
                 if upload.error != nil {
                     return UploadErrorAlert.present(self, upload)
                 }
-
+                
                 switch upload.state {
                 case .paused:
                     NotificationCenter.default.post(name: .uploadManagerUnpause, object: upload.id)
@@ -388,25 +319,25 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 default:
                     break
                 }
-
+                
                 return
             }
-
+            
             if cell.asset?.isUploaded ?? false || cell.upload != nil {
                 toggleMode(newMode: true)
-
+                
                 return updateRemove()
             }
         }
-
+        
         collectionView.deselectItem(at: indexPath, animated: false)
-
+        
         AbcFilteredByCollectionView.updateFilter(AssetsByCollectionView.collectionId(
             from: assetsMappings.group(forSection: UInt(indexPath.section))))
-
+        
         performSegue(withIdentifier: Self.segueShowPreview, sender: indexPath.row)
     }
-
+    
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
         // Switch off edit mode, when last item was deselected.
         if collectionView.numberOfSelectedItems < 1 {
@@ -416,16 +347,15 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             updateRemove()
         }
     }
-
-
+    
+    
     // MARK: SideMenuDelegate
-
-
+    
     func selected(project: Project?) {
         hideSettings()
         updateProject()
     }
-
+    
     func addSpace() {
         self.performSegue(withIdentifier: Self.segueConnectSpace, sender: self)
         
@@ -433,148 +363,149 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     func selectSpace(){
         hideSettings()
     }
-
-
+    
+    func pushPrivateServerSetting(space:Space , fromSetting :Bool = false) {
+        fromSetting ? print("no change") : hideSettings()
+        privateServer = space
+        performSegue(withIdentifier: MainViewController.segueShowPrivateServerSetting, sender: self)
+    }
+    
     // MARK: Actions
-
+    
     @IBAction func hideSettings() {
-                    self.container.hide(animated: true) { _ in
-                self.settingsVc.view.removeFromSuperview()
-                self.settingsVc.removeFromParent()
-            }
-            
-            if SelectedSpace.space != nil {
-                self.titleContainer.isHidden = false
-            }
-            self.titleContainerHeight.constant = 44
-            self.myMediaBt.setImage(UIImage(systemName: "photo.fill"))
-            self.settingsBt.setImage(UIImage(systemName: "gearshape"))
+        self.container.hide(animated: true) { _ in
+            self.settingsVc.view.removeFromSuperview()
+            self.settingsVc.removeFromParent()
+        }
+        
+        if SelectedSpace.space != nil {
+            self.titleContainer.isHidden = false
+        }
+        self.titleContainerHeight.constant = 44
+        self.myMediaBt.setImage(UIImage(systemName: "photo.fill"))
+        self.settingsBt.setImage(UIImage(systemName: "gearshape"))
         
     }
-
+    
     @IBAction func showSettings() {
-       
-       
-            self.container.addSubview(self.settingsVc.view)
-
-            self.container.translatesAutoresizingMaskIntoConstraints = false
-            self.settingsVc.view.translatesAutoresizingMaskIntoConstraints = false
-
-            self.container.topAnchor.constraint(equalTo: self.settingsVc.view.topAnchor).isActive = true
-            self.container.bottomAnchor.constraint(equalTo: self.settingsVc.view.bottomAnchor).isActive = true
-            self.container.leadingAnchor.constraint(equalTo: self.settingsVc.view.leadingAnchor).isActive = true
-            self.container.trailingAnchor.constraint(equalTo: self.settingsVc.view.trailingAnchor).isActive = true
-
-            self.addChild(self.settingsVc)
-            self.settingsVc.didMove(toParent: self)
-
-            self.container.show2(animated: true)
-            self.titleContainer.isHidden = true
-            self.titleContainerHeight.constant = 0
-            self.myMediaBt.setImage(UIImage(systemName: "photo"))
-            self.settingsBt.setImage(UIImage(systemName: "gearshape.fill"))
-  
-    }
-
-    @IBAction func toggleMenu() {
-     
-    }
-
-    @IBAction func addFolder() {
-      
-            if SelectedSpace.available {
-                if SelectedSpace.space is IaSpace{
-                    self.navigationController?.pushViewController(AddFolderNewViewController(), animated: true)
-                }
-                else{
-                    self.navigationController?.pushViewController(SelectFolderTypeViewController(), animated: true)
-                }
-            }
-            else {
-                self.performSegue(withIdentifier: Self.segueConnectSpace, sender: self)
-            }
+        
+        
+        self.container.addSubview(self.settingsVc.view)
+        
+        self.container.translatesAutoresizingMaskIntoConstraints = false
+        self.settingsVc.view.translatesAutoresizingMaskIntoConstraints = false
+        
+        self.container.topAnchor.constraint(equalTo: self.settingsVc.view.topAnchor).isActive = true
+        self.container.bottomAnchor.constraint(equalTo: self.settingsVc.view.bottomAnchor).isActive = true
+        self.container.leadingAnchor.constraint(equalTo: self.settingsVc.view.leadingAnchor).isActive = true
+        self.container.trailingAnchor.constraint(equalTo: self.settingsVc.view.trailingAnchor).isActive = true
+        
+        self.addChild(self.settingsVc)
+        self.settingsVc.didMove(toParent: self)
+        
+        self.container.show2(animated: true)
+        self.titleContainer.isHidden = true
+        self.titleContainerHeight.constant = 0
+        self.myMediaBt.setImage(UIImage(systemName: "photo"))
+        self.settingsBt.setImage(UIImage(systemName: "gearshape.fill"))
         
     }
-
+    
+    @IBAction func toggleMenu() {
+        
+    }
+    
+    @IBAction func addFolder() {
+        
+        if SelectedSpace.available {
+            if SelectedSpace.space is IaSpace{
+                self.navigationController?.pushViewController(AddFolderNewViewController(Project(space: SelectedSpace.space)), animated: true)
+            }
+            else{
+                self.navigationController?.pushViewController(SelectFolderTypeViewController(), animated: true)
+            }
+        }
+        else {
+            self.performSegue(withIdentifier: Self.segueConnectSpace, sender: self)
+        }
+        
+    }
+    
     @IBAction func add() {
-       
+        
         if selectedProject == nil {
             return FolderInfoAlert.presentIfNeeded(self) { [weak self] in
                 self?.addFolder()
             }
         }
-
+        
         AddInfoAlert.presentIfNeeded(self)
-
+        
         assetPicker.pickMedia()
     }
-
+    
     @IBAction func showAddMenu() {
         addMenu.show2(animated: true)
     }
-
+    
     @IBAction func closeAddMenu() {
         addMenu.hide(animated: true)
     }
-
+    
     /**
      Deactivated, was deemed too confusing.
      */
     @IBAction func addDocument() {
         closeAddMenu()
-
+        
         // Don't allow to add assets without a space or a project.
         if selectedProject == nil {
             return addFolder()
         }
-
+        
         assetPicker.pickDocuments()
     }
-
+    
     @IBAction func longPressItem(_ sender: UILongPressGestureRecognizer) {
-
-        // We only recognize this the first time, it is triggered.
-        // It will continue triggering with .changed and .ended states, but
-        // .ended is only released after the user lifts the finger which feels
-        // awkward.
+        
         if sender.state != .began {
             return
         }
-
+        
         if let indexPath = collectionView.indexPathForItem(at: sender.location(in: collectionView)) {
             collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredVertically)
-
+            
             toggleMode(newMode: true)
         }
     }
-
+    
     @IBAction func removeAssets() {
         RemoveAssetAlert.present(self, getSelectedAssets(), { [weak self] success in
             guard success else {
                 return
             }
-
+            
             self?.toggleMode(newMode: false)
         })
     }
-
-
+    
+    
     // MARK: AssetPickerDelegate
-
+    
     var currentCollection: Collection? {
         selectedProject?.currentCollection
     }
-
+    
     func picked() {
         performSegue(withIdentifier: Self.segueShowPreview, sender: nil)
     }
-
-
+    
+    
     // MARK: Observers
-
+    
     /**
      Callback for `YapDatabaseModified` and `YapDatabaseModifiedExternally` notifications.
-
+     
      Will be called, when something changed the database.
      */
     @objc func yapDatabaseModified(notification: Notification) {
@@ -588,7 +519,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 else {
                     continue
                 }
-
+                
                 if upload.state == .uploaded {
                     // Make sure, section header is reloaded, when an upload is finished.
                     DispatchQueue.main.async {
@@ -605,107 +536,163 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                     }
                 }
             }
-
+            
             if changes.forceFull || !changes.rowChanges.isEmpty {
                 updateManageBt()
             }
         }
-
+        
         if projectsReadConn?.hasChanges(projectsMappings) ?? false {
-         
+            
             updateSpace()
             FoloderList.reload()
             updateProject()
         }
-
+        
         var forceFull = false
-
+        
         if let changes = collectionsReadConn?.getChanges(collectionsMappings) {
             // We need to recognize changes in `Collection` objects used in the
             // section headers.
             forceFull = changes.forceFull || changes.rowChanges.contains(where: { $0.type == .update && $0.finalGroup == selectedProject?.id })
         }
-
+        
         // Always, always, always force a full reload if anything changed.
         // No optimizing helps. Tried this again, and got crash reports again when people
         // tried to delete a folder. Forget it.
         if let changes = assetsReadConn?.getChanges(assetsMappings) {
             forceFull = forceFull || changes.forceFull
-                || changes.sectionChanges.contains(where: { $0.type == .delete || $0.type == .insert })
-                || changes.rowChanges.contains(where: {
-                    $0.type == .delete || $0.type == .insert || $0.type == .move || $0.type == .update
-                })
+            || changes.sectionChanges.contains(where: { $0.type == .delete || $0.type == .insert })
+            || changes.rowChanges.contains(where: {
+                $0.type == .delete || $0.type == .insert || $0.type == .move || $0.type == .update
+            })
         }
-
+        
         collectionView.apply(YapDatabaseChanges(forceFull, [], [])) { [weak self] countChanged in
-
+            
             guard let self = self, countChanged else {
                 return
             }
-
+            
             self.folderAssetCountLb.text = "  \(Formatters.format(self.assetsMappings.numberOfItemsInAllGroups()))  "
-
+            
             if self.collectionView.isHidden != (self.numberOfSections(in: self.collectionView) < 1) {
                 self.collectionView.toggle(self.collectionView.isHidden, animated: true)
             }
         }
     }
-
-
+    
+    // MARK: - Helper Methods
+    
+    /**
+     Workaround for the filtered view, which potentially got reset by the share
+     extension's `Db#setup` call.
+     
+     Needs to be called from `AppDelegate#applicationWillEnterForeground`.
+     */
+    func updateFilter() {
+        ProjectsView.updateGrouping()
+        
+        updateProject()
+    }
+    
+    private func configureNavigationBar() {
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        if #available(iOS 15.0, *) {
+            appearance.backgroundColor = UIColor.systemMint
+        } else {
+            appearance.backgroundColor = UIColor.systemTeal
+        }
+        appearance.titleTextAttributes = [
+            .foregroundColor: UIColor.white,
+            .font: UIFont.boldSystemFont(ofSize: 18)
+        ]
+        
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.tintColor = UIColor.white
+        
+        configureNavigationBarLogo()
+    }
+    
+    private func configureNavigationBarLogo() {
+        guard let logoImage = UIImage(named: "savelogo_w") else { return }
+        
+        let logoImageView = UIImageView(image: logoImage)
+        logoImageView.contentMode = .scaleAspectFit
+        
+        let containerView = UIView()
+        containerView.addSubview(logoImageView)
+        
+        logoImageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            logoImageView.centerXAnchor.constraint(equalTo: containerView.centerXAnchor),
+            logoImageView.topAnchor.constraint(equalTo: containerView.topAnchor),
+            logoImageView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor, constant: -5)
+        ])
+        
+        navigationItem.titleView = containerView
+    }
+    
     // MARK: Private Methods
-
+    
     /**
      Shows/hides the upload manager button. Sets the number of currently queued items.
      */
     private func updateManageBt() {
         uploadsReadConn?.asyncRead { [weak self] tx in
             let count = UploadsView.countUploading(tx)
-
+            
             DispatchQueue.main.async {
                 self?.folderAssetCountLb.toggle(count < 1, animated: true)
                 self?.manageBt.toggle(count > 0, animated: true)
             }
         }
     }
-
+    
     private func toggleMode() {
         toggleMode(newMode: !inEditMode)
     }
-
+    
     /**
      Enables/disables edit mode. Updates all UI depending on it.
-
+     
      - parameter newMode: The new mode to set. If the same as the current one, nothing happens.
      */
     private func toggleMode(newMode: Bool) {
         if inEditMode == newMode {
             return
         }
-
+        
         if inEditMode && collectionView.numberOfSections > 0 {
             for i in 0 ... collectionView.numberOfSections - 1 {
                 collectionView.deselectSection(i, animated: true)
             }
         }
-
+        
         inEditMode = newMode
-
+        
         updateRemove()
     }
-
+    
     /**
      Shows/hides the  remove button, depending on if and what is selected.
      */
     private func updateRemove() {
         removeBt.isHidden = !inEditMode || collectionView.numberOfSelectedItems < 1
-       
+        
         removeButtonHeight.constant = removeBt.isHidden ? 0 : 24
         
     }
-
+    
     /**
      UI update: Space icon and name.
-    */
+     */
     private func updateSpace() {
         if let space = SelectedSpace.space {
             spaceFavIcon.image = space.favIcon
@@ -717,32 +704,26 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             self.titleContainer.isHidden = true
             
         }
-
+        
         if !container.isHidden {
-          //  settingsVc.reload()
+            //  settingsVc.reload()
         }
-       
+        
     }
-
+    
     private func updateProject() {
         let project = selectedProject
         AbcFilteredByProjectView.updateFilter(project?.id)
         folderName.text = project?.name
     }
-
+    
     private func getSelectedAssets() -> [Asset] {
         assetsReadConn?.objects(at: collectionView.indexPathsForSelectedItems, in: assetsMappings) ?? []
     }
-
-
-    func pushPrivateServerSetting(space:Space , fromSetting :Bool = false) {
-        fromSetting ? print("no change") : hideSettings()
-        privateServer = space
-        performSegue(withIdentifier: MainViewController.segueShowPrivateServerSetting, sender: self)
-    }
+    
 }
 extension MainViewController: GeneralSettingsDelegate {
-   
+    
     func pushFoldersScreen() {
         FoloderList.reload()
         navigationController?.pushViewController(FoloderList, animated: true)

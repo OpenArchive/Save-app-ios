@@ -100,7 +100,7 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
         let project = getProject(at: indexPath)
 
        
-        cell.configure(with: project?.name ?? "", isSelected: selectedProject == project)
+        cell.configure(with: project?.name ?? "", isSelected: selectedProject?.id == project?.id)
         cell.editButtonAction = { [weak self] in
             self?.editFolder(at: indexPath)
         }

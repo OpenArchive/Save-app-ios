@@ -33,7 +33,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
         let view = createOptionView(title: WebDavSpace.defaultPrettyName, icon:  UIImage(systemName: "server.rack"), action: #selector(newWebDav))
         return view
     }()
-
+    
     private lazy var internetArchiveView: UIView = {
         let view = createOptionView(title: IaSpace.defaultPrettyName, icon :IaSpace.favIcon, action: #selector(newIa))
         return view
@@ -44,15 +44,15 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
         
         
         view.addSubview(privateServerView)
-      
+        
         NSLayoutConstraint.activate([
             privateServerView.topAnchor.constraint(equalTo: subtitleLb.bottomAnchor, constant: 32),
             privateServerView.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 16),
             privateServerView.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -20),
             privateServerView.heightAnchor.constraint(equalToConstant: 50)
         ])
-
-
+        
+        
         
         Db.bgRwConn?.read { tx in
             if tx.find(where: { (_: IaSpace) in true }) == nil {
@@ -68,9 +68,9 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
                 
             }}
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-               navigationItem.backBarButtonItem = backBarButtonItem
+        navigationItem.backBarButtonItem = backBarButtonItem
         navigationItem.title = NSLocalizedString("Select a Server", comment: "")
-       
+        
     }
     
     
@@ -85,13 +85,13 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
     }
     
     @IBAction func newGdrive() {
-     //   delegate?.next(UIStoryboard.main.instantiate(GdriveWizardViewController.self), pos: 1)
+        //   delegate?.next(UIStoryboard.main.instantiate(GdriveWizardViewController.self), pos: 1)
     }
     
     private func createOptionView(title: String, icon: UIImage?, action: Selector) -> UIView {
         let container = UIView()
         container.translatesAutoresizingMaskIntoConstraints = false
-
+        
         let icon = UIImageView(image: icon)
         icon.widthAnchor.constraint(equalToConstant: 24).isActive = true
         icon.heightAnchor.constraint(equalToConstant: 24).isActive = true
@@ -100,38 +100,38 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
         label.text = title
         label.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         label.translatesAutoresizingMaskIntoConstraints = false
-
+        
         let arrow = UIImageView(image: UIImage(systemName: "chevron.right"))
         arrow.tintColor = .systemGray
         arrow.translatesAutoresizingMaskIntoConstraints = false
-
+        
         let button = UIButton()
         button.addTarget(self, action: action, for: .touchUpInside)
         button.translatesAutoresizingMaskIntoConstraints = false
-
+        
         container.addSubview(icon)
         container.addSubview(label)
         container.addSubview(arrow)
         container.addSubview(button)
-
+        
         NSLayoutConstraint.activate([
             icon.centerYAnchor.constraint(equalTo: container.centerYAnchor),
             icon.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 16),
             icon.widthAnchor.constraint(equalToConstant: 24),
             icon.heightAnchor.constraint(equalToConstant: 24),
-
+            
             label.centerYAnchor.constraint(equalTo: container.centerYAnchor),
             label.leadingAnchor.constraint(equalTo: icon.trailingAnchor, constant: 8),
-
+            
             arrow.centerYAnchor.constraint(equalTo: container.centerYAnchor),
             arrow.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -16),
-
+            
             button.topAnchor.constraint(equalTo: container.topAnchor),
             button.bottomAnchor.constraint(equalTo: container.bottomAnchor),
             button.leadingAnchor.constraint(equalTo: container.leadingAnchor),
             button.trailingAnchor.constraint(equalTo: container.trailingAnchor)
         ])
-
+        
         return container
     }
 }

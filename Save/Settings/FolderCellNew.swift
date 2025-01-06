@@ -47,7 +47,7 @@ class FolderCellNew: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        selectionStyle = .none 
+        selectionStyle = .none
         contentView.backgroundColor = .clear
         
         // Add subviews
@@ -111,12 +111,11 @@ class FolderCellNew: UITableViewCell {
         folderIcon.image = UIImage(systemName: isSelected ? "folder.fill" : "folder")?.withRenderingMode(.alwaysTemplate)
         folderIcon.tintColor = isSelected ? .accent : .label
         if isSelected {
-            // Archived folder appearance
             borderedContainer.backgroundColor = UIColor.systemGray6
             borderedContainer.layer.borderWidth = 1
             borderedContainer.layer.borderColor = UIColor.systemTeal.cgColor
         } else {
-           
+            
             if traitCollection.userInterfaceStyle == .dark {
                 borderedContainer.backgroundColor = UIColor.black
             } else {

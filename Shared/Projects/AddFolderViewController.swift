@@ -42,7 +42,7 @@ class AddFolderViewController: BaseViewController {
            var stack = navigationController?.viewControllers
         {
             stack.removeAll { $0 is AddFolderViewController }
-            stack.append(AddFolderNewViewController())
+            stack.append(AddFolderNewViewController(Project(space: SelectedSpace.space)))
             navigationController?.setViewControllers(stack, animated: false)
 
             return
@@ -70,7 +70,7 @@ class AddFolderViewController: BaseViewController {
 
     @IBAction func createNew() {
       
-        navigationController?.pushViewController(AddFolderNewViewController(), animated: true)
+        navigationController?.pushViewController(AddFolderNewViewController(Project(space: SelectedSpace.space)), animated: true)
     }
 
     @IBAction func browse() {

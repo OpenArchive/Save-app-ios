@@ -33,11 +33,13 @@ class SpaceSuccessViewController: BaseViewController {
     }
 
     @IBAction func done() {
-        if let existingVC = navigationController?.viewControllers.first(where: { $0.isKind(of: type(of: MainViewController())) }) {
+        if let existingVC = navigationController?.viewControllers.first(where: { $0 is MainViewController }) as? MainViewController {
+
+            existingVC.hideSettings()
             navigationController?.popToViewController(existingVC, animated: true)
-            } else {
-                navigationController?.setViewControllers([UIStoryboard.main.instantiate(MainViewController.self)],
-                                   animated: true)
-            }
+        } else {
+            let mainVC = UIStoryboard.main.instantiate(MainViewController.self)
+            navigationController?.setViewControllers([mainVC], animated: true)
+        }
     }
 }

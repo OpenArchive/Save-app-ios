@@ -8,52 +8,9 @@
 
 import UIKit
 
-class AddFolderNewViewController:UIViewController {
-
-    private var doStore = true
-    private var project: Project?
-    private lazy var ccEnabled = SelectedSpace.space?.license == nil
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        navigationController?.setNavigationBarHidden(false, animated: animated)
-    }
-  
+class AddFolderNewViewController:BaseFolderViewControllerNew {
     
-    @objc func connect() {
-           if let spaceId = project?.spaceId,
-              let name = folderNameTextField.text {
-
-               let alert = DuplicateFolderAlert(nil)
-
-               if alert.exists(spaceId: spaceId, name: name) {
-                   present(alert, animated: true)
-                   return
-               }
-           }
-           else {
-               return
-           }
-
-           project?.name = folderNameTextField.text
-
-           if self.doStore {
-               self.store()
-           }
-        navigationController?.popViewController(animated: true)
-          
-       }
-
-    // MARK: Private Methods
-
-
-    func store() {
-        if let project {
-            Db.writeConn?.setObject(project)
-        }
-    
-    }
-   
+    // MARK: - Properties
     let folderNameLabel: UILabel = {
         let label = UILabel()
         label.text = NSLocalizedString( "Folder Name",comment:"")
@@ -63,37 +20,28 @@ class AddFolderNewViewController:UIViewController {
         return label
     }()
     
-    let folderNameTextField: UITextField = {
-        let textField = UITextField()
-        textField.placeholder =  NSLocalizedString("Folder Name",comment: "")
-        textField.borderStyle = .roundedRect
-        textField.translatesAutoresizingMaskIntoConstraints = false
-        return textField
-    }()
-    
-    func enableDone() {
-        navigationItem.rightBarButtonItem?.isEnabled = folderNameTextField.text?.count ?? 0 > 0
-    }
-    
     // MARK: - Lifecycle
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        self.project = Project(space: SelectedSpace.space)
         navigationItem.title = NSLocalizedString( "Create Folder",comment:"")
         folderNameTextField.delegate = self
         folderNameTextField.returnKeyType = .done
         navigationItem.rightBarButtonItem = UIBarButtonItem(
             title: NSLocalizedString("Create", comment: ""), style: .done,
-            target: self, action: #selector(connect))
+            target: self, action: #selector(create))
         navigationItem.rightBarButtonItem?.accessibilityIdentifier = "btDone"
         
         let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(dismissController))
         navigationItem.leftBarButtonItem = backButton
         enableDone()
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        navigationController?.setNavigationBarHidden(false, animated: animated)
+    }
     @objc private func dismissController() {
         navigationController?.popViewController(animated: true)
     }
@@ -121,25 +69,30 @@ class AddFolderNewViewController:UIViewController {
             folderNameTextField.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             folderNameTextField.heightAnchor.constraint(equalToConstant: 44)
         ])
-      
+        
     }
- 
+    // MARK: - Helper Methods
+    @objc func create() {
+        connect()
+        dismissController()
+    }
 }
 extension AddFolderNewViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         connect()
+        navigationController?.popViewController(animated: true)
         return true
     }
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-           // Get the updated text
-           let currentText = textField.text ?? ""
-           guard let textRange = Range(range, in: currentText) else { return false }
-           let updatedText = currentText.replacingCharacters(in: textRange, with: string)
-           
-           // Perform any action you want with the updated text
-           print("Updated text: \(updatedText)")
-           enableDone()
-           return true
-       }
+        // Get the updated text
+        let currentText = textField.text ?? ""
+        guard let textRange = Range(range, in: currentText) else { return false }
+        let updatedText = currentText.replacingCharacters(in: textRange, with: string)
+        
+        // Perform any action you want with the updated text
+        print("Updated text: \(updatedText)")
+        enableDone()
+        return true
+    }
 }

@@ -10,7 +10,6 @@ import UIKit
 
 class ServerCellNew: UITableViewCell {
     
-    // Container for the content excluding the bottom padding
     private let borderedContainer: UIView = {
         let view = UIView()
         view.layer.cornerRadius = 8
@@ -50,14 +49,13 @@ class ServerCellNew: UITableViewCell {
         return view
     }()
     
-    // Closure for handling edit button tap
     var editButtonAction: (() -> Void)?
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         
         contentView.backgroundColor = .clear
-        selectionStyle = .none 
+        selectionStyle = .none
         // Add subviews
         contentView.addSubview(borderedContainer)
         borderedContainer.addSubview(serverIcon)
@@ -113,18 +111,17 @@ class ServerCellNew: UITableViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    // Configure the cell with folder data
+    // Configure the cell with server data
     func configure(with space:Space, isSelected: Bool) {
         serverNameLabel.text = space.name
         serverIcon.image = space.favIcon ?? SelectedSpace.defaultFavIcon
         serverIcon.tintColor = isSelected ? .accent : .label
         if isSelected {
-            // Archived folder appearance
             borderedContainer.backgroundColor = UIColor.systemGray6
             borderedContainer.layer.borderWidth = 1
             borderedContainer.layer.borderColor = UIColor.systemTeal.cgColor
         } else {
-           
+            
             if traitCollection.userInterfaceStyle == .dark {
                 borderedContainer.backgroundColor = UIColor.black
             } else {

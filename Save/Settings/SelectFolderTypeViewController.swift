@@ -118,7 +118,7 @@ class SelectFolderTypeViewController: UIViewController {
     @objc private func createNew() {
           if var viewControllers = navigationController?.viewControllers {
               viewControllers.removeLast()
-              viewControllers.append(AddFolderNewViewController())
+              viewControllers.append(AddFolderNewViewController(Project(space: SelectedSpace.space)))
               navigationController?.setViewControllers(viewControllers, animated: true)
           }
       }

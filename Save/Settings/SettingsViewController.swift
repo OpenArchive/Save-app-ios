@@ -127,7 +127,7 @@ class SettingsViewController: UIViewController {
     }
 
     @IBAction func folder() {
-        navigationController?.pushViewController(FoldersViewController(), animated: true)
+     //   navigationController?.pushViewController(FoldersViewController(), animated: true)
     }
 
     @IBAction func about() {
