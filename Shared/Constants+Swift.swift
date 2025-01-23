@@ -37,4 +37,10 @@ extension Constants {
             return false
         #endif
     }
+    
+    struct Errors {
+        static let defaultError = "Unexpected error"
+        static let defaultAction = "Try again in a few minutes"
+    }
 }
+typealias ErrorConstants = Constants.Errors

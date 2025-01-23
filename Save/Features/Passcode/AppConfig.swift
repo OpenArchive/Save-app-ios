@@ -13,12 +13,14 @@ struct AppConfig {
     let passcodeLength: Int
     let maxFailedAttempts: Int
     let maxRetryLimitEnabled: Bool
+    let appMaskingEnabled:Bool
     let lockoutDuration: TimeInterval // in seconds
     
     static let `default` = AppConfig(
         passcodeLength: 6,
         maxFailedAttempts: 5,
         maxRetryLimitEnabled: true,
-        lockoutDuration: 300 // 5 minutes
+        appMaskingEnabled: true,
+        lockoutDuration: 300
     )
 }

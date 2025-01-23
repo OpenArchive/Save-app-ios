@@ -23,18 +23,11 @@ class SectionHeaderView: UIView {
         separator.backgroundColor = .lightGray
         
         self.addSubview(label)
-    
+        
         label.snp.makeConstraints { (make) in
             make.leading.trailing.equalToSuperview().inset(20)
             make.top.bottom.equalToSuperview()
         }
-        
-        //        separator.snp.makeConstraints { (make) in
-        //            make.top.equalTo(label.snp.bottom)
-        //            make.bottom.equalToSuperview().inset(20)
-        //            make.leading.trailing.equalToSuperview()
-        //            make.height.equalTo(0.25)
-        //        }
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -43,7 +36,7 @@ class SectionHeaderView: UIView {
 }
 
 class GeneralSettingsViewController: FormViewController {
-    
+    private let config: AppConfig = .default
     private static let compressionOptions = [
         NSLocalizedString("Better Quality", comment: ""),
         NSLocalizedString("Smaller Size", comment: "")]
@@ -62,6 +55,38 @@ class GeneralSettingsViewController: FormViewController {
         
         navigationItem.title = NSLocalizedString("General", comment: "")
         
+        form
+        +++ sectionWithTitle(NSLocalizedString("Secure", comment: ""))
+        <<< SwitchRow() {
+            $0.tag = "lock_app"
+            $0.title = NSLocalizedString("Lock app with passcode", comment: "")
+            $0.value = AppSettings.isPasscodeEnabled
+            $0.cell.switchControl.onTintColor = .accent
+        }
+        
+        .onChange { row in
+            if row.value == true {
+                let passcodeSetupController = PasscodeSetupController()
+                self.navigationController?.pushViewController(passcodeSetupController, animated: true)
+            } else {
+                
+                AppSettings.isPasscodeEnabled = false
+            }
+        }
+        if config.appMaskingEnabled {
+            if let secureSection = form.last {
+                secureSection <<< ButtonRow("app_masking") {
+                    $0.title = NSLocalizedString("App Masking", comment: "")
+                    $0.presentationMode = .show(controllerProvider: .callback(builder: {
+                        if #available(iOS 14.0, *) {
+                            return SwiftUIHosting.createAppMaskingViewController()
+                        } else {
+                            return UIViewController()
+                        }
+                    }), onDismiss: nil)
+                }
+            }
+        }
         form
         +++ sectionWithTitle(NSLocalizedString("Connectivity & Data", comment: ""))
         
@@ -90,18 +115,18 @@ class GeneralSettingsViewController: FormViewController {
         //            Settings.highCompression = row.value == Self.compressionOptions[1]
         //        }
         
-        +++ sectionWithTitle(NSLocalizedString("Meta Data", comment: ""))
+        +++ sectionWithTitle(NSLocalizedString("Verify", comment: ""))
         
         <<< ButtonRow("proofmode") {
             $0.title = NSLocalizedString("ProofMode", comment: "")
-
+            
             $0.presentationMode = .show(controllerProvider: .callback(builder: {
                 ProofModeSettingsViewController()
             }), onDismiss: nil)
-
+            
         }
-
-       
+        
+        
         // MARK: Theme
         +++ sectionWithTitle(NSLocalizedString("Presentation", comment: ""))
         <<< ActionSheetRow<String>() {
@@ -122,7 +147,7 @@ class GeneralSettingsViewController: FormViewController {
                 Utils.setUnspecifiedMode()
             }
         }
-       
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -130,14 +155,10 @@ class GeneralSettingsViewController: FormViewController {
         
         navigationController?.setNavigationBarHidden(false, animated: animated)
         
-        //        form.delegate = nil
-        //
-        //        if let lockAppRow = form.rowBy(tag: "lock_app") as? SwitchRow {
-        //            lockAppRow.value = AppPreferences.passcodeEnabled
-        //            lockAppRow.evaluateDisabled()
-        //            lockAppRow.reload()
-        //        }
-        
+        if let lockAppRow = form.rowBy(tag: "lock_app") as? SwitchRow {
+            lockAppRow.value = AppSettings.isPasscodeEnabled
+            lockAppRow.reload()
+        }
         form.delegate = self
     }
     
@@ -186,7 +207,6 @@ class GeneralSettingsViewController: FormViewController {
         }
     }
     
-    /// Updates the switch row value programmatically while suppressing `onChange`.
     private func updateSwitch(row: SwitchRow, value: Bool) {
         isUpdatingSwitchProgrammatically = true
         row.value = value
