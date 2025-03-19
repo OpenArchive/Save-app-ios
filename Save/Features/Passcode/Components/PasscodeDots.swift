@@ -104,14 +104,5 @@ struct PasscodeDots: View {
             }
         }
         
-        //        withAnimation(.easeInOut(duration: 0.3)) {
-        //            animatableShakeValue = 1
-        //        }
-        //
-        //        DispatchQueue.main.asyncAfter(deadline: .now() + 0.3) {
-        //            withAnimation(.easeInOut(duration: 0.3)) {
-        //                animatableShakeValue = 0
-        //            }
-        //        }
     }
 }

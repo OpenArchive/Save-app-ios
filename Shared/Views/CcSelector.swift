@@ -15,12 +15,12 @@ class CcSelector {
 
     lazy var ccSw = SwitchRow("cc") {
         $0.title = individual
-            ? NSLocalizedString("Set unique Creative Commons licenses for EACH INDIVIDUAL folder on this server.", comment: "")
+            ? NSLocalizedString("Set creative commons licenses for folders on this server", comment: "")
             : NSLocalizedString("Set the same Creative Commons license for ALL folders on this server.", comment: "")
 
         $0.cell.textLabel?.numberOfLines = 0
         $0.cell.switchControl.onTintColor = .accent
-
+        $0.cell.textLabel?.font = .montserrat(forTextStyle: .caption2)
         $0.disabled = .function(["cc"], { [weak self] _ in
             !(self?.enabled ?? false)
         })
@@ -31,7 +31,7 @@ class CcSelector {
 
         $0.cell.textLabel?.numberOfLines = 0
         $0.cell.switchControl.onTintColor = .accent
-
+        $0.cell.textLabel?.font = .montserrat(forTextStyle: .caption2)
         $0.hidden = "$cc != true"
         $0.disabled = .function(["cc"], { [weak self] _ in
             !(self?.enabled ?? false)
@@ -43,7 +43,7 @@ class CcSelector {
 
         $0.cell.textLabel?.numberOfLines = 0
         $0.cell.switchControl.onTintColor = .accent
-
+        $0.cell.textLabel?.font = .montserrat(forTextStyle: .caption2)
         $0.hidden = "$cc != true"
         $0.disabled = .function(["cc", "remixSw"], { [weak self] _ in
             !(self?.enabled ?? false) || !(self?.remixSw.value ?? false)
@@ -54,6 +54,7 @@ class CcSelector {
         $0.title = NSLocalizedString("Allow commercial use?", comment: "")
 
         $0.cell.textLabel?.numberOfLines = 0
+        $0.cell.textLabel?.font = .montserrat(forTextStyle: .caption2)
         $0.cell.switchControl.onTintColor = .accent
 
         $0.hidden = "$cc != true"
@@ -67,7 +68,7 @@ class CcSelector {
 
         $0.hidden = "$cc != true"
     }.cellUpdate { cell, row in
-        cell.textLabel?.font = UIFont.systemFont(ofSize: 14)
+        cell.textLabel?.font = .montserrat(forTextStyle: .caption2)
      }
 
     let learnMoreRow = LinkRow() {
@@ -78,7 +79,7 @@ class CcSelector {
 
         $0.hidden = "$cc != true"
     }.cellUpdate { cell, row in
-        cell.textLabel?.font = UIFont.systemFont(ofSize: 14)
+        cell.textLabel?.font = .montserrat(forTextStyle: .caption2)
      }
 
 

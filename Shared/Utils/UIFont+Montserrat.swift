@@ -16,16 +16,17 @@ extension UIFont {
     static let italicFontName = "Montserrat-MediumItalic"
     static let boldItalicFontName = "Montserrat-BoldItalic"
     static let blackFontName = "Montserrat-Black"
+    static let semiBoldFontName = "Montserrat-SemiBold"
 
     static let baseSizes: [TextStyle: CGFloat] = [
         .body: 17,
         .callout: 16,
         .caption1: 12,
-        .caption2: 11,
+        .caption2: 14,
         .footnote: 13,
-        .headline: 17,
+        .headline: 18,
         .subheadline: 15,
-        .largeTitle: 34,
+        .largeTitle: 36,
         .title1: 28,
         .title2: 22,
         .title3: 20,
@@ -36,8 +37,8 @@ extension UIFont {
             print(fonts)
         } */
 
-        UILabel.appearance().fontName = defaultFontName
-        UIButton.appearance().fontName = defaultFontName
+       // UILabel.appearance().fontName = defaultFontName
+      //  UIButton.appearance().fontName = defaultFontName
 
         for state in [UIControl.State.application, .disabled, .focused, .highlighted, .normal, .reserved, .selected] {
             let font = UIBarItem.appearance().titleTextAttributes(for: state)?[.font] as? UIFont
@@ -99,6 +100,9 @@ extension UIFont {
         }
         else if traits?.contains(.traitItalic) ?? false {
             fontName = italicFontName
+        }
+        else if traits?.contains(.traitUIOptimized) ?? false {
+            fontName = semiBoldFontName
         }
         else {
             fontName = defaultFontName

@@ -20,30 +20,40 @@ class PreviewViewController: UIViewController,
 
     @IBOutlet weak var uploadBt: UIBarButtonItem! {
         didSet {
-            uploadBt.title = NSLocalizedString("Upload", comment: "")
+            uploadBt.title = NSLocalizedString("UPLOAD", comment: "")
             uploadBt.accessibilityIdentifier = "btUpload"
         }
     }
     @IBOutlet weak var collectionView: UICollectionView!
-    @IBOutlet weak var toolbar: UIToolbar!
-    @IBOutlet var editBt: UIBarButtonItem!
-    @IBOutlet var addBt: UIBarButtonItem!
-    @IBOutlet var deleteBt: UIBarButtonItem!
+   
+    @IBOutlet var editBt: UIButton!{
+        didSet {
+            editBt.isHidden = true
+        }
+    }
+    @IBOutlet var addBt: UIButton!
+    @IBOutlet var deleteBt: UIButton!{
+        didSet {
+            deleteBt.isHidden = true
+        }
+    }
 
     private let sc = SelectedCollection()
 
     private lazy var assetPicker = AssetPicker(self)
 
-    private lazy var flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-
-
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        let title = MultilineTitle()
-        title.title.text = NSLocalizedString("Preview", comment: "")
-        navigationItem.titleView = title
+      //  let title = MultilineTitle()
+       let  title = NSLocalizedString("Preview Upload", comment: "")
+//        title.title.textColor = .white
+//        title.subtitle.textColor = .white
+        navigationItem.title = title
 
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+               navigationItem.backBarButtonItem = backBarButtonItem
+        
         navigationItem.rightBarButtonItem?.accessibilityIdentifier = "btUpload"
 
         collectionView.register(PreviewCell.nib, forCellWithReuseIdentifier: PreviewCell.reuseId)
@@ -61,7 +71,7 @@ class PreviewViewController: UIViewController,
 
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
-        updateTitle()
+      //  updateTitle()
 
         toggleToolbar(collectionView.numberOfSelectedItems != 0, animated: animated)
     }
@@ -72,7 +82,7 @@ class PreviewViewController: UIViewController,
         // Delay. Otherwise, the alert would be shown before the view controller,
         // which effectively hides it.
         DispatchQueue.main.async {
-            BatchInfoAlert.presentIfNeeded(self, additionalCondition: self.sc.count > 1)
+            BatchInfoAlert.presentIfNeeded(viewController: self, additionalCondition: self.sc.count > 1)
         }
     }
 
@@ -172,7 +182,7 @@ class PreviewViewController: UIViewController,
     // MARK: Actions
 
     @IBAction func upload() {
-        UploadInfoAlert.presentIfNeeded(self) {
+        UploadInfoAlert.presentIfNeeded(viewController: self) {
             Db.writeConn?.asyncReadWrite { tx in
                 guard let group = self.sc.group else {
                     return
@@ -260,13 +270,23 @@ class PreviewViewController: UIViewController,
     }
 
     @IBAction func removeAssets() {
-        RemoveAssetAlert.present(self, getSelectedAssets(), { [weak self] success in
-            guard success else {
-                return
+        
+        for asset in getSelectedAssets() {
+            if asset == getSelectedAssets().last {
+                asset.remove() {
+                    self.toggleToolbar(false)
+                }
+            } else {
+                asset.remove()
             }
-
-            self?.toggleToolbar(false)
-        })
+        }
+//        RemoveAssetAlert.present(self, getSelectedAssets(), { [weak self] success in
+//            guard success else {
+//                return
+//            }
+//
+//            self?.toggleToolbar(false)
+//        })
     }
 
 
@@ -308,13 +328,10 @@ class PreviewViewController: UIViewController,
      - parameter selected: true, to show icons for editing, false to show icon for adding.
      */
     private func toggleToolbar(_ selected: Bool, animated: Bool = true) {
-        var items: [UIBarButtonItem] = [editBt, flexibleSpace, addBt, flexibleSpace]
 
-        if selected {
-            items.append(deleteBt)
-        }
+        deleteBt.isHidden = !selected
+        editBt.isHidden = !selected
 
-        toolbar.setItems(items, animated: animated)
     }
 
     private func getSelectedAssets() -> [Asset] {

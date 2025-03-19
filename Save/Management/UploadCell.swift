@@ -21,7 +21,7 @@ class UploadCell: BaseCell {
     }
 
     override class var height: CGFloat {
-        return 64
+        return 70
     }
 
     @IBOutlet weak var progress: ProgressButton! {
@@ -38,11 +38,16 @@ class UploadCell: BaseCell {
 
     @IBOutlet weak var nameLb: UILabel! {
         didSet {
-            nameLb.font = .montserrat(forTextStyle: .body, with: .traitBold)
+            nameLb.font = .montserrat(forTextStyle: .caption2)
         }
     }
 
-    @IBOutlet weak var sizeLb: UILabel!
+    @IBOutlet weak var sizeLb: UILabel!{
+        didSet {
+            sizeLb.font = .montserrat(forTextStyle: .caption1)
+            sizeLb.textColor = .gray70
+        }
+    }
     
     weak var upload: Upload? {
         didSet {

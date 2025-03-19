@@ -16,6 +16,7 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
     @IBOutlet weak var skipBt: UIButton! {
         didSet {
             skipBt.setTitle(NSLocalizedString("Skip", comment: ""))
+            skipBt.titleLabel?.font = .montserrat(forTextStyle: .callout,with: .traitUIOptimized)
         }
     }
 
@@ -34,9 +35,12 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
                     "Send your media securely to private servers and lock the app with a pin.",
                     comment: ""
                 )
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.lineSpacing = 3
                 return NSAttributedString(string: text, attributes: [
-                    .font: UIFont(name: "Montserrat-Regular", size: 14) ?? UIFont.systemFont(ofSize: 14),
-                    .foregroundColor: UIColor.black
+                    .font: UIFont(name: "Montserrat-Regular", size: 13) ?? UIFont.systemFont(ofSize: 14),
+                    .foregroundColor: UIColor.label,
+                    .paragraphStyle: paragraphStyle
                 ])
             },
             illustration: "onboarding-hand"
@@ -45,56 +49,89 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
         SlideViewController.Slide(
             heading: NSLocalizedString("Archive", comment: "").localizedUppercase,
             text: { _ in
-                // Create the main text
-                let attributedText = NSMutableAttributedString(string: NSLocalizedString(
-                    "Keep your media verifiable, safe and organized for the long-term by uploading it to private or public servers like Nextcloud or the Internet Archive. \nCommunicate your intentions for future use by adding a ",
-                    comment: ""
-                ), attributes: [
-                    .font: UIFont(name: "Montserrat-Regular", size: 14) ?? UIFont.systemFont(ofSize: 14),
-                    .foregroundColor: UIColor.black
-                ])
-                
-                // Create the link text
-                let linkText = NSLocalizedString("Creative Commons License.", comment: "creative commons license")
-                let linkAttributes: [NSAttributedString.Key: Any] = [
-                    .font: UIFont(name: "Montserrat-Regular", size: 14) ?? UIFont.systemFont(ofSize: 14),
+                // Define paragraph style
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.lineSpacing = 3
+
+                // Define font
+                let montserratFont = UIFont(name: "Montserrat-Regular", size: 13) ?? UIFont.systemFont(ofSize: 13)
+                let blackColor = UIColor.label
+
+                // Localized text with placeholders
+                let localizedString = NSLocalizedString(
+                    "Keep your media verifiable, safe and organized for the long-term by uploading it to private or public servers like Nextcloud or the Internet Archive. \nCommunicate your intentions for future use by adding a %@",
+                    comment: "Archive message"
+                )
+
+                // Create the "Creative Commons License" link text
+                let licenseText = NSLocalizedString("Creative Commons License.", comment: "Creative Commons License")
+                let licenseUrl = URL(string: "https://creativecommons.org")!
+
+                let licenseAttributes: [NSAttributedString.Key: Any] = [
+                    .font: montserratFont,
                     .underlineStyle: NSUnderlineStyle.single.rawValue,
-                    .foregroundColor: UIColor.black, // Black text color
-                    .link: URL(string: "https://creativecommons.org")! // Link to Creative Commons website
+                    .foregroundColor: blackColor,
+                    .paragraphStyle: paragraphStyle,
+                    .link: licenseUrl
                 ]
-                
-                // Append the link text to the main text
-                attributedText.append(NSAttributedString(string: linkText, attributes: linkAttributes))
-                
+                let licenseAttributed = NSAttributedString(string: licenseText, attributes: licenseAttributes)
+
+                // Split localized string into components
+                let localizedComponents = localizedString.components(separatedBy: "%@")
+
+                // Construct final attributed string
+                let attributedText = NSMutableAttributedString(string: localizedComponents[0], attributes: [
+                    .font: montserratFont,
+                    .foregroundColor: blackColor,
+                    .paragraphStyle: paragraphStyle
+                ])
+                attributedText.append(licenseAttributed)
+
                 return attributedText
             },
             illustration: "onboarding-laptop"
         ),
-
-
         SlideViewController.Slide(
             heading: NSLocalizedString("Verify", comment: "").localizedUppercase,
             text: { _ in
-                // Create the main text
-                let attributedText = NSMutableAttributedString(string: NSLocalizedString(
-                    "Authenticate and verify your media with sha256 hashes and ",
-                    comment: ""
-                ), attributes: [
-                    .font: UIFont(name: "Montserrat-Regular", size: 14) ?? UIFont.systemFont(ofSize: 14),
-                    .foregroundColor: UIColor.black
-                ])
-                
+                // Define paragraph style
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.lineSpacing = 3
+
+                // Define font
+                let montserratFont = UIFont(name: "Montserrat-Regular", size: 13) ?? UIFont.systemFont(ofSize: 14)
+                let blackColor = UIColor.label
+
+                // Localized text with placeholders
+                let localizedString = NSLocalizedString(
+                    "Authenticate and verify your media with sha256 hashes and %@",
+                    comment: "Verification message"
+                )
+
                 // Create the "ProofMode" link text
-                let linkText = NSLocalizedString("ProofMode.", comment: "ProofMode")
-                let linkAttributes: [NSAttributedString.Key: Any] = [
-                    .font: UIFont(name: "Montserrat-Regular", size: 14) ?? UIFont.systemFont(ofSize: 14),
+                let proofModeText = NSLocalizedString("ProofMode.", comment: "ProofMode")
+                let proofModeUrl = URL(string: "https://proofmode.org")!
+
+                let proofModeAttributes: [NSAttributedString.Key: Any] = [
+                    .font: montserratFont,
                     .underlineStyle: NSUnderlineStyle.single.rawValue,
-                    .foregroundColor: UIColor.black, // Ensure the color is black
-                    .link: URL(string: "https://proofmode.org")! // Add the URL for the clickable link
+                    .foregroundColor: blackColor,
+                    .paragraphStyle: paragraphStyle,
+                    .link: proofModeUrl
                 ]
-                
-                attributedText.append(NSAttributedString(string: linkText, attributes: linkAttributes))
-                
+                let proofModeAttributed = NSAttributedString(string: proofModeText, attributes: proofModeAttributes)
+
+                // Split localized string into components
+                let localizedComponents = localizedString.components(separatedBy: "%@")
+
+                // Construct final attributed string
+                let attributedText = NSMutableAttributedString(string: localizedComponents[0], attributes: [
+                    .font: montserratFont,
+                    .foregroundColor: blackColor,
+                    .paragraphStyle: paragraphStyle
+                ])
+                attributedText.append(proofModeAttributed)
+
                 return attributedText
             },
             illustration: "onboarding-handheld"
@@ -113,19 +150,21 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
                 let saveText = NSLocalizedString("Save", comment: "Save")
                 let torText = NSLocalizedString("Tor", comment: "Tor")
                 let torUrl = URL(string: "https://www.torproject.org")!
-
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.lineSpacing = 3
                 // Attributed string setup
                 let attributedText = NSMutableAttributedString()
 
                 // Font for all text
-                let montserratFont = UIFont(name: "Montserrat-Regular", size: 14) ?? UIFont.systemFont(ofSize: 14)
-                let blackColor = UIColor.black
+                let montserratFont = UIFont(name: "Montserrat-Regular", size: 13) ?? UIFont.systemFont(ofSize: 14)
+                let blackColor = UIColor.label
 
                 // Bold and italic font for "Save"
                 let boldItalicFont = UIFont(descriptor: montserratFont.fontDescriptor
                     .withSymbolicTraits([.traitBold, .traitItalic]) ?? montserratFont.fontDescriptor, size: 14)
                 let saveAttributed = NSAttributedString(string: saveText, attributes: [
                     .font: boldItalicFont,
+                    .paragraphStyle: paragraphStyle,
                     .foregroundColor: blackColor
                 ])
 
@@ -134,6 +173,7 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
                     .font: montserratFont,
                     .underlineStyle: NSUnderlineStyle.single.rawValue,
                     .foregroundColor: blackColor,
+                    .paragraphStyle: paragraphStyle,
                     .link: torUrl
                 ]
                 let torAttributed = NSAttributedString(string: torText, attributes: torAttributes)
@@ -142,17 +182,23 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
                 let localizedComponents = String(format: localizedString, "%@", "%@").components(separatedBy: "%@")
                 attributedText.append(NSAttributedString(string: localizedComponents[0], attributes: [
                     .font: montserratFont,
-                    .foregroundColor: blackColor
+                    .foregroundColor: blackColor,
+                    .paragraphStyle: paragraphStyle
+                
                 ]))
                 attributedText.append(saveAttributed)
                 attributedText.append(NSAttributedString(string: localizedComponents[1], attributes: [
                     .font: montserratFont,
-                    .foregroundColor: blackColor
+                    .foregroundColor: blackColor,
+                    .paragraphStyle: paragraphStyle
+                
                 ]))
                 attributedText.append(torAttributed)
                 attributedText.append(NSAttributedString(string: localizedComponents[2], attributes: [
                     .font: montserratFont,
-                    .foregroundColor: blackColor
+                    .foregroundColor: blackColor,
+                    .paragraphStyle: paragraphStyle
+                  
                 ]))
 
                 return attributedText
@@ -293,7 +339,7 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
     private func refresh(animate: Bool = true) {
         let last = page >= Self.slides.count - 1
         skipBt.isHidden = last
-        nextBt.setImage(.init(systemName: last ? "arrow.right" : "checkmark"))
+        nextBt.setImage(.init(systemName: last ? "checkmark" :"arrow.right"))
 
         pageControl.currentPage = page
 

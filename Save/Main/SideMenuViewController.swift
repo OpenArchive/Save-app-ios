@@ -18,6 +18,8 @@ protocol SideMenuDelegate {
     func addSpace()
 
     func addFolder()
+    
+    func pushPrivateServerSetting(space: Space)
 }
 
 class SideMenuViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
@@ -44,7 +46,7 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
         }
         set {
             spaceIcon.image = newValue?.favIcon ?? SelectedSpace.defaultFavIcon
-            spaceLb.text = newValue?.prettyName ?? Bundle.main.displayName
+            serverNameLbl.text = newValue?.prettyName ?? Bundle.main.displayName
         }
     }
 
@@ -55,9 +57,11 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
         }
     }
 
-    @IBOutlet weak var headerLb: UILabel! {
+    @IBOutlet weak var serverNameLbl: UILabel! {
         didSet {
-            headerLb.text = NSLocalizedString("Servers", comment: "")
+            serverNameLbl.text = NSLocalizedString("Servers", comment: "")
+            serverNameLbl.font = .montserrat(forTextStyle: .callout, with: .traitUIOptimized)
+            
         }
     }
     @IBOutlet weak var toggleIcon: UIImageView!
@@ -76,9 +80,11 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
 
     @IBOutlet weak var addFolderBt: UIButton! {
         didSet {
-            addFolderBt.setTitle(NSLocalizedString("Add Folder", comment: ""))
+            addFolderBt.titleLabel?.font = .montserrat(forTextStyle: .headline, with: .traitUIOptimized)
+            addFolderBt.titleLabel?.text = NSLocalizedString("New Folder", comment: "")
         }
     }
+
 
 
     private var spacesConn = Db.newLongLivedReadConn()
@@ -262,7 +268,9 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
      */
     @objc func yapDatabaseModified(notification: Notification) {
         if spacesConn?.hasChanges(spacesMappings) ?? false {
+            
             spacesTable.reloadData()
+            serverNameLbl.text = SelectedSpace.space?.prettyName ?? ""
         }
     }
 

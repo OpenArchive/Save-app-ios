@@ -7,44 +7,48 @@
 //
 
 import UIKit
+import SwiftUI
 
 class RemoveAssetAlert {
-
+    
     class func present(_ vc: UIViewController, _ assets: [Asset], _ completionHandler: ((_ success: Bool) -> Void)? = nil) {
         let appName = Bundle.main.displayName
-
-        let text = [
+        let itemCount = assets.count
+        
+        let message = [
             String.localizedStringWithFormat(
                 NSLocalizedString("This item/These items will be removed from the App only.", comment: "#bc-ignore!"),
-                assets.count, appName),
+                itemCount, appName),
             String.localizedStringWithFormat(
                 NSLocalizedString("It/They will remain on the server and in your Photos app.", comment: "#bc-ignore!"),
-                assets.count)]
-
-        AlertHelper.present(
-            vc,
-            message: text.joined(separator: "\n"),
+                itemCount)
+        ].joined(separator: "\n")
+        
+        let alertVC = CustomAlertViewController(
             title: String(format: NSLocalizedString("Remove Media from %@", comment: ""), appName),
-            actions: [
-                AlertHelper.cancelAction(handler: { _ in
-                    if let completionHandler = completionHandler {
-                        DispatchQueue.main.async {
-                            completionHandler(false)
+            message: message,
+            primaryButtonTitle: NSLocalizedString("Remove Media", comment: ""),
+            primaryButtonAction: {
+                for asset in assets {
+                    if asset == assets.last {
+                        asset.remove() {
+                            completionHandler?(true)
                         }
+                    } else {
+                        asset.remove()
                     }
-                }),
-                AlertHelper.destructiveAction(NSLocalizedString("Remove Media", comment: ""), handler: { _ in
-                    for asset in assets {
-                        if asset == assets.last {
-                            asset.remove() {
-                                completionHandler?(true)
-                            }
-                        }
-                        else {
-                            asset.remove()
-                        }
-                    }
-                })
-            ])
+                }
+            },
+            secondaryButtonTitle: NSLocalizedString("Cancel", comment: ""),
+            secondaryButtonAction: {
+                completionHandler?(false)
+               
+            }, showCheckbox: false, secondaryButtonIsOutlined: false,
+            iconImage: Image(systemName: "trash.fill"),
+            iconTint: Color.redButton,
+            isRemoveAlert: true
+        )
+        
+        vc.present(alertVC, animated: true)
     }
 }

@@ -30,4 +30,5 @@ enum  InternetArchiveDetailAction {
     case Remove
     case Removed
     case Cancel
+    case HandleBackButton(status:Bool)
 }

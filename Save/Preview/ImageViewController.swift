@@ -26,7 +26,7 @@ class ImageViewController: UIViewController {
         super.viewDidLoad()
 
         imageView.image = image
-
+        imageView.contentMode = .scaleAspectFill
         movieIndicator.isHidden = !(isAv ?? false)
         movieIndicator.set(duration: duration)
         movieIndicator.inset(9.5)

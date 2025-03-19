@@ -10,143 +10,136 @@ import UIKit
 import Eureka
 import LibProofMode
 
-class ProofModeSettingsViewController: FormViewController {
+class ProofModeSettingsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         navigationItem.title = NSLocalizedString("ProofMode", comment: "")
+        
+        if #available(iOS 14.0, *) {
+            
+            let settingsView = ProofModeSettingsView()
 
-        form
-      
-        +++ SwitchRow("proof_mode") {
-            $0.title = NSLocalizedString("Enable ProofMode", comment: "")
-            $0.value = Settings.proofMode
-            $0.cellStyle = .subtitle
-            $0.cell.switchControl.onTintColor = .accent
-            $0.cell.textLabel?.numberOfLines = 0
-            $0.cell.detailTextLabel?.numberOfLines = 0
+            let hostingController = UIHostingController(rootView: settingsView)
+
+            addChild(hostingController)
+            view.addSubview(hostingController.view)
+
+            hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+            NSLayoutConstraint.activate([
+                hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
+                hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+                hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+                hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
+            ])
+
+            hostingController.didMove(toParent: self)
+            hostingController.view.backgroundColor = UIColor.systemBackground
+            view.backgroundColor = UIColor.systemBackground
         }
-        .cellUpdate { cell, _ in
-            cell.detailTextLabel?.text = NSLocalizedString("Capture extra metadata and notarize all media.", comment: "")
+     }
+}
+import SwiftUI
+
+struct ProofModeSettingsView: View {
+    @State private var isProofModeEnabled = Settings.proofMode  // Initialize from Settings
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 15) {
+            ToggleSwitch(
+                title: NSLocalizedString("Enable ProofMode", comment: "Enable ProofMode"),
+                subtitle: NSLocalizedString("Share ProofMode public key", comment: "Share ProofMode public key"),
+                isOn: $isProofModeEnabled
+            ) { value in
+                handleProofModeToggle(value)
+            }
+
+            ProofModeView()
+
+            HStack(alignment: .top) {
+                Image(systemName: "exclamationmark.circle")
+                    .foregroundColor(.red)
+                    .padding(.leading, 10)
+                    .padding(.top, 16)
+                
+                VStack(alignment: .leading) { // Ensures text aligns properly
+                    let localizedText = String(format: NSLocalizedString(
+                              "ProofMode gathers metadata from local cell towers to help verify media. Android requires permission to enable this setting. %@ will only use this setting to capture data and will NOT access your phone to make/manage calls.",
+                              comment: "Warning about ProofMode metadata"), "Save")
+                    
+                    if #available(iOS 15, *) {
+                        Text(AttributedString.boldSubstring(in: localizedText, substring: "Save"))
+                            .font(.errorText).foregroundColor(.black)
+                    } else {
+                        Text(localizedText)
+                            .font(.errorText).foregroundColor(.black)
+                    }
+                }
+                .padding(.top, 16)
+                .padding(.bottom,16)
+                .padding(.trailing, 10)
+            }
+            .background(Color.gray05)
+            .cornerRadius(10)
         }
-        .onChange {  row in
-            Settings.proofMode = row.value ?? false
-
-            if Settings.proofMode {
-                // Request location access used for fresh `PHAsset`s.
-                LocationMananger.shared.requestAuthorization { status in
-
-                    // Create key immediately, if not existing, so users can export right away.
-                    if !(URL.proofModePrivateKey?.exists ?? false) {
-
-                        // If this is the first time, we create the key securely right away.
-//                        if Settings.proofModeEncryptedPassphrase == nil {
-//                            if let pmkeRow = self?.form.rowBy(tag: "proof_mode_key_encryption") as? SwitchRow {
-//                                pmkeRow.value = true
-//                                pmkeRow.updateCell()
-//                            }
-//                        }
-
+        .padding()
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .background(Color(UIColor.systemBackground))
+    }
+    struct ProofModeView: View {
+        var body: some View {
+            Text(NSLocalizedString("ProofMode is a system that enables authentication and verification of multimedia content,", comment: "ProofMode description"))
+                .font(.errorText)
+                .foregroundColor(.primary)
+            +
+            Text(" ")
+            +
+            Text("[\(NSLocalizedString(" learn more here", comment: "Learn more link"))](https://proofmode.org)")
+                .font(.errorText)
+                .foregroundColor(.accent)
+                .underline()
+        }
+    }
+    
+    /// **Handles ProofMode toggle logic**
+    private func handleProofModeToggle(_ isEnabled: Bool) {
+        Settings.proofMode = isEnabled  // Update Settings value when toggled
+        
+        if isEnabled {
+          
+            LocationMananger.shared.requestAuthorization { status in
+                
+                // Check if proof mode private key exists
+                if !(URL.proofModePrivateKey?.exists ?? false) {
+                    
+                    // If this is the first time, create the key securely
+                    if Settings.proofModeEncryptedPassphrase == nil {
                         Proof.shared.initializeWithDefaultKeys()
-
-                       // self?.form.rowBy(tag: "proof_mode_key_share")?.evaluateDisabled()
+                    }
+                    
+                    // Update any related UI elements
+                    DispatchQueue.main.async {
+                        // Logic to update UI if needed
                     }
                 }
             }
         }
+    }
+}
 
-//        if SecureEnclave.deviceSecured() {
-//            form
-//            +++ SwitchRow("proof_mode_key_encryption") {
-//                switch SecureEnclave.biometryType() {
-//                case .touchID:
-//                    $0.title = NSLocalizedString("Secure ProofMode Key with Touch ID or Device Passcode", comment: "")
-//
-//                case .faceID:
-//                    $0.title = NSLocalizedString("Secure ProofMode Key with Face ID or Device Passcode", comment: "")
-//
-//                default:
-//                    $0.title = NSLocalizedString("Secure ProofMode Key with Device Passcode", comment: "")
-//                }
-//                $0.value = Settings.proofModeEncryptedPassphrase != nil && SecureEnclave.loadKey() != nil
-//                $0.cellStyle = .subtitle
-//                $0.cell.switchControl.onTintColor = .accent
-//                $0.cell.textLabel?.numberOfLines = 0
-//                $0.cell.detailTextLabel?.numberOfLines = 0
-//            }
-//            .cellUpdate { cell, _ in
-//                cell.detailTextLabel?.text = NSLocalizedString(
-//                    "Changing this will create a new key! If you exported and signed that one before, you will need to do it again with the new one.",
-//                    comment: "")
-//            }
-//            .onChange { [weak self] row in
-//                let update = { (passphrase: String?) in
-//                    for file in [URL.proofModePrivateKey, URL.proofModePublicKey] {
-//                        if let file = file {
-//                            try? FileManager.default.removeItem(at: file)
-//                        }
-//                    }
-//
-//                    Proof.shared.passphrase = passphrase
-//                    Proof.shared.initializeWithDefaultKeys()
-//
-//                    self?.form.rowBy(tag: "proof_mode_key_share")?.evaluateDisabled()
-//                }
-//
-//                if row.value ?? false {
-//                    var key = SecureEnclave.loadKey()
-//
-//                    if key == nil {
-//                        // Force key creation.
-//                        SecureEnclave.createKey()
-//
-//                        key = SecureEnclave.loadKey()
-//                    }
-//
-//                    if let key = key, Settings.proofModeEncryptedPassphrase == nil {
-//                        let passphrase = UUID().uuidString
-//
-//                        Settings.proofModeEncryptedPassphrase = SecureEnclave.encrypt(passphrase, with: SecureEnclave.getPublicKey(key))
-//                        let decryptedPassphrase = SecureEnclave.decrypt(Settings.proofModeEncryptedPassphrase, with: key)
-//
-//                        // Test, if encryption works correctly, if not, don't destroy old key.
-//                        if passphrase == decryptedPassphrase {
-//                            update(passphrase)
-//                        }
-//                        else {
-//                            Settings.proofModeEncryptedPassphrase = nil
-//
-//                            row.value = false
-//                            row.updateCell()
-//                        }
-//                    }
-//                }
-//                else {
-//                    if Settings.proofModeEncryptedPassphrase != nil {
-//                        Settings.proofModeEncryptedPassphrase = nil
-//                        update(nil)
-//                    }
-//                }
-//            }
-//        }
-
-//        form
-//        +++ ButtonRow("proof_mode_key_share") {
-//            $0.title = NSLocalizedString("Share ProofMode Public Key", comment: "")
-//            $0.disabled = .function([], { form in
-//                !(URL.proofModePublicKey?.exists ?? false)
-//            })
-//        }
-//        .onCellSelection({ [weak self] cell, row in
-//            guard let file = URL.proofModePublicKey, file.exists else {
-//                return
-//            }
-//
-//            let vc = UIActivityViewController(activityItems: [file], applicationActivities: nil)
-//            vc.popoverPresentationController?.sourceView = cell
-//
-//            self?.present(vc, animated: true)
-//        })
+struct ProofModeSettingsView_Previews: PreviewProvider {
+    static var previews: some View {
+        ProofModeSettingsView()
+    }
+}
+@available(iOS 15, *)
+extension AttributedString {
+    static func boldSubstring(in text: String, substring: String) -> AttributedString {
+        var attributedString = AttributedString(text)
+        if let range = attributedString.range(of: substring) {
+            attributedString[range].font = .boldItalicFont
+        }
+        return attributedString
     }
 }

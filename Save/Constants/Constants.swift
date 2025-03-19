@@ -26,5 +26,8 @@ struct GeneralConstants {
     static let constraint_minus_20: CGFloat = -20.0
     static let constraint_20: CGFloat = 20.0
     static let zeroConstraint: CGFloat = 0.0
+    static let dark = "Dark"
+    static let light = "Light"
+    static let unspecified = "System"
 
 }

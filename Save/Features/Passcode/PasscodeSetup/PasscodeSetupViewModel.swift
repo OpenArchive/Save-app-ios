@@ -73,10 +73,7 @@ class PasscodeSetupViewModel : StoreViewModel<PasscodeSetupState, PasscodeSetupA
         
         passcode += number
         
-        if passcode.count == appConfig.passcodeLength {
-            isProcessing = true
-            processPasscodeEntry()
-        }
+      
     }
     
     func onBackspaceClick() {
@@ -85,7 +82,15 @@ class PasscodeSetupViewModel : StoreViewModel<PasscodeSetupState, PasscodeSetupA
         }
         passcode.removeLast()
     }
-    
+    func onEnterClick() {
+        guard !isProcessing, !passcode.isEmpty else {
+            return
+        }
+        if passcode.count == appConfig.passcodeLength {
+            isProcessing = true
+            processPasscodeEntry()
+        }
+    }
     
     private func processPasscodeEntry() {
         

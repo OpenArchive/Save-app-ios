@@ -22,31 +22,41 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
             nameTab.autocorrectionType = .no
             nameTab.autocapitalizationType = .none
             nameTab.textField.returnKeyType = .next
+            nameTab.textField.textColor = .gray70
+            nameTab.textField.font = .montserrat(forTextStyle: .footnote)
             
         }
     }
     @IBOutlet weak var scrollView: UIScrollView!
     @IBOutlet weak var titleLbl: UILabel!
-    @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var nextButton: UIButton!{
+        didSet{
+            nextButton.cornerRadius = 10
+        }
+    }
     @IBOutlet weak var formContainer: UIView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         keyboardHandling = KeyboardHandling(scrollView: scrollView,viewController: self)
+        self.navigationItem.hidesBackButton = true
+        self.title = NSLocalizedString("Private Server", comment: "")
         setupForm()
         hideKeyboardOnOutsideTap()
     }
     
     private func setupForm() {
-        // Remove the form's default tableView and add it as a subview to `formContainerView`
+      
         self.tableView?.removeFromSuperview()
         formContainer.addSubview(tableView!)
         
         // Constrain the form's tableView to fill the `formContainerView`
         tableView?.translatesAutoresizingMaskIntoConstraints = false
         tableView.backgroundColor = .white
+        tableView.separatorStyle = .none
         tableView?.isScrollEnabled = false
         tableView?.showsVerticalScrollIndicator = false
+        tableView.rowHeight = 53
         
         
         NSLayoutConstraint.activate([
@@ -59,8 +69,7 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
         // Define form sections and rows
         form
         +++ Section(""){ section in
-            section.header?.height = { TableHeader.minSize } // Reduce header height to 1 point
-        }
+            section.header?.height = { TableHeader.minSize }         }
         
         <<< cc.ccSw.onChange { [weak self] row in
             self?.ccLicenseChanged(row)
@@ -77,7 +86,10 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
         <<< cc.commercialSw.onChange { [weak self] row in
             self?.ccLicenseChanged(row)
         }
-        
+       <<< LabelRow() { row in
+                row.title = " "  // Empty title to create visual space
+                row.cell.height = { 10 }  // Adjust the height as needed
+        }
         <<< cc.licenseRow
         
         <<< cc.learnMoreRow
@@ -124,7 +136,7 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
         updateSpaceName(for: space.id, newName: nameTab.text ?? "")
         let vc = UIStoryboard.main.instantiate(SpaceSuccessViewController.self)
             vc.spaceName = space.prettyName
-            self.delegate?.next(vc, pos: 3)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func updateSpaceName(for spaceId: String, newName: String) {

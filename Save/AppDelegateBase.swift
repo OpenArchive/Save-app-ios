@@ -63,6 +63,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         UIFont.setUpMontserrat()
 
         setUpOrbotAndTor()
+        applyTheme(AppSettings.theme)
         return true
     }
 
@@ -389,5 +390,15 @@ extension AppDelegateBase {
     
     func shouldShowAppPasscodeEntryScreen() -> Bool {
         return AppSettings.passcodeEnabled
+    }
+    func applyTheme(_ theme: String) {
+        if theme == GeneralConstants.dark {
+            Utils.setDarkMode()
+        } else if theme == GeneralConstants.light {
+            Utils.setLightMode()
+        }
+        else {
+            Utils.setUnspecifiedMode()
+        }
     }
 }

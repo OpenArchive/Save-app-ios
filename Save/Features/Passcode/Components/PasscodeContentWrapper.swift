@@ -12,6 +12,7 @@ struct PasscodeContentWrapper: View {
     
     
     let title: String
+    let subtitle:String
     let passcode: String
     let passcodeLength: Int
     let shouldShake: Bool
@@ -19,30 +20,25 @@ struct PasscodeContentWrapper: View {
     
     let onNumberClick: (String) -> Void
     let onBackspaceClick: () -> Void
+    let onEnterClick: () -> Void
     let onExit: () -> Void
     
     let onAnimationCompleted: () -> Void
     
     var body: some View {
-        
-        VStack(spacing: 16) {
-            
-            // MARK: Logo Section
-            Image("save-open-archive-logo")
-                .resizable()
-                .scaledToFit()
-                .frame(height: 80)
-                .padding(.top, 16)
-                .frame(maxWidth: .infinity, alignment: .center)
-            
-            Spacer(minLength: 30)
-            
-            // MARK: Title Section
+        VStack(alignment: .center, spacing: 16) {
             Text(title)
-                .font(.body)
-                .fontWeight(.semibold)
-                .padding(.vertical, 8)
-            
+                .font(.headlineFont2)
+                .padding(.top,30)
+            if(!subtitle.isEmpty){
+                Text(subtitle)
+                    .font(.errorText)
+                    .lineLimit(3)
+                    .multilineTextAlignment(.center)
+                    .foregroundColor(.redButton)
+                    .padding(.top, 18)
+                    .padding(.horizontal,26)
+            }
             // MARK: Passcode Dots
             PasscodeDots(
                 passcodeLength: passcodeLength,
@@ -50,50 +46,24 @@ struct PasscodeContentWrapper: View {
                 shouldShake: shouldShake,
                 onAnimationCompleted: onAnimationCompleted
             )
-            .padding(.bottom, 20)
-            
-            //Spacer()
-            
+            .padding(.vertical, 50)
+
             // MARK: Numeric Keypad
             NumericKeypad(
                 isEnabled: isEnabled,
-                onNumberClick: onNumberClick
+                onNumberClick: onNumberClick,
+                onDelete: onBackspaceClick,
+                onEnter: onEnterClick
             )
-            //.frame(width: .infinity, height: .infinity )
             .padding(.horizontal, 15)
-            
+
             Spacer()
-            
-            // MARK: Bottom Buttons
-            HStack(spacing: 16) {
-                
-                Button(action: onExit) {
-                    Text("Cancel")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.gray.opacity(0.1))
-                        .cornerRadius(8)
-                }
-                .padding()
-                
-                Button(action: onBackspaceClick) {
-                    Text("Delete")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.gray.opacity(0.1))
-                        .cornerRadius(8)
-                }
-                .disabled(passcode.count == 0)
-            }
-            .padding(.horizontal, 20)
-            .padding(.bottom, 20)
-            
         }
-        .padding()
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .frame(maxWidth: .infinity, alignment: .topLeading)
+        .padding(.top, 40)
         .edgesIgnoringSafeArea(.bottom)
-        
     }
+
 }
 
 struct PasscodeContentWrapper_Previews: PreviewProvider {
@@ -103,12 +73,13 @@ struct PasscodeContentWrapper_Previews: PreviewProvider {
         
         PasscodeContentWrapper(
             title: "Title",
+            subtitle: "SubTitle",
             passcode: "123",
             passcodeLength: 6,
             shouldShake: false,
             isEnabled: true,
             onNumberClick: { _ in },
-            onBackspaceClick: { },
+            onBackspaceClick: { }, onEnterClick: {},
             onExit: { },
             onAnimationCompleted: {}
         )

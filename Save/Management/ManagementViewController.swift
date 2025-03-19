@@ -13,12 +13,6 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
 
     var delegate: DoneDelegate?
 
-    @IBOutlet weak var backBt: UIBarButtonItem? {
-        didSet {
-            backBt?.title = NSLocalizedString("Back", comment: "")
-        }
-    }
-
 
     private lazy var readConn = Db.newLongLivedReadConn()
 
@@ -36,13 +30,10 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
         readConn?.update(mappings: mappings)
 
         removeDone(async: false)
-
+        self.isEditing = true
         updateTitle()
-        setButton()
+        tableView.setEditing(true, animated: true)
 
-        // This button says "Back" because we don't want to have 2 "Done" buttons,
-        // when in editing mode.
-        // That doesn't make too much sense on iPad, because we're displayed as a popover.
         if UIDevice.current.userInterfaceIdiom == .pad {
             navigationItem.leftBarButtonItem = nil
         }
@@ -57,6 +48,7 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
 
         UIApplication.shared.isIdleTimerDisabled = true
         UIDevice.current.isProximityMonitoringEnabled = true
+        NotificationCenter.default.post(name: .uploadManagerPause, object: nil)
     }
 
     override func viewDidDisappear(_ animated: Bool) {
@@ -244,14 +236,17 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
         let titleView = navigationItem.titleView as? MultilineTitle ?? MultilineTitle()
 
         if isEditing {
-            titleView.title.text = NSLocalizedString("Edit Media", comment: "")
+            titleView.title.text = NSLocalizedString("Edit Queue", comment: "")
             titleView.subtitle.text = NSLocalizedString("Uploading is paused", comment: "")
+            
 
             navigationItem.titleView = titleView
 
             return
         }
-
+        titleView.title.font = .montserrat(forTextStyle: .callout, with: .traitUIOptimized)
+        titleView.subtitle.font = .montserrat(forTextStyle: .caption1)
+        titleView.subtitle.textColor = .gray70
         readConn?.asyncRead { [weak self] tx in
             let left = UploadsView.countUploading(tx)
 
@@ -269,13 +264,13 @@ class ManagementViewController: BaseTableViewController, UploadCellDelegate {
     }
 
     private func setButton() {
-        if count > 0 {
-            navigationItem.rightBarButtonItem = editButtonItem
-        }
-        else {
-            navigationItem.rightBarButtonItem = nil
-            tableView.setEditing(false, animated: true)
-        }
+//        if count > 0 {
+//            navigationItem.rightBarButtonItem = editButtonItem
+//        }
+//        else {
+//            navigationItem.rightBarButtonItem = nil
+//            tableView.setEditing(false, animated: true)
+//        }
     }
 
     private func getUpload(_ indexPath: IndexPath) -> Upload? {

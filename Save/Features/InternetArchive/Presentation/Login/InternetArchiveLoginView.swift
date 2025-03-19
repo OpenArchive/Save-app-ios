@@ -36,40 +36,42 @@ struct InternetArchiveLoginContent: View {
             ScrollView {
                 VStack {
                     HStack {
-                        Circle().fill(colorScheme == .dark ? Color.white : Color.pillBackground)
-                            .frame(width: 80, height: 80)
+                        Circle().fill(colorScheme == .dark ? Color.white : .gray10)
+                            .frame(width: 53, height: 53)
                             .overlay(
-                                Image("InternetArchiveLogo")
+                                Image("internet_archive_teal")
                                     .resizable()
                                     .aspectRatio(contentMode: .fit)
-                                    .frame(width: 48, height: 48)
+                                    .frame(width: 30, height: 30)
                             ).padding(.trailing, 6)
                         VStack(alignment: .leading) {
-                            Text(LocalizedStringKey("Internet Archive")).font(.headline)
-                            Text(LocalizedStringKey("Upload your media to a free public or paid private account on the Internet Archive.")).font(.subheadline)
+                            Text(LocalizedStringKey("Upload your media to a free public or paid private account on the Internet Archive.")).font(.menuMediumFont)
                         }
                     }
-                    .padding()
+                    .padding(.top,50).padding(.leading,20).padding(.trailing,40)
                     
-                    
-                    Spacer()
-                    
-                    TextField(LocalizedStringKey("Username"), text: state.userName)
-                        .autocapitalization(.none)
-                        .padding()
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.gray, lineWidth: 1)
-                        )
-                        .padding(.leading)
-                        .padding(.trailing)
+                    Text(LocalizedStringKey("Account")).font(.headlineFont2).foregroundColor(.gray70).padding(.top,50).frame(maxWidth: .infinity, alignment: .leading).padding(.leading,20)
+                    HStack {
+                        
+                        TextField(LocalizedStringKey("Username"), text: state.userName)
+                            .autocapitalization(.none).font(.footnoteFontMedium)
+                            .foregroundColor(.gray70)
+                    }.padding().overlay(
+                        RoundedRectangle(cornerRadius: 8)
+                            .stroke(Color.gray, lineWidth: 1)
+                    )
+                    .padding(.leading,20)
+                    .padding(.trailing,20)
+                    .padding(.top,15)
                     
                     
                     HStack {
                         if (isShowPassword) {
-                            TextField(LocalizedStringKey("Password"), text: state.password)
+                            TextField(LocalizedStringKey("Password"), text: state.password)   .font(.footnoteFontMedium)
+                                .foregroundColor(.gray70)
                         } else {
-                            SecureField(LocalizedStringKey("Password"), text: state.password)
+                            SecureField(LocalizedStringKey("Password"), text: state.password)   .font(.footnoteFontMedium)
+                                .foregroundColor(.gray70)
                         }
                         Button(action: { isShowPassword = !isShowPassword}) {
                             Image(systemName: isShowPassword ? "eye.slash" : "eye").foregroundColor(.gray)
@@ -78,23 +80,23 @@ struct InternetArchiveLoginContent: View {
                         RoundedRectangle(cornerRadius: 8)
                             .stroke(Color.gray, lineWidth: 1)
                     )
-                    .padding(.leading)
-                    .padding(.trailing)
-                    //
-                    Spacer()
+                    .padding(.leading,20)
+                    .padding(.trailing,20)
+                    .padding(.top,15)
                     
                     if (state.isLoginError) {
-                        Text(LocalizedStringKey("Invalid username or password")).foregroundColor(.red).padding()
+                        Text(LocalizedStringKey("Incorrect username or password")).foregroundColor(.red).padding(.top,1) .padding(.leading,20).font(.errorText)
+                            .padding(.trailing,20) .frame(maxWidth: .infinity, alignment: .leading)
                     }
                     
                     HStack(alignment: .center) {
-                        Text(LocalizedStringKey("No Account?"))
+                        Text(LocalizedStringKey("No Account?")).foregroundColor(.gray70).font(.semiBoldFont)
                         Button(action: {
                             dispatch(.CreateAccount)
                         }) {
                             Text(LocalizedStringKey("Create one"))
-                        }.foregroundColor(.accent)
-                    }
+                        }.foregroundColor(.accent).font(.semiBoldFont)
+                    }.padding(.top,40)
                     
                     
                     Spacer()
@@ -107,7 +109,8 @@ struct InternetArchiveLoginContent: View {
                         })
                         .padding()
                         .frame(maxWidth: .infinity)
-                        .foregroundColor(.accent)
+                        .foregroundColor(colorScheme == .dark ? Color.white : .black)
+                        .font(.headlineFont2)
                         
                         Button(action: {
                             dispatch(.Login)
@@ -115,7 +118,7 @@ struct InternetArchiveLoginContent: View {
                             if (state.isBusy) {
                                 ActivityIndicator(style: .medium, animate: .constant(true)).foregroundColor(.black)
                             } else {
-                                Text(LocalizedStringKey("Login"))
+                                Text(LocalizedStringKey("Next"))
                             }
                         })
                         .disabled(!state.isValid)
@@ -123,9 +126,11 @@ struct InternetArchiveLoginContent: View {
                         .frame(maxWidth: .infinity)
                         .background(Color.accent)
                         .foregroundColor(.black)
-                        .cornerRadius(12)
+                        .cornerRadius(10)
+                        .font(.headlineFont2)
+                        
                     }
-                    .padding()
+                    .padding(.bottom,20).padding(.leading,20).padding(.trailing,20)
                 } .frame(minHeight: reader.size.height)
                 
                 

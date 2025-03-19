@@ -31,7 +31,7 @@ class SlideViewController: UIViewController,UITextViewDelegate {
         super.viewDidLoad()
 
         headingLb.text = slide?.heading(headingLb)
-        headingLb.font = UIFont(name: "Montserrat-Bold", size: 23.0) ?? UIFont.boldSystemFont(ofSize: 23.0)
+        headingLb.font = UIFont(name: "Montserrat-ExtraBold", size: 23.0) ?? UIFont.boldSystemFont(ofSize: 23.0)
         if let slide = slide {
                    subtitleTextView.attributedText = slide.text(subtitleTextView)
                    subtitleTextView.isEditable = false
@@ -71,9 +71,10 @@ class SlideViewController: UIViewController,UITextViewDelegate {
             self.text = text
             self.illustration = illustration
             self.linkUrl = linkUrl
+           
         }
 
-        // Convenience initializer for a string-based heading
+        // Convenience initializer for a string-based headingmember
         init(
             heading: String,
             text: @escaping (_ view: UITextView) -> NSAttributedString,

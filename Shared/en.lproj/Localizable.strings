@@ -661,3 +661,78 @@
 "Internet Archive" = "Internet Archive";
 
 "Upload your media to a public server." = "Upload your media to a public server.";
+"Do not show me this again" = "Do not show me this again";
+"Removing this server will delete all associated data." = "Removing this server will delete all associated data.";
+"Upload your media to a free public or paid private account on the Internet Archive." = "Upload your media to a free public or paid private account on the Internet Archive.";
+"No Account?" = "No Account?";
+"Create one" = "Create one";
+"Setup Passcode" = "Setup Passcode";
+"Confirm Passcode" = "Confirm Passcode";
+"Enter Passcode" = "Enter Passcode";
+"Make sure you remember this pin. If you forget it, you will need to reset the app, and all data will be erased" = "Make sure you remember this pin. If you forget it, you will need to reset the app, and all data will be erased";
+
+"Error!"= "Error!";
+"Folder name cannot be empty" = "Folder name cannot be empty";
+"Rename folder" = "Rename folder";
+"Select media" = "Select media";
+"Remove folder from app" = "Remove folder from app";
+"Tap the %@ button below to add media" = "Tap the %@ button below to add media";
+"Tap the %@ button below to add a server" = "Tap the %@ button below to add a server";
+"Tap the %@ button below to add a folder" = "Tap the %@ button below to add a folder";
+"Add new server" = "Add new server";
+"New Folder" = "New Folder";
+
+/* Placeholder is 'ProofMode' */
+"Authenticate and verify your media with sha256 hashes and %@" = "Authenticate and verify your media with sha256 hashes and %@";
+
+/* Placeholder texts are 'Save' and 'Tor' */
+"%@ always uploads over TLS (Transport Layer Security) to protect your media in transit. \nTo further enhance security, enable %@ to prevent interception of your media from your phone to the server." = "%@ always uploads over TLS (Transport Layer Security) to protect your media in transit. \nTo further enhance security, enable %@ to prevent interception of your media from your phone to the server.";
+
+
+"Creative Commons License" = "Creative Commons License.";
+
+/* Placeholder texts is 'Creative Commons License' */
+"Keep your media verifiable, safe and organized for the long-term by uploading it to private or public servers like Nextcloud or the Internet Archive. \nCommunicate your intentions for future use by adding a %@"= "Keep your media verifiable, safe and organized for the long-term by uploading it to private or public servers like Nextcloud or the Internet Archive. \nCommunicate your intentions for future use by adding a %@.";
+
+/* Onboarding Secure Text */
+"Send your media securely to private servers and lock the app with a pin." = "Send your media securely to private servers and lock the app with a pin.";
+
+"Bulk Edit Media Info" = "Bulk Edit Media Info";
+"Press and hold to select and edit multiple media items." = "Press and hold to select and edit multiple media items.";
+"Archive Project" = "Archive Project";
+"Unarchive Project" = "Unarchive Project";
+"Success!" = "Success!";
+"You have renamed folder successfully." = "You have renamed folder successfully.";
+"ProofMode gathers metadata from local cell towers to help verify media. Android requires permission to enable this setting. %@ will only use this setting to capture data and will NOT access your phone to make/manage calls." = "ProofMode gathers metadata from local cell towers to help verify media. Android requires permission to enable this setting. %@ will only use this setting to capture data and will NOT access your phone to make/manage calls.";
+"ProofMode is a system that enables authentication and verification of multimedia content,"= "ProofMode is a system that enables authentication and verification of multimedia content,";
+" learn more here" = " learn more here";
+"Media Servers" = "Media Servers";
+"Unable to upload due to session error, please try again or contact support" = "Unable to upload due to session error, please try again or contact support";
+"You have changed your server settings successfully." = "You have changed your server settings successfully.";
+"Lock app with passcode" = "Lock app with passcode";
+"Media Folders" = "Media Folders";
+"Manage your servers" = "Manage your servers";
+"Manage your folders" = "Manage your folders";
+"Turn on Onion Routing" = "Turn on Onion Routing";
+"Transfer via the Tor Network only" = "Transfer via the Tor Network only";
+"Theme" = "Theme";
+"Save by OpenArchive" = "Save by OpenArchive";
+"Discover the Save app" = "Discover the Save app";
+"Terms & Privacy Policy"= "Terms & Privacy Policy";
+"Read our Terms & Privacy Policy"= "Read our Terms & Privacy Policy";
+"Version" = "Version";
+"Disable Passcode" = "Disable Passcode";
+"Are you sure you want to disable the passcode?" = "Are you sure you want to disable the passcode?";
+"Yes" = "Yes";
+"System" = "System";
+"Light" = "Light";
+"Dark" = "Dark";
+"Setup Complete" = "Setup Complete";
+"You can add multiple private servers and  one IA at any time." = "You can add multiple private servers and  one IA at any time.";
+"Select a Server" = "Select a Server";
+"Connect to a secure \nWebDAV server" = "Connect to a secure \nWebDAV server";
+"Connect to a free public \nor paid private server" = "Connect to a free public \nor paid private server";
+"First, please name your folder" = "First, please name your folder";
+"This folder will be created on your server and automatically added on Save." = "This folder will be created on your server and automatically added on Save.";
+"Enter folder name"= "Enter folder name";
+"You have added a folder successfully." = "You have added a folder successfully.";

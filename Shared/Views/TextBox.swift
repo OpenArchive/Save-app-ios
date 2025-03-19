@@ -214,7 +214,7 @@ class TextBox: UIView, UITextFieldDelegate {
     private func setup() {
         translatesAutoresizingMaskIntoConstraints = false
 
-        borderColor = .secondaryLabel
+        borderColor = .gray70
         borderWidth = 1
         cornerRadius = 8
 

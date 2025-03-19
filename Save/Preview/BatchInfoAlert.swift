@@ -11,30 +11,56 @@ import UIKit
 /**
  A special alert which informs the user about the batch edit feature.
  */
-class BatchInfoAlert: InfoAlert {
+import UIKit
+import SwiftUI
 
-    override class var image: UIImage? {
-        UIImage(named: "ic_compose")
+class BatchInfoAlert {
+    
+    static var image: Image? {
+        Image("add_media") // Custom icon image
     }
-
-    override class var tintColor: UIColor {
-        .warning
-    }
-
-    override class var title: String {
+    
+    static var title: String {
         NSLocalizedString("Edit Multiple", comment: "")
     }
-
-    override class var message: String {
-        NSLocalizedString("Press and hold to select and edit multiple media.", comment: "")
+    
+    static var message: String {
+        NSLocalizedString("Press and hold to select and edit multiple media items.", comment: "")
     }
-
-    override class var wasAlreadyShown: Bool {
+    
+    static var wasAlreadyShown: Bool {
         get {
             Settings.firstBatchEditDone
         }
         set {
             Settings.firstBatchEditDone = newValue
+        }
+    }
+    
+    static func presentIfNeeded(viewController: UIViewController? = nil, additionalCondition: Bool = true, success: (() -> Void)? = nil) {
+        guard additionalCondition, !wasAlreadyShown else {
+            success?()
+            return
+        }
+
+        
+        let alertVC = CustomAlertViewController(
+            title: title,
+            message: message,
+            primaryButtonTitle: NSLocalizedString("Got it", comment: ""),
+            primaryButtonAction: {
+                wasAlreadyShown = true
+                success?()
+            },
+            secondaryButtonAction: nil,
+            showCheckbox: false,
+            iconImage: image ?? Image(systemName: "exclamationmark.triangle.fill")
+        )
+
+        if let vc = viewController {
+            vc.present(alertVC, animated: true)
+        } else {
+            UIApplication.shared.windows.first?.rootViewController?.present(alertVC, animated: true)
         }
     }
 }
