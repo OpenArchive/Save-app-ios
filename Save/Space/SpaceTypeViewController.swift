@@ -29,7 +29,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
             subtitleLb.text = NSLocalizedString(
                 "You can add multiple private servers and  one IA at any time.",
                 comment: "")
-            subtitleLb.font = .montserrat(forTextStyle: .caption2)
+            subtitleLb.font = .montserrat(forTextStyle: .subheadline)
             subtitleLb.textColor = .subtitleText
         }
     }

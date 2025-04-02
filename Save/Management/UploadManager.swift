@@ -341,8 +341,10 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             }
             else {
                 self.globalPause = true
+                self.current?.paused = true
+                self.current?.cancel()
+                self.current = nil
             }
-
             self.uploadNext()
         }
     }

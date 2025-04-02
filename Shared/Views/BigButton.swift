@@ -96,7 +96,7 @@ class BigButton: UIView {
         set {
             if newValue?.isEmpty ?? true && !(subtitleLb.text?.isEmpty ?? true) {
                 subtitleLb.removeFromSuperview()
-                subtitleLb.font = .montserrat(forTextStyle: .caption2)
+                subtitleLb.font = .montserrat(forTextStyle: .subheadline)
                 subtitleLb.textColor = .gray70
                 titleBottomConstraint?.isActive = true
             }
@@ -149,7 +149,7 @@ class BigButton: UIView {
     private lazy var subtitleLb: UILabel = {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.font = .montserrat(forTextStyle: .caption2)
+        view.font = .montserrat(forTextStyle: .subheadline)
         view.textColor = .subtitleText
         view.numberOfLines = 0
 
@@ -161,7 +161,7 @@ class BigButton: UIView {
     private lazy var arrowIv: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.image = UIImage(systemName: "arrow.right")?.withRenderingMode(.alwaysTemplate)
+        view.image = UIImage(named: "forward_arrow")?.withRenderingMode(.alwaysTemplate)
         view.tintColor = .label
 
         view.widthAnchor.constraint(equalToConstant: 24).isActive = true

@@ -35,7 +35,7 @@ class ClaimViewController: UIViewController {
 
     @IBOutlet weak var subtitleLb: UILabel? {
         didSet {
-            subtitleLb?.font = .montserrat(forTextStyle: .callout,with: .traitUIOptimized)
+            subtitleLb?.font = .montserrat(forTextStyle: .body,with: .traitUIOptimized)
             subtitleLb?.adjustsFontSizeToFitWidth = true
             subtitleLb?.text = NSLocalizedString("Secure Mobile Media Preservation", comment: "")
         }
@@ -43,7 +43,7 @@ class ClaimViewController: UIViewController {
 
     @IBOutlet weak var nextBt: UILabel? {
         didSet {
-            nextBt?.font = .montserrat(forTextStyle: .callout,with: .traitUIOptimized)
+            nextBt?.font = .montserrat(forTextStyle: .body,with: .traitUIOptimized)
             nextBt?.adjustsFontSizeToFitWidth = true
             nextBt?.text = NSLocalizedString("Get Started", comment: "")
         }

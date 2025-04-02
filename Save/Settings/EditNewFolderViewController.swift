@@ -55,7 +55,7 @@ class NewEditFolderViewController: UIViewController {
                 hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
             ])
             hostingController.didMove(toParent: self)
-            self.view.backgroundColor = .clear
+            self.view.backgroundColor = .systemBackground
         }
     }
 }
@@ -173,7 +173,7 @@ struct EditFolderView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Folder Name")
-                        .font(.headlineFont2)
+                        .font(.montserrat(.semibold, for: .headline))
                         .multilineTextAlignment(.leading)
                     
                     CustomTextField(
@@ -201,7 +201,7 @@ struct EditFolderView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .foregroundColor(.primary)
-                .font(.headlineFont2)
+                .font(.montserrat(.semibold, for: .headline))
                 .cornerRadius(8)
                 
                 Button(NSLocalizedString("Remove from app", comment: "")) {
@@ -210,7 +210,7 @@ struct EditFolderView: View {
                     
                 }
                 .frame(maxWidth: .infinity)
-                .font(.headlineFont2)
+                .font(.montserrat(.semibold, for: .headline))
                 .foregroundColor(.redButton)
                 .cornerRadius(8)
             }
@@ -224,7 +224,7 @@ struct EditFolderView: View {
         .overlay(
             Group {
                 if store.state.status {
-                    Color.black.opacity(0.4)
+                    Color.gray.opacity(0.9)
                         .edgesIgnoringSafeArea(.all)
                         .overlay(
                             VStack {
@@ -248,7 +248,7 @@ struct EditFolderView: View {
                         )
                 }
                 if (store.state.errorMessage != nil) {
-                    Color.black.opacity(0.4)
+                    Color.gray.opacity(0.9)
                         .edgesIgnoringSafeArea(.all)
                         .overlay(
                             VStack {
@@ -273,7 +273,7 @@ struct EditFolderView: View {
                         )
                 }
                 if (showDeleteAlert) {
-                    Color.black.opacity(0.4)
+                    Color.gray.opacity(0.9)
                         .edgesIgnoringSafeArea(.all)
                         .overlay(
                             VStack {

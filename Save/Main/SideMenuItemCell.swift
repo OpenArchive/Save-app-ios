@@ -30,7 +30,7 @@ class SideMenuItemCell: UITableViewCell {
         icon.image = space?.favIcon ?? SelectedSpace.defaultFavIcon
         icon.tintColor = UIColor.label
         nameLb.text = space?.prettyName ?? Bundle.main.displayName
-        nameLb.font =  .montserrat(forTextStyle: .caption2)
+        nameLb.font =  .montserrat(forTextStyle: .subheadline)
         nameLb.textColor = .label
         contentView.backgroundColor = select ? .accent :  .pillBackground
     }
@@ -38,7 +38,7 @@ class SideMenuItemCell: UITableViewCell {
     func apply(_ project: Project?, select: Bool) {
         iconLeadingConstraint.constant = 12
 
-        icon.image = UIImage(systemName: select ? "folder.fill" : "folder")?.withRenderingMode(.alwaysTemplate)
+        icon.image = UIImage(named: select ? "folder_fil" : "folder")?.withRenderingMode(.alwaysTemplate)
         icon.tintColor = select ? .accent : .label
 
         nameLb.text = project?.name
@@ -55,7 +55,7 @@ class SideMenuItemCell: UITableViewCell {
         icon.tintColor = .accent
 
         nameLb.text = NSLocalizedString("Add new server", comment: "")
-        nameLb.font =  .montserrat(forTextStyle: .caption2)
+        nameLb.font =  .montserrat(forTextStyle: .subheadline)
         nameLb.textColor = .accent
 
         contentView.backgroundColor = .pillBackground

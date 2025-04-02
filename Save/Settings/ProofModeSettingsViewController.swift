@@ -63,17 +63,24 @@ struct ProofModeSettingsView: View {
                     .padding(.leading, 10)
                     .padding(.top, 16)
                 
-                VStack(alignment: .leading) { // Ensures text aligns properly
+                VStack(alignment: .leading) {
+                    
                     let localizedText = String(format: NSLocalizedString(
                               "ProofMode gathers metadata from local cell towers to help verify media. Android requires permission to enable this setting. %@ will only use this setting to capture data and will NOT access your phone to make/manage calls.",
                               comment: "Warning about ProofMode metadata"), "Save")
                     
                     if #available(iOS 15, *) {
                         Text(AttributedString.boldSubstring(in: localizedText, substring: "Save"))
-                            .font(.errorText).foregroundColor(.black)
+                            .font(.montserrat(.medium, for: .caption2)).foregroundColor(.black)
                     } else {
-                        Text(localizedText)
-                            .font(.errorText).foregroundColor(.black)
+                        if #available(iOS 16.0, *) {
+                            Text(localizedText)
+                                .font(.montserrat(.medium, for: .caption)).foregroundColor(.black).lineSpacing(6)
+                                .kerning(0.3)
+                        } else {
+                            Text(localizedText)
+                                .font(.montserrat(.medium, for: .caption)).foregroundColor(.black).lineSpacing(6)
+                        }
                     }
                 }
                 .padding(.top, 16)
@@ -90,13 +97,11 @@ struct ProofModeSettingsView: View {
     struct ProofModeView: View {
         var body: some View {
             Text(NSLocalizedString("ProofMode is a system that enables authentication and verification of multimedia content,", comment: "ProofMode description"))
-                .font(.errorText)
+                .font(.montserrat(.medium, for: .caption))
                 .foregroundColor(.primary)
             +
-            Text(" ")
-            +
             Text("[\(NSLocalizedString(" learn more here", comment: "Learn more link"))](https://proofmode.org)")
-                .font(.errorText)
+                .font(.montserrat(.medium, for: .caption))
                 .foregroundColor(.accent)
                 .underline()
         }
@@ -104,27 +109,18 @@ struct ProofModeSettingsView: View {
     
     /// **Handles ProofMode toggle logic**
     private func handleProofModeToggle(_ isEnabled: Bool) {
-        Settings.proofMode = isEnabled  // Update Settings value when toggled
+        Settings.proofMode = isEnabled
         
-        if isEnabled {
-          
-            LocationMananger.shared.requestAuthorization { status in
-                
-                // Check if proof mode private key exists
-                if !(URL.proofModePrivateKey?.exists ?? false) {
-                    
-                    // If this is the first time, create the key securely
-                    if Settings.proofModeEncryptedPassphrase == nil {
-                        Proof.shared.initializeWithDefaultKeys()
-                    }
-                    
-                    // Update any related UI elements
-                    DispatchQueue.main.async {
-                        // Logic to update UI if needed
-                    }
-                }
-            }
-        }
+        if Settings.proofMode {
+                 
+                     LocationMananger.shared.requestAuthorization { status in
+
+                         if !(URL.proofModePrivateKey?.exists ?? false) {
+
+                             Proof.shared.initializeWithDefaultKeys()
+                         }
+                     }
+                 }
     }
 }
 
@@ -133,12 +129,13 @@ struct ProofModeSettingsView_Previews: PreviewProvider {
         ProofModeSettingsView()
     }
 }
+
 @available(iOS 15, *)
 extension AttributedString {
     static func boldSubstring(in text: String, substring: String) -> AttributedString {
         var attributedString = AttributedString(text)
         if let range = attributedString.range(of: substring) {
-            attributedString[range].font = .boldItalicFont
+            attributedString[range].font =  (.montserrat(.boldItalic, for: .caption2))
         }
         return attributedString
     }

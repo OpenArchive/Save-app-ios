@@ -20,12 +20,12 @@ class InfoBox: UIView, UITextViewDelegate {
 
     // Don't store, otherwise font won't be recalculated after size change.
     private class var normalFont: UIFont {
-        UIFont.montserrat(forTextStyle: .caption1)
+        UIFont.montserrat(forTextStyle: .footnote)
     }
 
     // Don't store, otherwise font won't be recalculated after size change.
     private class var placeholderFont: UIFont? {
-        UIFont.montserrat(forTextStyle: .caption1, with: .traitItalic)
+        UIFont.montserrat(forTextStyle: .footnote, with: .traitItalic)
     }
 
     class func instantiate(_ icon: String? = nil, _ superview: UIView? = nil) -> InfoBox? {
@@ -94,8 +94,8 @@ class InfoBox: UIView, UITextViewDelegate {
     func addConstraints(_ container: UIView, top: UIView? = nil, bottom: UIView? = nil) {
         translatesAutoresizingMaskIntoConstraints = false
        
-        leftAnchor.constraint(equalTo: container.leftAnchor, constant: 0).isActive = true
-        rightAnchor.constraint(equalTo: container.rightAnchor, constant: 0).isActive = true
+        leftAnchor.constraint(equalTo: container.leftAnchor, constant: 20).isActive = true
+        rightAnchor.constraint(equalTo: container.rightAnchor, constant: -20).isActive = true
         
         if let topView = top {
             topAnchor.constraint(equalTo: topView.bottomAnchor, constant: 0).isActive = true // Place below the previous view
@@ -121,6 +121,9 @@ class InfoBox: UIView, UITextViewDelegate {
             ? InfoBox.placeholderFont
             : InfoBox.normalFont
 
+        textView.textColor = isDefault && !textView.isFirstResponder
+        ? .textEmpty
+        : .label
         // UITextView does not auto-size as UILabel. So we do that here.
         if let textHeightContraint = textHeightContraint {
             textHeight.constant = textHeightContraint

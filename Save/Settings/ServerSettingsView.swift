@@ -45,15 +45,15 @@ struct ServerSettingsView: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 10) {
                     
-                    SectionHeader(title: "Server info")
+                    SectionHeader(title: NSLocalizedString("Server info",comment: ""))
                     
                     CustomTextField(
-                        placeholder: "Server URL",
+                        placeholder:NSLocalizedString( "Server URL",comment: ""),
                         text: .constant(store.state.serverURL),
                         isDisabled: true
                     )
                     CustomTextField(
-                        placeholder: "Server Name",
+                        placeholder: NSLocalizedString("Server Name",comment: ""),
                         text: $serverName,
                         isDisabled: false, onCommit:  {
                             store.dispatch(action: .updateServerName(serverName))
@@ -61,23 +61,23 @@ struct ServerSettingsView: View {
                             showSuccessAlert = true
                         })
                    
-                    SectionHeader(title: "Account")
+                    SectionHeader(title:NSLocalizedString( "Account",comment: ""))
                     
                     CustomTextField(
-                        placeholder: "Username",
+                        placeholder: NSLocalizedString("Username",comment: ""),
                         text: .constant(store.state.username),
                         isDisabled: true
                     )
                     
                     CustomTextField(
                         
-                        placeholder: "Password",
+                        placeholder:NSLocalizedString( "Password",comment: ""),
                         text: .constant(store.state.password),
                         isSecure: true, isDisabled: true
                         
                     )
                     
-                    SectionHeader(title: "License")
+                    SectionHeader(title:NSLocalizedString( "License",comment: "" ))
                     
                     Toggle(NSLocalizedString("Set creative commons licenses for folders on this server", comment: "Creative Commons Toggle"), isOn: Binding(
                         get: { store.state.isCcEnabled },
@@ -85,7 +85,7 @@ struct ServerSettingsView: View {
                             store.dispatch(action: .toggleCcEnabled(newValue))
                             store.dispatch(action: .updateLicense)
                         }
-                    )) .toggleTint(.accent).font(.menuMediumFont)
+                    )) .toggleTint(.accent).font(.montserrat(.medium, for: .subheadline))
                     
                     if store.state.isCcEnabled {
                         LicenseToggles(store: store)
@@ -93,7 +93,7 @@ struct ServerSettingsView: View {
                     if #available(iOS 14.0, *) {
                         Link(NSLocalizedString("Learn more about Creative Commons", comment: "More Info Link"), destination: URL(string: "https://creativecommons.org/")! )
                             .foregroundColor(.accentColor)
-                            .padding(.top, 10).font(.menuMediumFont)
+                            .padding(.top, 10).font(.montserrat(.medium, for: .subheadline))
                     } else {
                         
                     }
@@ -106,7 +106,7 @@ struct ServerSettingsView: View {
                             disableBackAction?(true)
                         }
                         .foregroundColor(.redButton)
-                        .padding(.top, 20).font(.headlineFont2)
+                        .padding(.top, 20).font(.montserrat(.semibold, for: .headline))
                     }
                     .frame(maxWidth: .infinity)
                     
@@ -118,7 +118,7 @@ struct ServerSettingsView: View {
         }.overlay(
             Group {
                 if showDeleteAlert {
-                    Color.black.opacity(0.4)
+                    Color.gray.opacity(0.9)
                         .edgesIgnoringSafeArea(.all)
                         .overlay(
                             VStack {
@@ -152,7 +152,7 @@ struct ServerSettingsView: View {
                         )
                 }
                 if showSuccessAlert {
-                    Color.black.opacity(0.4)
+                    Color.gray.opacity(0.9)
                         .edgesIgnoringSafeArea(.all)
                         .overlay(
                             VStack {
@@ -194,32 +194,47 @@ struct CustomTextField: View {
    
 
     var body: some View {
-        Group {
+        ZStack(alignment: .leading) {
+            if text.isEmpty {
+                Text(placeholder)
+                    .italic()
+                    .font(.montserrat(.medium, for: .footnote))
+                    .foregroundColor(.textEmpty)
+                    .padding(.leading, 16)
+            }
+
             if isSecure {
-                       SecureField(NSLocalizedString(placeholder, comment: "\(placeholder) Placeholder"), text: $text)
-                   } else {
-                       if #available(iOS 14.0, *) {
-                           TextField(NSLocalizedString(placeholder, comment: "\(placeholder) Placeholder"), text: $text, onEditingChanged: { _ in
-                               onEditingChanged?()
-                           }, onCommit: {
-                               onCommit?()
-                           }).onChange(of: text) { newValue in
-                               onEditingChanged?()
-                           }
-                       } else {
-                           // Fallback on earlier versions
-                       }
-                   }
+                SecureField("", text: $text)
+                    .font(.montserrat(.medium, for: .footnote))
+                    .padding(12)
+            } else {
+                if #available(iOS 14.0, *) {
+                    TextField("", text: $text, onEditingChanged: { _ in
+                        onEditingChanged?()
+                    }, onCommit: {
+                        onCommit?()
+                    })
+                    .onChange(of: text) { _ in
+                        onEditingChanged?()
+                    }
+                    .font(.montserrat(.medium, for: .footnote))
+                    .padding(12)
+                } else {
+                    // Add fallback logic if needed
+                    TextField("", text: $text)
+                        .font(.montserrat(.medium, for: .footnote))
+                        .padding(12)
+                }
+            }
         }
-        .padding(12)
         .frame(height: 50)
         .cornerRadius(8)
-        .overlay(RoundedRectangle(cornerRadius: 8).stroke(.gray70))
+        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.7)))
         .background(isDisabled ? Color.gray.opacity(0.2) : Color.textboxBg)
         .disabled(isDisabled)
         .padding(.bottom, 8)
-        
     }
+
 }
 
    // MARK: - License Toggles
@@ -234,7 +249,7 @@ struct CustomTextField: View {
                        store.dispatch(action: .toggleAllowRemix(newValue))
                        store.dispatch(action: .updateLicense)
                    }
-               )) .toggleTint(.accent).font(.menuMediumFont)
+               )) .toggleTint(.accent).font(.montserrat(.medium, for: .subheadline))
 
                Toggle(NSLocalizedString("Require them to share like you have?", comment: "ShareAlike Toggle"), isOn: Binding(
                    get: { store.state.requireShareAlike },
@@ -243,7 +258,7 @@ struct CustomTextField: View {
                        store.dispatch(action: .updateLicense)
                    }
                )) .toggleTint(.accent)
-               .disabled(!store.state.allowRemix).font(.menuMediumFont)
+               .disabled(!store.state.allowRemix).font(.montserrat(.medium, for: .subheadline))
 
                Toggle(NSLocalizedString("Allow commercial use?", comment: "Commercial Use Toggle"), isOn: Binding(
                    get: { store.state.allowCommercialUse },
@@ -251,13 +266,13 @@ struct CustomTextField: View {
                        store.dispatch(action: .toggleAllowCommercialUse(newValue))
                        store.dispatch(action: .updateLicense)
                    }
-               )) .toggleTint(.accent).font(.menuMediumFont)
+               )) .toggleTint(.accent).font(.montserrat(.medium, for: .subheadline))
          
                if let licenseURL = store.state.licenseURL {
                    if #available(iOS 14.0, *) {
                        Link(NSLocalizedString(licenseURL, comment: "License Link"), destination: URL(string: licenseURL)!)
                            .foregroundColor(.accentColor)
-                           .padding(.top, 10).font(.menuMediumFont)
+                           .padding(.top, 10) .font(.montserrat(.medium, for: .subheadline))
                    } else {
                        // Fallback on earlier versions
                    }
@@ -273,7 +288,7 @@ struct CustomTextField: View {
 
        var body: some View {
            Text(NSLocalizedString(title, comment: "\(title) Section"))
-               .font(.headlineFont2)
+               .font(.montserrat(.semibold, for: .headline))
                .foregroundColor(.gray70)
                .padding(.top,20)
                .padding(.bottom,10)

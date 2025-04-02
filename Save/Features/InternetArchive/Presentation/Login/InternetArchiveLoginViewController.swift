@@ -45,7 +45,7 @@ class InternetArchiveLoginViewController : ViewModelController<InternetArchiveLo
     
     private func onNext() {
         let vc = UIStoryboard.main.instantiate(SpaceSuccessViewController.self)
-        vc.spaceName = IaSpace.defaultPrettyName
+        vc.spaceName = NSLocalizedString("the Internet Archive", comment: "")
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

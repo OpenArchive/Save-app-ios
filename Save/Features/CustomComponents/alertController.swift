@@ -62,7 +62,7 @@ class CustomAlertViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = UIColor.clear
+        view.backgroundColor = UIColor.gray.withAlphaComponent(0.9)
         
         
         addChild(alertView)

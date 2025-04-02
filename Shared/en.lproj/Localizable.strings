@@ -676,9 +676,9 @@
 "Rename folder" = "Rename folder";
 "Select media" = "Select media";
 "Remove folder from app" = "Remove folder from app";
-"Tap the %@ button below to add media" = "Tap the %@ button below to add media";
-"Tap the %@ button below to add a server" = "Tap the %@ button below to add a server";
-"Tap the %@ button below to add a folder" = "Tap the %@ button below to add a folder";
+"Tap the button below to add media" = "Tap the button below to add media";
+"Tap the button below to add a server" = "Tap the button below to add a server";
+"Tap the button below to add a folder" = "Tap the button below to add a folder";
 "Add new server" = "Add new server";
 "New Folder" = "New Folder";
 
@@ -736,3 +736,7 @@
 "This folder will be created on your server and automatically added on Save." = "This folder will be created on your server and automatically added on Save.";
 "Enter folder name"= "Enter folder name";
 "You have added a folder successfully." = "You have added a folder successfully.";
+"Add Media" = "Add Media";
+
+/* placeholder is + icon */
+"Tap %@ to pick from image gallery or press and hold to add media from other apps." = "Tap %@ to pick from image gallery or press and hold to add media from other apps.";

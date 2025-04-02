@@ -23,7 +23,7 @@ struct CustomButton: View {
         Button(action: action) {
             Text(title)
             
-                .font(.semiBoldFont)
+                .font(.montserrat(.semibold, for: .callout))
                 .frame(maxWidth: .infinity)
                 .padding()
                 .background(isOutlined ? Color.clear : backgroundColor)

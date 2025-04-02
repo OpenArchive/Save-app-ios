@@ -12,6 +12,8 @@ protocol UploadCellDelegate: AnyObject {
     func progressTapped(_ upload: Upload, _ button: ProgressButton)
 
     func showError(_ upload: Upload)
+    
+    func delete(_ upload: Upload,from cell: UploadCell)
 }
 
 class UploadCell: BaseCell {
@@ -24,11 +26,17 @@ class UploadCell: BaseCell {
         return 70
     }
 
-    @IBOutlet weak var progress: ProgressButton! {
+    @IBOutlet weak var DeleteButton: UIButton!{
         didSet {
-            progress.addTarget(self, action: #selector(progressTapped))
+            DeleteButton.addTarget(self, action: #selector(deleteTapped), for: [])
         }
     }
+    @IBOutlet weak var progress: ProgressButton!
+//    {
+//        didSet {
+//            progress.addTarget(self, action: #selector(progressTapped))
+//        }
+//    }
     
     @IBOutlet weak var errorBt: UIButton!
 
@@ -38,7 +46,7 @@ class UploadCell: BaseCell {
 
     @IBOutlet weak var nameLb: UILabel! {
         didSet {
-            nameLb.font = .montserrat(forTextStyle: .caption2)
+            nameLb.font = .montserrat(forTextStyle: .subheadline)
         }
     }
 
@@ -55,7 +63,7 @@ class UploadCell: BaseCell {
 
             progress.isHidden = upload?.error != nil || upload?.state == .uploaded
             progress.state = upload?.state ?? .pending
-            progress.progress = CGFloat(progressValue)
+          //  progress.progress = CGFloat(progressValue)
 
             errorBt.isHidden = upload?.error == nil
             done.isHidden = upload?.state != .uploaded
@@ -95,6 +103,12 @@ class UploadCell: BaseCell {
         }
     }
 
+    @IBAction
+    func deleteTapped() {
+        if let upload = upload {
+            delegate?.delete(upload,from: self)
+        }
+    }
     @IBAction func showError() {
         if let upload = upload {
             delegate?.showError(upload)

@@ -22,11 +22,11 @@ extension UIFont {
         .body: 17,
         .callout: 16,
         .caption1: 12,
-        .caption2: 14,
+        .caption2: 11,
         .footnote: 13,
-        .headline: 18,
+        .headline: 17,
         .subheadline: 15,
-        .largeTitle: 36,
+        .largeTitle: 34,
         .title1: 28,
         .title2: 22,
         .title3: 20,
@@ -53,7 +53,7 @@ extension UIFont {
 
         var font = nba.titleTextAttributes[.font] as? UIFont
         nba.titleTextAttributes[.font] = montserrat(similarTo: font)
-
+      
         for style in [UIBarButtonItem.Style.done, .plain] {
             let bbia = UIBarButtonItemAppearance(style: style)
 
@@ -79,7 +79,6 @@ extension UIFont {
         }
 
         let a = UINavigationBar.appearance()
-
         a.scrollEdgeAppearance = nba
         a.compactAppearance = nba
         a.standardAppearance = nba

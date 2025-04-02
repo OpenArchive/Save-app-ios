@@ -13,10 +13,12 @@ import TorManager
 class SlideshowViewController: BasePageViewController, SlideViewControllerDelegate
 {
 
+    @IBOutlet weak var bottomButtonContraint: NSLayoutConstraint!
+    @IBOutlet weak var SlideTopContraint: NSLayoutConstraint!
     @IBOutlet weak var skipBt: UIButton! {
         didSet {
             skipBt.setTitle(NSLocalizedString("Skip", comment: ""))
-            skipBt.titleLabel?.font = .montserrat(forTextStyle: .callout,with: .traitUIOptimized)
+            skipBt.titleLabel?.font = .montserrat(forTextStyle: .body,with: .traitUIOptimized)
         }
     }
 
@@ -28,17 +30,32 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
 
 
     private static let slides = [
+        
         SlideViewController.Slide(
+            
             heading: NSLocalizedString("Share", comment: "").localizedUppercase,
             text: { _ in
+                let style: UIFont.TextStyle = .subheadline
+                let baseSize = UIFont.preferredFont(forTextStyle: style).pointSize
+                let letterSpacing = baseSize * 0.02
+                let font = UIFont(name: "Montserrat-Regular", size: baseSize)
+                    ?? UIFont.preferredFont(forTextStyle: style)
+
+                // Line height
+                let lineHeight: CGFloat = 22.0
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.minimumLineHeight = lineHeight
+                paragraphStyle.maximumLineHeight = lineHeight
+                paragraphStyle.alignment = .left
+                
                 let text = NSLocalizedString(
                     "Send your media securely to private servers and lock the app with a pin.",
                     comment: ""
                 )
-                let paragraphStyle = NSMutableParagraphStyle()
-                paragraphStyle.lineSpacing = 3
+               
+            
                 return NSAttributedString(string: text, attributes: [
-                    .font: UIFont(name: "Montserrat-Regular", size: 13) ?? UIFont.systemFont(ofSize: 14),
+                    .font: font,
                     .foregroundColor: UIColor.label,
                     .paragraphStyle: paragraphStyle
                 ])
@@ -49,12 +66,24 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
         SlideViewController.Slide(
             heading: NSLocalizedString("Archive", comment: "").localizedUppercase,
             text: { _ in
-                // Define paragraph style
-                let paragraphStyle = NSMutableParagraphStyle()
-                paragraphStyle.lineSpacing = 3
+               
+                var style: UIFont.TextStyle =  .subheadline
 
-                // Define font
-                let montserratFont = UIFont(name: "Montserrat-Regular", size: 13) ?? UIFont.systemFont(ofSize: 13)
+                print(UIScreen.main.bounds.height)
+                let baseSize = UIFont.preferredFont(forTextStyle: style).pointSize
+                let letterSpacing =  0.02
+                let lineHeight: CGFloat =  22
+                let font = UIFont(name: "Montserrat-Regular", size: baseSize)
+                    ?? UIFont.preferredFont(forTextStyle: style)
+
+                let paragraphStyle = NSMutableParagraphStyle()
+                if UIScreen.main.bounds.height > 812 {
+                    paragraphStyle.minimumLineHeight = lineHeight
+                    paragraphStyle.maximumLineHeight = lineHeight
+                }
+                paragraphStyle.alignment = .left
+            
+
                 let blackColor = UIColor.label
 
                 // Localized text with placeholders
@@ -68,10 +97,11 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
                 let licenseUrl = URL(string: "https://creativecommons.org")!
 
                 let licenseAttributes: [NSAttributedString.Key: Any] = [
-                    .font: montserratFont,
+                    .font: font,
+                     .kern: letterSpacing,
+                    .paragraphStyle: paragraphStyle,
                     .underlineStyle: NSUnderlineStyle.single.rawValue,
                     .foregroundColor: blackColor,
-                    .paragraphStyle: paragraphStyle,
                     .link: licenseUrl
                 ]
                 let licenseAttributed = NSAttributedString(string: licenseText, attributes: licenseAttributes)
@@ -81,9 +111,10 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
 
                 // Construct final attributed string
                 let attributedText = NSMutableAttributedString(string: localizedComponents[0], attributes: [
-                    .font: montserratFont,
+                    .font: font,
+                    //.kern: letterSpacing,
+                    .paragraphStyle: paragraphStyle,
                     .foregroundColor: blackColor,
-                    .paragraphStyle: paragraphStyle
                 ])
                 attributedText.append(licenseAttributed)
 
@@ -94,12 +125,20 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
         SlideViewController.Slide(
             heading: NSLocalizedString("Verify", comment: "").localizedUppercase,
             text: { _ in
-                // Define paragraph style
-                let paragraphStyle = NSMutableParagraphStyle()
-                paragraphStyle.lineSpacing = 3
 
-                // Define font
-                let montserratFont = UIFont(name: "Montserrat-Regular", size: 13) ?? UIFont.systemFont(ofSize: 14)
+                let style: UIFont.TextStyle = .subheadline
+                let baseSize = UIFont.preferredFont(forTextStyle: style).pointSize
+                let letterSpacing = baseSize * 0.02
+                let font = UIFont(name: "Montserrat-Regular", size: baseSize)
+                    ?? UIFont.preferredFont(forTextStyle: style)
+
+                // Line height
+                let lineHeight: CGFloat = 22.0
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.minimumLineHeight = lineHeight
+                paragraphStyle.maximumLineHeight = lineHeight
+                paragraphStyle.alignment = .left
+                
                 let blackColor = UIColor.label
 
                 // Localized text with placeholders
@@ -113,10 +152,11 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
                 let proofModeUrl = URL(string: "https://proofmode.org")!
 
                 let proofModeAttributes: [NSAttributedString.Key: Any] = [
-                    .font: montserratFont,
+                    .font: font,
+                    .kern: letterSpacing,
+                    .paragraphStyle: paragraphStyle,
                     .underlineStyle: NSUnderlineStyle.single.rawValue,
                     .foregroundColor: blackColor,
-                    .paragraphStyle: paragraphStyle,
                     .link: proofModeUrl
                 ]
                 let proofModeAttributed = NSAttributedString(string: proofModeText, attributes: proofModeAttributes)
@@ -126,9 +166,10 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
 
                 // Construct final attributed string
                 let attributedText = NSMutableAttributedString(string: localizedComponents[0], attributes: [
-                    .font: montserratFont,
+                    .font: font,
+                    .kern: letterSpacing,
+                    .paragraphStyle: paragraphStyle,
                     .foregroundColor: blackColor,
-                    .paragraphStyle: paragraphStyle
                 ])
                 attributedText.append(proofModeAttributed)
 
@@ -145,35 +186,44 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
                     "%@ always uploads over TLS (Transport Layer Security) to protect your media in transit. \nTo further enhance security, enable %@ to prevent interception of your media from your phone to the server.",
                     comment: "Describes the encryption feature"
                 )
+                let style: UIFont.TextStyle = .subheadline
+                let baseSize = UIFont.preferredFont(forTextStyle: style).pointSize
+                let letterSpacing = baseSize * 0.02
+                let lineHeight: CGFloat = UIScreen.main.bounds.height <= 780 ? 18 :  22
+                let font = UIFont(name: "Montserrat-Regular", size: baseSize)
+                    ?? UIFont.preferredFont(forTextStyle: style)
 
-                // Dynamic parts for "Save" and "Tor"
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.minimumLineHeight = lineHeight
+                paragraphStyle.maximumLineHeight = lineHeight
+                paragraphStyle.alignment = .left
+           
                 let saveText = NSLocalizedString("Save", comment: "Save")
                 let torText = NSLocalizedString("Tor", comment: "Tor")
                 let torUrl = URL(string: "https://www.torproject.org")!
-                let paragraphStyle = NSMutableParagraphStyle()
-                paragraphStyle.lineSpacing = 3
-                // Attributed string setup
+               
+               // paragraphStyle.lineSpacing = 3
+              
                 let attributedText = NSMutableAttributedString()
 
-                // Font for all text
-                let montserratFont = UIFont(name: "Montserrat-Regular", size: 13) ?? UIFont.systemFont(ofSize: 14)
+              
                 let blackColor = UIColor.label
 
                 // Bold and italic font for "Save"
-                let boldItalicFont = UIFont(descriptor: montserratFont.fontDescriptor
-                    .withSymbolicTraits([.traitBold, .traitItalic]) ?? montserratFont.fontDescriptor, size: 14)
+                let descriptor = font.fontDescriptor.withSymbolicTraits([.traitBold, .traitItalic])
+                let boldItalicFont = UIFont(descriptor: descriptor ?? font.fontDescriptor, size: baseSize)
                 let saveAttributed = NSAttributedString(string: saveText, attributes: [
                     .font: boldItalicFont,
+                    .kern: letterSpacing,
                     .paragraphStyle: paragraphStyle,
                     .foregroundColor: blackColor
                 ])
 
                 // Link text for "Tor"
                 let torAttributes: [NSAttributedString.Key: Any] = [
-                    .font: montserratFont,
+                    .font: font,
                     .underlineStyle: NSUnderlineStyle.single.rawValue,
                     .foregroundColor: blackColor,
-                    .paragraphStyle: paragraphStyle,
                     .link: torUrl
                 ]
                 let torAttributed = NSAttributedString(string: torText, attributes: torAttributes)
@@ -181,24 +231,24 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
                 // Format the localized string
                 let localizedComponents = String(format: localizedString, "%@", "%@").components(separatedBy: "%@")
                 attributedText.append(NSAttributedString(string: localizedComponents[0], attributes: [
-                    .font: montserratFont,
+                    .font: font,
+                    .kern: letterSpacing,
+                    .paragraphStyle: paragraphStyle,
                     .foregroundColor: blackColor,
-                    .paragraphStyle: paragraphStyle
                 
                 ]))
                 attributedText.append(saveAttributed)
                 attributedText.append(NSAttributedString(string: localizedComponents[1], attributes: [
-                    .font: montserratFont,
-                    .foregroundColor: blackColor,
-                    .paragraphStyle: paragraphStyle
+                    .font: font,
+                    .kern: letterSpacing,
+                    .paragraphStyle: paragraphStyle,
+                    .foregroundColor: blackColor
                 
                 ]))
                 attributedText.append(torAttributed)
                 attributedText.append(NSAttributedString(string: localizedComponents[2], attributes: [
-                    .font: montserratFont,
-                    .foregroundColor: blackColor,
-                    .paragraphStyle: paragraphStyle
-                  
+                    .font: font,
+                    .foregroundColor: blackColor
                 ]))
 
                 return attributedText
@@ -211,7 +261,13 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        if UIScreen.main.bounds.height <= 667 {
+            bottomButtonContraint.constant = 16
+        
+        } else {
+            bottomButtonContraint.constant = 25
+          
+        }
         pageControl.numberOfPages = Self.slides.count
     }
 
@@ -269,7 +325,9 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
     {
         if completed {
             page = (pageViewController.viewControllers?.first as? SlideViewController)?.index ?? 0
-            refresh()
+            DispatchQueue.main.async {
+                       self.refresh()
+                   }
         }
     }
 
@@ -296,10 +354,9 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
 
         if let navC = navigationController as? MainNavigationController {
             navC.setRoot()
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                (navC.topViewController as? MainViewController)?.addSpace()
-            }
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+//                (navC.topViewController as? MainViewController)?.addSpace()
+//            }
         }
     }
 
@@ -339,8 +396,8 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
     private func refresh(animate: Bool = true) {
         let last = page >= Self.slides.count - 1
         skipBt.isHidden = last
-        nextBt.setImage(.init(systemName: last ? "checkmark" :"arrow.right"))
-
+        nextBt.setImage(.init(imageLiteralResourceName: last ? "check" :"forward_arrow"))
+       
         pageControl.currentPage = page
 
         if animate {
@@ -348,6 +405,7 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
                 self.view.layoutIfNeeded()
             }
         }
+    
     }
 
     private func getSlide(_ index: Int) -> SlideViewController {

@@ -17,10 +17,10 @@ class CcSelector {
         $0.title = individual
             ? NSLocalizedString("Set creative commons licenses for folders on this server", comment: "")
             : NSLocalizedString("Set the same Creative Commons license for ALL folders on this server.", comment: "")
-
+        $0.cell.backgroundColor = .clear
         $0.cell.textLabel?.numberOfLines = 0
         $0.cell.switchControl.onTintColor = .accent
-        $0.cell.textLabel?.font = .montserrat(forTextStyle: .caption2)
+        $0.cell.textLabel?.font = .montserrat(forTextStyle: .subheadline)
         $0.disabled = .function(["cc"], { [weak self] _ in
             !(self?.enabled ?? false)
         })
@@ -30,8 +30,9 @@ class CcSelector {
         $0.title = NSLocalizedString("Allow anyone to remix and share?", comment: "")
 
         $0.cell.textLabel?.numberOfLines = 0
+        $0.cell.backgroundColor = .clear
         $0.cell.switchControl.onTintColor = .accent
-        $0.cell.textLabel?.font = .montserrat(forTextStyle: .caption2)
+        $0.cell.textLabel?.font = .montserrat(forTextStyle: .subheadline)
         $0.hidden = "$cc != true"
         $0.disabled = .function(["cc"], { [weak self] _ in
             !(self?.enabled ?? false)
@@ -42,8 +43,9 @@ class CcSelector {
         $0.title = NSLocalizedString("Require them to share like you have?", comment: "")
 
         $0.cell.textLabel?.numberOfLines = 0
+        $0.cell.backgroundColor = .clear
         $0.cell.switchControl.onTintColor = .accent
-        $0.cell.textLabel?.font = .montserrat(forTextStyle: .caption2)
+        $0.cell.textLabel?.font = .montserrat(forTextStyle: .subheadline)
         $0.hidden = "$cc != true"
         $0.disabled = .function(["cc", "remixSw"], { [weak self] _ in
             !(self?.enabled ?? false) || !(self?.remixSw.value ?? false)
@@ -54,7 +56,8 @@ class CcSelector {
         $0.title = NSLocalizedString("Allow commercial use?", comment: "")
 
         $0.cell.textLabel?.numberOfLines = 0
-        $0.cell.textLabel?.font = .montserrat(forTextStyle: .caption2)
+        $0.cell.backgroundColor = .clear
+        $0.cell.textLabel?.font = .montserrat(forTextStyle: .subheadline)
         $0.cell.switchControl.onTintColor = .accent
 
         $0.hidden = "$cc != true"
@@ -65,21 +68,20 @@ class CcSelector {
 
     let licenseRow = LinkRow() {
         $0.cell.textLabel?.adjustsFontSizeToFitWidth = true
-
+        $0.cell.backgroundColor = .clear
         $0.hidden = "$cc != true"
     }.cellUpdate { cell, row in
-        cell.textLabel?.font = .montserrat(forTextStyle: .caption2)
+        cell.textLabel?.font = .montserrat(forTextStyle: .subheadline)
      }
 
     let learnMoreRow = LinkRow() {
         $0.title = NSLocalizedString("Learn more about Creative Commons", comment: "")
         $0.value = URL(string: "https://creativecommons.org/about/cclicenses/")
- 
+        $0.cell.backgroundColor = .clear
         $0.cell.textLabel?.numberOfLines = 0
 
-        $0.hidden = "$cc != true"
     }.cellUpdate { cell, row in
-        cell.textLabel?.font = .montserrat(forTextStyle: .caption2)
+        cell.textLabel?.font = .montserrat(forTextStyle: .subheadline)
      }
 
 

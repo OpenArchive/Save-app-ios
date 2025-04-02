@@ -52,7 +52,7 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
         
         // Constrain the form's tableView to fill the `formContainerView`
         tableView?.translatesAutoresizingMaskIntoConstraints = false
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = .clear
         tableView.separatorStyle = .none
         tableView?.isScrollEnabled = false
         tableView?.showsVerticalScrollIndicator = false
@@ -87,8 +87,9 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
             self?.ccLicenseChanged(row)
         }
        <<< LabelRow() { row in
-                row.title = " "  // Empty title to create visual space
-                row.cell.height = { 10 }  // Adjust the height as needed
+                row.title = " "
+                row.cell.backgroundColor = .clear
+                row.cell.height = { 10 }
         }
         <<< cc.licenseRow
         
@@ -135,7 +136,7 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
         }
         updateSpaceName(for: space.id, newName: nameTab.text ?? "")
         let vc = UIStoryboard.main.instantiate(SpaceSuccessViewController.self)
-            vc.spaceName = space.prettyName
+            vc.spaceName = NSLocalizedString("a private server", comment: "")
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

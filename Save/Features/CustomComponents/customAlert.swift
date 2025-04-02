@@ -41,20 +41,28 @@ struct CustomAlertView: View {
             }
             
             Text(title)
-                .font(.headlineFont)
+                .font(.montserrat(.bold, for: .headline))
                 .foregroundColor(.primary)
                 .multilineTextAlignment(.center)
             
             Text(message)
-                .font(.menuMediumFont)
+                .font(.montserrat(.medium, for: .subheadline))
                 .multilineTextAlignment(.center)
                 .padding(.bottom,10)
                 .foregroundColor(.alertSubtitle)
             
             if showCheckbox {
-                Toggle(isOn: $checkboxChecked) {
+                Toggle(isOn: Binding<Bool>(
+                    get: { checkboxChecked },
+                    set: { newValue in
+                        checkboxChecked = newValue
+                        if newValue {
+                            Settings.firstUploadDone = true
+                        }
+                    }
+                )) {
                     Text(NSLocalizedString("Do not show me this again", comment: ""))
-                        .font(.menuMediumFont)
+                        .font(.montserrat(.medium, for: .subheadline))
                         .foregroundColor(.alertSubtitle)
                 }
                 .toggleStyle(CheckboxToggleStyle())
@@ -94,7 +102,7 @@ struct CustomAlertView: View {
                 
             }
         }
-        .padding()
+        .padding(.all, 10)
         .background(Color.alertBg)
         .cornerRadius(12)
         .shadow(radius: 10)

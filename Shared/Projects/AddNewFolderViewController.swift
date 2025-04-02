@@ -133,11 +133,11 @@ struct CreateFolderView: View {
             ScrollView {
                 VStack(alignment: .center, spacing: 10) {
                     Text(NSLocalizedString("First, please name your folder", comment: ""))
-                        .font(.headlineFont2)
+                        .font(.montserrat(.semibold, for: .headline))
                         .multilineTextAlignment(.center)
                     
                     Text(NSLocalizedString("This folder will be created on your server and automatically added on Save.", comment: ""))
-                        .font(.menuMediumFont)
+                        .font(.montserrat(.medium, for: .subheadline))
                         .foregroundColor(.gray70)
                         .multilineTextAlignment(.center).padding(.bottom,30)
                     
@@ -165,7 +165,7 @@ struct CreateFolderView: View {
                 .frame(maxWidth: .infinity)
                 .foregroundColor(.primary)
                 .padding()
-                .font(.headlineFont2)
+                .font(.montserrat(.semibold, for: .headline))
                 .cornerRadius(8)
                 
                 Button(NSLocalizedString("Create", comment: "")) {
@@ -175,7 +175,7 @@ struct CreateFolderView: View {
                 }
                 .frame(maxWidth: .infinity)
                 .padding()
-                .font(.headlineFont2)
+                .font(.montserrat(.semibold, for: .headline))
                 .background(store.state.folderName.isEmpty ? Color.gray50 : Color.accentColor)
                 .foregroundColor(.black)
                 .cornerRadius(8)
@@ -190,7 +190,7 @@ struct CreateFolderView: View {
         .overlay(
             Group {
                 if store.state.status {
-                    Color.black.opacity(0.4)
+                    Color.gray.opacity(0.9)
                         .edgesIgnoringSafeArea(.all)
                         .overlay(
                             VStack {
@@ -215,7 +215,7 @@ struct CreateFolderView: View {
                         )
                 }
                 if (store.state.errorMessage != nil) {
-                    Color.black.opacity(0.4)
+                    Color.gray.opacity(0.9)
                         .edgesIgnoringSafeArea(.all)
                         .overlay(
                             VStack {

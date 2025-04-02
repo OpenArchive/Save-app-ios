@@ -28,16 +28,26 @@ struct PasscodeContentWrapper: View {
     var body: some View {
         VStack(alignment: .center, spacing: 16) {
             Text(title)
-                .font(.headlineFont2)
+                .font(.montserrat(.semibold, for: .headline))
                 .padding(.top,30)
             if(!subtitle.isEmpty){
-                Text(subtitle)
-                    .font(.errorText)
-                    .lineLimit(3)
-                    .multilineTextAlignment(.center)
-                    .foregroundColor(.redButton)
-                    .padding(.top, 18)
-                    .padding(.horizontal,26)
+                if #available(iOS 14.0, *) {
+                    Text(subtitle)
+                        .font(.montserrat(.medium, for: .caption2))
+                        .lineLimit(3)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.redButton)
+                        .padding(.top, 18)
+                        .padding(.horizontal,26)
+                } else {
+                    Text(subtitle)
+                        .font(.montserrat(.medium, for: .caption))
+                        .lineLimit(3)
+                        .multilineTextAlignment(.center)
+                        .foregroundColor(.redButton)
+                        .padding(.top, 18)
+                        .padding(.horizontal,26)
+                }
             }
             // MARK: Passcode Dots
             PasscodeDots(

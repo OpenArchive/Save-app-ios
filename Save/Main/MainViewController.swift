@@ -28,6 +28,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     private static let segueShowPrivateServerSetting = "showPrivateServerSetting"
     private static var isSettingsEnabled = false
     lazy var privateServer:Space? = nil
+    private var isLongPressTapped: Bool = false
     @IBOutlet weak var logo: UIImageView!
     
     @IBOutlet weak var removeBt: UIButton! {
@@ -45,7 +46,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     @IBOutlet weak var editButton: UIButton!
     private lazy var menuBt: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "line.horizontal.3"), for: .normal)
+        button.setImage(UIImage(named: "menu_icon"), for: .normal)
         button.tintColor = .black
         button.accessibilityIdentifier = "btMenu"
         button.addTarget(self, action: #selector(didTapMenuButton), for: .touchUpInside)
@@ -223,7 +224,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         folderNameText.delegate = self
         collectionView.allowsMultipleSelection = true
         uploadsReadConn?.update(mappings: uploadsMappings)
@@ -231,10 +231,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         collectionsReadConn?.update(mappings: collectionsMappings)
         assetsReadConn?.update(mappings: assetsMappings)
         Db.add(observer: self, #selector(yapDatabaseModified))
-        if #available(iOS 14.0, *) {
-            editButton.menu = createDropdownMenu()
-            editButton.showsMenuAsPrimaryAction = true
-        }
+      
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backBarButtonItem
         
@@ -300,13 +297,14 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
     //MARK: = Dropdown menu
     private func createDropdownMenu() -> UIMenu {
+        let isAssetsEmpty = !(numberOfSections(in: collectionView) != 0)
         let renameAction = UIAction(title: NSLocalizedString("Rename folder", comment: ""), image: nil) { _ in
             self.updateProject()
             self.renameView.isHidden = false
             
         }
         
-        let selectMediaAction = UIAction(title: NSLocalizedString("Select media", comment: ""), image: nil) { _ in
+        let selectMediaAction = UIAction(title: NSLocalizedString("Select media", comment: ""), image: nil, attributes: isAssetsEmpty ? [.disabled] : []) { _ in
             self.toggleMode(newMode: true)
         }
         
@@ -347,7 +345,11 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         configureNavigationBar()
         updateSpace()
         updateProject()
-        
+        isLongPressTapped = false
+        if #available(iOS 14.0, *) {
+            editButton.menu = createDropdownMenu()
+            editButton.showsMenuAsPrimaryAction = true
+        }
         collectionView.toggle(numberOfSections(in: collectionView) != 0, animated: animated)
         if(MainViewController.isSettingsEnabled){
             self.titleContainer.isHidden = true
@@ -359,7 +361,11 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         updateManageBt()
     
     }
-    
+    @available(iOS 14.0, *)
+    private func updateDropdownMenu() {
+        editButton.menu = createDropdownMenu()
+        editButton.showsMenuAsPrimaryAction = true
+    }
     @objc private func appDidBecomeActive() {
         if(MainViewController.isSettingsEnabled){
             self.titleContainer.isHidden = true
@@ -378,13 +384,13 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         let appearance = UINavigationBarAppearance()
         appearance.configureWithOpaqueBackground()
         if #available(iOS 15.0, *) {
-            appearance.backgroundColor = UIColor.systemMint
+            appearance.backgroundColor = .menuBackground
         } else {
-            appearance.backgroundColor = UIColor.systemTeal
+            appearance.backgroundColor = .menuBackground
         }
         appearance.titleTextAttributes = [
             .foregroundColor: UIColor.white,
-            .font: UIFont.boldSystemFont(ofSize: 18)
+            .font: UIFont(name: "Montserrat-SemiBold", size: 18) ??  UIFont.systemFont(ofSize: 18),
         ]
         
         navigationController?.navigationBar.standardAppearance = appearance
@@ -588,14 +594,17 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 self.settingsVc.view.removeFromSuperview()
                 self.settingsVc.removeFromParent()
             }
-            if self.selectedProject != nil {
-                self.titleContainer.isHidden = false
+            self.titleContainer.isHidden = false
+            if self.selectedProject == nil {
+                self.toggleVisibility(ishidden: true)
             }
+           
             self.titleContainerHeight.constant = 44
-            self.myMediaBt.setImage(UIImage(systemName: "photo.fill"))
+            self.myMediaBt.setImage(UIImage(named: "media_image"))
             self.settingsBt.setImage(UIImage(systemName: "gearshape"))
             self.menuBt.isHidden = false
             MainViewController.isSettingsEnabled=false
+            self.updateProject()
         }
     }
     
@@ -618,7 +627,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             self.titleContainerHeight.constant = 0
             self.container.show2(animated: true)
             MainViewController.isSettingsEnabled = true
-            self.myMediaBt.setImage(UIImage(systemName: "photo"))
+            self.myMediaBt.setImage(UIImage(named: "media_unselected"))
             self.menuBt.isHidden = true
             self.settingsBt.setImage(UIImage(systemName: "gearshape.fill"))
         }
@@ -664,8 +673,42 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         assetPicker.pickMedia()
     }
     
+    func showMediaPickerSheet() {
+        
+        if selectedProject == nil {
+            if(!isLongPressTapped){
+                isLongPressTapped.toggle()
+                return addFolder()
+            }
+        }
+        else{
+            if #available(iOS 15.0, *) {
+                let popup = MediaPopupViewController()
+                popup.modalPresentationStyle = .overCurrentContext
+                popup.modalTransitionStyle = .crossDissolve
+                
+                popup.onCameraTap = { [weak self] in
+                    self?.assetPicker.openCamera()
+                }
+                popup.onGalleryTap = { [weak self] in
+                    self?.assetPicker.pickMedia()
+                }
+                popup.onFilesTap = { [weak self] in
+                    
+                    self?.assetPicker.pickDocuments()
+                }
+                
+                present(popup, animated: true)
+            }
+            else{
+                addMenu.show2(animated: true)
+            }
+      }
+    }
+
     @IBAction func showAddMenu() {
-        addMenu.show2(animated: true)
+        showMediaPickerSheet()
+       
     }
     
     @IBAction func closeAddMenu() {
@@ -793,12 +836,23 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             guard let self = self, countChanged else {
                 return
             }
-            
-            self.folderAssetCountLb.text = "  \(Formatters.format(self.assetsMappings.numberOfItemsInAllGroups()))  "
-            
-            if self.collectionView.isHidden != (self.numberOfSections(in: self.collectionView) < 1) {
-                self.collectionView.toggle(self.collectionView.isHidden, animated: true)
+            if self.selectedProject != nil {
+                self.folderAssetCountLb.text = "  \(Formatters.format(self.assetsMappings.numberOfItemsInAllGroups()))  "
             }
+            if self.selectedProject == nil {
+                self.collectionView.isHidden = true
+            }
+            else{
+                if self.collectionView.isHidden != (self.numberOfSections(in: self.collectionView) < 1) {
+                    print(self.numberOfSections(in: self.collectionView))
+                    self.collectionView.toggle(self.collectionView.isHidden, animated: true)
+                }
+         }
+        }
+        if #available(iOS 14.0, *) {
+            updateDropdownMenu()
+        } else {
+          
         }
     }
     
@@ -811,14 +865,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     private func updateManageBt() {
         uploadsReadConn?.asyncRead { [weak self] tx in
             let count = UploadsView.countUploading(tx)
-            
-            DispatchQueue.main.async {
-                self?.folderAssetCountLb.toggle(count < 1, animated: true)
-                let shouldShow = count < 1
-                self?.EditButtonTrailingContraint.constant = shouldShow ? 31 : 0
-                
-                //  self?.manageBt.toggle(count > 0, animated: true)
-            }
         }
     }
     
@@ -864,22 +910,22 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             spaceFavIcon.image = space.favIcon
             sideMenu.space = space
             navigationItem.rightBarButtonItem = menuBarButtonItem
-            hintLb.text =  String(format: NSLocalizedString(
-                "Tap the %@ button below to add a folder",
-                comment: "placeholder is '+'"), "+")
+            hintLb.text =   NSLocalizedString(
+                "Tap the button below to add a folder",
+                comment: "")
             welcomeLb.text = ""
             welcomeLb.isHidden = true
             
         }
         else {
-            spaceFavIcon.image = SelectedSpace.defaultFavIcon
+            spaceFavIcon.image = nil
             sideMenu.space = nil
             self.titleContainer.isHidden = true
             
            
-            hintLb.text =  String(format: NSLocalizedString(
-                "Tap the %@ button below to add a server",
-                comment: "placeholder is '+'"), "+")
+            hintLb.text =  NSLocalizedString(
+                "Tap the button below to add a server",
+                comment: "")
             self.titleContainerHeight.constant = 0
             welcomeLb.isHidden = false
             welcomeLb.text = NSLocalizedString("Welcome!", comment: "")
@@ -891,23 +937,42 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
     
     private func updateProject() {
+       
         if let project = selectedProject{
             
             AbcFilteredByProjectView.updateFilter(project.id)
-            hintLb.text =  String(format: NSLocalizedString(
-                "Tap the %@ button below to add media",
-                comment: "placeholder is '+'"), "+")
+            hintLb.text =  NSLocalizedString(
+                "Tap the button below to add media",
+                comment: "")
             folderNameLb.text = project.name
             folderNameText.text = project.name
-            self.titleContainer.isHidden = false
-            self.titleContainerHeight.constant = 44
+            if(!MainViewController.isSettingsEnabled){
+                self.titleContainer.isHidden = false
+                self.titleContainerHeight.constant = 44
+                toggleVisibility(ishidden: false)
+            }
+            else{
+                self.titleContainer.isHidden = true
+                self.titleContainerHeight.constant = 0
+            }
         }
         else{
-            self.titleContainer.isHidden = true
-            self.titleContainerHeight.constant = 0
+            self.titleContainer.isHidden = false
+            self.titleContainerHeight.constant = 44
+            toggleVisibility(ishidden: true)
+            DispatchQueue.main.async {
+                self.collectionView.isHidden = true
+            }
+          
         }
     }
-    
+    func toggleVisibility(ishidden:Bool) {
+      
+        editButton.isHidden = ishidden
+        folderIndicator.isHidden = ishidden
+        folderNameLb.isHidden = ishidden
+        folderAssetCountLb.isHidden = ishidden
+    }
     private func getSelectedAssets() -> [Asset] {
         assetsReadConn?.objects(at: collectionView.indexPathsForSelectedItems, in: assetsMappings) ?? []
     }

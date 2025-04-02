@@ -34,6 +34,7 @@ class SettingsViewModel: ObservableObject {
 struct ToggleSwitch: View {
     var title: String
     var subtitle: String?
+    var isDisabled:Bool = false
     @Binding var isOn: Bool
     var action: ((Bool) -> Void)?
     
@@ -41,12 +42,18 @@ struct ToggleSwitch: View {
         HStack {
             VStack(alignment: .leading,spacing: 1) {
                 Text(title)
-                    .font(.menuMediumFont)
+                    .font(.montserrat(.medium, for: .subheadline))
                     .foregroundColor(.primary)
                 if let subtitle = subtitle {
-                    Text(subtitle)
-                        .font(.menuitalicFont)
-                        .foregroundColor(.settingSubtitle)
+                    if #available(iOS 14.0, *) {
+                        Text(subtitle)
+                            .font(.montserrat(.mediumItalic, for: .caption2))
+                            .foregroundColor(.settingSubtitle)
+                    } else {
+                        Text(subtitle)
+                            .font(.montserrat(.mediumItalic, for: .caption))
+                            .foregroundColor(.settingSubtitle)
+                    }
                     
                 }
             }.padding(.vertical, 6)
@@ -54,6 +61,7 @@ struct ToggleSwitch: View {
             if #available(iOS 15.0, *) {
                 Toggle("", isOn: $isOn)
                     .labelsHidden()
+                    .disabled(isDisabled)
                     .tint(.accent)
                     .onChange(of: isOn) { value in
                         action?(value)
@@ -61,6 +69,7 @@ struct ToggleSwitch: View {
             } else if #available(iOS 14.0, *) {
                 Toggle("", isOn: $isOn)
                     .labelsHidden()
+                    .disabled(isDisabled)
                     .accentColor(isOn ? .accentColor : .gray30)
                     .onChange(of: isOn) { value in
                         action?(value)
@@ -82,12 +91,18 @@ struct SubItem: View {
         Button(action: action) {
             VStack(alignment: .leading,spacing: 1) {
                 Text(title)
-                    .font(.menuMediumFont)
+                    .font(.montserrat(.medium, for: .subheadline))
                     .foregroundColor(.primary)
                 if let subtitle = subtitle {
-                    Text(subtitle)
-                        .font(.menuitalicFont)
-                        .foregroundColor(.settingSubtitle)
+                    if #available(iOS 14.0, *) {
+                        Text(subtitle)
+                            .font(.montserrat(.mediumItalic, for: .caption2))
+                            .foregroundColor(.settingSubtitle)
+                    } else {
+                        Text(subtitle)
+                            .font(.montserrat(.mediumItalic, for: .caption))
+                            .foregroundColor(.settingSubtitle)
+                    }
                 }
             }
             .padding(.vertical, 6)
@@ -172,7 +187,7 @@ struct SettingsView: View {
                         
                         (NSLocalizedString("Encrypt", comment: ""),
                          [
-                            AnyView(ToggleSwitch(title: NSLocalizedString("Turn on Onion Routing", comment: ""),subtitle: NSLocalizedString("Transfer via the Tor Network only", comment: ""), isOn: $viewModel.isOnionRoutingOn)),
+                            AnyView(ToggleSwitch(title: NSLocalizedString("Turn on Onion Routing", comment: ""),subtitle: NSLocalizedString("Transfer via the Tor Network only", comment: ""), isDisabled:true, isOn: $viewModel.isOnionRoutingOn)),
                             
                          ]),
                         
@@ -207,7 +222,8 @@ struct SettingsView: View {
                     ForEach(sections, id: \.0) { section in
                         Section(
                             header: Text(section.0)
-                                .font(.headlineFont2)
+                                .font(Font(UIFont.montserrat(forTextStyle: .headline,with:.traitUIOptimized)))
+                                .kerning(0.01)
                                 .foregroundColor(.accentColor)
                             
                             ,
@@ -221,7 +237,7 @@ struct SettingsView: View {
                                 section.1[index]
                                     .modifier(HideItemSeparator())
                             }
-                        }.background(Color(UIColor.systemBackground))
+                        }.background(Color(UIColor.clear))
                             .modifier(HideItemSeparator())
                     }
                 } .background(Color(UIColor.systemBackground))
@@ -236,7 +252,7 @@ struct SettingsView: View {
         }.overlay(
             Group {
                 if showPasscodeAlert {
-                    Color.black.opacity(0.4)
+                    Color.gray.opacity(0.9)
                         .edgesIgnoringSafeArea(.all)
                         .overlay(
                             VStack {

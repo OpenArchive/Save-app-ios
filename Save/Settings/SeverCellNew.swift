@@ -31,7 +31,7 @@ class ServerCellNew: UITableViewCell {
         serverNameLabel.font = UIFont.montserrat(forTextStyle: .headline, with: .traitUIOptimized)
         serverNameLabel.textColor = .label
         
-        serverSubtitleLabel.font = UIFont.montserrat(forTextStyle: .caption2)
+        serverSubtitleLabel.font = UIFont.montserrat(forTextStyle: .subheadline)
         serverSubtitleLabel.textColor = .subtitleText
         
         bottomPaddingView.backgroundColor = .clear

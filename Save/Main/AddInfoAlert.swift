@@ -17,16 +17,16 @@ import SwiftUI
 class AddInfoAlert {
     
     static var image: Image? {
-        Image("add_media") // Replace with correct asset name if needed
+        Image("add_media") 
     }
     
     static var title: String {
-        NSLocalizedString("Add Other Media", comment: "")
+        NSLocalizedString("Add Media", comment: "")
     }
     
     static var message: String {
         String(format: NSLocalizedString(
-            "Press and hold the %@ button to select other files than photos and movies.",
+            "Tap %@ to pick from image gallery or press and hold to add media from other apps.",
             comment: "placeholder is '+'"), "+")
     }
     

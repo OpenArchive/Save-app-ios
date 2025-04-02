@@ -31,11 +31,11 @@ struct InternetArchiveDetailContent: View {
         VStack(alignment: .leading, spacing: 20) {
             
             Text(NSLocalizedString("Account", comment:""))
-                .font(.headlineFont2)
+                .font(.montserrat(.semibold, for: .headline))
                 .padding(.horizontal)
             
             Text(state.userName)
-                .font(.footnoteFontMedium)
+                .font(.montserrat(.medium, for: .footnote))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding()
                 .foregroundColor(.gray70)
@@ -47,7 +47,7 @@ struct InternetArchiveDetailContent: View {
                 .padding(.horizontal)
             
             Text(state.screenName)
-                .font(.footnoteFontMedium)
+                .font(.montserrat(.medium, for: .footnote))
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .foregroundColor(.gray70)
                 .padding()
@@ -60,7 +60,7 @@ struct InternetArchiveDetailContent: View {
             
             
             Text(state.email)
-                .font(.footnoteFontMedium)
+                .font(.montserrat(.medium, for: .footnote))
                 .foregroundColor(.gray70)
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding()
@@ -79,7 +79,7 @@ struct InternetArchiveDetailContent: View {
                     dispatch(.HandleBackButton(status: true))
                 }) {
                     Text(LocalizedStringKey("Remove from App"))
-                        .font(.headlineFont2)
+                        .font(.montserrat(.semibold, for: .headline))
                         .foregroundColor(.redButton)
                         .padding()
                 }
@@ -93,7 +93,7 @@ struct InternetArchiveDetailContent: View {
         .padding(.top, 30).overlay(
             Group {
                 if showAlert {
-                    Color.black.opacity(0.4)
+                    Color.gray.opacity(0.9)
                         .edgesIgnoringSafeArea(.all)
                         .overlay(
                             VStack {
