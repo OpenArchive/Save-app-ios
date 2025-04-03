@@ -90,6 +90,7 @@ class ImageCell: UICollectionViewCell {
 
         progress.isHidden = upload == nil || asset?.isUploaded ?? true || upload?.state == .uploaded
         progress.state = upload?.state ?? .pending
-       // progress.progress = upload?.progress ?? 0
+        print(upload?.progress)
+        progress.progress = upload?.progress ?? 0
     }
 }

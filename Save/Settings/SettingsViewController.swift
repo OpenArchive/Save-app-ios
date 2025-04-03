@@ -140,8 +140,11 @@ struct SettingsView: View {
     @State private var selectedTheme: String
     @State private var showActionSheet = false
     @State private var showPasscodeAlert = false
+    @State private var passcodeToggleState: Bool
+    @State private var isProgrammaticallyChangingPasscodeToggle = false
     init() {
         _selectedTheme = State(initialValue: AppSettings.theme)
+        _passcodeToggleState = State(initialValue: AppSettings.isPasscodeEnabled)
     }
     var body: some View {
         NavigationView {
@@ -152,15 +155,18 @@ struct SettingsView: View {
                     let sections: [(String, [AnyView])] = [
                         (NSLocalizedString("Share", comment: ""),
                          [
-                            AnyView(ToggleSwitch(title: NSLocalizedString("Lock app with passcode", comment: ""), isOn: $viewModel.isPasscodeOn) { value in
+                            AnyView(ToggleSwitch(title: NSLocalizedString("Lock app with passcode", comment: ""), isOn: $passcodeToggleState) { value in
                                 
-                                if(value){
-                                    viewModel.togglePasscode(value)
-                                }
-                                else{
-                                    if(AppSettings.isPasscodeEnabled){
-                                        showPasscodeAlert  = true
-                                    }}
+                                guard !isProgrammaticallyChangingPasscodeToggle else {
+                                           return
+                                       }
+                                       if value {
+                                           viewModel.togglePasscode(value)
+                                       } else {
+                                           if AppSettings.isPasscodeEnabled {
+                                               showPasscodeAlert = true
+                                           }
+                                       }
                             })
                          ]),
                         
@@ -249,6 +255,7 @@ struct SettingsView: View {
             }
         }.onAppear {
             viewModel.isPasscodeOn = AppSettings.isPasscodeEnabled
+            passcodeToggleState = AppSettings.isPasscodeEnabled
         }.overlay(
             Group {
                 if showPasscodeAlert {
@@ -262,15 +269,25 @@ struct SettingsView: View {
                                     primaryButtonTitle: NSLocalizedString("Yes", comment: ""),
                                     iconImage: Image(systemName: "exclamationmark.triangle.fill"),
                                     primaryButtonAction: {
-                                        
                                         AppSettings.passcodeEnabled = false
+                                        viewModel.isPasscodeOn = false
+                                        passcodeToggleState = false
                                         showPasscodeAlert = false
                                     },
                                     secondaryButtonTitle: NSLocalizedString("Cancel", comment: ""),
                                     secondaryButtonIsOutlined: false,
+                                
                                     secondaryButtonAction: {
-                                        showPasscodeAlert = false
+                                        isProgrammaticallyChangingPasscodeToggle = true
+                                            passcodeToggleState = true
+
+                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                                isProgrammaticallyChangingPasscodeToggle = false
+                                            }
+
+                                            showPasscodeAlert = false
                                     },
+
                                     showCheckbox: false, isRemoveAlert: false
                                 )
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)

@@ -63,8 +63,7 @@ class UploadCell: BaseCell {
 
             progress.isHidden = upload?.error != nil || upload?.state == .uploaded
             progress.state = upload?.state ?? .pending
-          //  progress.progress = CGFloat(progressValue)
-
+            progress.progress = CGFloat(progressValue)
             errorBt.isHidden = upload?.error == nil
             done.isHidden = upload?.state != .uploaded
 
