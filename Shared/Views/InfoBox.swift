@@ -15,7 +15,8 @@ protocol InfoBoxDelegate {
 }
 
 class InfoBox: UIView, UITextViewDelegate {
-
+    var nextResponderField: UIResponder?
+    
     // MARK: Class
 
     // Don't store, otherwise font won't be recalculated after size change.
@@ -190,11 +191,16 @@ class InfoBox: UIView, UITextViewDelegate {
      */
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
-            textView.endEditing(true)
-
-            return false
+            if let next = nextResponderField {
+                textView.resignFirstResponder()
+                next.becomeFirstResponder()
+                return false
+            }
+           
+            return true
         }
 
         return true
     }
+
 }

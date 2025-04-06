@@ -307,11 +307,8 @@
                                         </userDefinedRuntimeAttributes>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3B2-GC-c26">
-                                        <rect key="frame" x="16" y="58" width="48" height="32"/>
+                                        <rect key="frame" x="22" y="58" width="36" height="32"/>
                                         <color key="backgroundColor" name="Accent"/>
-                                        <constraints>
-                                            <constraint firstAttribute="width" constant="48" id="1eX-WH-cW6"/>
-                                        </constraints>
                                         <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat SemiBold" pointSize="16"/>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
@@ -2487,9 +2484,16 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4N2-vm-5p4">
+                                                <rect key="frame" x="20" y="450.5" width="280" height="0.0"/>
+                                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                                <color key="textColor" name="red-button"/>
+                                                <nil key="highlightedColor"/>
+                                            </label>
                                         </subviews>
                                         <color key="backgroundColor" systemColor="systemBackgroundColor"/>
                                         <constraints>
+                                            <constraint firstItem="4N2-vm-5p4" firstAttribute="leading" secondItem="97a-9J-Qj6" secondAttribute="leading" id="6ng-zh-EG3"/>
                                             <constraint firstItem="PEt-pF-AHz" firstAttribute="top" secondItem="1eo-bB-Qwg" secondAttribute="top" constant="45" id="CTP-8m-jBT"/>
                                             <constraint firstItem="13Y-3C-Tmj" firstAttribute="top" secondItem="i5c-IQ-gVj" secondAttribute="bottom" constant="45" id="EQe-yi-GjH"/>
                                             <constraint firstItem="GzS-H2-y9Y" firstAttribute="top" secondItem="PEt-pF-AHz" secondAttribute="bottom" constant="45" id="G1f-Nr-DQB"/>
@@ -2503,6 +2507,8 @@
                                             <constraint firstAttribute="trailing" secondItem="PEt-pF-AHz" secondAttribute="trailing" constant="20" symbolic="YES" id="Weg-fD-Gea"/>
                                             <constraint firstItem="zHW-kD-Pea" firstAttribute="centerY" secondItem="PEt-pF-AHz" secondAttribute="centerY" id="Xsq-DY-nwy"/>
                                             <constraint firstItem="97a-9J-Qj6" firstAttribute="leading" secondItem="1eo-bB-Qwg" secondAttribute="leading" constant="20" symbolic="YES" id="ZhA-rj-pSD"/>
+                                            <constraint firstItem="4N2-vm-5p4" firstAttribute="trailing" secondItem="97a-9J-Qj6" secondAttribute="trailing" id="asX-dx-PZv"/>
+                                            <constraint firstItem="4N2-vm-5p4" firstAttribute="top" secondItem="97a-9J-Qj6" secondAttribute="bottom" constant="8" id="bMl-tV-ayV"/>
                                             <constraint firstItem="i5c-IQ-gVj" firstAttribute="top" secondItem="GzS-H2-y9Y" secondAttribute="bottom" constant="20" id="dKh-hA-Y9Y"/>
                                             <constraint firstAttribute="trailing" secondItem="i5c-IQ-gVj" secondAttribute="trailing" constant="20" symbolic="YES" id="h7a-7k-y86"/>
                                             <constraint firstAttribute="trailing" secondItem="97a-9J-Qj6" secondAttribute="trailing" constant="20" symbolic="YES" id="hM3-Yd-dda"/>
@@ -2573,6 +2579,7 @@
                     <connections>
                         <outlet property="accountLb" destination="13Y-3C-Tmj" id="R9S-0k-AeT"/>
                         <outlet property="backBt" destination="TdD-PF-XgW" id="445-0C-gYa"/>
+                        <outlet property="errorText" destination="4N2-vm-5p4" id="euG-TA-uL6"/>
                         <outlet property="iconIv" destination="zHW-kD-Pea" id="l64-3r-m2Z"/>
                         <outlet property="nextBt" destination="V5A-mk-bSu" id="r0m-JN-9Jg"/>
                         <outlet property="passwordTb" destination="97a-9J-Qj6" id="kXF-lx-XmW"/>
@@ -3046,6 +3053,7 @@ Google's APIs allow you to access and send media to your existing folders in Goo
                                                 <constraint firstAttribute="width" constant="24" id="Abd-s5-M4u"/>
                                                 <constraint firstAttribute="height" constant="24" id="ezj-UK-NQ9"/>
                                             </constraints>
+                                            <color key="tintColor" name="red-button"/>
                                             <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                             <state key="normal" image="trash_icon"/>
                                             <connections>

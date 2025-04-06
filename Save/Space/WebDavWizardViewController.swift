@@ -83,6 +83,12 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
     }
     
     
+    @IBOutlet weak var errorText: UILabel!{
+        didSet{
+            errorText?.font = .montserrat(forTextStyle: .caption2)
+            errorText.text? = ""
+        }
+    }
     @IBOutlet weak var backBt: UIButton! {
         didSet {
             backBt.setTitle(NSLocalizedString("Back", comment: ""))
@@ -189,15 +195,15 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
                     
                     if let error = error {
                         if let self = self {
-                            AlertHelper.present(self, message: error.friendlyMessage)
-                            
+//                            AlertHelper.present(self, message: error.friendlyMessage)
+                            self.errorText.text = error.friendlyMessage
                             self.usernameTb.status = .bad
                             self.passwordTb.status = .bad
                         }
                     }
                     else {
                         SelectedSpace.space = space
-                        
+                        self?.errorText.text = ""
                         Db.writeConn?.asyncReadWrite() { tx in
                             SelectedSpace.store(tx)
                             tx.setObject(space)
@@ -261,7 +267,7 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
     
     func textBox(didUpdate textBox: TextBox) {
         urlTb.text = url?.absoluteString
-        
+        self.errorText.text = ""
     }
     
     func textBox(shouldReturn textBox: TextBox) -> Bool {

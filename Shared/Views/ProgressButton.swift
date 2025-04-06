@@ -29,13 +29,13 @@ class ProgressButton: UIView {
             cl.start = 0
 
             switch state {
-            case  .uploaded:
+            case .paused, .uploaded:
                 cl.end = 1
 
             case .pending:
                 cl.end = 0
 
-            case .uploading, .paused :
+            case .uploading:
                 cl.end = progress
             }
 
@@ -78,16 +78,14 @@ class ProgressButton: UIView {
 
         switch state {
         case .paused:
+          //  draw(image: .icUp, center: center, radius: radius)
             break
-//            draw(image: .icUp, center: center, radius: radius)
-
         case .pending, .uploaded:
             break
 
         case .uploading:
-            break
-//            draw(text: Formatters.format(Int64(progress * 100)), center: center,
-//                 boundingSize: size, fontSize: radius * 0.9)
+            draw(text: Formatters.format(Int64(progress * 100)), center: center,
+                 boundingSize: size, fontSize: radius * 0.9)
         }
     }
 
@@ -113,7 +111,7 @@ class ProgressButton: UIView {
     // MARK: Private Methods
 
     private func manageAnimation() {
-        if (!isHidden && state == .pending) || state == .uploading || state == .paused {
+        if !isHidden && state == .pending {
             circleLayer.animate()
         }
         else {
@@ -130,10 +128,10 @@ class ProgressButton: UIView {
             attributes[.foregroundColor] = color
         }
 
-        let text = NSAttributedString(string: text, attributes: attributes)
-
+        let text = ""
+       
         let textSize = text.boundingRect(
-            with: boundingSize, 
+            with: boundingSize,
             options: [.usesLineFragmentOrigin, .usesFontLeading],
             context: nil)
 

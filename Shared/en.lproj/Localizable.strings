@@ -310,6 +310,8 @@
 /* Error+friendlyMessage */
 "Incorrect username or password" = "Incorrect username or password";
 
+"Incorrect email or password" = "Incorrect email or password";
+
 /* HeaderView */
 "Just now" = "Just now";
 

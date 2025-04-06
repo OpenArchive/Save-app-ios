@@ -25,9 +25,9 @@ class RemoveAssetAlert {
         ].joined(separator: "\n")
         
         let alertVC = CustomAlertViewController(
-            title: String(format: NSLocalizedString("Remove Media from %@", comment: ""), appName),
+            title: String(format: NSLocalizedString("Remove Media", comment: ""), appName),
             message: message,
-            primaryButtonTitle: NSLocalizedString("Remove Media", comment: ""),
+            primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
             primaryButtonAction: {
                 for asset in assets {
                     if asset == assets.last {
@@ -44,9 +44,9 @@ class RemoveAssetAlert {
                 completionHandler?(false)
                
             }, showCheckbox: false, secondaryButtonIsOutlined: false,
-            iconImage: Image(systemName: "trash.fill"),
+            iconImage: Image("trash_icon"),
             iconTint: Color.redButton,
-            isRemoveAlert: true
+            isRemoveAlert: false
         )
         
         vc.present(alertVC, animated: true)

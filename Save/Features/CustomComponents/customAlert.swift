@@ -49,6 +49,7 @@ struct CustomAlertView: View {
                 .font(.montserrat(.medium, for: .subheadline))
                 .multilineTextAlignment(.center)
                 .padding(.bottom,10)
+                .padding(.horizontal,8)
                 .foregroundColor(.alertSubtitle)
             
             if showCheckbox {

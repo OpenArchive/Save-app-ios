@@ -33,7 +33,8 @@ class DarkroomHelper {
         location?.addConstraints(superview, top: nil)
         
         notes?.addConstraints(superview, top: location)
-       
+        location?.nextResponderField = notes?.textView
+        
     }
     
     

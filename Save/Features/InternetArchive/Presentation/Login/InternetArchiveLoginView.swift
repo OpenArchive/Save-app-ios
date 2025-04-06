@@ -127,7 +127,7 @@ struct InternetArchiveLoginContent: View {
                         .padding(.top, 15)
                         
                         if (state.isLoginError) {
-                            Text(LocalizedStringKey("Incorrect username or password")).foregroundColor(.red).padding(.top,1) .padding(.leading,20).font(.montserrat(.medium, for: .caption2))
+                            Text(LocalizedStringKey("Incorrect email or password")).foregroundColor(.red).padding(.top,1) .padding(.leading,20).font(.montserrat(.medium, for: .caption2))
                                 .padding(.trailing,20) .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         
