@@ -191,13 +191,9 @@ class InfoBox: UIView, UITextViewDelegate {
      */
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
-            if let next = nextResponderField {
-                textView.resignFirstResponder()
-                next.becomeFirstResponder()
-                return false
-            }
-           
-            return true
+            textView.endEditing(true)
+
+            return false
         }
 
         return true

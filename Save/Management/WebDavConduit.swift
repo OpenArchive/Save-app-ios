@@ -191,38 +191,47 @@ class WebDavConduit: Conduit {
      - returns: An eventual error.
      */
     private func copyMetadata(to folder: URL, _ progress: Progress) -> Error? {
-        let json: Data
-
         do {
-            try json = Conduit.jsonEncoder.encode(asset)
-        }
-        catch {
-            return error
-        }
+            let json = try Conduit.jsonEncoder.encode(asset)
 
-        var error: Error? = nil
-        let group = DispatchGroup.enter()
+            let to = construct(url: folder, asset.filename)
+                .appendingPathExtension(Asset.Files.meta.rawValue)
 
-        let to = construct(url: folder, asset.filename).appendingPathExtension(Asset.Files.meta.rawValue)
+            _ = foregroundSession.upload(
+                json, to: to, headers: nil, credential: credential
+            ) { error in
+                if let error = error {
+                    print("meta.json upload failed: \(error.localizedDescription)")
+                } else {
+                    print("meta.json uploaded successfully.")
+                }
+            }
 
-        upload(json, to: to, progress, 1, credential: credential) { e in
-            error = e
-            group.leave()
-        }
-
-        group.wait(signal: progress)
-
-        if error != nil || progress.isCancelled {
-            return error
+        } catch {
+            print("Failed to encode meta.json: \(error.localizedDescription)")
         }
 
+        // Loop through proof files — fire-and-forget uploads
         uploadProofMode(to: folder) { source, destination in
-            upload(source, to: destination, progress, pendingUnitCount: 1, credential: credential)
+            guard source.exists else {
+                print("Missing proof file: \(source.lastPathComponent)")
+                return true
+            }
 
-            return !progress.isCancelled
+            _ = foregroundSession.upload(
+                source, to: destination, headers: nil, credential: credential
+            ) { error in
+                if let error = error {
+                    print("Failed to upload proof file \(source.lastPathComponent): \(error.localizedDescription)")
+                } else {
+                    print("Uploaded proof file: \(destination.lastPathComponent)")
+                }
+            }
+
+            return true
         }
 
-        return nil
+        return nil // Don't block upload flow
     }
 
     /**

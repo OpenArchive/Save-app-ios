@@ -59,18 +59,18 @@ struct ProofModeSettingsView: View {
 
             HStack(alignment: .top) {
                 Image(systemName: "exclamationmark.circle")
-                    .foregroundColor(.red)
+                    .foregroundColor(.black)
                     .padding(.leading, 10)
                     .padding(.top, 16)
                 
                 VStack(alignment: .leading) {
                     
                     let localizedText = String(format: NSLocalizedString(
-                              "ProofMode gathers metadata from local cell towers to help verify media. Android requires permission to enable this setting. %@ will only use this setting to capture data and will NOT access your phone to make/manage calls.",
-                              comment: "Warning about ProofMode metadata"), "Save")
+                              "To help verify where your media was captured, ProofMode gathers data from nearby cell towers to corroborate your location. To add credibility and context, it then includes a separate metadata file with your media. %@ will be able to access or store this location data, it will only be accessible to those with access to the server files. Android requires location access to collect this information.",
+                              comment: "Warning about ProofMode metadata"), "Neither Save nor OpenArchive")
                     
                     if #available(iOS 15, *) {
-                        Text(AttributedString.boldSubstring(in: localizedText, substring: "Save"))
+                        Text(AttributedString.boldSubstring(in: localizedText, substring: "Neither Save nor OpenArchive"))
                             .font(.montserrat(.medium, for: .caption2)).foregroundColor(.black)
                     } else {
                         if #available(iOS 16.0, *) {
