@@ -44,7 +44,7 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
         
         // Constrain the form's tableView to fill the `formContainerView`
         tableView?.translatesAutoresizingMaskIntoConstraints = false
-        tableView.backgroundColor = .white
+        tableView.backgroundColor = .systemBackground
         tableView?.isScrollEnabled = false
         tableView?.showsVerticalScrollIndicator = false
         
