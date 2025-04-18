@@ -711,11 +711,11 @@
                                 <rect key="frame" x="0.0" y="460" width="320" height="74"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QIU-V8-v7v">
-                                        <rect key="frame" x="20" y="11" width="78" height="52"/>
+                                        <rect key="frame" x="20" y="8.5" width="78" height="57.5"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" image="media_image" imagePlacement="top" title="My Media" imagePadding="6" titleAlignment="center">
                                             <fontDescription key="titleFontDescription" name="Montserrat-Medium" family="Montserrat Medium" pointSize="11"/>
-                                            <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </buttonConfiguration>
                                         <connections>
                                             <action selector="hideSettings" destination="wAB-WM-ZQl" eventType="touchUpInside" id="xvm-qT-J9V"/>
@@ -744,6 +744,7 @@
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="VpT-Ct-gHj">
                                         <rect key="frame" x="229.5" y="15" width="70.5" height="44"/>
                                         <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
                                         <state key="normal" title="Settings" image="gearshape">
                                             <color key="titleColor" systemColor="labelColor"/>
@@ -752,7 +753,7 @@
                                         <buttonConfiguration key="configuration" style="plain" image="gearshape" imagePlacement="top" title="Settings" imagePadding="6">
                                             <preferredSymbolConfiguration key="preferredSymbolConfigurationForImage"/>
                                             <fontDescription key="titleFontDescription" name="Montserrat-Medium" family="Montserrat Medium" pointSize="11"/>
-                                            <color key="baseForegroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="baseForegroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </buttonConfiguration>
                                         <connections>
                                             <action selector="showSettings" destination="wAB-WM-ZQl" eventType="touchUpInside" id="h8D-Mr-WB5"/>
@@ -3289,7 +3290,7 @@ Google's APIs allow you to access and send media to your existing folders in Goo
         <image name="ic_gdrive" width="128" height="128"/>
         <image name="internet_archive" width="37" height="34"/>
         <image name="logo" width="92" height="52"/>
-        <image name="media_image" width="23" height="19"/>
+        <image name="media_image" width="25" height="24"/>
         <image name="onboarding-app_hand" width="518" height="627"/>
         <image name="person.crop.circle" catalog="system" width="128" height="123"/>
         <image name="plus" catalog="system" width="128" height="113"/>
@@ -3330,19 +3331,19 @@ Google's APIs allow you to access and send media to your existing folders in Goo
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray3Color">
-            <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.78039215689999997" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

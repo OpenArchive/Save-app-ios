@@ -45,7 +45,7 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
             nil
         }
         set {
-            spaceIcon.image = newValue?.favIcon ?? SelectedSpace.defaultFavIcon
+            spaceIcon.image = getServerIcon(space: space)
             serverNameLbl.text = newValue?.prettyName ?? Bundle.main.displayName
         }
     }

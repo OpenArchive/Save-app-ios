@@ -37,6 +37,10 @@ class InternetArchiveLoginViewController : ViewModelController<InternetArchiveLo
                 self?.onNext()
             case .Cancel:
                 self?.onCancel()
+            case .isLoginOnprogress:
+                self?.navigationItem.hidesBackButton = true
+            case .isLoginFinished:
+                self?.navigationItem.hidesBackButton = false
             default:
                 break
             }

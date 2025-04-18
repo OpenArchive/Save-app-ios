@@ -59,11 +59,14 @@ class InternetArchiveLoginViewModel : StoreViewModel<InternetArchiveLoginState, 
     private func effects(state: InternetArchiveLoginState, action: Action) -> Scoped? {
         switch action {
         case .Login:
+            self.store.notify(.isLoginOnprogress)
             return useCase(email: state.userName, password: state.password, completion: { result in
                 switch result {
                 case .success:
+                    self.store.notify(.isLoginFinished)
                     self.store.dispatch(.LoggedIn)
                 case .failure(_):
+                    self.store.notify(.isLoginFinished)
                     self.store.dispatch(.LoginError)
                 }
             })

@@ -705,16 +705,20 @@
 "Unarchive Project" = "Unarchive Project";
 "Success!" = "Success!";
 "You have renamed folder successfully." = "You have renamed folder successfully.";
-"To help verify where your media was captured, ProofMode gathers data from nearby cell towers to corroborate your location. To add credibility and context, it then includes a separate metadata file with your media. %@ will be able to access or store this location data, it will only be accessible to those with access to the server files. Android requires location access to collect this information." = "To help verify where your media was captured, ProofMode gathers data from nearby cell towers to corroborate your location. To add credibility and context, it then includes a separate metadata file with your media. %@ will be able to access or store this location data, it will only be accessible to those with access to the server files. Android requires location access to collect this information.";
+
+/**Proofmode description*/
+
+"To help verify where your media was captured, ProofMode gathers data from nearby cell towers to corroborate your location. To add credibility and context, it then includes a separate metadata file with your media. Neither Save nor OpenArchive will be able to access or store this location data, it will only be accessible to those with access to the server files. iOS requires location access to collect this information." = "To help verify where your media was captured, ProofMode gathers data from nearby cell towers to corroborate your location. To add credibility and context, it then includes a separate metadata file with your media. Neither Save nor OpenArchive will be able to access or store this location data, it will only be accessible to those with access to the server files. iOS requires location access to collect this information.";
+
 "ProofMode is a system that enables authentication and verification of multimedia content,"= "ProofMode is a system that enables authentication and verification of multimedia content,";
 " learn more here" = " learn more here";
 "Media Servers" = "Media Servers";
 "Unable to upload due to session error, please try again or contact support" = "Unable to upload due to session error, please try again or contact support";
 "You have changed your server settings successfully." = "You have changed your server settings successfully.";
 "Lock app with passcode" = "Lock app with passcode";
-"Media Folders" = "Media Folders";
+"Archived Folders" = "Archived Folders";
 "Manage your servers" = "Manage your servers";
-"Manage your folders" = "Manage your folders";
+"Manage your archived folders" = "Manage your archived folders";
 "Turn on Onion Routing" = "Turn on Onion Routing";
 "Transfer via the Tor Network only" = "Transfer via the Tor Network only";
 "Theme" = "Theme";
@@ -742,3 +746,6 @@
 
 /* placeholder is + icon */
 "Tap %@ to pick from image gallery or press and hold to add media from other apps." = "Tap %@ to pick from image gallery or press and hold to add media from other apps.";
+"Please enable location access in Settings to use ProofMode." = "Please enable location access in Settings to use ProofMode.";
+"Location Permission Required" = "Location Permission Required";
+"Open Settings" = "Open Settings";

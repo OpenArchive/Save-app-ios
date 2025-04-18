@@ -9,7 +9,7 @@ class GeneralSettingsViewController:UIViewController,ViewControllerNavigationDel
         return vc
     }()
     private lazy var FolderList: FolderListNewViewController = {
-        let vc = FolderListNewViewController(archived: false)
+        let vc = FolderListNewViewController(archived: true)
         return vc
     }()
     

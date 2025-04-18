@@ -190,17 +190,15 @@ struct EditFolderView: View {
                     )
                 }
                 .padding(.horizontal)
+                .padding(.bottom,40)
                 .frame(maxWidth: .infinity, alignment: .leading)
-            }
-            
-            Spacer()
-            
-            HStack(spacing: 5) {
+                
                 Button((store.state.project?.active ?? false) ? NSLocalizedString("Archive Project", comment: "") :  NSLocalizedString("Unarchive Project", comment: "")) {
                     store.dispatch(action:.archiveFolder)
                 }
                 .frame(maxWidth: .infinity)
                 .foregroundColor(.primary)
+                .padding(.bottom,20)
                 .font(.montserrat(.semibold, for: .headline))
                 .cornerRadius(8)
                 
@@ -214,8 +212,7 @@ struct EditFolderView: View {
                 .foregroundColor(.redButton)
                 .cornerRadius(8)
             }
-            .padding(.horizontal,16)
-            .padding(.bottom, 20)
+            
             
         }
         .frame(maxHeight: .infinity, alignment: .top)
@@ -282,7 +279,7 @@ struct EditFolderView: View {
                                     message: String(format: NSLocalizedString(
                                         "Removing this folder will remove all contained thumbnails from the %@ app.",
                                         comment: "Placeholder is app name"), Bundle.main.displayName),
-                                    primaryButtonTitle: NSLocalizedString("Remove Folder", comment: ""),
+                                    primaryButtonTitle: NSLocalizedString("Remove", comment: ""),
                                     iconImage: Image("trash_icon"),
                                     iconTint:.gray,
                                     primaryButtonAction: {

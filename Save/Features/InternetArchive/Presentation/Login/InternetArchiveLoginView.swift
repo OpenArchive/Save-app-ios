@@ -151,8 +151,9 @@ struct InternetArchiveLoginContent: View {
                             })
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(colorScheme == .dark ? Color.white : .black)
+                            .foregroundColor(state.isBusy ? .gray50 : (colorScheme == .dark ? Color.white : Color.black))
                             .font(.montserrat(.semibold, for: .headline))
+                            .disabled(state.isBusy)
                             
                             Button(action: {
                                 if (!state.isBusy) {

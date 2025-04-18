@@ -179,7 +179,7 @@ struct SettingsView: View {
                             AnyView(SubItem(title: NSLocalizedString("Media Servers", comment: ""), subtitle: NSLocalizedString("Manage your servers", comment: "")) {
                                 viewModel.navigateToServerList()
                             }),
-                            AnyView(SubItem(title: NSLocalizedString("Media Folders", comment: ""), subtitle: NSLocalizedString("Manage your folders", comment: "")) {
+                            AnyView(SubItem(title: NSLocalizedString("Archived Folders", comment: ""), subtitle: NSLocalizedString("Manage your archived folders", comment: "")) {
                                 viewModel.navigateToFolderList()
                             })
                          ]),

@@ -41,7 +41,7 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
         tableView.separatorStyle = .none
         view.addSubview(tableView)
         
-        // Set up the archive button (only if there are archived folders)
+       
         archiveButton.setTitle(NSLocalizedString("View Archived Folders", comment: ""), for: .normal)
         archiveButton.setTitleColor(.label, for: .normal)
         archiveButton.titleLabel?.font = .montserrat(forTextStyle: .headline, with: .traitUIOptimized)

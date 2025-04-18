@@ -47,7 +47,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     private lazy var menuBt: UIButton = {
         let button = UIButton(type: .system)
         button.setImage(UIImage(named: "menu_icon"), for: .normal)
-        button.tintColor = .black
         button.accessibilityIdentifier = "btMenu"
         button.addTarget(self, action: #selector(didTapMenuButton), for: .touchUpInside)
         return button
@@ -69,7 +68,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     @IBOutlet weak var folderAssetCountLb: UILabel! {
         didSet {
-            // iOS 17 fix: Is ignored, when only set in storyboard.
+          
             folderAssetCountLb.clipsToBounds = true
         }
     }
@@ -411,25 +410,31 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         toggleMenu(menu.isHidden)
     }
     private func configureNavigationBarLogo() {
-        guard let logoImage = UIImage(named: "savelogo_w") else { return }
-        
+        guard let logoImage = UIImage(named: "save_logo_navbar") else { return }
+
         let logoImageView = UIImageView(image: logoImage)
         logoImageView.contentMode = .scaleAspectFit
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let logoContainer = UIView(frame: CGRect(x: 0, y: 0, width: 120, height: 40))
+
+        let logoContainer = UIView()
+        logoContainer.translatesAutoresizingMaskIntoConstraints = false
         logoContainer.addSubview(logoImageView)
-        
+
         NSLayoutConstraint.activate([
-            logoImageView.centerYAnchor.constraint(equalTo: logoContainer.centerYAnchor),
-            logoImageView.leadingAnchor.constraint(equalTo: logoContainer.leadingAnchor),
-            logoImageView.trailingAnchor.constraint(equalTo: logoContainer.trailingAnchor),
-            logoImageView.heightAnchor.constraint(equalToConstant: 30)
+            logoImageView.topAnchor.constraint(equalTo: logoContainer.topAnchor),
+            logoImageView.bottomAnchor.constraint(equalTo: logoContainer.bottomAnchor,constant: -10),
+            logoImageView.leadingAnchor.constraint(equalTo: logoContainer.leadingAnchor, constant: 0),
+            logoImageView.widthAnchor.constraint(equalToConstant: 60),
+            logoImageView.heightAnchor.constraint(equalToConstant: 36)
         ])
-        
+
+       
         let logoItem = UIBarButtonItem(customView: logoContainer)
-        navigationItem.leftBarButtonItem = logoItem
+
+        navigationItem.leftBarButtonItems = [logoItem]
     }
+
+
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
@@ -488,8 +493,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         let group = assetsMappings.group(forSection: UInt(indexPath.section))
         let collection: Collection? = collectionsReadConn?.object(for: AssetsByCollectionView.collectionId(from: group))
         
-        // Fixed bug: YapDatabase caches these objects, therefore we need to clear
-        // before we repopulate.
+       
         collection?.assets.removeAll()
         
         collection?.assets.append(contentsOf: assetsReadConn?.objects(in: indexPath.section, with: assetsMappings) ?? [])
@@ -602,6 +606,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             self.titleContainerHeight.constant = 44
             self.myMediaBt.setImage(UIImage(named: "media_image"))
             self.settingsBt.setImage(UIImage(systemName: "gearshape"))
+            self.settingsBt.tintColor = .white
             self.menuBt.isHidden = false
             MainViewController.isSettingsEnabled=false
             self.updateProject()
@@ -630,6 +635,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             self.myMediaBt.setImage(UIImage(named: "media_unselected"))
             self.menuBt.isHidden = true
             self.settingsBt.setImage(UIImage(systemName: "gearshape.fill"))
+            self.settingsBt.tintColor = .white
         }
     }
     
@@ -784,7 +790,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 }
                 
                 if upload.state == .uploaded {
-                    // Make sure, section header is reloaded, when an upload is finished.
+              
                     DispatchQueue.main.async {
                         UIView.performWithoutAnimation { // Less flickering: no fading animation.
                             self.collectionView.reloadSections([indexPath.section])
@@ -793,7 +799,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 }
                 else {
                     DispatchQueue.main.async {
-                        UIView.performWithoutAnimation { // Less flickering: no fading animation.
+                        UIView.performWithoutAnimation {
                             self.collectionView.reloadItems(at: [indexPath])
                         }
                     }
@@ -815,14 +821,11 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         var forceFull = false
         
         if let changes = collectionsReadConn?.getChanges(collectionsMappings) {
-            // We need to recognize changes in `Collection` objects used in the
-            // section headers.
+         
             forceFull = changes.forceFull || changes.rowChanges.contains(where: { $0.type == .update && $0.finalGroup == selectedProject?.id })
         }
         
-        // Always, always, always force a full reload if anything changed.
-        // No optimizing helps. Tried this again, and got crash reports again when people
-        // tried to delete a folder. Forget it.
+       
         if let changes = assetsReadConn?.getChanges(assetsMappings) {
             forceFull = forceFull || changes.forceFull
             || changes.sectionChanges.contains(where: { $0.type == .delete || $0.type == .insert })
@@ -840,7 +843,11 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 self.folderAssetCountLb.text = "  \(Formatters.format(self.assetsMappings.numberOfItemsInAllGroups()))  "
             }
             if self.selectedProject == nil {
-                self.collectionView.isHidden = true
+                if(!collectionView.isHidden){
+                    DispatchQueue.main.async {
+                        self.collectionView.isHidden = true
+                    }
+                }
             }
             else{
                 if self.collectionView.isHidden != (self.numberOfSections(in: self.collectionView) < 1) {
@@ -907,7 +914,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
      */
     private func updateSpace() {
         if let space = SelectedSpace.space {
-            spaceFavIcon.image = space.favIcon
+            spaceFavIcon.image = getServerIcon(space: space)
             sideMenu.space = space
             navigationItem.rightBarButtonItem = menuBarButtonItem
             hintLb.text =   NSLocalizedString(
@@ -957,14 +964,17 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             }
         }
         else{
-            self.titleContainer.isHidden = false
-            self.titleContainerHeight.constant = 44
-            toggleVisibility(ishidden: true)
             DispatchQueue.main.async {
                 self.collectionView.isHidden = true
             }
+            if(!MainViewController.isSettingsEnabled){
+                self.titleContainer.isHidden = false
+                self.titleContainerHeight.constant = 44
+                toggleVisibility(ishidden: true)
+            }
           
         }
+        
     }
     func toggleVisibility(ishidden:Bool) {
       

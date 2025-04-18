@@ -27,7 +27,7 @@ class SideMenuItemCell: UITableViewCell {
     func apply(_ space: Space?, select: Bool) {
         iconLeadingConstraint.constant = 12
 
-        icon.image = space?.favIcon ?? SelectedSpace.defaultFavIcon
+        icon.image = getServerIcon(space: space)
         icon.tintColor = UIColor.label
         nameLb.text = space?.prettyName ?? Bundle.main.displayName
         nameLb.font =  .montserrat(forTextStyle: .subheadline)

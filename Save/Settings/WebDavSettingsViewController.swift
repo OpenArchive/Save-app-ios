@@ -93,7 +93,9 @@ func saveSpaceToDatabase(state: ServerSettingsState) {
         return
     }
     space.name = state.serverName
-    SelectedSpace.space?.name = space.name
+    if(SelectedSpace.space is  WebDavSpace){
+        SelectedSpace.space?.name = space.name
+    }
     Db.writeConn?.setObject(space)
 }
 // Helper function to construct license URL
