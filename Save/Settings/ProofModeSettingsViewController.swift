@@ -55,49 +55,49 @@ struct ProofModeSettingsView: View {
                 subtitle: NSLocalizedString("Share ProofMode public key", comment: "Share ProofMode public key"),
                 isOn: $isProofModeEnabled
             ) { value in
+                Settings.proofMode = value
                 if value {
-                      let currentStatus = LocationManangerProofMode.shared.getAuthorizationStatus()
-
-                      switch currentStatus {
-                      case .notDetermined:
-                          // Request permission (first time)
-                          LocationManangerProofMode.shared.requestAuthorization { status in
-                              DispatchQueue.main.async {
-                                  if status == .authorizedWhenInUse || status == .authorizedAlways {
-                                      Settings.proofMode = true
-                                      isProofModeEnabled = true
-                                      if !(URL.proofModePrivateKey?.exists ?? false) {
-                                          Proof.shared.initializeWithDefaultKeys()
-                                      }
-                                  } else  if status == .denied || status == .restricted{
-                                      Settings.proofMode = false
-                                      isProofModeEnabled = false
-                                      showAlert = true
-                                  }
-                              }
-                          }
-
-                      case .authorizedWhenInUse, .authorizedAlways:
-                          // Already granted
-                          Settings.proofMode = true
-                          isProofModeEnabled = true
-                          if !(URL.proofModePrivateKey?.exists ?? false) {
-                              Proof.shared.initializeWithDefaultKeys()
-                          }
-
-                      case .denied, .restricted:
-                       
-                          Settings.proofMode = false
-                          isProofModeEnabled = false
-                          showAlert = true
-
-                      @unknown default:
-                          break
-                      }
-                  } else {
-                      // Toggle OFF
-                      Settings.proofMode = false
-                  }
+                    let currentStatus = LocationManangerProofMode.shared.getAuthorizationStatus()
+                    
+                    switch currentStatus {
+                    case .notDetermined:
+                        // Request permission (first time)
+                        LocationManangerProofMode.shared.requestAuthorization { status in
+                            DispatchQueue.main.async {
+                                if status == .authorizedWhenInUse || status == .authorizedAlways {
+                                    Settings.proofMode = true
+                                    isProofModeEnabled = true
+                                    if !(URL.proofModePrivateKey?.exists ?? false) {
+                                        Proof.shared.initializeWithDefaultKeys()
+                                    }
+                                } else  if status == .denied || status == .restricted{
+                                    Settings.proofMode = false
+                                    isProofModeEnabled = false
+                                    showAlert = true
+                                }
+                            }
+                        }
+                        
+                    case .authorizedWhenInUse, .authorizedAlways:
+                        // Already granted
+                        Settings.proofMode = true
+                        isProofModeEnabled = true
+                        if !(URL.proofModePrivateKey?.exists ?? false) {
+                            Proof.shared.initializeWithDefaultKeys()
+                        }
+                        
+                    case .denied, .restricted:
+                        
+                        Settings.proofMode = false
+                        isProofModeEnabled = false
+                        showAlert = true
+                        
+                    @unknown default:
+                        break
+                    }
+                } else {
+                    Settings.proofMode = false
+                }
             }
             
             ProofModeView()
