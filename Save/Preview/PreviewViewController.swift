@@ -216,8 +216,8 @@ class PreviewViewController: UIViewController,
                 let count = UploadsView.countUploading(tx)
                 
                 DispatchQueue.main.async {
-                    let count = UserDefaults.standard.integer(forKey: "uploadSessionCount") + 1
-                    UserDefaults.standard.set(count, forKey: "uploadSessionCount")
+//                    let count = UserDefaults.standard.integer(forKey: "uploadSessionCount") + 1
+//                    UserDefaults.standard.set(count, forKey: "uploadSessionCount")
                     OrbotManager.shared.alertCannotUpload(count: count) { [weak self] in
                         self?.navigationController?.popViewController(animated: true)
                     }
