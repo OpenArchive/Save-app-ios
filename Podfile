@@ -24,6 +24,8 @@ def shared_pods
         :git => 'https://gitlab.com/guardianproject/proofmode/libproofmode-ios.git', :branch => 'main'
         #:path => '../libproofmode-ios'
     pod "Factory"
+    pod 'Firebase/Core'
+    pod 'Firebase/Crashlytics'
 end
 
 def app_only
