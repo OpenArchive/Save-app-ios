@@ -45,6 +45,8 @@ import SwiftUI
 struct ProofModeSettingsView: View {
     @State private var isProofModeEnabled = Settings.proofMode  // Initialize from Settings
     @State private var showAlert = false
+    @State private var userManuallyToggledOn = false
+    @State private var lastPermissionStatus: CLAuthorizationStatus = LocationManangerProofMode.shared.status
     private func showLocationDeniedAlert() {
         showAlert = true
     }
@@ -56,30 +58,17 @@ struct ProofModeSettingsView: View {
                 isOn: $isProofModeEnabled
             ) { value in
                 Settings.proofMode = value
+                
                 if value {
-                    let currentStatus = LocationManangerProofMode.shared.getAuthorizationStatus()
+                    userManuallyToggledOn = true
+                    
+                    let currentStatus = LocationManangerProofMode.shared.status
                     
                     switch currentStatus {
                     case .notDetermined:
-                        // Request permission (first time)
-                        LocationManangerProofMode.shared.requestAuthorization { status in
-                            DispatchQueue.main.async {
-                                if status == .authorizedWhenInUse || status == .authorizedAlways {
-                                    Settings.proofMode = true
-                                    isProofModeEnabled = true
-                                    if !(URL.proofModePrivateKey?.exists ?? false) {
-                                        Proof.shared.initializeWithDefaultKeys()
-                                    }
-                                } else  if status == .denied || status == .restricted{
-                                    Settings.proofMode = false
-                                    isProofModeEnabled = false
-                                    showAlert = true
-                                }
-                            }
-                        }
+                        LocationManangerProofMode.shared.requestAuthorization()
                         
                     case .authorizedWhenInUse, .authorizedAlways:
-                        // Already granted
                         Settings.proofMode = true
                         isProofModeEnabled = true
                         if !(URL.proofModePrivateKey?.exists ?? false) {
@@ -87,7 +76,6 @@ struct ProofModeSettingsView: View {
                         }
                         
                     case .denied, .restricted:
-                        
                         Settings.proofMode = false
                         isProofModeEnabled = false
                         showAlert = true
@@ -96,6 +84,7 @@ struct ProofModeSettingsView: View {
                         break
                     }
                 } else {
+                    userManuallyToggledOn = false
                     Settings.proofMode = false
                 }
             }
@@ -137,6 +126,29 @@ struct ProofModeSettingsView: View {
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .onAppear {
+            LocationManangerProofMode.shared.monitorAuthorizationChanges { status in
+                DispatchQueue.main.async {
+                    guard status != lastPermissionStatus else { return }
+                    lastPermissionStatus = status
+                    
+                    if status == .authorizedWhenInUse || status == .authorizedAlways {
+                        
+                        if userManuallyToggledOn {
+                            Settings.proofMode = true
+                            isProofModeEnabled = true
+                            if !(URL.proofModePrivateKey?.exists ?? false) {
+                                Proof.shared.initializeWithDefaultKeys()
+                            }
+                        }
+                    } else if status == .denied || status == .restricted {
+                        Settings.proofMode = false
+                        isProofModeEnabled = false
+                        showAlert = true
+                    }
+                }
+            }
+        }
         .background(Color(UIColor.systemBackground))
         .overlay(
             Group {
@@ -219,31 +231,35 @@ extension AttributedString {
 }
 
 import CoreLocation
+import LibProofMode
 
 class LocationManangerProofMode: NSObject, ObservableObject, CLLocationManagerDelegate {
     
     static let shared = LocationManangerProofMode()
     
-    private let locationManager = CLLocationManager()
+    var status: CLAuthorizationStatus {
+        LibProofMode.LocationManager.shared.authorizationStatus
+    }
+    
     private var onAuthorizationChange: ((CLAuthorizationStatus) -> Void)?
+    private let observerManager = CLLocationManager()
     
     override private init() {
         super.init()
-        locationManager.delegate = self
+        observerManager.delegate = self
+        observerManager.desiredAccuracy = kCLLocationAccuracyBest
     }
     
-    func requestAuthorization(onChange: @escaping (CLAuthorizationStatus) -> Void) {
-        self.onAuthorizationChange = onChange
-        locationManager.requestWhenInUseAuthorization()
-    }
-    
-    func getAuthorizationStatus() -> CLAuthorizationStatus {
-        if #available(iOS 14.0, *) {
-            return locationManager.authorizationStatus
+    func requestAuthorization(_ callback: ((_ status: CLAuthorizationStatus) -> Void)? = nil) {
+        if status == .notDetermined {
+            LibProofMode.LocationManager.shared.getPermission(callback: callback ?? { _ in })
         } else {
-            // For iOS < 14, use legacy API
-            return CLLocationManager.authorizationStatus()
+            callback?(status)
         }
+    }
+    
+    func monitorAuthorizationChanges(_ callback: @escaping (CLAuthorizationStatus) -> Void) {
+        onAuthorizationChange = callback
     }
     
     func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {

@@ -142,6 +142,15 @@ struct SettingsView: View {
     @State private var showPasscodeAlert = false
     @State private var passcodeToggleState: Bool
     @State private var isProgrammaticallyChangingPasscodeToggle = false
+    @State private var showCompressionSheet = false
+    private static let compressionOptions = [
+        NSLocalizedString("Better Quality", comment: ""),
+        NSLocalizedString("Smaller Size", comment: "")
+    ]
+    @State private var selectedCompressionOption: String = Settings.highCompression
+        ? SettingsView.compressionOptions[1]  // "Smaller Size"
+        : SettingsView.compressionOptions[0]  // "Better Quality"
+
     init() {
         _selectedTheme = State(initialValue: AppSettings.theme)
         _passcodeToggleState = State(initialValue: AppSettings.isPasscodeEnabled)
@@ -158,15 +167,15 @@ struct SettingsView: View {
                             AnyView(ToggleSwitch(title: NSLocalizedString("Lock app with passcode", comment: ""), isOn: $passcodeToggleState) { value in
                                 
                                 guard !isProgrammaticallyChangingPasscodeToggle else {
-                                           return
-                                       }
-                                       if value {
-                                           viewModel.togglePasscode(value)
-                                       } else {
-                                           if AppSettings.isPasscodeEnabled {
-                                               showPasscodeAlert = true
-                                           }
-                                       }
+                                    return
+                                }
+                                if value {
+                                    viewModel.togglePasscode(value)
+                                } else {
+                                    if AppSettings.isPasscodeEnabled {
+                                        showPasscodeAlert = true
+                                    }
+                                }
                             })
                          ]),
                         
@@ -199,6 +208,18 @@ struct SettingsView: View {
                         
                         (NSLocalizedString("General", comment: ""),
                          [
+                            AnyView(
+                                SubItem(title: NSLocalizedString("Media Compression", comment: ""),
+                                        subtitle: selectedCompressionOption) {
+                                    showCompressionSheet = true
+                                }
+                                .actionSheet(isPresented: $showCompressionSheet) {
+                                    ActionSheet(
+                                        title: Text(NSLocalizedString("Media Compression", comment: "")),
+                                        buttons: compressionSheetButtons()
+                                    )
+                                }
+                            ),
                             AnyView(
                                 SubItem(title: NSLocalizedString("Theme", comment: ""),
                                         subtitle: selectedTheme) {
@@ -276,18 +297,18 @@ struct SettingsView: View {
                                     },
                                     secondaryButtonTitle: NSLocalizedString("Cancel", comment: ""),
                                     secondaryButtonIsOutlined: false,
-                                
+                                    
                                     secondaryButtonAction: {
                                         isProgrammaticallyChangingPasscodeToggle = true
-                                            passcodeToggleState = true
-
-                                            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                                                isProgrammaticallyChangingPasscodeToggle = false
-                                            }
-
-                                            showPasscodeAlert = false
+                                        passcodeToggleState = true
+                                        
+                                        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                                            isProgrammaticallyChangingPasscodeToggle = false
+                                        }
+                                        
+                                        showPasscodeAlert = false
                                     },
-
+                                    
                                     showCheckbox: false, isRemoveAlert: false
                                 )
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -301,6 +322,7 @@ struct SettingsView: View {
             })
         
     }
+    
     private let interfaceStyleOptions = [
         NSLocalizedString("System", comment: ""),
         NSLocalizedString("Light", comment: ""),
@@ -316,7 +338,16 @@ struct SettingsView: View {
         buttons.append(.cancel())
         return buttons
     }
-    
+    private func compressionSheetButtons() -> [ActionSheet.Button] {
+        var buttons: [ActionSheet.Button] = SettingsView.compressionOptions.map { option in
+            .default(Text(option)) {
+                selectedCompressionOption = option
+                Settings.highCompression = (option == SettingsView.compressionOptions[1])
+            }
+        }
+        buttons.append(.cancel())
+        return buttons
+    }
     private func applyTheme(for index: Int) {
         if index == 1 {
             Utils.setLightMode()

@@ -12,7 +12,17 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
         groups: ProjectsView.groups, view: ProjectsView.name)
 
     private var hasArchived = false
-
+    
+    private let noDataLabel: UILabel = {
+        let label = UILabel()
+        label.text = NSLocalizedString("No archived folders found.", comment: "")
+        label.textAlignment = .center
+        label.font = .montserrat(forTextStyle: .headline , with:.traitUIOptimized)
+        label.textColor = .gray70
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
     init(archived: Bool) {
         self.archived = archived
         super.init(nibName: nil, bundle: nil)
@@ -52,6 +62,14 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
         archiveButton.contentHorizontalAlignment = .center
         archiveButton.contentVerticalAlignment = .center
         view.addSubview(archiveButton)
+        view.addSubview(noDataLabel)
+
+        NSLayoutConstraint.activate([
+            noDataLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            noDataLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            noDataLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 20),
+            noDataLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -20)
+        ])
        
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
@@ -114,12 +132,10 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
 
     private func reload() {
         let projects: [Project] = projectsReadConn?.objects(in: 0, with: projectsMappings) ?? []
-        
-     
         hasArchived = !archived && projects.contains { !$0.active }
 
         projectList = projects.filter { archived != $0.active }
-        
+        noDataLabel.isHidden = !projectList.isEmpty ? true : false
         archiveButton.isHidden = !hasArchived
         
         navigationItem.title = archived ? NSLocalizedString("Archived Folders", comment: "") :NSLocalizedString("Folders", comment: "")

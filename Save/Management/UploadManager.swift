@@ -13,6 +13,7 @@ import Regex
 import BackgroundTasks
 import Photos
 import TorManager
+import StoreKit
 
 extension Notification.Name {
     static let uploadManagerPause = Notification.Name("uploadManagerPause")
@@ -569,6 +570,15 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             guard let upload = self.getNext(),
                   let asset = upload.asset
             else {
+                let sessionCount = UserDefaults.standard.integer(forKey: "uploadSessionCount")
+                   let prompted = UserDefaults.standard.bool(forKey: "hasPromptedReview")
+
+                   if sessionCount >= 5 && !prompted {
+                       DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+                           SKStoreReviewController.requestReview()
+                           UserDefaults.standard.set(true, forKey: "hasPromptedReview")
+                       }
+                   }
                 self.debug("#uploadNext nothing to upload")
 
                 return self.endBackgroundTask(.noData)
@@ -653,26 +663,40 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                     return false
                 }
 
-                // Look at next, if it's not ready, yet.
+               
                 guard upload.isReady else {
-                    // Trigger PHAsset export again, in case it failed the first time.
+                 
                     if let asset = upload.asset, !asset.isImporting {
                         if let phAsset = asset.phAsset {
-                            queue.async {
-                                let id = UIApplication.shared.beginBackgroundTask()
+                               
+                                  queue.async {
+                                      let id = UIApplication.shared.beginBackgroundTask()
+                                      AssetFactory.load(from: phAsset, into: asset) { asset in
+                                          UIApplication.shared.endBackgroundTask(id)
+                                      }
+                                  }
+                              }
+                              else if asset.file?.exists == true {
+                                
+                                  queue.async {
+                                      let id = UIApplication.shared.beginBackgroundTask()
 
-                                AssetFactory.load(from: phAsset, into: asset) { asset in
-                                    UIApplication.shared.endBackgroundTask(id)
-                                }
-                            }
-                        }
-                        else {
-                            upload.error = NSLocalizedString("Couldn't import item!", comment: "")
-                            upload.cancel()
-                            upload.paused = true
-
-                            tx.replace(upload)
-                        }
+                                      asset.generateProof {
+                                          asset.update({ asset in
+                                              asset.isReady = true
+                                          }) { updatedAsset in
+                                              UIApplication.shared.endBackgroundTask(id)
+                                          }
+                                      }
+                                  }
+                              }
+                              else {
+                                  // Couldn’t load anything; cancel
+                                  upload.error = NSLocalizedString("Couldn't import item!", comment: "")
+                                  upload.cancel()
+                                  upload.paused = true
+                                  tx.replace(upload)
+                              }
                     }
 
                     return false

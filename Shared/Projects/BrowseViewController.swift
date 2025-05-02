@@ -36,7 +36,23 @@ class BrowseViewController: BaseTableViewController {
     
     private var selected: IndexPath?
     
-    
+    func updateEmptyMessage(_ message: String?) {
+        if let message = message, tableView.numberOfRows(inSection: 0) == 0 {
+            let messageLabel = UILabel()
+            messageLabel.text = message
+            messageLabel.textAlignment = .center
+            messageLabel.font = .montserrat(forTextStyle: .headline , with:.traitUIOptimized)
+            messageLabel.textColor = .gray70
+            messageLabel.numberOfLines = 0
+            messageLabel.sizeToFit()
+            
+            tableView.backgroundView = messageLabel
+            tableView.separatorStyle = .none
+        } else {
+            tableView.backgroundView = nil
+            tableView.separatorStyle = .singleLine
+        }
+    }
     override func viewDidLoad() {
         super.viewDidLoad()
         if #available(iOS 15.0, *) {
@@ -156,6 +172,7 @@ class BrowseViewController: BaseTableViewController {
         
         DispatchQueue.main.async {
             self.tableView.reloadData()
+            self.updateEmptyMessage(NSLocalizedString("No folders available to add.", comment: "No folders available to add."))
             self.workingOverlay.isHidden = true
         }
     }

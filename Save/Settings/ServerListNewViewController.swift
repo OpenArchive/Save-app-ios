@@ -12,6 +12,17 @@ class ServerListNewViewController: UIViewController, UITableViewDelegate, UITabl
         groups: SpacesView.groups, view: SpacesView.name)
     var selectSpace = false
     
+    private let noDataLabel: UILabel = {
+        let label = UILabel()
+        label.text = NSLocalizedString("No servers added yet.", comment: "")
+        label.textAlignment = .center
+        label.font = .montserrat(forTextStyle: .headline , with:.traitUIOptimized)
+        label.textColor = .gray70
+        label.numberOfLines = 0
+        label.translatesAutoresizingMaskIntoConstraints = false
+        return label
+    }()
+
     override func viewWillDisappear(_ animated: Bool) {
         
     }
@@ -28,6 +39,15 @@ class ServerListNewViewController: UIViewController, UITableViewDelegate, UITabl
         tableView.separatorStyle = .none
         view.addSubview(tableView)
         
+        view.addSubview(noDataLabel)
+
+        NSLayoutConstraint.activate([
+            noDataLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            noDataLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
+            noDataLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 20),
+            noDataLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -20)
+        ])
+        
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -43,6 +63,7 @@ class ServerListNewViewController: UIViewController, UITableViewDelegate, UITabl
     
     override func viewWillAppear(_ animated: Bool) {
         spacesConn?.update(mappings: spacesMappings)
+        noDataLabel.isHidden = (spacesMappings.numberOfItems(inSection: 0) > 0)
         tableView.reloadData()
     }
     
@@ -74,7 +95,7 @@ class ServerListNewViewController: UIViewController, UITableViewDelegate, UITabl
                 
             case is WebDavSpace:
                 let vc = PrivateServerSettingViewController()
-                vc.space = space // Pass the actual Space object
+                vc.space = space
                 navigationController?.pushViewController(vc, animated: true)
             default:
                 print("no navigation")
@@ -85,6 +106,7 @@ class ServerListNewViewController: UIViewController, UITableViewDelegate, UITabl
     
     @objc
     private func yapDatabaseModified(_ notification: Notification) {
+        noDataLabel.isHidden = (spacesMappings.numberOfItems(inSection: 0) > 0)
         if spacesConn?.hasChanges(spacesMappings) ?? false {
             tableView.reloadData()
         }

@@ -122,7 +122,7 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
             for row in 0..<numberOfItems {
                 let indexPath = IndexPath(row: Int(row), section: 0)
                 if let space = getSpace(at: indexPath){
-                    if (space.username == username){
+                    if (space.username?.lowercased() == username.lowercased()){
                         return true
                     }
                 }

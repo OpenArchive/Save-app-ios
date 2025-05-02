@@ -13,6 +13,7 @@ import GoogleSignIn
 import TorManager
 import OrbotKit
 import SwiftUI
+import Firebase
 
 class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
 
@@ -62,6 +63,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 
         UIFont.setUpMontserrat()
 
+        FirebaseApp.configure()
         setUpOrbotAndTor()
         applyTheme(AppSettings.theme)
         return true

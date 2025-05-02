@@ -663,25 +663,42 @@
 "Internet Archive" = "Internet Archive";
 
 "Upload your media to a public server." = "Upload your media to a public server.";
+
 "Do not show me this again" = "Do not show me this again";
+
 "Removing this server will delete all associated data." = "Removing this server will delete all associated data.";
+
 "Upload your media to a free public or paid private account on the Internet Archive." = "Upload your media to a free public or paid private account on the Internet Archive.";
+
 "No Account?" = "No Account?";
+
 "Create one" = "Create one";
+
 "Setup Passcode" = "Setup Passcode";
+
 "Confirm Passcode" = "Confirm Passcode";
+
 "Enter Passcode" = "Enter Passcode";
+
 "Make sure you remember this pin. If you forget it, you will need to reset the app, and all data will be erased" = "Make sure you remember this pin. If you forget it, you will need to reset the app, and all data will be erased";
 
 "Error!"= "Error!";
+
 "Folder name cannot be empty" = "Folder name cannot be empty";
+
 "Rename folder" = "Rename folder";
+
 "Select media" = "Select media";
+
 "Remove folder from app" = "Remove folder from app";
+
 "Tap the button below to add media" = "Tap the button below to add media";
+
 "Tap the button below to add a server" = "Tap the button below to add a server";
+
 "Tap the button below to add a folder" = "Tap the button below to add a folder";
 "Add new server" = "Add new server";
+
 "New Folder" = "New Folder";
 
 /* Placeholder is 'ProofMode' */
@@ -700,10 +717,14 @@
 "Send your media securely to private servers and lock the app with a pin." = "Send your media securely to private servers and lock the app with a pin.";
 
 "Bulk Edit Media Info" = "Bulk Edit Media Info";
+
 "Press and hold to select and edit multiple media items." = "Press and hold to select and edit multiple media items.";
 "Archive Project" = "Archive Project";
+
 "Unarchive Project" = "Unarchive Project";
+
 "Success!" = "Success!";
+
 "You have renamed folder successfully." = "You have renamed folder successfully.";
 
 /**Proofmode description*/
@@ -711,41 +732,75 @@
 "To help verify where your media was captured, ProofMode gathers data from nearby cell towers to corroborate your location. To add credibility and context, it then includes a separate metadata file with your media. Neither Save nor OpenArchive will be able to access or store this location data, it will only be accessible to those with access to the server files. iOS requires location access to collect this information." = "To help verify where your media was captured, ProofMode gathers data from nearby cell towers to corroborate your location. To add credibility and context, it then includes a separate metadata file with your media. Neither Save nor OpenArchive will be able to access or store this location data, it will only be accessible to those with access to the server files. iOS requires location access to collect this information.";
 
 "ProofMode is a system that enables authentication and verification of multimedia content,"= "ProofMode is a system that enables authentication and verification of multimedia content,";
+
 " learn more here" = " learn more here";
+
 "Media Servers" = "Media Servers";
+
 "Unable to upload due to session error, please try again or contact support" = "Unable to upload due to session error, please try again or contact support";
+
 "You have changed your server settings successfully." = "You have changed your server settings successfully.";
+
 "Lock app with passcode" = "Lock app with passcode";
+
 "Archived Folders" = "Archived Folders";
+
 "Manage your servers" = "Manage your servers";
+
 "Manage your archived folders" = "Manage your archived folders";
+
 "Turn on Onion Routing" = "Turn on Onion Routing";
+
 "Transfer via the Tor Network only" = "Transfer via the Tor Network only";
+
 "Theme" = "Theme";
+
 "Save by OpenArchive" = "Save by OpenArchive";
+
 "Discover the Save app" = "Discover the Save app";
+
 "Terms & Privacy Policy"= "Terms & Privacy Policy";
+
 "Read our Terms & Privacy Policy"= "Read our Terms & Privacy Policy";
 "Version" = "Version";
+
 "Disable Passcode" = "Disable Passcode";
+
 "Are you sure you want to disable the passcode?" = "Are you sure you want to disable the passcode?";
+
 "Yes" = "Yes";
+
 "System" = "System";
+
 "Light" = "Light";
+
 "Dark" = "Dark";
+
 "Setup Complete" = "Setup Complete";
+
 "You can add multiple private servers and  one IA at any time." = "You can add multiple private servers and  one IA at any time.";
+
 "Select a Server" = "Select a Server";
+
 "Connect to a secure \nWebDAV server" = "Connect to a secure \nWebDAV server";
+
 "Connect to a free public \nor paid private server" = "Connect to a free public \nor paid private server";
+
 "First, please name your folder" = "First, please name your folder";
+
 "This folder will be created on your server and automatically added on Save." = "This folder will be created on your server and automatically added on Save.";
+
 "Enter folder name"= "Enter folder name";
+
 "You have added a folder successfully." = "You have added a folder successfully.";
+
 "Add Media" = "Add Media";
 
 /* placeholder is + icon */
 "Tap %@ to pick from image gallery or press and hold to add media from other apps." = "Tap %@ to pick from image gallery or press and hold to add media from other apps.";
+
 "Please enable location access in Settings to use ProofMode." = "Please enable location access in Settings to use ProofMode.";
+
 "Location Permission Required" = "Location Permission Required";
+
 "Open Settings" = "Open Settings";

@@ -26,6 +26,7 @@ class WebDavConduit: Conduit {
               let collectionName = asset.collection?.name,
               let url = asset.space?.url,
               let file = asset.file,
+              FileManager.default.fileExists(atPath: file.path),
               let filesize = asset.filesize,
               let credential = credential
         else {
