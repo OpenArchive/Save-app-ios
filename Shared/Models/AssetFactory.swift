@@ -139,13 +139,13 @@ class AssetFactory {
                     {
                         fetchThumb(phasset, asset) // asynchronous
 
-                        asset.generateProof {
+                     //   asset.generateProof {
                             asset.update({ asset in
                                 asset.isReady = true
                             }) { asset in
                                 handleResult(asset, resultHandler)
                             }
-                        }
+                   //     }
 
                         return
                     }
@@ -218,13 +218,13 @@ class AssetFactory {
                                     createThumb(asset)
                                 }
 
-                                asset.generateProof {
+                         //       asset.generateProof {
                                     asset.update({ asset in
                                         asset.isReady = true
                                     }) { asset in
                                         handleResult(asset, resultHandler)
                                     }
-                                }
+                           //     }
 
                                 return
 
@@ -298,13 +298,13 @@ class AssetFactory {
 
                 self.createThumb(asset, thumbnail: thumbnail)
 
-                asset.generateProof {
+             //   asset.generateProof {
                     asset.update({ asset in
                         asset.isReady = true
                     }) { asset in
                         handleResult(asset, resultHandler)
                     }
-                }
+             //   }
 
                 return
             }

@@ -681,13 +681,13 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                                   queue.async {
                                       let id = UIApplication.shared.beginBackgroundTask()
 
-                                      asset.generateProof {
+//                                      asset.generateProof {
                                           asset.update({ asset in
                                               asset.isReady = true
                                           }) { updatedAsset in
                                               UIApplication.shared.endBackgroundTask(id)
                                           }
-                                      }
+                               //       }
                                   }
                               }
                               else {

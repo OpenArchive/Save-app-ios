@@ -54,6 +54,8 @@ class WebDavConduit: Conduit {
                 return self.done(uploadId, error: error)
             }
 
+            //only generate proof for system camera images
+            let hasPHAsset = self.asset.phAsset != nil
             if self.asset.tags?.contains(Asset.flag) ?? false {
                 path.append(Asset.flag)
 
@@ -63,8 +65,8 @@ class WebDavConduit: Conduit {
                     return self.done(uploadId, error: error)
                 }
             }
-
-            error = self.copyMetadata(to: self.construct(url: url, path), progress)
+          
+            error = self.copyMetadata(to: self.construct(url: url, path), progress,hasPhAsset: hasPHAsset)
 
             if error != nil || progress.isCancelled {
                 return self.done(uploadId, error: error)
@@ -191,7 +193,7 @@ class WebDavConduit: Conduit {
      - parameter folder: The destination folder on the WebDAV server.
      - returns: An eventual error.
      */
-    private func copyMetadata(to folder: URL, _ progress: Progress) -> Error? {
+    private func copyMetadata(to folder: URL, _ progress: Progress,hasPhAsset:Bool=true) -> Error? {
         do {
             let json = try Conduit.jsonEncoder.encode(asset)
 
@@ -212,24 +214,25 @@ class WebDavConduit: Conduit {
             print("Failed to encode meta.json: \(error.localizedDescription)")
         }
 
-        // Loop through proof files — fire-and-forget uploads
-        uploadProofMode(to: folder) { source, destination in
-            guard source.exists else {
-                print("Missing proof file: \(source.lastPathComponent)")
+        if(!hasPhAsset){
+            uploadProofMode(to: folder) { source, destination in
+                guard source.exists else {
+                    print("Missing proof file: \(source.lastPathComponent)")
+                    return true
+                }
+                
+                _ = foregroundSession.upload(
+                    source, to: destination, headers: nil, credential: credential
+                ) { error in
+                    if let error = error {
+                        print("Failed to upload proof file \(source.lastPathComponent): \(error.localizedDescription)")
+                    } else {
+                        print("Uploaded proof file: \(destination.lastPathComponent)")
+                    }
+                }
+                
                 return true
             }
-
-            _ = foregroundSession.upload(
-                source, to: destination, headers: nil, credential: credential
-            ) { error in
-                if let error = error {
-                    print("Failed to upload proof file \(source.lastPathComponent): \(error.localizedDescription)")
-                } else {
-                    print("Uploaded proof file: \(destination.lastPathComponent)")
-                }
-            }
-
-            return true
         }
 
         return nil // Don't block upload flow

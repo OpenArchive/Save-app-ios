@@ -200,13 +200,14 @@ class PreviewViewController: UIViewController,
                     // proof is generated before upload.
                     // Proofing will set asset to un-ready, so upload will not start
                     // before proof is done as asset is set to ready again.
-                    if asset.isReady && !asset.hasProof && Settings.proofMode {
-                        asset.generateProof {
-                            asset.update { asset in
-                                asset.isReady = true
-                            }
-                        }
-                    }
+                    //commented by navoda : no need to generate proof mode when uploading.
+//                    if asset.isReady && !asset.hasProof && Settings.proofMode {
+//                        asset.generateProof {
+//                            asset.update { asset in
+//                                asset.isReady = true
+//                            }
+//                        }
+//                    }
                     
                     let upload = Upload(order: order, asset: asset)
                     tx.setObject(upload)
