@@ -10,7 +10,7 @@ import UIKit
 import YapDatabase
 
 class PreviewViewController: UIViewController,
-                                UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,
+                             UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,
                              AssetPickerDelegate, DoneDelegate
 {
     
@@ -201,13 +201,13 @@ class PreviewViewController: UIViewController,
                     // Proofing will set asset to un-ready, so upload will not start
                     // before proof is done as asset is set to ready again.
                     //commented by navoda : no need to generate proof mode when uploading.
-//                    if asset.isReady && !asset.hasProof && Settings.proofMode {
-//                        asset.generateProof {
-//                            asset.update { asset in
-//                                asset.isReady = true
-//                            }
-//                        }
-//                    }
+                    //                    if asset.isReady && !asset.hasProof && Settings.proofMode {
+                    //                        asset.generateProof {
+                    //                            asset.update { asset in
+                    //                                asset.isReady = true
+                    //                            }
+                    //                        }
+                    //                    }
                     
                     let upload = Upload(order: order, asset: asset)
                     tx.setObject(upload)
@@ -217,8 +217,8 @@ class PreviewViewController: UIViewController,
                 let count = UploadsView.countUploading(tx)
                 
                 DispatchQueue.main.async {
-//                    let count = UserDefaults.standard.integer(forKey: "uploadSessionCount") + 1
-//                    UserDefaults.standard.set(count, forKey: "uploadSessionCount")
+                    //                    let count = UserDefaults.standard.integer(forKey: "uploadSessionCount") + 1
+                    //                    UserDefaults.standard.set(count, forKey: "uploadSessionCount")
                     OrbotManager.shared.alertCannotUpload(count: count) { [weak self] in
                         self?.navigationController?.popViewController(animated: true)
                     }
