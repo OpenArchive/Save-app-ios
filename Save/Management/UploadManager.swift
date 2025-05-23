@@ -135,6 +135,14 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         if Settings.useTor {
             conf.connectionProxyDictionary = TorManager.shared.torSocks5ProxyConf
         }
+        
+        if (Settings.useOrbot) {
+            conf.connectionProxyDictionary = [
+                kCFNetworkProxiesHTTPEnable: true,
+                kCFNetworkProxiesHTTPProxy: "127.0.0.1",
+                kCFNetworkProxiesHTTPPort: 8118
+            ]
+        }
 
         return conf
     }

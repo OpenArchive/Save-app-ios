@@ -10,6 +10,7 @@ import UIKit
 
 import Eureka
 import SnapKit
+import OrbotKit
 
 class SectionHeaderView: UIView {
     let label = UILabel()
@@ -55,10 +56,21 @@ class GeneralSettingsViewController: FormViewController {
     
     private var isUpdatingSwitchProgrammatically = false
     
+    @objc
+    func orbotStatus(notification: Notification) {
+        DispatchQueue.main.async {
+            self.form.rowBy(tag: "orbot_status")?.reload()
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         setupDefaults()
+        
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(orbotStatus),
+                                               name: .orbotStatus, object: nil)
         
         navigationItem.title = NSLocalizedString("General", comment: "")
         
@@ -100,6 +112,66 @@ class GeneralSettingsViewController: FormViewController {
             }), onDismiss: nil)
 
         }
+        
+        +++ sectionWithTitle(NSLocalizedString("Security", comment: ""))
+        
+        <<< SwitchRow() {
+            $0.title = String(format: NSLocalizedString(
+                "Transfer via %@ only", comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName)
+            $0.value = Settings.useOrbot
+
+            $0.cellStyle = .subtitle
+
+            $0.cell.switchControl.onTintColor = .accent
+            $0.cell.textLabel?.numberOfLines = 0
+            $0.cell.detailTextLabel?.numberOfLines = 0
+        }
+        .cellUpdate({ cell, row in
+            cell.detailTextLabel?.text = String(format: NSLocalizedString(
+                "%@ routes all traffic through the Tor network",
+                comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName)
+        })
+        .onChange { row in
+            let newValue = row.value ?? false
+
+            if newValue != Settings.useOrbot {
+                if newValue {
+                    if !OrbotManager.shared.installed {
+                        row.value = false
+                        row.updateCell()
+
+                        OrbotManager.shared.alertOrbotNotInstalled()
+                    }
+                    else if Settings.orbotApiToken.isEmpty {
+                        row.value = false
+                        row.updateCell()
+
+                        OrbotManager.shared.alertToken {
+                            row.value = true
+                            row.updateCell()
+
+                            Settings.useOrbot = true
+                            OrbotManager.shared.start()
+                        }
+                    }
+                    else {
+                        Settings.useOrbot = true
+                        OrbotManager.shared.start()
+                    }
+                }
+                else {
+                    Settings.useOrbot = false
+                    OrbotManager.shared.stop()
+                }
+            }
+        }
+        
+        <<< TextRow("orbot_status") {
+            $0.value = getOrbotTorStatus()
+            $0.cellStyle = .subtitle
+        }.cellUpdate({ cell, row in
+            cell.textField.text = self.getOrbotTorStatus()
+        })
 
        
         // MARK: Theme
@@ -141,6 +213,34 @@ class GeneralSettingsViewController: FormViewController {
         form.delegate = self
     }
     
+    private func getOrbotTorStatus() -> String {
+        if OrbotManager.shared.status == .started {
+            if Settings.useTor {
+                return NSLocalizedString("Tor enabled and connected", comment: "")
+            } else if Settings.useOrbot {
+                return NSLocalizedString("Orbot enabled and Tor connected", comment: "")
+            } else {
+                return NSLocalizedString("Tor is not enabled but is connected", comment: "")
+            }
+        } else if OrbotManager.shared.status == .starting {
+                if Settings.useTor {
+                    return NSLocalizedString("Tor is enabled and starting...", comment: "")
+                } else if Settings.useOrbot {
+                    return NSLocalizedString("Orbot enabled and Tor is starting...", comment: "")
+                } else {
+                    return NSLocalizedString("Tor is not enabled but starting...", comment: "")
+                }
+        } else {
+            if Settings.useTor {
+                return NSLocalizedString("Tor is enabled but disconnected", comment: "")
+            } else if Settings.useOrbot {
+                return NSLocalizedString("Orbot enabled but Tor is disconnected", comment: "")
+            } else {
+                return NSLocalizedString("Tor is not enabled and disconnected", comment: "")
+            }
+        }
+    }
+    
     func sectionWithTitle(_ title: String) -> Section {
         return Section() { section in
             var header = HeaderFooterView<SectionHeaderView>(.class)
@@ -173,6 +273,18 @@ class GeneralSettingsViewController: FormViewController {
             cell.textLabel?.font = .normalMedium
             cell.detailTextLabel?.textColor = .lightGray
             cell.detailTextLabel?.font = .normalMedium
+        }
+        
+        TextRow.defaultCellUpdate = { (cell, row) in
+            cell.backgroundColor = .clear
+            cell.textLabel?.textColor = .gray
+            cell.textLabel?.font = .normalMedium
+            cell.detailTextLabel?.textColor = .lightGray
+            cell.detailTextLabel?.font = .normalMedium
+            cell.titleLabel?.textColor = .lightGray
+            cell.titleLabel?.font = .normalMedium
+            cell.textField?.textColor = .lightGray
+            cell.textField?.font = .normalMedium
         }
         
         SwitchRow.defaultCellUpdate = { (cell, row) in

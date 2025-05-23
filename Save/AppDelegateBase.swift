@@ -177,7 +177,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool
     {
         if let urlc = URLComponents(url: url, resolvingAgainstBaseURL: true),
-            urlc.path == "token-callback"
+           urlc.scheme == "orbot", urlc.path == "token-callback", urlc.host == "org.openarchive.save"
         {
             if let token = urlc.queryItems?.first(where: { $0.name == "token" })?.value {
                 OrbotManager.shared.received(token: token)

@@ -30,8 +30,8 @@ def app_only
     pod 'SDCAlertView'
     pod 'TLPhotoPicker', :git => 'https://github.com/tladesignz/TLPhotoPicker.git' # '~> 2.1'
     pod 'GoogleSignIn', '~> 7.0'
-    pod 'OrbotKit', '~> 1.1'
-    pod 'TorManager', '~> 0.3'
+    pod 'OrbotKit', '~> 1.2'
+    pod 'TorManager', '~> 0.4'
 end
 
 target 'Save' do

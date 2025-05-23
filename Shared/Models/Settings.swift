@@ -75,7 +75,7 @@ class Settings {
      */
     class var useOrbot: Bool {
         get {
-            false //defaults?.bool(forKey: kUseTor) ?? false
+            defaults?.bool(forKey: kUseTor) ?? false
         }
         set {
             defaults?.set(newValue, forKey: kUseTor)
