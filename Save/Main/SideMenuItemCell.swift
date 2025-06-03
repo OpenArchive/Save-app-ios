@@ -60,4 +60,13 @@ class SideMenuItemCell: UITableViewCell {
 
         contentView.backgroundColor = .pillBackground
     }
+    func applyStoracha() {
+        iconLeadingConstraint.constant = 12
+
+        icon.image = UIImage(named:  "storacha")?.withRenderingMode(.alwaysTemplate)
+        nameLb.text = NSLocalizedString("Storacha", comment: "")
+        nameLb.font =  .montserrat(forTextStyle: .subheadline)
+        nameLb.textColor = .accent
+        contentView.backgroundColor = .pillBackground
+    }
 }

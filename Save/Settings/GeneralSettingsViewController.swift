@@ -3,11 +3,11 @@ import UIKit
 import SwiftUI
 import YapDatabase
 class GeneralSettingsViewController:UIViewController,ViewControllerNavigationDelegate {
-    
     private lazy var ServerList: ServerListNewViewController = {
         let vc = ServerListNewViewController()
         return vc
     }()
+   
     private lazy var FolderList: FolderListNewViewController = {
         let vc = FolderListNewViewController(archived: true)
         return vc
@@ -18,6 +18,7 @@ class GeneralSettingsViewController:UIViewController,ViewControllerNavigationDel
     func pushViewController(_ viewController: UIViewController) {
         self.navigationController?.pushViewController(viewController, animated: true)
     }
+   
     func pushServerList() {
         
         self.navigationController?.pushViewController(ServerList, animated: true)

@@ -17,6 +17,8 @@ protocol SideMenuDelegate {
 
     func addSpace()
 
+    func manageStoracha()
+    
     func addFolder()
     
     func pushPrivateServerSetting(space: Space)
@@ -86,7 +88,6 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
 
-
     private var spacesConn = Db.newLongLivedReadConn()
 
     private var spacesMappings = YapDatabaseViewMappings(
@@ -131,7 +132,7 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
 
         // "Add Another Account" button.
         if section >= spacesMappings.numberOfSections() {
-            return 1
+            return 2
         }
 
         return Int(spacesMappings.numberOfItems(inSection: UInt(section)))
@@ -146,8 +147,14 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
             cell.apply(project, select: selectedProject == project)
         }
         else if indexPath.section >= spacesMappings.numberOfSections() {
-            cell.applyAdd()
-            cell.accessibilityIdentifier = "cellAddAccount"
+            if indexPath.row == 0 {
+                cell.applyStoracha()
+                cell.accessibilityIdentifier = "cellStoracha"
+                   
+                } else if indexPath.row == 1 {
+                    cell.applyAdd()
+                    cell.accessibilityIdentifier = "cellAddAccount"
+                }
         }
         else {
             let space = getSpace(at: indexPath)
@@ -171,7 +178,13 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
             }
         }
         else if indexPath.section >= spacesMappings.numberOfSections() {
-            delegate?.addSpace()
+           
+            if indexPath.row == 0 {
+                delegate?.manageStoracha()
+                
+                } else if indexPath.row == 1 {
+                    delegate?.addSpace()
+                }
         }
         else {
             SelectedSpace.space = getSpace(at: indexPath)

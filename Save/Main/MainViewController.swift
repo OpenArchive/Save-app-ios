@@ -192,6 +192,10 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     private var inEditMode = false
     
+    private lazy var storachaSettingViewController: StorachaSettingViewController = {
+        let vc = StorachaSettingViewController()
+        return vc
+    }()
     
     private lazy var sideMenu: SideMenuViewController = {
         let vc = SideMenuViewController()
@@ -589,6 +593,11 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
     }
     
+    func manageStoracha() {
+        toggleMenu(false) { [weak self] _ in
+            self?.navigationController?.pushViewController(StorachaSettingViewController(), animated: true)
+        }
+    }
     
     // MARK: Actions
     
@@ -913,10 +922,10 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
      UI update: Space icon and name.
      */
     private func updateSpace() {
+        navigationItem.rightBarButtonItem = menuBarButtonItem
         if let space = SelectedSpace.space {
             spaceFavIcon.image = getServerIcon(space: space)
             sideMenu.space = space
-            navigationItem.rightBarButtonItem = menuBarButtonItem
             hintLb.text =   NSLocalizedString(
                 "Tap the button below to add a folder",
                 comment: "")
@@ -994,14 +1003,16 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
         
         if toggle {
-            if !SelectedSpace.available {
-                addSpace()
-            }
-            else {
-                menu.isHidden = false
-                
-                sideMenu.animate(toggle, completion)
-            }
+            menu.isHidden = false
+            sideMenu.animate(toggle, completion)
+//            if !SelectedSpace.available {
+//                addSpace()
+//            }
+//            else {
+//                menu.isHidden = false
+//                
+//                sideMenu.animate(toggle, completion)
+//            }
         }
         else {
             sideMenu.animate(toggle) { finished in
