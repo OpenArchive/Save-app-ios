@@ -2,9 +2,7 @@
 
 https://open-archive.org/save/
 
-Save by OpenArchive enables you to safely preserve, organize, and share your mobile media. 
-
-Designed with and for newsrooms, human rights defenders, and archivists, Save keeps you in control of your mobile media at all times.
+Save is an open-source app created by OpenArchive to help you securely verify, share, and archive your mobile media. It's free, open-source, and available for iOS and Android.
 
 ## Author
 
