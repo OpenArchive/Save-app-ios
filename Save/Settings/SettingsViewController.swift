@@ -140,6 +140,7 @@ struct SettingsView: View {
     @State private var selectedTheme: String
     @State private var showActionSheet = false
     @State private var showPasscodeAlert = false
+    @State private var showTorAlert = false
     @State private var passcodeToggleState: Bool
     @State private var isProgrammaticallyChangingPasscodeToggle = false
     @State private var showCompressionSheet = false
@@ -202,7 +203,18 @@ struct SettingsView: View {
                         
                         (NSLocalizedString("Encrypt", comment: ""),
                          [
-                            AnyView(ToggleSwitch(title: NSLocalizedString("Turn on Onion Routing", comment: ""),subtitle: NSLocalizedString("Transfer via the Tor Network only", comment: ""), isDisabled:true, isOn: $viewModel.isOnionRoutingOn)),
+                            AnyView(ToggleSwitch(title: NSLocalizedString("Turn on Onion Routing", comment: ""),subtitle: NSLocalizedString("Transfer via the Tor Network only", comment: ""), isDisabled:true, isOn: $viewModel.isOnionRoutingOn).overlay(
+                             
+                                Group {
+                                    if true {
+                                        Color.black.opacity(0.001)
+                                            .onTapGesture {
+                                                showTorAlert = true
+                                            }
+                                    }
+                                }
+                            )
+                                   ),
                             
                          ]),
                         
@@ -313,6 +325,28 @@ struct SettingsView: View {
                                 )
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                                 
+                                
+                            }
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .background(Color.black.opacity(0.2))
+                        )
+                }
+                if showTorAlert {
+                    Color.gray.opacity(0.9)
+                        .edgesIgnoringSafeArea(.all)
+                        .overlay(
+                            VStack {
+                                CustomAlertView(
+                                    title: NSLocalizedString("Onion routing under development", comment: ""),
+                                    message: NSLocalizedString("This feature is currently under development. For now, you can use Orbot or any VPN of your choice to enhance your privacy and security.", comment: ""),
+                                    primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
+                                    iconImage: Image(systemName: "info.circle"),
+                                    primaryButtonAction: {
+                                        showTorAlert = false
+                                    }
+                                    
+                                )
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
                                 
                             }
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)

@@ -570,15 +570,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             guard let upload = self.getNext(),
                   let asset = upload.asset
             else {
-                //                let sessionCount = UserDefaults.standard.integer(forKey: "uploadSessionCount")
-                //                   let prompted = UserDefaults.standard.bool(forKey: "hasPromptedReview")
-                //
-                //                   if sessionCount >= 5 && !prompted {
-                //                       DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
-                //                           SKStoreReviewController.requestReview()
-                //                           UserDefaults.standard.set(true, forKey: "hasPromptedReview")
-                //                       }
-                //                   }
+               
                 self.debug("#uploadNext nothing to upload")
                 
                 return self.endBackgroundTask(.noData)
