@@ -33,3 +33,5 @@ extension UIImage {
         cgImage?.width ?? 0 < 1 || cgImage?.height ?? 0 < 1
     }
 }
+
+

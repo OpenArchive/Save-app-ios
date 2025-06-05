@@ -78,8 +78,8 @@ class ProgressButton: UIView {
 
         switch state {
         case .paused:
-            draw(image: .icUp, center: center, radius: radius)
-
+          //  draw(image: .icUp, center: center, radius: radius)
+            break
         case .pending, .uploaded:
             break
 
@@ -128,10 +128,10 @@ class ProgressButton: UIView {
             attributes[.foregroundColor] = color
         }
 
-        let text = NSAttributedString(string: text, attributes: attributes)
-
+        let text = ""
+       
         let textSize = text.boundingRect(
-            with: boundingSize, 
+            with: boundingSize,
             options: [.usesLineFragmentOrigin, .usesFontLeading],
             context: nil)
 

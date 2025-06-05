@@ -1,0 +1,318 @@
+
+/* Class = "UIButton"; configuration.title = "Back"; ObjectID = "04D-Iy-n3q"; */
+"04D-Iy-n3q.configuration.title" = "Back";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "04D-Iy-n3q"; */
+"04D-Iy-n3q.normalTitle" = "Button";
+
+/* Class = "UIButton"; configuration.title = "Stop Using Tor"; ObjectID = "0UD-F0-r3b"; */
+"0UD-F0-r3b.configuration.title" = "Stop Using Tor";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "0UD-F0-r3b"; */
+"0UD-F0-r3b.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "SHARE ARCHIVE VERIFY ENCRYPT"; ObjectID = "0gx-sd-QFe"; */
+"0gx-sd-QFe.text" = "SHARE ARCHIVE VERIFY ENCRYPT";
+
+/* Class = "UILabel"; text = "Account"; ObjectID = "13Y-3C-Tmj"; */
+"13Y-3C-Tmj.text" = "Account";
+
+/* Class = "UILabel"; text = "Starting Tor…"; ObjectID = "1Os-Wb-YF6"; */
+"1Os-Wb-YF6.text" = "Starting Tor…";
+
+/* Class = "UITextView"; text = "Save’s use and transfer of information received from Google APIs to any other app adheres to Google API Services User Data Policy, including the Limited Use requirements.\n\nGoogle's APIs allow you to access and send media to your existing folders in Google Drive via Save. Save will only read the list of folders from your Google Drive for the sole purpose of showing it to you so you can select one. This information is immediately forgotten afterwards."; ObjectID = "2qa-Lj-jX4"; */
+"2qa-Lj-jX4.text" = "Save’s use and transfer of information received from Google APIs to any other app adheres to Google API Services User Data Policy, including the Limited Use requirements.\n\nGoogle's APIs allow you to access and send media to your existing folders in Google Drive via Save. Save will only read the list of folders from your Google Drive for the sole purpose of showing it to you so you can select one. This information is immediately forgotten afterwards.";
+
+/* Class = "UIButton"; normalTitle = "Skip"; ObjectID = "3B2-GC-c26"; */
+"3B2-GC-c26.normalTitle" = "Skip";
+
+/* Class = "UILabel"; text = "Google Drive"; ObjectID = "3ov-yG-eFN"; */
+"3ov-yG-eFN.text" = "Google Drive";
+
+/* Class = "UILabel"; text = "To get started, connect to a server to store your media."; ObjectID = "60u-eC-Xt3"; */
+"60u-eC-Xt3.text" = "To get started, connect to a server to store your media.";
+
+/* Class = "UILabel"; text = "Privacy Policy"; ObjectID = "6JS-eq-OtK"; */
+"6JS-eq-OtK.text" = "Privacy Policy";
+
+/* Class = "UIButton"; configuration.title = "Remove from App"; ObjectID = "6lq-8U-YVx"; */
+"6lq-8U-YVx.configuration.title" = "Remove from App";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "6lq-8U-YVx"; */
+"6lq-8U-YVx.normalTitle" = "Button";
+
+/* Class = "UIButton"; configuration.title = "Retry"; ObjectID = "7pO-Ak-ucT"; */
+"7pO-Ak-ucT.configuration.title" = "Retry";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "7pO-Ak-ucT"; */
+"7pO-Ak-ucT.normalTitle" = "Button";
+
+/* Class = "UIButton"; configuration.title = "Files"; ObjectID = "8If-n3-PU8"; */
+"8If-n3-PU8.configuration.title" = "Files";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "8If-n3-PU8"; */
+"8If-n3-PU8.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Google ID"; ObjectID = "8LC-Ul-Qyg"; */
+"8LC-Ul-Qyg.text" = "Google ID";
+
+/* Class = "UILabel"; text = "0"; ObjectID = "AUB-rT-Stg"; */
+"AUB-rT-Stg.text" = "0";
+
+/* Class = "UILabel"; text = "Name your server and choose a license"; ObjectID = "Aaz-OU-hK0"; */
+"Aaz-OU-hK0.text" = "Name your server and choose a license";
+
+/* Class = "UILabel"; text = "If you do not have existing keys, learn how to acquire keys."; ObjectID = "Agm-bY-ukH"; */
+"Agm-bY-ukH.text" = "If you do not have existing keys, learn how to acquire keys.";
+
+/* Class = "UILabel"; text = "Version %@"; ObjectID = "BAd-wM-0Yb"; */
+"BAd-wM-0Yb.text" = "Version %@";
+
+/* Class = "UIButton"; normalTitle = "Next"; ObjectID = "D73-lY-Jyr"; */
+"D73-lY-Jyr.normalTitle" = "Next";
+
+/* Class = "UILabel"; text = "Get Started"; ObjectID = "Djp-bE-4X6"; */
+"Djp-bE-4X6.text" = "Get Started";
+
+/* Class = "UIButton"; normalTitle = "OK"; ObjectID = "EiJ-Re-tFb"; */
+"EiJ-Re-tFb.normalTitle" = "OK";
+
+/* Class = "UILabel"; text = "How to Acquire Keys in 3 Easy Steps"; ObjectID = "Fgz-Ch-6c8"; */
+"Fgz-Ch-6c8.text" = "How to Acquire Keys in 3 Easy Steps";
+
+/* Class = "UILabel"; text = "Server Info"; ObjectID = "GzS-H2-y9Y"; */
+"GzS-H2-y9Y.text" = "Server Info";
+
+/* Class = "UIBarButtonItem"; title = "DONE"; ObjectID = "HLR-fx-BKQ"; */
+"HLR-fx-BKQ.title" = "DONE";
+
+/* Class = "UILabel"; text = "Secret Key"; ObjectID = "Ire-uE-9Yh"; */
+"Ire-uE-9Yh.text" = "Secret Key";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "JwU-jM-abP"; */
+"JwU-jM-abP.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam"; ObjectID = "LOG-Gh-tpR"; */
+"LOG-Gh-tpR.text" = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam";
+
+/* Class = "UILabel"; text = "About Save"; ObjectID = "Mie-rR-T9r"; */
+"Mie-rR-T9r.text" = "About Save";
+
+/* Class = "UILabel"; text = "Sign in with Google Drive."; ObjectID = "Mv2-kV-NKc"; */
+"Mv2-kV-NKc.text" = "Sign in with Google Drive.";
+
+/* Class = "UIBarButtonItem"; title = "DONE"; ObjectID = "ONa-ua-8FY"; */
+"ONa-ua-8FY.title" = "DONE";
+
+/* Class = "UILabel"; text = "Secret Key"; ObjectID = "OOJ-dW-NJo"; */
+"OOJ-dW-NJo.text" = "Secret Key";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "OjE-OQ-JjP"; */
+"OjE-OQ-JjP.text" = "Label";
+
+/* Class = "UILabel"; text = "Connect to a WebDAV-compatible servers, e.g. Nexcloud and ownCloud."; ObjectID = "PEt-pF-AHz"; */
+"PEt-pF-AHz.text" = "Connect to a WebDAV-compatible servers, e.g. Nexcloud and ownCloud.";
+
+/* Class = "UILabel"; text = "Uploading"; ObjectID = "PNO-3V-865"; */
+"PNO-3V-865.text" = "Uploading";
+
+/* Class = "UIButton"; configuration.title = "Authenticate"; ObjectID = "Q6v-6W-Fm7"; */
+"Q6v-6W-Fm7.configuration.title" = "Authenticate";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Q6v-6W-Fm7"; */
+"Q6v-6W-Fm7.normalTitle" = "Button";
+
+/* Class = "UIButton"; configuration.title = "My Media"; ObjectID = "QIU-V8-v7v"; */
+"QIU-V8-v7v.configuration.title" = "My Media";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "QIU-V8-v7v"; */
+"QIU-V8-v7v.normalTitle" = "Button";
+
+/* Class = "UIButton"; configuration.title = "Acquire Keys"; ObjectID = "Qq5-R8-hER"; */
+"Qq5-R8-hER.configuration.title" = "Acquire Keys";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Qq5-R8-hER"; */
+"Qq5-R8-hER.normalTitle" = "Button";
+
+/* Class = "UITextView"; text = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda."; ObjectID = "RiZ-O4-tye"; */
+"RiZ-O4-tye.text" = "Lorem ipsum dolor sit er elit lamet, consectetaur cillium adipisicing pecu, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Nam liber te conscient to factor tum poen legum odioque civiuda.";
+
+/* Class = "UIButton"; configuration.title = "Remove from App"; ObjectID = "SJ1-T6-I17"; */
+"SJ1-T6-I17.configuration.title" = "Remove from App";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "SJ1-T6-I17"; */
+"SJ1-T6-I17.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Back"; ObjectID = "TdD-PF-XgW"; */
+"TdD-PF-XgW.normalTitle" = "Back";
+
+/* Class = "UIButton"; normalTitle = "Remove"; ObjectID = "U5N-a5-RcO"; */
+"U5N-a5-RcO.normalTitle" = "Remove";
+
+/* Class = "UILabel"; text = "Account"; ObjectID = "UBp-OB-rCI"; */
+"UBp-OB-rCI.text" = "Account";
+
+/* Class = "UIButton"; configuration.title = "Next"; ObjectID = "ULx-ZG-M7y"; */
+"ULx-ZG-M7y.configuration.title" = "Next";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "ULx-ZG-M7y"; */
+"ULx-ZG-M7y.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Next"; ObjectID = "V5A-mk-bSu"; */
+"V5A-mk-bSu.normalTitle" = "Next";
+
+/* Class = "UIButton"; normalTitle = "Add More"; ObjectID = "VPc-nR-QfI"; */
+"VPc-nR-QfI.normalTitle" = "Add More";
+
+/* Class = "UIButton"; configuration.title = "Next"; ObjectID = "VjO-FL-vZm"; */
+"VjO-FL-vZm.configuration.title" = "Next";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "VjO-FL-vZm"; */
+"VjO-FL-vZm.normalTitle" = "Button";
+
+/* Class = "UIButton"; configuration.title = "Settings"; ObjectID = "VpT-Ct-gHj"; */
+"VpT-Ct-gHj.configuration.title" = "Settings";
+
+/* Class = "UIButton"; normalTitle = "Settings"; ObjectID = "VpT-Ct-gHj"; */
+"VpT-Ct-gHj.normalTitle" = "Settings";
+
+/* Class = "UILabel"; text = "\"Chunking\" uploads media in pieces so you don't have to restart your upload if your connection is interrupted."; ObjectID = "WJ1-RS-SZt"; */
+"WJ1-RS-SZt.text" = "\"Chunking\" uploads media in pieces so you don't have to restart your upload if your connection is interrupted.";
+
+/* Class = "UILabel"; text = "In the side menu, you can add another server and connect to multiple servers"; ObjectID = "WgA-6I-Pkp"; */
+"WgA-6I-Pkp.text" = "In the side menu, you can add another server and connect to multiple servers";
+
+/* Class = "UILabel"; text = "Heading"; ObjectID = "Xtc-qd-Hr6"; */
+"Xtc-qd-Hr6.text" = "Heading";
+
+/* Class = "UILabel"; text = "Add Media using:"; ObjectID = "YS8-to-cqp"; */
+"YS8-to-cqp.text" = "Add Media using:";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "YSG-EE-2gJ"; */
+"YSG-EE-2gJ.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Error"; ObjectID = "ZPF-4R-JEn"; */
+"ZPF-4R-JEn.text" = "Error";
+
+/* Class = "UILabel"; text = "Welcome!"; ObjectID = "a1a-GU-jmb"; */
+"a1a-GU-jmb.text" = "Welcome!";
+
+/* Class = "UILabel"; text = "  0  "; ObjectID = "b2m-Ge-efz"; */
+"b2m-Ge-efz.text" = "  0  ";
+
+/* Class = "UIButton"; configuration.title = "Photo Gallery"; ObjectID = "b8W-ua-DyM"; */
+"b8W-ua-DyM.configuration.title" = "Photo Gallery";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "b8W-ua-DyM"; */
+"b8W-ua-DyM.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "General"; ObjectID = "bdB-rm-Dq1"; */
+"bdB-rm-Dq1.normalTitle" = "General";
+
+/* Class = "UILabel"; text = "Press the button below to add media"; ObjectID = "dIV-uA-I3m"; */
+"dIV-uA-I3m.text" = "Press the button below to add media";
+
+/* Class = "UILabel"; text = "Internet Archive"; ObjectID = "dwa-ZR-XaI"; */
+"dwa-ZR-XaI.text" = "Internet Archive";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "e32-y6-Qbz"; */
+"e32-y6-Qbz.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Server Info"; ObjectID = "fg0-J2-V4O"; */
+"fg0-J2-V4O.text" = "Server Info";
+
+/* Class = "UIButton"; configuration.title = "Back"; ObjectID = "fpa-gd-erT"; */
+"fpa-gd-erT.configuration.title" = "Back";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "fpa-gd-erT"; */
+"fpa-gd-erT.normalTitle" = "Button";
+
+/* Class = "UIButton"; configuration.title = "Bridge Configuration"; ObjectID = "iEw-VZ-MdO"; */
+"iEw-VZ-MdO.configuration.title" = "Bridge Configuration";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "iEw-VZ-MdO"; */
+"iEw-VZ-MdO.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Server"; ObjectID = "ind-b8-Uqd"; */
+"ind-b8-Uqd.normalTitle" = "Server";
+
+/* Class = "UILabel"; text = "12 MB"; ObjectID = "jEH-Gq-Jm6"; */
+"jEH-Gq-Jm6.text" = "12 MB";
+
+/* Class = "UILabel"; text = "Save needs your Internet Archive account's API keys to upload media."; ObjectID = "jLb-fY-tbq"; */
+"jLb-fY-tbq.text" = "Save needs your Internet Archive account's API keys to upload media.";
+
+/* Class = "UILabel"; text = "Access Key"; ObjectID = "lHn-7r-p22"; */
+"lHn-7r-p22.text" = "Access Key";
+
+/* Class = "UILabel"; text = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam"; ObjectID = "mX4-L9-fca"; */
+"mX4-L9-fca.text" = "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam";
+
+/* Class = "UIButton"; configuration.title = "Authenticate"; ObjectID = "muf-dt-V5G"; */
+"muf-dt-V5G.configuration.title" = "Authenticate";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "muf-dt-V5G"; */
+"muf-dt-V5G.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "n5o-VJ-Zav"; */
+"n5o-VJ-Zav.normalTitle" = "Button";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "oCx-p7-hl9"; */
+"oCx-p7-hl9.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Run health checks to help improve uploading."; ObjectID = "oPJ-c7-202"; */
+"oPJ-c7-202.text" = "Run health checks to help improve uploading.";
+
+/* Class = "UILabel"; text = "Use Upload Chunking (Nextcloud Only)"; ObjectID = "ov3-sS-CWS"; */
+"ov3-sS-CWS.text" = "Use Upload Chunking (Nextcloud Only)";
+
+/* Class = "UIBarButtonItem"; title = "DONE"; ObjectID = "p54-l4-HLD"; */
+"p54-l4-HLD.title" = "DONE";
+
+/* Class = "UIButton"; normalTitle = "No Thanks"; ObjectID = "q61-Gw-TTe"; */
+"q61-Gw-TTe.normalTitle" = "No Thanks";
+
+/* Class = "UILabel"; text = "  0  "; ObjectID = "qnh-e5-rWf"; */
+"qnh-e5-rWf.text" = "  0  ";
+
+/* Class = "UILabel"; text = "Secure Mobile Media Preservation"; ObjectID = "rik-2S-4lf"; */
+"rik-2S-4lf.text" = "Secure Mobile Media Preservation";
+
+/* Class = "UIButton"; normalTitle = "Done"; ObjectID = "rmQ-iI-oMX"; */
+"rmQ-iI-oMX.normalTitle" = "Done";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "sme-JJ-CDx"; */
+"sme-JJ-CDx.text" = "Label";
+
+/* Class = "UILabel"; text = "1/3"; ObjectID = "t8I-5E-O1R"; */
+"t8I-5E-O1R.text" = "1/3";
+
+/* Class = "UIButton"; configuration.title = "Remove from App"; ObjectID = "t8Q-WA-Rh5"; */
+"t8Q-WA-Rh5.configuration.title" = "Remove from App";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "t8Q-WA-Rh5"; */
+"t8Q-WA-Rh5.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "You have successfully connected to %@!"; ObjectID = "tKn-Gc-X17"; */
+"tKn-Gc-X17.text" = "You have successfully connected to %@!";
+
+/* Class = "UILabel"; text = "Select Media"; ObjectID = "u6F-rK-BzP"; */
+"u6F-rK-BzP.text" = "Select Media";
+
+/* Class = "UIButton"; normalTitle = "Folder"; ObjectID = "uJK-8Y-ZbQ"; */
+"uJK-8Y-ZbQ.normalTitle" = "Folder";
+
+/* Class = "UINavigationItem"; title = "Edit Media Info"; ObjectID = "uQQ-6M-irW"; */
+"uQQ-6M-irW.title" = "Edit Media Info";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "uzl-xN-F2B"; */
+"uzl-xN-F2B.text" = "Label";
+
+/* Class = "UINavigationItem"; title = "Preview"; ObjectID = "vUj-AP-iCH"; */
+"vUj-AP-iCH.title" = "Preview";
+
+/* Class = "UILabel"; text = "Access Key"; ObjectID = "vb7-yg-W2z"; */
+"vb7-yg-W2z.text" = "Access Key";
+
+/* Class = "UIBarButtonItem"; title = "UPLOAD"; ObjectID = "zEj-JW-dy7"; */
+"zEj-JW-dy7.title" = "UPLOAD";

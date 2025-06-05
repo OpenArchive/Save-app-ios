@@ -11,21 +11,24 @@ import UIKit
 /**
  A special alert which informs the user about the finality of an upload.
  */
-class UploadInfoAlert: InfoAlert {
+import UIKit
+import SwiftUI
 
-    override class var image: UIImage? {
-        UIImage(systemName: "arrow.up.square")
+class UploadInfoAlert {
+    
+    static var image: Image? {
+        Image(systemName: "exclamationmark.triangle.fill")
     }
-
-    override class var tintColor: UIColor {
-        .accent
+    
+    static var title: String {
+        NSLocalizedString("Warning", comment: "")
     }
-
-    override class var message: String {
+    
+    static var message: String {
         NSLocalizedString("Once uploaded, you will not be able to edit media.", comment: "")
     }
-
-    override class var wasAlreadyShown: Bool {
+    
+    static var wasAlreadyShown: Bool {
         get {
             Settings.firstUploadDone
         }
@@ -33,4 +36,32 @@ class UploadInfoAlert: InfoAlert {
             Settings.firstUploadDone = newValue
         }
     }
+    
+    static func presentIfNeeded(viewController: UIViewController? = nil, additionalCondition: Bool = true, success: (() -> Void)? = nil) {
+        guard additionalCondition, !wasAlreadyShown else {
+            success?()
+            return
+        }
+        
+        let alertVC = CustomAlertViewController(
+            title: title,
+            message: message,
+            primaryButtonTitle: NSLocalizedString("Proceed to upload", comment: ""),
+            primaryButtonAction: {
+                wasAlreadyShown = true
+                success?()
+            },
+            secondaryButtonTitle: NSLocalizedString("Actually, let me edit", comment: ""),
+            secondaryButtonAction: nil,
+            showCheckbox: true,
+            iconImage: image ?? Image(systemName: "exclamationmark.triangle.fill")
+        )
+        
+        if let vc = viewController {
+            vc.present(alertVC, animated: true)
+        } else {
+            UIApplication.shared.windows.first?.rootViewController?.present(alertVC, animated: true)
+        }
+    }
 }
+

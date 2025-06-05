@@ -1,131 +1,149 @@
-//
-//  WebDavSettingsViewController.swift
-//  Save
-//
-//  Created by Benjamin Erhart on 24.11.23.
-//  Copyright © 2023 Open Archive. All rights reserved.
-//
 
-import UIKit
+import Combine
 
-class WebDavSettingsViewController: SpaceSettingsViewController, TextBoxDelegate {
-
-    @IBOutlet weak var serverLb: UILabel! {
-        didSet {
-            serverLb.text = NSLocalizedString("Server Info", comment: "")
+class ServerSettingsStore: ObservableObject {
+    @Published private(set) var state: ServerSettingsState
+    
+    init(initialState: ServerSettingsState) {
+        self.state = initialState
+    }
+    
+    func dispatch(action: ServerSettingsAction) {
+        serverSettingsReducer(state: &state, action: action)
+        if case .updateLicense = action {
+            objectWillChange.send()
         }
     }
+}
 
-    @IBOutlet weak var urlTb: TextBox! {
-        didSet {
-            urlTb.placeholder = NSLocalizedString("Server URL", comment: "")
-            urlTb.status = .good
-            urlTb.isEnabled = false
+func serverSettingsReducer(state: inout ServerSettingsState, action: ServerSettingsAction) {
+    switch action {
+    case .updateServerName(let name):
+        state.serverName = name
+        
+    case .updateServerURL(let url):
+        state.serverURL = url
+        
+    case .toggleCcEnabled(let isEnabled):
+        state.isCcEnabled = isEnabled
+        if !isEnabled {
+            state.allowRemix = false
+            state.requireShareAlike = false
+            state.allowCommercialUse = false
+        }
+        
+    case .toggleAllowRemix(let value):
+        state.allowRemix = value
+        if !value { state.requireShareAlike = false }
+        
+    case .toggleRequireShareAlike(let value):
+        state.requireShareAlike = value
+        
+    case .toggleAllowCommercialUse(let value):
+        state.allowCommercialUse = value
+        
+    case .updateLicense:
+        state.licenseURL = generateLicenseURL(state: state)
+        saveLicenseToDatabase(state: state)
+    case .saveToDatabase:
+        saveSpaceToDatabase(state: state)
+    case .removeSpace(let value):
+        removeSpace(space: value)
+    }
+    
+    
+}
+func saveLicenseToDatabase(state: ServerSettingsState) {
+    guard let space = state.space else { return }
+    
+    space.license = state.licenseURL
+    
+    Db.writeConn?.asyncReadWrite { tx in
+        tx.setObject(space, forKey: space.id, inCollection: Space.collection)
+        
+        let projects: [Project] = tx.findAll { $0.active && $0.spaceId == space.id }
+        
+        for project in projects {
+            project.license = space.license
+            tx.setObject(project)
         }
     }
-
-    @IBOutlet weak var nameTb: TextBox! {
-        didSet {
-            nameTb.placeholder = NSLocalizedString("Server Name (Optional)", comment: "")
-            nameTb.delegate = self
-        }
+}
+func removeSpace(space:Space?){
+    guard let id = space?.id else {
+        return
     }
-
-    @IBOutlet weak var accountLb: UILabel! {
-        didSet {
-            accountLb.text = NSLocalizedString("Account", comment: "")
+    Db.writeConn?.asyncReadWrite { tx in
+        tx.removeObject(forKey: id, inCollection: Space.collection)
+        
+        // Delete selected space, too.
+        SelectedSpace.space = nil
+        SelectedSpace.store(tx)
+        
+        // Find new selected space.
+        tx.iterateKeysAndObjects(inCollection: Space.collection) { (key, space: Space, stop) in
+            SelectedSpace.space = space
+            stop = true
         }
+        SelectedSpace.store(tx)
     }
-
-    @IBOutlet weak var usernameTb: TextBox! {
-        didSet {
-            usernameTb.placeholder = NSLocalizedString("Username", comment: "")
-            usernameTb.status = .good
-            usernameTb.isEnabled = false
-        }
+}
+func saveSpaceToDatabase(state: ServerSettingsState) {
+    guard let space = state.space as? WebDavSpace else {
+        return
     }
-
-    @IBOutlet weak var passwordTb: TextBox! {
-        didSet {
-            passwordTb.placeholder = NSLocalizedString("Password", comment: "")
-            passwordTb.status = .good
-            passwordTb.isEnabled = false
-        }
+    space.name = state.serverName
+    if(SelectedSpace.space is  WebDavSpace){
+        SelectedSpace.space?.name = space.name
     }
-
-    @IBOutlet weak var nextcloudLb: UILabel! {
-        didSet {
-            nextcloudLb.text = NSLocalizedString("Use Upload Chunking (Nextcloud Only)", comment: "")
-        }
+    Db.writeConn?.setObject(space)
+}
+// Helper function to construct license URL
+func generateLicenseURL(state: ServerSettingsState) -> String? {
+    guard state.isCcEnabled else { return nil }
+    
+    var license = "by"
+    
+    if state.allowRemix {
+        if !state.allowCommercialUse { license += "-nc" }
+        if state.requireShareAlike { license += "-sa" }
+    } else {
+        if !state.allowCommercialUse { license += "-nc" }
+        license += "-nd"
     }
-
-    @IBOutlet weak var nextcloudSw: UISwitch! {
-        didSet {
-            nextcloudSw.addTarget(self, action: #selector(nextcloudChanged), for: .valueChanged)
-        }
+    
+    // Format the URL properly
+    if #available(iOS 14.0, *) {
+        return String(format: ServerSettingsView.ccUrl, license)
+    } else {
+        return String(format: "https://creativecommons.org/licenses/%@/4.0/", license)
     }
+}
+import Foundation
 
-    @IBOutlet weak var nextcloudDescLb: UILabel! {
-        didSet {
-            nextcloudDescLb.text = NSLocalizedString(
-                "\"Chunking\" uploads media in pieces so you don't have to restart your upload if your connection is interrupted.",
-                comment: "")
-        }
-    }
-
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        if space == nil || !(space is WebDavSpace), let space = SelectedSpace.space as? WebDavSpace {
-            self.space = space
-        }
-        else {
-            return dismiss(nil)
-        }
-
-        navigationItem.title = space?.prettyName ?? WebDavSpace.defaultPrettyName
-
-        urlTb.text = space?.url?.absoluteString
-        nameTb.text = space?.name
-        usernameTb.text = space?.username
-        passwordTb.text = "abcdefgh" // Don't populate with real password
-        nextcloudSw.isOn = space?.isNextcloud ?? false
-    }
-
-
-    // MARK: TextBoxDelegate
-
-    func textBox(didUpdate textBox: TextBox) {
-        guard let space = space as? WebDavSpace else {
-            return
-        }
-
-        let name = nameTb.text ?? ""
-
-        space.name = name.isEmpty ? nil : name
-
-        Db.writeConn?.setObject(space)
-
-        navigationItem.title = space.prettyName
-    }
-
-    func textBox(shouldReturn textBox: TextBox) -> Bool {
-        dismissKeyboard()
-
-        return true
-    }
-
-
-    // MARK: Private Methods
-
-    @objc func nextcloudChanged() {
-        guard let space = space as? WebDavSpace else {
-            return
-        }
-
-        space.isNextcloud = nextcloudSw.isOn
-
-        Db.writeConn?.setObject(space)
-    }
+struct ServerSettingsState {
+    var space: Space?
+    var serverName: String = ""
+    var serverURL: String = ""
+    var username: String = ""
+    var password: String = "••••••••"
+    
+    // Creative Commons License Toggles
+    var isCcEnabled: Bool = false
+    var allowRemix: Bool = false
+    var requireShareAlike: Bool = false
+    var allowCommercialUse: Bool = false
+    var licenseURL: String? = nil
+}
+enum ServerSettingsAction {
+    case updateServerName(String)
+    case updateServerURL(String)
+    
+    case toggleCcEnabled(Bool)
+    case toggleAllowRemix(Bool)
+    case toggleRequireShareAlike(Bool)
+    case toggleAllowCommercialUse(Bool)
+    case saveToDatabase
+    case removeSpace(Space?)
+    case updateLicense
 }

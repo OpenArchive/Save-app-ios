@@ -25,36 +25,39 @@ class SideMenuItemCell: UITableViewCell {
 
 
     func apply(_ space: Space?, select: Bool) {
-        iconLeadingConstraint.constant = 8
+        iconLeadingConstraint.constant = 12
 
-        icon.image = space?.favIcon ?? SelectedSpace.defaultFavIcon
-        icon.tintColor = select ? .accent : .label
-
+        icon.image = getServerIcon(space: space)
+        icon.tintColor = UIColor.label
         nameLb.text = space?.prettyName ?? Bundle.main.displayName
-        nameLb.textColor = select ? .accent : .label
+        nameLb.font =  .montserrat(forTextStyle: .subheadline)
+        nameLb.textColor = .label
+        contentView.backgroundColor = select ? .accent :  .pillBackground
     }
 
     func apply(_ project: Project?, select: Bool) {
-        iconLeadingConstraint.constant = 24
+        iconLeadingConstraint.constant = 12
 
-        icon.image = UIImage(systemName: select ? "folder.fill" : "folder")?.withRenderingMode(.alwaysTemplate)
+        icon.image = UIImage(named: select ? "folder_fil" : "folder")?.withRenderingMode(.alwaysTemplate)
         icon.tintColor = select ? .accent : .label
 
         nameLb.text = project?.name
-        nameLb.textColor = select ? .accent : .label
+        nameLb.font = .montserrat(forTextStyle: .callout ,with: .traitUIOptimized)
+        nameLb.textColor = select ? UIColor.label : .gray70
 
         contentView.backgroundColor = .clear
     }
 
     func applyAdd() {
-        iconLeadingConstraint.constant = 8
+        iconLeadingConstraint.constant = 12
 
         icon.image = UIImage(systemName: "plus")?.withRenderingMode(.alwaysTemplate)
-        icon.tintColor = .label
+        icon.tintColor = .accent
 
-        nameLb.text = NSLocalizedString("Add Server", comment: "")
-        nameLb.textColor = .label
+        nameLb.text = NSLocalizedString("Add new server", comment: "")
+        nameLb.font =  .montserrat(forTextStyle: .subheadline)
+        nameLb.textColor = .accent
 
-        contentView.backgroundColor = .secondarySystemBackground
+        contentView.backgroundColor = .pillBackground
     }
 }

@@ -51,4 +51,6 @@ enum InternetArchiveLoginAction {
     case UpdateEmail(_ value: String)
     case UpdatePassword(_ value: String)
     case CreateAccount
+    case isLoginOnprogress
+    case isLoginFinished
 }

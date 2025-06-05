@@ -25,7 +25,12 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
 
     @IBOutlet weak var container: UIView!
 
-    @IBOutlet weak var counterLb: UILabel!
+    @IBOutlet weak var counterLb: UILabel!{
+        didSet{
+            counterLb.cornerRadius = 10
+            counterLb.clipsToBounds = true
+        }
+    }
     @IBOutlet weak var flagIv: Flag!
 
     @IBOutlet weak var backwardBt: UIButton! {
@@ -64,8 +69,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        navigationItem.titleView = MultilineTitle()
-
+        flagIv.unselectedTintColor = .white
         addChild(pageVc)
         container.addSubview(pageVc.view)
         pageVc.view.frame = container.bounds
@@ -75,6 +79,8 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         
         Db.add(observer: self, #selector(yapDatabaseModified))
         infoViewBottomConstraint?.constant = GeneralConstants.constraint_20
+        dh?.setInfos(asset, defaults: true, infoView.frame.height * 0.5)
+        infoView.layoutIfNeeded()
         refresh(animate: false)
     }
     
@@ -83,7 +89,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
 
         navigationController?.setNavigationBarHidden(false, animated: animated)
 
-        BatchInfoAlert.presentIfNeeded(self, additionalCondition: sc.count > 1)
+        BatchInfoAlert.presentIfNeeded(viewController: self, additionalCondition: sc.count > 1)
     }
 
     override var preferredStatusBarStyle: UIStatusBarStyle {
@@ -268,7 +274,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
             update?(asset)
         })
 
-        dh?.setInfos(asset, defaults: true)
+        dh?.setInfos(asset, defaults: true, infoView.frame.height * 0.5)
 
         FlagInfoAlert.presentIfNeeded()
     }
@@ -291,10 +297,10 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     private func refresh(animate: Bool = true, direction: UIPageViewController.NavigationDirection? = nil) {
         let asset = self.asset // Don't repeat asset#get all the time.
 
-        let title = navigationItem.titleView as? MultilineTitle
-        title?.title.text = NSLocalizedString("Edit Media Info", comment: "")
-        title?.subtitle.text = asset?.filename
-
+//        let title = navigationItem.titleView as? MultilineTitle
+//        title?.title.text = NSLocalizedString("Edit Media Info", comment: "")
+//        title?.subtitle.text = asset?.filename
+        navigationItem.title = NSLocalizedString("Edit Media Info", comment: "")
         counterLb.text = String(format: NSLocalizedString("%1$@/%2$@", comment: "both are integer numbers meaning 'x of n'"),
                                 Formatters.format(selected + 1), Formatters.format(sc.count))
         flagIv.isSelected = asset?.flagged ?? false
@@ -306,7 +312,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
             pageVc.setViewControllers(getFreshImageVcList(), direction: direction ?? .forward, animated: direction != nil)
         }
 
-        dh?.setInfos(asset, defaults: true)
+        dh?.setInfos(asset, defaults: true, infoView.frame.height * 0.5)
     }
 
     private func getImageVc(_ index: Int) -> ImageViewController {

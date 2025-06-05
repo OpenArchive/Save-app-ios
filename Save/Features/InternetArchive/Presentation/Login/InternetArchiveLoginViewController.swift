@@ -30,13 +30,17 @@ class InternetArchiveLoginViewController : ViewModelController<InternetArchiveLo
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.title = NSLocalizedString("Internet Archive", comment: "")
         viewModel?.store.listen { [weak self] action in
             switch action {
             case .Next:
                 self?.onNext()
             case .Cancel:
                 self?.onCancel()
+            case .isLoginOnprogress:
+                self?.navigationItem.hidesBackButton = true
+            case .isLoginFinished:
+                self?.navigationItem.hidesBackButton = false
             default:
                 break
             }
@@ -45,11 +49,11 @@ class InternetArchiveLoginViewController : ViewModelController<InternetArchiveLo
     
     private func onNext() {
         let vc = UIStoryboard.main.instantiate(SpaceSuccessViewController.self)
-        vc.spaceName = IaSpace.defaultPrettyName
-        self.delegate?.next(vc, pos: 2)
+        vc.spaceName = NSLocalizedString("the Internet Archive", comment: "")
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     private func onCancel() {
-        self.delegate?.back()
+        self.navigationController?.popViewController(animated: true)
     }
 }

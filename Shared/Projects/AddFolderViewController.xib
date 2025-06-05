@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22155" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="23504" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22131"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23506"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
+    <customFonts key="customFonts">
+        <array key="Montserrat-SemiBold.ttf">
+            <string>Montserrat-SemiBold</string>
+        </array>
+    </customFonts>
     <objects>
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="AddFolderViewController" customModule="Save" customModuleProvider="target">
             <connections>
+                <outlet property="emptyView" destination="Id9-BK-5AP" id="gPw-c1-TYL"/>
                 <outlet property="subtitleLb" destination="BK0-yZ-fdo" id="Dld-6d-Xmz"/>
-                <outlet property="titleLb" destination="giG-Bb-Onb" id="s14-6O-5tQ"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
             </connections>
         </placeholder>
@@ -21,29 +26,30 @@
             <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
             <subviews>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Add a Folder" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" adjustsLetterSpacingToFitWidth="YES" translatesAutoresizingMaskIntoConstraints="NO" id="giG-Bb-Onb">
-                    <rect key="frame" x="0.0" y="36" width="320" height="33.5"/>
-                    <fontDescription key="fontDescription" style="UICTFontTextStyleTitle1"/>
+                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select where to store your media" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BK0-yZ-fdo">
+                    <rect key="frame" x="30" y="72" width="260" height="44"/>
+                    <fontDescription key="fontDescription" name="Montserrat-SemiBold" family="Montserrat SemiBold" pointSize="18"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
-                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Select where to store your media." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BK0-yZ-fdo">
-                    <rect key="frame" x="0.0" y="77.5" width="320" height="18"/>
-                    <fontDescription key="fontDescription" style="UICTFontTextStyleSubhead"/>
-                    <nil key="textColor"/>
-                    <nil key="highlightedColor"/>
-                </label>
+                <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Id9-BK-5AP">
+                    <rect key="frame" x="30" y="124" width="260" height="28"/>
+                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    <constraints>
+                        <constraint firstAttribute="height" constant="28" id="see-OV-iBU"/>
+                    </constraints>
+                </view>
             </subviews>
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
             <color key="backgroundColor" systemColor="systemBackgroundColor"/>
             <gestureRecognizers/>
             <constraints>
-                <constraint firstItem="BK0-yZ-fdo" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="1VZ-pX-EHT"/>
-                <constraint firstItem="BK0-yZ-fdo" firstAttribute="top" secondItem="giG-Bb-Onb" secondAttribute="bottom" constant="8" symbolic="YES" id="3oj-HV-R2w"/>
-                <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="giG-Bb-Onb" secondAttribute="trailing" id="fu1-aI-f1H"/>
-                <constraint firstAttribute="trailing" secondItem="BK0-yZ-fdo" secondAttribute="trailing" id="hs4-Y6-ABM"/>
-                <constraint firstItem="giG-Bb-Onb" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="oMH-rg-gdb"/>
-                <constraint firstItem="giG-Bb-Onb" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="16" id="v3o-TN-8W4"/>
+                <constraint firstItem="BK0-yZ-fdo" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="30" id="1VZ-pX-EHT"/>
+                <constraint firstItem="Id9-BK-5AP" firstAttribute="top" secondItem="BK0-yZ-fdo" secondAttribute="bottom" constant="8" symbolic="YES" id="7Da-YR-CfY"/>
+                <constraint firstItem="Id9-BK-5AP" firstAttribute="leading" secondItem="BK0-yZ-fdo" secondAttribute="leading" id="KBR-lq-d6M"/>
+                <constraint firstItem="Id9-BK-5AP" firstAttribute="trailing" secondItem="BK0-yZ-fdo" secondAttribute="trailing" id="Zgh-ji-Tpe"/>
+                <constraint firstAttribute="trailing" secondItem="BK0-yZ-fdo" secondAttribute="trailing" constant="30" id="hs4-Y6-ABM"/>
+                <constraint firstItem="BK0-yZ-fdo" firstAttribute="top" secondItem="fnl-2z-Ty3" secondAttribute="top" constant="52" id="vLh-Vj-Ovm"/>
             </constraints>
             <point key="canvasLocation" x="101.25" y="-11.619718309859156"/>
         </view>

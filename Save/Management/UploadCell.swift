@@ -12,6 +12,8 @@ protocol UploadCellDelegate: AnyObject {
     func progressTapped(_ upload: Upload, _ button: ProgressButton)
 
     func showError(_ upload: Upload)
+    
+    func delete(_ upload: Upload,from cell: UploadCell)
 }
 
 class UploadCell: BaseCell {
@@ -21,14 +23,20 @@ class UploadCell: BaseCell {
     }
 
     override class var height: CGFloat {
-        return 64
+        return 70
     }
 
-    @IBOutlet weak var progress: ProgressButton! {
+    @IBOutlet weak var DeleteButton: UIButton!{
         didSet {
-            progress.addTarget(self, action: #selector(progressTapped))
+            DeleteButton.addTarget(self, action: #selector(deleteTapped), for: [])
         }
     }
+    @IBOutlet weak var progress: ProgressButton!
+//    {
+//        didSet {
+//            progress.addTarget(self, action: #selector(progressTapped))
+//        }
+//    }
     
     @IBOutlet weak var errorBt: UIButton!
 
@@ -38,11 +46,16 @@ class UploadCell: BaseCell {
 
     @IBOutlet weak var nameLb: UILabel! {
         didSet {
-            nameLb.font = .montserrat(forTextStyle: .body, with: .traitBold)
+            nameLb.font = .montserrat(forTextStyle: .subheadline)
         }
     }
 
-    @IBOutlet weak var sizeLb: UILabel!
+    @IBOutlet weak var sizeLb: UILabel!{
+        didSet {
+            sizeLb.font = .montserrat(forTextStyle: .caption1)
+            sizeLb.textColor = .gray70
+        }
+    }
     
     weak var upload: Upload? {
         didSet {
@@ -51,7 +64,6 @@ class UploadCell: BaseCell {
             progress.isHidden = upload?.error != nil || upload?.state == .uploaded
             progress.state = upload?.state ?? .pending
             progress.progress = CGFloat(progressValue)
-
             errorBt.isHidden = upload?.error == nil
             done.isHidden = upload?.state != .uploaded
 
@@ -90,6 +102,12 @@ class UploadCell: BaseCell {
         }
     }
 
+    @IBAction
+    func deleteTapped() {
+        if let upload = upload {
+            delegate?.delete(upload,from: self)
+        }
+    }
     @IBAction func showError() {
         if let upload = upload {
             delegate?.showError(upload)

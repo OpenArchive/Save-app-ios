@@ -15,7 +15,11 @@ protocol SlideViewControllerDelegate: AnyObject {
 }
 
 class SlideViewController: UIViewController,UITextViewDelegate {
-
+    @IBOutlet weak var imageMultplier: NSLayoutConstraint!
+    
+    @IBOutlet weak var texttopContraint: NSLayoutConstraint!
+    @IBOutlet weak var headingTopConstraint: NSLayoutConstraint!
+    @IBOutlet weak var imageTopConstraint: NSLayoutConstraint!
     @IBOutlet weak var illustrationImg: UIImageViewAligned!
     @IBOutlet weak var headingLb: UILabel!
   @IBOutlet weak var textLb: UILabel!
@@ -29,20 +33,64 @@ class SlideViewController: UIViewController,UITextViewDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        headingLb.text = slide?.heading(headingLb)
-        headingLb.font = UIFont(name: "Montserrat-Bold", size: 23.0) ?? UIFont.boldSystemFont(ofSize: 23.0)
+        
+        if UIScreen.main.bounds.height <= 667 {
+            imageMultplier.constant = 0.5
+            headingTopConstraint.constant = 10
+            texttopContraint.constant = 8
+        } else {
+          
+            imageMultplier.constant = 0.6
+            headingTopConstraint.constant = 30
+        }
+       
+        guard let text = slide?.heading(headingLb) else { return  }
+        
+        let style: UIFont.TextStyle = .title1
+        let size = UIFont.preferredFont(forTextStyle: style).pointSize
+        
+        let baseFont = UIFont(name: "Montserrat-ExtraBold", size: size)
+        ?? UIFont.boldSystemFont(ofSize: size)
+        
+        let font = UIFontMetrics(forTextStyle: style).scaledFont(for: baseFont)
+        let attributes: [NSAttributedString.Key: Any] = [
+            .font: font,
+            .kern: 1.2,
+        ]
+        
+        let attributedString = NSAttributedString(string: text, attributes: attributes)
+        headingLb.attributedText = attributedString
         if let slide = slide {
-                   subtitleTextView.attributedText = slide.text(subtitleTextView)
-                   subtitleTextView.isEditable = false
-                   subtitleTextView.isSelectable = true
-                   subtitleTextView.isScrollEnabled = false
-                   subtitleTextView.dataDetectorTypes = .link
-                   subtitleTextView.textContainer.lineFragmentPadding = 0
-                   subtitleTextView.textContainerInset = .zero
-               }
+            subtitleTextView.attributedText = slide.text(subtitleTextView)
+            subtitleTextView.isEditable = false
+            subtitleTextView.isSelectable = true
+            subtitleTextView.isScrollEnabled = false
+            subtitleTextView.adjustsFontForContentSizeCategory = true
+            subtitleTextView.dataDetectorTypes = .link
+            subtitleTextView.textContainer.lineFragmentPadding = 0
+            subtitleTextView.textContainerInset = .zero
+        }
         illustrationImg.image = slide?.illustration(illustrationImg)
-        illustrationImg.alignment = .topLeft
+        
+        let heading = headingLb.text?.lowercased() ?? ""
+        
+        let isArchive = heading == NSLocalizedString("Archive", comment: "").lowercased()
+        let isVerify = heading == NSLocalizedString("Verify", comment: "").lowercased()
+
+        if isArchive {
+            self.imageTopConstraint.constant = 0
+            self.illustrationImg.alignment = .topLeft
+
+        } else if isVerify {
+            self.imageTopConstraint.constant = 18
+            self.illustrationImg.alignment = .topLeft
+        } else {
+            self.imageTopConstraint.constant = 18
+            self.illustrationImg.alignment = .center
+        }
+  
+        
+      
     }
     func textView(_ textView: UITextView, shouldInteractWith URL: URL, in characterRange: NSRange, interaction: UITextItemInteraction) -> Bool {
            UIApplication.shared.open(URL)
@@ -71,9 +119,10 @@ class SlideViewController: UIViewController,UITextViewDelegate {
             self.text = text
             self.illustration = illustration
             self.linkUrl = linkUrl
+           
         }
 
-        // Convenience initializer for a string-based heading
+        // Convenience initializer for a string-based headingmember
         init(
             heading: String,
             text: @escaping (_ view: UITextView) -> NSAttributedString,

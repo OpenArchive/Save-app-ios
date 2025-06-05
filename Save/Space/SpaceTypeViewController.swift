@@ -14,59 +14,54 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
     
     @IBOutlet weak var container: UIView!
     
+    @IBOutlet weak var emptyView: UIView!
     @IBOutlet weak var titleLb: UILabel! {
         didSet {
             titleLb.text = NSLocalizedString(
                 "To get started, connect to a server to store your media.",
                 comment: "")
+            titleLb.font = .montserrat(forTextStyle: .headline ,with: .traitUIOptimized)
         }
     }
     
     @IBOutlet weak var subtitleLb: UILabel! {
         didSet {
             subtitleLb.text = NSLocalizedString(
-                "In the side menu, you can add another server and connect to multiple servers",
+                "You can add multiple private servers and  one IA at any time.",
                 comment: "")
+            subtitleLb.font = .montserrat(forTextStyle: .subheadline)
+            subtitleLb.textColor = .subtitleText
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        title = NSLocalizedString("Select a Server", comment: "")
         var button = BigButton.create(
-            icon: UIImage(systemName: "server.rack"),
+            icon: UIImage(named: "private_server_teal"),
             title: WebDavSpace.defaultPrettyName,
-            subtitle: NSLocalizedString("Send to a WebDAV server", comment: ""),
+            subtitle: NSLocalizedString("Connect to a secure \nWebDAV server", comment: ""),
             target: self,
             action: #selector(newWebDav),
             container: container,
-            above: subtitleLb)
+            above: emptyView)
         button.accessibilityIdentifier = "viewPrivateServer"
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+               navigationItem.backBarButtonItem = backBarButtonItem
         
         Db.bgRwConn?.read { tx in
             if tx.find(where: { (_: IaSpace) in true }) == nil {
                 button = BigButton.create(
                     icon: IaSpace.favIcon,
                     title: IaSpace.defaultPrettyName,
-                    subtitle: String(format: NSLocalizedString("Upload to %@", comment: ""), IaSpace.defaultPrettyName),
+                    subtitle: NSLocalizedString("Connect to a free public \nor paid private server", comment: ""),
                     target: self,
                     action: #selector(newIa),
                     container: container,
                     above: button,
                     equalHeight: true)
             }
-            //
-            //            if tx.find(where: { (_: GdriveSpace) in true }) == nil {
-            //                button = BigButton.create(
-            //                    icon: GdriveSpace.favIcon,
-            //                    title: "\(GdriveSpace.defaultPrettyName)™", // First time should show a "tm". See https://developers.google.com/drive/api/guides/branding
-            //                    subtitle: String(format: NSLocalizedString("Upload to %@", comment: ""), GdriveSpace.defaultPrettyName),
-            //                    target: self,
-            //                    action: #selector(newGdrive),
-            //                    container: container,
-            //                    above: button,
-            //                    equalHeight: true)
-            //            }
+            
         }
         
         button.bottomAnchor.constraint(lessThanOrEqualTo: container.bottomAnchor, constant: -16).isActive = true
@@ -76,11 +71,12 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
     // MARK: Actions
     
     @IBAction func newWebDav() {
-        delegate?.next(UIStoryboard.main.instantiate(WebDavWizardViewController.self), pos: 1)
+        navigationController?.pushViewController(UIStoryboard.main.instantiate(WebDavWizardViewController.self),animated: true)
     }
     
     @IBAction func newIa() {
-        delegate?.next(InternetArchiveLoginViewController(), pos: 1)
+        navigationController?.pushViewController(InternetArchiveLoginViewController(),animated: true)
+        
     }
     
     @IBAction func newGdrive() {

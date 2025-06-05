@@ -27,6 +27,10 @@ struct PasscodeEntryView: View {
             onBackspaceClick: {
                 viewModel.onBackspaceClick()
             },
+            onEnterClick:{
+                viewModel.onEnterClick()
+            }
+            ,
             onExit: onExit,
             onAnimationCompleted: viewModel.onAnimationCompleted
         )
@@ -42,6 +46,7 @@ struct PasscodeEntryContent: View {
     
     let onNumberClick: (String) -> Void
     let onBackspaceClick: () -> Void
+    let onEnterClick: () -> Void
     let onExit: () -> Void
     
     let onAnimationCompleted: () -> Void
@@ -51,13 +56,13 @@ struct PasscodeEntryContent: View {
     var body: some View {
         
         PasscodeContentWrapper(
-            title: "Enter Passcode",
+            title: "Enter Passcode", subtitle: "",
             passcode: passcode,
             passcodeLength: passcodeLength,
             shouldShake: shouldShake,
             isEnabled: !isProcessing,
             onNumberClick: onNumberClick,
-            onBackspaceClick: onBackspaceClick,
+            onBackspaceClick: onBackspaceClick, onEnterClick: onEnterClick,
             onExit: onExit,
             onAnimationCompleted: onAnimationCompleted
         )

@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "laptop-bright.svg",
+      "filename" : "Archive image.png",
       "idiom" : "universal"
     },
     {
@@ -11,7 +11,7 @@
           "value" : "dark"
         }
       ],
-      "filename" : "laptop-dark.svg",
+      "filename" : "Archive.png",
       "idiom" : "universal"
     }
   ],

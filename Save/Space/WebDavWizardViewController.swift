@@ -8,180 +8,216 @@
 
 import UIKit
 import FavIcon
-
+import YapDatabase
+import SwiftUICore
 class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBoxDelegate {
-
+    
     weak var delegate: WizardDelegate?
-
+    private var spacesConn = Db.newLongLivedReadConn()
+    private var spacesMappings = YapDatabaseViewMappings(
+        groups: SpacesView.groups, view: SpacesView.name)
     @IBOutlet weak var iconIv: UIImageView!
-
+    
     @IBOutlet weak var titleLb: UILabel! {
         didSet {
-            titleLb.text = NSLocalizedString("Private (WebDAV) Server", comment: "")
+            titleLb.text = NSLocalizedString("Connect to a WebDAV-compatible servers, e.g. Nexcloud and ownCloud.", comment: "")
+            titleLb.font = .montserrat(forTextStyle: .subheadline )
+            titleLb.textColor = .gray70
         }
     }
-
-    @IBOutlet weak var subtitleLb: UILabel! {
-        didSet {
-            subtitleLb.text = String(
-                format: NSLocalizedString("%1$@ only connects to WebDAV-compatible servers, e.g. Nextcloud and ownCloud.",
-                                          comment: "First placeholder is app name"),
-                Bundle.main.displayName)
-        }
-    }
-
+    
+    
     @IBOutlet weak var serverLb: UILabel! {
         didSet {
-            serverLb.text = NSLocalizedString("Server Info", comment: "")
+            serverLb.text = NSLocalizedString("Server info", comment: "")
+            serverLb.font = .montserrat(forTextStyle: .headline, with: .traitUIOptimized)
+            serverLb.textColor = .gray70
         }
     }
-
+    
     @IBOutlet weak var urlTb: TextBox! {
         didSet {
-            urlTb.placeholder = NSLocalizedString("Server URL", comment: "")
+            urlTb.textField.font = .montserrat(forTextStyle: .footnote)
+            urlTb.placeholder = NSLocalizedString("Enter URL", comment: "")
             urlTb.delegate = self
             urlTb.autocorrectionType = .no
             urlTb.autocapitalizationType = .none
             urlTb.textField.returnKeyType = .next
+            urlTb.textField.textColor = .gray70
         }
     }
-
-    @IBOutlet weak var nameTb: TextBox! {
-        didSet {
-            nameTb.placeholder = NSLocalizedString("Server Name (Optional)", comment: "")
-            nameTb.delegate = self
-            nameTb.autocorrectionType = .no
-            nameTb.autocapitalizationType = .none
-            nameTb.textField.returnKeyType = .next
-            nameTb.isHidden = true
-        }
-    }
-
+    
+    
     @IBOutlet weak var accountLb: UILabel! {
         didSet {
             accountLb.text = NSLocalizedString("Account", comment: "")
+            accountLb.font = .montserrat(forTextStyle: .headline, with: .traitUIOptimized)
+            accountLb.textColor = .gray70
         }
     }
-
+    
     @IBOutlet weak var usernameTb: TextBox! {
         didSet {
+            usernameTb.textField.font = .montserrat(forTextStyle: .footnote)
             usernameTb.placeholder = NSLocalizedString("Username", comment: "")
             usernameTb.delegate = self
             usernameTb.autocorrectionType = .no
             usernameTb.autocapitalizationType = .none
             usernameTb.textField.returnKeyType = .next
+          
+            usernameTb.textField.textColor = .gray70
         }
     }
-
+    
     @IBOutlet weak var passwordTb: TextBox! {
         didSet {
+            passwordTb.textField.font = .montserrat(forTextStyle: .footnote)
             passwordTb.placeholder = NSLocalizedString("Password", comment: "")
             passwordTb.delegate = self
             passwordTb.autocorrectionType = .no
             passwordTb.autocapitalizationType = .none
             passwordTb.status = .reveal
             passwordTb.textField.returnKeyType = .done
+            passwordTb.textField.textColor = .gray70
         }
     }
-
-    @IBOutlet weak var nextcloudLb: UILabel! {
-        didSet {
-            nextcloudLb.text = NSLocalizedString("Use Upload Chunking (Nextcloud Only)", comment: "")
+    
+    
+    @IBOutlet weak var errorText: UILabel!{
+        didSet{
+            errorText?.font = .montserrat(forTextStyle: .caption2)
+            errorText.text? = ""
         }
     }
-
-    @IBOutlet weak var nextcloudSw: UISwitch!
-
-    @IBOutlet weak var nextcloudDescLb: UILabel! {
-        didSet {
-            nextcloudDescLb.text = NSLocalizedString(
-                "\"Chunking\" uploads media in pieces so you don't have to restart your upload if your connection is interrupted.",
-                comment: "")
-        }
-    }
-
     @IBOutlet weak var backBt: UIButton! {
         didSet {
             backBt.setTitle(NSLocalizedString("Back", comment: ""))
+            backBt.titleLabel?.font = .montserrat(forTextStyle: .headline, with: .traitUIOptimized)
+            
         }
     }
-
+    
     @IBOutlet weak var nextBt: UIButton! {
         didSet {
             nextBt.setTitle(NSLocalizedString("Next", comment: ""))
+            nextBt.isEnabled = false
+            nextBt.cornerRadius = 10
+            nextBt.backgroundColor =  .gray50
+            nextBt.titleLabel?.font = .montserrat(forTextStyle: .headline, with: .traitUIOptimized)
         }
     }
-
+    
     private lazy var workingOverlay: WorkingOverlay = {
         return WorkingOverlay().addToSuperview(navigationController?.view ?? view)
     }()
-
+    
     private var url: URL? {
         Formatters.URLFormatter.fix(url: urlTb.text)
     }
-
-    private var iconLoaded = false
-
-
+    private func getSpace(at indexPath: IndexPath) -> Space? {
+        spacesConn?.object(at: indexPath, in: spacesMappings)
+    }
+    private func spaceExists(username: String) -> Bool {
+            let numberOfItems = spacesMappings.numberOfItems(inSection: 0)
+            for row in 0..<numberOfItems {
+                let indexPath = IndexPath(row: Int(row), section: 0)
+                if let space = getSpace(at: indexPath){
+                    if (space.username?.lowercased() == username.lowercased()){
+                        return true
+                    }
+                }
+            }
+        
+        return false
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
+        spacesConn?.update(mappings: spacesMappings)
+        [urlTb, usernameTb, passwordTb].forEach { textField in
+            textField?.textField.addTarget(self, action: #selector(updateButtonState), for: .editingChanged)
+        }
+        updateButtonState()
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
+        self.title = NSLocalizedString("Private Server", comment: "")
+    }
+    
+    
+    @objc func updateButtonState() {
+        nextBt.isEnabled = ![urlTb, usernameTb, passwordTb].contains { $0?.text?.isEmpty ?? true }
+        nextBt.backgroundColor = nextBt.isEnabled ? .accent : .gray50
+    }
+    @objc override func dismissKeyboard() {
+        view.endEditing(true)
     }
     
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
-
+    
     @IBAction func back() {
-        delegate?.back()
+        self.navigationController?.popViewController(animated: true)
     }
-
+    
     @IBAction func next() {
         guard check() else {
             return
         }
-
+        workingOverlay.isHidden = false
+        if(spaceExists(username: usernameTb.text ?? "")){
+            workingOverlay.isHidden = true
+            let alertVC = CustomAlertViewController(
+                title: NSLocalizedString("Error!", comment: ""),
+                message: NSLocalizedString("This server already exists. Please create another server.", comment: ""),
+                primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
+                primaryButtonAction: {
+                    
+                }, showCheckbox: false, iconImage: Image(systemName: "exclamationmark.triangle.fill"),
+                iconTint:.gray
+            )
+            self.present(alertVC, animated: true)
+        }
+        else{
         let space = WebDavSpace(
             name: "",
             url: url,
-            favIcon: iconLoaded ? iconIv.image : nil,
+            favIcon: UIImage(named: "private_server"),
             username: usernameTb.text,
             password: passwordTb.text)
-
-        space.isNextcloud = nextcloudSw.isOn
-
+        
         workingOverlay.isHidden = false
-
+        
         // Do a test request to check validity of space configuration.
-        URLSession(configuration: UploadManager.improvedSessionConf()).info(space.url!, credential: space.credential) { [weak self] info, error in
-            DispatchQueue.main.async {
-                self?.workingOverlay.isHidden = true
-
-                if let error = error {
-                    if let self = self {
-                        AlertHelper.present(self, message: error.friendlyMessage)
-
-                        self.usernameTb.status = .bad
-                        self.passwordTb.status = .bad
+            URLSession(configuration: UploadManager.improvedSessionConf()).info(space.url!, credential: space.credential) { [weak self] info, error in
+                DispatchQueue.main.async {
+                    self?.workingOverlay.isHidden = true
+                    
+                    if let error = error {
+                        if let self = self {
+//                            AlertHelper.present(self, message: error.friendlyMessage)
+                            self.errorText.text = error.friendlyMessage
+                            self.usernameTb.status = .bad
+                            self.passwordTb.status = .bad
+                        }
                     }
-                }
-                else {
-                    SelectedSpace.space = space
-                   
-                    Db.writeConn?.asyncReadWrite() { tx in
-                        SelectedSpace.store(tx)
-                        tx.setObject(space)
+                    else {
+                        SelectedSpace.space = space
+                        self?.errorText.text = ""
+                        Db.writeConn?.asyncReadWrite() { tx in
+                            SelectedSpace.store(tx)
+                            tx.setObject(space)
+                        }
+                        
+                        let vc = UIStoryboard.main.instantiate(CreateCCLViewController.self)
+                        vc.space = space
+                        self?.navigationController?.pushViewController(vc, animated: true)
                     }
-
-                    let vc = UIStoryboard.main.instantiate(CreateCCLViewController.self)
-                    vc.space = space
-                    self?.delegate?.next(vc, pos: 2)
                 }
             }
         }
     }
-
+    
     override func keyboardWillShow(notification: Notification) {
         guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
             return
@@ -228,51 +264,38 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
     }
     
     // MARK: TextBoxDelegate
-
+    
     func textBox(didUpdate textBox: TextBox) {
         urlTb.text = url?.absoluteString
-
-        if let baseUrl = Formatters.URLFormatter.fix(url: urlTb.text, baseOnly: true) {
-            FavIcon.downloadSession = URLSession(configuration: UploadManager.improvedSessionConf())
-
-            try! FavIcon.downloadPreferred(baseUrl) { [weak self] result in
-                if case let .success(image) = result {
-                    self?.iconIv.image = image
-                    self?.iconIv.contentMode = .scaleAspectFill
-                    self?.iconLoaded = true
-                }
-            }
-        }
+        self.errorText.text = ""
     }
-
+    
     func textBox(shouldReturn textBox: TextBox) -> Bool {
         switch textBox {
         case urlTb:
-            nameTb.becomeFirstResponder()
-
-        case nameTb:
             usernameTb.becomeFirstResponder()
-
+            
         case usernameTb:
             passwordTb.becomeFirstResponder()
-
+            
         default:
             dismissKeyboard()
             next()
         }
-
+        
         return true
     }
-
-
+    
+    
     // MARK: Private Methods
-
+    
     @discardableResult
     private func check() -> Bool {
         urlTb.status = url == nil ? .bad : .good
         usernameTb.status = usernameTb.text?.isEmpty ?? true ? .bad : .good
         passwordTb.status = passwordTb.text?.isEmpty ?? true ? .bad : .good
-
+        
         return urlTb.status == .good && usernameTb.status == .good && passwordTb.status == .good
+        
     }
 }

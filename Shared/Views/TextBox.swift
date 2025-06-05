@@ -31,8 +31,19 @@ class TextBox: UIView, UITextFieldDelegate {
             textField.placeholder
         }
         set {
-            textField.placeholder = newValue
-        }
+                    guard let placeholderText = newValue else {
+                        textField.attributedPlaceholder = nil
+                        return
+                    }
+
+                    let attributes: [NSAttributedString.Key: Any] = [
+                        .font: UIFont.montserrat(forTextStyle: .footnote, with: .traitItalic),
+                        .foregroundColor: UIColor.textEmpty
+                    ]
+
+                    textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: attributes)
+                }
+        
     }
 
     @IBInspectable
@@ -119,7 +130,7 @@ class TextBox: UIView, UITextFieldDelegate {
                 statusIvWidth?.constant = 16
                 statusIvTrailing?.constant = -8
                 statusIv.tintColor = .systemGray
-                statusIv.image = .init(systemName: isSecureTextEntry ? "eye.slash" : "eye")
+                statusIv.image = .init(imageLiteralResourceName: isSecureTextEntry ? "eye_close" : "eye_open")
             }
         }
     }
@@ -214,7 +225,7 @@ class TextBox: UIView, UITextFieldDelegate {
     private func setup() {
         translatesAutoresizingMaskIntoConstraints = false
 
-        borderColor = .secondaryLabel
+        borderColor = .gray70
         borderWidth = 1
         cornerRadius = 8
 

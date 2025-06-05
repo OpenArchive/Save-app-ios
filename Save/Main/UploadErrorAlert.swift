@@ -7,20 +7,25 @@
 //
 
 import UIKit
+import SwiftUICore
 
 class UploadErrorAlert {
-
+    
     class func present(_ vc: UIViewController, _ upload: Upload) {
-        AlertHelper.present(
-            vc, message: upload.error,
-            title: NSLocalizedString("Upload unsuccessful", comment: ""),
-            actions: [
-                AlertHelper.destructiveAction(NSLocalizedString("Remove", comment: ""), handler: { _ in
-                    upload.remove()
-                }),
-                AlertHelper.defaultAction(NSLocalizedString("Retry", comment: ""), handler: { _ in
-                    NotificationCenter.default.post(name: .uploadManagerUnpause, object: upload.id)
-                }),
-                AlertHelper.cancelAction()])
+        let alertVC = CustomAlertViewController(
+            title: NSLocalizedString("Upload Unsuccessful", comment: ""),
+            message: NSLocalizedString("Unable to upload due to session error, please try again or contact support", comment: ""),
+            primaryButtonTitle: NSLocalizedString("Retry", comment: ""),
+            primaryButtonAction: {
+                NotificationCenter.default.post(name: .uploadManagerUnpause, object: upload.id)
+            },
+            secondaryButtonTitle: NSLocalizedString("Remove Media", comment: ""),
+            secondaryButtonAction: {
+                upload.remove()
+            }, showCheckbox: false, secondaryButtonIsOutlined: true,
+            iconImage: Image(systemName: "exclamationmark.circle")
+        )
+        
+        vc.present(alertVC, animated: true)
     }
 }

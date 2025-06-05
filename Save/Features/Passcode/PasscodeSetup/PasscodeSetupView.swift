@@ -22,7 +22,7 @@ struct PasscodeSetupView: View  {
             isProcessing: viewModel.isProcessing,
             shouldShake: viewModel.shouldShake,
             onNumberClick: viewModel.onNumberClick,
-            onBackspaceClick: viewModel.onBackspaceClick,
+            onBackspaceClick: viewModel.onBackspaceClick, onEnterClick: viewModel.onEnterClick,
             onAnimationCompleted: viewModel.onAnimationCompleted
         )
     }
@@ -41,7 +41,7 @@ struct PasscodeSetupContent: View {
     
     let onNumberClick: (String) -> Void
     let onBackspaceClick: () -> Void
-    
+    let onEnterClick: () -> Void
     let onAnimationCompleted: () -> Void
     
     @Environment(\.colorScheme) var colorScheme
@@ -49,12 +49,13 @@ struct PasscodeSetupContent: View {
     var body: some View {
         PasscodeContentWrapper(
             title: isConfirming ? NSLocalizedString("Confirm Passcode",comment: "Confirm Passcode")  : NSLocalizedString("Enter Passcode",comment: "Enter Passcode"),
+            subtitle: NSLocalizedString("Make sure you remember this pin. If you forget it, you will need to reset the app, and all data will be erased",comment: "subtitle"),
             passcode: passcode,
             passcodeLength: state.passcodeLength,
             shouldShake: shouldShake,
             isEnabled: !isProcessing,
             onNumberClick: onNumberClick,
-            onBackspaceClick: onBackspaceClick,
+            onBackspaceClick: onBackspaceClick, onEnterClick: onEnterClick,
             onExit: {
                 dispatch(.OnComplete)
             },

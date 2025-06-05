@@ -17,7 +17,12 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
     @IBOutlet weak var image2: UIImageView!
     @IBOutlet weak var image3: UIImageView!
     
-    @IBOutlet weak var counterLb: UILabel!
+    @IBOutlet weak var counterLb: UILabel!{
+        didSet{
+            counterLb.cornerRadius = 10
+            counterLb.clipsToBounds = true
+        }
+    }
     @IBOutlet weak var flagIv: Flag!
     
     @IBOutlet weak var infos: UIView!
@@ -28,14 +33,13 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let title = MultilineTitle()
-        title.title.text = NSLocalizedString("Edit Media Info", comment: "")
-        title.subtitle.text = String.localizedStringWithFormat(NSLocalizedString("%u Item(s) Selected", comment: "#bc-ignore!"), assets?.count ?? 0)
-        navigationItem.titleView = title
+        title =   NSLocalizedString("Bulk Edit Media Info", comment: "") 
+
+        navigationItem.title = title
         
         counterLb.text = Formatters.format(assets?.count ?? 0)
         flagIv.isSelected = assets?.reduce(true, { $0 && $1.flagged }) ?? false
-        
+        flagIv.tintColor = .label
         setImage(image1, assets?.first)
         setImage(image2, assets?.count ?? 0 > 1 ? assets?[1] : nil)
         setImage(image3, assets?.count ?? 0 > 2 ? assets?[2] : nil)
@@ -43,19 +47,18 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
         if #available(iOS 15.0, *) {
             // Deactivate storyboard constraint if any
             infosBottom?.isActive = false
-            keyboardConstraint = infos.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor)
-            keyboardConstraint?.constant = GeneralConstants.constraint_minus_20
-            keyboardConstraint?.priority = .defaultHigh
-            keyboardConstraint?.isActive = true
+            keyboardConstraint = infos.bottomAnchor.constraint(equalTo: view.keyboardLayoutGuide.topAnchor, constant: -20)
+               
+               keyboardConstraint?.priority = .defaultHigh // Allow flexibility
+               keyboardConstraint?.isActive = true // Activate the constraint
         } else {
             // Fallback for iOS < 15
             infosBottom?.constant = GeneralConstants.constraint_20
         }
         
         
-        dh = DarkroomHelper(self, infos)
-        
-        dh?.setInfos(assets?.first, defaults: true)
+ dh = DarkroomHelper(self, infos)
+        dh?.setInfos(assets?.first, defaults: true, infos.frame.height * 0.6)
         hideKeyboardOnOutsideTap()
     }
     
@@ -109,6 +112,7 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
         }
     }
     
+   
     
     // MARK: InfoBoxDelegate
     
@@ -153,8 +157,13 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
         
         flagIv.isSelected = flagged
         
-        dh?.setInfos(assets.first, defaults: true)
+        dh?.setInfos(assets.first, defaults: true,infos.frame.height * 0.6)
         
         FlagInfoAlert.presentIfNeeded()
+    }
+}
+extension Notification {
+    func keyboardHeight() -> CGFloat? {
+        return (userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue.height
     }
 }

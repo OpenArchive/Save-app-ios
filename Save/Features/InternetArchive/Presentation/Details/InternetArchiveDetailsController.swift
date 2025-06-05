@@ -35,6 +35,9 @@ class InternetArchiveDetailsController : ViewModelController<InternetArchiveDeta
                 fallthrough
             case .Cancel:
                 self?.dismiss(completion: nil)
+            case .HandleBackButton(let status):
+                self?.navigationItem.hidesBackButton = status
+                
             default: break
             }
         }
