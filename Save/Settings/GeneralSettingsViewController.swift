@@ -115,7 +115,7 @@ class GeneralSettingsViewController: FormViewController {
         
         +++ sectionWithTitle(NSLocalizedString("Security", comment: ""))
         
-        <<< SwitchRow() {
+        <<< SwitchRow("useTor") {
             $0.title = String(format: NSLocalizedString(
                 "Transfer via %@ only", comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName)
             $0.value = Settings.useOrbot
@@ -169,6 +169,9 @@ class GeneralSettingsViewController: FormViewController {
         <<< TextRow("orbot_status") {
             $0.value = getOrbotTorStatus()
             $0.cellStyle = .subtitle
+            $0.hidden = Condition.function(["useTor"], { form in
+                return !Settings.useOrbot
+            })
         }.cellUpdate({ cell, row in
             cell.textField.text = self.getOrbotTorStatus()
         })
