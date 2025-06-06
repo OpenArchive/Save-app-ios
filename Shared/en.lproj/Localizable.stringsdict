@@ -77,9 +77,9 @@
 			<key>NSStringFormatValueTypeKey</key>
 			<string>u</string>
 			<key>one</key>
-			<string>This item will be removed from the %2$@ App only.</string>
+			<string>This media will be removed from  %2$@.</string>
 			<key>other</key>
-			<string>These items will be removed from the %2$@ App only.</string>
+			<string>These medias will be removed from  %2$@.</string>
 		</dict>
 	</dict>
 	<key>It/They will remain on the server and in your Photos app.</key>

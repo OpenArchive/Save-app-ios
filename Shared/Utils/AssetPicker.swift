@@ -18,7 +18,7 @@ protocol AssetPickerDelegate: AnyObject {
     func picked()
 }
 
-class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPickerDelegate {
+class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPickerDelegate, UIImagePickerControllerDelegate & UINavigationControllerDelegate {
 
     private weak var delegate: UIViewController?
 
@@ -166,4 +166,79 @@ class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPic
             title: NSLocalizedString("Access Denied", comment: ""),
             actions: actions)
     }
+    func openCamera() {
+        guard UIImagePickerController.isSourceTypeAvailable(.camera) else {
+            showMissingPermissionAlert(
+                delegate ?? UIViewController(),
+                NSLocalizedString("Camera is not available on this device.", comment: "")
+            )
+            return
+        }
+
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            presentCamera()
+
+        case .notDetermined:
+            AVCaptureDevice.requestAccess(for: .video) { granted in
+                if granted {
+                    DispatchQueue.main.async {
+                        self.presentCamera()
+                    }
+                }
+            }
+
+        case .denied, .restricted:
+            showMissingPermissionAlert(
+                delegate ?? UIViewController(),
+                NSLocalizedString("Please go to the Settings app to grant this app access to your camera.", comment: "")
+            )
+
+        @unknown default:
+            break
+        }
+    }
+
+    private func presentCamera() {
+        let picker = UIImagePickerController()
+        picker.sourceType = .camera
+        picker.delegate = self
+        picker.mediaTypes = ["public.image"]
+        delegate?.present(picker, animated: true)
+    }
+
+
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+
+           picker.dismiss(animated: true)
+        guard let image = info[.originalImage] as? UIImage,
+              let collection = (delegate as? AssetPickerDelegate)?.currentCollection
+        else {
+            return
+        }
+
+        let id = UIApplication.shared.beginBackgroundTask()
+           if let mediaURL = info[.mediaURL] as? URL {
+               // Video captured
+               AssetFactory.create(fromFileUrl: mediaURL, collection) { asset in
+                   UIApplication.shared.endBackgroundTask(id)
+               }
+           }
+           else if let image = info[.originalImage] as? UIImage {
+               // Photo captured
+               if let imageData = image.jpegData(compressionQuality: 1.0) {
+                   AssetFactory.create(from: imageData, uti: LegacyUTType.jpeg, name: "captured.jpg", thumbnail: image, collection) { asset in
+                       UIApplication.shared.endBackgroundTask(id)
+                   }
+               }
+           }
+        AbcFilteredByCollectionView.updateFilter(collection.id)
+
+        (delegate as? AssetPickerDelegate)?.picked()
+       }
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        picker.dismiss(animated: true)
+    }
+
+
 }

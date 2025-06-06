@@ -44,14 +44,16 @@ class PasscodeEntryViewModel: ObservableObject {
         
         passcode += number
         
+        
+    }
+    func onEnterClick() {
+        guard !isProcessing, !passcode.isEmpty else { return }
         if passcode.count == appConfig.passcodeLength {
             
             isProcessing = true
             checkPasscode()
         }
-        
     }
-    
     func onBackspaceClick() {
         guard !isProcessing, !passcode.isEmpty else { return }
         passcode.removeLast()

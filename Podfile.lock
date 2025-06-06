@@ -11,16 +11,124 @@ PODS:
   - Eureka (5.5.0)
   - Factory (2.5.2)
   - FavIcon (3.1.0)
+  - Firebase/Core (11.13.0):
+    - Firebase/CoreOnly
+    - FirebaseAnalytics (~> 11.13.0)
+  - Firebase/CoreOnly (11.13.0):
+    - FirebaseCore (~> 11.13.0)
+  - Firebase/Crashlytics (11.13.0):
+    - Firebase/CoreOnly
+    - FirebaseCrashlytics (~> 11.13.0)
+  - FirebaseAnalytics (11.13.0):
+    - FirebaseAnalytics/AdIdSupport (= 11.13.0)
+    - FirebaseCore (~> 11.13.0)
+    - FirebaseInstallations (~> 11.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 8.1)
+    - GoogleUtilities/MethodSwizzler (~> 8.1)
+    - GoogleUtilities/Network (~> 8.1)
+    - "GoogleUtilities/NSData+zlib (~> 8.1)"
+    - nanopb (~> 3.30910.0)
+  - FirebaseAnalytics/AdIdSupport (11.13.0):
+    - FirebaseCore (~> 11.13.0)
+    - FirebaseInstallations (~> 11.0)
+    - GoogleAppMeasurement (= 11.13.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 8.1)
+    - GoogleUtilities/MethodSwizzler (~> 8.1)
+    - GoogleUtilities/Network (~> 8.1)
+    - "GoogleUtilities/NSData+zlib (~> 8.1)"
+    - nanopb (~> 3.30910.0)
+  - FirebaseCore (11.13.0):
+    - FirebaseCoreInternal (~> 11.13.0)
+    - GoogleUtilities/Environment (~> 8.1)
+    - GoogleUtilities/Logger (~> 8.1)
+  - FirebaseCoreExtension (11.13.0):
+    - FirebaseCore (~> 11.13.0)
+  - FirebaseCoreInternal (11.13.0):
+    - "GoogleUtilities/NSData+zlib (~> 8.1)"
+  - FirebaseCrashlytics (11.13.0):
+    - FirebaseCore (~> 11.13.0)
+    - FirebaseInstallations (~> 11.0)
+    - FirebaseRemoteConfigInterop (~> 11.0)
+    - FirebaseSessions (~> 11.0)
+    - GoogleDataTransport (~> 10.0)
+    - GoogleUtilities/Environment (~> 8.1)
+    - nanopb (~> 3.30910.0)
+    - PromisesObjC (~> 2.4)
+  - FirebaseInstallations (11.13.0):
+    - FirebaseCore (~> 11.13.0)
+    - GoogleUtilities/Environment (~> 8.1)
+    - GoogleUtilities/UserDefaults (~> 8.1)
+    - PromisesObjC (~> 2.4)
+  - FirebaseRemoteConfigInterop (11.13.0)
+  - FirebaseSessions (11.13.0):
+    - FirebaseCore (~> 11.13.0)
+    - FirebaseCoreExtension (~> 11.13.0)
+    - FirebaseInstallations (~> 11.0)
+    - GoogleDataTransport (~> 10.0)
+    - GoogleUtilities/Environment (~> 8.1)
+    - GoogleUtilities/UserDefaults (~> 8.1)
+    - nanopb (~> 3.30910.0)
+    - PromisesSwift (~> 2.1)
   - FontBlaster (5.3.0)
   - GoogleAPIClientForREST/Core (3.5.5):
     - GTMSessionFetcher/Full (< 4.0, >= 1.6.1)
   - GoogleAPIClientForREST/Drive (3.5.5):
     - GoogleAPIClientForREST/Core
     - GTMSessionFetcher/Full (< 4.0, >= 1.6.1)
+  - GoogleAppMeasurement (11.13.0):
+    - GoogleAppMeasurement/AdIdSupport (= 11.13.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 8.1)
+    - GoogleUtilities/MethodSwizzler (~> 8.1)
+    - GoogleUtilities/Network (~> 8.1)
+    - "GoogleUtilities/NSData+zlib (~> 8.1)"
+    - nanopb (~> 3.30910.0)
+  - GoogleAppMeasurement/AdIdSupport (11.13.0):
+    - GoogleAppMeasurement/WithoutAdIdSupport (= 11.13.0)
+    - GoogleUtilities/AppDelegateSwizzler (~> 8.1)
+    - GoogleUtilities/MethodSwizzler (~> 8.1)
+    - GoogleUtilities/Network (~> 8.1)
+    - "GoogleUtilities/NSData+zlib (~> 8.1)"
+    - nanopb (~> 3.30910.0)
+  - GoogleAppMeasurement/WithoutAdIdSupport (11.13.0):
+    - GoogleUtilities/AppDelegateSwizzler (~> 8.1)
+    - GoogleUtilities/MethodSwizzler (~> 8.1)
+    - GoogleUtilities/Network (~> 8.1)
+    - "GoogleUtilities/NSData+zlib (~> 8.1)"
+    - nanopb (~> 3.30910.0)
+  - GoogleDataTransport (10.1.0):
+    - nanopb (~> 3.30910.0)
+    - PromisesObjC (~> 2.4)
   - GoogleSignIn (7.1.0):
     - AppAuth (< 2.0, >= 1.7.3)
     - GTMAppAuth (< 5.0, >= 4.1.1)
     - GTMSessionFetcher/Core (~> 3.3)
+  - GoogleUtilities/AppDelegateSwizzler (8.1.0):
+    - GoogleUtilities/Environment
+    - GoogleUtilities/Logger
+    - GoogleUtilities/Network
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Environment (8.1.0):
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Logger (8.1.0):
+    - GoogleUtilities/Environment
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/MethodSwizzler (8.1.0):
+    - GoogleUtilities/Logger
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Network (8.1.0):
+    - GoogleUtilities/Logger
+    - "GoogleUtilities/NSData+zlib"
+    - GoogleUtilities/Privacy
+    - GoogleUtilities/Reachability
+  - "GoogleUtilities/NSData+zlib (8.1.0)":
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/Privacy (8.1.0)
+  - GoogleUtilities/Reachability (8.1.0):
+    - GoogleUtilities/Logger
+    - GoogleUtilities/Privacy
+  - GoogleUtilities/UserDefaults (8.1.0):
+    - GoogleUtilities/Logger
+    - GoogleUtilities/Privacy
   - GTMAppAuth (4.1.1):
     - AppAuth/Core (~> 1.7)
     - GTMSessionFetcher/Core (< 4.0, >= 3.3)
@@ -42,12 +150,21 @@ PODS:
     - LegacyUTType (~> 0.1)
     - ObjectivePGP (~> 0.99)
   - MBProgressHUD (1.2.0)
+  - nanopb (3.30910.0):
+    - nanopb/decode (= 3.30910.0)
+    - nanopb/encode (= 3.30910.0)
+  - nanopb/decode (3.30910.0)
+  - nanopb/encode (3.30910.0)
   - ObjectivePGP (0.99.4)
   - OrbotKit (1.2.0)
   - ProgressHUD (14.1.1)
+  - PromisesObjC (2.4.0)
+  - PromisesSwift (2.4.0):
+    - PromisesObjC (= 2.4.0)
   - ReachabilitySwift (5.2.4)
   - SDCAlertView (12.0.5)
   - SnapKit (5.7.1)
+  - SwiftUIIntrospect (1.3.0)
   - TLPhotoPicker (2.1.9)
   - Tor/Core (408.14.1)
   - Tor/CTor (408.14.1):
@@ -173,6 +290,8 @@ DEPENDENCIES:
   - Eureka (~> 5.3)
   - Factory
   - FavIcon (from `https://github.com/tladesignz/FavIcon.git`, branch `swift-5`)
+  - Firebase/Core
+  - Firebase/Crashlytics
   - FontBlaster (~> 5.2)
   - GoogleAPIClientForREST/Drive (~> 3.3)
   - GoogleSignIn (~> 7.0)
@@ -183,6 +302,7 @@ DEPENDENCIES:
   - ReachabilitySwift (~> 5.0)
   - SDCAlertView
   - SnapKit
+  - SwiftUIIntrospect (~> 1.0)
   - TLPhotoPicker (from `https://github.com/tladesignz/TLPhotoPicker.git`)
   - TorManager (~> 0.4)
   - UIImage-Resize (~> 1.0)
@@ -196,21 +316,37 @@ SPEC REPOS:
     - DeviceKit
     - Eureka
     - Factory
+    - Firebase
+    - FirebaseAnalytics
+    - FirebaseCore
+    - FirebaseCoreExtension
+    - FirebaseCoreInternal
+    - FirebaseCrashlytics
+    - FirebaseInstallations
+    - FirebaseRemoteConfigInterop
+    - FirebaseSessions
     - FontBlaster
     - GoogleAPIClientForREST
+    - GoogleAppMeasurement
+    - GoogleDataTransport
     - GoogleSignIn
+    - GoogleUtilities
     - GTMAppAuth
     - GTMSessionFetcher
     - IPtProxy
     - IPtProxyUI
     - LegacyUTType
     - MBProgressHUD
+    - nanopb
     - ObjectivePGP
     - OrbotKit
     - ProgressHUD
+    - PromisesObjC
+    - PromisesSwift
     - ReachabilitySwift
     - SDCAlertView
     - SnapKit
+    - SwiftUIIntrospect
     - Tor
     - TorManager
     - UIImage-Resize
@@ -256,9 +392,21 @@ SPEC CHECKSUMS:
   Eureka: 1c18c7fcd8f772cc2ca42d6be36292dffa77eecb
   Factory: bfc0d3ec51e8f1b0c91e715ea9b541bb2e1a6f85
   FavIcon: 57f172cc9880265915c1aba226a2538b722c83fd
+  Firebase: 3435bc66b4d494c2f22c79fd3aae4c1db6662327
+  FirebaseAnalytics: 630349facf4a114a0977e5d7570e104261973287
+  FirebaseCore: c692c7f1c75305ab6aff2b367f25e11d73aa8bd0
+  FirebaseCoreExtension: c048485c347616dba6165358dbef765c5197597b
+  FirebaseCoreInternal: 29d7b3af4aaf0b8f3ed20b568c13df399b06f68c
+  FirebaseCrashlytics: 8281e577b6f85a08ea7aeb8b66f95e1ae430c943
+  FirebaseInstallations: 0ee9074f2c1e86561ace168ee1470dc67aabaf02
+  FirebaseRemoteConfigInterop: 7915cec47731a806cda541f90898ad0fab8f9f86
+  FirebaseSessions: eaa8ec037e7793769defe4201c20bd4d976f9677
   FontBlaster: 941f89d735a29e1c7d24e7a90d3e16939ef1609a
   GoogleAPIClientForREST: 2aa369923c028ae5d0c1521809813f47d9299c4e
+  GoogleAppMeasurement: 0dfca1a4b534d123de3945e28f77869d10d0d600
+  GoogleDataTransport: aae35b7ea0c09004c3797d53c8c41f66f219d6a7
   GoogleSignIn: d4281ab6cf21542b1cfaff85c191f230b399d2db
+  GoogleUtilities: 00c88b9a86066ef77f0da2fab05f65d7768ed8e1
   GTMAppAuth: f69bd07d68cd3b766125f7e072c45d7340dea0de
   GTMSessionFetcher: 5aea5ba6bd522a239e236100971f10cb71b96ab6
   IPtProxy: de82c6d7d32318d2ef9c8d9afa01aa3e71b34043
@@ -266,12 +414,16 @@ SPEC CHECKSUMS:
   LegacyUTType: 827291c20ad7361a47ace7bcdd1652a607fe4108
   LibProofMode: eec37e3cea714b73e742bb04dec9b881c1145938
   MBProgressHUD: 3ee5efcc380f6a79a7cc9b363dd669c5e1ae7406
+  nanopb: fad817b59e0457d11a5dfbde799381cd727c1275
   ObjectivePGP: 5b023e0a73c9edb89a5d333e5e9ce89ec7740772
   OrbotKit: e932cc741c18e9a39242ae1c61eea6d54e54bd87
   ProgressHUD: abb9136ae23c85204236828562cb9a8ec98efb44
+  PromisesObjC: f5707f49cb48b9636751c5b2e7d227e43fba9f47
+  PromisesSwift: 9d77319bbe72ebf6d872900551f7eeba9bce2851
   ReachabilitySwift: 32793e867593cfc1177f5d16491e3a197d2fccda
   SDCAlertView: c9042ba201897da46d833193b8462a186f79c47c
   SnapKit: d612e99e678a2d3b95bf60b0705ed0a35c03484a
+  SwiftUIIntrospect: fee9aa07293ee280373a591e1824e8ddc869ba5d
   TLPhotoPicker: 2e7caa72ec0cb29d1c85543b252a02d56aeede01
   Tor: e37a153222ca73ca10a7fe80d1a543b8cc009da8
   TorManager: 76af413f8d8128959ac5b3913d3e6c100d4aacab
@@ -279,6 +431,6 @@ SPEC CHECKSUMS:
   UIImageViewAlignedSwift: 12b0b06da988015e6d5dec09ee29d5ae1a244848
   YapDatabase: dccf60d80746ec0da07687c4c0412197e889292b
 
-PODFILE CHECKSUM: b8be366a044b18a716aa1a7cf658e0cb9b0cacc4
+PODFILE CHECKSUM: 0c8cc3f6a5f64fa92429a47e31a70213d10af89e
 
 COCOAPODS: 1.16.2

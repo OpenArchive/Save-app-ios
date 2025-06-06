@@ -124,14 +124,17 @@ class Utils {
     }
     
     class func setDarkMode() {
+        AppSettings.theme = GeneralConstants.dark
         Utils.setInterfaceStyle(.dark)
     }
     
     class func setLightMode() {
+        AppSettings.theme = GeneralConstants.light
         Utils.setInterfaceStyle(.light)
     }
     
     class func setUnspecifiedMode() {
+        AppSettings.theme = GeneralConstants.unspecified
         Utils.setInterfaceStyle(.unspecified)
     }
     

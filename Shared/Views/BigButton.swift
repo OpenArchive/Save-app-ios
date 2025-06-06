@@ -19,6 +19,7 @@ class BigButton: UIView {
         let button = BigButton()
 
         button.icon = icon
+        button.icon?.withTintColor(.accent)
         button.title = title
         button.subtitle = subtitle
 
@@ -29,7 +30,7 @@ class BigButton: UIView {
         container.addSubview(button)
         button.leadingAnchor.constraint(equalTo: container.leadingAnchor, constant: 16).isActive = true
         button.trailingAnchor.constraint(equalTo: container.trailingAnchor, constant: -16).isActive = true
-        button.topAnchor.constraint(equalTo: above.bottomAnchor, constant: 16).isActive = true
+        button.topAnchor.constraint(equalTo: above.bottomAnchor, constant: 24).isActive = true
 
         if equalHeight {
             button.heightAnchor.constraint(equalTo: above.heightAnchor, constant: 0).isActive = true
@@ -65,11 +66,11 @@ class BigButton: UIView {
                 addSubview(leadIv)
 
                 leadIv.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16).isActive = true
-                leadIv.centerYAnchor.constraint(equalTo: centerYAnchor).isActive = true
+                leadIv.topAnchor.constraint(equalTo: topAnchor, constant: 16).isActive = true
 
                 titleLeadingConstraint?.isActive = false
 
-                titleLb.leadingAnchor.constraint(equalTo: leadIv.trailingAnchor, constant: 8).isActive = true
+                titleLb.leadingAnchor.constraint(equalTo: leadIv.trailingAnchor, constant: 15).isActive = true
             }
 
             leadIv.image = newValue
@@ -83,6 +84,7 @@ class BigButton: UIView {
         }
         set {
             titleLb.text = newValue
+            titleLb.font = .montserrat(forTextStyle: .headline ,with: .traitUIOptimized)
         }
     }
 
@@ -94,7 +96,8 @@ class BigButton: UIView {
         set {
             if newValue?.isEmpty ?? true && !(subtitleLb.text?.isEmpty ?? true) {
                 subtitleLb.removeFromSuperview()
-
+                subtitleLb.font = .montserrat(forTextStyle: .subheadline)
+                subtitleLb.textColor = .gray70
                 titleBottomConstraint?.isActive = true
             }
             else if !(newValue?.isEmpty ?? true) && subtitleLb.text?.isEmpty ?? true {
@@ -146,8 +149,8 @@ class BigButton: UIView {
     private lazy var subtitleLb: UILabel = {
         let view = UILabel()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.font = .montserrat(forTextStyle: .footnote)
-        view.textColor = .secondaryLabel
+        view.font = .montserrat(forTextStyle: .subheadline)
+        view.textColor = .subtitleText
         view.numberOfLines = 0
 
         view.setContentCompressionResistancePriority(.required, for: .vertical)
@@ -158,8 +161,8 @@ class BigButton: UIView {
     private lazy var arrowIv: UIImageView = {
         let view = UIImageView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.image = UIImage(systemName: "arrow.right")?.withRenderingMode(.alwaysTemplate)
-        view.tintColor = .accent
+        view.image = UIImage(named: "forward_arrow")?.withRenderingMode(.alwaysTemplate)
+        view.tintColor = .label
 
         view.widthAnchor.constraint(equalToConstant: 24).isActive = true
         view.heightAnchor.constraint(equalToConstant: 24).isActive = true
@@ -206,7 +209,7 @@ class BigButton: UIView {
     private func setup() {
         translatesAutoresizingMaskIntoConstraints = false
 
-        borderColor = .label
+        borderColor = .borderBg
         borderWidth = 1
         cornerRadius = 8
 
@@ -221,7 +224,7 @@ class BigButton: UIView {
         titleLeadingConstraint?.isActive = true
 
         titleLb.trailingAnchor.constraint(equalTo: arrowIv.leadingAnchor, constant: -8).isActive = true
-        titleLb.topAnchor.constraint(equalTo: topAnchor, constant: 24).isActive = true
+        titleLb.topAnchor.constraint(equalTo: topAnchor, constant: 16).isActive = true
 
         titleBottomConstraint = titleLb.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24)
         titleBottomConstraint?.isActive = true

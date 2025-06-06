@@ -16,6 +16,7 @@ extension UIFont {
     static let italicFontName = "Montserrat-MediumItalic"
     static let boldItalicFontName = "Montserrat-BoldItalic"
     static let blackFontName = "Montserrat-Black"
+    static let semiBoldFontName = "Montserrat-SemiBold"
 
     static let baseSizes: [TextStyle: CGFloat] = [
         .body: 17,
@@ -36,8 +37,8 @@ extension UIFont {
             print(fonts)
         } */
 
-        UILabel.appearance().fontName = defaultFontName
-        UIButton.appearance().fontName = defaultFontName
+       // UILabel.appearance().fontName = defaultFontName
+      //  UIButton.appearance().fontName = defaultFontName
 
         for state in [UIControl.State.application, .disabled, .focused, .highlighted, .normal, .reserved, .selected] {
             let font = UIBarItem.appearance().titleTextAttributes(for: state)?[.font] as? UIFont
@@ -52,7 +53,7 @@ extension UIFont {
 
         var font = nba.titleTextAttributes[.font] as? UIFont
         nba.titleTextAttributes[.font] = montserrat(similarTo: font)
-
+      
         for style in [UIBarButtonItem.Style.done, .plain] {
             let bbia = UIBarButtonItemAppearance(style: style)
 
@@ -78,7 +79,6 @@ extension UIFont {
         }
 
         let a = UINavigationBar.appearance()
-
         a.scrollEdgeAppearance = nba
         a.compactAppearance = nba
         a.standardAppearance = nba
@@ -99,6 +99,9 @@ extension UIFont {
         }
         else if traits?.contains(.traitItalic) ?? false {
             fontName = italicFontName
+        }
+        else if traits?.contains(.traitUIOptimized) ?? false {
+            fontName = semiBoldFontName
         }
         else {
             fontName = defaultFontName

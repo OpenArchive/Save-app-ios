@@ -14,13 +14,21 @@ struct InternetArchiveLoginView: View  {
     @ObservedObject var viewModel: InternetArchiveLoginViewModel
     
     var body: some View {
-        InternetArchiveLoginContent(
-            state: viewModel.state(),
-            dispatch: viewModel.store.dispatch
-        )
+        if #available(iOS 15.0, *) {
+            InternetArchiveLoginContent(
+                state: viewModel.state(),
+                dispatch: viewModel.store.dispatch
+            )
+        } else {
+            // Fallback on earlier versions
+        }
     }
 }
-
+enum Field: Hashable {
+    case username
+    case password
+}
+@available(iOS 15.0, *)
 struct InternetArchiveLoginContent: View {
     
     let state: InternetArchiveLoginState.Bindings
@@ -28,110 +36,154 @@ struct InternetArchiveLoginContent: View {
     @State private var keyboardOffset: CGFloat = 0
     @State private var isShowPassword = false
     @Environment(\.colorScheme) var colorScheme
-    
+    @FocusState private var focusedField: Field?
     
     
     var body: some View {
         GeometryReader { reader in
-            ScrollView {
-                VStack {
-                    HStack {
-                        Circle().fill(colorScheme == .dark ? Color.white : Color.pillBackground)
-                            .frame(width: 80, height: 80)
-                            .overlay(
-                                Image("InternetArchiveLogo")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 48, height: 48)
-                            ).padding(.trailing, 6)
-                        VStack(alignment: .leading) {
-                            Text(LocalizedStringKey("Internet Archive")).font(.headline)
-                            Text(LocalizedStringKey("Upload your media to a free public or paid private account on the Internet Archive.")).font(.subheadline)
-                        }
-                    }
-                    .padding()
-                    
-                    
-                    Spacer()
-                    
-                    TextField(LocalizedStringKey("Username"), text: state.userName)
-                        .autocapitalization(.none)
-                        .padding()
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.gray, lineWidth: 1)
-                        )
-                        .padding(.leading)
-                        .padding(.trailing)
-                    
-                    
-                    HStack {
-                        if (isShowPassword) {
-                            TextField(LocalizedStringKey("Password"), text: state.password)
-                        } else {
-                            SecureField(LocalizedStringKey("Password"), text: state.password)
-                        }
-                        Button(action: { isShowPassword = !isShowPassword}) {
-                            Image(systemName: isShowPassword ? "eye.slash" : "eye").foregroundColor(.gray)
-                        }
-                    }.padding().overlay(
-                        RoundedRectangle(cornerRadius: 8)
-                            .stroke(Color.gray, lineWidth: 1)
-                    )
-                    .padding(.leading)
-                    .padding(.trailing)
-                    //
-                    Spacer()
-                    
-                    if (state.isLoginError) {
-                        Text(LocalizedStringKey("Invalid username or password")).foregroundColor(.red).padding()
-                    }
-                    
-                    HStack(alignment: .center) {
-                        Text(LocalizedStringKey("No Account?"))
-                        Button(action: {
-                            dispatch(.CreateAccount)
-                        }) {
-                            Text(LocalizedStringKey("Create one"))
-                        }.foregroundColor(.accent)
-                    }
-                    
-                    
-                    Spacer()
-                    
-                    HStack(alignment: .bottom) {
-                        Button(action: {
-                            dispatch(.Cancel)
-                        }, label: {
-                            Text(LocalizedStringKey("Cancel"))
-                        })
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .foregroundColor(.accent)
-                        
-                        Button(action: {
-                            dispatch(.Login)
-                        }, label: {
-                            if (state.isBusy) {
-                                ActivityIndicator(style: .medium, animate: .constant(true)).foregroundColor(.black)
-                            } else {
-                                Text(LocalizedStringKey("Login"))
+            if #available(iOS 14.0, *) {
+             
+                    VStack {
+                        HStack {
+                            Circle().fill(.gray10)
+                                .frame(width: 53, height: 53)
+                                .overlay(
+                                    Image("internet_archive_teal")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fit)
+                                        .frame(width: 30, height: 30)
+                                ).padding(.trailing, 6)
+                            VStack(alignment: .leading) {
+                                Text(LocalizedStringKey("Upload your media to a free public or paid private account on the Internet Archive.")) .font(.montserrat(.medium, for: .subheadline))
                             }
-                        })
-                        .disabled(!state.isValid)
+                        }
+                        .padding(.top,50).padding(.leading,20).padding(.trailing,40)
+                        
+                        Text(LocalizedStringKey("Account")).font(.montserrat(.semibold, for: .headline)).foregroundColor(.gray70).padding(.top,50).frame(maxWidth: .infinity, alignment: .leading).padding(.leading,20)
+                        ZStack(alignment: .leading) {
+                            if state.userName.wrappedValue.isEmpty {
+                                Text("Email")
+                                    .italic()
+                                    .font(.montserrat(.medium, for: .footnote))
+                                    .foregroundColor(.textEmpty)
+                                    .padding(.leading, 5)
+                            }
+                            
+                           
+                                TextField("", text: state.userName)
+                                    .autocapitalization(.none)
+                                    .font(.montserrat(.medium, for: .footnote))
+                                    .foregroundColor(.gray70)
+                                    .submitLabel(.next)
+                                    .focused($focusedField, equals: .username)
+                                    .onSubmit {
+                                        focusedField = .password
+                                    }
+                            
+                        }
                         .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(Color.accent)
-                        .foregroundColor(.black)
-                        .cornerRadius(12)
-                    }
-                    .padding()
-                } .frame(minHeight: reader.size.height)
+                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.7)))
+                        .padding(.horizontal, 20)
+                        .padding(.top, 15)
+
+                        
+                        
+                        ZStack(alignment: .leading) {
+                            HStack {
+                                ZStack(alignment: .leading) {
+                                    if state.password.wrappedValue.isEmpty {
+                                        Text("Password")
+                                            .italic()
+                                            .font(.montserrat(.medium, for: .footnote))
+                                            .foregroundColor(.textEmpty)
+                                            .focused($focusedField, equals: .password)
+                                            .padding(.leading, 5)
+                                    }
+                                    
+                                    if isShowPassword {
+                                        TextField("", text: state.password)
+                                            .font(.montserrat(.medium, for: .footnote))
+                                            .focused($focusedField, equals: .password)
+                                            .foregroundColor(.gray70)
+                                    } else {
+                                        SecureField("", text: state.password)
+                                            .font(.montserrat(.medium, for: .footnote))
+                                            .focused($focusedField, equals: .password)
+                                            .foregroundColor(.gray70)
+                                    }
+                                }
+                                
+                                Button(action: {
+                                    isShowPassword.toggle()
+                                }) {
+                                    Image(isShowPassword ? "eye_open" : "eye_close")
+                                        .foregroundColor(.gray70)
+                                }
+                            }
+                        }
+                        .padding()
+                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.7)))
+                        .padding(.horizontal, 20)
+                        .padding(.top, 15)
+                        
+                        if (state.isLoginError) {
+                            Text(LocalizedStringKey("Incorrect email or password")).foregroundColor(.red).padding(.top,1) .padding(.leading,20).font(.montserrat(.medium, for: .caption2))
+                                .padding(.trailing,20) .frame(maxWidth: .infinity, alignment: .leading)
+                        }
+                        
+                        HStack(alignment: .center) {
+                            Text(LocalizedStringKey("No Account?")).foregroundColor(.gray70).font(.montserrat(.semibold, for: .callout))
+                            Button(action: {
+                                dispatch(.CreateAccount)
+                            }) {
+                                Text(LocalizedStringKey("Create one"))
+                            }.foregroundColor(.accent).font(.montserrat(.semibold, for: .callout))
+                        }.padding(.top,40)
+                        
+                        
+                        Spacer()
+                        
+                        HStack(alignment: .bottom) {
+                            Button(action: {
+                                dispatch(.Cancel)
+                            }, label: {
+                                Text(LocalizedStringKey("Back"))
+                            })
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .foregroundColor(state.isBusy ? .gray50 : (colorScheme == .dark ? Color.white : Color.black))
+                            .font(.montserrat(.semibold, for: .headline))
+                            .disabled(state.isBusy)
+                            
+                            Button(action: {
+                                if (!state.isBusy) {
+                                    dispatch(.Login)
+                                }
+                            }, label: {
+                                if (state.isBusy) {
+                                    ActivityIndicator(style: .medium, animate: .constant(true)).foregroundColor(.black)
+                                } else {
+                                    Text(LocalizedStringKey("Next"))
+                                }
+                            })
+                            .disabled(!state.isValid)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(!state.isValid ? .gray50 :  Color.accent)
+                            .foregroundColor(.black)
+                            .cornerRadius(10)
+                            .font(.montserrat(.semibold, for: .headline))
+                            
+                        }
+                        .padding(.bottom,20).padding(.leading,20).padding(.trailing,20)
+                    } .frame(minHeight: reader.size.height)
+                        .ignoresSafeArea(.keyboard, edges: .bottom)
+                    
+                    
                 
-                
+            } else {
+                // Fallback on earlier versions
             }
-            
-            .keyboardAware()
             
         }
         
@@ -153,15 +205,19 @@ struct InternetArchiveLoginView_Previews: PreviewProvider {
     )
     
     static var previews: some View {
-        InternetArchiveLoginContent(
-            state: InternetArchiveLoginState.Bindings(
-                userName: Binding.constant(state.userName),
-                password: Binding.constant(state.password),
-                isLoginError: state.isLoginError,
-                isBusy: state.isBusy,
-                isValid: state.isValid
-            )
-        ) { _ in }
+        if #available(iOS 15.0, *) {
+            InternetArchiveLoginContent(
+                state: InternetArchiveLoginState.Bindings(
+                    userName: Binding.constant(state.userName),
+                    password: Binding.constant(state.password),
+                    isLoginError: state.isLoginError,
+                    isBusy: state.isBusy,
+                    isValid: state.isValid
+                )
+            ) { _ in }
+        } else {
+            // Fallback on earlier versions
+        }
     }
 }
 struct GeometryGetter: View {

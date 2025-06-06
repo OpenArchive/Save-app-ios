@@ -146,7 +146,7 @@ class OrbotManager: OrbotStatusChangeListener {
 
         var urlc = URLComponents()
         urlc.scheme = "orbot"
-        urlc.host = "org.openarchive.save"
+        //urlc.host = "org.openarchive.save"
         urlc.path = "token-callback"
 
         OrbotKit.shared.open(.requestApiToken(needBypass: true, callback: urlc.url)) { [weak self] success in

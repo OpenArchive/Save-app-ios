@@ -19,10 +19,13 @@ def shared_pods
     pod 'LegacyUTType', '~> 0.1'
     pod 'GoogleAPIClientForREST/Drive', '~> 3.3'
     pod 'SnapKit'
+    pod 'SwiftUIIntrospect', '~> 1.0'
     pod 'LibProofMode',
         :git => 'https://gitlab.com/guardianproject/proofmode/libproofmode-ios.git', :branch => 'main'
         #:path => '../libproofmode-ios'
     pod "Factory"
+    pod 'Firebase/Core'
+    pod 'Firebase/Crashlytics'
 end
 
 def app_only

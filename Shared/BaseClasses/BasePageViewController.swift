@@ -12,7 +12,17 @@ class BasePageViewController: BaseViewController, UIPageViewControllerDataSource
                                 UIPageViewControllerDelegate
 {
 
-    @IBOutlet weak var pageControl: UIPageControl!
+    @IBOutlet weak var pageControl: UIPageControl!{
+        didSet{
+            if #available(iOS 14.0, *) {
+                pageControl.backgroundStyle = .minimal
+                pageControl.allowsContinuousInteraction = false
+            } else {
+                // Fallback on earlier versions
+            }
+           
+        }
+    }
 
     @IBOutlet weak var container: UIView!
 

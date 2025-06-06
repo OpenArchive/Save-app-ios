@@ -41,6 +41,8 @@ class InternetArchiveDetailViewModel : StoreViewModel<InternetArchiveDetailState
             load()
         case .Remove:
             remove()
+        case.HandleBackButton(let status):
+            self.store.notify(.HandleBackButton(status: status))
         default: break
         }
         
@@ -59,17 +61,17 @@ class InternetArchiveDetailViewModel : StoreViewModel<InternetArchiveDetailState
     private func remove() {
         Db.writeConn?.readWrite { tx in
             tx.removeObject(forKey: space.id, inCollection: Space.collection)
-
+            
             // Delete selected space, too.
             SelectedSpace.space = nil
             SelectedSpace.store(tx)
-
+            
             // Find new selected space.
             tx.iterateKeysAndObjects(inCollection: Space.collection) { (key, space: Space, stop) in
                 SelectedSpace.space = space
                 stop = true
             }
-
+            
             // Store newly selected space.
             SelectedSpace.store(tx)
             

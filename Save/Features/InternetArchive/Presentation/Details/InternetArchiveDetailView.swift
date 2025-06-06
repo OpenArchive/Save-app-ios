@@ -26,53 +26,112 @@ struct InternetArchiveDetailContent: View {
     
     @State private var showAlert = false
     
+    
     var body: some View {
-        VStack(alignment: .leading) {
-            Text(LocalizedStringKey("Username")).font(.caption).padding(.horizontal).padding(.top)
-            Text(state.userName).font(.body)
-                .padding()
+        VStack(alignment: .leading, spacing: 20) {
             
-            Text(LocalizedStringKey("Screen Name")).font(.caption).padding(.horizontal)
-            Text(state.screenName).font(.body)
-                .padding()
+            Text(NSLocalizedString("Account", comment:""))
+                .font(.montserrat(.semibold, for: .headline))
+                .padding(.horizontal)
             
-            Text(LocalizedStringKey("Email")).font(.caption).padding(.horizontal)
-            Text(state.email).font(.body)
+            Text(state.userName)
+                .font(.montserrat(.medium, for: .footnote))
+                .frame(maxWidth: .infinity, alignment: .leading)
                 .padding()
+                .foregroundColor(.gray70)
+                .background(Color.gray.opacity(0.2))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.gray70, lineWidth: 1)
+                )
+                .padding(.horizontal)
+            
+            Text(state.screenName)
+                .font(.montserrat(.medium, for: .footnote))
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .foregroundColor(.gray70)
+                .padding()
+                .background(Color.gray.opacity(0.2))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.gray70, lineWidth: 1)
+                )
+                .padding(.horizontal)
+            
+            
+            Text(state.email)
+                .font(.montserrat(.medium, for: .footnote))
+                .foregroundColor(.gray70)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding()
+                .background(Color.gray.opacity(0.2))
+                .overlay(
+                    RoundedRectangle(cornerRadius: 8)
+                        .stroke(Color.gray70, lineWidth: 1)
+                )
+                .padding(.horizontal)
+            
             
             HStack {
                 Spacer()
                 Button(action: {
                     showAlert = true
+                    dispatch(.HandleBackButton(status: true))
                 }) {
-                    Image(systemName: "trash")
-                    Text(LocalizedStringKey("Remove from App")).alert(isPresented: $showAlert) {
-                        Alert(
-                            title: Text(LocalizedStringKey("Are you sure?")),
-                            message: Text(
-                                String(
-                                    format:
-                                        NSLocalizedString("Removing this server will remove all contained thumbnails from the %@ app.", comment: "Placeholder is app name"),
-                                    arguments: [Bundle.main.displayName]
-                                )
-                            ),
-                            primaryButton: .destructive(Text(LocalizedStringKey("Remove Server"))) {
-                                dispatch(.Remove)
-                            },
-                            secondaryButton: .cancel()
-                        )
-                    }
-                }.foregroundColor(.red).padding()
+                    Text(LocalizedStringKey("Remove from App"))
+                        .font(.montserrat(.semibold, for: .headline))
+                        .foregroundColor(.redButton)
+                        .padding()
+                }
+                
+                
                 Spacer()
-            }
+            }.padding(.top,20)
+            
             Spacer()
         }
+        .padding(.top, 30).overlay(
+            Group {
+                if showAlert {
+                    Color.gray.opacity(0.9)
+                        .edgesIgnoringSafeArea(.all)
+                        .overlay(
+                            VStack {
+                                CustomAlertView(
+                                    title: NSLocalizedString("Are you sure?", comment: ""),
+                                    message: NSLocalizedString("Removing this server will delete all associated data.", comment: ""),
+                                    primaryButtonTitle: NSLocalizedString("Remove", comment: ""),
+                                    iconImage: Image("trash_icon"),
+                                    primaryButtonAction: {
+                                        dispatch(.Remove)
+                                        showAlert = false
+                                    },
+                                    secondaryButtonTitle: NSLocalizedString("Cancel", comment: ""),
+                                    secondaryButtonIsOutlined: false,
+                                    secondaryButtonAction: {
+                                        showAlert = false
+                                        dispatch(.HandleBackButton(status: false))
+                                        
+                                    },
+                                    showCheckbox: false,
+                                    isRemoveAlert: true
+                                )
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                            }
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .background(Color.black.opacity(0.2))
+                        )
+                }
+            }
+        )
+        
     }
+    
 }
 
 struct InternetArchiveDetailView_Previews: PreviewProvider {
     static let state = InternetArchiveDetailState(
-        screenName: "ABC User", 
+        screenName: "ABC User",
         userName: "@abc_user1",
         email: "abc@example.com"
     )

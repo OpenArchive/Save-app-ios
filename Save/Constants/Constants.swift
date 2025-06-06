@@ -5,7 +5,7 @@
 //  Created by navoda on 2024-11-13.
 //  Copyright © 2024 Open Archive. All rights reserved.
 //
-
+import UIKit
 import Foundation
 struct TimeIntervalConstants {
     static let hoursInDay: Double = 24.0
@@ -26,5 +26,14 @@ struct GeneralConstants {
     static let constraint_minus_20: CGFloat = -20.0
     static let constraint_20: CGFloat = 20.0
     static let zeroConstraint: CGFloat = 0.0
+    static let dark = "Dark"
+    static let light = "Light"
+    static let unspecified = "System"
 
+}
+func getServerIcon(space:Space?) -> UIImage?{
+    if(space is IaSpace){
+        return UIImage(named: "internet_archive")
+    }
+    return UIImage(named: "private_server")
 }

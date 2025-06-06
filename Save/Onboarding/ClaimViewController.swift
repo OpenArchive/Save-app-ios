@@ -29,12 +29,13 @@ class ClaimViewController: UIViewController {
             }
 
             claimLb?.attributedText = text
+            claimLb?.font = UIFont(name: "Montserrat-Bold", size: 60)
         }
     }
 
     @IBOutlet weak var subtitleLb: UILabel? {
         didSet {
-            subtitleLb?.font = .montserrat(forTextStyle: .headline)
+            subtitleLb?.font = .montserrat(forTextStyle: .body,with: .traitUIOptimized)
             subtitleLb?.adjustsFontSizeToFitWidth = true
             subtitleLb?.text = NSLocalizedString("Secure Mobile Media Preservation", comment: "")
         }
@@ -42,7 +43,7 @@ class ClaimViewController: UIViewController {
 
     @IBOutlet weak var nextBt: UILabel? {
         didSet {
-            nextBt?.font = .montserrat(forTextStyle: .headline)
+            nextBt?.font = .montserrat(forTextStyle: .body,with: .traitUIOptimized)
             nextBt?.adjustsFontSizeToFitWidth = true
             nextBt?.text = NSLocalizedString("Get Started", comment: "")
         }
@@ -51,8 +52,6 @@ class ClaimViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // Force to Montserrat-Black again, after we destroyed it with the appearance proxy.
-        // Needs to run here, otherwise, it'll be too early and the appearance proxy will win again.
         claimLb?.fontName = UIFont.blackFontName
     }
 }

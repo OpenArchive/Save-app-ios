@@ -664,8 +664,8 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         item.proofFolder = Files.base
         item.proofFilesBaseName = id
 
-        var showLocation = false
-        var showMobileNetwork = false
+        var showLocation = true
+        var showMobileNetwork = true
 
         // If this is an asset we imported via the picker,
         // (we know that, because otherwise we wouldn't have a `phAssetId` reference.)
