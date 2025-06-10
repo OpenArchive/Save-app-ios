@@ -154,12 +154,15 @@
 		6E5A320D2D74FE220068FB41 /* Exceptions for "Save" folder in "ShareExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				CustomComponents/AlertController.swift,
+				CustomComponents/CustomAlert.swift,
+				CustomComponents/CustomButton.swift,
+				CustomComponents/CustomTextField.swift,
 				Extensions/MontserratExtension.swift,
-				Features/CustomComponents/alertController.swift,
-				Features/CustomComponents/customAlert.swift,
-				Features/CustomComponents/customButton.swift,
-				Settings/ServerSettingsView.swift,
-				Settings/WebDavSettingsViewController.swift,
+				Extensions/ViewExtension.swift,
+				Settings/PrivateServer/ServerComponents.swift,
+				Settings/PrivateServer/ServerSettingsView.swift,
+				Settings/PrivateServer/WebDavSettingsRedux.swift,
 			);
 			target = A07128FA2111CC90007A432A /* ShareExtension */;
 		};
@@ -184,7 +187,7 @@
 				Projects/BrowseWebDavViewController.swift,
 				Protocols/KeyboardHandling.swift,
 				Settings/GdriveSettingsViewController.swift,
-				Settings/ProofModeSettingsViewController.swift,
+				Settings/ProofMode/ProofModeSettingsViewController.swift,
 				Space/CreateCCLViewController.swift,
 				Space/WebDavWizardViewController.swift,
 				Tor/TorStartViewController.swift,

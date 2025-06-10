@@ -1,7 +1,7 @@
 import UIKit
 import YapDatabase
 
-class FolderListNewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class NewFolderListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     let tableView = UITableView()
     let archiveButton = UIButton()
@@ -10,7 +10,7 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
     var projectList: [Project] = []
     private lazy var projectsMappings = YapDatabaseViewMappings(
         groups: ProjectsView.groups, view: ProjectsView.name)
-
+    
     private var hasArchived = false
     
     private let noDataLabel: UILabel = {
@@ -27,12 +27,12 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
         self.archived = archived
         super.init(nibName: nil, bundle: nil)
     }
-
+    
     required init?(coder aDecoder: NSCoder) {
         archived = aDecoder.decodeBool(forKey: "archived")
         super.init(coder: aDecoder)
     }
-
+    
     override func encode(with coder: NSCoder) {
         coder.encode(archived, forKey: "archived")
         super.encode(with: coder)
@@ -43,7 +43,7 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
         
         view.backgroundColor = UIColor.systemBackground
         title = NSLocalizedString("Folders", comment: "")
-       
+        
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(FolderCellNew.self, forCellReuseIdentifier: "FolderCellNew")
@@ -51,7 +51,7 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
         tableView.separatorStyle = .none
         view.addSubview(tableView)
         
-       
+        
         archiveButton.setTitle(NSLocalizedString("View Archived Folders", comment: ""), for: .normal)
         archiveButton.setTitleColor(.label, for: .normal)
         archiveButton.titleLabel?.font = .montserrat(forTextStyle: .headline, with: .traitUIOptimized)
@@ -63,14 +63,14 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
         archiveButton.contentVerticalAlignment = .center
         view.addSubview(archiveButton)
         view.addSubview(noDataLabel)
-
+        
         NSLayoutConstraint.activate([
             noDataLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             noDataLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             noDataLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 20),
             noDataLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -20)
         ])
-       
+        
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -85,16 +85,16 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
             archiveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
             archiveButton.heightAnchor.constraint(equalToConstant: 56),
         ])
-
+        
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backBarButtonItem
         Db.add(observer: self, #selector(yapDatabaseModified))
-
+        
         projectsReadConn?.update(mappings: projectsMappings)
-
+        
         reload()
     }
-   
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return projectList.count
     }
@@ -108,7 +108,7 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
         
         return cell
     }
-
+    
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let project = projectList[indexPath.row]
         self.navigationController?.pushViewController(NewEditFolderViewController(project), animated: true)
@@ -116,24 +116,24 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
     
     // Show Archived Folders
     @objc func showArchivedFolders() {
-        let archivedViewController = FolderListNewViewController(archived: true)
+        let archivedViewController = NewFolderListViewController(archived: true)
         self.navigationController?.pushViewController(archivedViewController, animated: true)
     }
-
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
-
+    
     @objc private func yapDatabaseModified(_ notification: Notification) {
         if projectsReadConn?.hasChanges(projectsMappings) ?? false {
             reload()
         }
     }
-
+    
     private func reload() {
         let projects: [Project] = projectsReadConn?.objects(in: 0, with: projectsMappings) ?? []
         hasArchived = !archived && projects.contains { !$0.active }
-
+        
         projectList = projects.filter { archived != $0.active }
         noDataLabel.isHidden = !projectList.isEmpty ? true : false
         archiveButton.isHidden = !hasArchived

@@ -8,8 +8,8 @@ class GeneralSettingsViewController:UIViewController,ViewControllerNavigationDel
         let vc = ServerListNewViewController()
         return vc
     }()
-    private lazy var FolderList: FolderListNewViewController = {
-        let vc = FolderListNewViewController(archived: true)
+    private lazy var FolderList: NewFolderListViewController = {
+        let vc = NewFolderListViewController(archived: true)
         return vc
     }()
     
@@ -30,7 +30,7 @@ class GeneralSettingsViewController:UIViewController,ViewControllerNavigationDel
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(orbotStatus),
-                                                   name: .orbotStatus, object: nil)
+                                               name: .orbotStatus, object: nil)
         settingsViewModel.delegate = self
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backBarButtonItem
