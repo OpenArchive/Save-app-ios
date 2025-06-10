@@ -31,8 +31,10 @@ public class AlertHelper {
                               style: AlertControllerStyle = .alert,
                               actions: [AlertAction]? = [defaultAction()])
     {
-        controller.present(build(message: message, title: title, style: style, actions: actions),
-                           animated: true)
+        DispatchQueue.main.async {
+            controller.present(build(message: message, title: title, style: style, actions: actions),
+                               animated: true)
+        }
     }
 
     /**
