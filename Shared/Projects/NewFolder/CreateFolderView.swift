@@ -1,117 +1,11 @@
 //
-//  AddNewFolderViewController.swift
+//  CreateFolderView.swift
 //  Save
 //
-//  Created by navoda on 2025-03-03.
+//  Created by navoda on 2025-06-10.
 //  Copyright © 2025 Open Archive. All rights reserved.
 //
-
-
 import SwiftUI
-import UIKit
-
-class AddNewFolderViewController: UIViewController {
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem = backBarButtonItem
-        
-        if #available(iOS 14.0, *) {
-            navigationItem.title = NSLocalizedString("Create a New Folder", comment: "")
-        
-            let settingsView = CreateFolderView(disableBackAction: { [weak self] isDisabled in
-                self?.navigationItem.hidesBackButton = isDisabled
-            }, dismissAction: {
-              
-                if let navigationController = self.navigationController {
-                    
-                    if let existingVC = navigationController.viewControllers.first(where: { $0 is MainViewController }) {
-                        
-                        navigationController.popToViewController(existingVC, animated: true)
-                    } else {
-                        
-                        let newVC = MainViewController()
-                        navigationController.pushViewController(newVC, animated: true)
-                    }
-                }
-            })
-            
-            let hostingController = UIHostingController(rootView: settingsView)
-            addChild(hostingController)
-            view.addSubview(hostingController.view)
-            
-            hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                hostingController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                hostingController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-                hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-            ])
-            hostingController.didMove(toParent: self)
-            self.view.backgroundColor = UIColor.systemBackground
-        }
-    }
-}
-
-
-
-// MARK: - State
-struct AppState {
-    var folderName: String = ""
-    var status:Bool = false
-    var errorMessage: String?
-}
-
-// MARK: - Actions
-enum AppAction {
-    case updateFolderName(String)
-    case saveFolderName
-    case resetStatus
-}
-
-// MARK: - Reducer
-func appReducer(state: inout AppState, action: AppAction) {
-    switch action {
-    case .updateFolderName(let name):
-        state.folderName = name
-    case .saveFolderName:
-        saveFolderName(state:&state)
-    case .resetStatus:
-        resetStatus(state:&state)
-    }
-}
-func saveFolderName(state:inout AppState) {
-    let project = Project(space: SelectedSpace.space)
-    if let spaceId = project.spaceId {
-        
-        let alert = DuplicateFolderAlert(nil)
-        if alert.exists(spaceId: spaceId, name: state.folderName){
-            state.status = false
-            state.errorMessage = NSLocalizedString("Please choose another name/folder or use the existing one instead.", comment: "")
-        }
-        else{
-            state.status = true
-            project.name = state.folderName
-            Db.writeConn?.setObject(project)
-        }
-    }
-}
-func resetStatus(state:inout AppState) {
-    state.status = false
-    state.errorMessage = nil
-}
-
-// MARK: - Store
-class NewFolderStore: ObservableObject {
-    @Published private(set) var state = AppState()
-    
-    func dispatch(action: AppAction) {
-        appReducer(state: &state, action: action)
-    }
-}
-
 
 // MARK: - SwiftUI View
 struct CreateFolderView: View {
@@ -120,12 +14,12 @@ struct CreateFolderView: View {
     var dismissAction: (() -> Void)?
     var disableBackAction: ((Bool) -> Void)?
     init(disableBackAction: ((Bool) -> Void)? = nil,dismissAction: (() -> Void)? = nil) {
-    
+        
         self.dismissAction = dismissAction
         self.disableBackAction = disableBackAction
         _folderName = .init(initialValue: "")
         _store = .init(wrappedValue: NewFolderStore())
-      
+        
     }
     
     var body: some View {
@@ -160,7 +54,7 @@ struct CreateFolderView: View {
                 Button(NSLocalizedString("Cancel", comment: "")) {
                     store.dispatch(action: .updateFolderName(""))
                     dismissAction?()
-                  
+                    
                 }
                 .frame(maxWidth: .infinity)
                 .foregroundColor(.primary)

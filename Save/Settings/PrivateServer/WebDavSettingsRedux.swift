@@ -1,5 +1,6 @@
 
 import Combine
+import Foundation
 
 class ServerSettingsStore: ObservableObject {
     @Published private(set) var state: ServerSettingsState
@@ -14,6 +15,34 @@ class ServerSettingsStore: ObservableObject {
             objectWillChange.send()
         }
     }
+}
+
+struct ServerSettingsState {
+    var space: Space?
+    var serverName: String = ""
+    var serverURL: String = ""
+    var username: String = ""
+    var password: String = "••••••••"
+    
+    // Creative Commons License Toggles
+    var isCcEnabled: Bool = false
+    var allowRemix: Bool = false
+    var requireShareAlike: Bool = false
+    var allowCommercialUse: Bool = false
+    var licenseURL: String? = nil
+}
+
+enum ServerSettingsAction {
+    case updateServerName(String)
+    case updateServerURL(String)
+    
+    case toggleCcEnabled(Bool)
+    case toggleAllowRemix(Bool)
+    case toggleRequireShareAlike(Bool)
+    case toggleAllowCommercialUse(Bool)
+    case saveToDatabase
+    case removeSpace(Space?)
+    case updateLicense
 }
 
 func serverSettingsReducer(state: inout ServerSettingsState, action: ServerSettingsAction) {
@@ -118,32 +147,4 @@ func generateLicenseURL(state: ServerSettingsState) -> String? {
     } else {
         return String(format: "https://creativecommons.org/licenses/%@/4.0/", license)
     }
-}
-import Foundation
-
-struct ServerSettingsState {
-    var space: Space?
-    var serverName: String = ""
-    var serverURL: String = ""
-    var username: String = ""
-    var password: String = "••••••••"
-    
-    // Creative Commons License Toggles
-    var isCcEnabled: Bool = false
-    var allowRemix: Bool = false
-    var requireShareAlike: Bool = false
-    var allowCommercialUse: Bool = false
-    var licenseURL: String? = nil
-}
-enum ServerSettingsAction {
-    case updateServerName(String)
-    case updateServerURL(String)
-    
-    case toggleCcEnabled(Bool)
-    case toggleAllowRemix(Bool)
-    case toggleRequireShareAlike(Bool)
-    case toggleAllowCommercialUse(Bool)
-    case saveToDatabase
-    case removeSpace(Space?)
-    case updateLicense
 }

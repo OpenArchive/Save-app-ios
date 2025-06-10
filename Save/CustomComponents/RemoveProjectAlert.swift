@@ -10,9 +10,9 @@ import UIKit
 import SDCAlertView
 import SwiftUI
 class RemoveProjectAlert {
-
+    
     class func present(_ vc: UIViewController, _ project: Project, _ completionHandler: ((_ success: Bool) -> Void)? = nil) {
-       
+        
         
         let alertVC = CustomAlertViewController(
             title: NSLocalizedString("Are you sure?", comment: ""),
@@ -23,7 +23,7 @@ class RemoveProjectAlert {
             primaryButtonAction: {
                 Db.writeConn?.asyncReadWrite() { tx in
                     tx.remove(project)
-
+                    
                     if let completionHandler = completionHandler {
                         DispatchQueue.main.async {
                             completionHandler(true)

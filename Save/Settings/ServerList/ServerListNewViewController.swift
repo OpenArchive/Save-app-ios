@@ -22,7 +22,7 @@ class ServerListNewViewController: UIViewController, UITableViewDelegate, UITabl
         label.translatesAutoresizingMaskIntoConstraints = false
         return label
     }()
-
+    
     override func viewWillDisappear(_ animated: Bool) {
         
     }
@@ -40,7 +40,7 @@ class ServerListNewViewController: UIViewController, UITableViewDelegate, UITabl
         view.addSubview(tableView)
         
         view.addSubview(noDataLabel)
-
+        
         NSLayoutConstraint.activate([
             noDataLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             noDataLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),

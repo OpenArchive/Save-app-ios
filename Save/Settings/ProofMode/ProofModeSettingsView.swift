@@ -1,46 +1,14 @@
 //
-//  ProofModeSettingsViewController.swift
-//  OpenArchive
+//  ProofModeSettingsView.swift
+//  Save
 //
-//  Created by Benjamin Erhart on 14.03.22.
-//  Copyright © 2022 Open Archive. All rights reserved.
+//  Created by navoda on 2025-06-10.
+//  Copyright © 2025 Open Archive. All rights reserved.
 //
 
-import UIKit
-import Eureka
-import LibProofMode
 
-class ProofModeSettingsViewController: UIViewController {
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        navigationItem.title = NSLocalizedString("ProofMode", comment: "")
-        
-        if #available(iOS 14.0, *) {
-            
-            let settingsView = ProofModeSettingsView()
-            
-            let hostingController = UIHostingController(rootView: settingsView)
-            
-            addChild(hostingController)
-            view.addSubview(hostingController.view)
-            
-            hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
-                hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-            ])
-            
-            hostingController.didMove(toParent: self)
-            hostingController.view.backgroundColor = UIColor.systemBackground
-            view.backgroundColor = UIColor.systemBackground
-        }
-    }
-}
 import SwiftUI
+import LibProofMode
 
 struct ProofModeSettingsView: View {
     @State private var isProofModeEnabled = Settings.proofMode  // Initialize from Settings
@@ -216,61 +184,5 @@ struct ProofModeSettingsView: View {
 struct ProofModeSettingsView_Previews: PreviewProvider {
     static var previews: some View {
         ProofModeSettingsView()
-    }
-}
-
-@available(iOS 15, *)
-extension AttributedString {
-    static func boldSubstring(in text: String, substring: String) -> AttributedString {
-        var attributedString = AttributedString(text)
-        if let range = attributedString.range(of: substring) {
-            attributedString[range].font =  (.montserrat(.boldItalic, for: .caption2))
-        }
-        return attributedString
-    }
-}
-
-import CoreLocation
-import LibProofMode
-
-class LocationManangerProofMode: NSObject, ObservableObject, CLLocationManagerDelegate {
-    
-    static let shared = LocationManangerProofMode()
-    
-    var status: CLAuthorizationStatus {
-        LibProofMode.LocationManager.shared.authorizationStatus
-    }
-    
-    private var onAuthorizationChange: ((CLAuthorizationStatus) -> Void)?
-    private let observerManager = CLLocationManager()
-    
-    override private init() {
-        super.init()
-        observerManager.delegate = self
-        observerManager.desiredAccuracy = kCLLocationAccuracyBest
-    }
-    
-    func requestAuthorization(_ callback: ((_ status: CLAuthorizationStatus) -> Void)? = nil) {
-        if status == .notDetermined {
-            LibProofMode.LocationManager.shared.getPermission(callback: callback ?? { _ in })
-        } else {
-            callback?(status)
-        }
-    }
-    
-    func monitorAuthorizationChanges(_ callback: @escaping (CLAuthorizationStatus) -> Void) {
-        onAuthorizationChange = callback
-    }
-    
-    func locationManagerDidChangeAuthorization(_ manager: CLLocationManager) {
-        let status: CLAuthorizationStatus
-        
-        if #available(iOS 14.0, *) {
-            status = manager.authorizationStatus
-        } else {
-            status = CLLocationManager.authorizationStatus()
-        }
-        
-        onAuthorizationChange?(status)
     }
 }

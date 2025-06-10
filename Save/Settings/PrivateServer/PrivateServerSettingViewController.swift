@@ -8,9 +8,6 @@
 import UIKit
 import SwiftUI
 
-import UIKit
-import SwiftUI
-
 class PrivateServerSettingViewController: UIViewController {
     var space: Space?
 

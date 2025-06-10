@@ -3,200 +3,6 @@ import SwiftUI
 import SwiftUIIntrospect
 import OrbotKit
 
-class SettingsViewModel: ObservableObject {
-    @Published var isPasscodeOn = AppSettings.isPasscodeEnabled
-    @Published var isWifiOnlyOn = Settings.wifiOnly
-    @Published var isOnionRoutingOn = false
-    
-    weak var delegate: ViewControllerNavigationDelegate?
-    
-    func navigateToServerList() {
-        delegate?.pushServerList()
-    }
-    
-    func navigateToFolderList() {
-        
-        delegate?.pushFolderList()
-    }
-    func navigateToProofMode(){
-        let proofModeSettingsViewController = ProofModeSettingsViewController()
-        delegate?.pushViewController(proofModeSettingsViewController)
-    }
-    
-    func togglePasscode(_ value: Bool) {
-        if value {
-            let passcodeSetupController = PasscodeSetupController()
-            delegate?.pushViewController(passcodeSetupController)
-        }
-    }
-    
-    
-    func toggleOrbot(completion: @escaping (Bool) -> Void) {
-        guard !isOnionRoutingOn else {
-            OrbotManager.shared.stop()
-            Settings.useOrbot = false
-            isOnionRoutingOn = false
-            completion(false)
-            return
-        }
-        guard OrbotManager.shared.installed else {
-            OrbotManager.shared.alertOrbotNotInstalled()
-            Settings.useOrbot = false
-            isOnionRoutingOn = false
-            completion(false)
-            return
-        }
-        if Settings.orbotApiToken.isEmpty {
-            OrbotManager.shared.alertToken {
-                OrbotManager.shared.start()
-                Settings.useOrbot = true
-                self.isOnionRoutingOn = true
-                completion(true)
-            }
-        } else {
-            OrbotManager.shared.start()
-            Settings.useOrbot = true
-            isOnionRoutingOn = true
-            completion(true)
-        }
-    }
-    
-    func openOrbot() {
-        OrbotKit.shared.open(.show)
-    }
-    
-    func orbotTorStatus() -> String {
-        if OrbotManager.shared.status == .started {
-            if Settings.useTor {
-                return NSLocalizedString("Tor enabled and connected", comment: "")
-            } else if Settings.useOrbot {
-                return NSLocalizedString("Orbot enabled and Tor connected", comment: "")
-            } else {
-                return NSLocalizedString("Tor is not enabled but is connected", comment: "")
-            }
-        } else if OrbotManager.shared.status == .starting {
-            if Settings.useTor {
-                return NSLocalizedString("Tor is enabled and starting...", comment: "")
-            } else if Settings.useOrbot {
-                return NSLocalizedString("Orbot enabled and Tor is starting...", comment: "")
-            } else {
-                return NSLocalizedString("Tor is not enabled but starting...", comment: "")
-            }
-        } else {
-            if Settings.useTor {
-                return NSLocalizedString("Tor is enabled but disconnected", comment: "")
-            } else if Settings.useOrbot {
-                return NSLocalizedString("Orbot enabled but Tor is disconnected", comment: "")
-            } else {
-                return NSLocalizedString("Tor is not enabled and disconnected", comment: "")
-            }
-        }
-    }
-}
-
-// Reusable Switch Toggle Component
-struct ToggleSwitch: View {
-    var title: String
-    var subtitle: String?
-    var isDisabled:Bool = false
-    @Binding var isOn: Bool
-    var action: ((Bool) -> Void)?
-    
-    var body: some View {
-        HStack {
-            VStack(alignment: .leading,spacing: 1) {
-                Text(title)
-                    .font(.montserrat(.medium, for: .subheadline))
-                    .foregroundColor(.primary)
-                if let subtitle = subtitle {
-                    if #available(iOS 14.0, *) {
-                        Text(subtitle)
-                            .font(.montserrat(.mediumItalic, for: .caption2))
-                            .foregroundColor(.settingSubtitle)
-                    } else {
-                        Text(subtitle)
-                            .font(.montserrat(.mediumItalic, for: .caption))
-                            .foregroundColor(.settingSubtitle)
-                    }
-                    
-                }
-            }.padding(.vertical, 6)
-            Spacer()
-            if #available(iOS 15.0, *) {
-                Toggle("", isOn: $isOn)
-                    .labelsHidden()
-                    .disabled(isDisabled)
-                    .tint(.accent)
-                    .onChange(of: isOn) { value in
-                        action?(value)
-                    }
-            } else if #available(iOS 14.0, *) {
-                Toggle("", isOn: $isOn)
-                    .labelsHidden()
-                    .disabled(isDisabled)
-                    .accentColor(isOn ? .accentColor : .gray30)
-                    .onChange(of: isOn) { value in
-                        action?(value)
-                    }
-            } else {
-                
-            }
-        }
-    }
-}
-
-// Clickable Sub-item Component
-struct SubItem: View {
-    var title: String
-    var subtitle: String?
-    var action: () -> Void
-    
-    var body: some View {
-        Button(action: action) {
-            VStack(alignment: .leading,spacing: 1) {
-                Text(title)
-                    .font(.montserrat(.medium, for: .subheadline))
-                    .foregroundColor(.primary)
-                if let subtitle = subtitle {
-                    if #available(iOS 14.0, *) {
-                        Text(subtitle)
-                            .font(.montserrat(.mediumItalic, for: .caption2))
-                            .foregroundColor(.settingSubtitle)
-                    } else {
-                        Text(subtitle)
-                            .font(.montserrat(.mediumItalic, for: .caption))
-                            .foregroundColor(.settingSubtitle)
-                    }
-                }
-            }
-            .padding(.vertical, 6)
-        }.buttonStyle(PlainButtonStyle())
-    }
-}
-struct HideItemSeparator: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(iOS 15.0, *) {
-            content.listRowSeparator(.hidden) // Works in iOS 15+
-        } else {
-            content.listRowBackground(Color.clear) // Hides background in iOS 14
-        }
-    }
-}
-struct ListSpacingModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(iOS 17, *) {
-            content.listSectionSpacing(1) // iOS 17+ uses listSectionSpacing
-        } else {
-            content
-                .environment(\.defaultMinListHeaderHeight, 0) // iOS 16 and below
-                .introspect(.list, on: .iOS(.v15)) { tableView in
-                    tableView.sectionHeaderHeight = 0
-                    tableView.sectionFooterHeight = 0
-                }
-        }
-    }
-}
-
 
 @available(iOS 14.0, *)
 struct SettingsView: View {
@@ -213,9 +19,9 @@ struct SettingsView: View {
         NSLocalizedString("Smaller Size", comment: "")
     ]
     @State private var selectedCompressionOption: String = Settings.highCompression
-        ? SettingsView.compressionOptions[1]  // "Smaller Size"
-        : SettingsView.compressionOptions[0]  // "Better Quality"
-
+    ? SettingsView.compressionOptions[1]  // "Smaller Size"
+    : SettingsView.compressionOptions[0]  // "Better Quality"
+    
     init() {
         _selectedTheme = State(initialValue: AppSettings.theme)
         _passcodeToggleState = State(initialValue: AppSettings.isPasscodeEnabled)
@@ -268,19 +74,19 @@ struct SettingsView: View {
                         (NSLocalizedString("Encrypt", comment: ""),
                          [
                             AnyView(ToggleSwitch(title: NSLocalizedString("Turn on Onion Routing", comment: ""),subtitle: NSLocalizedString("Transfer via the Tor Network only", comment: ""), isDisabled:false, isOn: $viewModel.isOnionRoutingOn).overlay(
-                             
+                                
                                 Group {
                                     if true {
                                         Color.black.opacity(0.001)
                                             .onTapGesture {
                                                 viewModel.toggleOrbot { result in
-                                                  //  showTorAlert = result
+                                                    //  showTorAlert = result
                                                 }
                                             }
                                     }
                                 }
                             )
-                                   ),
+                            ),
                             AnyView(Group {
                                 if viewModel.isOnionRoutingOn {
                                     SubItem(title: NSLocalizedString("Tor Status", comment: ""), subtitle: viewModel.orbotTorStatus()) {
@@ -296,14 +102,14 @@ struct SettingsView: View {
                             AnyView(
                                 SubItem(title: NSLocalizedString("Media Compression", comment: ""),
                                         subtitle: selectedCompressionOption) {
-                                    showCompressionSheet = true
-                                }
-                                .actionSheet(isPresented: $showCompressionSheet) {
-                                    ActionSheet(
-                                        title: Text(NSLocalizedString("Media Compression", comment: "")),
-                                        buttons: compressionSheetButtons()
-                                    )
-                                }
+                                            showCompressionSheet = true
+                                        }
+                                    .actionSheet(isPresented: $showCompressionSheet) {
+                                        ActionSheet(
+                                            title: Text(NSLocalizedString("Media Compression", comment: "")),
+                                            buttons: compressionSheetButtons()
+                                        )
+                                    }
                             ),
                             AnyView(
                                 SubItem(title: NSLocalizedString("Theme", comment: ""),
@@ -447,10 +253,10 @@ struct SettingsView: View {
     }
     private func compressionSheetButtons() -> [ActionSheet.Button] {
         var buttons: [ActionSheet.Button] = SettingsView.compressionOptions.map { option in
-            .default(Text(option)) {
-                selectedCompressionOption = option
-                Settings.highCompression = (option == SettingsView.compressionOptions[1])
-            }
+                .default(Text(option)) {
+                    selectedCompressionOption = option
+                    Settings.highCompression = (option == SettingsView.compressionOptions[1])
+                }
         }
         buttons.append(.cancel())
         return buttons

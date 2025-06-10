@@ -9,7 +9,7 @@
 import StoreKit
 
 func maybePromptForReview() {
-
+    
     Settings.appLaunchCount += 1
     
     if Settings.appLaunchCount >= 5 && !Settings.hasPromptedReview {
