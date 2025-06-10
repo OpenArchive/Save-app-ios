@@ -29,7 +29,8 @@ class GeneralSettingsViewController:UIViewController,ViewControllerNavigationDel
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(orbotStatus),
+                                                   name: .orbotStatus, object: nil)
         settingsViewModel.delegate = self
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backBarButtonItem
@@ -52,11 +53,20 @@ class GeneralSettingsViewController:UIViewController,ViewControllerNavigationDel
             hostingController.view.backgroundColor = .clear
             view.backgroundColor = .clear
         } else {
-            
         }
         
     }
     
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .orbotStatus, object: nil)
+    }
+    
+    @objc
+    func orbotStatus(notification: Notification) {
+        DispatchQueue.main.async {
+            self.settingsViewModel.objectWillChange.send()
+        }
+    }
 }
 protocol GeneralSettingsDelegate: AnyObject {
     func pushServerListScreen()

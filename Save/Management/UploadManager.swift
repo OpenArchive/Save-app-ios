@@ -91,6 +91,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     private var _backgroundSession: URLSession?
     private var _foregroundSession: URLSession?
     
+    
     /**
      A session, which is enabled for background uploading.
      
@@ -136,7 +137,13 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         if Settings.useTor {
             conf.connectionProxyDictionary = TorManager.shared.torSocks5ProxyConf
         }
-        
+        else if Settings.useOrbot && OrbotManager.shared.status == .started {
+            conf.connectionProxyDictionary = [
+                kCFNetworkProxiesHTTPEnable: true,
+                kCFNetworkProxiesHTTPProxy: "127.0.0.1",
+                kCFNetworkProxiesHTTPPort: 8118
+            ]
+        }
         return conf
     }
     

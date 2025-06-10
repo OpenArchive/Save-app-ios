@@ -14,6 +14,7 @@ import TorManager
 extension Notification.Name {
 
     static let orbotStopped = Notification.Name("\(Bundle.main.bundleIdentifier!).orbotStopped")
+    static let orbotStatus = Notification.Name("\(Bundle.main.bundleIdentifier!).orbotStatus")
 }
 
 /**
@@ -51,24 +52,29 @@ class OrbotManager: OrbotStatusChangeListener {
 
     func start() {
         OrbotKit.shared.apiToken = Settings.orbotApiToken
-
+        
+        // yes, url scheme less secure than universalScheme
+        // can mitigate by checking scheme and domain until
+        // TODO: setup backend for .well-known validation
+        OrbotKit.shared.uiUrlType = .orbotScheme
+        
         var error: Error?
-
+        
         let group = DispatchGroup()
         group.enter()
-
+        
         OrbotKit.shared.info { info, e in
             if let info = info {
                 self.lastOrbotInfo = info
             }
-
+            
             error = e
-
+            
             group.leave()
         }
-
+        
         group.wait()
-
+        
         if let error = error {
             if case OrbotKit.Errors.httpError(statusCode: 403) = error {
                 self.alertToken()
@@ -81,7 +87,7 @@ class OrbotManager: OrbotStatusChangeListener {
             OrbotKit.shared.notifyOnStatusChanges(self)
         }
     }
-
+    
     func stop() {
         OrbotKit.shared.removeStatusChangeListener(self)
     }
@@ -138,17 +144,12 @@ class OrbotManager: OrbotStatusChangeListener {
             return
         }
 
-        var urlc: URLComponents?
+        var urlc = URLComponents()
+        urlc.scheme = "orbot"
+        //urlc.host = "org.openarchive.save"
+        urlc.path = "token-callback"
 
-        if let urlType = (Bundle.main.infoDictionary?["CFBundleURLTypes"] as? [[String: Any]])?.first {
-            if let scheme = (urlType["CFBundleURLSchemes"] as? [String])?.first {
-                urlc = URLComponents()
-                urlc?.scheme = scheme
-                urlc?.path = "token-callback"
-            }
-        }
-
-        OrbotKit.shared.open(.requestApiToken(needBypass: true, callback: urlc?.url)) { [weak self] success in
+        OrbotKit.shared.open(.requestApiToken(needBypass: true, callback: urlc.url)) { [weak self] success in
             if !success {
                 AlertHelper.present(topVc, message: String(format: NSLocalizedString(
                     "%@ could not be opened!", comment: "Placeholder is 'Orbot'"), OrbotKit.orbotName))
@@ -306,10 +307,10 @@ class OrbotManager: OrbotStatusChangeListener {
 
     func orbotStatusChanged(info: OrbotKit.Info) {
         lastOrbotInfo = info
-
         if status == .stopped {
             NotificationCenter.default.post(name: .orbotStopped, object: nil)
         }
+        NotificationCenter.default.post(name: .orbotStatus, object: nil)
     }
 
     func statusChangeListeningStopped(error: Error) {

@@ -1,6 +1,7 @@
 
 import SwiftUI
 import SwiftUIIntrospect
+import OrbotKit
 
 class SettingsViewModel: ObservableObject {
     @Published var isPasscodeOn = AppSettings.isPasscodeEnabled
@@ -26,6 +27,69 @@ class SettingsViewModel: ObservableObject {
         if value {
             let passcodeSetupController = PasscodeSetupController()
             delegate?.pushViewController(passcodeSetupController)
+        }
+    }
+    
+    
+    func toggleOrbot(completion: @escaping (Bool) -> Void) {
+        guard !isOnionRoutingOn else {
+            OrbotManager.shared.stop()
+            Settings.useOrbot = false
+            isOnionRoutingOn = false
+            completion(false)
+            return
+        }
+        guard OrbotManager.shared.installed else {
+            OrbotManager.shared.alertOrbotNotInstalled()
+            Settings.useOrbot = false
+            isOnionRoutingOn = false
+            completion(false)
+            return
+        }
+        if Settings.orbotApiToken.isEmpty {
+            OrbotManager.shared.alertToken {
+                OrbotManager.shared.start()
+                Settings.useOrbot = true
+                self.isOnionRoutingOn = true
+                completion(true)
+            }
+        } else {
+            OrbotManager.shared.start()
+            Settings.useOrbot = true
+            isOnionRoutingOn = true
+            completion(true)
+        }
+    }
+    
+    func openOrbot() {
+        OrbotKit.shared.open(.show)
+    }
+    
+    func orbotTorStatus() -> String {
+        if OrbotManager.shared.status == .started {
+            if Settings.useTor {
+                return NSLocalizedString("Tor enabled and connected", comment: "")
+            } else if Settings.useOrbot {
+                return NSLocalizedString("Orbot enabled and Tor connected", comment: "")
+            } else {
+                return NSLocalizedString("Tor is not enabled but is connected", comment: "")
+            }
+        } else if OrbotManager.shared.status == .starting {
+            if Settings.useTor {
+                return NSLocalizedString("Tor is enabled and starting...", comment: "")
+            } else if Settings.useOrbot {
+                return NSLocalizedString("Orbot enabled and Tor is starting...", comment: "")
+            } else {
+                return NSLocalizedString("Tor is not enabled but starting...", comment: "")
+            }
+        } else {
+            if Settings.useTor {
+                return NSLocalizedString("Tor is enabled but disconnected", comment: "")
+            } else if Settings.useOrbot {
+                return NSLocalizedString("Orbot enabled but Tor is disconnected", comment: "")
+            } else {
+                return NSLocalizedString("Tor is not enabled and disconnected", comment: "")
+            }
         }
     }
 }
@@ -209,12 +273,21 @@ struct SettingsView: View {
                                     if true {
                                         Color.black.opacity(0.001)
                                             .onTapGesture {
-                                                showTorAlert = true
+                                                viewModel.toggleOrbot { result in
+                                                    showTorAlert = result
+                                                }
                                             }
                                     }
                                 }
                             )
                                    ),
+                            AnyView(Group {
+                                if viewModel.isOnionRoutingOn {
+                                    SubItem(title: NSLocalizedString("Tor Status", comment: ""), subtitle: viewModel.orbotTorStatus()) {
+                                        viewModel.openOrbot()
+                                    }
+                                }
+                            })
                             
                          ]),
                         

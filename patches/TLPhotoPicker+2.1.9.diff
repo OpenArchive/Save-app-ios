@@ -1,0 +1,18 @@
+diff --git a/cocoapods-patch-20250521-68355-m0btvy/TLPhotoPicker/TLPhotoPicker/Classes/TLPhotosPickerViewController.swift b/Pods/TLPhotoPicker/TLPhotoPicker/Classes/TLPhotosPickerViewController.swift
+index 89e9dda..e18ba03 100644
+--- a/cocoapods-patch-20250521-68355-m0btvy/TLPhotoPicker/TLPhotoPicker/Classes/TLPhotosPickerViewController.swift
++++ b/Pods/TLPhotoPicker/TLPhotoPicker/Classes/TLPhotosPickerViewController.swift
+@@ -125,7 +125,12 @@ public enum PopupConfigure {
+ 
+ public struct Platform {
+     public static var isSimulator: Bool {
+-        return TARGET_OS_SIMULATOR != 0 // Use this line in Xcode 7 or newer
++#if targetEnvironment(simulator)
++        return true
++#else
++        return false
++#endif
++
+     }
+ }
+ 

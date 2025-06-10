@@ -117,6 +117,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool
     {
         if let urlc = URLComponents(url: url, resolvingAgainstBaseURL: true),
+           // TODO: validate callback, scheme, domain
            urlc.path == "token-callback"
         {
             if let token = urlc.queryItems?.first(where: { $0.name == "token" })?.value {
