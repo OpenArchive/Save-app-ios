@@ -267,14 +267,14 @@ struct SettingsView: View {
                         
                         (NSLocalizedString("Encrypt", comment: ""),
                          [
-                            AnyView(ToggleSwitch(title: NSLocalizedString("Turn on Onion Routing", comment: ""),subtitle: NSLocalizedString("Transfer via the Tor Network only", comment: ""), isDisabled:true, isOn: $viewModel.isOnionRoutingOn).overlay(
+                            AnyView(ToggleSwitch(title: NSLocalizedString("Turn on Onion Routing", comment: ""),subtitle: NSLocalizedString("Transfer via the Tor Network only", comment: ""), isDisabled:false, isOn: $viewModel.isOnionRoutingOn).overlay(
                              
                                 Group {
                                     if true {
                                         Color.black.opacity(0.001)
                                             .onTapGesture {
                                                 viewModel.toggleOrbot { result in
-                                                    showTorAlert = result
+                                                  //  showTorAlert = result
                                                 }
                                             }
                                     }
