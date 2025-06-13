@@ -69,32 +69,4 @@ class SettingsViewModel: ObservableObject {
     func openOrbot() {
         OrbotKit.shared.open(.show)
     }
-    
-    func orbotTorStatus() -> String {
-        if OrbotManager.shared.status == .started {
-            if Settings.useTor {
-                return NSLocalizedString("Tor enabled and connected", comment: "")
-            } else if Settings.useOrbot {
-                return NSLocalizedString("Orbot enabled and Tor connected", comment: "")
-            } else {
-                return NSLocalizedString("Tor is not enabled but is connected", comment: "")
-            }
-        } else if OrbotManager.shared.status == .starting {
-            if Settings.useTor {
-                return NSLocalizedString("Tor is enabled and starting...", comment: "")
-            } else if Settings.useOrbot {
-                return NSLocalizedString("Orbot enabled and Tor is starting...", comment: "")
-            } else {
-                return NSLocalizedString("Tor is not enabled but starting...", comment: "")
-            }
-        } else {
-            if Settings.useTor {
-                return NSLocalizedString("Tor is enabled but disconnected", comment: "")
-            } else if Settings.useOrbot {
-                return NSLocalizedString("Orbot enabled but Tor is disconnected", comment: "")
-            } else {
-                return NSLocalizedString("Tor is not enabled and disconnected", comment: "")
-            }
-        }
-    }
 }

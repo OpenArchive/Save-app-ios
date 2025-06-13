@@ -89,7 +89,7 @@ struct SettingsView: View {
                             ),
                             AnyView(Group {
                                 if viewModel.isOnionRoutingOn {
-                                    SubItem(title: NSLocalizedString("Tor Status", comment: ""), subtitle: viewModel.orbotTorStatus()) {
+                                    SubItem(title: NSLocalizedString("Open Orbot", comment: ""), subtitle: "") {
                                         viewModel.openOrbot()
                                     }
                                 }
