@@ -199,8 +199,8 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
                 paragraphStyle.alignment = .left
            
                 let saveText = NSLocalizedString("Save", comment: "Save")
-                let torText = NSLocalizedString("Tor", comment: "Tor")
-                let torUrl = URL(string: "https://www.torproject.org")!
+                let torText = NSLocalizedString("Orbot", comment: "Orbot")
+                let torUrl = URL(string: "https://orbot.app/en/")!
                
                // paragraphStyle.lineSpacing = 3
               
