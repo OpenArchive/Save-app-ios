@@ -11,7 +11,7 @@ import OrbotKit
 class SettingsViewModel: ObservableObject {
     @Published var isPasscodeOn = AppSettings.isPasscodeEnabled
     @Published var isWifiOnlyOn = Settings.wifiOnly
-    @Published var isOnionRoutingOn = false
+    @Published var isOnionRoutingOn = Settings.useOrbot
     
     weak var delegate: ViewControllerNavigationDelegate?
     

@@ -89,9 +89,20 @@ struct SettingsView: View {
                             ),
                             AnyView(Group {
                                 if viewModel.isOnionRoutingOn {
-                                    SubItem(title: NSLocalizedString("Open Orbot", comment: ""), subtitle: "") {
-                                        viewModel.openOrbot()
+                                    HStack {
+                                        Button(action: {
+                                            viewModel.openOrbot()
+                                        }) {
+                                            Text(NSLocalizedString("Open Orbot", comment: ""))
+                                                .font(.montserrat(.semibold, for: .subheadline))
+                                                .padding(.horizontal, 20)
+                                                .padding(.vertical, 12)
+                                                .background(Color.accentColor)
+                                                .foregroundColor(.black)
+                                                .cornerRadius(10)
+                                        }
                                     }
+                                    .frame(maxWidth: .infinity)
                                 }
                             })
                             
