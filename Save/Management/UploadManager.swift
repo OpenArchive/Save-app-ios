@@ -138,6 +138,10 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             conf.connectionProxyDictionary = TorManager.shared.torSocks5ProxyConf
         }
         else if Settings.useOrbot && OrbotManager.shared.status == .started {
+            
+            conf.timeoutIntervalForRequest = 120
+            conf.timeoutIntervalForResource = 120
+
             conf.connectionProxyDictionary = [
                 kCFNetworkProxiesHTTPEnable: true,
                 kCFNetworkProxiesHTTPProxy: "127.0.0.1",

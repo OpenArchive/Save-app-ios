@@ -15,6 +15,7 @@ class InternetArchiveRemoteSource {
 
     func login(request: InternetArchiveLoginRequest) -> AnyPublisher<InternetArchiveLoginResponse, Error> {
         
+        
         var urlRequest = URLRequest(url: URL(string: LOGIN_URI)!)
         
         let payload = [
@@ -24,8 +25,10 @@ class InternetArchiveRemoteSource {
         
         urlRequest.httpMethod = "POST"
         urlRequest.httpBody = payload
+        
+        let session = URLSession(configuration: UploadManager.improvedSessionConf())
          
-        return URLSession.shared.dataTaskPublisher(for: urlRequest)
+        return session.dataTaskPublisher(for: urlRequest)
             .tryMap { data, response in
                 
                 guard let httpResponse = response as? HTTPURLResponse,
