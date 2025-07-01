@@ -339,9 +339,16 @@ struct SettingsView: View {
                                 CustomAlertView(
                                     title: NSLocalizedString("Onion routing under development", comment: ""),
                                     message: NSLocalizedString("This feature is currently under development. For now, you can use Orbot or any VPN of your choice to enhance your privacy and security.", comment: ""),
-                                    primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
-                                    iconImage: Image(systemName: "info.circle"),
+                                    primaryButtonTitle: NSLocalizedString("Download Orbot", comment: ""),
+                                    iconImage: Image(systemName: "info.circle.fill"),
                                     primaryButtonAction: {
+                                        showTorAlert = false
+                                        if let url = URL(string: "https://apps.apple.com/us/app/orbot/id1609461599") {
+                                                        UIApplication.shared.open(url)
+                                                    }
+                                    },
+                                    secondaryButtonTitle: NSLocalizedString("Cancel", comment: ""),
+                                    secondaryButtonAction: {
                                         showTorAlert = false
                                     }
                                     

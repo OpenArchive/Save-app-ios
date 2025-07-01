@@ -711,7 +711,7 @@
                                 <rect key="frame" x="0.0" y="460" width="320" height="74"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="tailTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="QIU-V8-v7v">
-                                        <rect key="frame" x="20" y="8.5" width="78" height="57.5"/>
+                                        <rect key="frame" x="20" y="8.5" width="78" height="57"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" image="media_image" imagePlacement="top" title="My Media" imagePadding="6" titleAlignment="center">
                                             <fontDescription key="titleFontDescription" name="Montserrat-Medium" family="Montserrat Medium" pointSize="11"/>
@@ -925,6 +925,7 @@
                         <outlet property="folderNameText" destination="jj3-YE-6Pn" id="kbV-Py-WiI"/>
                         <outlet property="hintLb" destination="dIV-uA-I3m" id="kTY-Ec-y7W"/>
                         <outlet property="logo" destination="hpS-2l-dcc" id="f3r-5D-oXV"/>
+                        <outlet property="mediaArrow" destination="Neb-2j-hxC" id="Ury-Be-Kh7"/>
                         <outlet property="menu" destination="Bhs-Ln-YUb" id="Pi8-tu-3Wk"/>
                         <outlet property="myMediaBt" destination="QIU-V8-v7v" id="Co4-ka-MJ3"/>
                         <outlet property="removeBt" destination="U5N-a5-RcO" id="900-IT-7kl"/>

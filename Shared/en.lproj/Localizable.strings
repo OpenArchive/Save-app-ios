@@ -668,7 +668,7 @@
 
 "Removing this server will delete all associated data." = "Removing this server will delete all associated data.";
 
-"Upload your media to a free public or paid private account on the Internet Archive." = "Upload your media to a free public or paid private account on the Internet Archive.";
+"Upload your media to a free public account on the Internet Archive." = "Upload your media to a free public account on the Internet Archive.";
 
 "No Account?" = "No Account?";
 
@@ -804,6 +804,11 @@
 "Location Permission Required" = "Location Permission Required";
 
 "Open Settings" = "Open Settings";
+
 "Onion routing under development" = "Onion routing under development";
 "This feature is currently under development. For now, you can use Orbot or any VPN of your choice to enhance your privacy and security." = "This feature is currently under development. For now, you can use Orbot or any VPN of your choice to enhance your privacy and security.";
+
+"Orbot" = "Orbot";
+
+"Download Orbot" = "Download Orbot";
 

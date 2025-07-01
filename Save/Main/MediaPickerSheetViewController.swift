@@ -14,9 +14,12 @@ class MediaPopupViewController: UIViewController {
     var onCameraTap: (() -> Void)?
     var onGalleryTap: (() -> Void)?
     var onFilesTap: (() -> Void)?
+    var onAppear: (() -> Void)?
+    var onDisappear: (() -> Void)?
+    
     
     private let backgroundView = UIView()
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .clear
@@ -28,7 +31,7 @@ class MediaPopupViewController: UIViewController {
         backgroundView.backgroundColor = UIColor.black.withAlphaComponent(0.4)
         backgroundView.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(backgroundView)
-
+        
         NSLayoutConstraint.activate([
             backgroundView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             backgroundView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
@@ -39,7 +42,7 @@ class MediaPopupViewController: UIViewController {
         let tap = UITapGestureRecognizer(target: self, action: #selector(dismissSelf))
         backgroundView.addGestureRecognizer(tap)
     }
-
+    
     private func setupPopup() {
         let popupView = UIView()
         popupView.backgroundColor = .gray10
@@ -84,42 +87,42 @@ class MediaPopupViewController: UIViewController {
             contentStack.bottomAnchor.constraint(equalTo: popupView.bottomAnchor, constant: -40)
         ])
     }
-
+    
     private func createOption(imageName: String, text: String, action: Selector) -> UIView {
         let imageView = UIImageView(image: UIImage(named: imageName))
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.widthAnchor.constraint(equalToConstant: 54).isActive = true
         imageView.heightAnchor.constraint(equalToConstant: 54).isActive = true
-
+        
         let tapGesture = UITapGestureRecognizer(target: self, action: action)
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(tapGesture)
-
+        
         let label = UILabel()
         label.text = text
         label.font = .montserrat(forTextStyle: .footnote)
         label.textAlignment = .center
-
+        
         let stack = UIStackView(arrangedSubviews: [imageView, label])
         stack.axis = .vertical
         stack.alignment = .center
         stack.spacing = 6
         return stack
     }
-
+    
     @objc private func cameraTapped() {
         dismiss(animated: true) {
             self.onCameraTap?()
         }
     }
-
+    
     @objc private func galleryTapped() {
         dismiss(animated: true) {
             self.onGalleryTap?()
         }
     }
-
+    
     @objc private func filesTapped() {
         dismiss(animated: true) {
             self.onFilesTap?()
@@ -128,5 +131,15 @@ class MediaPopupViewController: UIViewController {
     
     @objc private func dismissSelf() {
         dismiss(animated: true)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        onAppear?()
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        onDisappear?()
     }
 }
