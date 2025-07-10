@@ -20,6 +20,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
     }
     
+    @IBOutlet weak var mediaArrow: UIImageView!
     @IBOutlet weak var EditButtonTrailingContraint: NSLayoutConstraint!
     @IBOutlet weak var titleContainerHeight: NSLayoutConstraint!
     @IBOutlet weak var titleContainer: UIView!
@@ -701,16 +702,25 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 let popup = MediaPopupViewController()
                 popup.modalPresentationStyle = .overCurrentContext
                 popup.modalTransitionStyle = .crossDissolve
+                self.mediaArrow.isHidden = true
                 
                 popup.onCameraTap = { [weak self] in
+                    self?.mediaArrow.isHidden = false
                     self?.assetPicker.openCamera()
                 }
                 popup.onGalleryTap = { [weak self] in
+                    self?.mediaArrow.isHidden = false
                     self?.assetPicker.pickMedia()
                 }
                 popup.onFilesTap = { [weak self] in
-                    
+                    self?.mediaArrow.isHidden = false
                     self?.assetPicker.pickDocuments()
+                }
+                popup.onAppear = { [weak self] in
+                    self?.mediaArrow.isHidden = true
+                }
+                popup.onDisappear = { [weak self] in
+                    self?.mediaArrow.isHidden = false
                 }
                 
                 present(popup, animated: true)

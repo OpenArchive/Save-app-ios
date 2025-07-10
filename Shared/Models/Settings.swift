@@ -27,6 +27,8 @@ class Settings {
     private static let kHideContent = "hide_content"
     private static let kFirstFolderDone = "first_folder_done"
     private static let kInterfaceStyle = "interface_style"
+    private static let kAppLaunchCount = "app_launch_count"
+    private static let kHasPromptedReview = "has_prompted_review"
 
     private class var defaults: UserDefaults? {
         UserDefaults(suiteName: Constants.suiteName)
@@ -202,6 +204,22 @@ class Settings {
         }
         set {
             defaults?.set(newValue, forKey: kFirstFolderDone)
+        }
+    }
+    class var hasPromptedReview: Bool {
+        get {
+            defaults?.bool(forKey: kHasPromptedReview) ?? false
+        }
+        set {
+            defaults?.set(newValue, forKey: kHasPromptedReview)
+        }
+    }
+    class var appLaunchCount: Int {
+        get {
+            defaults?.integer(forKey: kAppLaunchCount) ?? 0
+        }
+        set {
+            defaults?.set(newValue, forKey: kAppLaunchCount)
         }
     }
 }

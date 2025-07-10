@@ -82,7 +82,7 @@ struct CustomAlertView: View {
                     CustomButton(
                         title: primaryButtonTitle,
                         backgroundColor: .accent,
-                        textColor: .black,
+                        textColor: .primary,
                         action: primaryButtonAction
                     ).padding(.top,15)
                         .padding(.bottom, secondaryButtonTitle != nil ? 0 : 15)

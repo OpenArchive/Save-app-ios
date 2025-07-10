@@ -54,7 +54,7 @@ struct InternetArchiveLoginContent: View {
                                         .frame(width: 30, height: 30)
                                 ).padding(.trailing, 6)
                             VStack(alignment: .leading) {
-                                Text(LocalizedStringKey("Upload your media to a free public or paid private account on the Internet Archive.")) .font(.montserrat(.medium, for: .subheadline))
+                                Text(LocalizedStringKey("Upload your media to a free public account on the Internet Archive.")) .font(.montserrat(.medium, for: .subheadline))
                             }
                         }
                         .padding(.top,50).padding(.leading,20).padding(.trailing,40)
