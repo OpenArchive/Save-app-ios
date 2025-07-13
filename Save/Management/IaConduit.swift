@@ -10,7 +10,7 @@ import UIKit
 import LegacyUTType
 
 class IaConduit: Conduit {
-
+    
     // MARK: Conduit
 
     /**
@@ -179,6 +179,7 @@ class IaConduit: Conduit {
         if let url = asset.publicUrl {
             return url
         }
+        
 
         var slug = StringUtils.slug(asset.title != nil
             ? asset.title!
@@ -188,19 +189,23 @@ class IaConduit: Conduit {
 
         //        slug = "IMG-0003-u4z6"
 
+        if let space = asset.space as? IaSpace {
+            return construct(url: space.baseUrl, slug, asset.filename)
+        }
+        
         return construct(url: IaSpace.baseUrl, slug, asset.filename)
     }
 
     private func mediatype(for asset: Asset) -> String {
-        if asset.uti.conforms(to: .image) {
+        if asset.uti.conforms(to: LegacyUTType.image) {
             return "image"
         }
 
-        if asset.uti.conforms(to: .movie) {
+        if asset.uti.conforms(to: LegacyUTType.movie) {
             return "movies"
         }
 
-        if asset.uti.conforms(to: .audio) {
+        if asset.uti.conforms(to: LegacyUTType.audio) {
             return "audio"
         }
 

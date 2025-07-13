@@ -12,7 +12,6 @@ import Reachability
 import Regex
 import BackgroundTasks
 import Photos
-import TorManager
 import StoreKit
 
 extension Notification.Name {
@@ -62,8 +61,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     var waiting: Bool {
         globalPause || 
         (reachability?.connection ?? Reachability.Connection.unavailable == .unavailable) ||
-        (Settings.useOrbot && OrbotManager.shared.status == .stopped) ||
-        (Settings.useTor && !TorManager.shared.connected)
+        (Settings.useOrbot && OrbotManager.shared.status == .stopped)
     }
     
     private var current: Upload?
@@ -134,11 +132,9 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     public class func improvedSessionConf(_ conf: URLSessionConfiguration? = nil) -> URLSessionConfiguration {
         let conf = URLSessionConfiguration.improved(conf)
         
-        if Settings.useTor {
-            conf.connectionProxyDictionary = TorManager.shared.torSocks5ProxyConf
-        }
-        else if Settings.useOrbot && OrbotManager.shared.status == .started {
+        if Settings.useOrbot {
             
+            // can be slow
             conf.timeoutIntervalForRequest = 120
             conf.timeoutIntervalForResource = 120
 
@@ -566,17 +562,13 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 return self.endBackgroundTask(.noData)
             }
             
+            #if !targetEnvironment(simulator) && !DEBUG
             if Settings.useOrbot && OrbotManager.shared.status == .stopped {
                 self.debug("#uploadNext should use Orbot, but Orbot not started")
                 
                 return self.endBackgroundTask(.noData)
             }
-            
-            if Settings.useTor && !TorManager.shared.connected {
-                self.debug("#uploadNext should use built-in Tor, but Tor not started")
-                
-                return self.endBackgroundTask(.noData)
-            }
+            #endif
             
             guard let upload = self.getNext(),
                   let asset = upload.asset

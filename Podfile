@@ -1,10 +1,12 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
+deployment_target = '15.6'
+
 # Uncomment the next line to define a global platform for your project
-platform :ios, '13.0'
+platform :ios, deployment_target
 
 # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
-use_frameworks!
+use_frameworks! :linkage => :dynamic
 
 def shared_pods
     pod 'YapDatabase', :git => 'https://github.com/tladesignz/YapDatabase.git' #'~> 4.0'
@@ -34,36 +36,39 @@ def app_only
     pod 'TLPhotoPicker', :git => 'https://github.com/tladesignz/TLPhotoPicker.git' # '~> 2.1'
     pod 'GoogleSignIn', '~> 7.0'
     pod 'OrbotKit', '~> 1.2'
-    pod 'TorManager', '~> 0.4'
 end
 
 target 'Save' do
+    inherit! :search_paths
     shared_pods
     app_only
+end
+
+target 'Save Test' do
+    inherit! :search_paths
+    shared_pods
+    app_only
+end
+
+target 'Screenshots' do
+  inherit! :search_paths
+  shared_pods
 end
 
 target 'ShareExtension' do
+    inherit! :search_paths
     shared_pods
 end
 
-target 'Save Screenshots' do
+target 'Unit Tests' do
+    inherit! :search_paths
     shared_pods
-    app_only
 end
 
-# Fix Xcode 15 compile issues.
 post_install do |installer|
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
-      config.build_settings['OA_APP_GROUP'] = '$(inherited)'
-      config.build_settings['DEVELOPMENT_TEAM'] = '$(inherited)'
-    end
-    if target.respond_to?(:name) and !target.name.start_with?("Pods-")
-      target.build_configurations.each do |config|
-        if config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'].to_f < 12
-          config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
-        end
-      end
+      config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = deployment_target
     end
   end
 end

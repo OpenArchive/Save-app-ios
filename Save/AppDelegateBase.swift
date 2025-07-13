@@ -10,7 +10,6 @@ import UIKit
 import UserNotifications
 import LibProofMode
 import GoogleSignIn
-import TorManager
 import OrbotKit
 import SwiftUI
 import Firebase
@@ -107,9 +106,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     
     func applicationWillTerminate(_ application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        
-        TorManager.shared.stop()
-        
+                
         cleanCache()
     }
     
@@ -227,10 +224,6 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
             OrbotKit.shared.apiToken = Settings.orbotApiToken
         }
         
-        // Always initialize TorManager, so PT_STATE directory gets set and users
-        // can fetch bridges before they switch on Tor.
-        _ = TorManager.shared
-        
         DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
             OrbotManager.shared.alertCannotUpload()
         }
@@ -281,10 +274,6 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         }
     }
     
-}
-
-extension TorManager {
-    static let shared = TorManager(directory: .groupDir!.appendingPathComponent("tor", isDirectory: true))
 }
 
 extension AppDelegateBase {

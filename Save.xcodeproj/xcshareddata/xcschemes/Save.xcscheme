@@ -9,35 +9,34 @@
          <BuildActionEntry
             buildForTesting = "YES"
             buildForRunning = "YES"
-            buildForProfiling = "NO"
-            buildForArchiving = "NO"
-            buildForAnalyzing = "NO">
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A05768D622E0B67D00B39FCE"
-               BuildableName = "Screenshots.xctest"
-               BlueprintName = "Screenshots"
+               BlueprintIdentifier = "A0E739D320E4C85D00DB31E1"
+               BuildableName = "Save.app"
+               BlueprintName = "Save"
                ReferencedContainer = "container:Save.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
    </BuildAction>
    <TestAction
-      buildConfiguration = "Debug"
+      buildConfiguration = "Release"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
       shouldUseLaunchSchemeArgsEnv = "YES">
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "A0E739D320E4C85D00DB31E1"
+            BuildableName = "Save.app"
+            BlueprintName = "Save"
+            ReferencedContainer = "container:Save.xcodeproj">
+         </BuildableReference>
+      </MacroExpansion>
       <Testables>
-         <TestableReference
-            skipped = "NO">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "A05768D622E0B67D00B39FCE"
-               BuildableName = "Screenshots.xctest"
-               BlueprintName = "Screenshots"
-               ReferencedContainer = "container:Save.xcodeproj">
-            </BuildableReference>
-         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -50,15 +49,16 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A05768D622E0B67D00B39FCE"
-            BuildableName = "Screenshots.xctest"
-            BlueprintName = "Screenshots"
+            BlueprintIdentifier = "A0E739D320E4C85D00DB31E1"
+            BuildableName = "Save.app"
+            BlueprintName = "Save"
             ReferencedContainer = "container:Save.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"
@@ -66,21 +66,23 @@
       savedToolIdentifier = ""
       useCustomWorkingDirectory = "NO"
       debugDocumentVersioning = "YES">
-      <MacroExpansion>
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "A05768D622E0B67D00B39FCE"
-            BuildableName = "Screenshots.xctest"
-            BlueprintName = "Screenshots"
+            BlueprintIdentifier = "A0E739D320E4C85D00DB31E1"
+            BuildableName = "Save.app"
+            BlueprintName = "Save"
             ReferencedContainer = "container:Save.xcodeproj">
          </BuildableReference>
-      </MacroExpansion>
+      </BuildableProductRunnable>
    </ProfileAction>
    <AnalyzeAction
       buildConfiguration = "Debug">
    </AnalyzeAction>
    <ArchiveAction
       buildConfiguration = "Release"
+      customArchiveName = "save_release"
       revealArchiveInOrganizer = "YES">
    </ArchiveAction>
 </Scheme>

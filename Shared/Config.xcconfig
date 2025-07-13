@@ -11,7 +11,7 @@
 
 OA_APP_BUNDLE_ID[config=Debug] = org.open-archive.save
 OA_EXT_BUNDLE_ID[config=Debug] = org.open-archive.save.extension
-OA_SCS_BUNDLE_ID[config=Debug] = org.open-archive.save.Screenshots
+OA_SCS_BUNDLE_ID[config=Debug] = org.open-archive.save.screenshots
 OA_APP_GROUP[config=Debug] = group.org.open-archive.save.ios
 DEVELOPMENT_TEAM[config=Debug] = QSU424W5UW
 PROVISIONING_PROFILE_SPECIFIER_MAIN[config=Debug] =
@@ -20,7 +20,7 @@ PROVISIONING_PROFILE_SPECIFIER_SCREENSHOTS[config=Debug] =
 
 OA_APP_BUNDLE_ID[config=Release] = org.open-archive.save
 OA_EXT_BUNDLE_ID[config=Release] = org.open-archive.save.extension
-OA_SCS_BUNDLE_ID[config=Release] = org.open-archive.save.Screenshots
+OA_SCS_BUNDLE_ID[config=Release] = org.open-archive.save.screenshots
 OA_APP_GROUP[config=Release] = group.org.open-archive.save.ios
 DEVELOPMENT_TEAM[config=Release] = QSU424W5UW
 PROVISIONING_PROFILE_SPECIFIER_MAIN[config=Release] = save Distribution
@@ -33,4 +33,4 @@ CURRENT_PROJECT_VERSION = 117
 GOOGLE_CLIENT_ID[config=Debug] = 589246344859-l0tb2aci39vt0osbc7rq9ccimvoj8grv // Dev
 GOOGLE_CLIENT_ID[config=Release] = 741316235729-6ek8n6v6u68mkok61rtd6qnj85c2bebm // Production 589246344859-2s2dacvmrv3qptumqs2brffqn3qb8117 // Testing
 
-GCC_PREPROCESSOR_DEFINITIONS = $(inherited) OA_APP_GROUP="group.org.open-archive.save.ios" DEVELOPMENT_TEAM="$(DEVELOPMENT_TEAM)" CURRENT_PROJECT_VERSION="$(CURRENT_PROJECT_VERSION)" MARKETING_VERSION="$(MARKETING_VERSION)" GOOGLE_CLIENT_ID="$(GOOGLE_CLIENT_ID)"
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) OA_APP_GROUP="$(OA_APP_GROUP)" DEVELOPMENT_TEAM="$(DEVELOPMENT_TEAM)" CURRENT_PROJECT_VERSION="$(CURRENT_PROJECT_VERSION)" MARKETING_VERSION="$(MARKETING_VERSION)" GOOGLE_CLIENT_ID="$(GOOGLE_CLIENT_ID)"

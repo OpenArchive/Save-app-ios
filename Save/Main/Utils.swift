@@ -116,13 +116,6 @@ class Utils {
         return (used_megabytes, total_megabytes)
     }
     
-    class func destructure(interval: TimeInterval) -> (days: Int, hours: Int, minutes: Int) {
-        let numDays = floor(interval / .day)
-        let numHours = floor((interval - (numDays * .day)) / .hour)
-        let numMinutes = floor(((interval - (numDays * .day)) - (numHours * .hour)) / .minute)
-        return (Int(numDays), Int(numHours), Int(numMinutes))
-    }
-    
     class func setDarkMode() {
         AppSettings.theme = GeneralConstants.dark
         Utils.setInterfaceStyle(.dark)

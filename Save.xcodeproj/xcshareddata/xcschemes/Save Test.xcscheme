@@ -15,8 +15,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "A09B537723266F02005266C2"
-               BuildableName = "Save Screenshots.app"
-               BlueprintName = "Save Screenshots"
+               BuildableName = "Save Test.app"
+               BlueprintName = "Save Test"
                ReferencedContainer = "container:Save.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -31,12 +31,23 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A09B537723266F02005266C2"
-            BuildableName = "Save Screenshots.app"
-            BlueprintName = "Save Screenshots"
+            BuildableName = "Save Test.app"
+            BlueprintName = "Save Test"
             ReferencedContainer = "container:Save.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "E4BCA7F12E221332003F5F49"
+               BuildableName = "Unit Tests.xctest"
+               BlueprintName = "Unit Tests"
+               ReferencedContainer = "container:Save.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
    </TestAction>
    <LaunchAction
@@ -54,8 +65,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A09B537723266F02005266C2"
-            BuildableName = "Save Screenshots.app"
-            BlueprintName = "Save Screenshots"
+            BuildableName = "Save Test.app"
+            BlueprintName = "Save Test"
             ReferencedContainer = "container:Save.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -71,8 +82,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "A09B537723266F02005266C2"
-            BuildableName = "Save Screenshots.app"
-            BlueprintName = "Save Screenshots"
+            BuildableName = "Save Test.app"
+            BlueprintName = "Save Test"
             ReferencedContainer = "container:Save.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

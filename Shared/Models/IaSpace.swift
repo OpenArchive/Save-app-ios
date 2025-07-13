@@ -12,8 +12,10 @@ import UIKit
  A special space supporting the Internet Archive.
  */
 class IaSpace: Space, Item {
+    
+    static let baseUrl:String = "https://s3.us.archive.org"
 
-    static let baseUrl = "https://s3.us.archive.org"
+    var baseUrl: String
     static let currentVersion = 1
 
     
@@ -37,12 +39,15 @@ class IaSpace: Space, Item {
     static let favIcon = UIImage(named: "internet_archive")?.withRenderingMode(.alwaysTemplate)
 
 
-    init(accessKey: String? = nil, secretKey: String? = nil) {
-        super.init(name: IaSpace.defaultPrettyName, url: URL(string: IaSpace.baseUrl),
+    init(accessKey: String? = nil, secretKey: String? = nil, baseUrl: String = IaSpace.baseUrl) {
+        self.baseUrl = baseUrl
+        super.init(name: IaSpace.defaultPrettyName, url: URL(string: baseUrl),
                    username: accessKey, password: secretKey)
     }
 
     required init?(coder decoder: NSCoder) {
+        self.baseUrl = decoder.decodeObject(of: NSString.self, forKey: "baseUrl") as? String ?? IaSpace.baseUrl
+        
         super.init(coder: decoder)
         
         let version = decoder.decodeInteger(forKey: "version")
@@ -86,6 +91,7 @@ class IaSpace: Space, Item {
         coder.encode(lastTry, forKey: "lastTry")
         coder.encode(version, forKey: "version")
         coder.encode(metaData, forKey: "metaData")
+        coder.encode(baseUrl, forKey: "baseUrl")
     }
     
 

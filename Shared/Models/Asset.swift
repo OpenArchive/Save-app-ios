@@ -327,7 +327,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
      Checks, if asset is audio or video.
      */
     var isAv: Bool {
-        uti.conforms(to: .audiovisualContent)
+        uti.conforms(to: LegacyUTType.audiovisualContent)
     }
 
     private var _duration: TimeInterval?

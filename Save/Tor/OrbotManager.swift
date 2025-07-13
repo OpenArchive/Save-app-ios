@@ -9,7 +9,6 @@
 import OrbotKit
 import YapDatabase
 import SDCAlertView
-import TorManager
 
 extension Notification.Name {
 
@@ -191,8 +190,7 @@ class OrbotManager: OrbotStatusChangeListener {
      */
     func alertCannotUpload(count: Int? = nil, _ completed: (() -> Void)? = nil) {
         guard (Settings.wifiOnly && UploadManager.shared.reachability?.connection == .unavailable)
-                || (Settings.useOrbot && status == .stopped)
-                || (Settings.useTor && !TorManager.shared.connected),
+                || (Settings.useOrbot && status == .stopped),
               let topVc = UIApplication.shared.delegate?.window??.rootViewController?.top
         else {
             completed?()
@@ -268,15 +266,15 @@ class OrbotManager: OrbotStatusChangeListener {
         }
         else {
             message = String(format: NSLocalizedString(
-                "Uploads are blocked until you start %1$@ or allow uploads without %1$@ again.",
-                comment: "Placeholder is 'Tor'"), TorManager.torName)
+                "Uploads are blocked until you start Tor or allow uploads without Orbot again.",
+                comment: "Placeholder is 'Tor'"))
 
-            title = String(format: NSLocalizedString("%@ not running", comment: "Placeholder is 'Tor'"), TorManager.torName)
+            title = String(format: NSLocalizedString("Tor not running", comment: "Placeholder is 'Tor'"))
 
             actions.append(
                 AlertHelper.defaultAction(
                     String(format: NSLocalizedString(
-                        "Start %@", comment: "Placeholder is 'Tor'"), TorManager.torName),
+                        "Start Tor", comment: "Placeholder is 'Tor'")),
                     handler: { _ in
                         // Trigger display of `TorStartViewController` to start up Tor.
                         if let navC = UIApplication.shared.delegate?.window??.rootViewController as? MainNavigationController {
@@ -289,11 +287,9 @@ class OrbotManager: OrbotStatusChangeListener {
             actions.append(
                 AlertHelper.destructiveAction(
                     String(format: NSLocalizedString(
-                        "Allow without %@", comment: "Placeholder is 'Tor'"), TorManager.torName),
+                        "Allow without Tor", comment: "Placeholder is 'Tor'")),
                     handler: { _ in
                         Settings.useTor = false
-
-                        TorManager.shared.stop()
 
                         completed?()
                     }))
