@@ -242,12 +242,12 @@ struct SettingsView: View {
                                                     buttons: actionSheetButtons())
                                     }
                             ),
-                            AnyView(SubItem(title: NSLocalizedString("Save by OpenArchive", comment: ""), subtitle: NSLocalizedString("Discover the Save app", comment: "")) {
+                            AnyView(SubItem(title: NSLocalizedString("Save by OpenArchive", comment: ""), subtitle: NSLocalizedString("Learn More", comment: "")) {
                                 if let url = URL(string: "https://www.open-archive.org/save") {
                                     UIApplication.shared.open(url)
                                 }
                             }),
-                            AnyView(SubItem(title: NSLocalizedString("Terms & Privacy Policy", comment: ""), subtitle: NSLocalizedString("Read our Terms & Privacy Policy", comment: "")) {
+                            AnyView(SubItem(title: NSLocalizedString("Terms and Privacy", comment: ""), subtitle: NSLocalizedString("Read our Terms and Privacy Policy", comment: "")) {
                                 if let url = URL(string: "https://www.open-archive.org/privacy") {
                                     UIApplication.shared.open(url)
                                 }
