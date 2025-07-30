@@ -26,7 +26,10 @@ class InternetArchiveRemoteSource {
         urlRequest.httpMethod = "POST"
         urlRequest.httpBody = payload
         
-        let session = URLSession(configuration: UploadManager.improvedSessionConf())
+        // NOTE: we bypass Tor for authentication and rely on TLS strategy
+        // Due to the fact that Tor is often blocked for authentication or poseses security risk if not fully configured
+        // Tor enabled: URLSession(configuration: UploadManager.improvedSessionConf())
+        let session = URLSession.shared
          
         return session.dataTaskPublisher(for: urlRequest)
             .tryMap { data, response in
