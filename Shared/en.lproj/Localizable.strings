@@ -759,9 +759,10 @@
 
 "Discover the Save app" = "Discover the Save app";
 
-"Terms & Privacy Policy"= "Terms & Privacy Policy";
+"Terms and Privacy"= "Terms and Privacy";
 
-"Read our Terms & Privacy Policy"= "Read our Terms & Privacy Policy";
+"Read our Terms and Privacy Policy"= "Read our Terms and Privacy Policy";
+
 "Version" = "Version";
 
 "Disable Passcode" = "Disable Passcode";
@@ -811,4 +812,6 @@
 "Orbot" = "Orbot";
 
 "Download Orbot" = "Download Orbot";
+
+"Learn More" = "Learn More";
 
