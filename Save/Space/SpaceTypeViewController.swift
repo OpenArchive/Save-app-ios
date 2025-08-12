@@ -54,7 +54,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
                 button = BigButton.create(
                     icon: IaSpace.favIcon,
                     title: IaSpace.defaultPrettyName,
-                    subtitle: NSLocalizedString("Connect to a free public \nor paid private server", comment: ""),
+                    subtitle: NSLocalizedString("Connect to a free public server", comment: ""),
                     target: self,
                     action: #selector(newIa),
                     container: container,
