@@ -46,7 +46,7 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
        
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(FolderCellNew.self, forCellReuseIdentifier: "FolderCellNew")
+        tableView.register(ListFolderCell.self, forCellReuseIdentifier: "ListFolderCell")
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .none
         view.addSubview(tableView)
@@ -100,7 +100,7 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "FolderCellNew", for: indexPath) as? FolderCellNew else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ListFolderCell", for: indexPath) as? ListFolderCell else {
             return UITableViewCell()
         }
         let project = projectList[indexPath.row]
@@ -111,7 +111,7 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let project = projectList[indexPath.row]
-        self.navigationController?.pushViewController(NewEditFolderViewController(project), animated: true)
+        self.navigationController?.pushViewController(EditFolderViewController(project), animated: true)
     }
     
     // Show Archived Folders
