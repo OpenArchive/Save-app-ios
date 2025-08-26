@@ -6,10 +6,10 @@
 //  Copyright © 2025 Open Archive. All rights reserved.
 //
 
-
 import SwiftUI
 
 struct VerificationSentView: View {
+    var email: String
     var onVerified: () -> Void
 
     var body: some View {
@@ -35,6 +35,13 @@ struct VerificationSentView: View {
                 .multilineTextAlignment(.center)
                 .foregroundColor(.gray)
                 .padding(.horizontal)
+            
+            // Optionally display the email address
+            if !email.isEmpty {
+                Text("Sent to: \(email)")
+                    .font(.montserrat(.medium, for: .caption))
+                    .foregroundColor(.gray)
+            }
 
             Spacer()
         }

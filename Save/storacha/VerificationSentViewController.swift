@@ -6,17 +6,19 @@
 //  Copyright © 2025 Open Archive. All rights reserved.
 //
 
-
 import UIKit
 import SwiftUI
 
 class VerificationSentViewController: UIViewController {
+    
+    private var email: String = ""
+    private var appState: StorachaAppState?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
 
-        let view = VerificationSentView {
+        let view = VerificationSentView(email: email) {
             self.pushSuccess()
         }
 
@@ -33,6 +35,12 @@ class VerificationSentViewController: UIViewController {
         ])
 
         hostingController.didMove(toParent: self)
+    }
+    
+    // Add the missing configure method
+    func configure(with email: String, appState: StorachaAppState) {
+        self.email = email
+        self.appState = appState
     }
 
     private func pushSuccess() {

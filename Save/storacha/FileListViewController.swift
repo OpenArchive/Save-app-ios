@@ -11,9 +11,9 @@ import UIKit
 import Combine
 class FileListViewController: UIViewController {
     private let store: AccountsStore<AccountsAppState, AccountsAppAction>
-    private let space: StorachaSpace
+    private let space: StorachaSpaceTest
 
-    init(store: AccountsStore<AccountsAppState, AccountsAppAction>, space: StorachaSpace) {
+    init(store: AccountsStore<AccountsAppState, AccountsAppAction>, space: StorachaSpaceTest) {
         self.store = store
         self.space = space
         super.init(nibName: nil, bundle: nil)

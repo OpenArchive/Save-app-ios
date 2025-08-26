@@ -5,29 +5,40 @@
 //  Created by navoda on 2025-05-26.
 //  Copyright © 2025 Open Archive. All rights reserved.
 //
-import SwiftUI
-struct StorachaLoginView: View  {
-    @ObservedObject var state: StorachaLoginState
-       var dispatch: (StorachaLoginAction) -> Void
-       @Environment(\.colorScheme) var colorScheme
+//
+//  StorachaLoginView.swift
+//  Save
+//
+//  Created by navoda on 2025-05-26.
+//  Copyright © 2025 Open Archive. All rights reserved.
+//
 
-       enum Field {
-           case email
-       }
+import SwiftUI
+
+struct StorachaLoginView: View {
+    @ObservedObject var state: StorachaAppState
+    var dispatch: (StorachaLoginAction) -> Void
+    @Environment(\.colorScheme) var colorScheme
+
+    enum Field {
+        case email
+    }
+    
     var dismissAction: (() -> Void)?
     var disableBackAction: ((Bool) -> Void)?
    
     init(
-           state: StorachaLoginState,
-           dispatch: @escaping (StorachaLoginAction) -> Void,
-           disableBackAction: ((Bool) -> Void)? = nil,
-           dismissAction: (() -> Void)? = nil
-       ) {
-           self.state = state
-           self.dispatch = dispatch
-           self.dismissAction = dismissAction
-           self.disableBackAction = disableBackAction
-       }
+        state: StorachaAppState,
+        dispatch: @escaping (StorachaLoginAction) -> Void,
+        disableBackAction: ((Bool) -> Void)? = nil,
+        dismissAction: (() -> Void)? = nil
+    ) {
+        self.state = state
+        self.dispatch = dispatch
+        self.dismissAction = dismissAction
+        self.disableBackAction = disableBackAction
+    }
+    
     var body: some View {
         GeometryReader { reader in
             if #available(iOS 14.0, *) {
@@ -136,20 +147,3 @@ struct StorachaLoginView: View  {
         
     }
 }
-class StorachaLoginState: ObservableObject {
-    @Published var email: String = ""
-    @Published var isBusy: Bool = false
-    @Published var isLoginError: Bool = false
-
-    var isValid: Bool {
-        // Add real validation logic as needed
-        return !email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-    }
-}
-
-enum StorachaLoginAction {
-    case login
-    case cancel
-    case createAccount
-}
-

@@ -60,7 +60,7 @@ import Combine
 import Foundation
 
 class SpaceListViewModel: ObservableObject {
-    @Published var spaces: [StorachaSpace] = []
+    @Published var spaces: [StorachaSpaceTest] = []
 
     private let store: AccountsStore<AccountsAppState, AccountsAppAction>
     private var cancellables = Set<AnyCancellable>()
@@ -80,7 +80,7 @@ class SpaceListViewModel: ObservableObject {
         }
     }
 
-    func select(space: StorachaSpace) {
+    func select(space: StorachaSpaceTest) {
         store.dispatch(.selectSpace(space))
     }
 }
@@ -153,7 +153,7 @@ class SpaceListViewController: UIViewController {
             .store(in: &cancellables)
     }
 
-    private func navigateToSpaceDetail(_ space: StorachaSpace) {
+    private func navigateToSpaceDetail(_ space: StorachaSpaceTest) {
         let fileListVC = FileListViewController(store: store, space: space)
           navigationController?.pushViewController(fileListVC, animated: true)
     }

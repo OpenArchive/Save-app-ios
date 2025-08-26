@@ -1,5 +1,5 @@
 //
-//  PrivateServerSettingViewController.swift
+//  StorachaSettingViewController.swift
 //  Save
 //
 //  Created by navoda on 2025-05-26.
@@ -62,34 +62,27 @@ class StorachaSettingViewController: UIViewController {
     }
     func handleManageNavigation() {
         
-        let accounts = UserDefaults.standard.stringArray(forKey: "storedAccounts") ?? []
-
-        if accounts.isEmpty {
             let loginVC = StorachaLoginViewController() 
             self.navigationController?.pushViewController(loginVC, animated: true)
-        } else {
-            let accountsVC = StorachaAccountsviewController()
-            self.navigationController?.pushViewController(accountsVC, animated: true)
-        }
     }
     func manageSpaceNavigation(isNew:Bool){
-        let store = AccountsStore(initial: AccountsAppState(), reducer: appReducer)
-           let storedSpaces: [StorachaSpace]
-
-           if let data = UserDefaults.standard.data(forKey: "storedSpaces"),
-              let decoded = try? JSONDecoder().decode([StorachaSpace].self, from: data) {
-               storedSpaces = decoded
-           } else {
-               storedSpaces = []
-           }
-
-           let targetVC: UIViewController
-        if storedSpaces.isEmpty || isNew {
-            targetVC = QRCodeViewController(store: store)
-           } else {
-               targetVC = SpaceListViewController(store: store)
-           }
-
-           navigationController?.pushViewController(targetVC, animated: true)
+//        let store = AccountsStore(initial: AccountsAppState(), reducer: appReducer)
+//           let storedSpaces: [StorachaSpaceTest]
+//
+//           if let data = UserDefaults.standard.data(forKey: "storedSpaces"),
+//              let decoded = try? JSONDecoder().decode([StorachaSpaceTest].self, from: data) {
+//               storedSpaces = decoded
+//           } else {
+//               storedSpaces = []
+//           }
+//
+//           let targetVC: UIViewController
+//        if storedSpaces.isEmpty || isNew {
+//            targetVC = QRCodeViewController(store: store)
+//           } else {
+//               targetVC = SpaceListViewController(store: store)
+//           }
+//
+//           navigationController?.pushViewController(targetVC, animated: true)
     }
 }

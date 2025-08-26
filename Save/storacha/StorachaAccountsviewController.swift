@@ -115,7 +115,7 @@ struct AccountListView: View {
     }
 }
 
-struct StorachaSpace: Codable, Equatable, Identifiable {
+struct StorachaSpaceTest: Codable, Equatable, Identifiable {
         let id: String
         var name: String
         var files: [String] = []
@@ -124,7 +124,7 @@ struct StorachaSpace: Codable, Equatable, Identifiable {
 
 struct AccountsAppState {
     var accounts: [String] = []
-    var spaces: [StorachaSpace] = []
+    var spaces: [StorachaSpaceTest] = []
     var navigation: NavigationState = .idle
 }
 
@@ -133,7 +133,7 @@ enum NavigationState: Equatable {
     case showAccountDetail(String)
     case showAddAccount
     case showAddSpace
-    case showSpaceDetail(StorachaSpace)
+    case showSpaceDetail(StorachaSpaceTest)
 }
 
 enum AccountsAppAction {
@@ -148,7 +148,7 @@ enum AccountsAppAction {
     case addSpace(name: String, did: String)
     case removeSpace(String)
     case selectSpace(
-        StorachaSpace)
+        StorachaSpaceTest)
     case addFile(toSpaceId: String, fileName: String)
     case revokeAccess(spaceId: String, did: String)
     case addDID(spaceId: String, did: String)
@@ -181,18 +181,18 @@ func appReducer(state: inout AccountsAppState, action: AccountsAppAction) {
     // MARK: Spaces
     case .loadSpaces:
         if let data = UserDefaults.standard.data(forKey: "storedSpaces"),
-           let saved = try? JSONDecoder().decode([StorachaSpace].self, from: data) {
+           let saved = try? JSONDecoder().decode([StorachaSpaceTest].self, from: data) {
             state.spaces = saved
         }
 
     case .addSpace(let name, let did):
         if let data = UserDefaults.standard.data(forKey: "storedSpaces"),
-           let saved = try? JSONDecoder().decode([StorachaSpace].self, from: data) {
+           let saved = try? JSONDecoder().decode([StorachaSpaceTest].self, from: data) {
             state.spaces = saved
         }
         var spaces = state.spaces
       
-           let newSpace = StorachaSpace(id: UUID().uuidString, name: name, dids: [did])
+           let newSpace = StorachaSpaceTest(id: UUID().uuidString, name: name, dids: [did])
            spaces.append(newSpace)
            if let encoded = try? JSONEncoder().encode(spaces) {
                UserDefaults.standard.setValue(encoded, forKey: "storedSpaces")
@@ -202,7 +202,7 @@ func appReducer(state: inout AccountsAppState, action: AccountsAppAction) {
 
     case .removeSpace(let id):
         if let data = UserDefaults.standard.data(forKey: "storedSpaces"),
-           let saved = try? JSONDecoder().decode([StorachaSpace].self, from: data) {
+           let saved = try? JSONDecoder().decode([StorachaSpaceTest].self, from: data) {
             state.spaces = saved
         }
         var spaces = state.spaces
@@ -214,7 +214,7 @@ func appReducer(state: inout AccountsAppState, action: AccountsAppAction) {
         state.navigation = .idle
     case .addFile(let spaceId, let fileName):
         if let data = UserDefaults.standard.data(forKey: "storedSpaces"),
-           let saved = try? JSONDecoder().decode([StorachaSpace].self, from: data) {
+           let saved = try? JSONDecoder().decode([StorachaSpaceTest].self, from: data) {
             state.spaces = saved
         }
         if let index = state.spaces.firstIndex(where: { $0.id == spaceId }) {
@@ -233,7 +233,7 @@ func appReducer(state: inout AccountsAppState, action: AccountsAppAction) {
         state.navigation = .idle
     case .revokeAccess(let spaceId, let did):
         if let data = UserDefaults.standard.data(forKey: "storedSpaces"),
-           var saved = try? JSONDecoder().decode([StorachaSpace].self, from: data) {
+           var saved = try? JSONDecoder().decode([StorachaSpaceTest].self, from: data) {
 
             if let index = saved.firstIndex(where: { $0.id == spaceId }) {
                 saved[index].dids.removeAll { $0 == did }
@@ -246,7 +246,7 @@ func appReducer(state: inout AccountsAppState, action: AccountsAppAction) {
         }
     case .addDID(let spaceId, let did):
         if let data = UserDefaults.standard.data(forKey: "storedSpaces"),
-           var saved = try? JSONDecoder().decode([StorachaSpace].self, from: data) {
+           var saved = try? JSONDecoder().decode([StorachaSpaceTest].self, from: data) {
 
             if let index = saved.firstIndex(where: { $0.id == spaceId }) {
                 var space = saved[index]
