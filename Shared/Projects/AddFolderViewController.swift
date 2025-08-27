@@ -23,7 +23,7 @@ class AddFolderViewController: BaseViewController {
 
     @IBOutlet weak var subtitleLb: UILabel! {
         didSet {
-            subtitleLb.text = NSLocalizedString("Select where to \nstore your media.", comment: "")
+            subtitleLb.text = NSLocalizedString("Choose a new or existing folder to save your media in.", comment: "")
         }
     }
 

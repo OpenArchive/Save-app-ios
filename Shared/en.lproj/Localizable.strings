@@ -493,7 +493,7 @@
 "Security" = "Security";
 
 /* No comment provided by engineer. */
-"Select where to store your media." = "Select where to store your media.";
+"Choose a new or existing folder to save your media in." = "Choose a new or existing folder to save your media in.";
 
 /* No comment provided by engineer. */
 "Send to a WebDAV server" = "Send to a WebDAV server";
@@ -729,7 +729,9 @@
 
 /**Proofmode description*/
 
-"To help verify where your media was captured, ProofMode gathers data from nearby cell towers to corroborate your location. To add credibility and context, it then includes a separate metadata file with your media. Neither Save nor OpenArchive will be able to access or store this location data, it will only be accessible to those with access to the server files. iOS requires location access to collect this information." = "To help verify where your media was captured, ProofMode gathers data from nearby cell towers to corroborate your location. To add credibility and context, it then includes a separate metadata file with your media. Neither Save nor OpenArchive will be able to access or store this location data, it will only be accessible to those with access to the server files. iOS requires location access to collect this information.";
+"To help verify where your media was captured, ProofMode gathers data from nearby cell towers to corroborate your location. To add credibility and context, it then includes a separate metadata file with your media*. iOS requires location access to collect this information." = "To help verify where your media was captured, ProofMode gathers data from nearby cell towers to corroborate your location. To add credibility and context, it then includes a separate metadata file with your media*. iOS requires location access to collect this information.";
+
+"*Neither Save nor OpenArchive will be able to access or store this location data, it will only be accessible to those with access to the server files." = "*Neither Save nor OpenArchive will be able to access or store this location data, it will only be accessible to those with access to the server files.";
 
 "ProofMode is a system that enables authentication and verification of multimedia content,"= "ProofMode is a system that enables authentication and verification of multimedia content,";
 
@@ -787,9 +789,9 @@
 
 "Connect to a free public server" = "Connect to a free public server";
 
-"First, please name your folder" = "First, please name your folder";
+"Please name your folder" = "Please name your folder";
 
-"This folder will be created on your server and automatically added on Save." = "This folder will be created on your server and automatically added on Save.";
+"This folder will be created on your server and added to Save." = "TThis folder will be created on your server and added to Save.";
 
 "Enter folder name"= "Enter folder name";
 

@@ -132,11 +132,11 @@ struct CreateFolderView: View {
         VStack {
             ScrollView {
                 VStack(alignment: .center, spacing: 10) {
-                    Text(NSLocalizedString("First, please name your folder", comment: ""))
+                    Text(NSLocalizedString("Please name your folder", comment: ""))
                         .font(.montserrat(.semibold, for: .headline))
                         .multilineTextAlignment(.center)
                     
-                    Text(NSLocalizedString("This folder will be created on your server and automatically added on Save.", comment: ""))
+                    Text(NSLocalizedString("This folder will be created on your server and added to Save.", comment: ""))
                         .font(.montserrat(.medium, for: .subheadline))
                         .foregroundColor(.gray70)
                         .multilineTextAlignment(.center).padding(.bottom,30)
