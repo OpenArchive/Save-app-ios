@@ -13,6 +13,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                           UINavigationControllerDelegate, SideMenuDelegate,
                           AssetPickerDelegate,UITextFieldDelegate,UICollectionViewDelegate
 {
+   
     
     @IBOutlet weak var renameView: UIView!{
         didSet {
@@ -30,6 +31,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     private static var isSettingsEnabled = false
     lazy var privateServer:Space? = nil
     private var isLongPressTapped: Bool = false
+    private let sessionManager = SessionManager.shared
     @IBOutlet weak var logo: UIImageView!
     
     @IBOutlet weak var removeBt: UIButton! {
@@ -193,17 +195,12 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     private var inEditMode = false
     
-    private lazy var storachaSettingViewController: StorachaSettingViewController = {
-        let vc = StorachaSettingViewController()
-        return vc
-    }()
     
     private lazy var sideMenu: SideMenuViewController = {
         let vc = SideMenuViewController()
         vc.delegate = self
         vc.projectsConn = projectsReadConn
         vc.projectsMappings = projectsMappings
-        
         addChild(vc)
         menu.addSubview(vc.view)
         
@@ -537,7 +534,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 //                    NotificationCenter.default.post(name: .uploadManagerUnpause, object: upload.id)
 //                case .pending, .uploading:
 //                    performSegue(withIdentifier: "editAssetsSegue", sender: indexPath.row)
-//                    
+//
 //                    //      NotificationCenter.default.post(name: .uploadManagerPause, object: upload.id)
 //                default:
 //                    break
@@ -594,11 +591,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
     }
     
-    func manageStoracha() {
-        toggleMenu(false) { [weak self] _ in
-            self?.navigationController?.pushViewController(StorachaSettingViewController(), animated: true)
-        }
-    }
     
     // MARK: Actions
     
@@ -932,10 +924,10 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
      UI update: Space icon and name.
      */
     private func updateSpace() {
-        navigationItem.rightBarButtonItem = menuBarButtonItem
         if let space = SelectedSpace.space {
             spaceFavIcon.image = getServerIcon(space: space)
             sideMenu.space = space
+            navigationItem.rightBarButtonItem = menuBarButtonItem
             hintLb.text =   NSLocalizedString(
                 "Tap the button below to add a folder",
                 comment: "")
@@ -955,10 +947,12 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             self.titleContainerHeight.constant = 0
             welcomeLb.isHidden = false
             welcomeLb.text = NSLocalizedString("Welcome!", comment: "")
+            if (sessionManager.loadSession()?.sessionId) != nil {
+                navigationItem.rightBarButtonItem = menuBarButtonItem
+            }
         }
         
         if !container.isHidden {
-            //  settingsVc.reload()
         }
     }
     
@@ -996,7 +990,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         
     }
     func toggleVisibility(ishidden:Bool) {
-      
         editButton.isHidden = ishidden
         folderIndicator.isHidden = ishidden
         folderNameLb.isHidden = ishidden
@@ -1013,16 +1006,15 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
         
         if toggle {
-            menu.isHidden = false
-            sideMenu.animate(toggle, completion)
-//            if !SelectedSpace.available {
-//                addSpace()
-//            }
-//            else {
-//                menu.isHidden = false
-//                
-//                sideMenu.animate(toggle, completion)
-//            }
+            let hasSession = sessionManager.loadSession()?.sessionId != nil
+              let hasSelectedSpace = SelectedSpace.space != nil
+              
+            if hasSession || hasSelectedSpace {
+                menu.isHidden = false
+                sideMenu.animate(toggle, completion)
+            } else{
+                addSpace()
+            }
         }
         else {
             sideMenu.animate(toggle) { finished in
@@ -1035,6 +1027,11 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     func pushPrivateServerSetting(space:Space) {
         privateServer = space
         performSegue(withIdentifier: MainViewController.segueShowPrivateServerSetting, sender: self)
+    }
+    func manageStoracha() {
+        toggleMenu(false) { [weak self] _ in
+            self?.navigationController?.pushViewController(StorachaSettingViewController(),animated: true)
+        }
     }
 }
 

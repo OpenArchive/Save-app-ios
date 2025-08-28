@@ -9,23 +9,30 @@
 import SwiftUI
 
 struct VerificationSentView: View {
+    @ObservedObject var appState: StorachaAppState
     var email: String
     var onVerified: () -> Void
+    var onTimeout: () -> Void
+    @State private var isPolling = false
 
     var body: some View {
         VStack(spacing: 20) {
             Spacer()
+            
             if #available(iOS 14.0, *) {
                 ProgressView()
                     .scaleEffect(1.5)
             } else {
                 // Fallback on earlier versions
+                ActivityIndicator(style: .large, animate: .constant(true))
             }
+            
             Image(systemName: "envelope.badge")
-                   .resizable()
-                   .scaledToFit()
-                   .frame(width: 24, height: 24)
-                   .foregroundColor(.accentColor)
+                .resizable()
+                .scaledToFit()
+                .frame(width: 24, height: 24)
+                .foregroundColor(.accentColor)
+            
             Text("Verification Email Sent")
                 .font(.montserrat(.bold, for: .headline))
                 .multilineTextAlignment(.center)
@@ -36,7 +43,7 @@ struct VerificationSentView: View {
                 .foregroundColor(.gray)
                 .padding(.horizontal)
             
-            // Optionally display the email address
+            // Display the email address
             if !email.isEmpty {
                 Text("Sent to: \(email)")
                     .font(.montserrat(.medium, for: .caption))
@@ -49,9 +56,24 @@ struct VerificationSentView: View {
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .background(Color(.systemBackground))
         .onAppear {
-          
-            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                onVerified()
+            startVerificationPolling()
+        }
+    }
+    
+    private func startVerificationPolling() {
+        guard !isPolling else { return }
+        
+        isPolling = true
+        
+        appState.startVerificationPolling { [self] isVerified in
+            DispatchQueue.main.async {
+                self.isPolling = false
+                
+                if isVerified {
+                    onVerified()
+                } else {
+                    onTimeout()
+                }
             }
         }
     }

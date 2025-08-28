@@ -6,7 +6,6 @@
 //  Copyright © 2025 Open Archive. All rights reserved.
 //
 
-
 import Foundation
 import SwiftUI
 import Combine
@@ -15,11 +14,8 @@ import Combine
 class StorachaAppState: ObservableObject {
     @Published var isAuthenticated: Bool = false
     @Published var currentUser: StorachaUser?
-    @Published var spaces: [StorachaSpace] = []
-    @Published var selectedSpace: StorachaSpace?
-    @Published var recentUploads: [StorachaUpload] = []
     @Published var isLoading: Bool = false
-    @Published var error: StorachaError?
+    @Published var error: StorachaAPIError?
     @Published var lastUsedEmail: String = ""
     @Published var email: String = ""
     @Published var isBusy: Bool = false
@@ -32,10 +28,10 @@ class StorachaAppState: ObservableObject {
     var isValid: Bool {
         return !email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
     }
-
+    
     init() {
         self.lastUsedEmail = sessionManager.getLastEmail() ?? ""
-        self.email = self.lastUsedEmail 
+        self.email = self.lastUsedEmail
         restoreSession()
     }
     
@@ -52,38 +48,32 @@ class StorachaAppState: ObservableObject {
             self.currentUser = user
             self.isAuthenticated = sessionData.verified
             self.lastUsedEmail = sessionData.email
+            self.email = sessionData.email
         }
         
-        // Verify session is still valid
-        Task {
-            do {
-                let isValid = try await apiService.checkSession()
-                await MainActor.run {
-                    if !isValid {
-                        self.logout()
-                    } else {
-                        // Load initial data
-                        Task {
-                            await self.loadSpaces()
-                        }
-                    }
-                }
-            } catch {
-                await MainActor.run {
-                    self.logout()
-                }
-            }
-        }
     }
     
     // MARK: - Authentication Actions
     @MainActor
     func login(email: String) async {
+        // Set busy state to show progress indicator
+        isBusy = true
         isLoading = true
         error = nil
+        isLoginError = false
+        let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
+        
+        guard isValidEmail(trimmedEmail) else {
+            isLoginError = true
+            error = StorachaAPIError.authenticationFailed("Please enter a valid email address")
+            isBusy = false
+            isLoading = false
+            return
+        }
         
         do {
-            let sessionData = try await apiService.login(email: email)
+            
+            let sessionData = try await apiService.login(email: trimmedEmail)
             
             let user = StorachaUser(
                 did: sessionData.did,
@@ -93,13 +83,29 @@ class StorachaAppState: ObservableObject {
             
             self.currentUser = user
             self.isAuthenticated = sessionData.verified
-            self.lastUsedEmail = email
+            self.lastUsedEmail = trimmedEmail
+            self.email = trimmedEmail
             
         } catch {
-            self.error = StorachaError.authenticationFailed(error.localizedDescription)
+            
+            self.isLoginError = true
+            
+            if let apiError = error as? StorachaAPIError {
+                self.error = apiError
+            } else {
+                self.error = StorachaAPIError.authenticationFailed("Login failed. Please check your email and try again.")
+            }
         }
         
+        isBusy = false
         isLoading = false
+    }
+    
+    // Email validation helper
+    private func isValidEmail(_ email: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: email)
     }
     
     @MainActor
@@ -110,100 +116,126 @@ class StorachaAppState: ObservableObject {
         
         currentUser = nil
         isAuthenticated = false
-        spaces = []
-        selectedSpace = nil
-        recentUploads = []
         error = nil
-    }
-    
-    // MARK: - Space Management
-    @MainActor
-    func loadSpaces() async {
-        guard isAuthenticated else { return }
-        
-        isLoading = true
-        
-        do {
-            let loadedSpaces = try await apiService.getSpaces()
-            self.spaces = loadedSpaces
-            
-            // Auto-select first space if none selected
-            if selectedSpace == nil, let firstSpace = loadedSpaces.first {
-                self.selectedSpace = firstSpace
-                await loadSpaceUsage()
-            }
-        } catch {
-            self.error = StorachaError.networkError(error)
-        }
-        
+        isLoginError = false
+        isBusy = false
         isLoading = false
     }
     
+    // MARK: - Session Management
     @MainActor
-    func selectSpace(_ space: StorachaSpace) async {
-        selectedSpace = space
-        await loadSpaceUsage()
-    }
-    
-    @MainActor
-    func loadSpaceUsage() async {
-        guard let space = selectedSpace else { return }
-        
-        do {
-            let usage = try await apiService.getSpaceUsage(spaceDid: space.did)
-            // Update the space usage in your UI
-            // You might want to add usage to the StorachaSpace model
-        } catch {
-            self.error = StorachaError.networkError(error)
-        }
-    }
-    
-    // MARK: - Upload Management
-    @MainActor
-    func uploadFile(_ fileData: Data, fileName: String) async -> Bool {
-        guard let space = selectedSpace else {
-            error = StorachaError.insufficientPermissions
-            return false
-        }
-        
+    func checkSessionAndNavigate() async -> (shouldGoToLogin: Bool,isVerified:Bool, userEmail: String?) {
+        isBusy = true
         isLoading = true
+        error = nil
+        
+        guard let sessionData = sessionManager.loadSession() else {
+            isBusy = false
+            isLoading = false
+            return (shouldGoToLogin: true,isVerified:false, userEmail: nil)
+        }
         
         do {
-            let uploadResponse = try await apiService.uploadFile(
-                fileData,
-                fileName: fileName,
-                spaceDid: space.did
-            )
+            // Validate session with server
+            let storachaSessionResponse = try await apiService.checkSession()
             
-            // Create upload record
-            let upload = StorachaUpload(
-                cid: uploadResponse.cid,
-                fileName: fileName,
-                size: uploadResponse.size,
-                uploadDate: Date(),
-                gatewayUrl: "https://\(uploadResponse.cid).ipfs.w3s.link/"
-            )
-            
-            // Add to recent uploads
-            recentUploads.insert(upload, at: 0)
-            
-            // Refresh space usage
-            await loadSpaceUsage()
-            
+            isBusy = false
             isLoading = false
-            return true
             
+            if (storachaSessionResponse?.valid ?? false) {
+                if(storachaSessionResponse?.verified == 0 ){
+                    return (shouldGoToLogin: true,isVerified:false, userEmail: nil)
+                }
+               
+                return (shouldGoToLogin: false,isVerified:true, userEmail: sessionData.email)
+            } else {
+            
+                return (shouldGoToLogin: true,isVerified:false, userEmail: nil)
+            }
         } catch {
-            self.error = StorachaError.uploadFailed(error.localizedDescription)
+           
+            self.error = error as? StorachaAPIError ?? StorachaAPIError.networkError(error)
+            
+            isBusy = false
             isLoading = false
-            return false
+            return (shouldGoToLogin: true,isVerified:false, userEmail: nil)
         }
+    }
+    
+    // MARK: - Email Verification Polling
+    @MainActor
+    func startVerificationPolling(completion: @escaping (Bool) -> Void) {
+        Task {
+            await pollForVerification(completion: completion)
+        }
+    }
+    
+    @MainActor
+    private func pollForVerification(completion: @escaping (Bool) -> Void) async {
+        var pollAttempts = 0
+        let maxAttempts = 20 // Poll for 5 minutes (60 * 5 seconds)
+        
+        while pollAttempts < maxAttempts {
+            do {
+                let sessionResponse = try await apiService.checkSession()
+                
+                if sessionResponse?.verified == 1 {
+                    if let sessionData = sessionManager.loadSession() {
+                       
+                        let verifiedSessionData = StorachaSessionData(
+                            sessionId: sessionData.sessionId,
+                            did: sessionData.did,
+                            email: sessionData.email,
+                            expiresAt: sessionData.expiresAt,
+                            verified: true
+                        )
+                        
+                        try sessionManager.saveSession(verifiedSessionData)
+                      
+                        self.isAuthenticated = true
+                        if let currentUser = self.currentUser {
+                            self.currentUser = StorachaUser(
+                                did: currentUser.did,
+                                email: currentUser.email,
+                                sessionId: currentUser.sessionId
+                            )
+                        }
+                        completion(true)
+                        return
+                    }
+                }
+                
+                pollAttempts += 1
+                
+                // Wait 5 seconds before next poll
+                if pollAttempts < maxAttempts {
+                    try await Task.sleep(nanoseconds: 5_000_000_000) // 5 seconds
+                }
+                
+            } catch {
+                // Continue polling on error, but increment attempt count
+                pollAttempts += 1
+                if pollAttempts < maxAttempts {
+                    try? await Task.sleep(nanoseconds: 5_000_000_000) // 5 seconds
+                }
+            }
+        }
+        
+        // Polling timed out
+        completion(false)
+    }
+    
+   
+    @MainActor
+    func stopVerificationPolling() {
+        // This will be handled by the Task cancellation in the view
     }
     
     // MARK: - Error Handling
     @MainActor
     func clearError() {
         error = nil
+        isLoginError = false
     }
 }
 
@@ -286,7 +318,7 @@ enum StorachaError: Error, LocalizedError {
     var errorDescription: String? {
         switch self {
         case .authenticationFailed(let message):
-            return "Authentication failed: \(message)"
+            return message
         case .networkError(let error):
             return "Network error: \(error.localizedDescription)"
         case .uploadFailed(let message):
@@ -301,97 +333,9 @@ enum StorachaError: Error, LocalizedError {
     }
 }
 
-// MARK: - Actions
+// MARK: - Actions (Simplified for login only)
 enum StorachaLoginAction {
     case login
     case cancel
     case createAccount
-}
-
-enum StorachaAppAction {
-    // Authentication
-    case login(email: String)
-    case logout
-    case checkSession
-    
-    // Spaces
-    case loadSpaces
-    case selectSpace(StorachaSpace)
-    case loadSpaceUsage
-    
-    // Uploads
-    case uploadFile(Data, fileName: String)
-    case loadRecentUploads
-    
-    // Delegations
-    case createDelegation(userDid: String, spaceDid: String, expiresInHours: Int)
-    
-    // Error handling
-    case clearError
-}
-
-// MARK: - State Dispatcher (Optional Redux-like pattern)
-class StorachaStateDispatcher: ObservableObject {
-    @Published var appState = StorachaAppState()
-    
-    func dispatch(_ action: StorachaAppAction) {
-        Task {
-            await handleAction(action)
-        }
-    }
-    
-    @MainActor
-    private func handleAction(_ action: StorachaAppAction) async {
-        switch action {
-        case .login(let email):
-            await appState.login(email: email)
-            
-        case .logout:
-            appState.logout()
-            
-        case .checkSession:
-            // Handle session check if needed
-            break
-            
-        case .loadSpaces:
-            await appState.loadSpaces()
-            
-        case .selectSpace(let space):
-            await appState.selectSpace(space)
-            
-        case .loadSpaceUsage:
-            await appState.loadSpaceUsage()
-            
-        case .uploadFile(let data, let fileName):
-            _ = await appState.uploadFile(data, fileName: fileName)
-            
-        case .loadRecentUploads:
-            // Handle loading recent uploads if needed
-            break
-            
-        case .createDelegation(let userDid, let spaceDid, let expiresInHours):
-            await createDelegation(userDid: userDid, spaceDid: spaceDid, expiresInHours: expiresInHours)
-            
-        case .clearError:
-            appState.clearError()
-        }
-    }
-    
-    @MainActor
-    private func createDelegation(userDid: String, spaceDid: String, expiresInHours: Int) async {
-        appState.isLoading = true
-        
-        do {
-            _ = try await StorachaAPIService.shared.createDelegation(
-                userDid: userDid,
-                spaceDid: spaceDid,
-                expiresInHours: expiresInHours
-            )
-            // Handle successful delegation creation
-        } catch {
-            appState.error = StorachaError.networkError(error)
-        }
-        
-        appState.isLoading = false
-    }
 }

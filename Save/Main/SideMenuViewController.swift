@@ -17,17 +17,19 @@ protocol SideMenuDelegate {
 
     func addSpace()
 
-    func manageStoracha()
-    
     func addFolder()
     
     func pushPrivateServerSetting(space: Space)
+    
+    func manageStoracha()
 }
 
 class SideMenuViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     var delegate: SideMenuDelegate?
-
+    
+    private let sessionManager = SessionManager.shared
+    
     var projectsConn: YapDatabaseConnection?
 
     var projectsMappings: YapDatabaseViewMappings?
@@ -61,7 +63,6 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
 
     @IBOutlet weak var serverNameLbl: UILabel! {
         didSet {
-            serverNameLbl.text = NSLocalizedString("Servers", comment: "")
             serverNameLbl.font = .montserrat(forTextStyle: .callout, with: .traitUIOptimized)
             
         }
@@ -88,6 +89,7 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
     }
 
 
+
     private var spacesConn = Db.newLongLivedReadConn()
 
     private var spacesMappings = YapDatabaseViewMappings(
@@ -109,12 +111,9 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
 
         spacesTable.register(SideMenuItemCell.nib, forCellReuseIdentifier: SideMenuItemCell.reuseId)
         projectsTable.register(SideMenuItemCell.nib, forCellReuseIdentifier: SideMenuItemCell.reuseId)
-
         Db.add(observer: self, #selector(yapDatabaseModified))
     }
-
-
-
+ 
     // MARK: UITableViewDataSource
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -123,6 +122,7 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
         }
 
         return Int(spacesMappings.numberOfSections()) + 1
+       
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -130,12 +130,15 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
             return Int(projectsMappings?.numberOfItems(inSection: UInt(section)) ?? 0)
         }
 
-        // "Add Another Account" button.
-        if section >= spacesMappings.numberOfSections() {
-            return 2
-        }
-
-        return Int(spacesMappings.numberOfItems(inSection: UInt(section)))
+        if section < spacesMappings.numberOfSections() {
+               return Int(spacesMappings.numberOfItems(inSection: UInt(section)))
+           }
+           
+           if let session = sessionManager.loadSession()?.sessionId {
+               return 2
+           } else {
+               return 1
+           }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -146,20 +149,24 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
 
             cell.apply(project, select: selectedProject == project)
         }
-        else if indexPath.section >= spacesMappings.numberOfSections() {
-            if indexPath.row == 0 {
-                cell.applyStoracha()
-                cell.accessibilityIdentifier = "cellStoracha"
-                   
-                } else if indexPath.row == 1 {
-                    cell.applyAdd()
-                    cell.accessibilityIdentifier = "cellAddAccount"
-                }
-        }
-        else {
-            let space = getSpace(at: indexPath)
-            cell.apply(space, select: SelectedSpace.id == space?.id)
-        }
+        else if indexPath.section < spacesMappings.numberOfSections() {
+               let space = getSpace(at: indexPath)
+               cell.apply(space, select: SelectedSpace.id == space?.id)
+           }
+           else {
+               if let session = sessionManager.loadSession()?.sessionId {
+                   if indexPath.row == 0 {
+                       cell.applyStoracha()
+                       cell.accessibilityIdentifier = "cellStoracha"
+                   } else {
+                       cell.applyAdd()
+                       cell.accessibilityIdentifier = "cellAddAccount"
+                   }
+               } else {
+                   cell.applyAdd()
+                   cell.accessibilityIdentifier = "cellAddAccount"
+               }
+           }
 
         return cell
     }
@@ -177,23 +184,23 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
                 tableView.deselectRow(at: indexPath, animated: false)
             }
         }
-        else if indexPath.section >= spacesMappings.numberOfSections() {
-           
-            if indexPath.row == 0 {
-                delegate?.manageStoracha()
-                
-                } else if indexPath.row == 1 {
-                    delegate?.addSpace()
-                }
-        }
-        else {
-            SelectedSpace.space = getSpace(at: indexPath)
-            SelectedSpace.store()
-
-            selectedProject = getProject(at: IndexPath(row: 0, section: 0))
-
-            delegate?.hideMenu()
-        }
+        else if indexPath.section < spacesMappings.numberOfSections() {
+               SelectedSpace.space = getSpace(at: indexPath)
+               SelectedSpace.store()
+               selectedProject = getProject(at: IndexPath(row: 0, section: 0))
+               delegate?.hideMenu()
+           }
+           else {
+               if let session = sessionManager.loadSession()?.sessionId {
+                   if indexPath.row == 0 {
+                       delegate?.manageStoracha()
+                   } else {
+                       delegate?.addSpace()
+                   }
+               } else {
+                   delegate?.addSpace()
+               }
+           }
     }
 
 
@@ -284,6 +291,7 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
             
             spacesTable.reloadData()
             serverNameLbl.text = SelectedSpace.space?.prettyName ?? ""
+            spaceIcon.image = getServerIcon(space: SelectedSpace.space)
         }
     }
 

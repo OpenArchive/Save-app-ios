@@ -23,7 +23,7 @@ struct StorachaSessionData: Codable {
     }
 }
 
-class SessionManager {
+public class SessionManager {
     static let shared = SessionManager()
     private let keychain = KeychainService.shared
     private let userDefaults = UserDefaults.standard
@@ -47,7 +47,7 @@ class SessionManager {
             let sessionData = try JSONDecoder().decode(StorachaSessionData.self, from: data)
             
             // Return only if session is still valid
-            return sessionData.isValid ? sessionData : nil
+            return sessionData
         } catch {
             return nil
         }
@@ -57,7 +57,14 @@ class SessionManager {
         try? keychain.delete(for: sessionKey)
     }
     
+}
+// MARK: - Session Manager Extension
+extension SessionManager {
+    func setLastEmail(_ email: String) {
+        UserDefaults.standard.set(email, forKey: "lastUsedEmail")
+    }
+    
     func getLastEmail() -> String? {
-        return userDefaults.string(forKey: lastEmailKey)
+        return UserDefaults.standard.string(forKey: "lastUsedEmail")
     }
 }

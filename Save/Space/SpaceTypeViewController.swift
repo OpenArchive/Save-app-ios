@@ -63,6 +63,15 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
             }
             
         }
+       button = BigButton.create(
+                    icon: UIImage(named: "storacha")?.withRenderingMode(.alwaysTemplate),
+                    title: "Storacha",
+                    subtitle: NSLocalizedString("Connect to the storacha network", comment: ""),
+                    target: self,
+                    action: #selector(newStoracha),
+                    container: container,
+                    above: button,
+                    equalHeight: true)
         
         button.bottomAnchor.constraint(lessThanOrEqualTo: container.bottomAnchor, constant: -16).isActive = true
     }
@@ -81,5 +90,10 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
     
     @IBAction func newGdrive() {
         delegate?.next(UIStoryboard.main.instantiate(GdriveWizardViewController.self), pos: 1)
+    }
+    
+    @IBAction func newStoracha() {
+        navigationController?.pushViewController(StorachaSettingViewController(),animated: true)
+        
     }
 }

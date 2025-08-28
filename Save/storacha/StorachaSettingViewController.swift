@@ -11,11 +11,14 @@ import UIKit
 import SwiftUI
 
 class StorachaSettingViewController: UIViewController {
+    
+    private var appState: StorachaAppState!
    
     private lazy var storachaLoginViewController: StorachaLoginViewController = {
         let vc = StorachaLoginViewController()
         return vc
     }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -24,23 +27,28 @@ class StorachaSettingViewController: UIViewController {
 
         if #available(iOS 14.0, *) {
             navigationItem.title = ""
+            
+            // Create app state
+            appState = StorachaAppState()
 
-            let settingsView = StorachaSettingView( disableBackAction: { [weak self] isDisabled in
-                self?.navigationItem.hidesBackButton = isDisabled
-            }, dismissAction: {
-              
-                self.navigationController?.popViewController(animated: true)
-            }, manageAccountsAction: {type in
-                if type == "manage" {
-                    self.handleManageNavigation()
-                }else if(type == "join"){
-                    self.manageSpaceNavigation(isNew: true)
+            let settingsView = StorachaSettingView(
+                appState: appState,
+                disableBackAction: { [weak self] isDisabled in
+                    self?.navigationItem.hidesBackButton = isDisabled
+                },
+                dismissAction: {
+                    self.navigationController?.popViewController(animated: true)
+                },
+                manageAccountsAction: { type in
+                    if type == "manage" {
+                        self.handleManageNavigation()
+                    } else if type == "join" {
+                        self.manageSpaceNavigation(isNew: true)
+                    } else {
+                        self.manageSpaceNavigation(isNew: false)
+                    }
                 }
-                else{
-                    self.manageSpaceNavigation(isNew: false)
-                }
-              
-            })
+            )
 
             let hostingController = UIHostingController(rootView: settingsView)
 
@@ -60,29 +68,40 @@ class StorachaSettingViewController: UIViewController {
             view.backgroundColor = .clear
         }
     }
+    
     func handleManageNavigation() {
-        
-            let loginVC = StorachaLoginViewController() 
-            self.navigationController?.pushViewController(loginVC, animated: true)
+        Task {
+            let result = await appState.checkSessionAndNavigate()
+            
+            await MainActor.run {
+                if result.shouldGoToLogin {
+                    self.navigateToLogin()
+                } else if result.isVerified {
+                    self.navigateToAccountDetails(email: result.userEmail ?? "")
+                } else{
+                    let verificationVC = VerificationSentViewController()
+                    verificationVC.configure(with: result.userEmail ?? "", appState: appState)
+                    self.navigationController?.pushViewController(verificationVC, animated: true)
+                }
+            }
+        }
     }
-    func manageSpaceNavigation(isNew:Bool){
-//        let store = AccountsStore(initial: AccountsAppState(), reducer: appReducer)
-//           let storedSpaces: [StorachaSpaceTest]
-//
-//           if let data = UserDefaults.standard.data(forKey: "storedSpaces"),
-//              let decoded = try? JSONDecoder().decode([StorachaSpaceTest].self, from: data) {
-//               storedSpaces = decoded
-//           } else {
-//               storedSpaces = []
-//           }
-//
-//           let targetVC: UIViewController
-//        if storedSpaces.isEmpty || isNew {
-//            targetVC = QRCodeViewController(store: store)
-//           } else {
-//               targetVC = SpaceListViewController(store: store)
-//           }
-//
-//           navigationController?.pushViewController(targetVC, animated: true)
+    
+    private func navigateToLogin() {
+        let loginVC = StorachaLoginViewController()
+        self.navigationController?.pushViewController(loginVC, animated: true)
+    }
+    
+    private func navigateToAccountDetails(email: String) {
+        let detailView = AccountDetailView(email: email) { [weak self] in
+            self?.navigationController?.popViewController(animated: true)
+        }
+        let hosting = UIHostingController(rootView: detailView)
+        hosting.title = "Account"
+        navigationController?.pushViewController(hosting, animated: true)
+    }
+    
+    func manageSpaceNavigation(isNew: Bool) {
+        // TODO: Implement space navigation when needed
     }
 }

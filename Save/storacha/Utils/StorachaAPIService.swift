@@ -41,7 +41,7 @@ struct StorachaVerifyResponse: Codable {
 
 struct StorachaSessionResponse: Codable {
     let valid: Bool
-    let verified: Bool
+    let verified: Int
     let expiresAt: String?
     let message: String
 }
@@ -150,14 +150,14 @@ class StorachaAPIService {
         // Generate or load existing key pair
         let keyPair: DIDKeyManager.DIDKeyPair
         do {
-            keyPair = try keyManager.loadKeyPair(for: "prathieshnav@gmail.com")
+            keyPair = try keyManager.loadKeyPair(for: email)
         } catch {
             keyPair = keyManager.generateKeyPair()
-            try keyManager.saveKeyPair(keyPair, for: "prathieshnav@gmail.com")
+            try keyManager.saveKeyPair(keyPair, for: email)
         }
         
         // Step 1: Initiate login
-        let loginResponse = try await initiateLogin(email: "prathieshnav@gmail.com", did: keyPair.did)
+        let loginResponse = try await initiateLogin(email: email, did: keyPair.did)
         
         // Step 2: Sign challenge if provided
         if let challenge = loginResponse.challenge,
@@ -168,7 +168,7 @@ class StorachaAPIService {
                 challengeId: challengeId,
                 signature: signature,
                 sessionId: loginResponse.sessionId,
-                email: "prathieshnav@gmail.com"
+                email: email
             )
         }
         
@@ -176,7 +176,7 @@ class StorachaAPIService {
         let sessionData = StorachaSessionData(
             sessionId: loginResponse.sessionId,
             did: loginResponse.did,
-            email: "prathieshnav@gmail.com",
+            email: email,
             expiresAt: nil,
             verified: loginResponse.verified
         )
@@ -247,14 +247,14 @@ class StorachaAPIService {
             expiresAt: nil,
             verified: false
         )
-        
+        sessionManager.clearSession()
         try sessionManager.saveSession(sessionData)
         return sessionData
     }
     
-    func checkSession() async throws -> Bool {
+    func checkSession() async throws -> StorachaSessionResponse? {
         guard let sessionData = sessionManager.loadSession() else {
-            return false
+            return nil
         }
         
         guard let url = URL(string: "\(baseURL)/auth/session") else {
@@ -267,11 +267,22 @@ class StorachaAPIService {
         let (data, response) = try await session.data(for: request)
         
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
-            return false
+            // Log the error response
+            if let errorString = String(data: data, encoding: .utf8) {
+                print("HTTP Error \(httpResponse.statusCode): \(errorString)")
+            }
+            return nil
         }
-        
+
+        // Log the raw response data before decoding
+        if let rawResponse = String(data: data, encoding: .utf8) {
+            print("Raw API Response: \(rawResponse)")
+        } else {
+            print("Failed to convert response data to string")
+        }
+
         let sessionResponse = try JSONDecoder().decode(StorachaSessionResponse.self, from: data)
-        return sessionResponse.valid && sessionResponse.verified
+        return sessionResponse
     }
     
     func logout() async throws {

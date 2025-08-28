@@ -6,14 +6,6 @@
 //  Copyright © 2025 Open Archive. All rights reserved.
 //
 
-//
-//  StorachaLoginViewController.swift
-//  Save
-//
-//  Created by navoda on 2025-05-26.
-//  Copyright © 2025 Open Archive. All rights reserved.
-//
-
 import UIKit
 import SwiftUI
 
@@ -69,13 +61,17 @@ class StorachaLoginViewController: UIViewController {
         switch action {
         case .login:
             Task {
-                // Call login with the email from the state
                 await appState.login(email: appState.email)
                 
                 await MainActor.run {
                     if appState.isAuthenticated && appState.currentUser != nil {
-                        let accountsVC = StorachaAccountsviewController()
-                        self.navigationController?.pushViewController(accountsVC, animated: true)
+                        let detailView = AccountDetailView(email: appState.email) { [weak self] in
+                            self?.navigationController?.popViewController(animated: true)
+                        }
+                        let hosting = UIHostingController(rootView: detailView)
+                        hosting.title = "Account"
+                        navigationController?.pushViewController(hosting, animated: true)
+                        
                     } else if appState.currentUser != nil {
                         let verificationVC = VerificationSentViewController()
                         verificationVC.configure(with: appState.lastUsedEmail, appState: appState)
@@ -88,5 +84,18 @@ class StorachaLoginViewController: UIViewController {
         case .cancel:
             navigationController?.popViewController(animated: true)
         }
+    }
+    
+    // MARK: - Helper Methods
+    private func showErrorAlert(message: String) {
+        let alert = UIAlertController(
+            title: "Error",
+            message: message,
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        
+        present(alert, animated: true)
     }
 }

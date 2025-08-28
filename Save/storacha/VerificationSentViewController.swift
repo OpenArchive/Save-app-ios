@@ -13,16 +13,35 @@ class VerificationSentViewController: UIViewController {
     
     private var email: String = ""
     private var appState: StorachaAppState?
+    private var hostingController: UIHostingController<VerificationSentView>?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        
+        navigationItem.hidesBackButton = true
+        navigationItem.title = "Verify Email"
+        
+        setupVerificationView()
+    }
+    
+    private func setupVerificationView() {
+        guard let appState = appState else { return }
+        
+        let verificationView = VerificationSentView(
+            appState: appState,
+            email: email,
+            onVerified: { [weak self] in
+                self?.handleVerificationSuccess()
+            },
+            onTimeout: { [weak self] in
+                self?.handleVerificationTimeout()
+            }
+        )
 
-        let view = VerificationSentView(email: email) {
-            self.pushSuccess()
-        }
-
-        let hostingController = UIHostingController(rootView: view)
+        let hostingController = UIHostingController(rootView: verificationView)
+        self.hostingController = hostingController
+        
         addChild(hostingController)
         self.view.addSubview(hostingController.view)
 
@@ -37,14 +56,56 @@ class VerificationSentViewController: UIViewController {
         hostingController.didMove(toParent: self)
     }
     
-    // Add the missing configure method
+    // Configure method for setting up the view controller
     func configure(with email: String, appState: StorachaAppState) {
         self.email = email
         self.appState = appState
+      
+        if isViewLoaded {
+            setupVerificationView()
+        }
     }
 
-    private func pushSuccess() {
+    private func handleVerificationSuccess() {
+        DispatchQueue.main.async { [weak self] in
+            // Navigate to success screen
+            self?.pushToSuccess()
+        }
+    }
+    
+    private func handleVerificationTimeout() {
+        DispatchQueue.main.async { [weak self] in
+            // Show timeout alert and option to retry or go back
+            self?.showTimeoutAlert()
+        }
+    }
+    
+    private func pushToSuccess() {
         let vc = VerificationSuccessViewController()
         navigationController?.pushViewController(vc, animated: true)
+    }
+    
+    private func showTimeoutAlert() {
+        let alert = UIAlertController(
+            title: "Verification Timeout",
+            message: "We didn't receive confirmation of your email verification. Please check your email and try again, or return to login.",
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "Try Again", style: .default) { [weak self] _ in
+            self?.setupVerificationView()
+        })
+        
+        alert.addAction(UIAlertAction(title: "Back to Login", style: .cancel) { [weak self] _ in
+            // Pop back to login
+            self?.navigationController?.popViewController(animated: true)
+        })
+        
+        present(alert, animated: true)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        appState?.stopVerificationPolling()
     }
 }
