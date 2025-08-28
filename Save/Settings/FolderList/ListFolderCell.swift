@@ -1,6 +1,6 @@
 import UIKit
 
-class FolderCellNew: UITableViewCell {
+class ListFolderCell: UITableViewCell {
     
     // Container for the content excluding the bottom padding
     private let borderedContainer: UIView = {

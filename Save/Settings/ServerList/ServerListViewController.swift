@@ -3,7 +3,7 @@ import UIKit
 import YapDatabase
 import SwiftUICore
 
-class ServerListNewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
+class ServerListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     
     
     let tableView = UITableView()
@@ -34,7 +34,7 @@ class ServerListNewViewController: UIViewController, UITableViewDelegate, UITabl
         
         tableView.delegate = self
         tableView.dataSource = self
-        tableView.register(ServerCellNew.self, forCellReuseIdentifier: "ServerCellNew")
+        tableView.register(ServerCell.self, forCellReuseIdentifier: "ServerCell")
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .none
         view.addSubview(tableView)
@@ -72,7 +72,7 @@ class ServerListNewViewController: UIViewController, UITableViewDelegate, UITabl
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ServerCellNew", for: indexPath) as? ServerCellNew else {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ServerCell", for: indexPath) as? ServerCell else {
             return UITableViewCell()
         }
         if  let space = getSpace(at: indexPath){
