@@ -271,6 +271,7 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
             
             spacesTable.reloadData()
             serverNameLbl.text = SelectedSpace.space?.prettyName ?? ""
+            spaceIcon.image = getServerIcon(space: SelectedSpace.space)
         }
     }
 
