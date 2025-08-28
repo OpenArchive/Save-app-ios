@@ -203,39 +203,45 @@ class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPic
         let picker = UIImagePickerController()
         picker.sourceType = .camera
         picker.delegate = self
-        picker.mediaTypes = ["public.image"]
+        picker.mediaTypes = ["public.image", "public.movie"]
+        picker.videoQuality = .typeMedium
         delegate?.present(picker, animated: true)
     }
 
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-
-           picker.dismiss(animated: true)
-        guard let image = info[.originalImage] as? UIImage,
-              let collection = (delegate as? AssetPickerDelegate)?.currentCollection
-        else {
+        
+        picker.dismiss(animated: true)
+        
+        guard let collection = (delegate as? AssetPickerDelegate)?.currentCollection else {
             return
         }
 
         let id = UIApplication.shared.beginBackgroundTask()
-           if let mediaURL = info[.mediaURL] as? URL {
-               // Video captured
-               AssetFactory.create(fromFileUrl: mediaURL, collection) { asset in
-                   UIApplication.shared.endBackgroundTask(id)
-               }
-           }
-           else if let image = info[.originalImage] as? UIImage {
-               // Photo captured
-               if let imageData = image.jpegData(compressionQuality: 1.0) {
-                   AssetFactory.create(from: imageData, uti: LegacyUTType.jpeg, name: "captured.jpg", thumbnail: image, collection) { asset in
-                       UIApplication.shared.endBackgroundTask(id)
-                   }
-               }
-           }
+        
+        if let mediaURL = info[.mediaURL] as? URL {
+            // Video captured
+            AssetFactory.create(fromFileUrl: mediaURL, collection) { asset in
+                UIApplication.shared.endBackgroundTask(id)
+            }
+        }
+        else if let image = info[.originalImage] as? UIImage {
+            // Photo captured
+            if let imageData = image.jpegData(compressionQuality: 1.0) {
+                AssetFactory.create(from: imageData, uti: LegacyUTType.jpeg, name: "captured.jpg", thumbnail: image, collection) { asset in
+                    UIApplication.shared.endBackgroundTask(id)
+                }
+            }
+        }
+        else {
+            // No media captured, end background task
+            UIApplication.shared.endBackgroundTask(id)
+            return
+        }
+        
         AbcFilteredByCollectionView.updateFilter(collection.id)
-
         (delegate as? AssetPickerDelegate)?.picked()
-       }
+    }
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         picker.dismiss(animated: true)
     }
