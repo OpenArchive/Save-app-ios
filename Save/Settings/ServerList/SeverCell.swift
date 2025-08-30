@@ -1,6 +1,6 @@
 import UIKit
 
-class ServerCellNew: UITableViewCell {
+class ServerCell: UITableViewCell {
     
     private let serverIcon = UIImageView()
     private let serverNameLabel = UILabel()

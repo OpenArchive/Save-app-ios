@@ -54,7 +54,7 @@ struct ProofModeSettingsView: View {
         VStack(alignment: .leading, spacing: 15) {
             ToggleSwitch(
                 title: NSLocalizedString("Enable ProofMode", comment: "Enable ProofMode"),
-                subtitle: NSLocalizedString("Share ProofMode public key", comment: "Share ProofMode public key"),
+                subtitle: "",
                 isOn: $isProofModeEnabled
             ) { value in
                 Settings.proofMode = value
@@ -99,23 +99,53 @@ struct ProofModeSettingsView: View {
                 
                 VStack(alignment: .leading) {
                     
-                    let localizedText = String(format: NSLocalizedString(
-                        "To help verify where your media was captured, ProofMode gathers data from nearby cell towers to corroborate your location. To add credibility and context, it then includes a separate metadata file with your media. Neither Save nor OpenArchive will be able to access or store this location data, it will only be accessible to those with access to the server files. iOS requires location access to collect this information.",
-                        comment: "Warning about ProofMode metadata"))
-                    
-                    if #available(iOS 15, *) {
-                        Text(AttributedString.boldSubstring(in: localizedText, substring: "Neither Save nor OpenArchive will be able to access or store this location data, it will only be accessible to those with access to the server files"))
-                            .font(.montserrat(.medium, for: .caption2)).foregroundColor(Color(UIColor.label))
-                    } else {
-                        if #available(iOS 16.0, *) {
-                            Text(localizedText)
-                                .font(.montserrat(.medium, for: .caption)).foregroundColor(Color(UIColor.label)).lineSpacing(6)
+                    let localizedText = NSLocalizedString(
+                        "To help verify where your media was captured, ProofMode gathers data from nearby cell towers to corroborate your location. To add credibility and context, it then includes a separate metadata file with your media*. iOS requires location access to collect this information.",
+                        comment: "Warning about ProofMode metadata"
+                    )
+
+                    let localizedTextPart2 = NSLocalizedString(
+                        "*Neither **_Save_** nor **_OpenArchive_** will be able to access or store this location data, it will only be accessible to those with access to the server files.",
+                        comment: "Warning about ProofMode metadata"
+                    )
+
+                    if #available(iOS 16.0, *) {
+                      
+                        if let attributed = try? AttributedString(markdown: localizedText) {
+                            Text(attributed)
+                                .font(.montserrat(.medium, for: .caption))
+                                .foregroundColor(Color(UIColor.label))
+                                .lineSpacing(6)
                                 .kerning(0.3)
-                        } else {
-                            Text(localizedText)
-                                .font(.montserrat(.medium, for: .caption)).foregroundColor(Color(UIColor.label)).lineSpacing(6)
                         }
+                        if let attributed2 = try? AttributedString(markdown: localizedTextPart2) {
+                            Text(attributed2)
+                                .font(.montserrat(.bold, for: .caption))
+                                .foregroundColor(Color(UIColor.label))
+                                .lineSpacing(6)
+                                .kerning(0.3)
+                                .padding(.top, 4)
+                        }
+                    } else if #available(iOS 15.0, *) {
+                        Text(localizedText)
+                            .font(.montserrat(.medium, for: .caption))
+                            .foregroundColor(Color(UIColor.label))
+                        Text(localizedTextPart2)
+                            .font(.montserrat(.bold, for: .caption))
+                            .foregroundColor(Color(UIColor.label))
+                            .padding(.top, 4)
+                    } else {
+                        Text(localizedText)
+                            .font(.montserrat(.medium, for: .caption))
+                            .foregroundColor(Color(UIColor.label))
+                            .lineSpacing(6)
+                        Text(localizedTextPart2)
+                            .font(.montserrat(.bold, for: .caption))
+                            .foregroundColor(Color(UIColor.label))
+                            .lineSpacing(6)
+                            .padding(.top, 4)
                     }
+
                 }
                 .padding(.top, 16)
                 .padding(.bottom,16)

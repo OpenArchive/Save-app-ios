@@ -2,33 +2,6 @@
 import SwiftUI
 import SwiftUIIntrospect
 
-class SettingsViewModel: ObservableObject {
-    @Published var isPasscodeOn = AppSettings.isPasscodeEnabled
-    @Published var isWifiOnlyOn = Settings.wifiOnly
-    @Published var isOnionRoutingOn = false
-    
-    weak var delegate: ViewControllerNavigationDelegate?
-    
-    func navigateToServerList() {
-        delegate?.pushServerList()
-    }
-    
-    func navigateToFolderList() {
-        
-        delegate?.pushFolderList()
-    }
-    func navigateToProofMode(){
-        let proofModeSettingsViewController = ProofModeSettingsViewController()
-        delegate?.pushViewController(proofModeSettingsViewController)
-    }
-    
-    func togglePasscode(_ value: Bool) {
-        if value {
-            let passcodeSetupController = PasscodeSetupController()
-            delegate?.pushViewController(passcodeSetupController)
-        }
-    }
-}
 
 // Reusable Switch Toggle Component
 struct ToggleSwitch: View {
@@ -400,24 +373,3 @@ struct SettingsView: View {
     }
 }
 
-
-protocol ViewControllerNavigationDelegate: AnyObject {
-    func pushViewController(_ viewController: UIViewController)
-    func pushServerList()
-    func pushFolderList()
-    func pushDetailServer(space:Space)
-}
-extension ViewControllerNavigationDelegate {
-    func pushDetailServer(space:Space) {
-        
-    }
-    func pushServerList(){
-        
-    }
-    func pushFolderList(){
-        
-    }
-    func pushViewController(_ viewController: UIViewController){
-        
-    }
-}

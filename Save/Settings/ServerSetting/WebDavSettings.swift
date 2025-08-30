@@ -1,5 +1,34 @@
 
 import Combine
+import Foundation
+
+struct ServerSettingsState {
+    var space: Space?
+    var serverName: String = ""
+    var serverURL: String = ""
+    var username: String = ""
+    var password: String = "••••••••"
+    
+    // Creative Commons License Toggles
+    var isCcEnabled: Bool = false
+    var allowRemix: Bool = false
+    var requireShareAlike: Bool = false
+    var allowCommercialUse: Bool = false
+    var licenseURL: String? = nil
+}
+
+enum ServerSettingsAction {
+    case updateServerName(String)
+    case updateServerURL(String)
+    
+    case toggleCcEnabled(Bool)
+    case toggleAllowRemix(Bool)
+    case toggleRequireShareAlike(Bool)
+    case toggleAllowCommercialUse(Bool)
+    case saveToDatabase
+    case removeSpace(Space?)
+    case updateLicense
+}
 
 class ServerSettingsStore: ObservableObject {
     @Published private(set) var state: ServerSettingsState
@@ -53,6 +82,7 @@ func serverSettingsReducer(state: inout ServerSettingsState, action: ServerSetti
     
     
 }
+
 func saveLicenseToDatabase(state: ServerSettingsState) {
     guard let space = state.space else { return }
     
@@ -69,6 +99,7 @@ func saveLicenseToDatabase(state: ServerSettingsState) {
         }
     }
 }
+
 func removeSpace(space:Space?){
     guard let id = space?.id else {
         return
@@ -88,6 +119,7 @@ func removeSpace(space:Space?){
         SelectedSpace.store(tx)
     }
 }
+
 func saveSpaceToDatabase(state: ServerSettingsState) {
     guard let space = state.space as? WebDavSpace else {
         return
@@ -98,6 +130,7 @@ func saveSpaceToDatabase(state: ServerSettingsState) {
     }
     Db.writeConn?.setObject(space)
 }
+
 // Helper function to construct license URL
 func generateLicenseURL(state: ServerSettingsState) -> String? {
     guard state.isCcEnabled else { return nil }
@@ -114,36 +147,8 @@ func generateLicenseURL(state: ServerSettingsState) -> String? {
     
     // Format the URL properly
     if #available(iOS 14.0, *) {
-        return String(format: ServerSettingsView.ccUrl, license)
+        return String(format: PrivateServerSettingsView.ccUrl, license)
     } else {
         return String(format: "https://creativecommons.org/licenses/%@/4.0/", license)
     }
-}
-import Foundation
-
-struct ServerSettingsState {
-    var space: Space?
-    var serverName: String = ""
-    var serverURL: String = ""
-    var username: String = ""
-    var password: String = "••••••••"
-    
-    // Creative Commons License Toggles
-    var isCcEnabled: Bool = false
-    var allowRemix: Bool = false
-    var requireShareAlike: Bool = false
-    var allowCommercialUse: Bool = false
-    var licenseURL: String? = nil
-}
-enum ServerSettingsAction {
-    case updateServerName(String)
-    case updateServerURL(String)
-    
-    case toggleCcEnabled(Bool)
-    case toggleAllowRemix(Bool)
-    case toggleRequireShareAlike(Bool)
-    case toggleAllowCommercialUse(Bool)
-    case saveToDatabase
-    case removeSpace(Space?)
-    case updateLicense
 }

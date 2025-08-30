@@ -3,8 +3,9 @@ import UIKit
 import SwiftUI
 import YapDatabase
 class GeneralSettingsViewController:UIViewController,ViewControllerNavigationDelegate {
-    private lazy var ServerList: ServerListNewViewController = {
-        let vc = ServerListNewViewController()
+    
+    private lazy var ServerList: ServerListViewController = {
+        let vc = ServerListViewController()
         return vc
     }()
    
@@ -61,4 +62,26 @@ class GeneralSettingsViewController:UIViewController,ViewControllerNavigationDel
 }
 protocol GeneralSettingsDelegate: AnyObject {
     func pushServerListScreen()
+}
+
+protocol ViewControllerNavigationDelegate: AnyObject {
+    func pushViewController(_ viewController: UIViewController)
+    func pushServerList()
+    func pushFolderList()
+    func pushDetailServer(space:Space)
+}
+
+extension ViewControllerNavigationDelegate {
+    func pushDetailServer(space:Space) {
+        
+    }
+    func pushServerList(){
+        
+    }
+    func pushFolderList(){
+        
+    }
+    func pushViewController(_ viewController: UIViewController){
+        
+    }
 }
