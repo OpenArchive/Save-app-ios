@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct VerificationSentView: View {
-    @ObservedObject var appState: StorachaAppState
+    @ObservedObject var authState: AuthState
     var email: String
     var onVerified: () -> Void
     var onTimeout: () -> Void
@@ -23,7 +23,6 @@ struct VerificationSentView: View {
                 ProgressView()
                     .scaleEffect(1.5)
             } else {
-                // Fallback on earlier versions
                 ActivityIndicator(style: .large, animate: .constant(true))
             }
             
@@ -43,7 +42,6 @@ struct VerificationSentView: View {
                 .foregroundColor(.gray)
                 .padding(.horizontal)
             
-            // Display the email address
             if !email.isEmpty {
                 Text("Sent to: \(email)")
                     .font(.montserrat(.medium, for: .caption))
@@ -58,17 +56,18 @@ struct VerificationSentView: View {
         .onAppear {
             startVerificationPolling()
         }
+        .onDisappear {
+            authState.stopVerificationPolling()
+        }
     }
     
     private func startVerificationPolling() {
         guard !isPolling else { return }
-        
         isPolling = true
         
-        appState.startVerificationPolling { [self] isVerified in
+        authState.startVerificationPolling { isVerified in
             DispatchQueue.main.async {
                 self.isPolling = false
-                
                 if isVerified {
                     onVerified()
                 } else {

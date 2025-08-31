@@ -10,7 +10,7 @@ import Combine
 
 @available(iOS 14.0, *)
 struct StorachaLoginView: View {
-    @ObservedObject var state: StorachaAppState
+    @ObservedObject var state: AuthState
     var dispatch: (StorachaLoginAction) -> Void
     @Environment(\.colorScheme) var colorScheme
     @State private var showingAlert = false
@@ -24,7 +24,7 @@ struct StorachaLoginView: View {
     var disableBackAction: ((Bool) -> Void)?
    
     init(
-        state: StorachaAppState,
+        state: AuthState,
         dispatch: @escaping (StorachaLoginAction) -> Void,
         disableBackAction: ((Bool) -> Void)? = nil,
         dismissAction: (() -> Void)? = nil
@@ -50,6 +50,7 @@ struct StorachaLoginView: View {
     var body: some View {
         GeometryReader { reader in
             VStack {
+                // --- Header
                 HStack {
                     Circle().fill(.gray10)
                         .frame(width: 53, height: 53)
@@ -60,12 +61,18 @@ struct StorachaLoginView: View {
                                 .frame(width: 30, height: 30)
                         ).padding(.trailing, 6)
                     VStack(alignment: .leading) {
-                        Text(LocalizedStringKey("Access your admin portal using your registered email address.")) .font(.montserrat(.medium, for: .subheadline))
+                        Text("Access your admin portal using your registered email address.")
+                            .font(.montserrat(.medium, for: .subheadline))
                     }
                 }
                 .padding(.top,50).padding(.leading,20).padding(.trailing,40)
                 
-                Text(LocalizedStringKey("Account")).font(.montserrat(.semibold, for: .headline)).foregroundColor(.gray70).padding(.top,50).frame(maxWidth: .infinity, alignment: .leading).padding(.leading,20)
+                Text("Account")
+                    .font(.montserrat(.semibold, for: .headline))
+                    .foregroundColor(.gray70)
+                    .padding(.top,50)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.leading,20)
                 
                 ZStack(alignment: .leading) {
                     if state.email.isEmpty {
@@ -82,7 +89,6 @@ struct StorachaLoginView: View {
                         .font(.montserrat(.medium, for: .footnote))
                         .foregroundColor(.gray70)
                         .onReceive(Just(state.email)) { _ in
-                            // Clear login error when user starts typing
                             if state.isLoginError {
                                 state.isLoginError = false
                             }
@@ -96,10 +102,10 @@ struct StorachaLoginView: View {
                 .padding(.horizontal, 20)
                 .padding(.top, 15)
                 
-                // Error messages
+                // --- Error messages
                 VStack(alignment: .leading, spacing: 4) {
                     if isEmailFormatInvalid {
-                        Text(LocalizedStringKey("Please enter a valid email address"))
+                        Text("Please enter a valid email address")
                             .foregroundColor(.red)
                             .font(.montserrat(.medium, for: .caption2))
                             .padding(.leading, 20)
@@ -108,7 +114,7 @@ struct StorachaLoginView: View {
                     }
                     
                     if state.isLoginError {
-                        Text(LocalizedStringKey("Incorrect email or login failed"))
+                        Text("Incorrect email or login failed")
                             .foregroundColor(.red)
                             .font(.montserrat(.medium, for: .caption2))
                             .padding(.leading, 20)
@@ -119,26 +125,28 @@ struct StorachaLoginView: View {
                 .padding(.top, isEmailFormatInvalid || state.isLoginError ? 4 : 0)
                 
                 HStack(alignment: .center) {
-                    Text(LocalizedStringKey("No Account?")).foregroundColor(.gray70).font(.montserrat(.semibold, for: .callout))
-                    Button(action: {
-                        dispatch(.createAccount)
-                    }) {
-                        Text(LocalizedStringKey("Create one"))
-                    }.foregroundColor(.accent).font(.montserrat(.semibold, for: .callout))
+                    Text("No Account?")
+                        .foregroundColor(.gray70)
+                        .font(.montserrat(.semibold, for: .callout))
+                    Button(action: { dispatch(.createAccount) }) {
+                        Text("Create one")
+                    }
+                    .foregroundColor(.accent)
+                    .font(.montserrat(.semibold, for: .callout))
                     .disabled(state.isBusy)
-                }.padding(.top, 40)
+                }
+                .padding(.top, 40)
                 
                 Spacer()
                 
                 HStack(alignment: .bottom) {
-                    Button(action: {
-                        dispatch(.cancel)
-                    }, label: {
-                        Text(LocalizedStringKey("Back"))
-                    })
+                    Button(action: { dispatch(.cancel) }) {
+                        Text("Back")
+                    }
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .foregroundColor(state.isBusy ? .gray50 : (colorScheme == .dark ? Color.white : Color.black))
+                    .foregroundColor(state.isBusy ? .gray50 :
+                        (colorScheme == .dark ? Color.white : Color.black))
                     .font(.montserrat(.semibold, for: .headline))
                     .disabled(state.isBusy)
                     
@@ -146,14 +154,14 @@ struct StorachaLoginView: View {
                         if !state.isBusy && isValidFormState {
                             dispatch(.login)
                         }
-                    }, label: {
+                    }) {
                         if state.isBusy {
                             ActivityIndicator(style: .medium, animate: .constant(true))
                                 .foregroundColor(.black)
                         } else {
-                            Text(LocalizedStringKey("Login"))
+                            Text("Login")
                         }
-                    })
+                    }
                     .disabled(!isValidFormState || state.isBusy)
                     .padding()
                     .frame(maxWidth: .infinity)
@@ -183,7 +191,7 @@ struct StorachaLoginView: View {
             if let error = error {
                 alertMessage = error.localizedDescription
                 showingAlert = true
-                state.clearError()
+                state.error = nil   // clear error inside AuthState
             }
         }
         .onAppear {

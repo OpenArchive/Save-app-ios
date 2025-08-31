@@ -1,5 +1,6 @@
 
 import UIKit
+import CoreImage.CIFilterBuiltins
 
 class Utils {
     static func doesMatchExist(regularExpression: String, inputText: String) -> Bool {
@@ -70,19 +71,22 @@ class Utils {
     }
     
     class func generateQRCode(from string: String) -> UIImage? {
-        let data = string.data(using: String.Encoding.ascii)
-        
-        if let filter = CIFilter(name: "CIQRCodeGenerator") {
-            filter.setValue(data, forKey: "inputMessage")
-            let transform = CGAffineTransform(scaleX: 3, y: 3)
-            
-            if let output = filter.outputImage?.transformed(by: transform) {
-                return UIImage(ciImage: output)
-            }
-        }
-        
-        return nil
-    }
+           let context = CIContext()
+           let filter = CIFilter.qrCodeGenerator()
+           let data = Data(string.utf8)
+           filter.setValue(data, forKey: "inputMessage")
+
+           if let outputImage = filter.outputImage {
+               // Scale up to make it sharp
+               let transform = CGAffineTransform(scaleX: 10, y: 10)
+               let scaledImage = outputImage.transformed(by: transform)
+
+               if let cgImage = context.createCGImage(scaledImage, from: scaledImage.extent) {
+                   return UIImage(cgImage: cgImage)
+               }
+           }
+           return nil
+       }
     
     class func getMemoryUsedAndDeviceTotalInMegabytes() -> (Float, Float) {
         

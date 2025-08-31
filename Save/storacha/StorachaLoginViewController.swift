@@ -9,6 +9,9 @@
 import UIKit
 import SwiftUI
 
+import UIKit
+import SwiftUI
+
 class StorachaLoginViewController: UIViewController {
     
     private var appState: StorachaAppState!
@@ -22,11 +25,12 @@ class StorachaLoginViewController: UIViewController {
         if #available(iOS 14.0, *) {
             navigationItem.title = ""
             
-            // Create the app state as an instance property
+            // Create the global app state
             appState = StorachaAppState()
             
+            // Pass only the auth state into the login view
             let loginView = StorachaLoginView(
-                state: appState,
+                state: appState.authState,
                 dispatch: { [weak self] action in
                     self?.handle(action: action)
                 },
@@ -61,26 +65,33 @@ class StorachaLoginViewController: UIViewController {
         switch action {
         case .login:
             Task {
-                await appState.login(email: appState.email)
+                await appState.authState.login(email: appState.authState.email)
                 
                 await MainActor.run {
-                    if appState.isAuthenticated && appState.currentUser != nil {
-                        let detailView = AccountDetailView(email: appState.email) { [weak self] in
+                    if appState.authState.isAuthenticated, let user = appState.authState.currentUser {
+                        let detailView = AccountDetailView(email: user.email) { [weak self] in
                             self?.navigationController?.popViewController(animated: true)
                         }
                         let hosting = UIHostingController(rootView: detailView)
                         hosting.title = "Account"
                         navigationController?.pushViewController(hosting, animated: true)
                         
-                    } else if appState.currentUser != nil {
+                    } else if appState.authState.currentUser != nil {
                         let verificationVC = VerificationSentViewController()
-                        verificationVC.configure(with: appState.lastUsedEmail, appState: appState)
+                        verificationVC.configure(
+                            with: appState.authState.lastUsedEmail,
+                            appState: appState
+                        )
                         self.navigationController?.pushViewController(verificationVC, animated: true)
+                    } else if let error = appState.authState.error {
+                        self.showErrorAlert(message: error.localizedDescription)
                     }
                 }
             }
+            
         case .createAccount:
-            print("create account")
+            print("create account flow")
+            
         case .cancel:
             navigationController?.popViewController(animated: true)
         }
@@ -93,9 +104,7 @@ class StorachaLoginViewController: UIViewController {
             message: message,
             preferredStyle: .alert
         )
-        
         alert.addAction(UIAlertAction(title: "OK", style: .default))
-        
         present(alert, animated: true)
     }
 }

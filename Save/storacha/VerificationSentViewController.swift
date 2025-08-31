@@ -9,6 +9,7 @@
 import UIKit
 import SwiftUI
 
+
 class VerificationSentViewController: UIViewController {
     
     private var email: String = ""
@@ -26,10 +27,10 @@ class VerificationSentViewController: UIViewController {
     }
     
     private func setupVerificationView() {
-        guard let appState = appState else { return }
+        guard let authState = appState?.authState else { return }
         
         let verificationView = VerificationSentView(
-            appState: appState,
+            authState: authState,
             email: email,
             onVerified: { [weak self] in
                 self?.handleVerificationSuccess()
@@ -43,24 +44,24 @@ class VerificationSentViewController: UIViewController {
         self.hostingController = hostingController
         
         addChild(hostingController)
-        self.view.addSubview(hostingController.view)
+        view.addSubview(hostingController.view)
 
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            hostingController.view.topAnchor.constraint(equalTo: self.view.topAnchor),
-            hostingController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-            hostingController.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            hostingController.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+            hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
+            hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
 
         hostingController.didMove(toParent: self)
     }
     
-    // Configure method for setting up the view controller
+    // Configure with AuthState instead of full AppState
     func configure(with email: String, appState: StorachaAppState) {
         self.email = email
         self.appState = appState
-      
+
         if isViewLoaded {
             setupVerificationView()
         }
@@ -68,21 +69,21 @@ class VerificationSentViewController: UIViewController {
 
     private func handleVerificationSuccess() {
         DispatchQueue.main.async { [weak self] in
-            // Navigate to success screen
             self?.pushToSuccess()
         }
     }
     
     private func handleVerificationTimeout() {
         DispatchQueue.main.async { [weak self] in
-            // Show timeout alert and option to retry or go back
             self?.showTimeoutAlert()
         }
     }
     
     private func pushToSuccess() {
-        let vc = VerificationSuccessViewController()
-        navigationController?.pushViewController(vc, animated: true)
+        if let state = appState {
+            let vc = VerificationSuccessViewController(appState:state)
+            navigationController?.pushViewController(vc, animated: true)
+        }
     }
     
     private func showTimeoutAlert() {
@@ -97,7 +98,6 @@ class VerificationSentViewController: UIViewController {
         })
         
         alert.addAction(UIAlertAction(title: "Back to Login", style: .cancel) { [weak self] _ in
-            // Pop back to login
             self?.navigationController?.popViewController(animated: true)
         })
         
@@ -106,6 +106,6 @@ class VerificationSentViewController: UIViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
-        appState?.stopVerificationPolling()
+        appState?.authState.stopVerificationPolling()
     }
 }

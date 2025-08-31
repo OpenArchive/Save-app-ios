@@ -23,8 +23,6 @@ class DIDKeyManager {
     func generateKeyPair() -> DIDKeyPair {
         let privateKey = Curve25519.Signing.PrivateKey()
         let publicKey = privateKey.publicKey
-        
-        // Create DID from public key using Android's logic
         let did = createDidFromPublicKey(publicKey)
         
         return DIDKeyPair(privateKey: privateKey, publicKey: publicKey, did: did)
@@ -45,14 +43,14 @@ class DIDKeyManager {
         return "did:key:z\(base58Key)"
     }
     
-    func saveKeyPair(_ keyPair: DIDKeyPair, for identifier: String) throws {
-        try keychain.save(keyPair.privateKey.rawRepresentation, for: "\(identifier)_private")
-        try keychain.save(keyPair.did.data(using: .utf8)!, for: "\(identifier)_did")
+    func saveKeyPair(_ keyPair: DIDKeyPair) throws {
+        try keychain.save(keyPair.privateKey.rawRepresentation, for: "key_private")
+        try keychain.save(keyPair.did.data(using: .utf8)!, for: "key_did")
     }
     
-    func loadKeyPair(for identifier: String) throws -> DIDKeyPair {
-        let privateKeyData = try keychain.load(for: "\(identifier)_private")
-        let didData = try keychain.load(for: "\(identifier)_did")
+    func loadKeyPair() throws -> DIDKeyPair {
+        let privateKeyData = try keychain.load(for: "key_private")
+        let didData = try keychain.load(for: "key_did")
         
         let privateKey = try Curve25519.Signing.PrivateKey(rawRepresentation: privateKeyData)
         let did = String(data: didData, encoding: .utf8)!

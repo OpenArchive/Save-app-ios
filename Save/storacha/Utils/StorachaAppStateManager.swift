@@ -13,113 +13,57 @@ import Combine
 // MARK: - Storacha States
 class StorachaAppState: ObservableObject {
     @Published var isAuthenticated: Bool = false
-    @Published var currentUser: StorachaUser?
+    @Published var accounts: [String] = []
     @Published var isLoading: Bool = false
+    @Published var usage: StorachaAccountUsageResponse?
     @Published var error: StorachaAPIError?
-    @Published var lastUsedEmail: String = ""
-    @Published var email: String = ""
     @Published var isBusy: Bool = false
-    @Published var isLoginError: Bool = false
-    
+    @Published var didState = DIDState()
+    @Published var authState = AuthState()
+    @Published var spaceState = SpaceState()
+    @Published var currentUser: StorachaUser?
+    @Published var lastUsedEmail: String = ""
     private let apiService = StorachaAPIService.shared
     private let sessionManager = SessionManager.shared
-    private var cancellables = Set<AnyCancellable>()
-    
-    var isValid: Bool {
-        return !email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-    }
-    
+   
     init() {
         self.lastUsedEmail = sessionManager.getLastEmail() ?? ""
-        self.email = self.lastUsedEmail
         restoreSession()
     }
+    // MARK: - Account Listing
+    @MainActor
+    func loadAccounts() {
+        isLoading = true
+        accounts.removeAll()
+
+        if let lastEmail = sessionManager.getLastEmail(), !lastEmail.isEmpty {
+            accounts = [lastEmail]
+        }
+        else{
+            guard let sessionData = sessionManager.loadSession() else { return }
+            accounts = [sessionData.email]
+            self.lastUsedEmail = sessionData.email
+            sessionManager.setLastEmail( self.lastUsedEmail)
+        }
+
+        isLoading = false
+    }
     
+    @MainActor
+    func clearAccounts() {
+        accounts = []
+    }
+
     private func restoreSession() {
         guard let sessionData = sessionManager.loadSession() else { return }
-        
-        let user = StorachaUser(
+        self.currentUser = StorachaUser(
             did: sessionData.did,
             email: sessionData.email,
             sessionId: sessionData.sessionId
         )
-        
-        DispatchQueue.main.async {
-            self.currentUser = user
-            self.isAuthenticated = sessionData.verified
-            self.lastUsedEmail = sessionData.email
-            self.email = sessionData.email
-        }
-        
-    }
-    
-    // MARK: - Authentication Actions
-    @MainActor
-    func login(email: String) async {
-        // Set busy state to show progress indicator
-        isBusy = true
-        isLoading = true
-        error = nil
-        isLoginError = false
-        let trimmedEmail = email.trimmingCharacters(in: .whitespacesAndNewlines)
-        
-        guard isValidEmail(trimmedEmail) else {
-            isLoginError = true
-            error = StorachaAPIError.authenticationFailed("Please enter a valid email address")
-            isBusy = false
-            isLoading = false
-            return
-        }
-        
-        do {
-            
-            let sessionData = try await apiService.login(email: trimmedEmail)
-            
-            let user = StorachaUser(
-                did: sessionData.did,
-                email: sessionData.email,
-                sessionId: sessionData.sessionId
-            )
-            
-            self.currentUser = user
-            self.isAuthenticated = sessionData.verified
-            self.lastUsedEmail = trimmedEmail
-            self.email = trimmedEmail
-            
-        } catch {
-            
-            self.isLoginError = true
-            
-            if let apiError = error as? StorachaAPIError {
-                self.error = apiError
-            } else {
-                self.error = StorachaAPIError.authenticationFailed("Login failed. Please check your email and try again.")
-            }
-        }
-        
-        isBusy = false
-        isLoading = false
-    }
-    
-    // Email validation helper
-    private func isValidEmail(_ email: String) -> Bool {
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailPred.evaluate(with: email)
-    }
-    
-    @MainActor
-    func logout() {
-        Task {
-            try? await apiService.logout()
-        }
-        
-        currentUser = nil
-        isAuthenticated = false
-        error = nil
-        isLoginError = false
-        isBusy = false
-        isLoading = false
+        self.lastUsedEmail = sessionData.email
+        sessionManager.setLastEmail( self.lastUsedEmail)
+        self.isAuthenticated = sessionData.verified
     }
     
     // MARK: - Session Management
@@ -162,132 +106,24 @@ class StorachaAppState: ObservableObject {
         }
     }
     
-    // MARK: - Email Verification Polling
     @MainActor
-    func startVerificationPolling(completion: @escaping (Bool) -> Void) {
-        Task {
-            await pollForVerification(completion: completion)
-        }
-    }
-    
-    @MainActor
-    private func pollForVerification(completion: @escaping (Bool) -> Void) async {
-        var pollAttempts = 0
-        let maxAttempts = 20 // Poll for 5 minutes (60 * 5 seconds)
-        
-        while pollAttempts < maxAttempts {
+    func loadUsage(sessionId: String) async {
+            isLoading = true
+            error = nil
             do {
-                let sessionResponse = try await apiService.checkSession()
-                
-                if sessionResponse?.verified == 1 {
-                    if let sessionData = sessionManager.loadSession() {
-                       
-                        let verifiedSessionData = StorachaSessionData(
-                            sessionId: sessionData.sessionId,
-                            did: sessionData.did,
-                            email: sessionData.email,
-                            expiresAt: sessionData.expiresAt,
-                            verified: true
-                        )
-                        
-                        try sessionManager.saveSession(verifiedSessionData)
-                      
-                        self.isAuthenticated = true
-                        if let currentUser = self.currentUser {
-                            self.currentUser = StorachaUser(
-                                did: currentUser.did,
-                                email: currentUser.email,
-                                sessionId: currentUser.sessionId
-                            )
-                        }
-                        completion(true)
-                        return
-                    }
-                }
-                
-                pollAttempts += 1
-                
-                // Wait 5 seconds before next poll
-                if pollAttempts < maxAttempts {
-                    try await Task.sleep(nanoseconds: 5_000_000_000) // 5 seconds
-                }
-                
+                let result = try await apiService.getAccountUsage()
+                usage = result
             } catch {
-                // Continue polling on error, but increment attempt count
-                pollAttempts += 1
-                if pollAttempts < maxAttempts {
-                    try? await Task.sleep(nanoseconds: 5_000_000_000) // 5 seconds
-                }
+                self.error = error as? StorachaAPIError ?? .networkError(error)
+                usage = nil
             }
+            isLoading = false
         }
-        
-        // Polling timed out
-        completion(false)
-    }
-    
-   
-    @MainActor
-    func stopVerificationPolling() {
-        // This will be handled by the Task cancellation in the view
-    }
     
     // MARK: - Error Handling
     @MainActor
     func clearError() {
         error = nil
-        isLoginError = false
-    }
-}
-
-// MARK: - Enhanced Login State
-class StorachaLoginState: ObservableObject {
-    @Published var email: String = ""
-    @Published var isBusy: Bool = false
-    @Published var isLoginError: Bool = false
-    @Published var errorMessage: String = ""
-    
-    private let appState: StorachaAppState
-    
-    init(appState: StorachaAppState) {
-        self.appState = appState
-        
-        // Pre-fill email if available
-        if !appState.lastUsedEmail.isEmpty {
-            self.email = appState.lastUsedEmail
-        }
-    }
-    
-    var isValid: Bool {
-        return !email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty
-    }
-    
-    @MainActor
-    func login() async {
-        guard isValid else { return }
-        
-        isBusy = true
-        isLoginError = false
-        errorMessage = ""
-        
-        await appState.login(email: email)
-        
-        // Check if login was successful
-        if !appState.isAuthenticated, let error = appState.error {
-            isLoginError = true
-            errorMessage = error.localizedDescription
-            appState.clearError()
-        }
-        
-        isBusy = false
-    }
-    
-    func cancel() {
-        // Handle cancel action
-    }
-    
-    func createAccount() {
-        // Handle create account action
-        // You might want to open a web view or handle registration
     }
 }
 

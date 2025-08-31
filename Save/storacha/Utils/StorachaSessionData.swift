@@ -36,8 +36,6 @@ public class SessionManager {
     func saveSession(_ sessionData: StorachaSessionData) throws {
         let data = try JSONEncoder().encode(sessionData)
         try keychain.save(data, for: sessionKey)
-        
-        // Save last used email for convenience
         userDefaults.set(sessionData.email, forKey: lastEmailKey)
     }
     
@@ -45,8 +43,6 @@ public class SessionManager {
         do {
             let data = try keychain.load(for: sessionKey)
             let sessionData = try JSONDecoder().decode(StorachaSessionData.self, from: data)
-            
-            // Return only if session is still valid
             return sessionData
         } catch {
             return nil

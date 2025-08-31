@@ -85,6 +85,51 @@ struct StorachaDelegationResponse: Codable {
     let createdBy: String
 }
 
+struct StorachaDelegationListResponse: Codable {
+    let spaceDid: String
+    let users: [String]
+}
+
+struct StorachaUploadItem: Codable, Identifiable {
+    let cid: String
+    let created: String
+    let insertedAt: String
+    let updatedAt: String
+    let gatewayUrl: String
+    
+    var id: String { cid }
+}
+
+struct StorachaUploadsResponse: Codable {
+    let success: Bool
+    let userDid: String
+    let spaceDid: String
+    let uploads: [StorachaUploadItem]
+    let count: Int
+    let cursor: String?
+    let hasMore: Bool
+}
+
+struct StorachaRevokeResponse: Codable {
+    let message: String
+    let userDid: String
+    let spaceDid: String
+    let revokedCount: Int
+}
+
+struct StorachaAccountUsageResponse: Codable {
+    let totalUsage: StorachaUsageDetail
+    let spaces: [StorachaSpaceUsage]
+}
+
+struct StorachaSpaceUsage: Codable, Identifiable {
+    let spaceDid: String
+    let name: String
+    let usage: StorachaUsageDetail
+
+    var id: String { spaceDid }
+}
+
 // MARK: - API Errors
 enum StorachaAPIError: Error, LocalizedError {
     case invalidURL
@@ -150,10 +195,10 @@ class StorachaAPIService {
         // Generate or load existing key pair
         let keyPair: DIDKeyManager.DIDKeyPair
         do {
-            keyPair = try keyManager.loadKeyPair(for: email)
+            keyPair = try keyManager.loadKeyPair()
         } catch {
             keyPair = keyManager.generateKeyPair()
-            try keyManager.saveKeyPair(keyPair, for: email)
+            try keyManager.saveKeyPair(keyPair)
         }
         
         // Step 1: Initiate login
@@ -273,14 +318,14 @@ class StorachaAPIService {
             }
             return nil
         }
-
+        
         // Log the raw response data before decoding
         if let rawResponse = String(data: data, encoding: .utf8) {
             print("Raw API Response: \(rawResponse)")
         } else {
             print("Failed to convert response data to string")
         }
-
+        
         let sessionResponse = try JSONDecoder().decode(StorachaSessionResponse.self, from: data)
         return sessionResponse
     }
@@ -302,8 +347,13 @@ class StorachaAPIService {
     
     // MARK: - Space Management
     func getSpaces() async throws -> [StorachaSpace] {
-        guard let sessionData = sessionManager.loadSession() else {
-            throw StorachaAPIError.authenticationFailed("No active session")
+        let keyPair: DIDKeyManager.DIDKeyPair
+        do {
+            keyPair = try keyManager.loadKeyPair()
+        } catch {
+            let generated = keyManager.generateKeyPair()
+            try keyManager.saveKeyPair(generated)
+            keyPair = generated
         }
         
         guard let url = URL(string: "\(baseURL)/spaces") else {
@@ -311,7 +361,14 @@ class StorachaAPIService {
         }
         
         var request = URLRequest(url: url)
-        request.setValue(sessionData.sessionId, forHTTPHeaderField: "x-session-id")
+        
+        // Add session header only if available
+        if let sessionData = sessionManager.loadSession() {
+            request.setValue(sessionData.sessionId, forHTTPHeaderField: "x-session-id")
+        }
+        
+        // Always pass DID
+        request.setValue(keyPair.did, forHTTPHeaderField: "x-user-did")
         
         let (data, response) = try await session.data(for: request)
         
@@ -322,6 +379,7 @@ class StorachaAPIService {
         
         return try JSONDecoder().decode([StorachaSpace].self, from: data)
     }
+    
     
     func getSpaceUsage(spaceDid: String) async throws -> StorachaUsageDetail {
         guard let sessionData = sessionManager.loadSession() else {
@@ -391,7 +449,7 @@ class StorachaAPIService {
         return try JSONDecoder().decode(StorachaUploadResponse.self, from: data)
     }
     
-    // MARK: - Delegation Management
+    // MARK: - create Delegation
     func createDelegation(userDid: String, spaceDid: String, expiresInHours: Int = 24) async throws -> StorachaDelegationResponse {
         guard let sessionData = sessionManager.loadSession() else {
             throw StorachaAPIError.authenticationFailed("No active session")
@@ -422,4 +480,133 @@ class StorachaAPIService {
         
         return try JSONDecoder().decode(StorachaDelegationResponse.self, from: data)
     }
+    
+    // MARK: - list Delegations for a space
+    
+    func listDelegations(spaceDid: String) async throws -> [String] {
+        guard let sessionData = sessionManager.loadSession() else {
+            throw StorachaAPIError.authenticationFailed("No active session")
+        }
+        
+        guard let url = URL(string: "\(baseURL)/delegations/list?spaceDid=\(spaceDid)") else {
+            throw StorachaAPIError.invalidURL
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "GET"
+        request.setValue(sessionData.sessionId, forHTTPHeaderField: "x-session-id")
+        
+        let (data, response) = try await session.data(for: request)
+        
+        if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
+            let errorMessage = String(data: data, encoding: .utf8) ?? "Unknown error"
+            throw StorachaAPIError.serverError(httpResponse.statusCode, errorMessage)
+        }
+        
+        let decoded = try JSONDecoder().decode(StorachaDelegationListResponse.self, from: data)
+        return decoded.users
+    }
+    
+    // MARK: -  Revoke DID access
+    func revokeDelegation(userDid: String, spaceDid: String) async throws -> StorachaRevokeResponse {
+        guard let sessionData = sessionManager.loadSession() else {
+            throw StorachaAPIError.authenticationFailed("No active session")
+        }
+        
+        guard let url = URL(string: "\(baseURL)/delegations/revoke") else {
+            throw StorachaAPIError.invalidURL
+        }
+        
+        var request = URLRequest(url: url)
+        request.httpMethod = "DELETE"
+        request.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.setValue(sessionData.sessionId, forHTTPHeaderField: "x-session-id")
+        
+        let body: [String: String] = ["userDid": userDid, "spaceDid": spaceDid]
+        request.httpBody = try JSONEncoder().encode(body)
+        
+        let (data, response) = try await session.data(for: request)
+        if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
+            let errorMessage = String(data: data, encoding: .utf8) ?? "Unknown error"
+            throw StorachaAPIError.serverError(httpResponse.statusCode, errorMessage)
+        }
+        
+        return try JSONDecoder().decode(StorachaRevokeResponse.self, from: data)
+    }
+    
+    // MARK: - list uploads
+    
+    func listUploads(
+        spaceDid: String,
+        cursor: String? = nil,
+        size: Int = 25
+    ) async throws -> StorachaUploadsResponse {
+        
+        // Load or generate DID
+        let keyPair: DIDKeyManager.DIDKeyPair
+        do {
+            keyPair = try keyManager.loadKeyPair()
+        } catch {
+            let generated = keyManager.generateKeyPair()
+            try keyManager.saveKeyPair(generated)
+            keyPair = generated
+        }
+        
+        // Build URL with query params
+        var components = URLComponents(string: "\(baseURL)/uploads")!
+        var queryItems: [URLQueryItem] = [
+            URLQueryItem(name: "spaceDid", value: spaceDid),
+            URLQueryItem(name: "size", value: "\(size)")
+        ]
+        if let cursor = cursor {
+            queryItems.append(URLQueryItem(name: "cursor", value: cursor))
+        }
+        components.queryItems = queryItems
+        
+        guard let url = components.url else {
+            throw StorachaAPIError.invalidURL
+        }
+        
+        var request = URLRequest(url: url)
+        
+        // Required DID header
+        request.setValue(keyPair.did, forHTTPHeaderField: "x-user-did")
+        
+        // Optional session header
+        if let sessionData = sessionManager.loadSession() {
+            request.setValue(sessionData.sessionId, forHTTPHeaderField: "x-session-id")
+        }
+        
+        let (data, response) = try await session.data(for: request)
+        
+        if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
+            let errorMessage = String(data: data, encoding: .utf8) ?? "Unknown error"
+            throw StorachaAPIError.serverError(httpResponse.statusCode, errorMessage)
+        }
+        
+        return try JSONDecoder().decode(StorachaUploadsResponse.self, from: data)
+    }
+    
+    // MARK: - Get account usage
+    func getAccountUsage() async throws -> StorachaAccountUsageResponse {
+           guard let sessionData = sessionManager.loadSession() else {
+               throw StorachaAPIError.authenticationFailed("No active session")
+           }
+           
+           guard let url = URL(string: "\(baseURL)/spaces/account-usage") else {
+               throw StorachaAPIError.invalidURL
+           }
+
+           var request = URLRequest(url: url)
+           request.setValue(sessionData.sessionId, forHTTPHeaderField: "x-session-id")
+
+           let (data, response) = try await session.data(for: request)
+
+           if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
+               let errorMessage = String(data: data, encoding: .utf8) ?? "Unknown error"
+               throw StorachaAPIError.serverError(httpResponse.statusCode, errorMessage)
+           }
+
+           return try JSONDecoder().decode(StorachaAccountUsageResponse.self, from: data)
+       }
 }

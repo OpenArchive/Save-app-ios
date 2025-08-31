@@ -93,15 +93,18 @@ class StorachaSettingViewController: UIViewController {
     }
     
     private func navigateToAccountDetails(email: String) {
-        let detailView = AccountDetailView(email: email) { [weak self] in
-            self?.navigationController?.popViewController(animated: true)
-        }
-        let hosting = UIHostingController(rootView: detailView)
-        hosting.title = "Account"
-        navigationController?.pushViewController(hosting, animated: true)
+        let newVC = StorachaAccountsViewController(appState: appState)
+        self.navigationController?.pushViewController(newVC, animated:true)
     }
     
     func manageSpaceNavigation(isNew: Bool) {
-        // TODO: Implement space navigation when needed
+        if(isNew){
+            let newVC = QRCodeViewController(spaceState: self.appState.spaceState)
+            self.navigationController?.pushViewController(newVC, animated: true)
+        } else{
+            let newVC = SpaceListViewController(appState:  self.appState)
+            self.navigationController?.pushViewController(newVC, animated: true)
+        }
+      
     }
 }

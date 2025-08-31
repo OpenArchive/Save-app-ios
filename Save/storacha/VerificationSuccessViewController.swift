@@ -10,37 +10,41 @@
 import UIKit
 import SwiftUI
 
+import UIKit
+import SwiftUI
+
 class VerificationSuccessViewController: UIViewController {
+    private var appState: StorachaAppState
+
+    init(appState: StorachaAppState) {
+        self.appState = appState
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-
-        let view = VerificationSuccessView {
-            if let navigationController = self.navigationController {
-                
-                if let existingVC = navigationController.viewControllers.first(where: { $0 is StorachaSettingViewController }) {
-                    
-                    navigationController.popToViewController(existingVC, animated: true)
-                } else {
-                    
-                    let newVC = MainViewController()
-                    navigationController.pushViewController(newVC, animated: true)
-                }
-            }
-        }
         navigationItem.hidesBackButton = true
 
-        let hostingController = UIHostingController(rootView: view)
+        let successView = VerificationSuccessView {
+            let newVC = SpaceListViewController(appState:  self.appState)
+            self.navigationController?.pushViewController(newVC, animated: true)
+        }
+
+        let hostingController = UIHostingController(rootView: successView)
         addChild(hostingController)
-        self.view.addSubview(hostingController.view)
+        view.addSubview(hostingController.view)
 
         hostingController.view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            hostingController.view.topAnchor.constraint(equalTo: self.view.topAnchor),
-            hostingController.view.bottomAnchor.constraint(equalTo: self.view.bottomAnchor),
-            hostingController.view.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
-            hostingController.view.trailingAnchor.constraint(equalTo: self.view.trailingAnchor)
+            hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
+            hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
         ])
 
         hostingController.didMove(toParent: self)
