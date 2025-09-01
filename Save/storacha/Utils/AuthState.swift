@@ -139,7 +139,7 @@ class AuthState: ObservableObject {
                                 sessionId: currentUser.sessionId
                             )
                         }
-                        sessionManager.setLastEmail(currentUser?.email)
+                        sessionManager.setLastEmail(currentUser?.email ?? "")
                         completion(true)
                         return
                     }
