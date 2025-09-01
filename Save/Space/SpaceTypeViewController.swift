@@ -52,7 +52,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
         Db.bgRwConn?.read { tx in
             if tx.find(where: { (_: IaSpace) in true }) == nil {
                 button = BigButton.create(
-                    icon: IaSpace.favIcon,
+                    icon: UIImage(named: "internet_archive_teal"),
                     title: IaSpace.defaultPrettyName,
                     subtitle: NSLocalizedString("Connect to a free public server", comment: ""),
                     target: self,
