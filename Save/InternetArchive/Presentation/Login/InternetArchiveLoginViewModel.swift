@@ -62,16 +62,16 @@ class InternetArchiveLoginViewModel : StoreViewModel<InternetArchiveLoginState, 
             self.store.notify(.isLoginOnprogress)
             return useCase(email: state.userName, password: state.password, completion: { result in
                 switch result {
-                case .success:
+                case .success(let space):
                     self.store.notify(.isLoginFinished)
-                    self.store.dispatch(.LoggedIn)
+                    self.store.dispatch(.LoggedIn(space))
                 case .failure(_):
                     self.store.notify(.isLoginFinished)
                     self.store.dispatch(.LoginError)
                 }
             })
-        case .LoggedIn:
-            self.store.notify(.Next)
+        case .LoggedIn(let space):
+            self.store.notify(.Next(space))
         case .Cancel:
             self.store.notify(.Cancel)
         case .CreateAccount:

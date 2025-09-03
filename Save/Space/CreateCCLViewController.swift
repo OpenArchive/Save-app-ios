@@ -10,11 +10,13 @@ import UIKit
 import Eureka
 import YapDatabase
 class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDelegate {
-    
+   
+    @IBOutlet weak var labelBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var nameTabHeight: NSLayoutConstraint!
     private var keyboardHandling: KeyboardHandling?
     private let cc = CcSelector(individual: false)
     var delegate: WizardDelegate?
-    var space: WebDavSpace?
+    var space: Space?
     @IBOutlet weak var nameTab: TextBox!{
         didSet {
             nameTab.placeholder = NSLocalizedString("Server Name (Optional)", comment: "")
@@ -40,7 +42,19 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
         super.viewDidLoad()
         keyboardHandling = KeyboardHandling(scrollView: scrollView,viewController: self)
         self.navigationItem.hidesBackButton = true
-        self.title = NSLocalizedString("Private Server", comment: "")
+        if(space is IaSpace){
+            titleLbl.text = NSLocalizedString("Choose a licence", comment: "")
+            labelBottomConstraint.constant = 0
+            nameTab.isHidden = true
+            nameTabHeight.constant = 0
+            self.title = NSLocalizedString("Internet Archive", comment: "")
+        }else{
+            labelBottomConstraint.constant = 50
+            nameTab.isHidden = false
+            nameTabHeight.constant = 50
+            self.title = NSLocalizedString("Private Server", comment: "")
+        }
+       
         setupForm()
         hideKeyboardOnOutsideTap()
     }
@@ -134,9 +148,14 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
         guard let space = SelectedSpace.space else {
             return
         }
-        updateSpaceName(for: space.id, newName: nameTab.text ?? "")
         let vc = UIStoryboard.main.instantiate(SpaceSuccessViewController.self)
+        if(space is IaSpace){
+            vc.spaceName = NSLocalizedString("the Internet Archive", comment: "")
+        }else{
+            updateSpaceName(for: space.id, newName: nameTab.text ?? "")
             vc.spaceName = NSLocalizedString("a private server", comment: "")
+        }
+        
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
