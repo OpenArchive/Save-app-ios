@@ -13,6 +13,7 @@ struct InternetArchiveDetailState {
 
     // Creative Commons license state
     var isCcEnabled: Bool = false
+    var isCc0Enabled: Bool = false
     var allowRemix: Bool = false
     var requireShareAlike: Bool = false
     var allowCommercialUse: Bool = false
@@ -23,6 +24,7 @@ struct InternetArchiveDetailState {
         userName: String? = nil,
         email: String? = nil,
         isCcEnabled: Bool? = nil,
+        isCc0Enabled: Bool? = nil,
         allowRemix: Bool? = nil,
         requireShareAlike: Bool? = nil,
         allowCommercialUse: Bool? = nil,
@@ -33,6 +35,7 @@ struct InternetArchiveDetailState {
         copy.userName = userName ?? self.userName
         copy.email = email ?? self.email
         copy.isCcEnabled = isCcEnabled ?? self.isCcEnabled
+        copy.isCc0Enabled = isCc0Enabled ?? self.isCc0Enabled
         copy.allowRemix = allowRemix ?? self.allowRemix
         copy.requireShareAlike = requireShareAlike ?? self.requireShareAlike
         copy.allowCommercialUse = allowCommercialUse ?? self.allowCommercialUse
@@ -50,6 +53,7 @@ enum InternetArchiveDetailAction {
     case HandleBackButton(status: Bool)
 
     case toggleCcEnabled(Bool)
+    case toggleCc0Enabled(Bool) 
     case toggleAllowRemix(Bool)
     case toggleRequireShareAlike(Bool)
     case toggleAllowCommercialUse(Bool)

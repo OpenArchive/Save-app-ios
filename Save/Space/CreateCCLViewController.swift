@@ -10,7 +10,7 @@ import UIKit
 import Eureka
 import YapDatabase
 class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDelegate {
-   
+    
     @IBOutlet weak var labelBottomConstraint: NSLayoutConstraint!
     @IBOutlet weak var nameTabHeight: NSLayoutConstraint!
     private var keyboardHandling: KeyboardHandling?
@@ -54,13 +54,13 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
             nameTabHeight.constant = 50
             self.title = NSLocalizedString("Private Server", comment: "")
         }
-       
+        
         setupForm()
         hideKeyboardOnOutsideTap()
     }
     
     private func setupForm() {
-      
+        
         self.tableView?.removeFromSuperview()
         formContainer.addSubview(tableView!)
         
@@ -88,22 +88,25 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
         <<< cc.ccSw.onChange { [weak self] row in
             self?.ccLicenseChanged(row)
         }
-        
+        <<< cc.cc0Sw.onChange { [weak self] row in
+            self?.cc0LicenseChanged(row)
+        }
         <<< cc.remixSw.onChange { [weak self] row in
-            self?.ccLicenseChanged(row)
+            print("change remix")
+            self?.otherLicenseChanged(row)
         }
         
         <<< cc.shareAlikeSw.onChange { [weak self] row in
-            self?.ccLicenseChanged(row)
+            self?.otherLicenseChanged(row)
         }
         
         <<< cc.commercialSw.onChange { [weak self] row in
-            self?.ccLicenseChanged(row)
+            self?.otherLicenseChanged(row)
         }
-       <<< LabelRow() { row in
-                row.title = " "
-                row.cell.backgroundColor = .clear
-                row.cell.height = { 10 }
+        <<< LabelRow() { row in
+            row.title = " "
+            row.cell.backgroundColor = .clear
+            row.cell.height = { 10 }
         }
         <<< cc.licenseRow
         
@@ -143,6 +146,19 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
             }
         }
     }
+    private func cc0LicenseChanged(_ row: SwitchRow) {
+        if !cc.isUpdatingValues {
+            cc.handleCC0Toggle()
+        }
+        ccLicenseChanged(row)
+    }
+    
+    private func otherLicenseChanged(_ row: SwitchRow) {
+        if !cc.isUpdatingValues {
+            cc.handleOtherToggle()
+        }
+        ccLicenseChanged(row)
+    }
     
     @IBAction func onNextButtonTap(_ sender: Any) {
         guard let space = SelectedSpace.space else {
@@ -161,9 +177,9 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
     
     func updateSpaceName(for spaceId: String, newName: String) {
         Db.writeConn?.asyncReadWrite { tx in
-           
+            
             if let space = tx.object(forKey: spaceId, inCollection: Space.collection) as? Space {
-
+                
                 space.name = newName
                 tx.setObject(space, forKey: space.id, inCollection: Space.collection)
                 if SelectedSpace.id == spaceId {

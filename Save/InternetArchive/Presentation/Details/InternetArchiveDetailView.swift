@@ -92,6 +92,15 @@ struct InternetArchiveDetailContent: View {
                 
                 if state.isCcEnabled {
                     VStack(alignment: .leading, spacing: 10) {
+                        Toggle(NSLocalizedString("Waive all restrictions, requirements, and attribution (CC0)", comment: "CC0 Toggle"), isOn: Binding(
+                            get: { state.isCc0Enabled },
+                            set: { newValue in
+                                dispatch(.toggleCc0Enabled(newValue))
+                                dispatch(.updateLicense)
+                            }
+                        ))
+                        .toggleTint(.accent)
+                        .font(.montserrat(.medium, for: .subheadline))
                         Toggle(NSLocalizedString("Allow anyone to remix and share?", comment: ""), isOn: Binding(
                             get: { state.allowRemix },
                             set: { newValue in
@@ -190,8 +199,8 @@ struct InternetArchiveDetailContent: View {
                                 )
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                             }
-                            .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            .background(Color.black.opacity(0.2))
+                                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                                .background(Color.black.opacity(0.2))
                         )
                 }
             }

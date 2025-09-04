@@ -22,6 +22,7 @@ struct PrivateServerSettingsView: View {
         self.dismissAction = dismissAction
         self.disableBackAction = disableBackAction
         self.changetitle = changeTitle
+        let isCC0 = space.license?.contains("publicdomain/zero") == true
         let initialState = ServerSettingsState(
             space:space,
             serverName: space.name ?? "",
@@ -29,9 +30,10 @@ struct PrivateServerSettingsView: View {
             username: space.username ?? "",
             password: "••••••••", // Do not expose real password
             isCcEnabled: space.license != nil,
-            allowRemix: space.license?.contains("-nd") == false,
-            requireShareAlike: space.license?.contains("-sa") == true,
-            allowCommercialUse: space.license?.contains("-nc") == false,
+            isCc0Enabled: isCC0,
+            allowRemix: isCC0 ? false : space.license?.contains("-nd") == false,
+            requireShareAlike: isCC0 ? false : space.license?.contains("-sa") == true,
+            allowCommercialUse: isCC0 ? false : space.license?.contains("-nc") == false,
             licenseURL: space.license
         )
         _serverName = State(initialValue: initialState.serverName)
@@ -187,6 +189,16 @@ struct LicenseToggles: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
+            Toggle(NSLocalizedString("Waive all restrictions, requirements, and attribution (CC0)", comment: "CC0 Toggle"), isOn: Binding(
+                            get: { store.state.isCc0Enabled },
+                            set: { newValue in
+                                store.dispatch(action: .toggleCc0Enabled(newValue))
+                                store.dispatch(action: .updateLicense)
+                            }
+                        ))
+                        .toggleTint(.accent)
+                        .font(.montserrat(.medium, for: .subheadline))
+            
             Toggle(NSLocalizedString("Allow anyone to remix and share?", comment: "Remix Toggle"), isOn: Binding(
                 get: { store.state.allowRemix },
                 set: { newValue in
@@ -194,6 +206,7 @@ struct LicenseToggles: View {
                     store.dispatch(action: .updateLicense)
                 }
             )) .toggleTint(.accent).font(.montserrat(.medium, for: .subheadline))
+            
             
             Toggle(NSLocalizedString("Require them to share like you have?", comment: "ShareAlike Toggle"), isOn: Binding(
                 get: { store.state.requireShareAlike },

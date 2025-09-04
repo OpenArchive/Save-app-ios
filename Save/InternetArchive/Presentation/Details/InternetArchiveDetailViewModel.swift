@@ -29,32 +29,71 @@ class InternetArchiveDetailViewModel : StoreViewModel<InternetArchiveDetailState
     private func reduce(state: State, action: Action) -> State? {
         switch action {
         case .Loaded(let data):
-            // license info is not in InternetArchive.MetaData, so we read from space
+            let isCC0 = space.license?.contains("publicdomain/zero") == true
+            
             return state.copy(
                 screenName: data.screenName,
                 userName: data.userName,
                 email: data.email,
                 isCcEnabled: space.license != nil,
-                allowRemix: space.license?.contains("-nd") == false,
-                requireShareAlike: space.license?.contains("-sa") == true,
-                allowCommercialUse: space.license?.contains("-nc") == false,
+                isCc0Enabled: isCC0, // New CC0 state
+                allowRemix: isCC0 ? false : space.license?.contains("-nd") == false,
+                requireShareAlike: isCC0 ? false : space.license?.contains("-sa") == true,
+                allowCommercialUse: isCC0 ? false : space.license?.contains("-nc") == false,
                 licenseURL: space.license
             )
             
         case .toggleCcEnabled(let value):
-            return state.copy(isCcEnabled: value)
+            var newState = state.copy(isCcEnabled: value)
+            if !value {
+                
+                newState = newState.copy(
+                    isCc0Enabled: false,
+                    allowRemix: false,
+                    requireShareAlike: false,
+                    allowCommercialUse: false
+                )
+            }
+            return newState
+            
+        case .toggleCc0Enabled(let value):
+            var newState = state.copy(isCc0Enabled: value)
+            if value {
+                
+                newState = newState.copy(
+                    allowRemix: false,
+                    requireShareAlike: false,
+                    allowCommercialUse: false
+                )
+            }
+            return newState
             
         case .toggleAllowRemix(let value):
-            return state.copy(
+            var newState = state.copy(
                 allowRemix: value,
                 requireShareAlike: value ? state.requireShareAlike : false
             )
             
+            if value {
+                newState = newState.copy(isCc0Enabled: false)
+            }
+            return newState
+            
         case .toggleRequireShareAlike(let value):
-            return state.copy(requireShareAlike: value)
+            var newState = state.copy(requireShareAlike: value)
+            
+            if value {
+                newState = newState.copy(isCc0Enabled: false)
+            }
+            return newState
             
         case .toggleAllowCommercialUse(let value):
-            return state.copy(allowCommercialUse: value)
+            var newState = state.copy(allowCommercialUse: value)
+            
+            if value {
+                newState = newState.copy(isCc0Enabled: false)
+            }
+            return newState
             
         case .updateLicense:
             return state.copy(licenseURL: generateLicenseURL(state: state))
@@ -63,7 +102,7 @@ class InternetArchiveDetailViewModel : StoreViewModel<InternetArchiveDetailState
             return nil
         }
     }
-
+    
     // MARK: - Effects
     private func effects(state: State, action: Action) -> Scoped? {
         switch action {
@@ -139,6 +178,12 @@ class InternetArchiveDetailViewModel : StoreViewModel<InternetArchiveDetailState
 func generateLicenseURL(state: InternetArchiveDetailState) -> String? {
     guard state.isCcEnabled else { return nil }
     
+    // If CC0 is enabled, return CC0 URL
+    if state.isCc0Enabled {
+        return "https://creativecommons.org/publicdomain/zero/1.0/"
+    }
+    
+    // Regular CC license
     var license = "by"
     
     if state.allowRemix {
