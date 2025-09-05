@@ -35,8 +35,8 @@ class SideMenuItemCell: UITableViewCell {
         contentView.backgroundColor = select ? .accent :  .pillBackground
     }
 
-    func apply(_ project: Project?, select: Bool) {
-        iconLeadingConstraint.constant = 12
+    func apply(_ project: Project?, select: Bool, isIndented: Bool = false) {
+        iconLeadingConstraint.constant = isIndented ? 32 : 12
 
         icon.image = UIImage(named: select ? "folder_fil" : "folder")?.withRenderingMode(.alwaysTemplate)
         icon.tintColor = select ? .accent : .label
