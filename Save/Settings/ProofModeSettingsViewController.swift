@@ -215,11 +215,11 @@ struct ProofModeSettingsView: View {
     }
     struct ProofModeView: View {
         var body: some View {
-            Text(NSLocalizedString("ProofMode is a system that enables authentication and verification of multimedia content,", comment: "ProofMode description"))
+            Text(NSLocalizedString("ProofMode is a way to enhance the authentication and verification of multimedia content.", comment: "ProofMode description"))
                 .font(.montserrat(.medium, for: .caption))
                 .foregroundColor(.primary)
             +
-            Text("[\(NSLocalizedString(" learn more here", comment: "Learn more link"))](https://proofmode.org)")
+            Text("[\(NSLocalizedString(" Learn more here.", comment: "Learn more link"))](https://proofmode.org)")
                 .font(.montserrat(.medium, for: .caption))
                 .foregroundColor(.accent)
                 .underline()

@@ -56,7 +56,7 @@ struct PasscodeEntryContent: View {
     var body: some View {
         
         PasscodeContentWrapper(
-            title: "Enter Passcode", subtitle: "",
+            title: "Set Passcode", subtitle: "",
             passcode: passcode,
             passcodeLength: passcodeLength,
             shouldShake: shouldShake,

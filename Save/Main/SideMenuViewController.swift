@@ -19,6 +19,8 @@ protocol SideMenuDelegate {
 
     func addFolder()
     
+    func hideSelectMedia()
+    
     func pushPrivateServerSetting(space: Space)
 }
 
@@ -202,8 +204,9 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
             showSpaceHeader(animated: true)
         
             projectsTable.reloadData()
-
+            delegate?.hideSelectMedia()
             delegate?.hideMenu()
+            
         }
     }
 

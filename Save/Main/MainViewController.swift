@@ -13,7 +13,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                           UINavigationControllerDelegate, SideMenuDelegate,
                           AssetPickerDelegate,UITextFieldDelegate,UICollectionViewDelegate
 {
-    
+   
     @IBOutlet weak var renameView: UIView!{
         didSet {
             renameView.isHidden = true
@@ -580,7 +580,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         if AbcFilteredByProjectView.projectId != project?.id {
             toggleMode(newMode: false)
         }
-        
+        hideSelectMedia()
         updateProject()
     }
     
@@ -590,6 +590,10 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
     }
     
+    func hideSelectMedia() {
+        selectMediaView.isHidden = true
+        self.toggleMode(newMode: false)
+    }
     
     // MARK: Actions
     
@@ -1009,7 +1013,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             }
             else {
                 menu.isHidden = false
-                
                 sideMenu.animate(toggle, completion)
             }
         }
