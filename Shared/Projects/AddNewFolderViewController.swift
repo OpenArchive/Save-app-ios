@@ -145,7 +145,7 @@ struct CreateFolderView: View {
                         placeholder: NSLocalizedString("Enter folder name", comment: ""),
                         text: $folderName,
                         isDisabled: false,
-                        onEditingChanged: {
+                        onEditingChanged: {_ in 
                             store.dispatch(action: .updateFolderName(folderName))
                         }
                     )
@@ -190,7 +190,7 @@ struct CreateFolderView: View {
         .overlay(
             Group {
                 if store.state.status {
-                    Color.gray.opacity(0.9)
+                    Color.black.opacity(0.7)
                         .edgesIgnoringSafeArea(.all)
                         .overlay(
                             VStack {
@@ -215,7 +215,7 @@ struct CreateFolderView: View {
                         )
                 }
                 if (store.state.errorMessage != nil) {
-                    Color.gray.opacity(0.9)
+                    Color.black.opacity(0.7)
                         .edgesIgnoringSafeArea(.all)
                         .overlay(
                             VStack {
@@ -236,7 +236,7 @@ struct CreateFolderView: View {
                                 
                             }
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .background(Color.black.opacity(0.2))
+                                .background(Color.black.opacity(0.6))
                         )
                 }
             })

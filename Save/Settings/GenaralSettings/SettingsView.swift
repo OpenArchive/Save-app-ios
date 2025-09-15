@@ -265,7 +265,7 @@ struct SettingsView: View {
         }.overlay(
             Group {
                 if showPasscodeAlert {
-                    Color.gray.opacity(0.9)
+                    Color.black.opacity(0.7)
                         .edgesIgnoringSafeArea(.all)
                         .overlay(
                             VStack {
@@ -301,11 +301,11 @@ struct SettingsView: View {
                                 
                             }
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .background(Color.black.opacity(0.2))
+                               
                         )
                 }
                 if showTorAlert {
-                    Color.gray.opacity(0.9)
+                    Color.black.opacity(0.7)
                         .edgesIgnoringSafeArea(.all)
                         .overlay(
                             VStack {
@@ -330,7 +330,7 @@ struct SettingsView: View {
                                 
                             }
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .background(Color.black.opacity(0.2))
+                               
                         )
                 }
             })

@@ -8,7 +8,9 @@
 
 
 import SwiftUI
-
+extension Notification.Name {
+    static let privateServerSettingsConfirm = Notification.Name("privateServerSettingsConfirm")
+}
 @available(iOS 14.0, *)
 struct PrivateServerSettingsView: View {
     static let ccUrl = "https://creativecommons.org/licenses/%@/4.0/"
@@ -18,10 +20,12 @@ struct PrivateServerSettingsView: View {
     var dismissAction: (() -> Void)?
     var disableBackAction: ((Bool) -> Void)?
     var changetitle: ((String) -> Void)?
-    init(space: Space,disableBackAction: ((Bool) -> Void)? = nil,dismissAction: (() -> Void)? = nil,changeTitle: ((String) -> Void)? = nil) {
+    var onEditingChanged: ((Bool) -> Void)?
+    init(space: Space,disableBackAction: ((Bool) -> Void)? = nil,dismissAction: (() -> Void)? = nil,changeTitle: ((String) -> Void)? = nil, onEditingChanged: ((Bool) -> Void)? = nil) {
         self.dismissAction = dismissAction
         self.disableBackAction = disableBackAction
         self.changetitle = changeTitle
+        self.onEditingChanged = onEditingChanged
         let isCC0 = space.license?.contains("publicdomain/zero") == true
         let initialState = ServerSettingsState(
             space:space,
@@ -57,7 +61,10 @@ struct PrivateServerSettingsView: View {
                     CustomTextField(
                         placeholder: NSLocalizedString("Server Name",comment: ""),
                         text: $serverName,
-                        isDisabled: false, onCommit:  {
+                        isDisabled: false,
+                        onEditingChanged: { began in
+                            onEditingChanged?(began)
+                        }, onCommit:  {
                             store.dispatch(action: .updateServerName(serverName))
                             store.dispatch(action: .saveToDatabase)
                             showSuccessAlert = true
@@ -117,16 +124,20 @@ struct PrivateServerSettingsView: View {
                 .padding(.horizontal, 16)
                 .padding(.top, 10)
             }
+        }.onReceive(NotificationCenter.default.publisher(for: Foundation.Notification.Name.privateServerSettingsConfirm)) { _ in
+            store.dispatch(action: .updateServerName(serverName))
+            store.dispatch(action: .saveToDatabase)
+            showSuccessAlert = true
         }.overlay(
             Group {
                 if showDeleteAlert {
-                    Color.gray.opacity(0.9)
+                    Color.black.opacity(0.7)
                         .edgesIgnoringSafeArea(.all)
                         .overlay(
                             VStack {
                                 CustomAlertView(
-                                    title: NSLocalizedString("Are you sure?", comment: ""),
-                                    message: NSLocalizedString("Removing this server will delete all associated data.", comment: ""),
+                                    title: NSLocalizedString("Remove from app", comment: ""),
+                                    message: NSLocalizedString("Are you sure you want to remove this server from the app?", comment: ""),
                                     primaryButtonTitle: NSLocalizedString("Remove", comment: ""),
                                     iconImage: Image("trash_icon"),
                                     primaryButtonAction: {
@@ -150,11 +161,10 @@ struct PrivateServerSettingsView: View {
                                 
                             }
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .background(Color.black.opacity(0.2))
                         )
                 }
                 if showSuccessAlert {
-                    Color.gray.opacity(0.9)
+                    Color.black.opacity(0.7)
                         .edgesIgnoringSafeArea(.all)
                         .overlay(
                             VStack {
@@ -174,7 +184,7 @@ struct PrivateServerSettingsView: View {
                                 
                             }
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .background(Color.black.opacity(0.2))
+                               
                         )
                 }
                 
@@ -182,6 +192,7 @@ struct PrivateServerSettingsView: View {
             })
         
     }}
+
 
 // MARK: - License Toggles
 struct LicenseToggles: View {

@@ -92,7 +92,7 @@ struct EditFolderView: View {
                         placeholder: "",
                         text: $folderName,
                         isDisabled: (!(store.state.project?.active ?? false) ),
-                        onEditingChanged: {
+                        onEditingChanged: {_ in 
                             store.dispatch(action: .updateFolderName(folderName))
                         },onCommit: {
                             store.dispatch(action:.saveFolderName)
@@ -133,7 +133,7 @@ struct EditFolderView: View {
         .overlay(
             Group {
                 if store.state.status {
-                    Color.gray.opacity(0.9)
+                    Color.black.opacity(0.7)
                         .edgesIgnoringSafeArea(.all)
                         .overlay(
                             VStack {
@@ -153,11 +153,11 @@ struct EditFolderView: View {
                                 
                             }
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .background(Color.black.opacity(0.2))
+                               
                         )
                 }
                 if (store.state.errorMessage != nil) {
-                    Color.gray.opacity(0.9)
+                    Color.black.opacity(0.7)
                         .edgesIgnoringSafeArea(.all)
                         .overlay(
                             VStack {
@@ -178,11 +178,10 @@ struct EditFolderView: View {
                                 
                             }
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .background(Color.black.opacity(0.2))
                         )
                 }
                 if (showDeleteAlert) {
-                    Color.gray.opacity(0.9)
+                    Color.black.opacity(0.7)
                         .edgesIgnoringSafeArea(.all)
                         .overlay(
                             VStack {
@@ -212,7 +211,7 @@ struct EditFolderView: View {
                                 
                             }
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .background(Color.black.opacity(0.2))
+                               
                         )
                 }
             })

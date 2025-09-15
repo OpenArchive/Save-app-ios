@@ -183,7 +183,7 @@ struct ProofModeSettingsView: View {
         .overlay(
             Group {
                 if showAlert {
-                    Color.gray.opacity(0.9)
+                    Color.black.opacity(0.7)
                         .edgesIgnoringSafeArea(.all)
                         .overlay(
                             VStack {
@@ -208,7 +208,7 @@ struct ProofModeSettingsView: View {
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                             }
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .background(Color.black.opacity(0.2))
+                               
                         )
                 }
             })

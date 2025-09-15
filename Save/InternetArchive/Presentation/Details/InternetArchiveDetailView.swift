@@ -175,13 +175,13 @@ struct InternetArchiveDetailContent: View {
         .overlay(
             Group {
                 if showAlert {
-                    Color.gray.opacity(0.9)
+                    Color.black.opacity(0.7)
                         .edgesIgnoringSafeArea(.all)
                         .overlay(
                             VStack {
                                 CustomAlertView(
-                                    title: NSLocalizedString("Are you sure?", comment: ""),
-                                    message: NSLocalizedString("Removing this server will delete all associated data.", comment: ""),
+                                    title: NSLocalizedString("Remove from app", comment: ""),
+                                    message: NSLocalizedString("Are you sure you want to remove this server from the app?", comment: ""),
                                     primaryButtonTitle: NSLocalizedString("Remove", comment: ""),
                                     iconImage: Image("trash_icon"),
                                     primaryButtonAction: {
@@ -200,7 +200,7 @@ struct InternetArchiveDetailContent: View {
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                             }
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .background(Color.black.opacity(0.2))
+                                
                         )
                 }
             }
