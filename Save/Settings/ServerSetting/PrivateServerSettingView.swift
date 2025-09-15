@@ -81,7 +81,7 @@ struct PrivateServerSettingsView: View {
                     
                     SectionHeader(title:NSLocalizedString( "License",comment: "" ))
                     
-                    Toggle(NSLocalizedString("Set creative commons licenses for folders on this server", comment: "Creative Commons Toggle"), isOn: Binding(
+                    Toggle(NSLocalizedString("Set creative commons licenses for folders on this server.", comment: "Creative Commons Toggle"), isOn: Binding(
                         get: { store.state.isCcEnabled },
                         set: { newValue in
                             store.dispatch(action: .toggleCcEnabled(newValue))
@@ -189,7 +189,7 @@ struct LicenseToggles: View {
     
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Toggle(NSLocalizedString("Waive all restrictions, requirements, and attribution (CC0)", comment: "CC0 Toggle"), isOn: Binding(
+            Toggle(NSLocalizedString("Waive all restrictions, requirements, and attribution (CC0).", comment: "CC0 Toggle"), isOn: Binding(
                             get: { store.state.isCc0Enabled },
                             set: { newValue in
                                 store.dispatch(action: .toggleCc0Enabled(newValue))

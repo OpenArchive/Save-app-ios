@@ -18,7 +18,7 @@ class CcSelector {
     var isUpdatingValues = false
     lazy var ccSw = SwitchRow("cc") {
         $0.title = individual
-        ? NSLocalizedString("Set creative commons licenses for folders on this server", comment: "")
+        ? NSLocalizedString("Set creative commons licenses for folders on this server.", comment: "")
         : NSLocalizedString("Set the same Creative Commons license for ALL folders on this server.", comment: "")
         $0.cell.backgroundColor = .clear
         $0.cell.textLabel?.numberOfLines = 0
@@ -30,7 +30,7 @@ class CcSelector {
     }
     
     lazy var cc0Sw = SwitchRow("cc0") {
-        $0.title = NSLocalizedString("Waive all restrictions, requirements, and attribution (CC0)", comment: "")
+        $0.title = NSLocalizedString("Waive all restrictions, requirements, and attribution (CC0).", comment: "")
         $0.cell.backgroundColor = .clear
         $0.cell.textLabel?.numberOfLines = 0
         $0.cell.switchControl.onTintColor = .accent

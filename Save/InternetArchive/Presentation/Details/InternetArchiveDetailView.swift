@@ -77,7 +77,7 @@ struct InternetArchiveDetailContent: View {
                     .padding(.top ,10)
                 
                 Toggle(
-                    NSLocalizedString("Set creative commons licenses for folders on this server", comment: ""),
+                    NSLocalizedString("Set creative commons licenses for folders on this server.", comment: ""),
                     isOn: Binding(
                         get: { state.isCcEnabled },
                         set: { newValue in
@@ -92,7 +92,7 @@ struct InternetArchiveDetailContent: View {
                 
                 if state.isCcEnabled {
                     VStack(alignment: .leading, spacing: 10) {
-                        Toggle(NSLocalizedString("Waive all restrictions, requirements, and attribution (CC0)", comment: "CC0 Toggle"), isOn: Binding(
+                        Toggle(NSLocalizedString("Waive all restrictions, requirements, and attribution (CC0).", comment: "CC0 Toggle"), isOn: Binding(
                             get: { state.isCc0Enabled },
                             set: { newValue in
                                 dispatch(.toggleCc0Enabled(newValue))
