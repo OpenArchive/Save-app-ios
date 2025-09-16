@@ -7,7 +7,7 @@
 //
 
 import UIKit
-import SwiftUICore
+import SwiftUI
 
 class UploadErrorAlert {
     

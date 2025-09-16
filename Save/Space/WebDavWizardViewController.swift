@@ -9,7 +9,7 @@
 import UIKit
 import FavIcon
 import YapDatabase
-import SwiftUICore
+import SwiftUI
 class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBoxDelegate {
     
     weak var delegate: WizardDelegate?

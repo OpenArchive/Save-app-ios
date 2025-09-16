@@ -1,6 +1,6 @@
 import UIKit
 import YapDatabase
-import SwiftUICore
+import SwiftUI
 
 class ServerListViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
     

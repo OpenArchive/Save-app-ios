@@ -62,7 +62,10 @@ class AddInfoAlert {
         if let vc = viewController {
             vc.present(alertVC, animated: true)
         } else {
-            UIApplication.shared.windows.first?.rootViewController?.present(alertVC, animated: true)
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
+                window.rootViewController?.present(alertVC, animated: true)
+            }
         }
     }
 }

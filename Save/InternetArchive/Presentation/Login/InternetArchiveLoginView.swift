@@ -265,7 +265,7 @@ struct KeyboardAware: ViewModifier {
         content
             .padding(.bottom, self.keyboard.height)
             .edgesIgnoringSafeArea(self.keyboard.height > 0 ? .bottom : [])
-            .animation(.easeOut)
+            .animation(.easeOut, value: keyboard.height)
     }
 }
 
