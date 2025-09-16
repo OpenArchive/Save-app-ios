@@ -27,7 +27,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
     @IBOutlet weak var subtitleLb: UILabel! {
         didSet {
             subtitleLb.text = NSLocalizedString(
-                "You can add multiple private servers and  one IA at any time.",
+                "You can add multiple private servers and one IA Account at any time.",
                 comment: "")
             subtitleLb.font = .montserrat(forTextStyle: .subheadline)
             subtitleLb.textColor = .subtitleText

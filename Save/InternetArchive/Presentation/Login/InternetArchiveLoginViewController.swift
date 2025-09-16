@@ -33,8 +33,8 @@ class InternetArchiveLoginViewController : ViewModelController<InternetArchiveLo
         self.title = NSLocalizedString("Internet Archive", comment: "")
         viewModel?.store.listen { [weak self] action in
             switch action {
-            case .Next:
-                self?.onNext()
+            case .Next(let space):
+                self?.onNext(space)
             case .Cancel:
                 self?.onCancel()
             case .isLoginOnprogress:
@@ -47,9 +47,9 @@ class InternetArchiveLoginViewController : ViewModelController<InternetArchiveLo
         }
     }
     
-    private func onNext() {
-        let vc = UIStoryboard.main.instantiate(SpaceSuccessViewController.self)
-        vc.spaceName = NSLocalizedString("the Internet Archive", comment: "")
+    private func onNext(_ space: IaSpace) {
+        let vc = UIStoryboard.main.instantiate(CreateCCLViewController.self)
+        vc.space = space
         self.navigationController?.pushViewController(vc, animated: true)
     }
     

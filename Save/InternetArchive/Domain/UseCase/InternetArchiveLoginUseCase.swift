@@ -19,17 +19,17 @@ class InternetArchiveLoginUseCase {
     func callAsFunction(
         email: String,
         password: String, 
-        completion: @escaping (Result<Void, Error>) -> Void
+        completion: @escaping (Result<IaSpace, Error>) -> Void
     ) -> Scoped? {
         
         return repository.login(email: email, password: password)
             .receive(on: DispatchQueue.global())
             .sink(receiveCompletion: { result in
                 switch result {
-                case .finished:
-                    completion(.success(()))
                 case .failure(let err):
                     completion(.failure(err))
+                case .finished:
+                    break
                 }
             }, receiveValue: { result in
                 
@@ -46,7 +46,7 @@ class InternetArchiveLoginUseCase {
 
                     tx.setObject(space)
                 }
-
+                completion(.success(space))
             })
     }
 }

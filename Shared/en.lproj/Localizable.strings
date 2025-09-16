@@ -316,7 +316,7 @@
 "Just now" = "Just now";
 
 /* No comment provided by engineer. */
-"Keep your media safe and organized for the long-term and create in-app project folders that map to your personal or organizational media archive." = "Keep your media safe and organized for the long-term and create in-app project folders that map to your personal or organizational media archive.";
+"Upload media to Nextcloud or the Internet Archive to keep your media verifiable, safe, and organized for the long term." = "Upload media to Nextcloud or the Internet Archive to keep your media verifiable, safe, and organized for the long term.";
 
 /* No comment provided by engineer. */
 "learn how" = "learn how";
@@ -514,7 +514,7 @@
 "Servers" = "Servers";
 
 /* No comment provided by engineer. */
-"Set the same Creative Commons license for ALL folders on this server." = "Set creative commons licenses for folders on this server";
+"Set the same Creative Commons license for ALL folders on this server." = "Set creative commons licenses for folders on this server.";
 
 /* No comment provided by engineer. */
 "Set unique Creative Commons licenses for EACH INDIVIDUAL folder on this server." = "Set unique Creative Commons licenses for EACH INDIVIDUAL folder on this server.";
@@ -678,7 +678,7 @@
 
 "Confirm Passcode" = "Confirm Passcode";
 
-"Enter Passcode" = "Enter Passcode";
+"Set Passcode" = "Set Passcode";
 
 "Make sure you remember this pin. If you forget it, you will need to reset the app, and all in-app data will be erased." = "Make sure you remember this pin. If you forget it, you will need to reset the app, and all in-app data will be erased.";
 
@@ -781,7 +781,7 @@
 
 "Setup Complete" = "Setup Complete";
 
-"You can add multiple private servers and  one IA at any time." = "You can add multiple private servers and  one IA at any time.";
+"You can add multiple private servers and one IA Account at any time." = "You can add multiple private servers and one IA Account at any time.";
 
 "Select a Server" = "Select a Server";
 
@@ -816,4 +816,13 @@
 "Download Orbot" = "Download Orbot";
 
 "Learn More" = "Learn More";
+
+"Waive all restrictions, requirements, and attribution (CC0)." = "Waive all restrictions, requirements, and attribution (CC0).";
+
+"Are you sure you want to remove your project?"= "Are you sure you want to remove your project?";
+
+"Remove from app"= "Remove from app";
+
+"Are you sure you want to remove this server from the app?" = "Are you sure you want to remove this server from the app?";
+
 

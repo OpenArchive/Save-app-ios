@@ -32,7 +32,7 @@ class PasscodeSetupController : ViewModelController<PasscodeSetupState, Passcode
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = NSLocalizedString("Setup Passcode", comment: "")
+        navigationItem.title = NSLocalizedString("Lock app with passcode", comment: "")
         viewModel?.store.listen { [weak self] action in
             switch action {
             case .OnComplete:

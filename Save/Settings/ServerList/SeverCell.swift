@@ -59,7 +59,12 @@ class ServerCell: UITableViewCell {
     }
     
     func configure(with space: Space) {
-        serverNameLabel.text = space.name
+        if let name = space.name, !name.isEmpty {
+            serverNameLabel.text = name
+        } else {
+            serverNameLabel.text = space.prettyName
+        }
+       
         serverIcon.image = getServerIcon(space: space)
         serverIcon.tintColor = isSelected ? .accent : .label
         serverSubtitleLabel.text = getServerType(for: space)

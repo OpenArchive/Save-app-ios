@@ -31,23 +31,14 @@ struct PasscodeContentWrapper: View {
                 .font(.montserrat(.semibold, for: .headline))
                 .padding(.top,30)
             if(!subtitle.isEmpty){
-                if #available(iOS 14.0, *) {
                     Text(subtitle)
-                        .font(.montserrat(.medium, for: .caption2))
+                    .font(.montserrat(.medium, for: .callout))
                         .lineLimit(3)
                         .multilineTextAlignment(.center)
                         .foregroundColor(.redButton)
                         .padding(.top, 18)
                         .padding(.horizontal,26)
-                } else {
-                    Text(subtitle)
-                        .font(.montserrat(.medium, for: .caption))
-                        .lineLimit(3)
-                        .multilineTextAlignment(.center)
-                        .foregroundColor(.redButton)
-                        .padding(.top, 18)
-                        .padding(.horizontal,26)
-                }
+               
             }
             // MARK: Passcode Dots
             PasscodeDots(

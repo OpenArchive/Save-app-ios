@@ -13,7 +13,13 @@ import SwiftUI
 
 class PrivateServerSettingViewController: UIViewController {
     var space: Space?
-    
+    private lazy var confirmItem: UIBarButtonItem = {
+            UIBarButtonItem(title: NSLocalizedString("Confirm", comment: ""),
+                            style: .done,
+                            target: self,
+                            action: #selector(confirmTapped))
+        }()
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -31,6 +37,9 @@ class PrivateServerSettingViewController: UIViewController {
                 }, changeTitle: { [weak self] titleValue in
                     
                     self?.title = titleValue
+                }, onEditingChanged: { [weak self] isEditing in
+                    guard let self else { return }
+                    self.navigationItem.rightBarButtonItem = isEditing ? self.confirmItem : nil
                 })
                 
                 let hostingController = UIHostingController(rootView: settingsView)
@@ -53,5 +62,13 @@ class PrivateServerSettingViewController: UIViewController {
             
         }
     }
+    
+    @objc private func confirmTapped() {
+           view.endEditing(true)
+        NotificationCenter.default.post(name: Foundation.Notification.Name.privateServerSettingsConfirm, object: nil)
+
+       }
 }
+
+
 
