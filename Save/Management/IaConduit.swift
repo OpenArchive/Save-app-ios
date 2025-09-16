@@ -8,6 +8,7 @@
 
 import UIKit
 import LegacyUTType
+import UniformTypeIdentifiers
 
 class IaConduit: Conduit {
 
@@ -192,15 +193,15 @@ class IaConduit: Conduit {
     }
 
     private func mediatype(for asset: Asset) -> String {
-        if asset.uti.conforms(to: .image) {
+        if asset.uti.conforms(to: UTType.image) {
             return "image"
         }
 
-        if asset.uti.conforms(to: .movie) {
+        if asset.uti.conforms(to: UTType.movie) {
             return "movies"
         }
 
-        if asset.uti.conforms(to: .audio) {
+        if asset.uti.conforms(to: UTType.audio) {
             return "audio"
         }
 
