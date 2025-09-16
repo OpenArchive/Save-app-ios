@@ -7,6 +7,7 @@
 //
 
 import StoreKit
+import UIKit
 
 func maybePromptForReview() {
 
@@ -14,7 +15,9 @@ func maybePromptForReview() {
     
     if Settings.appLaunchCount >= 5 && !Settings.hasPromptedReview {
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
-            SKStoreReviewController.requestReview()
+            if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
+                SKStoreReviewController.requestReview(in: scene)
+            }
             Settings.hasPromptedReview = true
         }
     }
