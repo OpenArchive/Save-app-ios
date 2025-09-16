@@ -44,9 +44,9 @@ struct InternetArchiveLoginState {
 
 enum InternetArchiveLoginAction {
     case Login
-    case LoggedIn
+    case LoggedIn(IaSpace) 
     case LoginError
-    case Next
+    case Next(IaSpace) 
     case Cancel
     case UpdateEmail(_ value: String)
     case UpdatePassword(_ value: String)

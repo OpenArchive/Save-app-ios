@@ -48,7 +48,7 @@ struct PasscodeSetupContent: View {
     
     var body: some View {
         PasscodeContentWrapper(
-            title: isConfirming ? NSLocalizedString("Confirm Passcode",comment: "Confirm Passcode")  : NSLocalizedString("Enter Passcode",comment: "Enter Passcode"),
+            title: isConfirming ? NSLocalizedString("Confirm Passcode",comment: "Confirm Passcode")  : NSLocalizedString("Set Passcode",comment: "Set Passcode"),
             subtitle: NSLocalizedString("Make sure you remember this pin. If you forget it, you will need to reset the app, and all in-app data will be erased.",comment: "subtitle"),
             passcode: passcode,
             passcodeLength: state.passcodeLength,

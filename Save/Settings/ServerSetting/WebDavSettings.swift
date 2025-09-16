@@ -11,6 +11,7 @@ struct ServerSettingsState {
     
     // Creative Commons License Toggles
     var isCcEnabled: Bool = false
+    var isCc0Enabled: Bool = false
     var allowRemix: Bool = false
     var requireShareAlike: Bool = false
     var allowCommercialUse: Bool = false
@@ -22,6 +23,7 @@ enum ServerSettingsAction {
     case updateServerURL(String)
     
     case toggleCcEnabled(Bool)
+    case toggleCc0Enabled(Bool)
     case toggleAllowRemix(Bool)
     case toggleRequireShareAlike(Bool)
     case toggleAllowCommercialUse(Bool)
@@ -54,24 +56,40 @@ func serverSettingsReducer(state: inout ServerSettingsState, action: ServerSetti
         state.serverURL = url
         
     case .toggleCcEnabled(let isEnabled):
-        state.isCcEnabled = isEnabled
-        if !isEnabled {
-            state.allowRemix = false
-            state.requireShareAlike = false
-            state.allowCommercialUse = false
-        }
-        
-    case .toggleAllowRemix(let value):
-        state.allowRemix = value
-        if !value { state.requireShareAlike = false }
-        
-    case .toggleRequireShareAlike(let value):
-        state.requireShareAlike = value
-        
-    case .toggleAllowCommercialUse(let value):
-        state.allowCommercialUse = value
-        
-    case .updateLicense:
+            state.isCcEnabled = isEnabled
+            if !isEnabled {
+                state.isCc0Enabled = false
+                state.allowRemix = false
+                state.requireShareAlike = false
+                state.allowCommercialUse = false
+            }
+            
+        case .toggleCc0Enabled(let isEnabled):
+            state.isCc0Enabled = isEnabled
+            if isEnabled {
+           
+                state.allowRemix = false
+                state.requireShareAlike = false
+                state.allowCommercialUse = false
+            }
+            
+        case .toggleAllowRemix(let value):
+            state.allowRemix = value
+            if !value { state.requireShareAlike = false }
+         
+            if value { state.isCc0Enabled = false }
+            
+        case .toggleRequireShareAlike(let value):
+            state.requireShareAlike = value
+          
+            if value { state.isCc0Enabled = false }
+            
+        case .toggleAllowCommercialUse(let value):
+            state.allowCommercialUse = value
+          
+            if value { state.isCc0Enabled = false }
+            
+        case .updateLicense:
         state.licenseURL = generateLicenseURL(state: state)
         saveLicenseToDatabase(state: state)
     case .saveToDatabase:
@@ -135,6 +153,12 @@ func saveSpaceToDatabase(state: ServerSettingsState) {
 func generateLicenseURL(state: ServerSettingsState) -> String? {
     guard state.isCcEnabled else { return nil }
     
+    // If CC0 is enabled, return CC0 URL
+    if state.isCc0Enabled {
+        return "https://creativecommons.org/publicdomain/zero/1.0/"
+    }
+    
+    // Regular CC license
     var license = "by"
     
     if state.allowRemix {

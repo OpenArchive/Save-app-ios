@@ -1345,7 +1345,7 @@
                 </navigationController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="uHK-lK-UmY" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1288" y="702"/>
+            <point key="canvasLocation" x="748" y="1095"/>
         </scene>
         <!--Image View Controller-->
         <scene sceneID="x18-DK-E4B">
@@ -1974,7 +1974,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="luJ-YL-A5R" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1507.5" y="42.25352112676056"/>
+            <point key="canvasLocation" x="1519" y="36"/>
         </scene>
         <!--Ia Guide View Controller-->
         <scene sceneID="M3g-yo-nab">
@@ -3210,10 +3210,12 @@ Google's APIs allow you to access and send media to your existing folders in Goo
                     </view>
                     <connections>
                         <outlet property="formContainer" destination="GQY-AM-wrP" id="1fR-CD-m3J"/>
+                        <outlet property="labelBottomConstraint" destination="Yeo-dV-Cv0" id="pBU-G5-4Uj"/>
                         <outlet property="nameTab" destination="vrj-hc-x9t" id="I1E-CW-xwY"/>
+                        <outlet property="nameTabHeight" destination="0As-DF-jlT" id="jo1-Nf-qyC"/>
                         <outlet property="nextButton" destination="D73-lY-Jyr" id="yPJ-cm-kSH"/>
                         <outlet property="scrollView" destination="Uxk-6S-a4Q" id="3TJ-Dg-VUr"/>
-                        <outlet property="titleLbl" destination="Aaz-OU-hK0" id="17T-mA-HQH"/>
+                        <outlet property="titleLbl" destination="Aaz-OU-hK0" id="DSf-VU-e8h"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HxJ-e5-NMM" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -3332,19 +3334,19 @@ Google's APIs allow you to access and send media to your existing folders in Goo
             <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="secondaryLabelColor">
-            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.23529411764705882" green="0.23529411764705882" blue="0.2627450980392157" alpha="0.59999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemBackgroundColor">
             <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
         </systemColor>
         <systemColor name="systemGray2Color">
-            <color red="0.68235294120000001" green="0.68235294120000001" blue="0.69803921570000005" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.68235294117647061" green="0.68235294117647061" blue="0.69803921568627447" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemGray3Color">
-            <color red="0.78039215689999997" green="0.78039215689999997" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
-            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+            <color red="1" green="0.23137254901960785" blue="0.18823529411764706" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
     </resources>
 </document>

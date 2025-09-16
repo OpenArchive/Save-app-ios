@@ -88,12 +88,12 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
 
                 // Localized text with placeholders
                 let localizedString = NSLocalizedString(
-                    "Keep your media verifiable, safe and organized for the long-term by uploading it to private or public servers like Nextcloud or the Internet Archive. \nCommunicate your intentions for future use by adding a %@",
+                    "Upload media to Nextcloud or the Internet Archive to keep your media verifiable, safe, and organized for the long term.\n\nChoose %@",
                     comment: "Archive message"
                 )
 
                 // Create the "Creative Commons License" link text
-                let licenseText = NSLocalizedString("Creative Commons License.", comment: "Creative Commons License")
+                let licenseText = NSLocalizedString("Creative Commons Licensing.", comment: "Creative Commons License")
                 let licenseUrl = URL(string: "https://creativecommons.org")!
 
                 let licenseAttributes: [NSAttributedString.Key: Any] = [

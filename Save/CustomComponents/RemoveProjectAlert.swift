@@ -15,11 +15,11 @@ class RemoveProjectAlert {
        
         
         let alertVC = CustomAlertViewController(
-            title: NSLocalizedString("Are you sure?", comment: ""),
+            title: NSLocalizedString("Remove from app", comment: ""),
             message: String(format: NSLocalizedString(
-                "Removing this folder will remove all contained thumbnails from the %@ app.",
+                "Are you sure you want to remove your project?",
                 comment: "Placeholder is app name"), Bundle.main.displayName),
-            primaryButtonTitle: NSLocalizedString("Remove Folder", comment: ""),
+            primaryButtonTitle: NSLocalizedString("Remove", comment: ""),
             primaryButtonAction: {
                 Db.writeConn?.asyncReadWrite() { tx in
                     tx.remove(project)
@@ -39,7 +39,7 @@ class RemoveProjectAlert {
                     }
                 }
             }, showCheckbox: false, secondaryButtonIsOutlined: false,
-            iconImage: Image(systemName: "exclamationmark.circle"),isRemoveAlert: true
+            iconImage: Image("trash_icon"),isRemoveAlert: true
         )
         
         vc.present(alertVC, animated: true)

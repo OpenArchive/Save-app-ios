@@ -13,7 +13,7 @@ struct CustomTextField: View {
     @Binding var text: String
     var isSecure: Bool = false
     var isDisabled: Bool = false
-    var onEditingChanged: (() -> Void)? = nil
+    var onEditingChanged: ((Bool) -> Void)? = nil
     var onCommit: (() -> Void)? = nil
    
 
@@ -33,13 +33,13 @@ struct CustomTextField: View {
                     .padding(12)
             } else {
                 if #available(iOS 14.0, *) {
-                    TextField("", text: $text, onEditingChanged: { _ in
-                        onEditingChanged?()
+                    TextField("", text: $text, onEditingChanged: { began in
+                        onEditingChanged?(began)
                     }, onCommit: {
                         onCommit?()
                     })
                     .onChange(of: text) { _ in
-                        onEditingChanged?()
+                        onEditingChanged?(true)
                     }
                     .font(.montserrat(.medium, for: .footnote))
                     .padding(12)

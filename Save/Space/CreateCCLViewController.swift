@@ -11,10 +11,12 @@ import Eureka
 import YapDatabase
 class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDelegate {
     
+    @IBOutlet weak var labelBottomConstraint: NSLayoutConstraint!
+    @IBOutlet weak var nameTabHeight: NSLayoutConstraint!
     private var keyboardHandling: KeyboardHandling?
     private let cc = CcSelector(individual: false)
     var delegate: WizardDelegate?
-    var space: WebDavSpace?
+    var space: Space?
     @IBOutlet weak var nameTab: TextBox!{
         didSet {
             nameTab.placeholder = NSLocalizedString("Server Name (Optional)", comment: "")
@@ -40,13 +42,25 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
         super.viewDidLoad()
         keyboardHandling = KeyboardHandling(scrollView: scrollView,viewController: self)
         self.navigationItem.hidesBackButton = true
-        self.title = NSLocalizedString("Private Server", comment: "")
+        if(space is IaSpace){
+            titleLbl.text = NSLocalizedString("Choose a licence", comment: "")
+            labelBottomConstraint.constant = 0
+            nameTab.isHidden = true
+            nameTabHeight.constant = 0
+            self.title = NSLocalizedString("Internet Archive", comment: "")
+        }else{
+            labelBottomConstraint.constant = 50
+            nameTab.isHidden = false
+            nameTabHeight.constant = 50
+            self.title = NSLocalizedString("Private Server", comment: "")
+        }
+        
         setupForm()
         hideKeyboardOnOutsideTap()
     }
     
     private func setupForm() {
-      
+        
         self.tableView?.removeFromSuperview()
         formContainer.addSubview(tableView!)
         
@@ -74,22 +88,25 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
         <<< cc.ccSw.onChange { [weak self] row in
             self?.ccLicenseChanged(row)
         }
-        
+        <<< cc.cc0Sw.onChange { [weak self] row in
+            self?.cc0LicenseChanged(row)
+        }
         <<< cc.remixSw.onChange { [weak self] row in
-            self?.ccLicenseChanged(row)
+            print("change remix")
+            self?.otherLicenseChanged(row)
         }
         
         <<< cc.shareAlikeSw.onChange { [weak self] row in
-            self?.ccLicenseChanged(row)
+            self?.otherLicenseChanged(row)
         }
         
         <<< cc.commercialSw.onChange { [weak self] row in
-            self?.ccLicenseChanged(row)
+            self?.otherLicenseChanged(row)
         }
-       <<< LabelRow() { row in
-                row.title = " "
-                row.cell.backgroundColor = .clear
-                row.cell.height = { 10 }
+        <<< LabelRow() { row in
+            row.title = " "
+            row.cell.backgroundColor = .clear
+            row.cell.height = { 10 }
         }
         <<< cc.licenseRow
         
@@ -129,22 +146,40 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
             }
         }
     }
+    private func cc0LicenseChanged(_ row: SwitchRow) {
+        if !cc.isUpdatingValues {
+            cc.handleCC0Toggle()
+        }
+        ccLicenseChanged(row)
+    }
+    
+    private func otherLicenseChanged(_ row: SwitchRow) {
+        if !cc.isUpdatingValues {
+            cc.handleOtherToggle()
+        }
+        ccLicenseChanged(row)
+    }
     
     @IBAction func onNextButtonTap(_ sender: Any) {
         guard let space = SelectedSpace.space else {
             return
         }
-        updateSpaceName(for: space.id, newName: nameTab.text ?? "")
         let vc = UIStoryboard.main.instantiate(SpaceSuccessViewController.self)
+        if(space is IaSpace){
+            vc.spaceName = NSLocalizedString("the Internet Archive", comment: "")
+        }else{
+            updateSpaceName(for: space.id, newName: nameTab.text ?? "")
             vc.spaceName = NSLocalizedString("a private server", comment: "")
+        }
+        
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func updateSpaceName(for spaceId: String, newName: String) {
         Db.writeConn?.asyncReadWrite { tx in
-           
+            
             if let space = tx.object(forKey: spaceId, inCollection: Space.collection) as? Space {
-
+                
                 space.name = newName
                 tx.setObject(space, forKey: space.id, inCollection: Space.collection)
                 if SelectedSpace.id == spaceId {

@@ -19,6 +19,8 @@ protocol SideMenuDelegate {
 
     func addFolder()
     
+    func hideSelectMedia()
+    
     func pushPrivateServerSetting(space: Space)
     
     func manageStoracha()
@@ -49,8 +51,7 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
             nil
         }
         set {
-            spaceIcon.image = getServerIcon(space: space)
-            serverNameLbl.text = newValue?.prettyName ?? Bundle.main.displayName
+            serverNameLbl.text = NSLocalizedString("Servers", comment: "")
         }
     }
 
@@ -72,6 +73,12 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
 
     @IBOutlet weak var spaceIcon: UIImageView!
     @IBOutlet weak var spaceLb: UILabel!
+    
+    // Add space header label above projects table
+    @IBOutlet weak var spaceHeaderContainer: UIView!
+    @IBOutlet weak var spaceHeaderIcon: UIImageView!
+    @IBOutlet weak var spaceHeaderLabel: UILabel!
+    @IBOutlet weak var spaceHeaderHeight: NSLayoutConstraint!
 
     @IBOutlet weak var projectsTable: UITableView!
 
@@ -111,9 +118,26 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
 
         spacesTable.register(SideMenuItemCell.nib, forCellReuseIdentifier: SideMenuItemCell.reuseId)
         projectsTable.register(SideMenuItemCell.nib, forCellReuseIdentifier: SideMenuItemCell.reuseId)
+        
+        setupSpaceHeader()
+
         Db.add(observer: self, #selector(yapDatabaseModified))
     }
- 
+    
+    private func setupSpaceHeader() {
+        
+        spaceHeaderLabel.font = .montserrat(forTextStyle: .callout, with: .traitUIOptimized)
+        spaceHeaderLabel.textColor = .label
+        
+        spaceHeaderIcon.contentMode = .scaleAspectFit
+        spaceHeaderIcon.tintColor = .label
+        
+        spaceHeaderContainer.backgroundColor = .systemBackground
+        showSpaceHeader(animated: true)
+    }
+
+
+
     // MARK: UITableViewDataSource
 
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -146,8 +170,7 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
 
         if tableView == projectsTable {
             let project = getProject(at: indexPath)
-
-            cell.apply(project, select: selectedProject == project)
+            cell.apply(project, select: selectedProject == project, isIndented: !spaceHeaderContainer.isHidden)
         }
         else if indexPath.section < spacesMappings.numberOfSections() {
                let space = getSpace(at: indexPath)
@@ -184,23 +207,24 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
                 tableView.deselectRow(at: indexPath, animated: false)
             }
         }
-        else if indexPath.section < spacesMappings.numberOfSections() {
-               SelectedSpace.space = getSpace(at: indexPath)
-               SelectedSpace.store()
-               selectedProject = getProject(at: IndexPath(row: 0, section: 0))
-               delegate?.hideMenu()
-           }
-           else {
-               if let session = sessionManager.loadSession()?.sessionId {
-                   if indexPath.row == 0 {
-                       delegate?.manageStoracha()
-                   } else {
-                       delegate?.addSpace()
-                   }
-               } else {
-                   delegate?.addSpace()
-               }
-           }
+        else if indexPath.section >= spacesMappings.numberOfSections() {
+            delegate?.addSpace()
+        }
+        else {
+            let selectedSpace = getSpace(at: indexPath)
+            SelectedSpace.space = selectedSpace
+            SelectedSpace.store()
+
+            selectedProject = getProject(at: IndexPath(row: 0, section: 0))
+            
+            updateSpaceHeader(with: selectedSpace)
+            showSpaceHeader(animated: true)
+        
+            projectsTable.reloadData()
+            delegate?.hideSelectMedia()
+            delegate?.hideMenu()
+            
+        }
     }
 
 
@@ -290,8 +314,57 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
         if spacesConn?.hasChanges(spacesMappings) ?? false {
             
             spacesTable.reloadData()
-            serverNameLbl.text = SelectedSpace.space?.prettyName ?? ""
+            serverNameLbl.text = NSLocalizedString("Servers", comment: "")
             spaceIcon.image = getServerIcon(space: SelectedSpace.space)
+       
+            if !spaceHeaderContainer.isHidden {
+                updateSpaceHeader(with: SelectedSpace.space)
+            }
+        }
+    }
+
+
+    // MARK: Space Header Methods
+    
+    private func updateSpaceHeader(with space: Space?) {
+        spaceHeaderIcon.image = getServerIcon(space: space)
+        spaceHeaderLabel.text = space?.prettyName ?? Bundle.main.displayName
+    }
+    
+    private func showSpaceHeader(animated: Bool) {
+        guard spaceHeaderContainer.isHidden else { return }
+        
+        if animated {
+            spaceHeaderHeight.constant = 40
+            spaceHeaderContainer.isHidden = false
+            spaceHeaderContainer.alpha = 0
+            
+            UIView.animate(withDuration: 0.25) {
+                self.spaceHeaderContainer.alpha = 1
+                self.view.layoutIfNeeded()
+            }
+        } else {
+            spaceHeaderHeight.constant = 40
+            spaceHeaderContainer.isHidden = false
+            spaceHeaderContainer.alpha = 1
+        }
+    }
+    
+    private func hideSpaceHeader(animated: Bool) {
+        guard !spaceHeaderContainer.isHidden else { return }
+        
+        if animated {
+            UIView.animate(withDuration: 0.25, animations: {
+                self.spaceHeaderContainer.alpha = 0
+                self.spaceHeaderHeight.constant = 0
+                self.view.layoutIfNeeded()
+            }) { _ in
+                self.spaceHeaderContainer.isHidden = true
+            }
+        } else {
+            spaceHeaderHeight.constant = 0
+            spaceHeaderContainer.isHidden = true
+            spaceHeaderContainer.alpha = 0
         }
     }
 
