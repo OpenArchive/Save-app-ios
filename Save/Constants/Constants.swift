@@ -32,8 +32,11 @@ struct GeneralConstants {
 
 }
 func getServerIcon(space:Space?) -> UIImage?{
-    if(space is IaSpace){
-        return UIImage(named: "internet_archive")
+    if(space != nil){
+        if(space is IaSpace){
+            return UIImage(named: "internet_archive")
+        }
+        return UIImage(named: "private_server")
     }
-    return UIImage(named: "private_server")
+    return nil
 }

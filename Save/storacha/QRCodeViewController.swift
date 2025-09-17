@@ -9,20 +9,25 @@
 import SwiftUI
 
 class QRCodeViewController: UIViewController {
-    private let spaceState: SpaceState
+    private let appState: StorachaAppState
 
-    init(spaceState: SpaceState) {
-        self.spaceState = spaceState
+    init(appStateval: StorachaAppState) {
+        self.appState = appStateval
         super.init(nibName: nil, bundle: nil)
     }
 
-    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = NSLocalizedString("Join Space", comment: "")
-        let qrView = QRCodeView().environmentObject(spaceState)
+        
+        let qrView = QRCodeView(onComplete: { [weak self] in
+            self?.navigateToSpaces()
+        }).environmentObject(appState.spaceState)
 
         let hosting = UIHostingController(rootView: qrView)
         addChild(hosting)
@@ -36,5 +41,10 @@ class QRCodeViewController: UIViewController {
             hosting.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
         ])
         hosting.didMove(toParent: self)
+    }
+    
+    private func navigateToSpaces() {
+        let newVC = SpaceListViewController(appState:  self.appState)
+        self.navigationController?.pushViewController(newVC, animated: true)
     }
 }

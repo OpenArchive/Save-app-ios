@@ -6,7 +6,6 @@
 //  Copyright © 2025 Open Archive. All rights reserved.
 //
 
-
 import UIKit
 import SwiftUI
 
@@ -27,8 +26,7 @@ class ScanDIDViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        title = "Scan or Add DID"
-
+        
         if #available(iOS 14.0, *) {
             let scanView = ScanDIDView(spaceDid: spaceDid)
                 .environmentObject(didState)
@@ -36,7 +34,7 @@ class ScanDIDViewController: UIViewController {
             let hosting = UIHostingController(rootView: scanView)
             addChild(hosting)
             view.addSubview(hosting.view)
-
+            title = "Scan or Add DID"
             hosting.view.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 hosting.view.topAnchor.constraint(equalTo: view.topAnchor),

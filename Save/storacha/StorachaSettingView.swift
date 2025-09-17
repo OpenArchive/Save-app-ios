@@ -6,37 +6,49 @@
 //  Copyright © 2025 Open Archive. All rights reserved.
 //
 
-
 import SwiftUI
 import Combine
 
 struct StyledButton: View {
     let title: String
     let subtitle: String
+    let icon: String?
     let action: () -> Void
     let isDisabled: Bool
     
-    init(title: String, subtitle: String, isDisabled: Bool = false, action: @escaping () -> Void) {
+    init(title: String, subtitle: String, icon: String? = nil, isDisabled: Bool = false, action: @escaping () -> Void) {
         self.title = title
         self.subtitle = subtitle
+        self.icon = icon
         self.isDisabled = isDisabled
         self.action = action
     }
-
+    
     var body: some View {
         Button(action: action) {
-            HStack {
+            HStack(spacing: 12) {
+                if let icon = icon {
+                    Image(systemName: icon)
+                        .font(.system(size: 20, weight: .medium))
+                        .foregroundColor(isDisabled ? .gray50 : Color(.accent))
+                        .frame(width: 24, height: 24)
+                }
+                
                 VStack(alignment: .leading, spacing: 4) {
                     Text(title)
                         .font(.montserrat(.semibold, for: .headline))
                         .foregroundColor(isDisabled ? .gray50 : Color(.label))
+                        .multilineTextAlignment(.leading)
                     Text(subtitle)
                         .font(.montserrat(.medium, for: .subheadline))
                         .foregroundColor(isDisabled ? .gray50 : .gray70)
+                        .multilineTextAlignment(.leading)
                 }
-                Spacer()
+                .frame(maxWidth: .infinity, alignment: .leading)
+                
                 Image(uiImage: (UIImage(named: "forward_arrow")?.withRenderingMode(.alwaysTemplate))!)
                     .foregroundColor(isDisabled ? .gray50 : Color(.label))
+                    .frame(width: 24, height: 24)
             }
             .padding()
             .frame(maxWidth: .infinity)
@@ -71,10 +83,28 @@ struct StorachaSettingView: View {
     
     var body: some View {
         ZStack {
+            
             VStack(spacing: 20) {
+                
+                VStack(spacing: 16) {
+                    Image("storachaLogo")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 200, height: 60)
+                    
+                    Text("Storacha is a decentralized media storage system using IPFS, UCAN, and DIDs.")
+                        .font(.montserrat(.medium, for: .subheadline))
+                        .foregroundColor(.gray70)
+                        .multilineTextAlignment(.center)
+                        .padding(.horizontal, 20)
+                        .lineLimit(nil)
+                }
+                .padding(.vertical, 10)
+                
                 StyledButton(
                     title: "Manage accounts",
                     subtitle: "Create or edit accounts",
+                    icon: "person.circle",
                     isDisabled: appState.isBusy
                 ) {
                     manageAccountsAction?("manage")
@@ -83,6 +113,7 @@ struct StorachaSettingView: View {
                 StyledButton(
                     title: "My spaces",
                     subtitle: "Access your saved spaces",
+                    icon: "folder",
                     isDisabled: appState.isBusy
                 ) {
                     manageAccountsAction?("spaces")
@@ -91,33 +122,57 @@ struct StorachaSettingView: View {
                 StyledButton(
                     title: "Join space",
                     subtitle: "Connect to an existing space",
+                    icon: "plus",
                     isDisabled: appState.isBusy
                 ) {
                     manageAccountsAction?("join")
                 }
                 
-                Spacer()
+                VStack(spacing: 8) {
+                    HStack(alignment: .top, spacing: 12) {
+                        Image(systemName: "info.circle.fill")
+                            .foregroundColor(.gray70)
+                            .font(.system(size: 16))
+                            .padding(.top, 2)
+                        
+                        Text("All data uploaded to Storacha Network is public. Do not store private or sensitive information. Removing files doesn't prevent indefinite retention by network nodes.")
+                            .font(.montserrat(.medium, for: .caption))
+                            .foregroundColor(.gray70)
+                            .multilineTextAlignment(.leading)
+                            .lineLimit(nil)
+                    }
+                }
+                .padding(.horizontal)
+                .padding(.vertical, 12)
+                .background(Color.gray.opacity(0.1))
+                .cornerRadius(8)
+                .padding(.horizontal)
+                
+                Spacer(minLength: 20)
             }
-            .padding(.top, 100)
+            .padding(.top, 20)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(.systemBackground))
             .edgesIgnoringSafeArea(.all)
-        
+            
             if appState.isBusy {
-                Color.black.opacity(0.3)
-                    .edgesIgnoringSafeArea(.all)
+                Color.black
+                    .opacity(0.7)
+                    .ignoresSafeArea(.all)
                 
-                VStack(spacing: 20) {
+                VStack(spacing: 16) {
                     ActivityIndicator(style: .large, animate: .constant(true))
                         .foregroundColor(.white)
                     
                     Text("Checking session...")
                         .font(.montserrat(.medium, for: .callout))
-                        .foregroundColor(.primary)
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
                 }
-                .padding(30)
-                .background(Color.black.opacity(0.8))
-                .cornerRadius(15)
+                .padding(.horizontal, 24)
+                .padding(.vertical, 32)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .background(Color.clear)
             }
         }
         .onAppear {

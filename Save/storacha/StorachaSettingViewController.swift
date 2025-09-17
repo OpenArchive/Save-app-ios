@@ -99,7 +99,7 @@ class StorachaSettingViewController: UIViewController {
     
     func manageSpaceNavigation(isNew: Bool) {
         if(isNew){
-            let newVC = QRCodeViewController(spaceState: self.appState.spaceState)
+            let newVC = QRCodeViewController(appStateval: self.appState)
             self.navigationController?.pushViewController(newVC, animated: true)
         } else{
             let newVC = SpaceListViewController(appState:  self.appState)

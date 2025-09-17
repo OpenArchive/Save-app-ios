@@ -1,11 +1,3 @@
-//
-//  ScanDIDView.swift
-//  Save
-//
-//  Created by navoda on 2025-08-31.
-//  Copyright © 2025 Open Archive. All rights reserved.
-//
-
 import SwiftUI
 
 struct ScanDIDView: View {
@@ -13,56 +5,109 @@ struct ScanDIDView: View {
     let spaceDid: String
     @Environment(\.presentationMode) var presentationMode
     @State private var typedDID: String = ""
-    @State private var showScanner = false
-
+    @State private var showScannerView = false
+    
     var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            HStack {
-                TextField("Enter DID", text: $typedDID, onCommit: {
-                    Task {
-                        await addAndDismiss(did: typedDID)
+        NavigationView {
+            VStack(alignment: .leading, spacing: 16) {
+                // Input section
+                VStack(alignment: .leading, spacing: 8) {
+                   
+                    HStack {
+                        TextField("DID Access Key", text: $typedDID)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .font(.montserrat(.semibold, for: .callout))
+                        Button(action: {
+                            showScannerView = true
+                        }) {
+                            Image(systemName: "qrcode.viewfinder")
+                                .resizable()
+                                .frame(width: 30, height: 30)
+                                .foregroundColor(.accentColor)
+                        }
+                        .padding(.leading, 8)
                     }
-                })
-                .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding(.horizontal)
+                }
+                .padding(.top, 20)
                 
-                Button(action: {
-                    withAnimation {
-                        showScanner.toggle()
-                    }
-                }) {
-                    Image(systemName: "qrcode.viewfinder")
-                        .resizable()
-                        .frame(width: 30, height: 30)
-                        .foregroundColor(.accentColor)
+                Spacer()
+                
+                // Bottom buttons
+                HStack(spacing: 16) {
+                    Button("Back") {
+                        presentationMode.wrappedValue.dismiss()
+                    }.font(.montserrat(.semibold, for: .headline))
+                        .foregroundColor(.black)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background(Color.gray.opacity(0.2))
+                        .foregroundColor(.primary)
+                        .cornerRadius(8)
+                    
+                    Button("Add") {
+                        Task {
+                            await addDID()
+                        }
+                    }.font(.montserrat(.semibold, for: .headline))
+                        .foregroundColor(.black)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 12)
+                        .background(typedDID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? Color.gray.opacity(0.3) : Color.accentColor)
+                        .foregroundColor(.white)
+                        .cornerRadius(8)
+                        .disabled(typedDID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }
-                .padding(.leading, 8)
+                .padding(.horizontal)
+                .padding(.bottom, 20)
             }
-            .padding(.horizontal)
-
-            if showScanner {
-                BarcodeScannerView { scannedValue in
-                    Task {
-                        await addAndDismiss(did: scannedValue)
-                    }
-                    showScanner = false
+            .sheet(isPresented: $showScannerView) {
+                QRCodeScannerView { scannedValue in
+                    typedDID = scannedValue
+                    showScannerView = false
                 }
-                .frame(height: 300)
-                .transition(.move(edge: .top))
-                .padding(.trailing,16)
             }
-
-            Spacer()
         }
-        .padding(.top, 20)
     }
-
+    
     // MARK: - Helper
-    private func addAndDismiss(did: String) async {
-        let trimmed = did.trimmingCharacters(in: .whitespacesAndNewlines)
+    private func addDID() async {
+        let trimmed = typedDID.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
-
+        
         await didState.addDID(for: spaceDid, did: trimmed)
         await didState.loadDIDs(for: spaceDid)
         presentationMode.wrappedValue.dismiss()
+    }
+}
+
+// MARK: - QR Code Scanner View
+struct QRCodeScannerView: View {
+    let onCodeScanned: (String) -> Void
+    @Environment(\.presentationMode) var presentationMode
+    
+    var body: some View {
+        NavigationView {
+            VStack {
+                Text("Position the QR code within the frame to scan")
+                    .font(.montserrat(.semibold, for: .subheadline))
+                    .foregroundColor(.secondary)
+                    .padding()
+                
+                BarcodeScannerView { scannedValue in
+                    onCodeScanned(scannedValue)
+                }
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
+                .cornerRadius(12)
+                .padding()
+                
+                Spacer()
+            }
+            .navigationTitle("Scan QR Code")
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationBarItems(trailing: Button("Cancel") {
+                presentationMode.wrappedValue.dismiss()
+            })
+        }
     }
 }

@@ -9,168 +9,7 @@
 import Foundation
 import CryptoKit
 import Combine
-
-// MARK: - API Models
-struct StorachaLoginRequest: Codable {
-    let email: String
-    let did: String
-}
-
-struct StorachaLoginResponse: Codable {
-    let message: String
-    let sessionId: String
-    let did: String
-    let verified: Bool
-    let challenge: String?
-    let challengeId: String?
-}
-
-struct StorachaVerifyRequest: Codable {
-    let did: String
-    let challengeId: String
-    let signature: String
-    let sessionId: String
-    let email: String
-}
-
-struct StorachaVerifyResponse: Codable {
-    let sessionId: String
-    let did: String
-    let message: String
-}
-
-struct StorachaSessionResponse: Codable {
-    let valid: Bool
-    let verified: Int
-    let expiresAt: String?
-    let message: String
-}
-
-struct StorachaSpace: Codable, Identifiable {
-    let did: String
-    let name: String
-    let isAdmin: Bool
-    
-    var id: String { did }
-}
-
-struct StorachaUploadResponse: Codable {
-    let success: Bool
-    let cid: String
-    let size: Int
-}
-
-struct StorachaUsageResponse: Codable {
-    let spaceDid: String
-    let usage: StorachaUsageDetail
-}
-
-struct StorachaUsageDetail: Codable {
-    let bytes: Int
-    let mb: Double
-    let human: String
-}
-
-struct StorachaDelegationRequest: Codable {
-    let userDid: String
-    let spaceDid: String
-    let expiresIn: Int
-}
-
-struct StorachaDelegationResponse: Codable {
-    let message: String
-    let principalDid: String
-    let delegationCid: String
-    let expiresAt: String
-    let createdBy: String
-}
-
-struct StorachaDelegationListResponse: Codable {
-    let spaceDid: String
-    let users: [String]
-}
-
-struct StorachaUploadItem: Codable, Identifiable {
-    let cid: String
-    let created: String
-    let insertedAt: String
-    let updatedAt: String
-    let gatewayUrl: String
-    
-    var id: String { cid }
-}
-
-struct StorachaUploadsResponse: Codable {
-    let success: Bool
-    let userDid: String
-    let spaceDid: String
-    let uploads: [StorachaUploadItem]
-    let count: Int
-    let cursor: String?
-    let hasMore: Bool
-}
-
-struct StorachaRevokeResponse: Codable {
-    let message: String
-    let userDid: String
-    let spaceDid: String
-    let revokedCount: Int
-}
-
-struct StorachaAccountUsageResponse: Codable {
-    let totalUsage: StorachaUsageDetail
-    let spaces: [StorachaSpaceUsage]
-}
-
-struct StorachaSpaceUsage: Codable, Identifiable {
-    let spaceDid: String
-    let name: String
-    let usage: StorachaUsageDetail
-
-    var id: String { spaceDid }
-}
-
-// MARK: - API Errors
-enum StorachaAPIError: Error, LocalizedError {
-    case invalidURL
-    case noData
-    case decodingError(Error)
-    case networkError(Error)
-    case authenticationFailed(String)
-    case invalidDID
-    case signatureGenerationFailed
-    case sessionExpired
-    case insufficientPermissions
-    case uploadFailed(String)
-    case serverError(Int, String)
-    
-    var errorDescription: String? {
-        switch self {
-        case .invalidURL:
-            return "Invalid URL"
-        case .noData:
-            return "No data received"
-        case .decodingError(let error):
-            return "Decoding error: \(error.localizedDescription)"
-        case .networkError(let error):
-            return "Network error: \(error.localizedDescription)"
-        case .authenticationFailed(let message):
-            return "Authentication failed: \(message)"
-        case .invalidDID:
-            return "Invalid DID format"
-        case .signatureGenerationFailed:
-            return "Failed to generate signature"
-        case .sessionExpired:
-            return "Session has expired"
-        case .insufficientPermissions:
-            return "Insufficient permissions for this operation"
-        case .uploadFailed(let message):
-            return "Upload failed: \(message)"
-        case .serverError(let code, let message):
-            return "Server error (\(code)): \(message)"
-        }
-    }
-}
+import OSLog
 
 // MARK: - Main API Service
 class StorachaAPIService {
@@ -180,7 +19,7 @@ class StorachaAPIService {
     private let session = URLSession.shared
     private let keyManager = DIDKeyManager()
     private let sessionManager = SessionManager.shared
-    
+    private let logger = Logger(subsystem: "StorachaApiService", category: "API")
     private init(baseURL: String = "http://192.168.0.104:3000") {
         self.baseURL = baseURL
     }
@@ -203,21 +42,22 @@ class StorachaAPIService {
         
         // Step 1: Initiate login
         let loginResponse = try await initiateLogin(email: email, did: keyPair.did)
-        
-        // Step 2: Sign challenge if provided
-        if let challenge = loginResponse.challenge,
-           let challengeId = loginResponse.challengeId {
-            let signature = try keyManager.signChallenge(challenge, with: keyPair.privateKey)
-            return try await verifySignature(
-                did: keyPair.did,
-                challengeId: challengeId,
-                signature: signature,
-                sessionId: loginResponse.sessionId,
-                email: email
-            )
+        if(!loginResponse.verified){
+            
+            // Step 2: Sign challenge if provided
+            if let challenge = loginResponse.challenge,
+               let challengeId = loginResponse.challengeId {
+                let signature = try keyManager.signChallenge(challenge, with: keyPair.privateKey)
+                return try await verifySignature(
+                    did: keyPair.did,
+                    challengeId: challengeId,
+                    signature: signature,
+                    sessionId: loginResponse.sessionId,
+                    email: email
+                )
+            }
         }
         
-        // Return unverified session (verification happens via email)
         let sessionData = StorachaSessionData(
             sessionId: loginResponse.sessionId,
             did: loginResponse.did,
@@ -243,7 +83,12 @@ class StorachaAPIService {
         urlRequest.httpBody = try JSONEncoder().encode(request)
         
         let (data, response) = try await session.data(for: urlRequest)
-        
+        // Log the raw response data before decoding
+        if let rawResponse = String(data: data, encoding: .utf8) {
+            print("Raw Login  API Response: \(rawResponse)")
+        } else {
+            print("Failed to convert response data to string")
+        }
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
             let errorMessage = String(data: data, encoding: .utf8) ?? "Unknown error"
             throw StorachaAPIError.serverError(httpResponse.statusCode, errorMessage)
@@ -282,7 +127,11 @@ class StorachaAPIService {
             let errorMessage = String(data: data, encoding: .utf8) ?? "Unknown error"
             throw StorachaAPIError.serverError(httpResponse.statusCode, errorMessage)
         }
-        
+        if let rawResponse = String(data: data, encoding: .utf8) {
+            print("Raw verify signature  API Response: \(rawResponse)")
+        } else {
+            print("Failed to convert response data to string")
+        }
         let verifyResponse = try JSONDecoder().decode(StorachaVerifyResponse.self, from: data)
         
         let sessionData = StorachaSessionData(
@@ -312,14 +161,13 @@ class StorachaAPIService {
         let (data, response) = try await session.data(for: request)
         
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
-            // Log the error response
+         
             if let errorString = String(data: data, encoding: .utf8) {
                 print("HTTP Error \(httpResponse.statusCode): \(errorString)")
             }
             return nil
         }
         
-        // Log the raw response data before decoding
         if let rawResponse = String(data: data, encoding: .utf8) {
             print("Raw API Response: \(rawResponse)")
         } else {
@@ -609,4 +457,57 @@ class StorachaAPIService {
 
            return try JSONDecoder().decode(StorachaAccountUsageResponse.self, from: data)
        }
+    
+    // MARK: - Generate bridge Tokens
+   
+    func generateBridgeTokens(spaceDid: String, userDid: String?, sessionId: String?) async throws -> BridgeTokens {
+        // Generate expiration timestamp (1 hour from now)
+        let currentTimeSeconds = Int64(Date().timeIntervalSince1970)
+        let expirationMillis = (currentTimeSeconds * 1000) + (60 * 60 * 1000) // 1 hour from now
+        
+        logger.info("Token expiration: \(expirationMillis) (current: \(Date().timeIntervalSince1970 * 1000))")
+        
+        let request = BridgeTokenRequest(
+            resource: spaceDid,
+            can: ["store/add", "upload/add"],
+            expiration: expirationMillis,
+            json: false
+        )
+        guard let url = URL(string: "\(baseURL)/bridge-tokens") else {
+            throw StorachaAPIError.invalidURL
+        }
+        
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "POST"
+        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
+        
+        if let userDid = userDid {
+            urlRequest.setValue(userDid, forHTTPHeaderField: "x-user-did")
+        }
+        if let sessionId = sessionId {
+            urlRequest.setValue(sessionId, forHTTPHeaderField: "x-session-id")
+        }
+        
+        urlRequest.httpBody = try JSONEncoder().encode(request)
+        
+        let (data, response) = try await session.data(for: urlRequest)
+        
+        guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
+            let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1
+            let responseBody = String(data: data, encoding: .utf8) ?? "No response body"
+            logger.error("Failed to generate tokens - Status: \(statusCode), Body: \(responseBody)")
+            throw BridgeUploadError.networkError("Failed to generate tokens: \(statusCode)")
+        }
+        
+        let tokenResponse = try JSONDecoder().decode(BridgeTokenResponse.self, from: data)
+        
+        logger.info("Token response received: \(tokenResponse.success)")
+        logger.info("X-Auth-Secret length: \(tokenResponse.tokens.xAuthSecret.count)")
+        logger.info("Authorization length: \(tokenResponse.tokens.authorization.count)")
+        
+        // Log success but not the actual token values for security
+        logger.info("Generated tokens successfully")
+        
+        return tokenResponse.tokens
+    }
 }

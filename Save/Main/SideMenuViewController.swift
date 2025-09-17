@@ -208,7 +208,18 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
             }
         }
         else if indexPath.section >= spacesMappings.numberOfSections() {
-            delegate?.addSpace()
+            
+            if let session = sessionManager.loadSession()?.sessionId {
+                if indexPath.row == 0 {
+                    
+                    delegate?.manageStoracha()
+                    delegate?.hideMenu()
+                } else {
+                    delegate?.addSpace()
+                }
+            } else {
+                delegate?.addSpace()
+            }
         }
         else {
             let selectedSpace = getSpace(at: indexPath)
@@ -328,7 +339,7 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
     
     private func updateSpaceHeader(with space: Space?) {
         spaceHeaderIcon.image = getServerIcon(space: space)
-        spaceHeaderLabel.text = space?.prettyName ?? Bundle.main.displayName
+        spaceHeaderLabel.text = space?.prettyName ?? ""
     }
     
     private func showSpaceHeader(animated: Bool) {

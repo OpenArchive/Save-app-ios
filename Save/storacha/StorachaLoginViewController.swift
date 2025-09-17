@@ -25,7 +25,6 @@ class StorachaLoginViewController: UIViewController {
         if #available(iOS 14.0, *) {
             navigationItem.title = ""
             
-            // Create the global app state
             appState = StorachaAppState()
             
             // Pass only the auth state into the login view
@@ -69,12 +68,8 @@ class StorachaLoginViewController: UIViewController {
                 
                 await MainActor.run {
                     if appState.authState.isAuthenticated, let user = appState.authState.currentUser {
-                        let detailView = AccountDetailView(email: user.email) { [weak self] in
-                            self?.navigationController?.popViewController(animated: true)
-                        }
-                        let hosting = UIHostingController(rootView: detailView)
-                        hosting.title = "Account"
-                        navigationController?.pushViewController(hosting, animated: true)
+                        let vc = VerificationSuccessViewController(appState:appState)
+                        navigationController?.pushViewController(vc, animated: true)
                         
                     } else if appState.authState.currentUser != nil {
                         let verificationVC = VerificationSentViewController()
