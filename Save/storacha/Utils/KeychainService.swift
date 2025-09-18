@@ -54,4 +54,20 @@ class KeychainService {
             throw StorachaAPIError.authenticationFailed("Failed to delete from keychain")
         }
     }
+    
+    // MARK: - First Install Cleanup
+    func clearKeychainOnFirstInstall() {
+        let firstLaunchKey = "HasLaunchedBefore"
+        
+        if !UserDefaults.standard.bool(forKey: firstLaunchKey) {
+            // First install - clear all keychain items for this app
+            let query: [String: Any] = [
+                kSecClass as String: kSecClassGenericPassword
+            ]
+            SecItemDelete(query as CFDictionary)
+            
+            // Mark as launched
+            UserDefaults.standard.set(true, forKey: firstLaunchKey)
+        }
+    }
 }

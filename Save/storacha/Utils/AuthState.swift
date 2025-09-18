@@ -118,7 +118,7 @@ class AuthState: ObservableObject {
             do {
                 let sessionResponse = try await apiService.checkSession()
                 
-                if ((sessionResponse?.verified) ?? false ) {
+                if (sessionResponse?.verified == 1) {
                     if let sessionData = sessionManager.loadSession() {
                        
                         let verifiedSessionData = StorachaSessionData(

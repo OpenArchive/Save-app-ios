@@ -147,6 +147,7 @@ struct StorachaSettingView: View {
                 .background(Color.gray.opacity(0.1))
                 .cornerRadius(8)
                 .padding(.horizontal)
+                .padding(.top,20)
                 
                 Spacer(minLength: 20)
             }

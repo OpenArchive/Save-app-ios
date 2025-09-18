@@ -63,8 +63,8 @@ class SideMenuItemCell: UITableViewCell {
     func applyStoracha() {
         iconLeadingConstraint.constant = 12
 
-        icon.image = UIImage(named:  "storacha")?.withRenderingMode(.alwaysTemplate)
-        nameLb.text = NSLocalizedString("Storacha", comment: "")
+        icon.image = UIImage(named:  "storachaBird")?.withRenderingMode(.alwaysTemplate)
+        nameLb.text = NSLocalizedString("Storacha Service", comment: "")
         nameLb.font =  .montserrat(forTextStyle: .subheadline)
         nameLb.textColor = .accent
         contentView.backgroundColor = .pillBackground

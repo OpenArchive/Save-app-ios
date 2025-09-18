@@ -87,7 +87,7 @@ class StorachaAppState: ObservableObject {
             isLoading = false
             
             if (storachaSessionResponse?.valid ?? false) {
-                if !(storachaSessionResponse?.verified ?? false) {
+                if (storachaSessionResponse?.verified == 0) {
                     return (shouldGoToLogin: true,isVerified:false, userEmail: nil)
                 }
                

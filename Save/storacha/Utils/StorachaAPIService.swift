@@ -20,7 +20,7 @@ class StorachaAPIService {
     private let keyManager = DIDKeyManager()
     private let sessionManager = SessionManager.shared
     private let logger = Logger(subsystem: "StorachaApiService", category: "API")
-    private init(baseURL: String = "http://192.168.0.104:3000") {
+    private init(baseURL: String = "http://172.20.10.2:3000") {
         self.baseURL = baseURL
     }
     
@@ -163,15 +163,15 @@ class StorachaAPIService {
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
          
             if let errorString = String(data: data, encoding: .utf8) {
-                print("HTTP Error \(httpResponse.statusCode): \(errorString)")
+                print("Check Session HTTP Error \(httpResponse.statusCode): \(errorString)")
             }
             return nil
         }
         
         if let rawResponse = String(data: data, encoding: .utf8) {
-            print("Raw API Response: \(rawResponse)")
+            print("Check Session Raw API Response: \(rawResponse)")
         } else {
-            print("Failed to convert response data to string")
+            print("Failed to convert check session response data to string")
         }
         
         let sessionResponse = try JSONDecoder().decode(StorachaSessionResponse.self, from: data)
@@ -189,7 +189,14 @@ class StorachaAPIService {
         request.httpMethod = "POST"
         request.setValue(sessionData.sessionId, forHTTPHeaderField: "x-session-id")
         
-        _ = try await session.data(for: request)
+        let (data, response) = try await session.data(for: request)
+        
+        if let rawResponse = String(data: data, encoding: .utf8) {
+            print("Logout Raw API Response: \(rawResponse)")
+        } else {
+            print("Failed to convert logout response data to string")
+        }
+        
         sessionManager.clearSession()
     }
     
@@ -220,8 +227,15 @@ class StorachaAPIService {
         
         let (data, response) = try await session.data(for: request)
         
+        if let rawResponse = String(data: data, encoding: .utf8) {
+            print("Get Spaces Raw API Response: \(rawResponse)")
+        } else {
+            print("Failed to convert get spaces response data to string")
+        }
+        
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
             let errorMessage = String(data: data, encoding: .utf8) ?? "Unknown error"
+            logger.error("API Error - Status: \(httpResponse.statusCode), Message: \(errorMessage)")
             throw StorachaAPIError.serverError(httpResponse.statusCode, errorMessage)
         }
         
@@ -242,6 +256,12 @@ class StorachaAPIService {
         request.setValue(sessionData.sessionId, forHTTPHeaderField: "x-session-id")
         
         let (data, response) = try await session.data(for: request)
+        
+        if let rawResponse = String(data: data, encoding: .utf8) {
+            print("Get Space Usage Raw API Response: \(rawResponse)")
+        } else {
+            print("Failed to convert get space usage response data to string")
+        }
         
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
             let errorMessage = String(data: data, encoding: .utf8) ?? "Unknown error"
@@ -289,6 +309,12 @@ class StorachaAPIService {
         
         let (data, response) = try await session.data(for: request)
         
+        if let rawResponse = String(data: data, encoding: .utf8) {
+            print("Upload File Raw API Response: \(rawResponse)")
+        } else {
+            print("Failed to convert upload file response data to string")
+        }
+        
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
             let errorMessage = String(data: data, encoding: .utf8) ?? "Unknown error"
             throw StorachaAPIError.uploadFailed(errorMessage)
@@ -321,6 +347,12 @@ class StorachaAPIService {
         
         let (data, response) = try await session.data(for: urlRequest)
         
+        if let rawResponse = String(data: data, encoding: .utf8) {
+            print("Create Delegation Raw API Response: \(rawResponse)")
+        } else {
+            print("Failed to convert create delegation response data to string")
+        }
+        
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
             let errorMessage = String(data: data, encoding: .utf8) ?? "Unknown error"
             throw StorachaAPIError.serverError(httpResponse.statusCode, errorMessage)
@@ -345,6 +377,12 @@ class StorachaAPIService {
         request.setValue(sessionData.sessionId, forHTTPHeaderField: "x-session-id")
         
         let (data, response) = try await session.data(for: request)
+        
+        if let rawResponse = String(data: data, encoding: .utf8) {
+            print("List Delegations Raw API Response: \(rawResponse)")
+        } else {
+            print("Failed to convert list delegations response data to string")
+        }
         
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
             let errorMessage = String(data: data, encoding: .utf8) ?? "Unknown error"
@@ -374,6 +412,13 @@ class StorachaAPIService {
         request.httpBody = try JSONEncoder().encode(body)
         
         let (data, response) = try await session.data(for: request)
+        
+        if let rawResponse = String(data: data, encoding: .utf8) {
+            print("Revoke Delegation Raw API Response: \(rawResponse)")
+        } else {
+            print("Failed to convert revoke delegation response data to string")
+        }
+        
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
             let errorMessage = String(data: data, encoding: .utf8) ?? "Unknown error"
             throw StorachaAPIError.serverError(httpResponse.statusCode, errorMessage)
@@ -427,6 +472,12 @@ class StorachaAPIService {
         
         let (data, response) = try await session.data(for: request)
         
+        if let rawResponse = String(data: data, encoding: .utf8) {
+            print("List Uploads Raw API Response: \(rawResponse)")
+        } else {
+            print("Failed to convert list uploads response data to string")
+        }
+        
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
             let errorMessage = String(data: data, encoding: .utf8) ?? "Unknown error"
             throw StorachaAPIError.serverError(httpResponse.statusCode, errorMessage)
@@ -449,6 +500,12 @@ class StorachaAPIService {
            request.setValue(sessionData.sessionId, forHTTPHeaderField: "x-session-id")
 
            let (data, response) = try await session.data(for: request)
+
+           if let rawResponse = String(data: data, encoding: .utf8) {
+               print("Get Account Usage Raw API Response: \(rawResponse)")
+           } else {
+               print("Failed to convert get account usage response data to string")
+           }
 
            if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
                let errorMessage = String(data: data, encoding: .utf8) ?? "Unknown error"
@@ -491,6 +548,12 @@ class StorachaAPIService {
         urlRequest.httpBody = try JSONEncoder().encode(request)
         
         let (data, response) = try await session.data(for: urlRequest)
+        
+        if let rawResponse = String(data: data, encoding: .utf8) {
+            print("Generate Bridge Tokens Raw API Response: \(rawResponse)")
+        } else {
+            print("Failed to convert generate bridge tokens response data to string")
+        }
         
         guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else {
             let statusCode = (response as? HTTPURLResponse)?.statusCode ?? -1

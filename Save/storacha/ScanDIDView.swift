@@ -41,8 +41,7 @@ struct ScanDIDView: View {
                         .foregroundColor(.black)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
-                        .background(Color.gray.opacity(0.2))
-                        .foregroundColor(.primary)
+                        .foregroundColor(.backButton)
                         .cornerRadius(8)
                     
                     Button("Add") {
@@ -54,7 +53,7 @@ struct ScanDIDView: View {
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
                         .background(typedDID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty ? Color.gray.opacity(0.3) : Color.accentColor)
-                        .foregroundColor(.white)
+                        .foregroundColor(.black)
                         .cornerRadius(8)
                         .disabled(typedDID.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty)
                 }

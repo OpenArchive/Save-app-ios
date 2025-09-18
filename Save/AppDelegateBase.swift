@@ -62,7 +62,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         setUpGdrive()
         
         UIFont.setUpMontserrat()
-        
+        KeychainService.shared.clearKeychainOnFirstInstall()
         FirebaseApp.configure()
         setUpOrbotAndTor()
         applyTheme(AppSettings.theme)

@@ -37,7 +37,7 @@ struct StorachaVerifyResponse: Codable {
 
 struct StorachaSessionResponse: Codable {
     let valid: Bool
-    let verified: Bool
+    let verified: Int
     let expiresAt: String?
     let message: String
 }

@@ -47,7 +47,7 @@ struct SpaceListView: View {
                                         .padding(.trailing, 8)
                                     VStack(alignment: .leading, spacing: 4) {
                                         Text(space.name)
-                                            .font(.montserrat(.semibold, for: .headline))
+                                            .font(.montserrat(.semibold, for: .callout))
                                             .foregroundColor(.primary)
                                         
                                         Text(space.id)
@@ -61,10 +61,6 @@ struct SpaceListView: View {
                                 }
                                 .padding()
                                 .frame(maxWidth: .infinity)
-                                .background(
-                                    RoundedRectangle(cornerRadius: 10)
-                                        .stroke(Color.gray.opacity(0.4), lineWidth: 1)
-                                )
                             }
                             .padding(.horizontal)
                         }
