@@ -78,7 +78,7 @@ class SpaceState: ObservableObject {
         uploadProgress = 0.0
         uploadResult = nil
         
-        if let sessionData = sessionManager.loadSession() {
+            let  sessionData = sessionManager.loadSession()
             do {
                 // Get user DID
                 let userDid = try getOrCreateDID()
@@ -95,8 +95,7 @@ class SpaceState: ObservableObject {
                 // Step 3: Save CAR data for debugging (optional)
                 try saveCarFileForDebugging(carResult: carResult, originalFileName: fileURL.lastPathComponent)
                 uploadProgress = 0.4
-                
-                // Step 4: Upload via bridge
+        
                 print("Starting bridge upload")
                 let bridgeResult = try await bridgeUploader.uploadFile(
                     file: tempFile,
@@ -105,7 +104,7 @@ class SpaceState: ObservableObject {
                     rootCid: carResult.rootCid,
                     spaceDid: spaceDid,
                     userDid: userDid,
-                    sessionId: sessionData.sessionId
+                    sessionId: sessionData?.sessionId
                 )
                 uploadProgress = 1.0
                 
@@ -129,10 +128,6 @@ class SpaceState: ObservableObject {
                 print("Upload failed: \(error.localizedDescription)")
                 uploadResult = .failure(error)
             }
-        } else {
-            let sessionError = StorachaAPIError.networkError(NSError(domain: "Session", code: -1, userInfo: [NSLocalizedDescriptionKey: "No valid session found"]))
-            uploadResult = .failure(sessionError)
-        }
         
         isUploading = false
     }

@@ -38,7 +38,7 @@ struct ScanDIDView: View {
                     Button("Back") {
                         presentationMode.wrappedValue.dismiss()
                     }.font(.montserrat(.semibold, for: .headline))
-                        .foregroundColor(.black)
+                        .foregroundColor(.backButton)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 12)
                         .foregroundColor(.backButton)

@@ -20,6 +20,8 @@ class StorachaAPIService {
     private let keyManager = DIDKeyManager()
     private let sessionManager = SessionManager.shared
     private let logger = Logger(subsystem: "StorachaApiService", category: "API")
+    //192.168.0.104
+    //172.20.10.2 - phone
     private init(baseURL: String = "http://172.20.10.2:3000") {
         self.baseURL = baseURL
     }
