@@ -108,7 +108,7 @@ class BigButton: UIView {
                 subtitleLb.leadingAnchor.constraint(equalTo: titleLb.leadingAnchor).isActive = true
                 subtitleLb.trailingAnchor.constraint(equalTo: titleLb.trailingAnchor).isActive = true
                 subtitleLb.topAnchor.constraint(equalTo: titleLb.bottomAnchor, constant: 4).isActive = true
-                subtitleLb.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24).isActive = true
+                subtitleLb.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -16).isActive = true
             }
 
             subtitleLb.text = newValue

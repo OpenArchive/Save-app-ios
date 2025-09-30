@@ -165,7 +165,58 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
             return
         }
         workingOverlay.isHidden = false
-        if(spaceExists(username: usernameTb.text ?? "")){
+        if(canOpen(url?.absoluteString ?? "")){
+            
+            if(spaceExists(username: usernameTb.text ?? "")){
+                workingOverlay.isHidden = true
+                let alertVC = CustomAlertViewController(
+                    title: NSLocalizedString("Error!", comment: ""),
+                    message: NSLocalizedString("This server already exists. Please create another server.", comment: ""),
+                    primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
+                    primaryButtonAction: {
+                        
+                    }, showCheckbox: false, iconImage: Image(systemName: "exclamationmark.triangle.fill"),
+                    iconTint:.gray
+                )
+                self.present(alertVC, animated: true)
+            }
+            else{
+            let space = WebDavSpace(
+                name: "",
+                url: url,
+                favIcon: UIImage(named: "private_server"),
+                username: usernameTb.text,
+                password: passwordTb.text)
+            
+            workingOverlay.isHidden = false
+            
+                URLSession(configuration: UploadManager.improvedSessionConf()).info(space.url!, credential: space.credential) { [weak self] info, error in
+                    DispatchQueue.main.async {
+                        self?.workingOverlay.isHidden = true
+                        
+                        if let error = error {
+                            if let self = self {
+                                self.errorText.text = error.friendlyMessage
+                                self.usernameTb.status = .bad
+                                self.passwordTb.status = .bad
+                            }
+                        }
+                        else {
+                            SelectedSpace.space = space
+                            self?.errorText.text = ""
+                            Db.writeConn?.asyncReadWrite() { tx in
+                                SelectedSpace.store(tx)
+                                tx.setObject(space)
+                            }
+                            
+                            let vc = UIStoryboard.main.instantiate(CreateCCLViewController.self)
+                            vc.space = space
+                            self?.navigationController?.pushViewController(vc, animated: true)
+                        }
+                    }
+                }
+            }
+        } else{
             workingOverlay.isHidden = true
             let alertVC = CustomAlertViewController(
                 title: NSLocalizedString("Error!", comment: ""),
@@ -178,44 +229,15 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
             )
             self.present(alertVC, animated: true)
         }
-        else{
-        let space = WebDavSpace(
-            name: "",
-            url: url,
-            favIcon: UIImage(named: "private_server"),
-            username: usernameTb.text,
-            password: passwordTb.text)
-        
-        workingOverlay.isHidden = false
-        
-        // Do a test request to check validity of space configuration.
-            URLSession(configuration: UploadManager.improvedSessionConf()).info(space.url!, credential: space.credential) { [weak self] info, error in
-                DispatchQueue.main.async {
-                    self?.workingOverlay.isHidden = true
-                    
-                    if let error = error {
-                        if let self = self {
-//                            AlertHelper.present(self, message: error.friendlyMessage)
-                            self.errorText.text = error.friendlyMessage
-                            self.usernameTb.status = .bad
-                            self.passwordTb.status = .bad
-                        }
-                    }
-                    else {
-                        SelectedSpace.space = space
-                        self?.errorText.text = ""
-                        Db.writeConn?.asyncReadWrite() { tx in
-                            SelectedSpace.store(tx)
-                            tx.setObject(space)
-                        }
-                        
-                        let vc = UIStoryboard.main.instantiate(CreateCCLViewController.self)
-                        vc.space = space
-                        self?.navigationController?.pushViewController(vc, animated: true)
-                    }
-                }
-            }
-        }
+       
+    }
+    func canOpen(_ urlString: String) -> Bool {
+        guard let url = URL(string: urlString) else { return false }
+        #if canImport(UIKit)
+        return UIApplication.shared.canOpenURL(url)
+        #else
+        return true
+        #endif
     }
     
     override func keyboardWillShow(notification: Notification) {
