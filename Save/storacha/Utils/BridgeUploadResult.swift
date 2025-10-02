@@ -27,7 +27,8 @@ class BridgeUploader: ObservableObject {
         rootCid: String,
         spaceDid: String,
         userDid: String? = nil,
-        sessionId: String? = nil
+        sessionId: String? = nil,
+        isAdmin:Bool,
     ) async throws -> BridgeUploadResult {
         // Validate CID formats
         guard carCid.hasPrefix("bag") else {
@@ -41,7 +42,7 @@ class BridgeUploader: ObservableObject {
         
         do {
             // Step 1: Generate bridge tokens
-            let tokens = try await apiService.generateBridgeTokens(spaceDid: spaceDid, userDid: userDid, sessionId: sessionId)
+            let tokens = try await apiService.generateBridgeTokens(spaceDid: spaceDid, userDid: userDid, sessionId: sessionId,isAdmin:isAdmin)
             
             // Small delay to ensure token propagation
             try await Task.sleep(nanoseconds: 100_000_000) // 100ms

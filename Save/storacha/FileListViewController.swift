@@ -31,20 +31,23 @@ class FileListViewController: UIViewController {
         
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backBarButtonItem
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "Manage DIDs",
-            style: .plain,
-            target: self,
-            action: #selector(manageDIDsTapped)
-        )
+        if(space.isAdmin){
+            navigationItem.rightBarButtonItem = UIBarButtonItem(
+                title: "Manage DIDs",
+                style: .plain,
+                target: self,
+                action: #selector(manageDIDsTapped)
+            )}
         
         if #available(iOS 14.0, *) {
-            let contentView = FileListView(spaceDid: space.id) {
-                // Only allow upload if not currently uploading
-                if !self.appState.spaceState.isUploading {
-                    self.showUploadOptions()
-                }
-            }
+            let contentView = FileListView(
+                spaceDid: space.id,
+                onUploadTapped: {
+                    if !self.appState.spaceState.isUploading {
+                        self.showUploadOptions()
+                    }
+                }, isSpaceAdmin: true
+            )
             .environmentObject(appState.spaceState)
             
             let hosting = UIHostingController(rootView: contentView)
@@ -205,7 +208,8 @@ class FileListViewController: UIViewController {
             // Upload the file
             await appState.spaceState.uploadFile(
                 fileURL: url,
-                spaceDid: space.id
+                spaceDid: space.id,
+                isAdmin: space.isAdmin
             )
             
             // Clean up temporary file if needed

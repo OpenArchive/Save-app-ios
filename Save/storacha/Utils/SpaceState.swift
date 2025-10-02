@@ -47,7 +47,7 @@ class SpaceState: ObservableObject {
   
     // MARK: - Load files in space for a user
     @MainActor
-    func loadUploads(for spaceDid: String, reset: Bool = false) async {
+    func loadUploads(for spaceDid: String,isAdmin:Bool, reset: Bool = false) async {
         if reset {
             uploads = []
             uploadsCursor = nil
@@ -60,7 +60,7 @@ class SpaceState: ObservableObject {
         defer { isLoadingUploads = false }
         
         do {
-            let response = try await apiService.listUploads(spaceDid: spaceDid, cursor: uploadsCursor)
+            let response = try await apiService.listUploads(spaceDid: spaceDid,cursor: uploadsCursor, isAdmin:isAdmin)
             uploads.append(contentsOf: response.uploads)
             uploadsCursor = response.cursor
             uploadsHasMore = response.hasMore
@@ -73,7 +73,7 @@ class SpaceState: ObservableObject {
     
     // MARK: - Upload File
     @MainActor
-    func uploadFile(fileURL: URL, spaceDid: String) async {
+    func uploadFile(fileURL: URL, spaceDid: String,isAdmin:Bool) async {
         isUploading = true
         uploadProgress = 0.0
         uploadResult = nil
@@ -104,7 +104,8 @@ class SpaceState: ObservableObject {
                     rootCid: carResult.rootCid,
                     spaceDid: spaceDid,
                     userDid: userDid,
-                    sessionId: sessionData?.sessionId
+                    sessionId: sessionData?.sessionId,
+                    isAdmin:isAdmin
                 )
                 uploadProgress = 1.0
                 
@@ -119,7 +120,7 @@ class SpaceState: ObservableObject {
                 print("Upload completed successfully. CID: \(bridgeResult.rootCid)")
                 
                 // Step 6: Refresh the uploads list
-                await loadUploads(for: spaceDid, reset: true)
+                await loadUploads(for: spaceDid,isAdmin:isAdmin, reset: true)
                 
                 // Cleanup temp file if we created one
                 cleanupTempFile(tempFile, originalURL: fileURL)

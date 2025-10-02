@@ -434,6 +434,7 @@ class StorachaAPIService {
     func listUploads(
         spaceDid: String,
         cursor: String? = nil,
+        isAdmin:Bool,
         size: Int = 25
     ) async throws -> StorachaUploadsResponse {
         
@@ -466,12 +467,12 @@ class StorachaAPIService {
         
         // Required DID header
         request.setValue(keyPair.did, forHTTPHeaderField: "x-user-did")
-        
-        // Optional session header
-        if let sessionData = sessionManager.loadSession() {
-            request.setValue(sessionData.sessionId, forHTTPHeaderField: "x-session-id")
+    
+        if(isAdmin){
+            if let sessionData = sessionManager.loadSession() {
+                request.setValue(sessionData.sessionId, forHTTPHeaderField: "x-session-id")
+            }
         }
-        
         let (data, response) = try await session.data(for: request)
         
         if let rawResponse = String(data: data, encoding: .utf8) {
@@ -519,7 +520,7 @@ class StorachaAPIService {
     
     // MARK: - Generate bridge Tokens
    
-    func generateBridgeTokens(spaceDid: String, userDid: String?, sessionId: String?) async throws -> BridgeTokens {
+    func generateBridgeTokens(spaceDid: String, userDid: String?, sessionId: String?,isAdmin:Bool) async throws -> BridgeTokens {
         // Generate expiration timestamp (1 hour from now)
         let currentTimeSeconds = Int64(Date().timeIntervalSince1970)
         let expirationMillis = (currentTimeSeconds * 1000) + (60 * 60 * 1000) // 1 hour from now
@@ -543,10 +544,11 @@ class StorachaAPIService {
         if let userDid = userDid {
             urlRequest.setValue(userDid, forHTTPHeaderField: "x-user-did")
         }
-        if let sessionId = sessionId {
-            urlRequest.setValue(sessionId, forHTTPHeaderField: "x-session-id")
+        if(isAdmin){
+            if let sessionId = sessionId {
+                urlRequest.setValue(sessionId, forHTTPHeaderField: "x-session-id")
+            }
         }
-        
         urlRequest.httpBody = try JSONEncoder().encode(request)
         
         let (data, response) = try await session.data(for: urlRequest)

@@ -5,6 +5,7 @@ struct FileListView: View {
     @EnvironmentObject var spaceState: SpaceState
     let spaceDid: String
     let onUploadTapped: () -> Void
+    let isSpaceAdmin:Bool
     
     var body: some View {
         ZStack {
@@ -58,7 +59,7 @@ struct FileListView: View {
         }
         .compatTask {
             // Load uploads when view appears
-            await spaceState.loadUploads(for: spaceDid, reset: true)
+            await spaceState.loadUploads(for: spaceDid, isAdmin: isSpaceAdmin, reset: true)
         }
     }
     
@@ -137,7 +138,7 @@ struct FileListView: View {
                                        spaceState.uploadsHasMore,
                                        !spaceState.isLoadingUploads {
                                         Task {
-                                            await spaceState.loadUploads(for: spaceDid)
+                                            await spaceState.loadUploads(for: spaceDid,isAdmin: isSpaceAdmin)
                                         }
                                     }
                                 }
@@ -179,7 +180,7 @@ struct FileListView: View {
             }
             .refreshable {
                 if !spaceState.isUploading {
-                    await spaceState.loadUploads(for: spaceDid, reset: true)
+                    await spaceState.loadUploads(for: spaceDid,isAdmin: isSpaceAdmin, reset: true)
                 }
             }
         }
