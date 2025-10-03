@@ -574,10 +574,34 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         return UIImage(named: "NoImage")
     }
     func getThumbnailAsync(completion: @escaping (UIImage?) -> Void) {
-        DispatchQueue.global(qos: .userInitiated).async {
-            let thumbnail = self.getThumbnail()
+        // First, try to load from local thumb cache
+        if let thumb = thumb,
+            let data = try? Data(contentsOf: thumb),
+            let image = UIImage(data: data) {
+            completion(image)
+            return
+        }
+        
+        // If no cached thumbnail and we have a PHAsset, load it properly
+        guard let phAsset = self.phAsset else {
+            completion(UIImage(named: "NoImage"))
+            return
+        }
+        
+        let options = PHImageRequestOptions()
+        options.deliveryMode = .opportunistic // Get low quality first, then high quality
+        options.resizeMode = .fast
+        options.isNetworkAccessAllowed = true // Allow iCloud downloads
+        options.isSynchronous = false
+        
+        PHImageManager.default().requestImage(
+            for: phAsset,
+            targetSize: CGSize(width: 300, height: 300),
+            contentMode: .aspectFill,
+            options: options
+        ) { image, info in
             DispatchQueue.main.async {
-                completion(thumbnail)
+                completion(image ?? UIImage(named: "NoImage"))
             }
         }
     }

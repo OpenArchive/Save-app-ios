@@ -57,21 +57,26 @@ class PreviewCell: UICollectionViewCell {
     }
     
     private func configureCell() {
-        guard let asset = asset else {
+            guard let asset = asset else {
+                previewImg.image = UIImage(named: "NoImage")
+                movieIndicator.isHidden = true
+                return
+            }
+            
+            // Store the current asset ID to prevent race conditions
+            currentAssetId = asset.id
+            
+            // Set placeholder immediately
             previewImg.image = UIImage(named: "NoImage")
-            movieIndicator.isHidden = true
-            return
+            
+            // Configure movie indicator immediately (this is fast)
+            movieIndicator.isHidden = !(asset.isAv ?? false)
+            movieIndicator.set(duration: asset.duration)
+            
+            // Load thumbnail asynchronously
+            asset.getThumbnailAsync { [weak self] thumbnail in
+                guard self?.currentAssetId == asset.id else { return }
+                self?.previewImg.image = thumbnail
+            }
         }
-        
-        currentAssetId = asset.id
-        previewImg.image = UIImage(named: "NoImage")
-        
-        movieIndicator.isHidden = !(asset.isAv)
-        movieIndicator.set(duration: asset.duration)
-        
-        asset.getThumbnailAsync { [weak self] thumbnail in
-            guard self?.currentAssetId == asset.id else { return }
-            self?.previewImg.image = thumbnail
-        }
-    }
 }
