@@ -107,6 +107,9 @@ struct EditFolderView: View {
                 
                 Button((store.state.project?.active ?? false) ? NSLocalizedString("Archive Project", comment: "") :  NSLocalizedString("Unarchive Project", comment: "")) {
                     store.dispatch(action:.archiveFolder)
+                    if (store.state.project?.active ?? false) {
+                           dismissAction?()
+                       }
                 }
                 .frame(maxWidth: .infinity)
                 .foregroundColor(.primary)

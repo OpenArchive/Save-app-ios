@@ -275,27 +275,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                     Db.writeConn?.setObject(currentProject)
                     renameView.isHidden = true
                     updateProject()
-                    let alertVC = CustomAlertViewController(
-                        title:NSLocalizedString("Success!", comment: "") ,
-                        message: NSLocalizedString("Folder renamed successfully.", comment: ""),
-                        primaryButtonTitle: NSLocalizedString("Got it", comment: ""),
-                        primaryButtonAction: {
-                            if let navigationController = self.navigationController {
-                                
-                                if let existingVC = navigationController.viewControllers.first(where: { $0 is MainViewController }) {
-                                    
-                                    navigationController.popToViewController(existingVC, animated: true)
-                                } else {
-                                    
-                                    let newVC = MainViewController()
-                                    navigationController.pushViewController(newVC, animated: true)
-                                }
-                            }
-                        },
-                        showCheckbox: false,
-                        iconImage: Image("check_icon")
-                    )
-                    self.present(alertVC, animated: true)
                     
                 }
             }}

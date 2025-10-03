@@ -65,6 +65,12 @@ class CcSelector {
         $0.disabled = .function(["cc", "remixSw"], { [weak self] _ in
             !(self?.enabled ?? false) || !(self?.remixSw.value ?? false)
         })
+        $0.cellUpdate { cell, row in
+            cell.textLabel?.textColor = .label
+            cell.textLabel?.alpha = 1.0
+            cell.switchControl.isEnabled = !row.isDisabled
+            cell.switchControl.alpha = row.isDisabled ? 0.5 : 1.0
+        }
     }
     
     lazy var commercialSw = SwitchRow() {
