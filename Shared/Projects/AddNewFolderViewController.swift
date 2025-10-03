@@ -169,6 +169,7 @@ struct CreateFolderView: View {
                 .cornerRadius(8)
                 
                 Button(NSLocalizedString("Create", comment: "")) {
+                    hideKeyboard()
                     disableBackAction?(true)
                     store.dispatch(action: .saveFolderName)
                     
@@ -241,6 +242,8 @@ struct CreateFolderView: View {
                 }
             })
     }
-    
+    private func hideKeyboard() {
+           UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+       }
 }
 

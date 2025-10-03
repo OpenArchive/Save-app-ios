@@ -186,9 +186,9 @@ struct EditFolderView: View {
                         .overlay(
                             VStack {
                                 CustomAlertView(
-                                    title: NSLocalizedString("Are you sure?", comment: ""),
+                                    title: NSLocalizedString("Remove from app", comment: ""),
                                     message: String(format: NSLocalizedString(
-                                        "Removing this folder will remove all contained thumbnails from the %@ app.",
+                                        "Are you sure you want to remove your project?",
                                         comment: "Placeholder is app name"), Bundle.main.displayName),
                                     primaryButtonTitle: NSLocalizedString("Remove", comment: ""),
                                     iconImage: Image("trash_icon"),

@@ -573,7 +573,14 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
 
         return UIImage(named: "NoImage")
     }
-
+    func getThumbnailAsync(completion: @escaping (UIImage?) -> Void) {
+        DispatchQueue.global(qos: .userInitiated).async {
+            let thumbnail = self.getThumbnail()
+            DispatchQueue.main.async {
+                completion(thumbnail)
+            }
+        }
+    }
     /**
      Asynchronously deletes this asset from the database.
 

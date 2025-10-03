@@ -25,7 +25,7 @@ class PasscodeSetupViewModel : StoreViewModel<PasscodeSetupState, PasscodeSetupA
     @Published var isConfirming: Bool = false
     @Published var isProcessing: Bool = false
     @Published var shouldShake: Bool = false
-    
+    @Published var showPasswordMismatch: Bool = false
     
     
     init(
@@ -109,7 +109,7 @@ class PasscodeSetupViewModel : StoreViewModel<PasscodeSetupState, PasscodeSetupA
             if passcode == confirmPasscode {
                 hashPasscode()
             } else {
-                // send event to ui (Passcode do not match
+                self.showPasswordMismatch = true
                 self.triggerShakeAnimation()
             }
         }
@@ -143,6 +143,7 @@ class PasscodeSetupViewModel : StoreViewModel<PasscodeSetupState, PasscodeSetupA
         isConfirming = false
         isProcessing = false
         shouldShake = false
+        showPasswordMismatch = false
     }
     
     private func triggerShakeAnimation() {

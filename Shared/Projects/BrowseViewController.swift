@@ -60,11 +60,6 @@ class BrowseViewController: BaseTableViewController {
         }
         navigationItem.title = NSLocalizedString("Browse Existing", comment: "")
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: NSLocalizedString("ADD", comment: ""), style: .done,
-            target: self, action: #selector(done))
-        navigationItem.rightBarButtonItem?.isEnabled = false
-        
         tableView.register(FolderCell.nib, forCellReuseIdentifier: FolderCell.reuseId)
         let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(dismissController))
         
@@ -134,7 +129,12 @@ class BrowseViewController: BaseTableViewController {
         }
         
         selected = indexPath
-        navigationItem.rightBarButtonItem?.isEnabled = true
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+                title: NSLocalizedString("ADD", comment: ""),
+                style: .done,
+                target: self,
+                action: #selector(done)
+            )
         
         tableView.reloadRows(at: rows, with: .none)
     }

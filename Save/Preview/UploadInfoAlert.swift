@@ -21,7 +21,7 @@ class UploadInfoAlert {
     }
     
     static var title: String {
-        NSLocalizedString("Warning", comment: "")
+        NSLocalizedString("Warning!", comment: "")
     }
     
     static var message: String {

@@ -679,9 +679,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             return  self.addFolder()
         }
         
-        AddInfoAlert.presentIfNeeded(viewController: self)
-        
-        assetPicker.pickMedia()
+        AddInfoAlert.presentIfNeeded(viewController: self) {
+            self.assetPicker.pickMedia()
+        }
     }
     
     func showMediaPickerSheet() {

@@ -28,7 +28,7 @@ enum Field: Hashable {
     case username
     case password
 }
-@available(iOS 15.0, *)
+
 struct InternetArchiveLoginContent: View {
     
     let state: InternetArchiveLoginState.Bindings
@@ -38,11 +38,9 @@ struct InternetArchiveLoginContent: View {
     @Environment(\.colorScheme) var colorScheme
     @FocusState private var focusedField: Field?
     
-    
     var body: some View {
         GeometryReader { reader in
-            if #available(iOS 14.0, *) {
-             
+                ZStack {
                     VStack {
                         HStack {
                             Circle().fill(.gray10)
@@ -60,6 +58,7 @@ struct InternetArchiveLoginContent: View {
                         .padding(.top,50).padding(.leading,20).padding(.trailing,40)
                         
                         Text(LocalizedStringKey("Account")).font(.montserrat(.semibold, for: .headline)).foregroundColor(.gray70).padding(.top,50).frame(maxWidth: .infinity, alignment: .leading).padding(.leading,20)
+                        
                         ZStack(alignment: .leading) {
                             if state.userName.wrappedValue.isEmpty {
                                 Text("Email")
@@ -69,24 +68,23 @@ struct InternetArchiveLoginContent: View {
                                     .padding(.leading, 5)
                             }
                             
-                           
-                                TextField("", text: state.userName)
-                                    .autocapitalization(.none)
-                                    .font(.montserrat(.medium, for: .footnote))
-                                    .foregroundColor(.gray70)
-                                    .submitLabel(.next)
-                                    .focused($focusedField, equals: .username)
-                                    .onSubmit {
-                                        focusedField = .password
-                                    }
-                            
+                            TextField("", text: state.userName)
+                                .autocapitalization(.none)
+                                .font(.montserrat(.medium, for: .footnote))
+                                .foregroundColor(.gray70)
+                                .submitLabel(.next)
+                                .focused($focusedField, equals: .username)
+                                .onSubmit {
+                                    focusedField = .password
+                                }
                         }
                         .padding()
-                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.7)))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(borderColor(for: .username), lineWidth: 1)
+                        )
                         .padding(.horizontal, 20)
                         .padding(.top, 15)
-
-                        
                         
                         ZStack(alignment: .leading) {
                             HStack {
@@ -96,7 +94,6 @@ struct InternetArchiveLoginContent: View {
                                             .italic()
                                             .font(.montserrat(.medium, for: .footnote))
                                             .foregroundColor(.textEmpty)
-                                            .focused($focusedField, equals: .password)
                                             .padding(.leading, 5)
                                     }
                                     
@@ -122,7 +119,10 @@ struct InternetArchiveLoginContent: View {
                             }
                         }
                         .padding()
-                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.7)))
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 8)
+                                .stroke(borderColor(for: .password), lineWidth: 1)
+                        )
                         .padding(.horizontal, 20)
                         .padding(.top, 15)
                         
@@ -139,7 +139,6 @@ struct InternetArchiveLoginContent: View {
                                 Text(LocalizedStringKey("Create one"))
                             }.foregroundColor(.accent).font(.montserrat(.semibold, for: .callout))
                         }.padding(.top,40)
-                        
                         
                         Spacer()
                         
@@ -160,11 +159,7 @@ struct InternetArchiveLoginContent: View {
                                     dispatch(.Login)
                                 }
                             }, label: {
-                                if (state.isBusy) {
-                                    ActivityIndicator(style: .medium, animate: .constant(true)).foregroundColor(.black)
-                                } else {
-                                    Text(LocalizedStringKey("Next"))
-                                }
+                                Text(LocalizedStringKey("Next"))
                             })
                             .disabled(!state.isValid)
                             .padding()
@@ -173,25 +168,44 @@ struct InternetArchiveLoginContent: View {
                             .foregroundColor(.black)
                             .cornerRadius(10)
                             .font(.montserrat(.semibold, for: .headline))
-                            
                         }
                         .padding(.bottom,20).padding(.leading,20).padding(.trailing,20)
-                    } .frame(minHeight: reader.size.height)
-                        .ignoresSafeArea(.keyboard, edges: .bottom)
+                    }
+                    .frame(minHeight: reader.size.height)
+                    .ignoresSafeArea(.keyboard, edges: .bottom)
                     
-                    
-                
-            } else {
-                // Fallback on earlier versions
-            }
+                    if state.isBusy {
+                                          Color.black.opacity(0.7)
+                                              .edgesIgnoringSafeArea(.all)
+                                              .overlay(
+                                                  ProgressView()
+                                                      .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                                      .scaleEffect(1.5)
+                                              )
+                                      }
+                }
             
         }
-        
+        .onChange(of: state.userName.wrappedValue) { _ in
+            if state.isLoginError {
+                dispatch(.ClearError)
+            }
+        }
+        .onChange(of: state.password.wrappedValue) { _ in
+            if state.isLoginError {
+                dispatch(.ClearError)
+            }
+        }
     }
     
-    private func removeKeyboardObservers() {
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.removeObserver(self, name: UIResponder.keyboardWillHideNotification, object: nil)
+    private func borderColor(for field: Field) -> Color {
+        if state.isLoginError {
+            return .red
+        } else if focusedField == field {
+            return .accent // teal
+        } else {
+            return Color.gray.opacity(0.7)
+        }
     }
 }
 
@@ -272,5 +286,17 @@ struct KeyboardAware: ViewModifier {
 extension View {
     public func keyboardAware() -> some View {
         ModifiedContent(content: self, modifier: KeyboardAware())
+    }
+}
+struct WorkingOverlayRepresentable: UIViewRepresentable {
+    @Binding var isShowing: Bool
+    
+    func makeUIView(context: Context) -> WorkingOverlay {
+        let overlay = WorkingOverlay()
+        return overlay
+    }
+    
+    func updateUIView(_ uiView: WorkingOverlay, context: Context) {
+        uiView.isHidden = !isShowing
     }
 }

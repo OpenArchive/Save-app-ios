@@ -322,7 +322,7 @@
 "learn how" = "learn how";
 
 /* No comment provided by engineer. */
-"Learn more about Creative Commons" = "Learn more about Creative Commons";
+"Learn more about Creative Commons." = "Learn more about Creative Commons.";
 
 /* MiscSettingsViewController */
 "Lock App with Device Passcode" = "Lock App with Device Passcode";
@@ -824,5 +824,15 @@
 "Remove from app"= "Remove from app";
 
 "Are you sure you want to remove this server from the app?" = "Are you sure you want to remove this server from the app?";
+
+"Warning!"= "Warning!";
+
+"Enter your Passcode" = "Enter your Passcode";
+
+"Passcodes do not match. Try again." = "Passcodes do not match. Try again.";
+
+"Select All" = "Select All";
+
+"Deselect All" = "Deselect All";
 
 

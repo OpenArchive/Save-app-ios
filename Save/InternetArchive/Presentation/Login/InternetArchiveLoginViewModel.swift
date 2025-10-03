@@ -46,6 +46,8 @@ class InternetArchiveLoginViewModel : StoreViewModel<InternetArchiveLoginState, 
             state.copy(isLoginError: true, isBusy: false)
         case .LoggedIn:
             state.copy(isBusy: false)
+        case .ClearError:
+            state.copy(isLoginError: false)
         default:
             nil
         }

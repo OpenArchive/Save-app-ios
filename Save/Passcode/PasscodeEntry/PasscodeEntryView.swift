@@ -56,11 +56,11 @@ struct PasscodeEntryContent: View {
     var body: some View {
         
         PasscodeContentWrapper(
-            title: "Set Passcode", subtitle: "",
+            title: NSLocalizedString("Enter your Passcode", comment: ""), subtitle: "",
             passcode: passcode,
             passcodeLength: passcodeLength,
             shouldShake: shouldShake,
-            isEnabled: !isProcessing,
+            isEnabled: !isProcessing, isPasscodeEntry: true, showPasswordMismatch: false,
             onNumberClick: onNumberClick,
             onBackspaceClick: onBackspaceClick, onEnterClick: onEnterClick,
             onExit: onExit,

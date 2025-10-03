@@ -31,14 +31,14 @@ struct NumericKeypad: View {
                         let key = gridKeys[index]
 
                         if key == "delete" {
-                            SpecialButton(iconName: "delete.left.fill", backgroundColor: Color.red.opacity(0.3)) {
+                            SpecialButton(iconName: "passcode_delete", backgroundColor: Color.red.opacity(0.3)) {
                                 if isEnabled {
                                     generateHapticFeedback()
                                     onDelete()
                                 }
                             }
                         } else if key == "enter" {
-                            SpecialButton(iconName: "arrow.right", backgroundColor: Color.accentColor.opacity(0.8)) {
+                            SpecialButton(iconName: "passcode-enter", backgroundColor: Color.accentColor.opacity(0.8)) {
                                 if isEnabled {
                                     generateHapticFeedback()
                                     onEnter()
@@ -115,7 +115,7 @@ private struct SpecialButton: View {
                     .fill(backgroundColor)
                     .frame(width: keypadButtonSize, height: keypadButtonSize)
 
-                Image(systemName: iconName)
+                Image(iconName)
                     .font(.title)
                     .foregroundColor(.primary)
             }

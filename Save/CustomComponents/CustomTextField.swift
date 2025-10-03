@@ -8,6 +8,8 @@
 
 import SwiftUI
 
+import SwiftUI
+
 struct CustomTextField: View {
     var placeholder: String
     @Binding var text: String
@@ -15,8 +17,9 @@ struct CustomTextField: View {
     var isDisabled: Bool = false
     var onEditingChanged: ((Bool) -> Void)? = nil
     var onCommit: (() -> Void)? = nil
+    
+    @State private var isFocused: Bool = false
    
-
     var body: some View {
         ZStack(alignment: .leading) {
             if text.isEmpty {
@@ -34,6 +37,7 @@ struct CustomTextField: View {
             } else {
                 if #available(iOS 14.0, *) {
                     TextField("", text: $text, onEditingChanged: { began in
+                        isFocused = began
                         onEditingChanged?(began)
                     }, onCommit: {
                         onCommit?()
@@ -44,7 +48,6 @@ struct CustomTextField: View {
                     .font(.montserrat(.medium, for: .footnote))
                     .padding(12)
                 } else {
-                    // Add fallback logic if needed
                     TextField("", text: $text)
                         .font(.montserrat(.medium, for: .footnote))
                         .padding(12)
@@ -53,10 +56,20 @@ struct CustomTextField: View {
         }
         .frame(height: 50)
         .cornerRadius(8)
-        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.gray.opacity(0.7)))
+        .overlay(
+            RoundedRectangle(cornerRadius: 8)
+                .stroke(borderColor(), lineWidth: 1)
+        )
         .background(isDisabled ? Color.gray.opacity(0.2) : Color.textboxBg)
         .disabled(isDisabled)
         .padding(.bottom, 8)
     }
-
+    
+    private func borderColor() -> Color {
+        if isFocused {
+            return .accent
+        } else {
+            return .gray70
+        }
+    }
 }

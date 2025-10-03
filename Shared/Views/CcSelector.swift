@@ -90,7 +90,7 @@ class CcSelector {
     }
     
     let learnMoreRow = LinkRow() {
-        $0.title = NSLocalizedString("Learn more about Creative Commons", comment: "")
+        $0.title = NSLocalizedString("Learn more about Creative Commons.", comment: "")
         $0.value = URL(string: "https://creativecommons.org/about/cclicenses/")
         $0.cell.backgroundColor = .clear
         $0.cell.textLabel?.numberOfLines = 0

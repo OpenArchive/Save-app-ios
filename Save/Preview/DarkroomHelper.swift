@@ -41,11 +41,11 @@ class DarkroomHelper {
     // MARK: Public Methods
     
     func setInfos(_ asset: Asset?, defaults: Bool = false, isEditable: Bool = true,_ noteHeight: CGFloat) {
-    
-        location?.set(asset?.location, with: defaults ? DarkroomHelper.locPlaceholder : nil,textHeightContraint: nil)
+        
+        location?.set(asset?.location, with: defaults ? DarkroomHelper.locPlaceholder : nil, textHeightContraint: nil, hideIcon: true)
         location?.textView.isEditable = isEditable
         
-        notes?.set(asset?.notes, with: defaults ? DarkroomHelper.notesPlaceholder : nil,textHeightContraint: noteHeight)
+        notes?.set(asset?.notes, with: defaults ? DarkroomHelper.notesPlaceholder : nil, textHeightContraint: noteHeight, hideIcon: true)
         notes?.textView.isEditable = isEditable
       
     }

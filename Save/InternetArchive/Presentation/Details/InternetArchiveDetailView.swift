@@ -132,24 +132,30 @@ struct InternetArchiveDetailContent: View {
                         .toggleTint(.accent)
                         .font(.montserrat(.medium, for: .subheadline))
                         
-                        if let licenseURL = state.licenseURL {
-                            if #available(iOS 14.0, *) {
-                                Link(NSLocalizedString(licenseURL, comment: "License Link"), destination: URL(string: licenseURL)!)
-                                    .foregroundColor(.accentColor)
-                                    .padding(.top, 10)
-                                    .font(.montserrat(.medium, for: .subheadline))
-                            }
+                        if let licenseURL = state.licenseURL, let url = URL(string: licenseURL) {
+                            
+                            Text(AttributedString(NSLocalizedString(licenseURL, comment: "License Link"), attributes: AttributeContainer([.underlineStyle: NSUnderlineStyle.single.rawValue])))
+                                .foregroundColor(.accentColor)
+                                .font(.montserrat(.medium, for: .subheadline))
+                                .padding(.top, 10)
+                                .onTapGesture {
+                                    UIApplication.shared.open(url)
+                                }
                         }
                     }
                     .padding(.horizontal)
                 }
                 
-                if #available(iOS 14.0, *) {
-                    Link(NSLocalizedString("Learn more about Creative Commons", comment: "More Info Link"), destination: URL(string: "https://creativecommons.org/")! )
+                if  let url = URL(string: "https://creativecommons.org/") {
+                    
+                    Text(AttributedString(NSLocalizedString(NSLocalizedString("Learn more about Creative Commons.", comment: "More Info Link"), comment: "License Link"), attributes: AttributeContainer([.underlineStyle: NSUnderlineStyle.single.rawValue])))
                         .foregroundColor(.accentColor)
-                        .padding(.top, 10)
-                        .padding(.horizontal) 
                         .font(.montserrat(.medium, for: .subheadline))
+                        .padding(.top, 10)
+                        .onTapGesture {
+                            UIApplication.shared.open(url)
+                        }.padding(.horizontal)
+                    
                 }
                 
                 // MARK: Remove Button
@@ -200,7 +206,7 @@ struct InternetArchiveDetailContent: View {
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                             }
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                
+                            
                         )
                 }
             }
