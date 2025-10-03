@@ -92,7 +92,7 @@ struct ProofModeSettingsView: View {
             ProofModeView()
             
             HStack(alignment: .top) {
-                Image(systemName: "exclamationmark.circle")
+                Image("ic_error")
                     .foregroundColor(Color(UIColor.label))
                     .padding(.leading, 10)
                     .padding(.top, 16)

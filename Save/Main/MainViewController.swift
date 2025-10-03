@@ -265,8 +265,8 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                         primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
                         primaryButtonAction: {
                             
-                        }, showCheckbox: false, iconImage: Image(systemName: "exclamationmark.triangle.fill"),
-                        iconTint:.gray
+                        }, showCheckbox: false, iconImage: Image("ic_error"),
+                        
                     )
                     self.present(alertVC, animated: true)
                     
@@ -275,6 +275,28 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                     Db.writeConn?.setObject(currentProject)
                     renameView.isHidden = true
                     updateProject()
+                    let alertVC = CustomAlertViewController(
+                        title:NSLocalizedString("Success!", comment: "") ,
+                        message: NSLocalizedString("Folder renamed successfully.", comment: ""),
+                        primaryButtonTitle: NSLocalizedString("Got it", comment: ""),
+                        primaryButtonAction: {
+                            if let navigationController = self.navigationController {
+                                
+                                if let existingVC = navigationController.viewControllers.first(where: { $0 is MainViewController }) {
+                                    
+                                    navigationController.popToViewController(existingVC, animated: true)
+                                } else {
+                                    
+                                    let newVC = MainViewController()
+                                    navigationController.pushViewController(newVC, animated: true)
+                                }
+                            }
+                        },
+                        showCheckbox: false,
+                        iconImage: Image("check_icon")
+                    )
+                    self.present(alertVC, animated: true)
+                    
                 }
             }}
         else{
@@ -284,7 +306,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
                 primaryButtonAction: {
                     
-                }, showCheckbox: false, iconImage: Image(systemName: "exclamationmark.triangle.fill"),
+                }, showCheckbox: false, iconImage: Image("ic_error"),
                 iconTint:.gray
             )
             self.present(alertVC, animated: true)
@@ -314,7 +336,27 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 project.active = false
                 Db.writeConn?.setObject(project)
                 self.selectedProject?.active = false
-                
+                let alertVC = CustomAlertViewController(
+                    title:NSLocalizedString("Success!", comment: "") ,
+                    message: NSLocalizedString("Folder archived successfully.", comment: ""),
+                    primaryButtonTitle: NSLocalizedString("Got it", comment: ""),
+                    primaryButtonAction: {
+                        if let navigationController = self.navigationController {
+                            
+                            if let existingVC = navigationController.viewControllers.first(where: { $0 is MainViewController }) {
+                                
+                                navigationController.popToViewController(existingVC, animated: true)
+                            } else {
+                                
+                                let newVC = MainViewController()
+                                navigationController.pushViewController(newVC, animated: true)
+                            }
+                        }
+                    },
+                    showCheckbox: false,
+                    iconImage: Image("check_icon")
+                )
+                self.present(alertVC, animated: true)
             }
         }
         

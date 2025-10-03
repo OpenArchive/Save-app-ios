@@ -177,7 +177,7 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
                         primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
                         primaryButtonAction: {
                             
-                        }, showCheckbox: false, iconImage: Image(systemName: "exclamationmark.triangle.fill"),
+                        }, showCheckbox: false, iconImage: Image("ic_error"),
                         iconTint:.gray
                     )
                     self.present(alertVC, animated: true)
@@ -228,7 +228,7 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
                     primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
                     primaryButtonAction: {
                         
-                    }, showCheckbox: false, iconImage: Image(systemName: "exclamationmark.triangle.fill"),
+                    }, showCheckbox: false, iconImage: Image("ic_error"),
                     iconTint:.gray
                 )
                 self.present(alertVC, animated: true)

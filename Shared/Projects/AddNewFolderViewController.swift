@@ -224,7 +224,7 @@ struct CreateFolderView: View {
                                     title: NSLocalizedString("Error!", comment: ""),
                                     message: store.state.errorMessage ?? "",
                                     primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
-                                    iconImage: Image(systemName: "exclamationmark.triangle.fill"),
+                                    iconImage: Image("ic_error"),
                                     iconTint:.gray,
                                     primaryButtonAction: {
                                         disableBackAction?(false)

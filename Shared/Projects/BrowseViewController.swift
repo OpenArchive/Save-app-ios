@@ -235,7 +235,7 @@ class BrowseViewController: BaseTableViewController {
                 primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
                 primaryButtonAction: {
                 },
-                showCheckbox: false, iconImage: Image(systemName: "exclamationmark.triangle.fill"),
+                showCheckbox: false, iconImage: Image("ic_error"),
                 iconTint:.gray
             )
             self.present(alertVC, animated: true)
@@ -247,7 +247,7 @@ class BrowseViewController: BaseTableViewController {
             let alertVC = CustomAlertViewController(
                 title:NSLocalizedString("Success!", comment: "") ,
                 message: NSLocalizedString("You have added a folder successfully.", comment: ""),
-                primaryButtonTitle: NSLocalizedString("Got it!", comment: ""),
+                primaryButtonTitle: NSLocalizedString("Got it", comment: ""),
                 primaryButtonAction: {
                     if let navigationController = self.navigationController {
                         
