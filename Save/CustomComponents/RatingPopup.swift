@@ -16,7 +16,7 @@ func maybePromptForReview() {
     if let lastPromptDate = Settings.lastReviewPromptDate {
         daysSinceLastPrompt = Date().timeIntervalSince(lastPromptDate) / 86400
     } else {
-        daysSinceLastPrompt = .infinity // Never prompted before
+        daysSinceLastPrompt = .infinity 
     }
     
     if Settings.appLaunchCount >= 5 && daysSinceLastPrompt >= 90 {
