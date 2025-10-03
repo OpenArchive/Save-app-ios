@@ -29,7 +29,7 @@ class Settings {
     private static let kInterfaceStyle = "interface_style"
     private static let kAppLaunchCount = "app_launch_count"
     private static let kHasPromptedReview = "has_prompted_review"
-
+    private static let KPromtReviewDate = "prompt_review_date"
     private class var defaults: UserDefaults? {
         UserDefaults(suiteName: Constants.suiteName)
     }
@@ -220,6 +220,23 @@ class Settings {
         }
         set {
             defaults?.set(newValue, forKey: kAppLaunchCount)
+        }
+    }
+    
+    class var lastReviewPromptDate: Date? {
+        get {
+            let timestamp = defaults?.integer(forKey: KPromtReviewDate) ?? 0
+            guard timestamp > 0 else {
+                return nil
+            }
+            return Date(timeIntervalSince1970: TimeInterval(timestamp))
+        }
+        set {
+            if let date = newValue {
+                defaults?.set(Int(date.timeIntervalSince1970), forKey: KPromtReviewDate)
+            } else {
+                defaults?.set(0, forKey: KPromtReviewDate)
+            }
         }
     }
 }

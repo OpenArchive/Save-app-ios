@@ -757,7 +757,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         
         if let indexPath = collectionView.indexPathForItem(at: sender.location(in: collectionView)) {
             collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredVertically)
-            
+            updateRemove()
             toggleMode(newMode: true)
         }
     }
