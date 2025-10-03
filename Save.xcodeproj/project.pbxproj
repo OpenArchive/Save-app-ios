@@ -159,9 +159,14 @@
 				CustomComponents/CustomButton.swift,
 				CustomComponents/CustomTextField.swift,
 				Extensions/MontserratExtension.swift,
-				Extensions/ViewExtensions.swift,
-				Settings/ServerSetting/PrivateServerSettingView.swift,
-				Settings/ServerSetting/WebDavSettings.swift,
+			);
+			target = A07128FA2111CC90007A432A /* ShareExtension */;
+		};
+		6EC1E7D92E905FFD000C0E1E /* Exceptions for "Projects" folder in "ShareExtension" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				AddFolderViewController.swift,
+				AddNewFolderViewController.swift,
 			);
 			target = A07128FA2111CC90007A432A /* ShareExtension */;
 		};
@@ -366,6 +371,9 @@
 		};
 		EAB2832A2D0265A10023D594 /* Projects */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				6EC1E7D92E905FFD000C0E1E /* Exceptions for "Projects" folder in "ShareExtension" target */,
+			);
 			path = Projects;
 			sourceTree = "<group>";
 		};
@@ -389,6 +397,8 @@
 		};
 		EAB2840B2D0265AF0023D594 /* Models */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = Models;
 			sourceTree = "<group>";
 		};
@@ -1098,6 +1108,7 @@
 				DEVELOPMENT_TEAM = YF7TV4HW2S;
 				INFOPLIST_FILE = Screenshots/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1123,6 +1134,7 @@
 				DEVELOPMENT_TEAM = YF7TV4HW2S;
 				INFOPLIST_FILE = Screenshots/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1149,6 +1161,7 @@
 				CURRENT_PROJECT_VERSION = 146;
 				DEVELOPMENT_TEAM = YF7TV4HW2S;
 				INFOPLIST_FILE = ShareExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1180,6 +1193,7 @@
 				CURRENT_PROJECT_VERSION = 146;
 				DEVELOPMENT_TEAM = YF7TV4HW2S;
 				INFOPLIST_FILE = ShareExtension/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1242,6 +1256,7 @@
 				CURRENT_PROJECT_VERSION = 146;
 				DEVELOPMENT_TEAM = YF7TV4HW2S;
 				INFOPLIST_FILE = "Save Screenshots/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
