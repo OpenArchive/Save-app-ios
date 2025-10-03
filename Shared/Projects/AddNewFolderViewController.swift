@@ -132,11 +132,11 @@ struct CreateFolderView: View {
         VStack {
             ScrollView {
                 VStack(alignment: .center, spacing: 10) {
-                    Text(NSLocalizedString("First, please name your folder", comment: ""))
+                    Text(NSLocalizedString("Please name your folder", comment: ""))
                         .font(.montserrat(.semibold, for: .headline))
                         .multilineTextAlignment(.center)
                     
-                    Text(NSLocalizedString("This folder will be created on your server and automatically added on Save.", comment: ""))
+                    Text(NSLocalizedString("This folder will be created on your server and added to Save.", comment: ""))
                         .font(.montserrat(.medium, for: .subheadline))
                         .foregroundColor(.gray70)
                         .multilineTextAlignment(.center).padding(.bottom,30)
@@ -145,7 +145,7 @@ struct CreateFolderView: View {
                         placeholder: NSLocalizedString("Enter folder name", comment: ""),
                         text: $folderName,
                         isDisabled: false,
-                        onEditingChanged: {
+                        onEditingChanged: {_ in 
                             store.dispatch(action: .updateFolderName(folderName))
                         }
                     )
@@ -169,6 +169,7 @@ struct CreateFolderView: View {
                 .cornerRadius(8)
                 
                 Button(NSLocalizedString("Create", comment: "")) {
+                    hideKeyboard()
                     disableBackAction?(true)
                     store.dispatch(action: .saveFolderName)
                     
@@ -190,7 +191,7 @@ struct CreateFolderView: View {
         .overlay(
             Group {
                 if store.state.status {
-                    Color.gray.opacity(0.9)
+                    Color.black.opacity(0.7)
                         .edgesIgnoringSafeArea(.all)
                         .overlay(
                             VStack {
@@ -215,7 +216,7 @@ struct CreateFolderView: View {
                         )
                 }
                 if (store.state.errorMessage != nil) {
-                    Color.gray.opacity(0.9)
+                    Color.black.opacity(0.7)
                         .edgesIgnoringSafeArea(.all)
                         .overlay(
                             VStack {
@@ -223,7 +224,7 @@ struct CreateFolderView: View {
                                     title: NSLocalizedString("Error!", comment: ""),
                                     message: store.state.errorMessage ?? "",
                                     primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
-                                    iconImage: Image(systemName: "exclamationmark.triangle.fill"),
+                                    iconImage: Image("ic_error"),
                                     iconTint:.gray,
                                     primaryButtonAction: {
                                         disableBackAction?(false)
@@ -236,11 +237,13 @@ struct CreateFolderView: View {
                                 
                             }
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                                .background(Color.black.opacity(0.2))
+                                .background(Color.black.opacity(0.6))
                         )
                 }
             })
     }
-    
+    private func hideKeyboard() {
+           UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+       }
 }
 

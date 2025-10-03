@@ -9,7 +9,7 @@
 import UIKit
 import FavIcon
 import YapDatabase
-import SwiftUICore
+import SwiftUI
 class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBoxDelegate {
     
     weak var delegate: WizardDelegate?
@@ -165,59 +165,95 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
             return
         }
         workingOverlay.isHidden = false
-        if(spaceExists(username: usernameTb.text ?? "")){
-            workingOverlay.isHidden = true
-            let alertVC = CustomAlertViewController(
-                title: NSLocalizedString("Error!", comment: ""),
-                message: NSLocalizedString("This server already exists. Please create another server.", comment: ""),
-                primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
-                primaryButtonAction: {
-                    
-                }, showCheckbox: false, iconImage: Image(systemName: "exclamationmark.triangle.fill"),
-                iconTint:.gray
-            )
-            self.present(alertVC, animated: true)
-        }
-        else{
-        let space = WebDavSpace(
-            name: "",
-            url: url,
-            favIcon: UIImage(named: "private_server"),
-            username: usernameTb.text,
-            password: passwordTb.text)
-        
-        workingOverlay.isHidden = false
-        
-        // Do a test request to check validity of space configuration.
-            URLSession(configuration: UploadManager.improvedSessionConf()).info(space.url!, credential: space.credential) { [weak self] info, error in
-                DispatchQueue.main.async {
-                    self?.workingOverlay.isHidden = true
-                    
-                    if let error = error {
-                        if let self = self {
-//                            AlertHelper.present(self, message: error.friendlyMessage)
-                            self.errorText.text = error.friendlyMessage
-                            self.usernameTb.status = .bad
-                            self.passwordTb.status = .bad
+        canOpen(url?.absoluteString ?? "") { isValid in
+          
+            if isValid {
+                if(self.spaceExists(username: self.usernameTb.text ?? "")){
+                    self.workingOverlay.isHidden = true
+                    self.usernameTb.status = .bad
+                    let alertVC = CustomAlertViewController(
+                        title: NSLocalizedString("Error!", comment: ""),
+                        message: NSLocalizedString("This server already exists. Please create another server.", comment: ""),
+                        primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
+                        primaryButtonAction: {
+                            
+                        }, showCheckbox: false, iconImage: Image("ic_error"),
+                        iconTint:.gray
+                    )
+                    self.present(alertVC, animated: true)
+                }
+                else{
+                let space = WebDavSpace(
+                    name: "",
+                    url: self.url,
+                    favIcon: UIImage(named: "private_server"),
+                    username: self.usernameTb.text,
+                    password: self.passwordTb.text)
+                
+                    self.workingOverlay.isHidden = false
+                
+                    URLSession(configuration: UploadManager.improvedSessionConf()).info(space.url!, credential: space.credential) { [weak self] info, error in
+                        DispatchQueue.main.async {
+                            self?.workingOverlay.isHidden = true
+                            
+                            if let error = error {
+                                if let self = self {
+                                    self.errorText.text = error.friendlyMessage
+                                    self.usernameTb.status = .bad
+                                    self.passwordTb.status = .bad
+                                }
+                            }
+                            else {
+                                SelectedSpace.space = space
+                                self?.errorText.text = ""
+                                Db.writeConn?.asyncReadWrite() { tx in
+                                    SelectedSpace.store(tx)
+                                    tx.setObject(space)
+                                }
+                                
+                                let vc = UIStoryboard.main.instantiate(CreateCCLViewController.self)
+                                vc.space = space
+                                self?.navigationController?.pushViewController(vc, animated: true)
+                            }
                         }
-                    }
-                    else {
-                        SelectedSpace.space = space
-                        self?.errorText.text = ""
-                        Db.writeConn?.asyncReadWrite() { tx in
-                            SelectedSpace.store(tx)
-                            tx.setObject(space)
-                        }
-                        
-                        let vc = UIStoryboard.main.instantiate(CreateCCLViewController.self)
-                        vc.space = space
-                        self?.navigationController?.pushViewController(vc, animated: true)
                     }
                 }
+            
+            } else {
+                self.workingOverlay.isHidden = true
+                self.urlTb.status = .bad
+                let alertVC = CustomAlertViewController(
+                    title: NSLocalizedString("Error!", comment: ""),
+                    message: NSLocalizedString("A server with the specified hostname could not be found.", comment: ""),
+                    primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
+                    primaryButtonAction: {
+                        
+                    }, showCheckbox: false, iconImage: Image("ic_error"),
+                    iconTint:.gray
+                )
+                self.present(alertVC, animated: true)
+              
             }
         }
+            
     }
-    
+
+    func canOpen(_ urlString: String, completion: @escaping (Bool) -> Void) {
+        guard let url = URL(string: urlString),
+              let host = url.host, !host.isEmpty else {
+            completion(false)
+            return
+        }
+        
+        var request = URLRequest(url: url)
+        request.timeoutInterval = 5
+        
+        URLSession.shared.dataTask(with: request) { _, response, error in
+            DispatchQueue.main.async {
+                completion(response != nil)
+            }
+        }.resume()
+    }
     override func keyboardWillShow(notification: Notification) {
         guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
             return
@@ -291,11 +327,11 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
     
     @discardableResult
     private func check() -> Bool {
-        urlTb.status = url == nil ? .bad : .good
-        usernameTb.status = usernameTb.text?.isEmpty ?? true ? .bad : .good
-        passwordTb.status = passwordTb.text?.isEmpty ?? true ? .bad : .good
+        urlTb.status = url == nil ? .bad : .unknown
+        usernameTb.status = usernameTb.text?.isEmpty ?? true ? .bad : .unknown
+        passwordTb.status = passwordTb.text?.isEmpty ?? true ? .bad : .unknown
         
-        return urlTb.status == .good && usernameTb.status == .good && passwordTb.status == .good
+        return urlTb.status == .unknown && usernameTb.status == .unknown && passwordTb.status == .unknown
         
     }
 }

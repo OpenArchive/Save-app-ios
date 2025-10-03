@@ -13,13 +13,14 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                           UINavigationControllerDelegate, SideMenuDelegate,
                           AssetPickerDelegate,UITextFieldDelegate,UICollectionViewDelegate
 {
-    
+   
     @IBOutlet weak var renameView: UIView!{
         didSet {
             renameView.isHidden = true
         }
     }
     
+    @IBOutlet weak var mediaArrow: UIImageView!
     @IBOutlet weak var EditButtonTrailingContraint: NSLayoutConstraint!
     @IBOutlet weak var titleContainerHeight: NSLayoutConstraint!
     @IBOutlet weak var titleContainer: UIView!
@@ -264,8 +265,8 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                         primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
                         primaryButtonAction: {
                             
-                        }, showCheckbox: false, iconImage: Image(systemName: "exclamationmark.triangle.fill"),
-                        iconTint:.gray
+                        }, showCheckbox: false, iconImage: Image("ic_error"),
+                        
                     )
                     self.present(alertVC, animated: true)
                     
@@ -274,6 +275,28 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                     Db.writeConn?.setObject(currentProject)
                     renameView.isHidden = true
                     updateProject()
+                    let alertVC = CustomAlertViewController(
+                        title:NSLocalizedString("Success!", comment: "") ,
+                        message: NSLocalizedString("Folder renamed successfully.", comment: ""),
+                        primaryButtonTitle: NSLocalizedString("Got it", comment: ""),
+                        primaryButtonAction: {
+                            if let navigationController = self.navigationController {
+                                
+                                if let existingVC = navigationController.viewControllers.first(where: { $0 is MainViewController }) {
+                                    
+                                    navigationController.popToViewController(existingVC, animated: true)
+                                } else {
+                                    
+                                    let newVC = MainViewController()
+                                    navigationController.pushViewController(newVC, animated: true)
+                                }
+                            }
+                        },
+                        showCheckbox: false,
+                        iconImage: Image("check_icon")
+                    )
+                    self.present(alertVC, animated: true)
+                    
                 }
             }}
         else{
@@ -283,7 +306,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
                 primaryButtonAction: {
                     
-                }, showCheckbox: false, iconImage: Image(systemName: "exclamationmark.triangle.fill"),
+                }, showCheckbox: false, iconImage: Image("ic_error"),
                 iconTint:.gray
             )
             self.present(alertVC, animated: true)
@@ -313,7 +336,27 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 project.active = false
                 Db.writeConn?.setObject(project)
                 self.selectedProject?.active = false
-                
+                let alertVC = CustomAlertViewController(
+                    title:NSLocalizedString("Success!", comment: "") ,
+                    message: NSLocalizedString("Folder archived successfully.", comment: ""),
+                    primaryButtonTitle: NSLocalizedString("Got it", comment: ""),
+                    primaryButtonAction: {
+                        if let navigationController = self.navigationController {
+                            
+                            if let existingVC = navigationController.viewControllers.first(where: { $0 is MainViewController }) {
+                                
+                                navigationController.popToViewController(existingVC, animated: true)
+                            } else {
+                                
+                                let newVC = MainViewController()
+                                navigationController.pushViewController(newVC, animated: true)
+                            }
+                        }
+                    },
+                    showCheckbox: false,
+                    iconImage: Image("check_icon")
+                )
+                self.present(alertVC, animated: true)
             }
         }
         
@@ -579,7 +622,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         if AbcFilteredByProjectView.projectId != project?.id {
             toggleMode(newMode: false)
         }
-        
+        hideSelectMedia()
         updateProject()
     }
     
@@ -589,6 +632,10 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
     }
     
+    func hideSelectMedia() {
+        selectMediaView.isHidden = true
+        self.toggleMode(newMode: false)
+    }
     
     // MARK: Actions
     
@@ -674,9 +721,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             return  self.addFolder()
         }
         
-        AddInfoAlert.presentIfNeeded(viewController: self)
-        
-        assetPicker.pickMedia()
+        AddInfoAlert.presentIfNeeded(viewController: self) {
+            self.assetPicker.pickMedia()
+        }
     }
     
     func showMediaPickerSheet() {
@@ -692,16 +739,25 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 let popup = MediaPopupViewController()
                 popup.modalPresentationStyle = .overCurrentContext
                 popup.modalTransitionStyle = .crossDissolve
+                self.mediaArrow.isHidden = true
                 
                 popup.onCameraTap = { [weak self] in
+                    self?.mediaArrow.isHidden = false
                     self?.assetPicker.openCamera()
                 }
                 popup.onGalleryTap = { [weak self] in
+                    self?.mediaArrow.isHidden = false
                     self?.assetPicker.pickMedia()
                 }
                 popup.onFilesTap = { [weak self] in
-                    
+                    self?.mediaArrow.isHidden = false
                     self?.assetPicker.pickDocuments()
+                }
+                popup.onAppear = { [weak self] in
+                    self?.mediaArrow.isHidden = true
+                }
+                popup.onDisappear = { [weak self] in
+                    self?.mediaArrow.isHidden = false
                 }
                 
                 present(popup, animated: true)
@@ -743,7 +799,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         
         if let indexPath = collectionView.indexPathForItem(at: sender.location(in: collectionView)) {
             collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredVertically)
-            
+            updateRemove()
             toggleMode(newMode: true)
         }
     }
@@ -999,7 +1055,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             }
             else {
                 menu.isHidden = false
-                
                 sideMenu.animate(toggle, completion)
             }
         }

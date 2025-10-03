@@ -103,38 +103,33 @@ class TextBox: UIView, UITextFieldDelegate {
         didSet {
             switch status {
             case .good:
-                borderColor = .accent
-                statusIv.isHidden = false
-                statusIvWidth?.constant = 16
-                statusIvTrailing?.constant = -8
-                statusIv.tintColor = .accent
-                statusIv.image = .init(systemName: "checkmark")
+                hideStatusIcon()
 
             case .bad:
-                borderColor = .systemRed
-                statusIv.isHidden = false
-                statusIvWidth?.constant = 16
-                statusIvTrailing?.constant = -8
-                statusIv.tintColor = .systemRed
-                statusIv.image = .init(systemName: "exclamationmark.circle")
+                if shallBeSecureTextEntry { showEye() } else { hideStatusIcon() }
 
             case .unknown:
-                borderColor = .secondaryLabel
-                statusIv.isHidden = true
-                statusIvWidth?.constant = 0
-                statusIvTrailing?.constant = 0
+                hideStatusIcon()
 
             case .reveal:
-                borderColor = .secondaryLabel
-                statusIv.isHidden = false
-                statusIvWidth?.constant = 16
-                statusIvTrailing?.constant = -8
-                statusIv.tintColor = .systemGray
-                statusIv.image = .init(imageLiteralResourceName: isSecureTextEntry ? "eye_close" : "eye_open")
+                if shallBeSecureTextEntry { showEye() } else { hideStatusIcon() }
             }
+            refreshBorderColor()
         }
     }
+    private func showEye() {
+        statusIv.isHidden = false
+        statusIvWidth?.constant = 24
+        statusIvTrailing?.constant = -8
+        statusIv.tintColor = .systemGray
+        statusIv.image = .init(imageLiteralResourceName: isSecureTextEntry ? "eye_close" : "eye_open")
+    }
 
+    private func hideStatusIcon() {
+        statusIv.isHidden = true
+        statusIvWidth?.constant = 0
+        statusIvTrailing?.constant = 0
+    }
     var delegate: TextBoxDelegate?
 
     override class var requiresConstraintBasedLayout: Bool {
@@ -162,7 +157,7 @@ class TextBox: UIView, UITextFieldDelegate {
 
         statusIvWidth = view.widthAnchor.constraint(equalToConstant: 0)
         statusIvWidth?.isActive = true
-        view.heightAnchor.constraint(equalToConstant: 16).isActive = true
+        view.heightAnchor.constraint(equalToConstant: 24).isActive = true
 
         return view
     }()
@@ -197,15 +192,38 @@ class TextBox: UIView, UITextFieldDelegate {
 
     // MARK: UITextFieldDelegate
 
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        status = shallBeSecureTextEntry ? .reveal : .unknown
+    private func refreshBorderColor() {
+        if textField.isEditing {
+            borderColor = (status == .bad) ? .systemRed : .accent
+        } else {
+            switch status {
+            case .good:     borderColor = .accent
+            case .bad:      borderColor = .systemRed
+            default:        borderColor = .gray70
+            }
+        }
+    }
 
+
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        delegate?.textBox(shouldReturn: self) ?? true
+    }
+
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        refreshBorderColor()
+    }
+
+    func textField(_ textField: UITextField,
+                   shouldChangeCharactersIn range: NSRange,
+                   replacementString string: String) -> Bool {
+        status = shallBeSecureTextEntry ? .reveal : .unknown
+        refreshBorderColor()
         return true
     }
 
     func textFieldShouldClear(_ textField: UITextField) -> Bool {
         status = shallBeSecureTextEntry ? .reveal : .unknown
-
+        refreshBorderColor()
         return true
     }
 
@@ -213,12 +231,8 @@ class TextBox: UIView, UITextFieldDelegate {
         if reason == .committed {
             delegate?.textBox(didUpdate: self)
         }
+        refreshBorderColor()
     }
-
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        delegate?.textBox(shouldReturn: self) ?? true
-    }
-
 
     // MARK: Private Methods
 
@@ -244,11 +258,8 @@ class TextBox: UIView, UITextFieldDelegate {
     }
 
     @objc private func reveal() {
-        guard status == .reveal else {
-            return
-        }
-
+        guard shallBeSecureTextEntry, !statusIv.isHidden else { return }
         textField.isSecureTextEntry = !isSecureTextEntry
-        status = .reveal // Trigger UI update
+        status = .reveal
     }
 }

@@ -31,6 +31,13 @@ class PreviewViewController: UIViewController,
             editBt.isHidden = true
         }
     }
+    
+    @IBOutlet weak var selectAllBt: UIButton!{
+        didSet{
+            selectAllBt.isHidden = true
+            selectAllBt.titleLabel?.font =  .montserrat(forTextStyle: .headline, with: .traitUIOptimized)
+        }
+    }
     @IBOutlet var addBt: UIButton!
     @IBOutlet var deleteBt: UIButton!{
         didSet {
@@ -74,7 +81,7 @@ class PreviewViewController: UIViewController,
         super.viewDidAppear(animated)
         
         DispatchQueue.main.async {
-            BatchInfoAlert.presentIfNeeded(viewController: self, additionalCondition: self.sc.count > 1)
+            BatchInfoAlert.presentIfNeeded(viewController: self, additionalCondition: self.sc.count >= 1)
         }
     }
     
@@ -117,7 +124,10 @@ class PreviewViewController: UIViewController,
             
             // For an unkown reason, this isn't done automatically.
             collectionView.cellForItem(at: indexPath)?.isSelected = true
-            
+            let totalItems = collectionView.numberOfItems(inSection: 0)
+                    if collectionView.numberOfSelectedItems == totalItems {
+                        selectAllBt.setTitle(NSLocalizedString("Deselect All", comment: ""), for: .normal)
+                    }
             return
         }
         
@@ -131,8 +141,10 @@ class PreviewViewController: UIViewController,
         collectionView.cellForItem(at: indexPath)?.isSelected = false
         
         if collectionView.numberOfSelectedItems == 0 {
-            toggleToolbar(false)
-        }
+                toggleToolbar(false)
+            } else {
+                selectAllBt.setTitle(NSLocalizedString("Select All", comment: ""), for: .normal)
+            }
     }
     
     
@@ -217,8 +229,6 @@ class PreviewViewController: UIViewController,
                 let count = UploadsView.countUploading(tx)
                 
                 DispatchQueue.main.async {
-                    //                    let count = UserDefaults.standard.integer(forKey: "uploadSessionCount") + 1
-                    //                    UserDefaults.standard.set(count, forKey: "uploadSessionCount")
                     OrbotManager.shared.alertCannotUpload(count: count) { [weak self] in
                         self?.navigationController?.popViewController(animated: true)
                     }
@@ -280,6 +290,29 @@ class PreviewViewController: UIViewController,
         }
     }
     
+    @IBAction func selectAllAssets(_ sender: Any) {
+        let totalItems = collectionView.numberOfItems(inSection: 0)
+           
+           let allSelected = collectionView.indexPathsForSelectedItems?.count == totalItems
+           
+           if allSelected {
+             
+               for indexPath in collectionView.indexPathsForSelectedItems ?? [] {
+                   collectionView.deselectItem(at: indexPath, animated: false)
+                   collectionView.cellForItem(at: indexPath)?.isSelected = false
+               }
+               toggleToolbar(false)
+               selectAllBt.setTitle(NSLocalizedString("Select All", comment: ""), for: .normal)
+           } else {
+               for item in 0..<totalItems {
+                   let indexPath = IndexPath(item: item, section: 0)
+                   collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
+                   collectionView.cellForItem(at: indexPath)?.isSelected = true
+               }
+               toggleToolbar(true)
+               selectAllBt.setTitle(NSLocalizedString("Deselect All", comment: ""), for: .normal)
+           }
+    }
     @IBAction func addAssets() {
         assetPicker.pickMedia()
     }
@@ -339,6 +372,8 @@ class PreviewViewController: UIViewController,
         
         deleteBt.isHidden = !selected
         editBt.isHidden = !selected
+        selectAllBt.isHidden = !selected
+        addBt.isHidden = selected
         
     }
     

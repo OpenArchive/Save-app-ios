@@ -154,12 +154,14 @@
 		6E5A320D2D74FE220068FB41 /* Exceptions for "Save" folder in "ShareExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				CustomComponents/AlertController.swift,
+				CustomComponents/CustomAlert.swift,
+				CustomComponents/CustomButton.swift,
+				CustomComponents/CustomTextField.swift,
 				Extensions/MontserratExtension.swift,
-				Features/CustomComponents/alertController.swift,
-				Features/CustomComponents/customAlert.swift,
-				Features/CustomComponents/customButton.swift,
-				Settings/ServerSettingsView.swift,
-				Settings/WebDavSettingsViewController.swift,
+				Extensions/ViewExtensions.swift,
+				Settings/ServerSetting/PrivateServerSettingView.swift,
+				Settings/ServerSetting/WebDavSettings.swift,
 			);
 			target = A07128FA2111CC90007A432A /* ShareExtension */;
 		};
@@ -177,13 +179,12 @@
 				"/Localized: LaunchScreen.storyboard",
 				AppDelegate.swift,
 				Constants/Constants.swift,
+				CustomComponents/KeyboardHandling.swift,
 				Extensions/TimeIntervalExtension.swift,
 				Info.plist,
 				Onboarding/SlideshowViewController.swift,
 				Onboarding/SlideViewController.swift,
 				Projects/BrowseWebDavViewController.swift,
-				Protocols/KeyboardHandling.swift,
-				Settings/GdriveSettingsViewController.swift,
 				Settings/ProofModeSettingsViewController.swift,
 				Space/CreateCCLViewController.swift,
 				Space/WebDavWizardViewController.swift,
@@ -230,8 +231,12 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				AlertHelper.swift,
+				AppConfig.swift,
+				AppSettings.swift,
 				AssetPicker.swift,
+				DialogHelper.swift,
 				"Dictionary+Utils.swift",
+				KeychainHelper.swift,
 				"NSError+from.swift",
 				"Request+debug.swift",
 				SecureEnclave.swift,
@@ -674,6 +679,7 @@
 				A07129092111CC90007A432A /* Embed Foundation Extensions */,
 				39ADDA7DF5BD3D09D9C26BDF /* [CP] Embed Pods Frameworks */,
 				8D49F10B5297F48ABD2558BC /* [CP] Copy Pods Resources */,
+				6E78F3342DF30C8B008DB278 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -701,7 +707,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1020;
-				LastUpgradeCheck = 1530;
+				LastUpgradeCheck = 2600;
 				ORGANIZATIONNAME = "Open Archive";
 				TargetAttributes = {
 					A05768D622E0B67D00B39FCE = {
@@ -870,6 +876,30 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Save/Pods-Save-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		6E78F3342DF30C8B008DB278 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Info.plist",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleService-Info.plist",
+				"${TARGET_BUILD_DIR}/${EXECUTABLE_PATH}",
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}.debug.dylib",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
 		};
 		8D49F10B5297F48ABD2558BC /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1268,6 +1298,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -1286,6 +1317,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
@@ -1333,6 +1365,7 @@
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_NO_COMMON_BLOCKS = YES;
 				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
@@ -1344,6 +1377,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_COMPILATION_MODE = wholemodule;
 				SWIFT_OPTIMIZATION_LEVEL = "-O";
 				VALIDATE_PRODUCT = YES;
@@ -1360,20 +1394,22 @@
 				CODE_SIGN_ENTITLEMENTS = Save/Save.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 10;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = YF7TV4HW2S;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"COCOAPODS=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Save/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				IPHONEOS_DEPLOYMENT_TARGET = 13;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.5.1;
+				MARKETING_VERSION = 4.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.open-archive.save";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1396,20 +1432,21 @@
 				CODE_SIGN_ENTITLEMENTS = Save/Save.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 11;
+				CURRENT_PROJECT_VERSION = 10;
 				DEVELOPMENT_TEAM = YF7TV4HW2S;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"COCOAPODS=1",
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = Save/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
-				IPHONEOS_DEPLOYMENT_TARGET = 13;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 3.5.1;
+				MARKETING_VERSION = 4.0.2;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.open-archive.save";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";

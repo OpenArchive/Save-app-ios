@@ -34,9 +34,9 @@ class InfoBox: UIView, UITextViewDelegate {
             .instantiate(withOwner: nil, options: nil).first as? InfoBox
 
         if let info = info {
-            if let icon = icon {
-                info.icon.image = UIImage(named: icon)
-            }
+//            if let icon = icon {
+//                info.icon.image = UIImage(named: icon)
+//            }
 
             superview?.addSubview(info)
         }
@@ -108,7 +108,7 @@ class InfoBox: UIView, UITextViewDelegate {
             bottomAnchor.constraint(equalTo: bottomView.topAnchor, constant: 0).isActive = true // Place above bottomView
         }
     }
-    func set(_ text: String?, with placeholder: String? = nil,textHeightContraint: CGFloat?) {
+    func set(_ text: String?, with placeholder: String? = nil, textHeightContraint: CGFloat?, hideIcon: Bool = false) {
         self.text = text
         self.placeholder = placeholder
 
@@ -125,6 +125,10 @@ class InfoBox: UIView, UITextViewDelegate {
         textView.textColor = isDefault && !textView.isFirstResponder
         ? .textEmpty
         : .label
+        
+        // Hide or show icon
+        icon.isHidden = hideIcon
+        
         // UITextView does not auto-size as UILabel. So we do that here.
         if let textHeightContraint = textHeightContraint {
             textHeight.constant = textHeightContraint

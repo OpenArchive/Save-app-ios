@@ -27,7 +27,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
     @IBOutlet weak var subtitleLb: UILabel! {
         didSet {
             subtitleLb.text = NSLocalizedString(
-                "You can add multiple private servers and  one IA at any time.",
+                "You can add multiple private servers and one IA Account at any time.",
                 comment: "")
             subtitleLb.font = .montserrat(forTextStyle: .subheadline)
             subtitleLb.textColor = .subtitleText
@@ -52,9 +52,9 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
         Db.bgRwConn?.read { tx in
             if tx.find(where: { (_: IaSpace) in true }) == nil {
                 button = BigButton.create(
-                    icon: IaSpace.favIcon,
+                    icon: UIImage(named: "internet_archive_teal"),
                     title: IaSpace.defaultPrettyName,
-                    subtitle: NSLocalizedString("Connect to a free public \nor paid private server", comment: ""),
+                    subtitle: NSLocalizedString("Connect to a free \npublic server", comment: ""),
                     target: self,
                     action: #selector(newIa),
                     container: container,
