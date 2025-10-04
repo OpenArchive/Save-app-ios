@@ -86,7 +86,7 @@ struct PrivateServerSettingsView: View {
                         
                     )
                     
-                    SectionHeader(title:NSLocalizedString( "License",comment: "" ))
+                    SectionHeader(title:NSLocalizedString("License",comment: "" ))
                     
                     Toggle(NSLocalizedString("Set creative commons licenses for folders on this server.", comment: "Creative Commons Toggle"), isOn: Binding(
                         get: { store.state.isCcEnabled },
@@ -241,7 +241,7 @@ struct LicenseToggles: View {
             
             if let licenseURL = store.state.licenseURL, let url = URL(string: licenseURL) {
                 
-                Text(AttributedString(NSLocalizedString(licenseURL, comment: "License Link"), attributes: AttributeContainer([.underlineStyle: NSUnderlineStyle.single.rawValue])))
+                Text(AttributedString(licenseURL, attributes: AttributeContainer([.underlineStyle: NSUnderlineStyle.single.rawValue])))
                     .foregroundColor(.accentColor)
                     .font(.montserrat(.medium, for: .subheadline))
                     .padding(.top, 10)
