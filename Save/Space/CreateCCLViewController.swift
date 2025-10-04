@@ -92,7 +92,6 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
             self?.cc0LicenseChanged(row)
         }
         <<< cc.remixSw.onChange { [weak self] row in
-            print("change remix")
             self?.otherLicenseChanged(row)
         }
         

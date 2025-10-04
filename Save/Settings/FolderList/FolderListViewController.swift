@@ -42,8 +42,7 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
         super.viewDidLoad()
         
         view.backgroundColor = UIColor.systemBackground
-        title = NSLocalizedString("Folders", comment: "")
-       
+    
         tableView.delegate = self
         tableView.dataSource = self
         tableView.register(ListFolderCell.self, forCellReuseIdentifier: "ListFolderCell")
@@ -51,17 +50,6 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
         tableView.separatorStyle = .none
         view.addSubview(tableView)
         
-       
-        archiveButton.setTitle(NSLocalizedString("View Archived Folders", comment: ""), for: .normal)
-        archiveButton.setTitleColor(.label, for: .normal)
-        archiveButton.titleLabel?.font = .montserrat(forTextStyle: .headline, with: .traitUIOptimized)
-        archiveButton.backgroundColor = UIColor.accent
-        archiveButton.layer.cornerRadius = 10
-        archiveButton.translatesAutoresizingMaskIntoConstraints = false
-        archiveButton.addTarget(self, action: #selector(showArchivedFolders), for: .touchUpInside)
-        archiveButton.contentHorizontalAlignment = .center
-        archiveButton.contentVerticalAlignment = .center
-        view.addSubview(archiveButton)
         view.addSubview(noDataLabel)
 
         NSLayoutConstraint.activate([
@@ -78,14 +66,6 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16)
         ])
         
-        // Constraints for Archive Button
-        NSLayoutConstraint.activate([
-            archiveButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            archiveButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            archiveButton.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20),
-            archiveButton.heightAnchor.constraint(equalToConstant: 56),
-        ])
-
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backBarButtonItem
         Db.add(observer: self, #selector(yapDatabaseModified))
@@ -132,13 +112,12 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
 
     private func reload() {
         let projects: [Project] = projectsReadConn?.objects(in: 0, with: projectsMappings) ?? []
-        hasArchived = !archived && projects.contains { !$0.active }
+       
 
         projectList = projects.filter { archived != $0.active }
         noDataLabel.isHidden = !projectList.isEmpty ? true : false
-        archiveButton.isHidden = !hasArchived
-        
-        navigationItem.title = archived ? NSLocalizedString("Archived Folders", comment: "") :NSLocalizedString("Folders", comment: "")
+      
+        navigationItem.title = NSLocalizedString("Archived Folders", comment: "")
         tableView.reloadData()
     }
 }

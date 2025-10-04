@@ -88,12 +88,12 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
 
                 // Localized text with placeholders
                 let localizedString = NSLocalizedString(
-                    "Upload media to Nextcloud or the Internet Archive to keep your media verifiable, safe, and organized for the long term.\n\nChoose %@",
+                    "Upload media to Nextcloud or the Internet Archive to keep your media verifiable, safe, and organized for the long term.\n\nChoose %@.",
                     comment: "Archive message"
                 )
 
                 // Create the "Creative Commons License" link text
-                let licenseText = NSLocalizedString("Creative Commons Licensing.", comment: "Creative Commons License")
+                let licenseText = NSLocalizedString("Creative Commons Licensing", comment: "Creative Commons License")
                 let licenseUrl = URL(string: "https://creativecommons.org")!
 
                 let licenseAttributes: [NSAttributedString.Key: Any] = [
@@ -143,12 +143,12 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
 
                 // Localized text with placeholders
                 let localizedString = NSLocalizedString(
-                    "Authenticate and verify your media with sha256 hashes and %@",
+                    "Authenticate and verify your media with sha256 hashes and %@.",
                     comment: "Verification message"
                 )
 
                 // Create the "ProofMode" link text
-                let proofModeText = NSLocalizedString("ProofMode.", comment: "ProofMode")
+                let proofModeText = NSLocalizedString("ProofMode", comment: "ProofMode")
                 let proofModeUrl = URL(string: "https://proofmode.org")!
 
                 let proofModeAttributes: [NSAttributedString.Key: Any] = [

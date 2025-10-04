@@ -9,13 +9,10 @@
 import UIKit
 
 class DarkroomHelper {
-    
-    private static let descPlaceholder = NSLocalizedString("Add People", comment: "")
+   
     private static let locPlaceholder = NSLocalizedString("Add a location (optional)", comment: "")
     private static let notesPlaceholder = NSLocalizedString("Add notes (optional)", comment: "")
-    private static let flagPlaceholder = NSLocalizedString("Tap to flag as significant content", comment: "")
-    
-    
+
     let delegate: InfoBoxDelegate
     let location: InfoBox?
     let notes: InfoBox?

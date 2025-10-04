@@ -52,16 +52,16 @@ struct InternetArchiveLoginContent: View {
                                         .frame(width: 30, height: 30)
                                 ).padding(.trailing, 6)
                             VStack(alignment: .leading) {
-                                Text(LocalizedStringKey("Upload your media to a free public account on the Internet Archive.")) .font(.montserrat(.medium, for: .subheadline))
+                                Text(NSLocalizedString("Upload your media to a free public account on the Internet Archive.",comment: "")) .font(.montserrat(.medium, for: .subheadline))
                             }
                         }
                         .padding(.top,50).padding(.leading,20).padding(.trailing,40)
                         
-                        Text(LocalizedStringKey("Account")).font(.montserrat(.semibold, for: .headline)).foregroundColor(.gray70).padding(.top,50).frame(maxWidth: .infinity, alignment: .leading).padding(.leading,20)
+                        Text(NSLocalizedString("Account",comment: "")).font(.montserrat(.semibold, for: .headline)).foregroundColor(.gray70).padding(.top,50).frame(maxWidth: .infinity, alignment: .leading).padding(.leading,20)
                         
                         ZStack(alignment: .leading) {
                             if state.userName.wrappedValue.isEmpty {
-                                Text("Email")
+                                Text(NSLocalizedString("Email", comment: ""))
                                     .italic()
                                     .font(.montserrat(.medium, for: .footnote))
                                     .foregroundColor(.textEmpty)
@@ -90,7 +90,7 @@ struct InternetArchiveLoginContent: View {
                             HStack {
                                 ZStack(alignment: .leading) {
                                     if state.password.wrappedValue.isEmpty {
-                                        Text("Password")
+                                        Text(NSLocalizedString("Password",comment: ""))
                                             .italic()
                                             .font(.montserrat(.medium, for: .footnote))
                                             .foregroundColor(.textEmpty)
@@ -127,16 +127,16 @@ struct InternetArchiveLoginContent: View {
                         .padding(.top, 15)
                         
                         if (state.isLoginError) {
-                            Text(LocalizedStringKey("Incorrect email or password")).foregroundColor(.red).padding(.top,1) .padding(.leading,20).font(.montserrat(.medium, for: .caption2))
+                            Text(NSLocalizedString("Incorrect email or password",comment: "")).foregroundColor(.red).padding(.top,1) .padding(.leading,20).font(.montserrat(.medium, for: .caption2))
                                 .padding(.trailing,20) .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         
                         HStack(alignment: .center) {
-                            Text(LocalizedStringKey("No Account?")).foregroundColor(.gray70).font(.montserrat(.semibold, for: .callout))
+                            Text(NSLocalizedString("No Account?",comment: "")).foregroundColor(.gray70).font(.montserrat(.semibold, for: .callout))
                             Button(action: {
                                 dispatch(.CreateAccount)
                             }) {
-                                Text(LocalizedStringKey("Create one"))
+                                Text(NSLocalizedString("Create one",comment: ""))
                             }.foregroundColor(.accent).font(.montserrat(.semibold, for: .callout))
                         }.padding(.top,40)
                         
@@ -146,7 +146,7 @@ struct InternetArchiveLoginContent: View {
                             Button(action: {
                                 dispatch(.Cancel)
                             }, label: {
-                                Text(LocalizedStringKey("Back"))
+                                Text(NSLocalizedString("Back",comment: ""))
                             })
                             .padding()
                             .frame(maxWidth: .infinity)
@@ -159,7 +159,7 @@ struct InternetArchiveLoginContent: View {
                                     dispatch(.Login)
                                 }
                             }, label: {
-                                Text(LocalizedStringKey("Next"))
+                                Text(NSLocalizedString("Next",comment: ""))
                             })
                             .disabled(!state.isValid)
                             .padding()

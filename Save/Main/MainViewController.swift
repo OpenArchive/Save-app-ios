@@ -123,24 +123,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
     }
     
-    @IBOutlet weak var addMenuLb: UILabel! {
-        didSet {
-            addMenuLb.text = NSLocalizedString("Add media using:", comment: "")
-        }
-    }
-    
-    @IBOutlet weak var addPhotosBt: UIButton! {
-        didSet {
-            addPhotosBt.setTitle(NSLocalizedString("Photo Gallery", comment: ""))
-        }
-    }
-    
-    @IBOutlet weak var addFilesBt: UIButton! {
-        didSet {
-            addFilesBt.setTitle(NSLocalizedString("Files", comment: ""))
-        }
-    }
-    
+
     @IBOutlet weak var settingsBt: UIButton! {
         didSet {
             settingsBt.setAttributedTitle(.init(
@@ -154,11 +137,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         renameView.isHidden = true
     }
     
-    @IBOutlet weak var addMenu: UIView! {
-        didSet {
-            addMenu.hide()
-        }
-    }
+  
     @IBAction func closeMedia(_ sender: Any) {
         selectMediaView.isHidden = true
         self.toggleMode(newMode: false)
@@ -714,7 +693,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             }
         }
         else{
-            if #available(iOS 15.0, *) {
+           
                 let popup = MediaPopupViewController()
                 popup.modalPresentationStyle = .overCurrentContext
                 popup.modalTransitionStyle = .crossDissolve
@@ -740,10 +719,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 }
                 
                 present(popup, animated: true)
-            }
-            else{
-                addMenu.show2(animated: true)
-            }
+            
       }
     }
 
@@ -753,21 +729,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
     
     @IBAction func closeAddMenu() {
-        addMenu.hide(animated: true)
-    }
-    
-    /**
-     Deactivated, was deemed too confusing.
-     */
-    @IBAction func addDocument() {
-        closeAddMenu()
-        
-        // Don't allow to add assets without a space or a project.
-        if selectedProject == nil {
-            return addFolder()
-        }
-        
-        assetPicker.pickDocuments()
+       
     }
     
     @IBAction func longPressItem(_ sender: UILongPressGestureRecognizer) {

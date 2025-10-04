@@ -71,7 +71,7 @@ struct InternetArchiveDetailContent: View {
                     .padding(.horizontal)
                 
                 // MARK: License Section
-                Text(NSLocalizedString("Licence", comment:""))
+                Text(NSLocalizedString("License", comment:""))
                     .font(.montserrat(.semibold, for: .headline))
                     .padding(.horizontal)
                     .padding(.top ,10)
@@ -134,7 +134,7 @@ struct InternetArchiveDetailContent: View {
                         
                         if let licenseURL = state.licenseURL, let url = URL(string: licenseURL) {
                             
-                            Text(AttributedString(NSLocalizedString(licenseURL, comment: "License Link"), attributes: AttributeContainer([.underlineStyle: NSUnderlineStyle.single.rawValue])))
+                            Text(AttributedString(licenseURL, attributes: AttributeContainer([.underlineStyle: NSUnderlineStyle.single.rawValue])))
                                 .foregroundColor(.accentColor)
                                 .font(.montserrat(.medium, for: .subheadline))
                                 .padding(.top, 10)
