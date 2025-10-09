@@ -750,8 +750,10 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             guard success else {
                 return
             }
-            
             self?.toggleMode(newMode: false)
+            if(self?.getAllAssets().count == 1){
+                self?.selectMediaView.isHidden = true
+            }
         })
     }
     
@@ -894,8 +896,10 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         
         inEditMode = newMode
         if(inEditMode){
+          
             selectMediaView.isHidden = !inEditMode
         }
+        
         updateRemove()
     }
     
@@ -983,7 +987,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     private func getSelectedAssets() -> [Asset] {
         assetsReadConn?.objects(at: collectionView.indexPathsForSelectedItems, in: assetsMappings) ?? []
     }
-    
+    private func getAllAssets()-> [Asset] {
+        assetsReadConn?.objects(at: collectionView.indexPathsForVisibleItems, in: assetsMappings) ?? []
+    }
     private func toggleMenu(_ toggle: Bool, _ completion: ((_ finished: Bool) -> Void)? = nil) {
         guard menu.isHidden != !toggle else {
             completion?(true)

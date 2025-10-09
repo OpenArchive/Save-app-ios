@@ -10,6 +10,7 @@ import UIKit
 
 class ClaimViewController: UIViewController {
 
+    @IBOutlet weak var nextArrow: UIImageView!
     @IBOutlet weak var claimLb: UILabel? {
         didSet {
             let text = String(
@@ -53,5 +54,23 @@ class ClaimViewController: UIViewController {
         super.viewWillAppear(animated)
 
         claimLb?.fontName = UIFont.blackFontName
+    }
+    override func viewDidLoad() {
+        animateArrow()
+    }
+    func animateArrow() {
+        let animation = CAKeyframeAnimation(keyPath: "transform.translation.x")
+        animation.timingFunction = CAMediaTimingFunction(name: .linear)
+        animation.duration = 3.0
+        animation.values = [-10, 10, -8, 8, -5, 5, 0, 0, 0, 0]  // Added zeros for pause at end
+        animation.repeatCount = .infinity
+        nextArrow.layer.add(animation, forKey: "shake")
+    }
+    
+    func stopArrowAnimation() {
+        nextArrow.layer.removeAllAnimations()
+    }
+    override func viewWillDisappear(_ animated: Bool) {
+        stopArrowAnimation()
     }
 }

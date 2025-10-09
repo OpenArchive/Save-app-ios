@@ -171,6 +171,8 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
                 if(self.spaceExists(username: self.usernameTb.text ?? "")){
                     self.workingOverlay.isHidden = true
                     self.usernameTb.status = .bad
+                    self.passwordTb.status = .unknown
+                    self.urlTb.status = .unknown
                     let alertVC = CustomAlertViewController(
                         title: NSLocalizedString("Error!", comment: ""),
                         message: NSLocalizedString("This server already exists. Please create another server.", comment: ""),
@@ -201,6 +203,7 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
                                     self.errorText.text = error.friendlyMessage
                                     self.usernameTb.status = .bad
                                     self.passwordTb.status = .bad
+                                    self.urlTb.status = .unknown
                                 }
                             }
                             else {
@@ -222,6 +225,8 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
             } else {
                 self.workingOverlay.isHidden = true
                 self.urlTb.status = .bad
+                self.usernameTb.status = .unknown
+                self.passwordTb.status = .unknown
                 let alertVC = CustomAlertViewController(
                     title: NSLocalizedString("Error!", comment: ""),
                     message: NSLocalizedString("A server with the specified hostname could not be found.", comment: ""),

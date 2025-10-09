@@ -135,6 +135,7 @@
                     </view>
                     <connections>
                         <outlet property="claimLb" destination="0gx-sd-QFe" id="Q3h-Cn-S1s"/>
+                        <outlet property="nextArrow" destination="Reh-6z-n6M" id="JKc-67-1wj"/>
                         <outlet property="nextBt" destination="Djp-bE-4X6" id="dyd-Kk-HrI"/>
                         <outlet property="subtitleLb" destination="rik-2S-4lf" id="AXG-4i-gq0"/>
                     </connections>
