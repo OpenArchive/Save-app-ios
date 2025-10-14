@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import FavIcon
 import YapDatabase
 import SwiftUI
 class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBoxDelegate {
@@ -134,9 +133,13 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
     override func viewDidLoad() {
         super.viewDidLoad()
         spacesConn?.update(mappings: spacesMappings)
+        
         [urlTb, usernameTb, passwordTb].forEach { textField in
             textField?.textField.addTarget(self, action: #selector(updateButtonState), for: .editingChanged)
         }
+        urlTb.status = .unknown
+        usernameTb.status = .unknown
+        passwordTb.status = .reveal
         updateButtonState()
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
@@ -174,8 +177,8 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
                     self.passwordTb.status = .unknown
                     self.urlTb.status = .unknown
                     let alertVC = CustomAlertViewController(
-                        title: NSLocalizedString("Error!", comment: ""),
-                        message: NSLocalizedString("This server already exists. Please create another server.", comment: ""),
+                        title: NSLocalizedString("Error", comment: ""),
+                        message: NSLocalizedString("You already have a server with these credentials.", comment: ""),
                         primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
                         primaryButtonAction: {
                             
@@ -228,7 +231,7 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
                 self.usernameTb.status = .unknown
                 self.passwordTb.status = .unknown
                 let alertVC = CustomAlertViewController(
-                    title: NSLocalizedString("Error!", comment: ""),
+                    title: NSLocalizedString("Error", comment: ""),
                     message: NSLocalizedString("A server with the specified hostname could not be found.", comment: ""),
                     primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
                     primaryButtonAction: {
@@ -258,6 +261,13 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
                 completion(response != nil)
             }
         }.resume()
+    }
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            [urlTb, usernameTb, passwordTb].forEach { $0?.status = $0?.status ?? .unknown }
+        }
     }
     override func keyboardWillShow(notification: Notification) {
         guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {

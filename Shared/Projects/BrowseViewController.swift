@@ -230,7 +230,7 @@ class BrowseViewController: BaseTableViewController {
         if alert.exists(spaceId: space.id, name: folder.name) {
             
             let alertVC = CustomAlertViewController(
-                title:NSLocalizedString("Error!", comment: "") ,
+                title:NSLocalizedString("Error", comment: "") ,
                 message: NSLocalizedString("Please choose another name/folder or use the existing one instead.", comment: ""),
                 primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
                 primaryButtonAction: {

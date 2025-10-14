@@ -82,7 +82,7 @@
                                     <constraint firstItem="0gx-sd-QFe" firstAttribute="leading" secondItem="DiL-8H-sEF" secondAttribute="leading" constant="16" id="ek5-bg-2mG"/>
                                 </constraints>
                             </view>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding-app_hand" translatesAutoresizingMaskIntoConstraints="NO" id="OFU-t8-TQ0">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="onboarding_app_hand" translatesAutoresizingMaskIntoConstraints="NO" id="OFU-t8-TQ0">
                                 <rect key="frame" x="-8" y="454.5" width="94" height="113.5"/>
                                 <constraints>
                                     <constraint firstAttribute="width" secondItem="OFU-t8-TQ0" secondAttribute="height" multiplier="518:627" id="bQq-zl-SwN"/>
@@ -732,7 +732,7 @@
                                         </constraints>
                                         <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <state key="normal" title="Button"/>
-                                        <buttonConfiguration key="configuration" style="plain" image="plus" catalog="system"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="ic_plus"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
                                                 <integer key="value" value="16"/>
@@ -3238,10 +3238,11 @@ Google's APIs allow you to access and send media to your existing folders in Goo
         <image name="ic_batchedit" width="24" height="24"/>
         <image name="ic_error" width="16" height="16"/>
         <image name="ic_gdrive" width="128" height="128"/>
+        <image name="ic_plus" width="20" height="20"/>
         <image name="internet_archive" width="37" height="34"/>
         <image name="logo" width="92" height="52"/>
         <image name="media_image" width="25" height="24"/>
-        <image name="onboarding-app_hand" width="518" height="627"/>
+        <image name="onboarding_app_hand" width="518" height="627"/>
         <image name="person.crop.circle" catalog="system" width="128" height="123"/>
         <image name="plus" catalog="system" width="128" height="113"/>
         <image name="private_server_teal" width="24" height="24"/>

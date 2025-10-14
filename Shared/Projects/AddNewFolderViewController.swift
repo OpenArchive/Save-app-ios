@@ -221,7 +221,7 @@ struct CreateFolderView: View {
                         .overlay(
                             VStack {
                                 CustomAlertView(
-                                    title: NSLocalizedString("Error!", comment: ""),
+                                    title: NSLocalizedString("Error", comment: ""),
                                     message: store.state.errorMessage ?? "",
                                     primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
                                     iconImage: Image("ic_error"),

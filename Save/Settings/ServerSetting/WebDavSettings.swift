@@ -103,7 +103,7 @@ func serverSettingsReducer(state: inout ServerSettingsState, action: ServerSetti
 
 func saveLicenseToDatabase(state: ServerSettingsState) {
     guard let space = state.space else { return }
-    
+    print(state.licenseURL)
     space.license = state.licenseURL
     
     Db.writeConn?.asyncReadWrite { tx in

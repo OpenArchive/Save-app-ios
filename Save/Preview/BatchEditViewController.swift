@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AlignedCollectionViewFlowLayout
 
 class BatchEditViewController: BaseViewController, InfoBoxDelegate {
     
