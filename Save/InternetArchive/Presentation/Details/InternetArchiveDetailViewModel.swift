@@ -96,7 +96,10 @@ class InternetArchiveDetailViewModel : StoreViewModel<InternetArchiveDetailState
             return newState
             
         case .updateLicense:
-            return state.copy(licenseURL: generateLicenseURL(state: state))
+            var licence = generateLicenseURL(state: state)
+            print(licence)
+            saveLicense(licenseURL: licence)
+            return state.copy(licenseURL:licence )
             
         default:
             return nil
@@ -111,9 +114,6 @@ class InternetArchiveDetailViewModel : StoreViewModel<InternetArchiveDetailState
             
         case .Remove:
             remove()
-            
-        case .updateLicense:
-            saveLicense(state: state)
             
         case .HandleBackButton(let status):
             self.store.notify(.HandleBackButton(status: status))
@@ -135,10 +135,10 @@ class InternetArchiveDetailViewModel : StoreViewModel<InternetArchiveDetailState
     }
     
     // MARK: - Save License
-    private func saveLicense(state: State) {
+    private func saveLicense(licenseURL:String?) {
         guard let space = self.space as? IaSpace else { return }
         
-        space.license = state.licenseURL
+        space.license = licenseURL
         
         Db.writeConn?.asyncReadWrite { tx in
             tx.setObject(space, forKey: space.id, inCollection: Space.collection)

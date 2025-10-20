@@ -17,8 +17,8 @@ class GdriveWizardViewController: BaseViewController, WizardDelegatable {
     @IBOutlet weak var iconIv: UIImageView! {
         didSet {
             iconIv.image = .icGdrive
-                .resizeFit(to: .icon)?
-                .withRenderingMode(.alwaysOriginal)
+//                .resizeFit(to: .icon)?
+//                .withRenderingMode(.alwaysOriginal)
         }
     }
 

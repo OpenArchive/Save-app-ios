@@ -239,7 +239,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 
                 if (isExsists){
                     let alertVC = CustomAlertViewController(
-                        title: NSLocalizedString("Error!", comment: ""),
+                        title: NSLocalizedString("Error", comment: ""),
                         message: NSLocalizedString("Please choose another name/folder or use the existing one instead.", comment: ""),
                         primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
                         primaryButtonAction: {
@@ -254,12 +254,13 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                     Db.writeConn?.setObject(currentProject)
                     renameView.isHidden = true
                     updateProject()
+                    showToast(message:  NSLocalizedString("Folder renamed.",comment: ""))
                     
                 }
             }}
         else{
             let alertVC = CustomAlertViewController(
-                title: NSLocalizedString("Error!", comment: ""),
+                title: NSLocalizedString("Error", comment: ""),
                 message: NSLocalizedString("Folder name cannot be empty", comment: ""),
                 primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
                 primaryButtonAction: {
@@ -325,7 +326,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                     guard success else {
                         return
                     }
-                    
+                    self?.showToast(message:  NSLocalizedString("Folder removed.",comment: ""))
                 })
                 
             }
@@ -751,7 +752,8 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 return
             }
             self?.toggleMode(newMode: false)
-            if(self?.getAllAssets().count == 1){
+          
+            if(self?.getAllAssets().count == 1 || self?.getAllAssets().count == 0 ){
                 self?.selectMediaView.isHidden = true
             }
         })

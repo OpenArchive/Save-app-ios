@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import AlignedCollectionViewFlowLayout
 
 class SpacesListCell: BaseCell {
 
@@ -17,10 +16,15 @@ class SpacesListCell: BaseCell {
 
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
-            let alignedFlowLayout = collectionView?.collectionViewLayout as? AlignedCollectionViewFlowLayout
-            alignedFlowLayout?.horizontalAlignment = .right
-            alignedFlowLayout?.itemSize = CGSize(width: 32, height: 32)
-            alignedFlowLayout?.minimumInteritemSpacing = 24
+            let flowLayout = UICollectionViewFlowLayout()
+            flowLayout.scrollDirection = .horizontal
+            flowLayout.itemSize = CGSize(width: 32, height: 32)
+            flowLayout.minimumInteritemSpacing = 24
+            flowLayout.minimumLineSpacing = 24
+            flowLayout.sectionInset = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: 0)
+            
+            collectionView?.collectionViewLayout = flowLayout
+            collectionView?.semanticContentAttribute = .forceRightToLeft
         }
     }
 }

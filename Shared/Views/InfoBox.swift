@@ -86,12 +86,6 @@ class InfoBox: UIView, UITextViewDelegate {
         translatesAutoresizingMaskIntoConstraints = false
     }
 
-//    func addConstraints(_ superview: UIView, top: UIView? = nil, bottom: UIView? = nil) {
-//        leftAnchor.constraint(equalTo: superview.leftAnchor).isActive = true
-//        rightAnchor.constraint(equalTo: superview.rightAnchor).isActive = true
-//        topAnchor.constraint(equalTo: top == nil ? superview.topAnchor : top!.topAnchor).isActive = true
-//        bottomAnchor.constraint(equalTo: bottom == nil ? superview.bottomAnchor : bottom!.bottomAnchor).isActive = true
-//    }
     func addConstraints(_ container: UIView, top: UIView? = nil, bottom: UIView? = nil) {
         translatesAutoresizingMaskIntoConstraints = false
        
@@ -195,9 +189,13 @@ class InfoBox: UIView, UITextViewDelegate {
      */
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
-            textView.endEditing(true)
-
-            return false
+    
+            if let nextResponder = nextResponderField {
+                nextResponder.becomeFirstResponder()
+                return false
+            }
+            
+            return true
         }
 
         return true

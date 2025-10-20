@@ -94,10 +94,10 @@ struct HideItemSeparator: ViewModifier {
 struct ListSpacingModifier: ViewModifier {
     func body(content: Content) -> some View {
         if #available(iOS 17, *) {
-            content.listSectionSpacing(1) // iOS 17+ uses listSectionSpacing
+            content.listSectionSpacing(1) 
         } else {
             content
-                .environment(\.defaultMinListHeaderHeight, 0) // iOS 16 and below
+                .environment(\.defaultMinListHeaderHeight, 0)
                 .introspect(.list, on: .iOS(.v15)) { tableView in
                     tableView.sectionHeaderHeight = 0
                     tableView.sectionFooterHeight = 0

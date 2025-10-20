@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import LegacyUTType
 import UniformTypeIdentifiers
 
 class IaConduit: Conduit {

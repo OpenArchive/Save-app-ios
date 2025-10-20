@@ -143,12 +143,12 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
 
                 // Localized text with placeholders
                 let localizedString = NSLocalizedString(
-                    "Authenticate and verify your media with sha256 hashes and %@.",
+                    "Authenticate and verify your media with sha256 hashes and %@",
                     comment: "Verification message"
                 )
 
                 // Create the "ProofMode" link text
-                let proofModeText = NSLocalizedString("ProofMode", comment: "ProofMode")
+                let proofModeText = NSLocalizedString("ProofMode.", comment: "ProofMode")
                 let proofModeUrl = URL(string: "https://proofmode.org")!
 
                 let proofModeAttributes: [NSAttributedString.Key: Any] = [

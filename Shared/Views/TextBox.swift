@@ -121,7 +121,7 @@ class TextBox: UIView, UITextFieldDelegate {
         statusIv.isHidden = false
         statusIvWidth?.constant = 24
         statusIvTrailing?.constant = -8
-        statusIv.tintColor = .systemGray
+        statusIv.tintColor = .gray70
         statusIv.image = .init(imageLiteralResourceName: isSecureTextEntry ? "eye_close" : "eye_open")
     }
 
@@ -233,7 +233,14 @@ class TextBox: UIView, UITextFieldDelegate {
         }
         refreshBorderColor()
     }
-
+  
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+      
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            refreshBorderColor()
+        }
+    }
     // MARK: Private Methods
 
     private func setup() {
