@@ -193,15 +193,23 @@ class TextBox: UIView, UITextFieldDelegate {
     // MARK: UITextFieldDelegate
 
     private func refreshBorderColor() {
+        let newColor: UIColor
+        
         if textField.isEditing {
-            borderColor = (status == .bad) ? .systemRed : .accent
+            newColor = (status == .bad) ? .systemRed : .accent
         } else {
             switch status {
-            case .good:     borderColor = .accent
-            case .bad:      borderColor = .systemRed
-            default:        borderColor = .gray70
+            case .good:
+                newColor = .accent
+            case .bad:
+                newColor = .systemRed
+            default:
+                newColor = UIColor(named: "gray-70") ?? .gray
             }
         }
+        
+        borderColor = newColor
+        layer.borderColor = newColor.resolvedColor(with: traitCollection).cgColor
     }
 
 
@@ -236,8 +244,11 @@ class TextBox: UIView, UITextFieldDelegate {
   
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
         super.traitCollectionDidChange(previousTraitCollection)
-      
+        
         if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            if let currentBorderColor = borderColor {
+                layer.borderColor = currentBorderColor.resolvedColor(with: traitCollection).cgColor
+            }
             refreshBorderColor()
         }
     }
@@ -270,3 +281,5 @@ class TextBox: UIView, UITextFieldDelegate {
         status = .reveal
     }
 }
+
+
