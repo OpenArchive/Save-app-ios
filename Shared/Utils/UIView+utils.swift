@@ -131,7 +131,7 @@ extension UIView {
             return UIColor(cgColor: color)
         }
         set {
-            layer.borderColor = newValue?.cgColor
+            layer.borderColor = newValue?.resolvedColor(with: traitCollection).cgColor
         }
     }
 
