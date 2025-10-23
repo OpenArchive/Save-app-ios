@@ -169,6 +169,7 @@ struct CreateFolderView: View {
                 .cornerRadius(8)
                 
                 Button(NSLocalizedString("Create", comment: "")) {
+                    hideKeyboard()
                     disableBackAction?(true)
                     store.dispatch(action: .saveFolderName)
                     
@@ -220,10 +221,10 @@ struct CreateFolderView: View {
                         .overlay(
                             VStack {
                                 CustomAlertView(
-                                    title: NSLocalizedString("Error!", comment: ""),
+                                    title: NSLocalizedString("Error", comment: ""),
                                     message: store.state.errorMessage ?? "",
                                     primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
-                                    iconImage: Image(systemName: "exclamationmark.triangle.fill"),
+                                    iconImage: Image("ic_error"),
                                     iconTint:.gray,
                                     primaryButtonAction: {
                                         disableBackAction?(false)
@@ -241,6 +242,8 @@ struct CreateFolderView: View {
                 }
             })
     }
-    
+    private func hideKeyboard() {
+           UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+       }
 }
 

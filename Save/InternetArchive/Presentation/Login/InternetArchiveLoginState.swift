@@ -53,4 +53,5 @@ enum InternetArchiveLoginAction {
     case CreateAccount
     case isLoginOnprogress
     case isLoginFinished
+    case ClearError
 }

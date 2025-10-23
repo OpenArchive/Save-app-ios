@@ -107,6 +107,9 @@ struct EditFolderView: View {
                 
                 Button((store.state.project?.active ?? false) ? NSLocalizedString("Archive Project", comment: "") :  NSLocalizedString("Unarchive Project", comment: "")) {
                     store.dispatch(action:.archiveFolder)
+                    if (store.state.project?.active ?? false) {
+                           dismissAction?()
+                       }
                 }
                 .frame(maxWidth: .infinity)
                 .foregroundColor(.primary)
@@ -162,10 +165,10 @@ struct EditFolderView: View {
                         .overlay(
                             VStack {
                                 CustomAlertView(
-                                    title: NSLocalizedString("Error!", comment: ""),
+                                    title: NSLocalizedString("Error", comment: ""),
                                     message: store.state.errorMessage ?? "",
                                     primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
-                                    iconImage: Image(systemName: "exclamationmark.triangle.fill"),
+                                    iconImage: Image("ic_error"),
                                     iconTint:.gray,
                                     primaryButtonAction: {
                                         store.dispatch(action: .resetStatus)
@@ -186,9 +189,9 @@ struct EditFolderView: View {
                         .overlay(
                             VStack {
                                 CustomAlertView(
-                                    title: NSLocalizedString("Are you sure?", comment: ""),
+                                    title: NSLocalizedString("Remove from app", comment: ""),
                                     message: String(format: NSLocalizedString(
-                                        "Removing this folder will remove all contained thumbnails from the %@ app.",
+                                        "Are you sure you want to remove your project?",
                                         comment: "Placeholder is app name"), Bundle.main.displayName),
                                     primaryButtonTitle: NSLocalizedString("Remove", comment: ""),
                                     iconImage: Image("trash_icon"),

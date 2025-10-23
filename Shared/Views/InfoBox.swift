@@ -34,9 +34,9 @@ class InfoBox: UIView, UITextViewDelegate {
             .instantiate(withOwner: nil, options: nil).first as? InfoBox
 
         if let info = info {
-            if let icon = icon {
-                info.icon.image = UIImage(named: icon)
-            }
+//            if let icon = icon {
+//                info.icon.image = UIImage(named: icon)
+//            }
 
             superview?.addSubview(info)
         }
@@ -86,12 +86,6 @@ class InfoBox: UIView, UITextViewDelegate {
         translatesAutoresizingMaskIntoConstraints = false
     }
 
-//    func addConstraints(_ superview: UIView, top: UIView? = nil, bottom: UIView? = nil) {
-//        leftAnchor.constraint(equalTo: superview.leftAnchor).isActive = true
-//        rightAnchor.constraint(equalTo: superview.rightAnchor).isActive = true
-//        topAnchor.constraint(equalTo: top == nil ? superview.topAnchor : top!.topAnchor).isActive = true
-//        bottomAnchor.constraint(equalTo: bottom == nil ? superview.bottomAnchor : bottom!.bottomAnchor).isActive = true
-//    }
     func addConstraints(_ container: UIView, top: UIView? = nil, bottom: UIView? = nil) {
         translatesAutoresizingMaskIntoConstraints = false
        
@@ -108,7 +102,7 @@ class InfoBox: UIView, UITextViewDelegate {
             bottomAnchor.constraint(equalTo: bottomView.topAnchor, constant: 0).isActive = true // Place above bottomView
         }
     }
-    func set(_ text: String?, with placeholder: String? = nil,textHeightContraint: CGFloat?) {
+    func set(_ text: String?, with placeholder: String? = nil, textHeightContraint: CGFloat?, hideIcon: Bool = false) {
         self.text = text
         self.placeholder = placeholder
 
@@ -125,6 +119,10 @@ class InfoBox: UIView, UITextViewDelegate {
         textView.textColor = isDefault && !textView.isFirstResponder
         ? .textEmpty
         : .label
+        
+        // Hide or show icon
+        icon.isHidden = hideIcon
+        
         // UITextView does not auto-size as UILabel. So we do that here.
         if let textHeightContraint = textHeightContraint {
             textHeight.constant = textHeightContraint
@@ -191,9 +189,13 @@ class InfoBox: UIView, UITextViewDelegate {
      */
     func textView(_ textView: UITextView, shouldChangeTextIn range: NSRange, replacementText text: String) -> Bool {
         if text == "\n" {
-            textView.endEditing(true)
-
-            return false
+    
+            if let nextResponder = nextResponderField {
+                nextResponder.becomeFirstResponder()
+                return false
+            }
+            
+            return true
         }
 
         return true

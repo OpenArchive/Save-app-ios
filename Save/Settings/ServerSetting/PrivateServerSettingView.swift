@@ -32,7 +32,7 @@ struct PrivateServerSettingsView: View {
             serverName: space.name ?? "",
             serverURL: space.url?.absoluteString ?? "",
             username: space.username ?? "",
-            password: "••••••••", // Do not expose real password
+            password: space.password != nil ? String(repeating: "•", count: space.password?.count ?? 0) : "",
             isCcEnabled: space.license != nil,
             isCc0Enabled: isCC0,
             allowRemix: isCC0 ? false : space.license?.contains("-nd") == false,
@@ -86,7 +86,7 @@ struct PrivateServerSettingsView: View {
                         
                     )
                     
-                    SectionHeader(title:NSLocalizedString( "License",comment: "" ))
+                    SectionHeader(title:NSLocalizedString("License",comment: "" ))
                     
                     Toggle(NSLocalizedString("Set creative commons licenses for folders on this server.", comment: "Creative Commons Toggle"), isOn: Binding(
                         get: { store.state.isCcEnabled },
@@ -99,15 +99,18 @@ struct PrivateServerSettingsView: View {
                     if store.state.isCcEnabled {
                         LicenseToggles(store: store)
                     }
-                    if #available(iOS 14.0, *) {
-                        Link(NSLocalizedString("Learn more about Creative Commons", comment: "More Info Link"), destination: URL(string: "https://creativecommons.org/")! )
+                    
+                    if  let url = URL(string: "https://creativecommons.org/") {
+                        
+                        Text(AttributedString(NSLocalizedString(NSLocalizedString("Learn more about Creative Commons.", comment: "More Info Link"), comment: "License Link"), attributes: AttributeContainer([.underlineStyle: NSUnderlineStyle.single.rawValue])))
                             .foregroundColor(.accentColor)
-                            .padding(.top, 10).font(.montserrat(.medium, for: .subheadline))
-                    } else {
+                            .font(.montserrat(.medium, for: .subheadline))
+                            .padding(.top, 10)
+                            .onTapGesture {
+                                UIApplication.shared.open(url)
+                            }
                         
                     }
-                    
-                    
                     
                     HStack {
                         Button(NSLocalizedString("Remove from app", comment: "Remove Button")) {
@@ -184,7 +187,7 @@ struct PrivateServerSettingsView: View {
                                 
                             }
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
-                               
+                            
                         )
                 }
                 
@@ -201,14 +204,14 @@ struct LicenseToggles: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Toggle(NSLocalizedString("Waive all restrictions, requirements, and attribution (CC0).", comment: "CC0 Toggle"), isOn: Binding(
-                            get: { store.state.isCc0Enabled },
-                            set: { newValue in
-                                store.dispatch(action: .toggleCc0Enabled(newValue))
-                                store.dispatch(action: .updateLicense)
-                            }
-                        ))
-                        .toggleTint(.accent)
-                        .font(.montserrat(.medium, for: .subheadline))
+                get: { store.state.isCc0Enabled },
+                set: { newValue in
+                    store.dispatch(action: .toggleCc0Enabled(newValue))
+                    store.dispatch(action: .updateLicense)
+                }
+            ))
+            .toggleTint(.accent)
+            .font(.montserrat(.medium, for: .subheadline))
             
             Toggle(NSLocalizedString("Allow anyone to remix and share?", comment: "Remix Toggle"), isOn: Binding(
                 get: { store.state.allowRemix },
@@ -236,16 +239,16 @@ struct LicenseToggles: View {
                 }
             )) .toggleTint(.accent).font(.montserrat(.medium, for: .subheadline))
             
-            if let licenseURL = store.state.licenseURL {
-                if #available(iOS 14.0, *) {
-                    Link(NSLocalizedString(licenseURL, comment: "License Link"), destination: URL(string: licenseURL)!)
-                        .foregroundColor(.accentColor)
-                        .padding(.top, 10) .font(.montserrat(.medium, for: .subheadline))
-                } else {
-                    // Fallback on earlier versions
-                }
+            if let licenseURL = store.state.licenseURL, let url = URL(string: licenseURL) {
+                
+                Text(AttributedString(licenseURL, attributes: AttributeContainer([.underlineStyle: NSUnderlineStyle.single.rawValue])))
+                    .foregroundColor(.accentColor)
+                    .font(.montserrat(.medium, for: .subheadline))
+                    .padding(.top, 10)
+                    .onTapGesture {
+                        UIApplication.shared.open(url)
+                    }
             }
-            
         }
     }
 }

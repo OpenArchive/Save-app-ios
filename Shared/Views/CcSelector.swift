@@ -17,9 +17,7 @@ class CcSelector {
     static let cc0Url = "https://creativecommons.org/publicdomain/zero/1.0/"
     var isUpdatingValues = false
     lazy var ccSw = SwitchRow("cc") {
-        $0.title = individual
-        ? NSLocalizedString("Set creative commons licenses for folders on this server.", comment: "")
-        : NSLocalizedString("Set the same Creative Commons license for ALL folders on this server.", comment: "")
+        $0.title = NSLocalizedString("Set creative commons licenses for folders on this server.", comment: "")
         $0.cell.backgroundColor = .clear
         $0.cell.textLabel?.numberOfLines = 0
         $0.cell.switchControl.onTintColor = .accent
@@ -65,6 +63,12 @@ class CcSelector {
         $0.disabled = .function(["cc", "remixSw"], { [weak self] _ in
             !(self?.enabled ?? false) || !(self?.remixSw.value ?? false)
         })
+        $0.cellUpdate { cell, row in
+            cell.textLabel?.textColor = .label
+            cell.textLabel?.alpha = 1.0
+            cell.switchControl.isEnabled = !row.isDisabled
+            cell.switchControl.alpha = row.isDisabled ? 0.5 : 1.0
+        }
     }
     
     lazy var commercialSw = SwitchRow() {
@@ -90,7 +94,7 @@ class CcSelector {
     }
     
     let learnMoreRow = LinkRow() {
-        $0.title = NSLocalizedString("Learn more about Creative Commons", comment: "")
+        $0.title = NSLocalizedString("Learn more about Creative Commons.", comment: "")
         $0.value = URL(string: "https://creativecommons.org/about/cclicenses/")
         $0.cell.backgroundColor = .clear
         $0.cell.textLabel?.numberOfLines = 0

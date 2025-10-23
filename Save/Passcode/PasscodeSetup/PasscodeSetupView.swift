@@ -21,7 +21,7 @@ struct PasscodeSetupView: View  {
             isConfirming: viewModel.isConfirming,
             isProcessing: viewModel.isProcessing,
             shouldShake: viewModel.shouldShake,
-            onNumberClick: viewModel.onNumberClick,
+            onNumberClick: viewModel.onNumberClick, showPasscodeError: viewModel.showPasswordMismatch,
             onBackspaceClick: viewModel.onBackspaceClick, onEnterClick: viewModel.onEnterClick,
             onAnimationCompleted: viewModel.onAnimationCompleted
         )
@@ -38,8 +38,8 @@ struct PasscodeSetupContent: View {
     let isConfirming: Bool
     let isProcessing: Bool
     let shouldShake: Bool
-    
     let onNumberClick: (String) -> Void
+    let showPasscodeError:Bool
     let onBackspaceClick: () -> Void
     let onEnterClick: () -> Void
     let onAnimationCompleted: () -> Void
@@ -53,7 +53,7 @@ struct PasscodeSetupContent: View {
             passcode: passcode,
             passcodeLength: state.passcodeLength,
             shouldShake: shouldShake,
-            isEnabled: !isProcessing,
+            isEnabled: !isProcessing, isPasscodeEntry: false, showPasswordMismatch: showPasscodeError,
             onNumberClick: onNumberClick,
             onBackspaceClick: onBackspaceClick, onEnterClick: onEnterClick,
             onExit: {

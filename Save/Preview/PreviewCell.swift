@@ -15,27 +15,24 @@ class PreviewCell: UICollectionViewCell {
     }
 
     class var reuseId: String {
-        return  "previewCell"
+        return "previewCell"
     }
 
     class var height: CGFloat {
         return 240
     }
 
-
     private lazy var selectedView = SelectedView()
-
+    
+    private var currentAssetId: String?
 
     @IBOutlet weak var previewImg: UIImageView!
 
     @IBOutlet weak var movieIndicator: MovieIndicator!
 
-
     var asset: Asset? {
         didSet {
-            previewImg.image = asset?.getThumbnail()
-            movieIndicator.isHidden = !(asset?.isAv ?? false)
-            movieIndicator.set(duration: asset?.duration)
+            configureCell()
         }
     }
 
@@ -49,4 +46,37 @@ class PreviewCell: UICollectionViewCell {
             }
         }
     }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        
+        // Reset to default state to prevent showing old images
+        previewImg.image = UIImage(named: "NoImage")
+        movieIndicator.isHidden = true
+        currentAssetId = nil
+    }
+    
+    private func configureCell() {
+            guard let asset = asset else {
+                previewImg.image = UIImage(named: "NoImage")
+                movieIndicator.isHidden = true
+                return
+            }
+            
+            // Store the current asset ID to prevent race conditions
+            currentAssetId = asset.id
+            
+            // Set placeholder immediately
+            previewImg.image = UIImage(named: "NoImage")
+            
+            // Configure movie indicator immediately (this is fast)
+            movieIndicator.isHidden = !(asset.isAv ?? false)
+            movieIndicator.set(duration: asset.duration)
+            
+            // Load thumbnail asynchronously
+            asset.getThumbnailAsync { [weak self] thumbnail in
+                guard self?.currentAssetId == asset.id else { return }
+                self?.previewImg.image = thumbnail
+            }
+        }
 }

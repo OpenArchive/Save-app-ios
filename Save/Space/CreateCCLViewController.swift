@@ -18,15 +18,15 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
     var delegate: WizardDelegate?
     var space: Space?
     @IBOutlet weak var nameTab: TextBox!{
-        didSet {
-            nameTab.placeholder = NSLocalizedString("Server Name (Optional)", comment: "")
-            nameTab.delegate = self
-            nameTab.autocorrectionType = .no
-            nameTab.autocapitalizationType = .none
-            nameTab.textField.returnKeyType = .next
-            nameTab.textField.textColor = .gray70
-            nameTab.textField.font = .montserrat(forTextStyle: .footnote)
-            
+        
+            didSet {
+                nameTab.textField.font = .montserrat(forTextStyle: .footnote)
+                nameTab.placeholder = NSLocalizedString("Server Name (Optional)", comment: "")
+                nameTab.delegate = self
+                nameTab.autocorrectionType = .no
+                nameTab.autocapitalizationType = .none
+                nameTab.textField.returnKeyType = .next
+                nameTab.textField.textColor = .gray70
         }
     }
     @IBOutlet weak var scrollView: UIScrollView!
@@ -92,7 +92,6 @@ class CreateCCLViewController: FormViewController, WizardDelegatable,TextBoxDele
             self?.cc0LicenseChanged(row)
         }
         <<< cc.remixSw.onChange { [weak self] row in
-            print("change remix")
             self?.otherLicenseChanged(row)
         }
         

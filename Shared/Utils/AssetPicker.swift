@@ -9,7 +9,6 @@
 import Foundation
 import TLPhotoPicker
 import Photos
-import LegacyUTType
 
 protocol AssetPickerDelegate: AnyObject {
 
@@ -82,9 +81,9 @@ class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPic
     }
 
     func pickDocuments() {
-        let vc = UIDocumentPickerViewController(documentTypes: [LegacyUTType.item.identifier], in: .import)
+        let vc = UIDocumentPickerViewController(forOpeningContentTypes: [.item])
         vc.delegate = self
-
+        
         delegate?.present(vc, animated: true)
     }
 
@@ -127,8 +126,7 @@ class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPic
 
     func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
         guard let collection = (delegate as? AssetPickerDelegate)?.currentCollection,
-              controller.documentPickerMode == .import
-                && urls.count > 0
+              !urls.isEmpty
         else {
             return
         }
@@ -211,7 +209,7 @@ class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPic
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
 
            picker.dismiss(animated: true)
-        guard let image = info[.originalImage] as? UIImage,
+        guard let _ = info[.originalImage] as? UIImage,
               let collection = (delegate as? AssetPickerDelegate)?.currentCollection
         else {
             return
@@ -227,7 +225,7 @@ class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPic
            else if let image = info[.originalImage] as? UIImage {
                // Photo captured
                if let imageData = image.jpegData(compressionQuality: 1.0) {
-                   AssetFactory.create(from: imageData, uti: LegacyUTType.jpeg, name: "captured.jpg", thumbnail: image, collection) { asset in
+                   AssetFactory.create(from: imageData, uti: UTType.jpeg, name: "captured.jpg", thumbnail: image, collection) { asset in
                        UIApplication.shared.endBackgroundTask(id)
                    }
                }

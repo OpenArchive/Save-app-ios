@@ -9,13 +9,10 @@
 import UIKit
 
 class DarkroomHelper {
-    
-    private static let descPlaceholder = NSLocalizedString("Add People", comment: "")
+   
     private static let locPlaceholder = NSLocalizedString("Add a location (optional)", comment: "")
     private static let notesPlaceholder = NSLocalizedString("Add notes (optional)", comment: "")
-    private static let flagPlaceholder = NSLocalizedString("Tap to flag as significant content", comment: "")
-    
-    
+
     let delegate: InfoBoxDelegate
     let location: InfoBox?
     let notes: InfoBox?
@@ -41,11 +38,11 @@ class DarkroomHelper {
     // MARK: Public Methods
     
     func setInfos(_ asset: Asset?, defaults: Bool = false, isEditable: Bool = true,_ noteHeight: CGFloat) {
-    
-        location?.set(asset?.location, with: defaults ? DarkroomHelper.locPlaceholder : nil,textHeightContraint: nil)
+        
+        location?.set(asset?.location, with: defaults ? DarkroomHelper.locPlaceholder : nil, textHeightContraint: nil, hideIcon: true)
         location?.textView.isEditable = isEditable
         
-        notes?.set(asset?.notes, with: defaults ? DarkroomHelper.notesPlaceholder : nil,textHeightContraint: noteHeight)
+        notes?.set(asset?.notes, with: defaults ? DarkroomHelper.notesPlaceholder : nil, textHeightContraint: noteHeight, hideIcon: true)
         notes?.textView.isEditable = isEditable
       
     }

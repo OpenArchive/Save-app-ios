@@ -54,7 +54,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
                 button = BigButton.create(
                     icon: UIImage(named: "internet_archive_teal"),
                     title: IaSpace.defaultPrettyName,
-                    subtitle: NSLocalizedString("Connect to a free public server", comment: ""),
+                    subtitle: NSLocalizedString("Connect to a free \npublic server", comment: ""),
                     target: self,
                     action: #selector(newIa),
                     container: container,

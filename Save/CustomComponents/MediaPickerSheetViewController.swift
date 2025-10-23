@@ -59,13 +59,13 @@ class MediaPopupViewController: UIViewController {
         ])
         
         let titleLabel = UILabel()
-        titleLabel.text = "Add media from"
+        titleLabel.text = NSLocalizedString("Add media from", comment: "")
         titleLabel.font = .montserrat(forTextStyle: .callout, with: .traitUIOptimized)
         titleLabel.textAlignment = .left
         
-        let camera = createOption(imageName: "camera", text: "Camera", action: #selector(cameraTapped))
-        let gallery = createOption(imageName: "gallery", text: "Photo Gallery", action: #selector(galleryTapped))
-        let files = createOption(imageName: "doc", text: "Files", action: #selector(filesTapped))
+        let camera = createOption(imageName: "camera", text: NSLocalizedString("Camera", comment: ""), action: #selector(cameraTapped))
+        let gallery = createOption(imageName: "gallery", text: NSLocalizedString("Photo Gallery", comment: ""), action: #selector(galleryTapped))
+        let files = createOption(imageName: "doc", text:NSLocalizedString("Files", comment: ""), action: #selector(filesTapped))
         
         let iconsStack = UIStackView(arrangedSubviews: [camera, gallery, files])
         iconsStack.axis = .horizontal

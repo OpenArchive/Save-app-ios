@@ -17,16 +17,23 @@ struct PasscodeContentWrapper: View {
     let passcodeLength: Int
     let shouldShake: Bool
     let isEnabled: Bool
-    
+    let isPasscodeEntry:Bool
+    let showPasswordMismatch: Bool
     let onNumberClick: (String) -> Void
     let onBackspaceClick: () -> Void
     let onEnterClick: () -> Void
     let onExit: () -> Void
-    
     let onAnimationCompleted: () -> Void
+    
+    @State private var showToast = false
     
     var body: some View {
         VStack(alignment: .center, spacing: 16) {
+            if(isPasscodeEntry){
+                Image("logo")
+                    .resizable()
+                    .aspectRatio(contentMode: .fit)
+                .frame(width: 100, height: 100)}
             Text(title)
                 .font(.montserrat(.semibold, for: .headline))
                 .padding(.top,30)
@@ -63,6 +70,14 @@ struct PasscodeContentWrapper: View {
         .frame(maxWidth: .infinity, alignment: .topLeading)
         .padding(.top, 40)
         .edgesIgnoringSafeArea(.bottom)
+        .toast(isShowing: $showToast, message: NSLocalizedString("Passcodes do not match. Try again.", comment: ""))
+                .onChange(of: showPasswordMismatch) { shouldShow in
+                    if shouldShow && !isPasscodeEntry {
+                        withAnimation {
+                            showToast = true
+                        }
+                    }
+                }
     }
 
 }
@@ -78,7 +93,7 @@ struct PasscodeContentWrapper_Previews: PreviewProvider {
             passcode: "123",
             passcodeLength: 6,
             shouldShake: false,
-            isEnabled: true,
+            isEnabled: true, isPasscodeEntry: false, showPasswordMismatch: false,
             onNumberClick: { _ in },
             onBackspaceClick: { }, onEnterClick: {},
             onExit: { },

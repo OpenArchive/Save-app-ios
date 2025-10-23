@@ -60,11 +60,6 @@ class BrowseViewController: BaseTableViewController {
         }
         navigationItem.title = NSLocalizedString("Browse Existing", comment: "")
         
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: NSLocalizedString("ADD", comment: ""), style: .done,
-            target: self, action: #selector(done))
-        navigationItem.rightBarButtonItem?.isEnabled = false
-        
         tableView.register(FolderCell.nib, forCellReuseIdentifier: FolderCell.reuseId)
         let backButton = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(dismissController))
         
@@ -134,7 +129,12 @@ class BrowseViewController: BaseTableViewController {
         }
         
         selected = indexPath
-        navigationItem.rightBarButtonItem?.isEnabled = true
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+                title: NSLocalizedString("ADD", comment: ""),
+                style: .done,
+                target: self,
+                action: #selector(done)
+            )
         
         tableView.reloadRows(at: rows, with: .none)
     }
@@ -230,12 +230,12 @@ class BrowseViewController: BaseTableViewController {
         if alert.exists(spaceId: space.id, name: folder.name) {
             
             let alertVC = CustomAlertViewController(
-                title:NSLocalizedString("Error!", comment: "") ,
+                title:NSLocalizedString("Error", comment: "") ,
                 message: NSLocalizedString("Please choose another name/folder or use the existing one instead.", comment: ""),
                 primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
                 primaryButtonAction: {
                 },
-                showCheckbox: false, iconImage: Image(systemName: "exclamationmark.triangle.fill"),
+                showCheckbox: false, iconImage: Image("ic_error"),
                 iconTint:.gray
             )
             self.present(alertVC, animated: true)
@@ -247,7 +247,7 @@ class BrowseViewController: BaseTableViewController {
             let alertVC = CustomAlertViewController(
                 title:NSLocalizedString("Success!", comment: "") ,
                 message: NSLocalizedString("You have added a folder successfully.", comment: ""),
-                primaryButtonTitle: NSLocalizedString("Got it!", comment: ""),
+                primaryButtonTitle: NSLocalizedString("Got it", comment: ""),
                 primaryButtonAction: {
                     if let navigationController = self.navigationController {
                         

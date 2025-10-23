@@ -124,24 +124,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
     }
     
-    @IBOutlet weak var addMenuLb: UILabel! {
-        didSet {
-            addMenuLb.text = NSLocalizedString("Add media using:", comment: "")
-        }
-    }
-    
-    @IBOutlet weak var addPhotosBt: UIButton! {
-        didSet {
-            addPhotosBt.setTitle(NSLocalizedString("Photo Gallery", comment: ""))
-        }
-    }
-    
-    @IBOutlet weak var addFilesBt: UIButton! {
-        didSet {
-            addFilesBt.setTitle(NSLocalizedString("Files", comment: ""))
-        }
-    }
-    
+
     @IBOutlet weak var settingsBt: UIButton! {
         didSet {
             settingsBt.setAttributedTitle(.init(
@@ -155,11 +138,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         renameView.isHidden = true
     }
     
-    @IBOutlet weak var addMenu: UIView! {
-        didSet {
-            addMenu.hide()
-        }
-    }
+  
     @IBAction func closeMedia(_ sender: Any) {
         selectMediaView.isHidden = true
         self.toggleMode(newMode: false)
@@ -260,13 +239,13 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 
                 if (isExsists){
                     let alertVC = CustomAlertViewController(
-                        title: NSLocalizedString("Error!", comment: ""),
+                        title: NSLocalizedString("Error", comment: ""),
                         message: NSLocalizedString("Please choose another name/folder or use the existing one instead.", comment: ""),
                         primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
                         primaryButtonAction: {
                             
-                        }, showCheckbox: false, iconImage: Image(systemName: "exclamationmark.triangle.fill"),
-                        iconTint:.gray
+                        }, showCheckbox: false, iconImage: Image("ic_error"),
+                        
                     )
                     self.present(alertVC, animated: true)
                     
@@ -275,16 +254,18 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                     Db.writeConn?.setObject(currentProject)
                     renameView.isHidden = true
                     updateProject()
+                    showToast(message:  NSLocalizedString("Folder renamed.",comment: ""))
+                    
                 }
             }}
         else{
             let alertVC = CustomAlertViewController(
-                title: NSLocalizedString("Error!", comment: ""),
+                title: NSLocalizedString("Error", comment: ""),
                 message: NSLocalizedString("Folder name cannot be empty", comment: ""),
                 primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
                 primaryButtonAction: {
                     
-                }, showCheckbox: false, iconImage: Image(systemName: "exclamationmark.triangle.fill"),
+                }, showCheckbox: false, iconImage: Image("ic_error"),
                 iconTint:.gray
             )
             self.present(alertVC, animated: true)
@@ -314,7 +295,27 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 project.active = false
                 Db.writeConn?.setObject(project)
                 self.selectedProject?.active = false
-                
+                let alertVC = CustomAlertViewController(
+                    title:NSLocalizedString("Success!", comment: "") ,
+                    message: NSLocalizedString("Folder archived successfully.", comment: ""),
+                    primaryButtonTitle: NSLocalizedString("Got it", comment: ""),
+                    primaryButtonAction: {
+                        if let navigationController = self.navigationController {
+                            
+                            if let existingVC = navigationController.viewControllers.first(where: { $0 is MainViewController }) {
+                                
+                                navigationController.popToViewController(existingVC, animated: true)
+                            } else {
+                                
+                                let newVC = MainViewController()
+                                navigationController.pushViewController(newVC, animated: true)
+                            }
+                        }
+                    },
+                    showCheckbox: false,
+                    iconImage: Image("check_icon")
+                )
+                self.present(alertVC, animated: true)
             }
         }
         
@@ -325,7 +326,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                     guard success else {
                         return
                     }
-                    
+                    self?.showToast(message:  NSLocalizedString("Folder removed.",comment: ""))
                 })
                 
             }
@@ -679,9 +680,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             return  self.addFolder()
         }
         
-        AddInfoAlert.presentIfNeeded(viewController: self)
-        
-        assetPicker.pickMedia()
+        AddInfoAlert.presentIfNeeded(viewController: self) {
+            self.assetPicker.pickMedia()
+        }
     }
     
     func showMediaPickerSheet() {
@@ -693,7 +694,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             }
         }
         else{
-            if #available(iOS 15.0, *) {
+           
                 let popup = MediaPopupViewController()
                 popup.modalPresentationStyle = .overCurrentContext
                 popup.modalTransitionStyle = .crossDissolve
@@ -719,10 +720,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 }
                 
                 present(popup, animated: true)
-            }
-            else{
-                addMenu.show2(animated: true)
-            }
+            
       }
     }
 
@@ -732,21 +730,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
     
     @IBAction func closeAddMenu() {
-        addMenu.hide(animated: true)
-    }
-    
-    /**
-     Deactivated, was deemed too confusing.
-     */
-    @IBAction func addDocument() {
-        closeAddMenu()
-        
-        // Don't allow to add assets without a space or a project.
-        if selectedProject == nil {
-            return addFolder()
-        }
-        
-        assetPicker.pickDocuments()
+       
     }
     
     @IBAction func longPressItem(_ sender: UILongPressGestureRecognizer) {
@@ -757,7 +741,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         
         if let indexPath = collectionView.indexPathForItem(at: sender.location(in: collectionView)) {
             collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredVertically)
-            
+            updateRemove()
             toggleMode(newMode: true)
         }
     }
@@ -767,8 +751,11 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             guard success else {
                 return
             }
-            
             self?.toggleMode(newMode: false)
+          
+            if(self?.getAllAssets().count == 1 || self?.getAllAssets().count == 0 ){
+                self?.selectMediaView.isHidden = true
+            }
         })
     }
     
@@ -911,8 +898,10 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         
         inEditMode = newMode
         if(inEditMode){
+          
             selectMediaView.isHidden = !inEditMode
         }
+        
         updateRemove()
     }
     
@@ -1001,7 +990,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     private func getSelectedAssets() -> [Asset] {
         assetsReadConn?.objects(at: collectionView.indexPathsForSelectedItems, in: assetsMappings) ?? []
     }
-    
+    private func getAllAssets()-> [Asset] {
+        assetsReadConn?.objects(at: collectionView.indexPathsForVisibleItems, in: assetsMappings) ?? []
+    }
     private func toggleMenu(_ toggle: Bool, _ completion: ((_ finished: Bool) -> Void)? = nil) {
         guard menu.isHidden != !toggle else {
             completion?(true)

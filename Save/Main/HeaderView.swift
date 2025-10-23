@@ -52,7 +52,7 @@ class HeaderView: UICollectionReusableView {
                     Formatters.format(total))
             }
             else {
-                infoLb.text = NSLocalizedString("Ready to upload", comment: "").localizedUppercase
+                infoLb.text = NSLocalizedString("Ready to upload", comment: "")
 
                 let waiting = collection?.waitingAssetsCount ?? 0
 

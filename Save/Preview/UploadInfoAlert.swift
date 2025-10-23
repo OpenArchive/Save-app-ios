@@ -21,7 +21,7 @@ class UploadInfoAlert {
     }
     
     static var title: String {
-        NSLocalizedString("Warning", comment: "")
+        NSLocalizedString("Warning!", comment: "")
     }
     
     static var message: String {
@@ -54,7 +54,8 @@ class UploadInfoAlert {
             secondaryButtonTitle: NSLocalizedString("Actually, let me edit", comment: ""),
             secondaryButtonAction: nil,
             showCheckbox: true,
-            iconImage: image ?? Image(systemName: "exclamationmark.triangle.fill")
+            iconImage: image ?? Image(systemName: "exclamationmark.triangle.fill"),
+            iconTint: .accent
         )
         
         if let vc = viewController {
