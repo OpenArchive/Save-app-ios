@@ -6,10 +6,8 @@
 //  Copyright © 2025 Open Archive. All rights reserved.
 //
 
-
 import UIKit
 import StoreKit
-
 
 class AppUpdateManager {
     
@@ -17,6 +15,7 @@ class AppUpdateManager {
     
     private let cacheKey = "com.app.versionCache"
     private let lastPromptDateKey = "com.app.lastUpdatePrompt"
+    private let canceledVersionKey = "com.app.canceledVersion"
     private let userDefaults = UserDefaults.standard
     
     // Configuration
@@ -34,7 +33,6 @@ class AppUpdateManager {
     func checkForUpdateIfNeeded(forced: Bool = false) {
         
         guard !isCheckingUpdate else { return }
-        
         
         if !forced, let cachedInfo = getCachedVersionInfo(), !cachedInfo.isExpired {
             handleVersionCheck(appStoreVersion: cachedInfo.appStoreVersion,
@@ -117,6 +115,12 @@ class AppUpdateManager {
         guard let currentVersion = getCurrentAppVersion() else { return }
         
         if isVersionOlder(currentVersion: currentVersion, appStoreVersion: appStoreVersion) {
+            // Check if user already canceled this version
+            if shouldSkipVersion(appStoreVersion) {
+                print("Skipping update alert for version \(appStoreVersion) - user canceled")
+                return
+            }
+            
             showUpdateAlert(appStoreVersion: appStoreVersion,
                             trackId: trackId,
                             trackViewUrl: trackViewUrl,
@@ -152,6 +156,26 @@ class AppUpdateManager {
         return Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String
     }
     
+    // MARK: - Cancel Management
+    
+    private func shouldSkipVersion(_ version: String) -> Bool {
+        // Simply check if this version was canceled - no expiration
+        guard let canceledVersion = userDefaults.string(forKey: canceledVersionKey),
+              canceledVersion == version else {
+            return false
+        }
+        
+        return true
+    }
+    
+    private func setCanceledVersion(_ version: String) {
+        userDefaults.set(version, forKey: canceledVersionKey)
+    }
+    
+    private func clearCanceledVersion() {
+        userDefaults.removeObject(forKey: canceledVersionKey)
+    }
+    
     // MARK: - Cache Management
     
     private func cacheVersionInfo(_ appStoreApp: AppStoreApp) {
@@ -179,6 +203,7 @@ class AppUpdateManager {
     func clearCache() {
         userDefaults.removeObject(forKey: cacheKey)
         userDefaults.removeObject(forKey: lastPromptDateKey)
+        clearCanceledVersion()
     }
     
     // MARK: - UI Presentation
@@ -187,7 +212,6 @@ class AppUpdateManager {
         // Dismiss any existing alert
         updateAlertController?.dismiss(animated: false)
         
-        // Get window using simpler approach that works with your AppDelegate
         guard let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow })
                 ?? UIApplication.shared.windows.first,
               let rootViewController = window.rootViewController else {
@@ -204,8 +228,9 @@ class AppUpdateManager {
             preferredStyle: .alert
         )
         
-        // Force Update Action
+        // Update Now Action
         let updateAction = UIAlertAction(title: "Update Now", style: .default) { [weak self] _ in
+            self?.clearCanceledVersion() // Clear any canceled version when user chooses to update
             self?.openAppStore(trackId: trackId, trackViewUrl: trackViewUrl)
             
             // Check again after user returns
@@ -215,7 +240,15 @@ class AppUpdateManager {
             }
         }
         
+        // Later Action (Cancel)
+        let laterAction = UIAlertAction(title: "Cancel", style: .cancel) { [weak self] _ in
+            // Store this version as canceled - will never show again
+            self?.setCanceledVersion(appStoreVersion)
+            print("User canceled update for version \(appStoreVersion) - will not show again")
+        }
+        
         alert.addAction(updateAction)
+        alert.addAction(laterAction)
         alert.preferredAction = updateAction
         
         updateAlertController = alert
@@ -223,16 +256,7 @@ class AppUpdateManager {
     }
     
     private func createUpdateMessage(newVersion: String, releaseNotes: String?) -> String {
-        var message = "Version \(newVersion) is now available. Please update to get the latest features and improvements."
-        
-        if let notes = releaseNotes, !notes.isEmpty {
-            // Limit release notes to first 200 characters
-            let truncatedNotes = String(notes.prefix(200))
-            message += "\n\nWhat's New:\n\(truncatedNotes)"
-            if notes.count > 200 {
-                message += "..."
-            }
-        }
+        let message = "Version \(newVersion) is now available. Please update to get the latest features and improvements."
         
         return message
     }
