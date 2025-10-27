@@ -34,7 +34,7 @@ class ScanDIDViewController: UIViewController {
             let hosting = UIHostingController(rootView: scanView)
             addChild(hosting)
             view.addSubview(hosting.view)
-            title = "Scan or Add DID"
+            title = NSLocalizedString("Add DID", comment: "")
             hosting.view.translatesAutoresizingMaskIntoConstraints = false
             NSLayoutConstraint.activate([
                 hosting.view.topAnchor.constraint(equalTo: view.topAnchor),

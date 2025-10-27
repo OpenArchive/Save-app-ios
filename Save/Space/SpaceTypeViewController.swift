@@ -66,7 +66,7 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
        button = BigButton.create(
                     icon: UIImage(named: "storachaBird")?.withRenderingMode(.alwaysTemplate),
                     title: "Storacha",
-                    subtitle: NSLocalizedString("Connect to the storacha network", comment: ""),
+                    subtitle: NSLocalizedString("Connect to the storacha \nnetwork", comment: ""),
                     target: self,
                     action: #selector(newStoracha),
                     container: container,

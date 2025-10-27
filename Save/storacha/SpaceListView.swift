@@ -18,7 +18,7 @@ struct SpaceListView: View {
                 VStack(spacing: 16) {
                     ProgressView()
                         .scaleEffect(1.2)
-                    Text("Loading spaces...")
+                    Text(NSLocalizedString("Loading spaces...", comment: ""))
                         .font(.montserrat(.medium, for: .callout))
                         .foregroundColor(.gray)
                 }
@@ -26,7 +26,7 @@ struct SpaceListView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else if spaceState.spaces.isEmpty {
                 VStack {
-                    Text("No spaces available")
+                    Text(NSLocalizedString("No Spaces Available",comment: ""))
                         .font(.montserrat(.medium, for: .body))
                         .foregroundColor(.gray)
                 }
@@ -40,7 +40,7 @@ struct SpaceListView: View {
                                 onSelect(space)
                             }) {
                                 HStack {
-                                    Image(systemName: "folder")
+                                    Image("folder")
                                         .resizable()
                                         .frame(width: 30, height: 30)
                                         .foregroundColor(.accentColor)

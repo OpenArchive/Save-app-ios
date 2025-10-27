@@ -10,13 +10,11 @@ struct ScanDIDView: View {
     var body: some View {
         NavigationView {
             VStack(alignment: .leading, spacing: 16) {
-                // Input section
+             
                 VStack(alignment: .leading, spacing: 8) {
-                   
+                    Text(NSLocalizedString("Enter a DID access key manually, or scan a QR code to add one.", comment: "")).foregroundColor(.gray70).font(.montserrat(.medium, for: .subheadline)).padding(.horizontal)
                     HStack {
-                        TextField("DID Access Key", text: $typedDID)
-                            .textFieldStyle(RoundedBorderTextFieldStyle())
-                            .font(.montserrat(.semibold, for: .callout))
+                        CustomTextField(placeholder: NSLocalizedString("Enter DID Key", comment: ""),text: $typedDID)
                         Button(action: {
                             showScannerView = true
                         }) {
@@ -33,18 +31,10 @@ struct ScanDIDView: View {
                 
                 Spacer()
                 
-                // Bottom buttons
+                
                 HStack(spacing: 16) {
-                    Button("Back") {
-                        presentationMode.wrappedValue.dismiss()
-                    }.font(.montserrat(.semibold, for: .headline))
-                        .foregroundColor(.backButton)
-                        .frame(maxWidth: .infinity)
-                        .padding(.vertical, 12)
-                        .foregroundColor(.backButton)
-                        .cornerRadius(8)
-                    
-                    Button("Add") {
+                  
+                    Button("Next") {
                         Task {
                             await addDID()
                         }

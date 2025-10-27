@@ -56,7 +56,7 @@ class StorachaAccountsViewController: UIViewController {
             }
         }.environmentObject(appState)
         let hosting = UIHostingController(rootView: detailView)
-        hosting.title = "Account"
+        hosting.title = NSLocalizedString("Accounts", comment: "")
         navigationController?.pushViewController(hosting, animated: true)
     }
 }

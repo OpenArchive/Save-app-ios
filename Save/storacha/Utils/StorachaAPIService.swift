@@ -22,7 +22,7 @@ class StorachaAPIService {
     private let logger = Logger(subsystem: "StorachaApiService", category: "API")
     //192.168.0.104
     //172.20.10.2 - phone
-    private init(baseURL: String = "http://172.20.10.2:3000") {
+    private init(baseURL: String = "http://save-storacha.staging.hypha.coop:3000") {
         self.baseURL = baseURL
     }
     

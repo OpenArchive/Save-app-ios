@@ -33,7 +33,7 @@ class FileListViewController: UIViewController {
         navigationItem.backBarButtonItem = backBarButtonItem
         if(space.isAdmin){
             navigationItem.rightBarButtonItem = UIBarButtonItem(
-                title: "Manage DIDs",
+                title: NSLocalizedString("MANAGE ACCESS", comment: ""),
                 style: .plain,
                 target: self,
                 action: #selector(manageDIDsTapped)

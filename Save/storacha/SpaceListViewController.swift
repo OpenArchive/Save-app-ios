@@ -16,7 +16,7 @@ class SpaceListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        title = "My Spaces"
+        title = NSLocalizedString("Spaces", comment: "")
 
         // Hide default back text
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)

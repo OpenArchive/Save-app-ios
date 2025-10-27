@@ -52,7 +52,7 @@ struct StyledButton: View {
             }
             .padding()
             .frame(maxWidth: .infinity)
-            .background((Color(.systemBackground)))
+            .background(isDisabled ? .gray10 : (Color(.systemBackground)))
             .overlay(
                 RoundedRectangle(cornerRadius: 8)
                     .stroke(isDisabled ? Color.gray50 : Color.gray30, lineWidth: 1)
@@ -92,7 +92,7 @@ struct StorachaSettingView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 200, height: 60)
                     
-                    Text("Storacha is a decentralized media storage system using IPFS, UCAN, and DIDs.")
+                    Text(NSLocalizedString("Storacha lets you store media securely using decentralized technologies (IPFS, UCAN, and DIDs)", comment: ""))
                         .font(.montserrat(.medium, for: .subheadline))
                         .foregroundColor(.gray70)
                         .multilineTextAlignment(.center)
@@ -102,8 +102,8 @@ struct StorachaSettingView: View {
                 .padding(.vertical, 10)
                 
                 StyledButton(
-                    title: "Manage accounts",
-                    subtitle: "Create or edit accounts",
+                    title: NSLocalizedString("Manage Accounts", comment: ""),
+                    subtitle: NSLocalizedString("Create or edit accounts",comment: ""),
                     icon: "person.circle",
                     isDisabled: appState.isBusy
                 ) {
@@ -111,17 +111,17 @@ struct StorachaSettingView: View {
                 }
                 
                 StyledButton(
-                    title: "My spaces",
-                    subtitle: "Access your saved spaces",
+                    title: NSLocalizedString("My Spaces", comment: ""),
+                    subtitle: NSLocalizedString("Access your spaces",comment: ""),
                     icon: "folder",
-                    isDisabled: appState.isBusy
+                    isDisabled: appState.isBusy || appState.spaceCount < 1
                 ) {
                     manageAccountsAction?("spaces")
                 }
                 
                 StyledButton(
-                    title: "Join space",
-                    subtitle: "Connect to an existing space",
+                    title: NSLocalizedString("Join Space",comment: ""),
+                    subtitle: NSLocalizedString("Join an existing shared space",comment: ""),
                     icon: "plus",
                     isDisabled: appState.isBusy
                 ) {
@@ -135,11 +135,7 @@ struct StorachaSettingView: View {
                             .font(.system(size: 16))
                             .padding(.top, 2)
                         
-                        Text("All data uploaded to Storacha Network is public. Do not store private or sensitive information. Removing files doesn't prevent indefinite retention by network nodes.")
-                            .font(.montserrat(.medium, for: .caption))
-                            .foregroundColor(.gray70)
-                            .multilineTextAlignment(.leading)
-                            .lineLimit(nil)
+                        StorachaContentDescription()
                     }
                 }
                 .padding(.horizontal)
@@ -182,5 +178,17 @@ struct StorachaSettingView: View {
         .onReceive(Just(appState.isBusy)) { isBusy in
             disableBackAction?(isBusy)
         }
+    }
+}
+struct StorachaContentDescription: View {
+    var body: some View {
+        Text(NSLocalizedString("Files uploaded to the Storacha network are publicly accessible through their CID and may remain permanently available across decentralized nodes. ", comment: "ProofMode description"))
+            .font(.montserrat(.medium, for: .caption))
+            .foregroundColor(.gray70)
+        +
+        Text("[\(NSLocalizedString("Learn more.", comment: "Learn more link"))](https://docs.storacha.network/how-to/upload/)")
+            .font(.montserrat(.medium, for: .caption))
+            .foregroundColor(.accent)
+            .underline()
     }
 }

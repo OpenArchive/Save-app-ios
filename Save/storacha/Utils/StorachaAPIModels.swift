@@ -116,6 +116,7 @@ struct StorachaRevokeResponse: Codable {
 struct StorachaAccountUsageResponse: Codable {
     let totalUsage: StorachaUsageDetail
     let spaces: [StorachaSpaceUsage]
+    let planProduct:String
 }
 
 struct StorachaSpaceUsage: Codable, Identifiable {

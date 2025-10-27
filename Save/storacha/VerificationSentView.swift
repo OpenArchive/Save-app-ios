@@ -14,6 +14,7 @@ struct VerificationSentView: View {
     var onVerified: () -> Void
     var onTimeout: () -> Void
     @State private var isPolling = false
+    @Environment(\.presentationMode) var presentationMode
 
     var body: some View {
         VStack(spacing: 20) {
@@ -32,22 +33,39 @@ struct VerificationSentView: View {
                 .frame(width: 24, height: 24)
                 .foregroundColor(.accentColor)
             
-            Text("Verification Email Sent")
+            Text(NSLocalizedString("Verification Email Sent", comment: ""))
                 .font(.montserrat(.bold, for: .headline))
                 .multilineTextAlignment(.center)
 
-            Text("Please check your inbox and click the link on the verification email.")
+            Text(NSLocalizedString("Please check your inbox and click the link on the verification email.", comment: ""))
                 .font(.montserrat(.medium, for: .subheadline))
                 .multilineTextAlignment(.center)
                 .foregroundColor(.gray)
                 .padding(.horizontal)
             
             if !email.isEmpty {
-                Text("Sent to: \(email)")
+                Text(  String(format: NSLocalizedString(
+                    "Sent to: %@",
+                    comment: "placeholder is 'email'"), email))
                     .font(.montserrat(.medium, for: .caption))
                     .foregroundColor(.gray)
             }
-
+            HStack(spacing: 4) {
+                            Text(NSLocalizedString("Email is incorrect?", comment: ""))
+                                .font(.montserrat(.bold, for: .subheadline))
+                                .foregroundColor(.gray70)
+                            
+                            Button(action: {
+                                authState.stopVerificationPolling()
+                                presentationMode.wrappedValue.dismiss()
+                            }) {
+                                Text(NSLocalizedString("Change now.", comment: ""))
+                                    .font(.montserrat(.bold, for: .subheadline))
+                                    .underline()
+                                    .foregroundColor(.accentColor)
+                            }
+                        }
+                        .padding(.top, 10)
             Spacer()
         }
         .padding()

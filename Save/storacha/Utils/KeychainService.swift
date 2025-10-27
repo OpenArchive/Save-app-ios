@@ -60,11 +60,36 @@ class KeychainService {
         let firstLaunchKey = "HasLaunchedBefore"
         
         if !UserDefaults.standard.bool(forKey: firstLaunchKey) {
-            // First install - clear all keychain items for this app
+           
+            var keysToKeep: [String] = []
+            
+            if AppSettings.isPasscodeEnabled {
+                keysToKeep = ["passcode_hash", "passcode_salt"]
+            }
+            
             let query: [String: Any] = [
-                kSecClass as String: kSecClassGenericPassword
+                kSecClass as String: kSecClassGenericPassword,
+                kSecReturnAttributes as String: true,
+                kSecMatchLimit as String: kSecMatchLimitAll
             ]
-            SecItemDelete(query as CFDictionary)
+            
+            var result: AnyObject?
+            let status = SecItemCopyMatching(query as CFDictionary, &result)
+            
+            if status == errSecSuccess, let items = result as? [[String: Any]] {
+                for item in items {
+                    if let account = item[kSecAttrAccount as String] as? String {
+                        // Only delete if not in our keep list
+                        if !keysToKeep.contains(account) {
+                            let deleteQuery: [String: Any] = [
+                                kSecClass as String: kSecClassGenericPassword,
+                                kSecAttrAccount as String: account
+                            ]
+                            SecItemDelete(deleteQuery as CFDictionary)
+                        }
+                    }
+                }
+            }
             
             // Mark as launched
             UserDefaults.standard.set(true, forKey: firstLaunchKey)

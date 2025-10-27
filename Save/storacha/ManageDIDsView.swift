@@ -20,19 +20,25 @@ struct ManageDIDsView: View {
         if #available(iOS 15.0, *) {
             VStack(spacing: 12) {
                 if didState.isLoading {
-                    ProgressView("Loading DIDs...")
+                    ProgressView(NSLocalizedString("Loading DIDs...", comment: ""))
                         .font(.montserrat(.medium, for: .caption))
                         .progressViewStyle(CircularProgressViewStyle())
                         .padding(.top, 40)
                 } else {
-                    ScrollView {
-                        VStack(spacing: 12) {
-                            if didState.dids.isEmpty {
-                                Text("No DIDs available")
-                                    .foregroundColor(.gray)
-                                    .font(.montserrat(.medium, for: .body))
-                                    .padding(.top, 40)
-                            } else {
+                  
+                   
+                        if didState.dids.isEmpty {
+                            VStack(spacing: 12) {
+                            Spacer()
+                            Text(NSLocalizedString("No DIDs currently have access to this space.\nTap 'Add' to grant access.", comment: ""))
+                                .foregroundColor(.gray)
+                                .font(.montserrat(.medium, for: .body))
+                                .multilineTextAlignment(.center)
+                                .padding(.top, 40)
+                            Spacer()}}
+                            else {
+                                ScrollView {
+                                    VStack(spacing: 12) {
                                 ForEach(didState.dids, id: \.self) { did in
                                     HStack {
                                         Image(systemName: "person.circle")
@@ -64,11 +70,11 @@ struct ManageDIDsView: View {
                                             .stroke(.gray30, lineWidth: 1)
                                     )
                                     .padding(.horizontal)
-                                }
+                                }  }
+                                .padding(.top, 20)
                             }
-                        }
-                        .padding(.top, 20)
-                    }
+                            }
+                      
                 }
             }
             .compatTask {
@@ -82,10 +88,10 @@ struct ManageDIDsView: View {
                         
                         CustomAlertView(
                             title: NSLocalizedString("Revoke Access?", comment: ""),
-                            message: String(format: NSLocalizedString(
-                                "This will revoke access for this DID from the %@ app.",
+                            message: NSLocalizedString(
+                                "This will revoke access to this DID for this space.",
                                 comment: "Placeholder is app name"
-                            ), Bundle.main.displayName),
+                            ),
                             primaryButtonTitle: NSLocalizedString("Revoke", comment: ""),
                             iconImage: Image("trash_icon"),
                             iconTint: .gray,

@@ -18,6 +18,7 @@ class StorachaAppState: ObservableObject {
     @Published var usage: StorachaAccountUsageResponse?
     @Published var error: StorachaAPIError?
     @Published var isBusy: Bool = false
+    @Published var spaceCount:Int = 0
     @Published var didState = DIDState()
     @Published var authState = AuthState()
     @Published var spaceState = SpaceState()
@@ -29,6 +30,7 @@ class StorachaAppState: ObservableObject {
     init() {
         self.lastUsedEmail = sessionManager.getLastEmail() ?? ""
         restoreSession()
+        spaceCount = sessionManager.loadSpaceCount() ?? 0
     }
     // MARK: - Account Listing
     @MainActor

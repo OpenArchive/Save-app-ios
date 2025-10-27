@@ -16,7 +16,7 @@ struct VerificationSuccessView: View {
         VStack(spacing: 20) {
             Spacer()
             
-            Text("Email has been verified and spaces have been added to your application.")
+            Text(NSLocalizedString("Your email has been verified,\nand the spaces have been added to Save.", comment: ""))
                 .font(.montserrat(.medium, for: .subheadline))
                 .multilineTextAlignment(.center)
                 .foregroundColor(.gray)

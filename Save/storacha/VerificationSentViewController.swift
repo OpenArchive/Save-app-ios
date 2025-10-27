@@ -21,7 +21,7 @@ class VerificationSentViewController: UIViewController {
         view.backgroundColor = .systemBackground
         
         navigationItem.hidesBackButton = true
-        navigationItem.title = "Verify Email"
+        navigationItem.title = NSLocalizedString("Email Verification", comment: "")
         
         setupVerificationView()
     }
@@ -87,21 +87,24 @@ class VerificationSentViewController: UIViewController {
     }
     
     private func showTimeoutAlert() {
-        let alert = UIAlertController(
-            title: "Verification Timeout",
-            message: "We didn't receive confirmation of your email verification. Please check your email and try again, or return to login.",
-            preferredStyle: .alert
+ 
+        let alertVC = CustomAlertViewController(
+            title: NSLocalizedString("Verification Timeout", comment: ""),
+            message: NSLocalizedString("We didn't receive confirmation of your email verification. Please check your email and try again, or return to login.", comment: ""),
+            primaryButtonTitle: NSLocalizedString("Try Again", comment: ""),
+            primaryButtonAction: {
+                self.setupVerificationView()
+            },
+            secondaryButtonTitle:NSLocalizedString("Back to Login", comment: ""),
+            secondaryButtonAction: {
+                self.navigationController?.popViewController(animated: true)
+            },
+            showCheckbox: false,
+            iconImage: Image(systemName: "exclamationmark.triangle.fill"),
+            iconTint: .accent
         )
-        
-        alert.addAction(UIAlertAction(title: "Try Again", style: .default) { [weak self] _ in
-            self?.setupVerificationView()
-        })
-        
-        alert.addAction(UIAlertAction(title: "Back to Login", style: .cancel) { [weak self] _ in
-            self?.navigationController?.popViewController(animated: true)
-        })
-        
-        present(alert, animated: true)
+        self.present(alertVC, animated: true)
+       
     }
     
     override func viewWillDisappear(_ animated: Bool) {

@@ -158,9 +158,9 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
                return Int(spacesMappings.numberOfItems(inSection: UInt(section)))
            }
            
-           if let session = sessionManager.loadSession()?.sessionId {
-               return 2
-           } else {
+        if sessionManager.loadSession()?.sessionId != nil || (sessionManager.loadSpaceCount() ?? 0) > 0 {
+            return 2
+        } else {
                return 1
            }
     }
@@ -177,18 +177,17 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
                cell.apply(space, select: SelectedSpace.id == space?.id)
            }
            else {
-               if let session = sessionManager.loadSession()?.sessionId {
-                   if indexPath.row == 0 {
+               let hasSession = sessionManager.loadSession()?.sessionId != nil
+               let hasSpaces = (sessionManager.loadSpaceCount() ?? 0) > 0
+
+               if (hasSession || hasSpaces) && indexPath.row == 0 {
                        cell.applyStoracha()
                        cell.accessibilityIdentifier = "cellStoracha"
                    } else {
                        cell.applyAdd()
                        cell.accessibilityIdentifier = "cellAddAccount"
                    }
-               } else {
-                   cell.applyAdd()
-                   cell.accessibilityIdentifier = "cellAddAccount"
-               }
+               
            }
 
         return cell
@@ -208,16 +207,13 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
             }
         }
         else if indexPath.section >= spacesMappings.numberOfSections() {
-            
-            if let session = sessionManager.loadSession()?.sessionId {
-                if indexPath.row == 0 {
-                    
-                    delegate?.manageStoracha()
-                    delegate?.hideMenu()
-                } else {
-                    delegate?.addSpace()
-                }
-            } else {
+            let hasSession = sessionManager.loadSession()?.sessionId != nil
+            let hasSpaces = (sessionManager.loadSpaceCount() ?? 0) > 0
+
+            if (hasSession || hasSpaces) && indexPath.row == 0 {
+                delegate?.manageStoracha()
+                delegate?.hideMenu()
+            }else{
                 delegate?.addSpace()
             }
         }

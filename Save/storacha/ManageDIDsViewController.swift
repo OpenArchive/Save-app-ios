@@ -24,13 +24,13 @@ class ManageDIDsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Manage DIDs"
+        title = NSLocalizedString("Manage Access", comment: "")
         view.backgroundColor = .systemBackground
         
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backBarButtonItem
         navigationItem.rightBarButtonItem = UIBarButtonItem(
-            title: "Add",
+            title: NSLocalizedString("ADD", comment: ""),
             style: .plain,
             target: self,
             action: #selector(addDidTapped)

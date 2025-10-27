@@ -1,7 +1,7 @@
 {
   "images" : [
     {
-      "filename" : "folder_icon.svg",
+      "filename" : "IOS.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },
@@ -12,6 +12,7 @@
           "value" : "dark"
         }
       ],
+      "filename" : "IOS 1.svg",
       "idiom" : "universal",
       "scale" : "1x"
     },

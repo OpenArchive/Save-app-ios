@@ -36,7 +36,7 @@ struct FileListView: View {
                         .scaleEffect(1.0)
                         .progressViewStyle(CircularProgressViewStyle(tint: .white))
                     
-                    Text("Uploading...")
+                    Text(NSLocalizedString("Uploading...", comment: ""))
                         .font(.montserrat(.medium, for: .callout))
                         .foregroundColor(.white)
                         .multilineTextAlignment(.center)
@@ -66,10 +66,10 @@ struct FileListView: View {
     @ViewBuilder
     private func uploadResultAlert(result: Result<UploadResponse, Error>) -> some View {
         switch result {
-        case .success(let response):
+        case .success(_):
             CustomAlertView(
                 title: NSLocalizedString("Success!", comment: ""),
-                message: NSLocalizedString("File uploaded successfully!\nCID: \(response.cid)\nSize: \(ByteCountFormatter.string(fromByteCount: Int64(response.size), countStyle: .file))", comment: ""),
+                message: NSLocalizedString("File uploaded successfully!", comment: ""),
                 primaryButtonTitle: NSLocalizedString("Got it", comment: ""),
                 iconImage: Image("check_icon"),
                 primaryButtonAction: {
@@ -83,7 +83,7 @@ struct FileListView: View {
         case .failure(let error):
             CustomAlertView(
                 title: NSLocalizedString("Upload Failed", comment: ""),
-                message: NSLocalizedString("Sorry, we couldn't upload your file.\n\(error.localizedDescription)", comment: ""),
+                message: "\(error.localizedDescription)",
                 primaryButtonTitle: NSLocalizedString("Try Again", comment: ""),
                 iconImage: Image(systemName: "exclamationmark.triangle.fill"),
                 iconTint: .red,
@@ -101,7 +101,7 @@ struct FileListView: View {
         if spaceState.isLoadingUploads && spaceState.uploads.isEmpty {
             VStack {
                 Spacer()
-                ProgressView("Loading files...")
+                ProgressView(NSLocalizedString("Loading files...", comment: ""))
                     .font(.montserrat(.medium, for: .body))
                 Spacer()
             }
@@ -109,12 +109,7 @@ struct FileListView: View {
             VStack {
                 Spacer()
                 
-                Image(systemName: "tray")
-                    .font(.system(size: 48))
-                    .foregroundColor(.gray)
-                    .padding(.bottom, 16)
-                
-                Text("No files available")
+                Text(NSLocalizedString("No Media Available", comment: ""))
                     .foregroundColor(.gray)
                     .font(.montserrat(.medium, for: .body))
                 
@@ -150,7 +145,7 @@ struct FileListView: View {
                             VStack(spacing: 8) {
                                 ProgressView()
                                     .scaleEffect(0.8)
-                                Text("Loading more...")
+                                Text(NSLocalizedString("Loading more...", comment: ""))
                                     .font(.montserrat(.medium, for: .caption))
                                     .foregroundColor(.secondary)
                             }
@@ -164,7 +159,7 @@ struct FileListView: View {
                                 VStack(spacing: 8) {
                                     ProgressView()
                                         .scaleEffect(0.8)
-                                    Text("Loading more...")
+                                    Text(NSLocalizedString("Loading more...", comment: ""))
                                         .font(.montserrat(.medium, for: .caption))
                                         .foregroundColor(.secondary)
                                 }

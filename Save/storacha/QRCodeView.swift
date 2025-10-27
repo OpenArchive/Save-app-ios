@@ -25,7 +25,7 @@ struct QRCodeView: View {
                         .progressViewStyle(CircularProgressViewStyle())
                         .scaleEffect(1.5)
                     
-                    Text("Loading QR code...")
+                    Text(NSLocalizedString("Loading QR code...", comment: ""))
                         .font(.montserrat(.semibold, for: .headline))
                         .foregroundColor(.gray70)
                 }
@@ -39,7 +39,7 @@ struct QRCodeView: View {
                             .scaledToFit()
                             .frame(width: 50, height: 50)
                         
-                        Text("This is your QR code to request access, Please ask the admin to scan your code to gain access to space")
+                        Text(NSLocalizedString("This is your QR code to request access, Please ask the admin to scan your code to gain access to space.", comment: ""))
                             .font(.montserrat(.medium, for: .callout))
                             .foregroundColor(.gray70)
                             .multilineTextAlignment(.leading)
@@ -66,7 +66,7 @@ struct QRCodeView: View {
                     }
                     
                     VStack(spacing: 8) {
-                        Text("DID ACCESS KEY")
+                        Text(NSLocalizedString("DID ACCESS KEY", comment: ""))
                             .font(.montserrat(.bold, for: .caption))
                             .foregroundColor(.black)
                             .tracking(1)
@@ -111,7 +111,7 @@ struct QRCodeView: View {
                 Button(action: {
                     onComplete?()
                 }) {
-                    Text("View Spaces")
+                    Text(NSLocalizedString("View Spaces", comment: ""))
                         .font(.montserrat(.semibold, for: .headline))
                         .foregroundColor(.black)
                         .frame(maxWidth: .infinity)
@@ -131,7 +131,7 @@ struct QRCodeView: View {
             VStack {
                 Spacer()
                 if showToast {
-                    Text("DID copied to clipboard")
+                    Text(NSLocalizedString("DID copied to clipboard", comment: ""))
                         .font(.montserrat(.medium, for: .subheadline))
                         .foregroundColor(.white)
                         .padding(.horizontal, 20)

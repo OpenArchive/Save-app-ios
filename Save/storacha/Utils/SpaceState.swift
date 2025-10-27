@@ -37,6 +37,7 @@ class SpaceState: ObservableObject {
         do {
             let fetchedSpaces = try await apiService.getSpaces()
             self.spaces = fetchedSpaces
+            try sessionManager.saveSpaces(fetchedSpaces.count)
         } catch {
             self.error = error as? StorachaAPIError ?? .networkError(error)
             self.spaces = []

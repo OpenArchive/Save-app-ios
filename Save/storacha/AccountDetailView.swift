@@ -12,69 +12,174 @@ struct AccountDetailView: View {
     @EnvironmentObject var appState: StorachaAppState
     var email: String
     var onLogout: () -> Void
+    
+    @State private var activeSortType: SortType = .name
+    @State private var nameSortAscending = true
+    @State private var sizeSortAscending = false // Start with descending for size
+    
+    enum SortType {
+        case name, size
+    }
 
     var body: some View {
-        VStack {
-            Spacer().frame(height: 80)
-
+        VStack(alignment: .leading, spacing: 20) {
+           
             Text(email)
-                .font(.montserrat(.semibold, for: .subheadline))
+                .font(.montserrat(.medium, for: .body))
+                .foregroundColor(.gray)
                 .padding()
                 .frame(maxWidth: .infinity)
                 .background(
                     RoundedRectangle(cornerRadius: 8)
-                        .stroke(Color.gray.opacity(0.5), lineWidth: 1)
+                        .stroke(Color.black, lineWidth: 1)
                 )
                 .padding(.horizontal)
+                .padding(.top, 20)
 
-            if appState.isLoading {
-                if #available(iOS 14.0, *) {
-                    ProgressView("Loading usage...")
-                        .padding(.top, 20) .font(.montserrat(.medium, for: .caption))
+            // Plan Section
+            VStack(alignment: .leading, spacing: 8) {
+                if appState.isLoading {
+                    ProgressView()
                 } else {
-                    // Fallback on earlier versions
+                    Text("\(extractPlanName()) Plan")
+                        .font(.montserrat(.bold, for: .headline))
+                        .foregroundColor(.primary)
+                    if let usage = appState.usage {
+                        Text("\(usage.totalUsage.human) used")
+                            .font(.montserrat(.medium, for: .body))
+                            .foregroundColor(.gray70)
+                    } else {
+                        Text("0 MB used")
+                            .font(.montserrat(.medium, for: .body))
+                            .foregroundColor(.gray70)
+                    }
                 }
-            } else if let usage = appState.usage {
-                VStack(alignment: .leading, spacing: 16) {
-                    Text("Total Usage: \(usage.totalUsage.human)")
-                        .font(.montserrat(.semibold, for: .title))
+            }
+            .padding(.horizontal)
 
-                    ForEach(usage.spaces) { space in
-                        HStack {
-                            Text(space.name)
-                                .font(.montserrat(.medium, for: .body))
-                            Spacer()
-                            Text(space.usage.human)
-                                .font(.montserrat(.medium, for: .footnote))
-                                .foregroundColor(.gray)
+            // Storage Spaces Section
+            VStack(alignment: .leading, spacing: 16) {
+                Text(NSLocalizedString("Storage Spaces", comment: ""))
+                    .font(.montserrat(.bold, for: .headline))
+                    .foregroundColor(.primary)
+                    .padding(.horizontal)
+                
+                // Sort buttons
+                HStack(spacing: 12) {
+                    Button(action: {
+                        if activeSortType == .name {
+                            // Toggle ascending/descending
+                            nameSortAscending.toggle()
+                        } else {
+                            // Switch to name sort
+                            activeSortType = .name
                         }
-                        .padding(.vertical, 4)
+                    }) {
+                        HStack(spacing: 4) {
+                            Text(NSLocalizedString("Sort by Name", comment: ""))
+                                .font(.montserrat(.medium, for: .caption))
+                            if activeSortType == .name {
+                                Image(systemName: nameSortAscending ? "arrow.up" : "arrow.down")
+                                    .font(.system(size: 10, weight: .medium))
+                            }
+                        }
+                        .foregroundColor(activeSortType == .name ? .accentColor : .gray70)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(
+                            RoundedRectangle(cornerRadius: 25)
+                                .stroke(activeSortType == .name ? Color.accentColor : .gray30, lineWidth: 1)
+                        )
+                    }
+                    
+                    Button(action: {
+                        if activeSortType == .size {
+                            // Toggle ascending/descending
+                            sizeSortAscending.toggle()
+                        } else {
+                            // Switch to size sort
+                            activeSortType = .size
+                        }
+                    }) {
+                        HStack(spacing: 4) {
+                            Text(NSLocalizedString("Sort by Size", comment: ""))
+                                .font(.montserrat(.medium, for: .caption))
+                            if activeSortType == .size {
+                                Image(systemName: sizeSortAscending ? "arrow.up" : "arrow.down")
+                                    .font(.system(size: 10, weight: .medium))
+                            }
+                        }
+                        .foregroundColor(activeSortType == .size ? .accentColor : .gray70)
+                        .padding()
+                        .frame(maxWidth: .infinity)
+                        .background(
+                            RoundedRectangle(cornerRadius: 25)
+                                .stroke(activeSortType == .size ? Color.accentColor : .gray30, lineWidth: 1)
+                        )
                     }
                 }
                 .padding(.horizontal)
-            } else if let error = appState.error {
-                Text("Error: \(error.localizedDescription)")
-                    .foregroundColor(.red)
-                    .padding()
-            } else {
-                Text("No usage data available")
-                    .foregroundColor(.gray70)
-                    .padding(.top, 20)
+                
+                // Spaces list
+                if appState.isLoading {
+                    if #available(iOS 14.0, *) {
+                        ProgressView()
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                    }
+                } else if let usage = appState.usage {
+                    let sortedSpaces: [StorachaSpaceUsage] = {
+                        if activeSortType == .name {
+                            return nameSortAscending
+                                ? usage.spaces.sorted(by: { $0.name < $1.name })
+                                : usage.spaces.sorted(by: { $0.name > $1.name })
+                        } else {
+                            return sizeSortAscending
+                                ? usage.spaces.sorted(by: { $0.usage.bytes < $1.usage.bytes })
+                                : usage.spaces.sorted(by: { $0.usage.bytes > $1.usage.bytes })
+                        }
+                    }()
+                    
+                    ForEach(sortedSpaces) { space in
+                        HStack {
+                            Text(space.name)
+                                .font(.montserrat(.medium, for: .body))
+                                .foregroundColor(.black)
+                            Spacer()
+                            Text(space.usage.human)
+                                .font(.montserrat(.medium, for: .body))
+                                .foregroundColor(.gray)
+                        }
+                        .padding(.horizontal)
+                        .padding(.vertical, 4)
+                    }
+                } else if appState.error != nil {
+                    Text("Error loading spaces")
+                        .foregroundColor(.red)
+                        .font(.montserrat(.medium, for: .caption))
+                        .padding(.horizontal)
+                }
             }
 
             Spacer()
 
+            // Logout button
             Button(action: { onLogout() }) {
-                Text("Log out")
+                Text(NSLocalizedString("Logout", comment: ""))
                     .font(.montserrat(.semibold, for: .headline))
-                    .foregroundColor(.white)
+                    .foregroundColor(.black)
                     .padding()
                     .frame(maxWidth: .infinity)
-                    .background(RoundedRectangle(cornerRadius: 8).fill(Color.accentColor))
+                    .background(
+                        RoundedRectangle(cornerRadius: 8)
+                            .fill(Color.accentColor)
+                    )
             }
             .padding(.horizontal)
             .padding(.bottom, 40)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .top)
+        .background(Color(.systemBackground))
         .onAppear {
             Task {
                 if let sessionId = appState.currentUser?.sessionId {
@@ -82,5 +187,20 @@ struct AccountDetailView: View {
                 }
             }
         }
+    }
+    
+    private func extractPlanName() -> String {
+        guard let usage = appState.usage else {
+            return "Starter"
+        }
+    
+        let components = usage.planProduct.split(separator: ":")
+        if components.count >= 3 {
+            let webComponent = String(components[2])
+            let planName = webComponent.split(separator: ".").first ?? "Starter"
+            return String(planName).capitalized
+        }
+        
+        return "Starter"
     }
 }

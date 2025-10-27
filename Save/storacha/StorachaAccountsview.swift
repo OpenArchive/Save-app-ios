@@ -17,28 +17,34 @@ struct AccountListView: View {
     var body: some View {
         ScrollView {
             VStack(spacing: 12) {
-                Spacer().frame(height: 40)
-
+              
                 if accountState.accounts.isEmpty {
-                    Text("No accounts found")
-                        .foregroundColor(.gray)
+                    Spacer()
+                    Text(NSLocalizedString("No Accounts Available", comment: ""))
+                        .foregroundColor(.gray70)
                         .padding()
+                    Spacer()
                 } else {
                     ForEach(accountState.accounts, id: \.self) { email in
                         Button(action: { onSelect(email) }) {
                             HStack {
-                                Text(email)
-                                    .foregroundColor(Color(.label)).font(.montserrat(.semibold, for: .headline))
+                                Image(systemName: "person.circle")
+                                    .resizable()
+                                    .frame(width: 30, height: 30)
+                                    .padding(.trailing, 8)
+                                    .foregroundColor(.primary)
+                                VStack(alignment: .leading, spacing: 4) {
+                                    Text(email)
+                                        .font(.montserrat(.semibold, for: .callout))
+                                        .foregroundColor(.primary)
+                                }
                                 Spacer()
-                                Image(uiImage: (UIImage(named: "forward_arrow")?.withRenderingMode(.alwaysTemplate))!)
+                                Image(systemName: "chevron.right")
                                     .foregroundColor(Color(.label))
                             }
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(.gray30, lineWidth: 1)
-                            )
+                           
                         }
                         .padding(.horizontal)
                     }
