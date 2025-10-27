@@ -70,7 +70,7 @@ class PreviewCell: UICollectionViewCell {
             previewImg.image = UIImage(named: "NoImage")
             
             // Configure movie indicator immediately (this is fast)
-            movieIndicator.isHidden = !(asset.isAv ?? false)
+            movieIndicator.isHidden = !(asset.isAv)
             movieIndicator.set(duration: asset.duration)
             
             // Load thumbnail asynchronously
