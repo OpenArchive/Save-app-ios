@@ -6,9 +6,6 @@
 //  Copyright © 2025 Open Archive. All rights reserved.
 //
 
-
-import CryptoKit
-
 import CryptoKit
 
 class DIDKeyManager {
@@ -41,6 +38,80 @@ class DIDKeyManager {
         // Encode with base58btc and create DID
         let base58Key = prefixedKey.toBase58String()
         return "did:key:z\(base58Key)"
+    }
+    
+    /**
+     * Validates a DID key format and structure
+     */
+    func isValidDid(_ did: String) -> Bool {
+        do {
+            // Check basic format
+            guard did.hasPrefix("did:key:z") else { return false }
+            
+            // Must have content after "did:key:z"
+            guard did.count > 9 else { return false }
+            
+            let base58Part = String(did.dropFirst(9))
+            
+            // Base58 part should not be empty
+            guard !base58Part.isEmpty else { return false }
+            
+            // Try to decode and validate the structure
+            let multicodecKey = try decodeBase58(base58Part)
+            
+            // Check multicodec prefix for Ed25519 (0xed01) and minimum length
+            guard multicodecKey.count >= 34 else { return false }
+            guard multicodecKey[0] == 0xed && multicodecKey[1] == 0x01 else { return false }
+            
+            // Extract the public key (32 bytes from index 2 to 33)
+            let publicKeyBytes = multicodecKey[2...33]
+            
+            // Validate it's 32 bytes and can be used as a Curve25519 public key
+            guard publicKeyBytes.count == 32 else { return false }
+            _ = try Curve25519.Signing.PublicKey(rawRepresentation: Data(publicKeyBytes))
+            
+            return true
+        } catch {
+            return false
+        }
+    }
+    
+    /**
+     * Decodes a Base58 encoded string to Data
+     */
+    private func decodeBase58(_ string: String) throws -> Data {
+        let alphabet = "123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz"
+        var decoded: [UInt8] = [0]
+        
+        for char in string {
+            guard let index = alphabet.firstIndex(of: char) else {
+                throw NSError(domain: "Base58", code: -1, userInfo: [NSLocalizedDescriptionKey: "Invalid Base58 character"])
+            }
+            
+            var carry = alphabet.distance(from: alphabet.startIndex, to: index)
+            
+            for i in 0..<decoded.count {
+                carry += Int(decoded[i]) * 58
+                decoded[i] = UInt8(carry & 0xff)
+                carry >>= 8
+            }
+            
+            while carry > 0 {
+                decoded.append(UInt8(carry & 0xff))
+                carry >>= 8
+            }
+        }
+        
+        // Add leading zeros
+        for char in string {
+            if char == "1" {
+                decoded.append(0)
+            } else {
+                break
+            }
+        }
+        
+        return Data(decoded.reversed())
     }
     
     func saveKeyPair(_ keyPair: DIDKeyPair) throws {

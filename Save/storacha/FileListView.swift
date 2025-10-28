@@ -66,10 +66,10 @@ struct FileListView: View {
     @ViewBuilder
     private func uploadResultAlert(result: Result<UploadResponse, Error>) -> some View {
         switch result {
-        case .success(_):
+        case .success(let response):
             CustomAlertView(
                 title: NSLocalizedString("Success!", comment: ""),
-                message: NSLocalizedString("File uploaded successfully!", comment: ""),
+                message: NSLocalizedString("File uploaded successfully!\nCID: \(response.cid)\nSize: \(ByteCountFormatter.string(fromByteCount: Int64(response.size), countStyle: .file))", comment: ""),
                 primaryButtonTitle: NSLocalizedString("Got it", comment: ""),
                 iconImage: Image("check_icon"),
                 primaryButtonAction: {

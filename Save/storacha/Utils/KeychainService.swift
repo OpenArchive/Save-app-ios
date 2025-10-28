@@ -56,10 +56,10 @@ class KeychainService {
     }
     
     // MARK: - First Install Cleanup
-    func clearKeychainOnFirstInstall() {
+    func clearKeychainOnFirstInstall(forceDelete: Bool = false) {
         let firstLaunchKey = "HasLaunchedBefore"
         
-        if !UserDefaults.standard.bool(forKey: firstLaunchKey) {
+        if !UserDefaults.standard.bool(forKey: firstLaunchKey) || forceDelete {
            
             var keysToKeep: [String] = []
             
@@ -91,8 +91,10 @@ class KeychainService {
                 }
             }
             
-            // Mark as launched
-            UserDefaults.standard.set(true, forKey: firstLaunchKey)
+            // Mark as launched (only on first launch, not on force delete)
+            if !UserDefaults.standard.bool(forKey: firstLaunchKey) {
+                UserDefaults.standard.set(true, forKey: firstLaunchKey)
+            }
         }
     }
 }

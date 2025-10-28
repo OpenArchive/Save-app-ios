@@ -36,11 +36,13 @@ struct AccountDetailView: View {
                 .padding(.horizontal)
                 .padding(.top, 20)
 
-            // Plan Section
-            VStack(alignment: .leading, spacing: 8) {
-                if appState.isLoading {
-                    ProgressView()
-                } else {
+            if appState.isLoading {
+                // Single progress indicator for both plan and spaces
+                ProgressView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+            } else {
+                // Plan Section
+                VStack(alignment: .leading, spacing: 8) {
                     Text("\(extractPlanName()) Plan")
                         .font(.montserrat(.bold, for: .headline))
                         .foregroundColor(.primary)
@@ -54,110 +56,108 @@ struct AccountDetailView: View {
                             .foregroundColor(.gray70)
                     }
                 }
-            }
-            .padding(.horizontal)
-
-            // Storage Spaces Section
-            VStack(alignment: .leading, spacing: 16) {
-                Text(NSLocalizedString("Storage Spaces", comment: ""))
-                    .font(.montserrat(.bold, for: .headline))
-                    .foregroundColor(.primary)
-                    .padding(.horizontal)
-                
-                // Sort buttons
-                HStack(spacing: 12) {
-                    Button(action: {
-                        if activeSortType == .name {
-                            // Toggle ascending/descending
-                            nameSortAscending.toggle()
-                        } else {
-                            // Switch to name sort
-                            activeSortType = .name
-                        }
-                    }) {
-                        HStack(spacing: 4) {
-                            Text(NSLocalizedString("Sort by Name", comment: ""))
-                                .font(.montserrat(.medium, for: .caption))
-                            if activeSortType == .name {
-                                Image(systemName: nameSortAscending ? "arrow.up" : "arrow.down")
-                                    .font(.system(size: 10, weight: .medium))
-                            }
-                        }
-                        .foregroundColor(activeSortType == .name ? .accentColor : .gray70)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(
-                            RoundedRectangle(cornerRadius: 25)
-                                .stroke(activeSortType == .name ? Color.accentColor : .gray30, lineWidth: 1)
-                        )
-                    }
-                    
-                    Button(action: {
-                        if activeSortType == .size {
-                            // Toggle ascending/descending
-                            sizeSortAscending.toggle()
-                        } else {
-                            // Switch to size sort
-                            activeSortType = .size
-                        }
-                    }) {
-                        HStack(spacing: 4) {
-                            Text(NSLocalizedString("Sort by Size", comment: ""))
-                                .font(.montserrat(.medium, for: .caption))
-                            if activeSortType == .size {
-                                Image(systemName: sizeSortAscending ? "arrow.up" : "arrow.down")
-                                    .font(.system(size: 10, weight: .medium))
-                            }
-                        }
-                        .foregroundColor(activeSortType == .size ? .accentColor : .gray70)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(
-                            RoundedRectangle(cornerRadius: 25)
-                                .stroke(activeSortType == .size ? Color.accentColor : .gray30, lineWidth: 1)
-                        )
-                    }
-                }
                 .padding(.horizontal)
-                
-                // Spaces list
-                if appState.isLoading {
-                    if #available(iOS 14.0, *) {
-                        ProgressView()
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                    }
-                } else if let usage = appState.usage {
-                    let sortedSpaces: [StorachaSpaceUsage] = {
-                        if activeSortType == .name {
-                            return nameSortAscending
-                                ? usage.spaces.sorted(by: { $0.name < $1.name })
-                                : usage.spaces.sorted(by: { $0.name > $1.name })
-                        } else {
-                            return sizeSortAscending
-                                ? usage.spaces.sorted(by: { $0.usage.bytes < $1.usage.bytes })
-                                : usage.spaces.sorted(by: { $0.usage.bytes > $1.usage.bytes })
-                        }
-                    }()
+
+                // Storage Spaces Section
+                VStack(alignment: .leading, spacing: 16) {
+                    Text(NSLocalizedString("Storage Spaces", comment: ""))
+                        .font(.montserrat(.bold, for: .headline))
+                        .foregroundColor(.primary)
+                        .padding(.horizontal)
                     
-                    ForEach(sortedSpaces) { space in
-                        HStack {
-                            Text(space.name)
-                                .font(.montserrat(.medium, for: .body))
-                                .foregroundColor(.black)
-                            Spacer()
-                            Text(space.usage.human)
-                                .font(.montserrat(.medium, for: .body))
-                                .foregroundColor(.gray)
+                    // Sort buttons
+                    HStack(spacing: 12) {
+                        Button(action: {
+                            if activeSortType == .name {
+                                // Toggle ascending/descending
+                                nameSortAscending.toggle()
+                            } else {
+                                // Switch to name sort
+                                activeSortType = .name
+                            }
+                        }) {
+                            HStack(spacing: 4) {
+                                Text(NSLocalizedString("Sort by Name", comment: ""))
+                                    .font(.montserrat(.medium, for: .caption))
+                                if activeSortType == .name {
+                                    Image(systemName: nameSortAscending ? "arrow.up" : "arrow.down")
+                                        .font(.system(size: 10, weight: .medium))
+                                }
+                            }
+                            .foregroundColor(activeSortType == .name ? .accentColor : .gray70)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(
+                                RoundedRectangle(cornerRadius: 25)
+                                    .stroke(activeSortType == .name ? Color.accentColor : .gray30, lineWidth: 1)
+                            )
                         }
-                        .padding(.horizontal)
-                        .padding(.vertical, 4)
+                        
+                        Button(action: {
+                            if activeSortType == .size {
+                                // Toggle ascending/descending
+                                sizeSortAscending.toggle()
+                            } else {
+                                // Switch to size sort
+                                activeSortType = .size
+                            }
+                        }) {
+                            HStack(spacing: 4) {
+                                Text(NSLocalizedString("Sort by Size", comment: ""))
+                                    .font(.montserrat(.medium, for: .caption))
+                                if activeSortType == .size {
+                                    Image(systemName: sizeSortAscending ? "arrow.up" : "arrow.down")
+                                        .font(.system(size: 10, weight: .medium))
+                                }
+                            }
+                            .foregroundColor(activeSortType == .size ? .accentColor : .gray70)
+                            .padding()
+                            .frame(maxWidth: .infinity)
+                            .background(
+                                RoundedRectangle(cornerRadius: 25)
+                                    .stroke(activeSortType == .size ? Color.accentColor : .gray30, lineWidth: 1)
+                            )
+                        }
                     }
-                } else if appState.error != nil {
-                    Text("Error loading spaces")
-                        .foregroundColor(.red)
-                        .font(.montserrat(.medium, for: .caption))
-                        .padding(.horizontal)
+                    .padding(.horizontal)
+                    
+                    // Spaces list with ScrollView
+                    if let usage = appState.usage {
+                        let sortedSpaces: [StorachaSpaceUsage] = {
+                            if activeSortType == .name {
+                                return nameSortAscending
+                                    ? usage.spaces.sorted(by: { $0.name < $1.name })
+                                    : usage.spaces.sorted(by: { $0.name > $1.name })
+                            } else {
+                                return sizeSortAscending
+                                    ? usage.spaces.sorted(by: { $0.usage.bytes < $1.usage.bytes })
+                                    : usage.spaces.sorted(by: { $0.usage.bytes > $1.usage.bytes })
+                            }
+                        }()
+                        
+                        ScrollView {
+                            VStack(spacing: 8) {
+                                ForEach(sortedSpaces) { space in
+                                    HStack {
+                                        Text(space.name)
+                                            .font(.montserrat(.medium, for: .body))
+                                            .foregroundColor(.black)
+                                        Spacer()
+                                        Text(space.usage.human)
+                                            .font(.montserrat(.medium, for: .body))
+                                            .foregroundColor(.gray)
+                                    }
+                                    .padding(.horizontal)
+                                    .padding(.vertical, 4)
+                                }
+                            }
+                        }
+                    } else if appState.error != nil {
+                        Text("Error loading spaces")
+                            .foregroundColor(.red)
+                            .font(.montserrat(.medium, for: .caption))
+                            .padding(.horizontal)
+                    }
                 }
             }
 

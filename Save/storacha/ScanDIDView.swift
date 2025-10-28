@@ -6,7 +6,8 @@ struct ScanDIDView: View {
     @Environment(\.presentationMode) var presentationMode
     @State private var typedDID: String = ""
     @State private var showScannerView = false
-    
+    @State private var showToast = false
+    @State private var errorMsg = ""
     var body: some View {
         NavigationView {
             VStack(alignment: .leading, spacing: 16) {
@@ -56,17 +57,28 @@ struct ScanDIDView: View {
                     showScannerView = false
                 }
             }
-        }
+        }.toast(isShowing: $showToast, message: errorMsg)
     }
     
     // MARK: - Helper
     private func addDID() async {
         let trimmed = typedDID.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !trimmed.isEmpty else { return }
-        
-        await didState.addDID(for: spaceDid, did: trimmed)
-        await didState.loadDIDs(for: spaceDid)
-        presentationMode.wrappedValue.dismiss()
+        if(didState.dids.contains(trimmed)){
+            showToast = true
+            errorMsg = NSLocalizedString("DID is already added.", comment: "")
+            
+        }else if(!DIDKeyManager().isValidDid(trimmed)){
+            showToast = true
+            errorMsg = NSLocalizedString("Invalid DID format. Please scan a valid DID key (format: did:key:z...).", comment: "")
+        }
+        else{
+            showToast = false
+            errorMsg = ""
+            await didState.addDID(for: spaceDid, did: trimmed)
+            await didState.loadDIDs(for: spaceDid)
+            presentationMode.wrappedValue.dismiss()
+        }
     }
 }
 
