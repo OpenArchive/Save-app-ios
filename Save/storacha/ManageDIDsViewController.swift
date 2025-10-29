@@ -6,13 +6,14 @@
 //  Copyright © 2025 Open Archive. All rights reserved.
 //
 
-
 import UIKit
 import SwiftUI
+import Combine
 
 class ManageDIDsViewController: UIViewController {
     private let didState: DIDState
     private let spaceDid: String
+    private var cancellables = Set<AnyCancellable>()
     
     init(didState: DIDState, spaceDid: String) {
         self.didState = didState
@@ -36,6 +37,9 @@ class ManageDIDsViewController: UIViewController {
             action: #selector(addDidTapped)
         )
 
+        // Setup 401 error observers
+        setupErrorObservers()
+
         let contentView = ManageDIDsView(
             didState: didState, spaceDid: spaceDid,
             disableBackAction: { [weak self] isDisabled in
@@ -56,8 +60,54 @@ class ManageDIDsViewController: UIViewController {
         hosting.didMove(toParent: self)
     }
 
+    // MARK: - 401 Error Handling
+    private func setupErrorObservers() {
+        // Observe unauthorized alert
+        didState.$showUnauthorizedAlert
+            .sink { [weak self] shouldShow in
+                if shouldShow {
+                    self?.showUnauthorizedAlert()
+                }
+            }
+            .store(in: &cancellables)
+        
+        // Observe navigation to login
+        didState.$shouldNavigateToLogin
+            .sink { [weak self] shouldNavigate in
+                if shouldNavigate {
+                    self?.navigateToLogin()
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func showUnauthorizedAlert() {
+        let message = didState.unauthorizedMessage
+        
+        let alert = UIAlertController(
+            title: "Session Expired",
+            message: message,
+            preferredStyle: .alert
+        )
+        
+        // Only "Back to Login" button (no "Stay Here" for admin operations)
+        alert.addAction(UIAlertAction(title: "Back to Login", style: .default) { [weak self] _ in
+            self?.didState.handleBackToLoginAction()
+        })
+        
+        present(alert, animated: true)
+    }
+    
+    private func navigateToLogin() {
+        // Reset navigation state
+        didState.resetNavigationState()
+        
+        // Pop to root to get back to login
+        navigationController?.popToRootViewController(animated: true)
+    }
+
     @objc private func addDidTapped() {
         let scanVC = ScanDIDViewController(didState: didState, spaceDid: spaceDid)
-           navigationController?.pushViewController(scanVC, animated: true)
+        navigationController?.pushViewController(scanVC, animated: true)
     }
 }

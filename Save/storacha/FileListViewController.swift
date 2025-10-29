@@ -11,10 +11,12 @@ import UIKit
 import Photos
 import PhotosUI
 import AVFoundation
+import Combine
 
 class FileListViewController: UIViewController {
     private let appState: StorachaAppState
     private let space: StorachaSpace
+    private var cancellables = Set<AnyCancellable>()
     
     init(appState: StorachaAppState, space: StorachaSpace) {
         self.appState = appState
@@ -28,16 +30,21 @@ class FileListViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = space.name
-        
+     
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backBarButtonItem
-        if(space.isAdmin){
+       
+        if space.isAdmin {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
                 title: NSLocalizedString("MANAGE ACCESS", comment: ""),
                 style: .plain,
                 target: self,
                 action: #selector(manageDIDsTapped)
-            )}
+            )
+        }
+        
+        // Setup 401 error observers
+        setupErrorObservers()
         
         if #available(iOS 14.0, *) {
             let contentView = FileListView(
@@ -46,7 +53,7 @@ class FileListViewController: UIViewController {
                     if !self.appState.spaceState.isUploading {
                         self.showUploadOptions()
                     }
-                }, isSpaceAdmin: true
+                }, isSpaceAdmin: space.isAdmin
             )
             .environmentObject(appState.spaceState)
             
@@ -64,6 +71,68 @@ class FileListViewController: UIViewController {
         }
     }
     
+    // MARK: - 401 Error Handling
+    private func setupErrorObservers() {
+        // Observe unauthorized alert
+        appState.spaceState.$showUnauthorizedAlert
+            .sink { [weak self] shouldShow in
+                if shouldShow {
+                    self?.showUnauthorizedAlert()
+                }
+            }
+            .store(in: &cancellables)
+        
+        // Observe navigation to login
+        appState.spaceState.$shouldNavigateToLogin
+            .sink { [weak self] shouldNavigate in
+                if shouldNavigate {
+                    self?.navigateToLogin()
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func showUnauthorizedAlert() {
+        let message = appState.spaceState.unauthorizedMessage
+        let isDelegatedUser = appState.spaceState.isDelegatedUserError
+        
+        let alert = UIAlertController(
+            title: "Session Expired",
+            message: message,
+            preferredStyle: .alert
+        )
+        
+        if isDelegatedUser {
+            // For delegated users, show "Stay Here" option
+            alert.addAction(UIAlertAction(title: "Stay Here", style: .default) { [weak self] _ in
+                Task {
+                    await self?.appState.spaceState.handleStayHereAction()
+                }
+            })
+        }
+        
+        alert.addAction(UIAlertAction(title: "Back to Login", style: .default) { [weak self] _ in
+            self?.appState.spaceState.handleBackToLoginAction()
+        })
+        
+        present(alert, animated: true)
+    }
+    
+    private func navigateToLogin() {
+        // Reset navigation state
+        appState.spaceState.resetNavigationState()
+        
+        // Pop to root to get back to login
+        navigationController?.popToRootViewController(animated: true)
+    }
+    
+    private func navigateBackToSpacesList() {
+     
+        appState.spaceState.resetNavigationState()
+        navigationController?.popViewController(animated: true)
+    }
+    
+    // MARK: - Upload Options
     private func showUploadOptions() {
         let alert = UIAlertController(title: "Upload File", message: "Choose upload source", preferredStyle: .actionSheet)
         

@@ -137,6 +137,7 @@ enum StorachaAPIError: Error, LocalizedError {
     case invalidDID
     case signatureGenerationFailed
     case sessionExpired
+    case unauthorized
     case insufficientPermissions
     case uploadFailed(String)
     case serverError(Int, String)
@@ -145,6 +146,8 @@ enum StorachaAPIError: Error, LocalizedError {
         switch self {
         case .invalidURL:
             return "Invalid URL"
+        case .unauthorized:
+            return "Unauthorized"
         case .noData:
             return "No data received"
         case .decodingError(let error):

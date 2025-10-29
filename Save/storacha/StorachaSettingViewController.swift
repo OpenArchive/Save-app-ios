@@ -24,11 +24,10 @@ class StorachaSettingViewController: UIViewController {
 
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backBarButtonItem
-
-        if #available(iOS 14.0, *) {
-            navigationItem.title = ""
-            
-            // Create app state
+        
+  
+            navigationItem.title = NSLocalizedString("Storacha", comment: "")
+        
             appState = StorachaAppState()
 
             let settingsView = StorachaSettingView(
@@ -66,9 +65,12 @@ class StorachaSettingViewController: UIViewController {
             hostingController.didMove(toParent: self)
             hostingController.view.backgroundColor = .clear
             view.backgroundColor = .clear
-        }
+        
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        appState.refreshSpaceCount()
+    }
     func handleManageNavigation() {
         Task {
             let result = await appState.checkSessionAndNavigate()

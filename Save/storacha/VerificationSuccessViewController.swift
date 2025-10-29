@@ -29,7 +29,7 @@ class VerificationSuccessViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         navigationItem.hidesBackButton = true
-
+        navigationItem.title = NSLocalizedString("Setup Complete", comment: "")
         let successView = VerificationSuccessView {
             let newVC = SpaceListViewController(appState:  self.appState)
             self.navigationController?.pushViewController(newVC, animated: true)

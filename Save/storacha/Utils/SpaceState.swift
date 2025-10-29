@@ -23,6 +23,12 @@ class SpaceState: ObservableObject {
     @Published var uploadResult: Result<UploadResponse, Error>?
     @Published var shouldRefreshUploads: Bool = false
     
+    // Auth error handling
+    @Published var showUnauthorizedAlert: Bool = false
+    @Published var unauthorizedMessage: String = ""
+    @Published var shouldNavigateToLogin: Bool = false
+    @Published var isDelegatedUserError: Bool = false
+    
     private let keyManager = DIDKeyManager()
     private let apiService = StorachaAPIService.shared
     private let bridgeUploader = BridgeUploader()
@@ -39,8 +45,12 @@ class SpaceState: ObservableObject {
             self.spaces = fetchedSpaces
             try sessionManager.saveSpaces(fetchedSpaces.count)
         } catch {
-            self.error = error as? StorachaAPIError ?? .networkError(error)
-            self.spaces = []
+            let apiError = error as? StorachaAPIError ?? .networkError(error)
+                   self.error = apiError
+                   let hasDelegatedSpace = self.spaces.contains { !$0.isAdmin }
+                   
+                   await handle401Error(apiError, isDelegatedUser: hasDelegatedSpace)
+                   self.spaces = []
         }
 
         isLoading = false
@@ -48,7 +58,7 @@ class SpaceState: ObservableObject {
   
     // MARK: - Load files in space for a user
     @MainActor
-    func loadUploads(for spaceDid: String,isAdmin:Bool, reset: Bool = false) async {
+    func loadUploads(for spaceDid: String, isAdmin: Bool, reset: Bool = false) async {
         if reset {
             uploads = []
             uploadsCursor = nil
@@ -61,7 +71,7 @@ class SpaceState: ObservableObject {
         defer { isLoadingUploads = false }
         
         do {
-            let response = try await apiService.listUploads(spaceDid: spaceDid,cursor: uploadsCursor, isAdmin:isAdmin)
+            let response = try await apiService.listUploads(spaceDid: spaceDid, cursor: uploadsCursor, isAdmin: isAdmin)
             uploads.append(contentsOf: response.uploads)
             uploadsCursor = response.cursor
             uploadsHasMore = response.hasMore
@@ -69,69 +79,116 @@ class SpaceState: ObservableObject {
             print("Failed to load uploads: \(error)")
             uploads = []
             uploadsHasMore = false
+            
+            // Handle 401 errors
+            let apiError = error as? StorachaAPIError ?? .networkError(error)
+            await handle401Error(apiError, isDelegatedUser: !isAdmin)
         }
     }
     
     // MARK: - Upload File
     @MainActor
-    func uploadFile(fileURL: URL, spaceDid: String,isAdmin:Bool) async {
+    func uploadFile(fileURL: URL, spaceDid: String, isAdmin: Bool) async {
         isUploading = true
         uploadProgress = 0.0
         uploadResult = nil
         
-            let  sessionData = sessionManager.loadSession()
-            do {
-                // Get user DID
-                let userDid = try getOrCreateDID()
-                
-                // Step 1: Create temporary file from URL (if needed)
-                let tempFile = try createTempFileIfNeeded(from: fileURL)
-                uploadProgress = 0.1
-                
-                // Step 2: Generate CAR file
-                print("Generating CAR file for: \(fileURL.lastPathComponent)")
-                let carResult = try CarFileCreator.createCarFile(from: tempFile)
-                uploadProgress = 0.3
-                
-                // Step 3: Save CAR data for debugging (optional)
-                try saveCarFileForDebugging(carResult: carResult, originalFileName: fileURL.lastPathComponent)
-                uploadProgress = 0.4
-        
-                print("Starting bridge upload")
-                let bridgeResult = try await bridgeUploader.uploadFile(
-                    file: tempFile,
-                    carData: carResult.carData,
-                    carCid: carResult.carCid,
-                    rootCid: carResult.rootCid,
-                    spaceDid: spaceDid,
-                    userDid: userDid,
-                    sessionId: sessionData?.sessionId,
-                    isAdmin:isAdmin
-                )
-                uploadProgress = 1.0
-                
-                // Step 5: Create success response
-                let uploadResponse = UploadResponse(
-                    success: true,
-                    cid: bridgeResult.rootCid,
-                    size: bridgeResult.size
-                )
-                
-                uploadResult = .success(uploadResponse)
-                print("Upload completed successfully. CID: \(bridgeResult.rootCid)")
-                
-                // Step 6: Refresh the uploads list
-                await loadUploads(for: spaceDid,isAdmin:isAdmin, reset: true)
-                
-                // Cleanup temp file if we created one
-                cleanupTempFile(tempFile, originalURL: fileURL)
-                
-            } catch {
-                print("Upload failed: \(error.localizedDescription)")
-                uploadResult = .failure(error)
-            }
+        let sessionData = sessionManager.loadSession()
+        do {
+            // Get user DID
+            let userDid = try getOrCreateDID()
+            
+            // Step 1: Create temporary file from URL (if needed)
+            let tempFile = try createTempFileIfNeeded(from: fileURL)
+            uploadProgress = 0.1
+            
+            // Step 2: Generate CAR file
+            print("Generating CAR file for: \(fileURL.lastPathComponent)")
+            let carResult = try CarFileCreator.createCarFile(from: tempFile)
+            uploadProgress = 0.3
+            
+            // Step 3: Save CAR data for debugging (optional)
+            try saveCarFileForDebugging(carResult: carResult, originalFileName: fileURL.lastPathComponent)
+            uploadProgress = 0.4
+    
+            print("Starting bridge upload")
+            let bridgeResult = try await bridgeUploader.uploadFile(
+                file: tempFile,
+                carData: carResult.carData,
+                carCid: carResult.carCid,
+                rootCid: carResult.rootCid,
+                spaceDid: spaceDid,
+                userDid: userDid,
+                sessionId: sessionData?.sessionId,
+                isAdmin: isAdmin
+            )
+            uploadProgress = 1.0
+            
+            // Step 5: Create success response
+            let uploadResponse = UploadResponse(
+                success: true,
+                cid: bridgeResult.rootCid,
+                size: bridgeResult.size
+            )
+            
+            uploadResult = .success(uploadResponse)
+            print("Upload completed successfully. CID: \(bridgeResult.rootCid)")
+            
+            // Step 6: Refresh the uploads list
+            await loadUploads(for: spaceDid, isAdmin: isAdmin, reset: true)
+            
+            // Cleanup temp file if we created one
+            cleanupTempFile(tempFile, originalURL: fileURL)
+            
+        } catch {
+            print("Upload failed: \(error.localizedDescription)")
+            uploadResult = .failure(error)
+            
+            // Handle 401 errors
+            let apiError = error as? StorachaAPIError ?? .networkError(error)
+            await handle401Error(apiError, isDelegatedUser: !isAdmin)
+        }
         
         isUploading = false
+    }
+    
+    // MARK: - 401 Error Handling
+    @MainActor
+    private func handle401Error(_ error: StorachaAPIError, isDelegatedUser: Bool = false) async {
+        // Check if it's a 401 error
+        if case .unauthorized = error {
+            isDelegatedUserError = isDelegatedUser
+            
+            if isDelegatedUser {
+                unauthorizedMessage = "Your access to this space has been revoked. Would you like to refresh your spaces list or return to login?"
+            } else {
+                unauthorizedMessage = "Your session has expired. Please log in again."
+            }
+            
+            showUnauthorizedAlert = true
+        }
+    }
+    
+    // MARK: - Alert Actions
+    @MainActor
+    func handleStayHereAction() async {
+        showUnauthorizedAlert = false
+        // Refresh spaces for delegated user
+        await loadSpaces()
+    }
+    
+    @MainActor
+    func handleBackToLoginAction() {
+        showUnauthorizedAlert = false
+        shouldNavigateToLogin = true
+        
+        // Clear session
+        sessionManager.clearSession()
+    }
+    
+    @MainActor
+    func resetNavigationState() {
+        shouldNavigateToLogin = false
     }
     
     // MARK: - Helper Methods

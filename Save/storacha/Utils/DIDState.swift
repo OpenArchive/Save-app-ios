@@ -6,15 +6,20 @@
 //  Copyright © 2025 Open Archive. All rights reserved.
 //
 
-
 import Foundation
 
 class DIDState: ObservableObject {
     @Published var dids: [String] = []
     @Published var isLoading: Bool = false
     @Published var error: StorachaAPIError?
+    
+    // Auth error handling
+    @Published var showUnauthorizedAlert: Bool = false
+    @Published var unauthorizedMessage: String = ""
+    @Published var shouldNavigateToLogin: Bool = false
 
     private let apiService = StorachaAPIService.shared
+    private let sessionManager = SessionManager.shared
 
     @MainActor
     func loadDIDs(for spaceDid: String) async {
@@ -24,50 +29,82 @@ class DIDState: ObservableObject {
             let users = try await apiService.listDelegations(spaceDid: spaceDid)
             self.dids = users
         } catch {
-            self.error = error as? StorachaAPIError ?? .networkError(error)
+            let apiError = error as? StorachaAPIError ?? .networkError(error)
+            self.error = apiError
             self.dids = []
+            
+            // Handle 401 errors (always admin context for DID management)
+            await handle401Error(apiError)
         }
         isLoading = false
     }
 
     @MainActor
-        func addDID(for spaceDid: String, did: String, expiresInHours: Int = 24) async {
-            isLoading = true
-            error = nil
+    func addDID(for spaceDid: String, did: String, expiresInHours: Int = 24) async {
+        isLoading = true
+        error = nil
 
-            do {
-                _ = try await apiService.createDelegation(
-                    userDid: did,
-                    spaceDid: spaceDid,
-                    expiresInHours: expiresInHours
-                )
-                // refresh list after add
-                await loadDIDs(for: spaceDid)
-            } catch {
-                await MainActor.run {
-                    self.error = error as? StorachaAPIError ?? .networkError(error)
-                }
-            }
-
-            isLoading = false
+        do {
+            _ = try await apiService.createDelegation(
+                userDid: did,
+                spaceDid: spaceDid,
+                expiresInHours: expiresInHours
+            )
+            // refresh list after add
+            await loadDIDs(for: spaceDid)
+        } catch {
+            let apiError = error as? StorachaAPIError ?? .networkError(error)
+            self.error = apiError
+            
+            // Handle 401 errors
+            await handle401Error(apiError)
         }
 
-        // MARK: - Revoke DID
-        @MainActor
-        func revokeDID(for spaceDid: String, did: String) async {
-            isLoading = true
-            error = nil
+        isLoading = false
+    }
 
-            do {
-                _ = try await apiService.revokeDelegation(userDid: did, spaceDid: spaceDid)
-                // refresh list after revoke
-                await loadDIDs(for: spaceDid)
-            } catch {
-                await MainActor.run {
-                    self.error = error as? StorachaAPIError ?? .networkError(error)
-                }
-            }
+    // MARK: - Revoke DID
+    @MainActor
+    func revokeDID(for spaceDid: String, did: String) async {
+        isLoading = true
+        error = nil
 
-            isLoading = false
+        do {
+            _ = try await apiService.revokeDelegation(userDid: did, spaceDid: spaceDid)
+            // refresh list after revoke
+            await loadDIDs(for: spaceDid)
+        } catch {
+            let apiError = error as? StorachaAPIError ?? .networkError(error)
+            self.error = apiError
+            
+            // Handle 401 errors
+            await handle401Error(apiError)
         }
+
+        isLoading = false
+    }
+    
+    // MARK: - 401 Error Handling
+    @MainActor
+    private func handle401Error(_ error: StorachaAPIError) async {
+        // Check if it's a 401 error
+        if case .unauthorized = error {
+            // DID management is always admin context, so no delegated user option
+            unauthorizedMessage = "Your session has expired. Please log in again."
+            showUnauthorizedAlert = true
+        }
+    }
+    
+    // MARK: - Alert Actions
+    @MainActor
+    func handleBackToLoginAction() {
+        showUnauthorizedAlert = false
+        shouldNavigateToLogin = true
+        sessionManager.clearSession()
+    }
+    
+    @MainActor
+    func resetNavigationState() {
+        shouldNavigateToLogin = false
+    }
 }

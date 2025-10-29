@@ -23,7 +23,7 @@ class StorachaLoginViewController: UIViewController {
         navigationItem.backBarButtonItem = backBarButtonItem
         
         if #available(iOS 14.0, *) {
-            navigationItem.title = ""
+            navigationItem.title = NSLocalizedString("Login", comment: "")
             
             appState = StorachaAppState()
             

@@ -8,10 +8,12 @@
 
 import UIKit
 import SwiftUI
+import Combine
 
 class ScanDIDViewController: UIViewController {
     private let didState: DIDState
     private let spaceDid: String
+    private var cancellables = Set<AnyCancellable>()
 
     init(didState: DIDState, spaceDid: String) {
         self.didState = didState
@@ -26,6 +28,9 @@ class ScanDIDViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        
+        // Setup 401 error observers
+        setupErrorObservers()
         
         if #available(iOS 14.0, *) {
             let scanView = ScanDIDView(spaceDid: spaceDid)
@@ -55,5 +60,51 @@ class ScanDIDViewController: UIViewController {
                 label.centerYAnchor.constraint(equalTo: view.centerYAnchor)
             ])
         }
+    }
+    
+    // MARK: - 401 Error Handling
+    private func setupErrorObservers() {
+        // Observe unauthorized alert
+        didState.$showUnauthorizedAlert
+            .sink { [weak self] shouldShow in
+                if shouldShow {
+                    self?.showUnauthorizedAlert()
+                }
+            }
+            .store(in: &cancellables)
+        
+        // Observe navigation to login
+        didState.$shouldNavigateToLogin
+            .sink { [weak self] shouldNavigate in
+                if shouldNavigate {
+                    self?.navigateToLogin()
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func showUnauthorizedAlert() {
+        let message = didState.unauthorizedMessage
+        
+        let alert = UIAlertController(
+            title: "Session Expired",
+            message: message,
+            preferredStyle: .alert
+        )
+        
+        // Only "Back to Login" button (no "Stay Here" for admin operations)
+        alert.addAction(UIAlertAction(title: "Back to Login", style: .default) { [weak self] _ in
+            self?.didState.handleBackToLoginAction()
+        })
+        
+        present(alert, animated: true)
+    }
+    
+    private func navigateToLogin() {
+        // Reset navigation state
+        didState.resetNavigationState()
+        
+        // Pop to root to get back to login
+        navigationController?.popToRootViewController(animated: true)
     }
 }

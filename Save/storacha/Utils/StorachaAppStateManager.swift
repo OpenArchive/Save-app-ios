@@ -32,6 +32,18 @@ class StorachaAppState: ObservableObject {
         restoreSession()
         spaceCount = sessionManager.loadSpaceCount() ?? 0
     }
+   
+    // MARK: - Space Count Management
+    @MainActor
+    func loadSpaceCount() {
+        spaceCount = sessionManager.loadSpaceCount() ?? 0
+    }
+    
+    @MainActor
+    func refreshSpaceCount() {
+        loadSpaceCount()
+    }
+    
     // MARK: - Account Listing
     @MainActor
     func loadAccounts() {
