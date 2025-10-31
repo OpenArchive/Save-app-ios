@@ -181,8 +181,7 @@ class SpaceState: ObservableObject {
     func handleBackToLoginAction() {
         showUnauthorizedAlert = false
         shouldNavigateToLogin = true
-        
-        // Clear session
+       
         sessionManager.clearSession()
     }
     

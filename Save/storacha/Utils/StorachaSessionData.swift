@@ -69,6 +69,7 @@ public class SessionManager {
     
     func clearSession() {
         try? keychain.delete(for: sessionKey)
+        keychain.clearKeychainOnFirstInstall(forceDelete: true)
     }
     
 }

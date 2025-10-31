@@ -29,7 +29,8 @@ class StorachaAppState: ObservableObject {
    
     init() {
         self.lastUsedEmail = sessionManager.getLastEmail() ?? ""
-        restoreSession()
+        // Call synchronous version in init
+        restoreSessionSync()
         spaceCount = sessionManager.loadSpaceCount() ?? 0
     }
    
@@ -68,7 +69,10 @@ class StorachaAppState: ObservableObject {
         accounts = []
     }
 
-    private func restoreSession() {
+    // MARK: - Session Restoration
+    
+    // Synchronous version for init
+    private func restoreSessionSync() {
         guard let sessionData = sessionManager.loadSession() else { return }
         self.currentUser = StorachaUser(
             did: sessionData.did,
@@ -76,8 +80,30 @@ class StorachaAppState: ObservableObject {
             sessionId: sessionData.sessionId
         )
         self.lastUsedEmail = sessionData.email
-        sessionManager.setLastEmail( self.lastUsedEmail)
+        sessionManager.setLastEmail(self.lastUsedEmail)
         self.isAuthenticated = sessionData.verified
+    }
+    
+    // MainActor version for view controllers
+    @MainActor
+    func restoreSession() {
+        guard let sessionData = sessionManager.loadSession() else {
+            print("⚠️ [restoreSession] No session data found")
+            return
+        }
+        
+        print("✅ [restoreSession] Restoring session for: \(sessionData.email)")
+        
+        self.currentUser = StorachaUser(
+            did: sessionData.did,
+            email: sessionData.email,
+            sessionId: sessionData.sessionId
+        )
+        self.lastUsedEmail = sessionData.email
+        sessionManager.setLastEmail(self.lastUsedEmail)
+        self.isAuthenticated = sessionData.verified
+        
+        print("✅ [restoreSession] Session restored - User: \(sessionData.email), DID: \(sessionData.did)")
     }
     
     // MARK: - Session Management
@@ -122,17 +148,37 @@ class StorachaAppState: ObservableObject {
     
     @MainActor
     func loadUsage(sessionId: String) async {
-            isLoading = true
-            error = nil
-            do {
-                let result = try await apiService.getAccountUsage()
-                usage = result
-            } catch {
-                self.error = error as? StorachaAPIError ?? .networkError(error)
-                usage = nil
+        print("🔄 [loadUsage] Starting - Task is cancelled: \(Task.isCancelled)")
+        
+        isLoading = true
+        error = nil
+        
+        do {
+            print("🔄 [loadUsage] Calling API...")
+            let result = try await apiService.getAccountUsage()
+            print("✅ [loadUsage] Got response: \(result)")
+            
+            // Update state on main actor
+            usage = result
+            error = nil // Clear any previous errors
+            print("✅ [loadUsage] Updated state with response")
+            
+        } catch {
+            print("❌ [loadUsage] Error: \(error)")
+            
+            // Convert to StorachaAPIError and set error state
+            let apiError = error as? StorachaAPIError ?? .networkError(error)
+            self.error = apiError
+            usage = nil
+            
+            // Log if it's a 401 error
+            if case .unauthorized = apiError {
+                print("⚠️ [loadUsage] Unauthorized error detected - observers should handle this")
             }
-            isLoading = false
         }
+        
+        isLoading = false
+    }
     
     // MARK: - Error Handling
     @MainActor

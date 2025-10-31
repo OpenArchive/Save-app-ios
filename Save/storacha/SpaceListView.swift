@@ -67,6 +67,9 @@ struct SpaceListView: View {
                     }
                     .padding(.top)
                 }
+                .refreshable {
+                    await spaceState.loadSpaces()
+                }
             }
         }
         .onAppear {

@@ -483,28 +483,44 @@ class StorachaAPIService {
     
     // MARK: - Get account usage
     func getAccountUsage() async throws -> StorachaAccountUsageResponse {
+        print("🔍 [getAccountUsage] Starting request...")
+        
         guard let sessionData = sessionManager.loadSession() else {
+            print("❌ [getAccountUsage] No active session found")
             throw StorachaAPIError.authenticationFailed("No active session")
         }
         
+        print("✅ [getAccountUsage] Session ID: \(sessionData.sessionId)")
+        
         guard let url = URL(string: "\(baseURL)/spaces/account-usage") else {
+            print("❌ [getAccountUsage] Invalid URL")
             throw StorachaAPIError.invalidURL
         }
 
         var request = URLRequest(url: url)
         request.setValue(sessionData.sessionId, forHTTPHeaderField: "x-session-id")
-
+        
+        print("📤 [getAccountUsage] Making request to: \(url.absoluteString)")
+        print("📤 [getAccountUsage] Session ID header: \(sessionData.sessionId)")
+        
         let (data, response) = try await session.data(for: request)
 
         if let rawResponse = String(data: data, encoding: .utf8) {
-            print("Get Account Usage Raw API Response: \(rawResponse)")
+            print("📥 [getAccountUsage] Raw API Response: \(rawResponse)")
+        }
+        
+        if let httpResponse = response as? HTTPURLResponse {
+            print("📥 [getAccountUsage] Status Code: \(httpResponse.statusCode)")
+            
+            if httpResponse.statusCode != 200 {
+                print("❌ [getAccountUsage] HTTP Error: \(httpResponse.statusCode)")
+                try handleHTTPError(statusCode: httpResponse.statusCode, data: data)
+            }
         }
 
-        if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
-            try handleHTTPError(statusCode: httpResponse.statusCode, data: data)
-        }
-
-        return try JSONDecoder().decode(StorachaAccountUsageResponse.self, from: data)
+        let decoded = try JSONDecoder().decode(StorachaAccountUsageResponse.self, from: data)
+        print("✅ [getAccountUsage] Successfully decoded response")
+        return decoded
     }
     
     // MARK: - Generate bridge Tokens

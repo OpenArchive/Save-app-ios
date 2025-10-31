@@ -102,8 +102,17 @@ class ManageDIDsViewController: UIViewController {
         // Reset navigation state
         didState.resetNavigationState()
         
-        // Pop to root to get back to login
-        navigationController?.popToRootViewController(animated: true)
+        if let navigationController = navigationController {
+           
+            if let loginVC = navigationController.viewControllers.first(where: { $0 is StorachaLoginViewController }) {
+
+                navigationController.popToViewController(loginVC, animated: true)
+            } else {
+            
+                let loginVC = StorachaLoginViewController()
+                navigationController.pushViewController(loginVC, animated: true)
+            }
+        }
     }
 
     @objc private func addDidTapped() {

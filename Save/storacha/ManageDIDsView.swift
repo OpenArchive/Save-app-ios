@@ -73,6 +73,9 @@ struct ManageDIDsView: View {
                                 }  }
                                 .padding(.top, 20)
                             }
+                            .refreshable {
+                                await didState.loadDIDs(for: spaceDid)
+                            }
                             }
                       
                 }
@@ -121,4 +124,3 @@ struct ManageDIDsView: View {
         }
     }
 }
-

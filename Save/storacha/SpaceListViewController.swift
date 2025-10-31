@@ -36,7 +36,7 @@ class SpaceListViewController: UIViewController {
         // Setup 401 error observers
         setupErrorObservers()
 
-        if #available(iOS 14.0, *) {
+     
             let hostingController = UIHostingController(
                 rootView: SpaceListView(spaceState: appState.spaceState) { [weak self] space in
                     self?.navigateToSpaceDetail(space)
@@ -57,7 +57,7 @@ class SpaceListViewController: UIViewController {
             hostingController.view.backgroundColor = UIColor.systemBackground
             view.backgroundColor = UIColor.systemBackground
         }
-    }
+    
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
@@ -114,9 +114,19 @@ class SpaceListViewController: UIViewController {
     private func navigateToLogin() {
         // Reset navigation state
         appState.spaceState.resetNavigationState()
-        
-        // Pop to root to get back to login
-        navigationController?.popToRootViewController(animated: true)
+
+        // Check if login controller exists in navigation stack
+        if let navigationController = navigationController {
+            // Try to find StorachaLoginViewController in the stack
+            if let loginVC = navigationController.viewControllers.first(where: { $0 is StorachaLoginViewController }) {
+                // Pop back to existing login controller
+                navigationController.popToViewController(loginVC, animated: true)
+            } else {
+                // Create and navigate to new login controller
+                let loginVC = StorachaLoginViewController()
+                navigationController.pushViewController(loginVC, animated: true)
+            }
+        }
     }
 
     private func navigateToSpaceDetail(_ space: StorachaSpace) {

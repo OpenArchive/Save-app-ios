@@ -1,5 +1,5 @@
 //
-//  StorachaAccountsViewController 2.swift
+//  StorachaAccountsViewController.swift
 //  Save
 //
 //  Created by navoda on 2025-08-31.
@@ -8,22 +8,31 @@
 
 import UIKit
 import SwiftUI
+import Combine
 
 class StorachaAccountsViewController: UIViewController {
     private let appState: StorachaAppState
+    private var cancellables = Set<AnyCancellable>()
 
     init(appState: StorachaAppState) {
         self.appState = appState
         super.init(nibName: nil, bundle: nil)
     }
-    required init?(coder: NSCoder) { fatalError("init(coder:) has not been implemented") }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Accounts"
         view.backgroundColor = .systemBackground
+        
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backBarButtonItem
+        
+        // Setup 401 error observers
+        setupErrorObservers()
         
         let contentView = AccountListView(
             onSelect: { [weak self] email in
@@ -44,17 +53,61 @@ class StorachaAccountsViewController: UIViewController {
         hosting.didMove(toParent: self)
     }
 
+    // MARK: - 401 Error Handling
+    private func setupErrorObservers() {
+        // Observe error changes in appState
+        appState.$error
+            .sink { [weak self] error in
+                if let apiError = error, case .unauthorized = apiError {
+                    self?.showUnauthorizedAlert()
+                }
+            }
+            .store(in: &cancellables)
+    }
+    
+    private func showUnauthorizedAlert() {
+        let alert = UIAlertController(
+            title: "Session Expired",
+            message: "Your session has expired. Please log in again.",
+            preferredStyle: .alert
+        )
+        
+        alert.addAction(UIAlertAction(title: "Back to Login", style: .default) { [weak self] _ in
+            self?.handleLogout()
+        })
+        
+        present(alert, animated: true)
+    }
+    
+    private func handleLogout() {
+        // Clear session and accounts
+        appState.clearAccounts()
+        appState.authState.logout()
+        appState.clearError()
+        
+        // Navigate to login
+        navigateToLogin()
+    }
+    
+    private func navigateToLogin() {
+        guard let navigationController = navigationController else { return }
+        
+        // Try to find StorachaLoginViewController in the stack
+        if let loginVC = navigationController.viewControllers.first(where: { $0 is StorachaLoginViewController }) {
+            // Pop back to existing login controller
+            navigationController.popToViewController(loginVC, animated: true)
+        } else {
+            // Create and navigate to new login controller
+            let loginVC = StorachaLoginViewController()
+            navigationController.setViewControllers([loginVC], animated: true)
+        }
+    }
+
     private func navigateToDetail(email: String) {
         let detailView = AccountDetailView(email: email) { [weak self] in
-            self?.appState.clearAccounts()
-            self?.appState.authState.logout()
-            if let existingVC = self?.navigationController?.viewControllers.first(where: { $0 is StorachaSettingViewController }) {
-                self?.navigationController?.popToViewController(existingVC, animated: true)
-            } else {
-                let newVC = StorachaSettingViewController()
-                self?.navigationController?.pushViewController(newVC, animated: true)
-            }
+            self?.handleLogout()
         }.environmentObject(appState)
+        
         let hosting = UIHostingController(rootView: detailView)
         hosting.title = NSLocalizedString("Accounts", comment: "")
         navigationController?.pushViewController(hosting, animated: true)

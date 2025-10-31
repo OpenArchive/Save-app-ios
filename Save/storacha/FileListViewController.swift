@@ -36,7 +36,7 @@ class FileListViewController: UIViewController {
        
         if space.isAdmin {
             navigationItem.rightBarButtonItem = UIBarButtonItem(
-                title: NSLocalizedString("MANAGE ACCESS", comment: ""),
+                title: NSLocalizedString("MANAGE", comment: ""),
                 style: .plain,
                 target: self,
                 action: #selector(manageDIDsTapped)
@@ -122,8 +122,17 @@ class FileListViewController: UIViewController {
         // Reset navigation state
         appState.spaceState.resetNavigationState()
         
-        // Pop to root to get back to login
-        navigationController?.popToRootViewController(animated: true)
+        if let navigationController = navigationController {
+           
+            if let loginVC = navigationController.viewControllers.first(where: { $0 is StorachaLoginViewController }) {
+
+                navigationController.popToViewController(loginVC, animated: true)
+            } else {
+            
+                let loginVC = StorachaLoginViewController()
+                navigationController.pushViewController(loginVC, animated: true)
+            }
+        }
     }
     
     private func navigateBackToSpacesList() {
