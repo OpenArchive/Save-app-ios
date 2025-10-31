@@ -90,7 +90,7 @@ class DIDState: ObservableObject {
         // Check if it's a 401 error
         if case .unauthorized = error {
             // DID management is always admin context, so no delegated user option
-            unauthorizedMessage = "Your session has expired. Please log in again."
+            unauthorizedMessage = NSLocalizedString("Your session has expired. Please login again to continue." , comment: "")
             showUnauthorizedAlert = true
         }
     }

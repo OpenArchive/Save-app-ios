@@ -66,17 +66,19 @@ class StorachaAccountsViewController: UIViewController {
     }
     
     private func showUnauthorizedAlert() {
-        let alert = UIAlertController(
-            title: "Session Expired",
-            message: "Your session has expired. Please log in again.",
-            preferredStyle: .alert
-        )
-        
-        alert.addAction(UIAlertAction(title: "Back to Login", style: .default) { [weak self] _ in
-            self?.handleLogout()
-        })
-        
-        present(alert, animated: true)
+
+        let alertVC = CustomAlertViewController(
+              title: NSLocalizedString("Session Expired", comment: ""),
+              message: NSLocalizedString("Your session has expired. Please login again to continue." , comment: ""),
+              primaryButtonTitle: NSLocalizedString("Back to Login", comment: ""),
+              primaryButtonAction: { [weak self] in
+                  self?.handleLogout()
+              },
+              iconImage: Image(systemName: "exclamationmark.triangle.fill"),
+              iconTint: .accent
+          )
+          
+          present(alertVC, animated: true)
     }
     
     private func handleLogout() {

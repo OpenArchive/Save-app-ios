@@ -83,19 +83,20 @@ class ManageDIDsViewController: UIViewController {
     
     private func showUnauthorizedAlert() {
         let message = didState.unauthorizedMessage
+    
         
-        let alert = UIAlertController(
-            title: "Session Expired",
-            message: message,
-            preferredStyle: .alert
-        )
-        
-        // Only "Back to Login" button (no "Stay Here" for admin operations)
-        alert.addAction(UIAlertAction(title: "Back to Login", style: .default) { [weak self] _ in
-            self?.didState.handleBackToLoginAction()
-        })
-        
-        present(alert, animated: true)
+        let alertVC = CustomAlertViewController(
+              title: NSLocalizedString("Session Expired", comment: ""),
+              message: message,
+              primaryButtonTitle: NSLocalizedString("Back to Login", comment: ""),
+              primaryButtonAction: { [weak self] in
+                  self?.didState.handleBackToLoginAction()
+              },
+              iconImage: Image(systemName: "exclamationmark.triangle.fill"),
+              iconTint: .accent
+          )
+          
+          present(alertVC, animated: true)
     }
     
     private func navigateToLogin() {

@@ -121,7 +121,6 @@ class FileListViewController: UIViewController {
     private func navigateToLogin() {
         // Reset navigation state
         appState.spaceState.resetNavigationState()
-        
         if let navigationController = navigationController {
            
             if let loginVC = navigationController.viewControllers.first(where: { $0 is StorachaLoginViewController }) {
