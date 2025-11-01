@@ -89,26 +89,42 @@ class SpaceListViewController: UIViewController {
         let message = appState.spaceState.unauthorizedMessage
         let isDelegatedUser = appState.spaceState.isDelegatedUserError
         
-        let alert = UIAlertController(
-            title: "Session Expired",
-            message: message,
-            preferredStyle: .alert
-        )
-        
         if isDelegatedUser {
             // For delegated users, show "Stay Here" option
-            alert.addAction(UIAlertAction(title: "Stay Here", style: .default) { [weak self] _ in
-                Task {
-                    await self?.appState.spaceState.handleStayHereAction()
-                }
-            })
+            let alertVC = CustomAlertViewController(
+                title: NSLocalizedString("Session Expired", comment: ""),
+                message: message,
+                primaryButtonTitle: NSLocalizedString("Back to Login", comment: ""),
+                primaryButtonAction: { [weak self] in
+                    self?.appState.spaceState.handleBackToLoginAction()
+                },
+                secondaryButtonTitle: NSLocalizedString("Stay Here", comment: ""),
+                secondaryButtonAction: { [weak self] in
+                    Task {
+                        await self?.appState.spaceState.handleStayHereAction()
+                    }
+                },
+                secondaryButtonIsOutlined: true,
+                iconImage: Image(systemName: "exclamationmark.triangle.fill"),
+                iconTint: .accentColor
+            )
+            
+            present(alertVC, animated: true)
+        } else {
+            // For regular users, only show "Back to Login"
+            let alertVC = CustomAlertViewController(
+                title: NSLocalizedString("Session Expired", comment: ""),
+                message: message,
+                primaryButtonTitle: NSLocalizedString("Back to Login", comment: ""),
+                primaryButtonAction: { [weak self] in
+                    self?.appState.spaceState.handleBackToLoginAction()
+                },
+                iconImage: Image(systemName: "exclamationmark.triangle.fill"),
+                iconTint: .orange
+            )
+            
+            present(alertVC, animated: true)
         }
-        
-        alert.addAction(UIAlertAction(title: "Back to Login", style: .default) { [weak self] _ in
-            self?.appState.spaceState.handleBackToLoginAction()
-        })
-        
-        present(alert, animated: true)
     }
     
     private func navigateToLogin() {

@@ -1,6 +1,6 @@
 import SwiftUI
 
-@available(iOS 14.0, *)
+
 struct FileListView: View {
     @EnvironmentObject var spaceState: SpaceState
     let spaceDid: String
@@ -14,13 +14,14 @@ struct FileListView: View {
                 fileListContent
             }
             
-            // Upload Button - Hide during upload
+            // Upload Button - Hide during upload - Centered at bottom
             if !spaceState.isUploading {
                 VStack {
                     Spacer()
                     HStack {
                         Spacer()
                         uploadButton
+                        Spacer()
                     }
                 }
             }
@@ -184,13 +185,19 @@ struct FileListView: View {
     @ViewBuilder
     private var uploadButton: some View {
         Button(action: onUploadTapped) {
-            Image(systemName: "plus")
-                .font(.system(size: 20))
-                .foregroundColor(.white)
-                .padding(16)
-                .background(Circle().fill(Color.accentColor))
-                .shadow(radius: 3)
+            HStack(spacing: 8) {  // Increased spacing from 6 to 8
+                Image(systemName: "plus")
+                    .font(.montserrat(.semibold, for: .headline))
+            }
+            .foregroundColor(.black)
+            .padding(.horizontal, 24)
+            .padding(.vertical, 12)
+            .background(
+                Capsule()
+                    .fill(Color.accentColor)
+            )
+          
         }
-        .padding()
+        .padding(.bottom, 20)
     }
 }

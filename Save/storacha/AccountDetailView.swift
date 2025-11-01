@@ -142,11 +142,11 @@ struct AccountDetailView: View {
                                     HStack {
                                         Text(space.name)
                                             .font(.montserrat(.medium, for: .body))
-                                            .foregroundColor(.black)
+                                            .foregroundColor(.primary)
                                         Spacer()
                                         Text(space.usage.human)
                                             .font(.montserrat(.medium, for: .body))
-                                            .foregroundColor(.gray)
+                                            .foregroundColor(.gray70)
                                     }
                                     .padding(.horizontal)
                                     .padding(.vertical, 4)

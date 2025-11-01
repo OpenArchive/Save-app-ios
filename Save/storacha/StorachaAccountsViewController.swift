@@ -22,7 +22,11 @@ class StorachaAccountsViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
+    override func viewWillAppear(_ animated: Bool) {
+        appState.restoreSession()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Accounts"
