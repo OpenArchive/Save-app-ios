@@ -209,11 +209,11 @@ class BigButton: UIView {
     private func setup() {
         translatesAutoresizingMaskIntoConstraints = false
 
-        borderColor = .borderBg
         borderWidth = 1
         cornerRadius = 8
 
         backgroundColor = .systemBackground
+        updateBorderColor()
 
         addSubview(arrowIv)
         arrowIv.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -16).isActive = true
@@ -228,5 +228,17 @@ class BigButton: UIView {
 
         titleBottomConstraint = titleLb.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -24)
         titleBottomConstraint?.isActive = true
+    }
+    
+    private func updateBorderColor() {
+        borderColor = .borderBg
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        
+        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            updateBorderColor()
+        }
     }
 }
