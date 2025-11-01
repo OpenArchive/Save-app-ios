@@ -582,16 +582,19 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
             return
         }
         
-        // If no cached thumbnail and we have a PHAsset, load it properly
+        if isAudioFile() {
+                completion(UIImage(named: "audio_waveform"))
+                return
+            }
         guard let phAsset = self.phAsset else {
             completion(UIImage(named: "NoImage"))
             return
         }
         
         let options = PHImageRequestOptions()
-        options.deliveryMode = .opportunistic // Get low quality first, then high quality
+        options.deliveryMode = .opportunistic
         options.resizeMode = .fast
-        options.isNetworkAccessAllowed = true // Allow iCloud downloads
+        options.isNetworkAccessAllowed = true
         options.isSynchronous = false
         
         PHImageManager.default().requestImage(
@@ -604,6 +607,18 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
                 completion(image ?? UIImage(named: "NoImage"))
             }
         }
+    }
+    private func isAudioFile() -> Bool {
+        let audioExtensions = ["mp3", "m4a", "wav", "aac", "flac", "aiff", "wma", "ogg"]
+        
+        // Check from file URL if available
+        if let fileUrl = self.file {
+            return audioExtensions.contains(fileUrl.pathExtension.lowercased())
+        }
+        
+        // Check from filename if available
+        let ext = (self.filename as NSString).pathExtension.lowercased()
+        return audioExtensions.contains(ext)
     }
     /**
      Asynchronously deletes this asset from the database.
