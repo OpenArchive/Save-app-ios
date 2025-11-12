@@ -92,7 +92,7 @@ struct StorachaSettingView: View {
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 200, height: 60)
                     
-                    Text(NSLocalizedString("Storacha lets you store media securely using decentralized technologies (IPFS, UCAN, and DIDs)", comment: ""))
+                    Text(NSLocalizedString("Storacha lets you store media securely using decentralized technologies (IPFS, UCAN, and DIDs).", comment: ""))
                         .font(.montserrat(.medium, for: .subheadline))
                         .foregroundColor(.gray70)
                         .multilineTextAlignment(.center)

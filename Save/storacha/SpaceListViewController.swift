@@ -130,21 +130,34 @@ class SpaceListViewController: UIViewController {
     private func navigateToLogin() {
         // Reset navigation state
         appState.spaceState.resetNavigationState()
-
-        // Check if login controller exists in navigation stack
-        if let navigationController = navigationController {
-            // Try to find StorachaLoginViewController in the stack
-            if let loginVC = navigationController.viewControllers.first(where: { $0 is StorachaLoginViewController }) {
-                // Pop back to existing login controller
-                navigationController.popToViewController(loginVC, animated: true)
-            } else {
-                // Create and navigate to new login controller
-                let loginVC = StorachaLoginViewController()
-                navigationController.pushViewController(loginVC, animated: true)
-            }
-        }
+        login()
     }
 
+    private func login() {
+        guard let navigationController = navigationController else { return }
+        
+        if let loginVC = navigationController.viewControllers.first(where: { $0 is StorachaLoginViewController }) {
+        
+            navigationController.popToViewController(loginVC, animated: true)
+        } else if let settingsVC = navigationController.viewControllers.first(where: { $0 is StorachaSettingViewController }) {
+        
+            let loginVC = StorachaLoginViewController()
+            
+            if let settingsIndex = navigationController.viewControllers.firstIndex(of: settingsVC) {
+              
+                var newStack = Array(navigationController.viewControllers[0...settingsIndex])
+                newStack.append(loginVC)
+                navigationController.setViewControllers(newStack, animated: true)
+            } else {
+               
+                navigationController.pushViewController(loginVC, animated: true)
+            }
+        } else {
+        
+            navigationController.popToRootViewController(animated: true)
+        }
+    }
+    
     private func navigateToSpaceDetail(_ space: StorachaSpace) {
         let fileListVC = FileListViewController(appState: appState, space: space)
         navigationController?.pushViewController(fileListVC, animated: true)

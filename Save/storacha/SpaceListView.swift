@@ -39,29 +39,34 @@ struct SpaceListView: View {
                             Button(action: {
                                 onSelect(space)
                             }) {
-                                HStack {
+                                HStack(alignment: .top, spacing: 12) {
                                     Image("folder")
                                         .resizable()
                                         .frame(width: 30, height: 30)
                                         .foregroundColor(.accentColor)
-                                        .padding(.trailing, 8)
+                                    
                                     VStack(alignment: .leading, spacing: 4) {
                                         Text(space.name)
                                             .font(.montserrat(.semibold, for: .callout))
                                             .foregroundColor(.primary)
+                                            .multilineTextAlignment(.leading)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
                                         
                                         Text(space.id)
                                             .font(.montserrat(.medium, for: .caption))
                                             .foregroundColor(.gray)
                                             .multilineTextAlignment(.leading)
+                                            .frame(maxWidth: .infinity, alignment: .leading)
                                     }
-                                    Spacer()
+                                    
                                     Image(systemName: "chevron.right")
                                         .foregroundColor(Color(.label))
+                                        .frame(width: 20)
                                 }
                                 .padding()
-                                .frame(maxWidth: .infinity)
+                                .frame(maxWidth: .infinity, alignment: .leading)
                             }
+                            .buttonStyle(PlainButtonStyle())
                             .padding(.horizontal)
                         }
                     }

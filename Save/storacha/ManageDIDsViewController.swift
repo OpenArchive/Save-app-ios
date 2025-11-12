@@ -102,17 +102,32 @@ class ManageDIDsViewController: UIViewController {
     private func navigateToLogin() {
         // Reset navigation state
         didState.resetNavigationState()
+        login()
+       
+    }
+    
+    private func login() {
+        guard let navigationController = navigationController else { return }
         
-        if let navigationController = navigationController {
-           
-            if let loginVC = navigationController.viewControllers.first(where: { $0 is StorachaLoginViewController }) {
-
-                navigationController.popToViewController(loginVC, animated: true)
-            } else {
+        if let loginVC = navigationController.viewControllers.first(where: { $0 is StorachaLoginViewController }) {
+        
+            navigationController.popToViewController(loginVC, animated: true)
+        } else if let settingsVC = navigationController.viewControllers.first(where: { $0 is StorachaSettingViewController }) {
+        
+            let loginVC = StorachaLoginViewController()
             
-                let loginVC = StorachaLoginViewController()
+            if let settingsIndex = navigationController.viewControllers.firstIndex(of: settingsVC) {
+              
+                var newStack = Array(navigationController.viewControllers[0...settingsIndex])
+                newStack.append(loginVC)
+                navigationController.setViewControllers(newStack, animated: true)
+            } else {
+               
                 navigationController.pushViewController(loginVC, animated: true)
             }
+        } else {
+        
+            navigationController.popToRootViewController(animated: true)
         }
     }
 

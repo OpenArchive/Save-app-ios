@@ -29,7 +29,7 @@ class StorachaAccountsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Accounts"
+        title =  NSLocalizedString("Accounts", comment: "")
         view.backgroundColor = .systemBackground
         
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
@@ -98,14 +98,25 @@ class StorachaAccountsViewController: UIViewController {
     private func navigateToLogin() {
         guard let navigationController = navigationController else { return }
         
-        // Try to find StorachaLoginViewController in the stack
         if let loginVC = navigationController.viewControllers.first(where: { $0 is StorachaLoginViewController }) {
-            // Pop back to existing login controller
+        
             navigationController.popToViewController(loginVC, animated: true)
-        } else {
-            // Create and navigate to new login controller
+        } else if let settingsVC = navigationController.viewControllers.first(where: { $0 is StorachaSettingViewController }) {
+        
             let loginVC = StorachaLoginViewController()
-            navigationController.setViewControllers([loginVC], animated: true)
+            
+            if let settingsIndex = navigationController.viewControllers.firstIndex(of: settingsVC) {
+              
+                var newStack = Array(navigationController.viewControllers[0...settingsIndex])
+                newStack.append(loginVC)
+                navigationController.setViewControllers(newStack, animated: true)
+            } else {
+               
+                navigationController.pushViewController(loginVC, animated: true)
+            }
+        } else {
+        
+            navigationController.popToRootViewController(animated: true)
         }
     }
 
@@ -115,7 +126,7 @@ class StorachaAccountsViewController: UIViewController {
         }.environmentObject(appState)
         
         let hosting = UIHostingController(rootView: detailView)
-        hosting.title = NSLocalizedString("Accounts", comment: "")
+        hosting.title = NSLocalizedString("Account", comment: "")
         navigationController?.pushViewController(hosting, animated: true)
     }
 }

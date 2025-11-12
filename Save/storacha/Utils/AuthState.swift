@@ -71,7 +71,8 @@ class AuthState: ObservableObject {
             self.currentUser = user
             self.isAuthenticated = sessionData.verified
             self.lastUsedEmail = trimmedEmail
-            self.email = trimmedEmail
+            self.email = ""
+            
         } catch {
             self.isLoginError = true
             if let apiError = error as? StorachaAPIError {
@@ -113,7 +114,7 @@ class AuthState: ObservableObject {
     @MainActor
     private func pollForVerification(completion: @escaping (Bool) -> Void) async {
         var pollAttempts = 0
-        let maxAttempts = 20 // Poll for 5 minutes (60 * 5 seconds)
+        let maxAttempts = 10 // Poll for 5 minutes (60 * 5 seconds)
         
         while pollAttempts < maxAttempts {
             do {

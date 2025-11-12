@@ -8,7 +8,6 @@
 import SwiftUI
 import Combine
 
-@available(iOS 14.0, *)
 struct StorachaLoginView: View {
     @ObservedObject var state: AuthState
     var dispatch: (StorachaLoginAction) -> Void
@@ -90,14 +89,6 @@ struct StorachaLoginView: View {
                     .padding(.top, 15)
                     
                     VStack(alignment: .leading, spacing: 4) {
-//                        if isEmailFormatInvalid {
-//                            Text(NSLocalizedString("Please enter a valid email address.",comment: ""))
-//                                .foregroundColor(.red)
-//                                .font(.montserrat(.medium, for: .caption2))
-//                                .padding(.leading, 20)
-//                                .padding(.trailing, 20)
-//                                .frame(maxWidth: .infinity, alignment: .leading)
-//                        }
                         
                         if state.isLoginError {
                             Text(NSLocalizedString("Incorrect email or login failed.",comment: ""))
