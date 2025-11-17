@@ -38,6 +38,9 @@ class MainNavigationController: UINavigationController {
                 if let appDelegate = UIApplication.shared.delegate as? AppDelegateBase {
                     if(appDelegate.shouldShowAppPasscodeEntryScreen()){
                         appDelegate.showAppPasscodeEntryScreen()
+                    }else{
+                        AppUpdateManager.shared.checkForUpdateIfNeeded()
+                        
                     }
                 }
             }
