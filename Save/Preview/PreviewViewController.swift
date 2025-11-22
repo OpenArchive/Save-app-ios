@@ -343,11 +343,22 @@ class PreviewViewController: UIViewController,
         
         updateTitle()
         
+        // If multiple deletions or force full, just reload
+        let deleteCount = changes.rowChanges.filter { $0.type == .delete }.count
+        
+        if changes.forceFull || deleteCount > 1 {
+            UIView.performWithoutAnimation {
+                collectionView.reloadData()
+            }
+            
+            if sc.count < 1 {
+                navigationController?.popViewController(animated: true)
+            }
+            return
+        }
+        
         collectionView.apply(changes) { [weak self] _ in
             if self?.sc.count ?? 0 < 1 {
-                // When we don't have any assets anymore after an update, because the
-                // user deleted them, it doesn't make sense, to show this view
-                // controller anymore. So we leave here.
                 self?.navigationController?.popViewController(animated: true)
             }
         }
