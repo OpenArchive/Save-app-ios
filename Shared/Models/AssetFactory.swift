@@ -282,7 +282,7 @@ class AssetFactory {
      - parameter collection: The collection the asset will belong to.
      - parameter resultHandler: Callback with the created `Asset` object.
      */
-    class func create(fromFileUrl url: URL, thumbnail: UIImage? = nil,
+    class func create(isCamera:Bool,fromFileUrl url: URL, thumbnail: UIImage? = nil,
                       _ collection: Collection, _ resultHandler: ResultHandler? = nil)
     {
         if let uti = (try? url.resourceValues(forKeys: [.typeIdentifierKey]))?.typeIdentifier
@@ -297,15 +297,21 @@ class AssetFactory {
                 self.fetchLocation(asset)
                 
                 self.createThumb(asset, thumbnail: thumbnail)
-                
-                //   asset.generateProof {
-                asset.update({ asset in
-                    asset.isReady = true
-                }) { asset in
-                    handleResult(asset, resultHandler)
+                if(isCamera){
+                    asset.generateProof {
+                        asset.update({ asset in
+                            asset.isReady = true
+                        }) { asset in
+                            handleResult(asset, resultHandler)
+                        }
+                    }
+                }else{
+                    asset.update({ asset in
+                        asset.isReady = true
+                    }) { asset in
+                        handleResult(asset, resultHandler)
+                    }
                 }
-                //   }
-                
                 return
             }
             
