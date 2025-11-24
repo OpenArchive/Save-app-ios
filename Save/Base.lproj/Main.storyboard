@@ -2,7 +2,6 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="24127" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="3f6-u4-WuB">
     <device id="retina4_0" orientation="portrait" appearance="light"/>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24063"/>
         <capability name="Named colors" minToolsVersion="9.0"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
@@ -614,6 +613,30 @@
                                                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="yAz-am-otB">
                                                     <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
                                                 </imageView>
+                                                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="6ff-9z-Dpg">
+                                                    <rect key="frame" x="0.0" y="0.0" width="80" height="80"/>
+                                                    <subviews>
+                                                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="unknown" translatesAutoresizingMaskIntoConstraints="NO" id="ZZD-yb-50P">
+                                                            <rect key="frame" x="20" y="20" width="40" height="40"/>
+                                                        </imageView>
+                                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6vx-qi-lrB">
+                                                            <rect key="frame" x="8" y="59.5" width="64" height="12.5"/>
+                                                            <fontDescription key="fontDescription" name="Montserrat-Medium" family="Montserrat Medium" pointSize="10"/>
+                                                            <color key="textColor" systemColor="systemGrayColor"/>
+                                                            <nil key="highlightedColor"/>
+                                                        </label>
+                                                    </subviews>
+                                                    <color key="backgroundColor" name="placeholderBackground"/>
+                                                    <constraints>
+                                                        <constraint firstItem="ZZD-yb-50P" firstAttribute="width" secondItem="6ff-9z-Dpg" secondAttribute="width" multiplier="0.5" id="00h-r5-rnb"/>
+                                                        <constraint firstItem="ZZD-yb-50P" firstAttribute="height" secondItem="6ff-9z-Dpg" secondAttribute="height" multiplier="0.5" id="7vr-LO-NdN"/>
+                                                        <constraint firstItem="ZZD-yb-50P" firstAttribute="centerY" secondItem="6ff-9z-Dpg" secondAttribute="centerY" id="VS9-mK-sEW"/>
+                                                        <constraint firstItem="ZZD-yb-50P" firstAttribute="centerX" secondItem="6ff-9z-Dpg" secondAttribute="centerX" id="hUW-sF-BPV"/>
+                                                        <constraint firstAttribute="bottom" secondItem="6vx-qi-lrB" secondAttribute="bottom" constant="8" id="np3-H7-cBj"/>
+                                                        <constraint firstItem="6vx-qi-lrB" firstAttribute="leading" secondItem="6ff-9z-Dpg" secondAttribute="leading" constant="8" id="nx2-ey-hYv"/>
+                                                        <constraint firstAttribute="trailing" secondItem="6vx-qi-lrB" secondAttribute="trailing" constant="8" id="sjZ-kv-KIU"/>
+                                                    </constraints>
+                                                </view>
                                                 <view opaque="NO" userInteractionEnabled="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="RIt-E5-A19" customClass="ProgressButton" customModule="Save" customModuleProvider="target">
                                                     <rect key="frame" x="28" y="28" width="24" height="24"/>
                                                     <constraints>
@@ -644,19 +667,26 @@
                                         </view>
                                         <constraints>
                                             <constraint firstItem="fL1-Yq-xpO" firstAttribute="centerY" secondItem="3TG-dv-3xE" secondAttribute="centerY" id="73C-Kk-e6B"/>
+                                            <constraint firstAttribute="bottom" secondItem="6ff-9z-Dpg" secondAttribute="bottom" id="7MS-pn-DU7"/>
                                             <constraint firstItem="yAz-am-otB" firstAttribute="top" secondItem="3TG-dv-3xE" secondAttribute="top" id="ALp-gm-KeT"/>
                                             <constraint firstItem="yAz-am-otB" firstAttribute="leading" secondItem="3TG-dv-3xE" secondAttribute="leading" id="VXQ-EX-H5r"/>
                                             <constraint firstAttribute="trailing" secondItem="ReK-Xu-rBe" secondAttribute="trailing" id="YC6-cg-oEk"/>
                                             <constraint firstItem="fL1-Yq-xpO" firstAttribute="centerX" secondItem="3TG-dv-3xE" secondAttribute="centerX" id="b3h-6F-pTO"/>
+                                            <constraint firstAttribute="trailing" secondItem="6ff-9z-Dpg" secondAttribute="trailing" id="bcm-f5-xxn"/>
                                             <constraint firstItem="RIt-E5-A19" firstAttribute="centerY" secondItem="3TG-dv-3xE" secondAttribute="centerY" id="hXP-rU-3Hs"/>
                                             <constraint firstAttribute="trailing" secondItem="yAz-am-otB" secondAttribute="trailing" id="hao-TR-5g9"/>
                                             <constraint firstItem="RIt-E5-A19" firstAttribute="centerX" secondItem="3TG-dv-3xE" secondAttribute="centerX" id="nDC-lh-Zkq"/>
                                             <constraint firstAttribute="bottom" secondItem="yAz-am-otB" secondAttribute="bottom" id="pb1-BF-M1u"/>
                                             <constraint firstItem="ReK-Xu-rBe" firstAttribute="leading" secondItem="3TG-dv-3xE" secondAttribute="leading" id="t3Q-Mk-Ymz"/>
                                             <constraint firstAttribute="bottom" secondItem="ReK-Xu-rBe" secondAttribute="bottom" id="y6M-yt-uUv"/>
+                                            <constraint firstItem="6ff-9z-Dpg" firstAttribute="leading" secondItem="3TG-dv-3xE" secondAttribute="leading" id="z08-Dk-8lh"/>
+                                            <constraint firstItem="6ff-9z-Dpg" firstAttribute="top" secondItem="3TG-dv-3xE" secondAttribute="top" id="zq1-xJ-DSQ"/>
                                         </constraints>
                                         <connections>
+                                            <outlet property="defaultFileType" destination="6ff-9z-Dpg" id="7T7-xh-3er"/>
                                             <outlet property="errorIcon" destination="fL1-Yq-xpO" id="NBI-kR-btR"/>
+                                            <outlet property="fileImage" destination="ZZD-yb-50P" id="PCG-V6-ll0"/>
+                                            <outlet property="fileName" destination="6vx-qi-lrB" id="HBb-e4-pjI"/>
                                             <outlet property="imgView" destination="yAz-am-otB" id="rzq-aH-CeX"/>
                                             <outlet property="movieIndicator" destination="ReK-Xu-rBe" id="Omq-zh-fNB"/>
                                             <outlet property="progress" destination="RIt-E5-A19" id="31p-5f-exD"/>
@@ -1316,21 +1346,42 @@
                                     <constraint firstAttribute="height" constant="43" id="eR0-aV-x8x"/>
                                 </constraints>
                             </view>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Ckw-65-nwe">
+                                <rect key="frame" x="0.0" y="20" width="375" height="220"/>
+                                <subviews>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="unknown" translatesAutoresizingMaskIntoConstraints="NO" id="zMI-TE-p9Y">
+                                        <rect key="frame" x="94" y="55" width="187.5" height="110"/>
+                                    </imageView>
+                                </subviews>
+                                <color key="backgroundColor" name="placeholderBackground"/>
+                                <constraints>
+                                    <constraint firstItem="zMI-TE-p9Y" firstAttribute="centerX" secondItem="Ckw-65-nwe" secondAttribute="centerX" id="8e3-Ok-3Gk"/>
+                                    <constraint firstItem="zMI-TE-p9Y" firstAttribute="width" secondItem="Ckw-65-nwe" secondAttribute="width" multiplier="0.5" id="Aa8-7a-0pu"/>
+                                    <constraint firstItem="zMI-TE-p9Y" firstAttribute="height" secondItem="Ckw-65-nwe" secondAttribute="height" multiplier="0.5" id="lAb-mD-YQ6"/>
+                                    <constraint firstItem="zMI-TE-p9Y" firstAttribute="centerY" secondItem="Ckw-65-nwe" secondAttribute="centerY" id="nQq-dp-wro"/>
+                                </constraints>
+                            </view>
                         </subviews>
                         <viewLayoutGuide key="safeArea" id="UTc-RK-CZe"/>
                         <constraints>
+                            <constraint firstItem="Ckw-65-nwe" firstAttribute="trailing" secondItem="UTc-RK-CZe" secondAttribute="trailing" id="2Oi-Gi-FPK"/>
+                            <constraint firstItem="Ckw-65-nwe" firstAttribute="bottom" secondItem="UTc-RK-CZe" secondAttribute="bottom" id="3tf-Be-Nnu"/>
                             <constraint firstItem="MHp-Qj-lMm" firstAttribute="top" secondItem="UTc-RK-CZe" secondAttribute="top" id="71F-TG-2RV"/>
+                            <constraint firstItem="Ckw-65-nwe" firstAttribute="top" secondItem="UTc-RK-CZe" secondAttribute="top" id="8f4-t2-XOs"/>
                             <constraint firstItem="eM7-5Z-dQg" firstAttribute="top" secondItem="UTc-RK-CZe" secondAttribute="top" id="HyF-k0-CNt"/>
                             <constraint firstItem="UTc-RK-CZe" firstAttribute="trailing" secondItem="eM7-5Z-dQg" secondAttribute="trailing" id="Ppf-UW-bF7"/>
                             <constraint firstItem="UTc-RK-CZe" firstAttribute="bottom" secondItem="MHp-Qj-lMm" secondAttribute="bottom" id="ZYF-rW-ndD"/>
                             <constraint firstItem="eM7-5Z-dQg" firstAttribute="leading" secondItem="UTc-RK-CZe" secondAttribute="leading" id="aIF-dF-ZjZ"/>
                             <constraint firstItem="UTc-RK-CZe" firstAttribute="trailing" secondItem="MHp-Qj-lMm" secondAttribute="trailing" id="eAN-A3-82h"/>
                             <constraint firstItem="MHp-Qj-lMm" firstAttribute="leading" secondItem="UTc-RK-CZe" secondAttribute="leading" id="kxP-lu-Jfq"/>
+                            <constraint firstItem="Ckw-65-nwe" firstAttribute="leading" secondItem="UTc-RK-CZe" secondAttribute="leading" id="zAC-oo-ZIl"/>
                         </constraints>
                     </view>
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="375" height="240"/>
                     <connections>
+                        <outlet property="defaultImage" destination="zMI-TE-p9Y" id="xuU-cE-HUq"/>
+                        <outlet property="defaultView" destination="Ckw-65-nwe" id="9aU-ct-fdH"/>
                         <outlet property="imageView" destination="MHp-Qj-lMm" id="h3n-uL-aPA"/>
                         <outlet property="movieIndicator" destination="eM7-5Z-dQg" id="kP5-M9-maJ"/>
                     </connections>
@@ -1707,6 +1758,8 @@
                                 <subviews>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="KYI-V2-8dS">
                                         <rect key="frame" x="0.0" y="0.0" width="199.5" height="234.5"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" systemColor="systemRedColor"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                 <real key="value" value="10"/>
@@ -1715,6 +1768,8 @@
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Fph-2e-DsC">
                                         <rect key="frame" x="23" y="17" width="199" height="234.5"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" systemColor="systemRedColor"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                 <real key="value" value="10"/>
@@ -1723,6 +1778,8 @@
                                     </imageView>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="UwJ-TJ-OLW">
                                         <rect key="frame" x="55.5" y="38.5" width="199.5" height="234.5"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" systemColor="systemRedColor"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="number" keyPath="cornerRadius">
                                                 <real key="value" value="10"/>
@@ -3250,6 +3307,7 @@ Google's APIs allow you to access and send media to your existing folders in Goo
         <image name="server.rack" catalog="system" width="128" height="93"/>
         <image name="trash" catalog="system" width="117" height="128"/>
         <image name="trash_icon" width="33" height="32"/>
+        <image name="unknown" width="512" height="512"/>
         <image name="welcome_arrow" width="100" height="279"/>
         <namedColor name="Accent">
             <color red="0.0" green="0.70588235294117652" blue="0.65098039215686276" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -3272,6 +3330,9 @@ Google's APIs allow you to access and send media to your existing folders in Goo
         <namedColor name="pill-background">
             <color red="0.8901960784313725" green="0.8901960784313725" blue="0.89411764705882357" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
+        <namedColor name="placeholderBackground">
+            <color red="0.8901960784313725" green="0.8901960784313725" blue="0.89411764705882357" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </namedColor>
         <namedColor name="red-button">
             <color red="0.86274509803921573" green="0.20392156862745098" blue="0.11764705882352941" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </namedColor>
@@ -3292,6 +3353,9 @@ Google's APIs allow you to access and send media to your existing folders in Goo
         </systemColor>
         <systemColor name="systemGray3Color">
             <color red="0.7803921568627451" green="0.7803921568627451" blue="0.80000000000000004" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemGrayColor">
+            <color red="0.55686274509803924" green="0.55686274509803924" blue="0.57647058823529407" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
         </systemColor>
         <systemColor name="systemRedColor">
             <color red="1" green="0.2196078431372549" blue="0.23529411764705882" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>

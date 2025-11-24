@@ -66,9 +66,11 @@ class UploadCell: BaseCell {
             progress.progress = CGFloat(progressValue)
             errorBt.isHidden = upload?.error == nil
             done.isHidden = upload?.state != .uploaded
-
-            thumbnail.image = upload?.thumbnail
-
+            if((upload?.asset?.hasThumbnail()) ?? false){
+                thumbnail.image = upload?.thumbnail
+            }else{
+                thumbnail.image = UIImage(named:upload?.asset?.getFileType().placeholder ?? "unknown")
+            }
             nameLb.text = upload?.filename
 
             if !(upload?.isReady ?? false) && upload?.state != .uploaded {

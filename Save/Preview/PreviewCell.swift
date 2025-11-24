@@ -10,6 +10,9 @@ import UIKit
 
 class PreviewCell: UICollectionViewCell {
 
+    @IBOutlet weak var fileImage: UIImageView!
+    @IBOutlet weak var filename: UILabel!
+    @IBOutlet weak var defaultFileType: UIView!
     class var nib: UINib {
         return UINib(nibName: String(describing: self), bundle: Bundle(for: self))
     }
@@ -53,30 +56,40 @@ class PreviewCell: UICollectionViewCell {
         // Reset to default state to prevent showing old images
         previewImg.image = UIImage(named: "NoImage")
         movieIndicator.isHidden = true
+        defaultFileType.isHidden = true
         currentAssetId = nil
     }
     
     private func configureCell() {
-            guard let asset = asset else {
-                previewImg.image = UIImage(named: "NoImage")
-                movieIndicator.isHidden = true
-                return
-            }
-            
-            // Store the current asset ID to prevent race conditions
-            currentAssetId = asset.id
-            
-            // Set placeholder immediately
+        guard let asset = asset else {
             previewImg.image = UIImage(named: "NoImage")
-            
-            // Configure movie indicator immediately (this is fast)
-            movieIndicator.isHidden = !(asset.isAv)
-            movieIndicator.set(duration: asset.duration)
-            
-            // Load thumbnail asynchronously
+            defaultFileType.isHidden = true
+            movieIndicator.isHidden = true
+            return
+        }
+        
+        // Store the current asset ID to prevent race conditions
+        currentAssetId = asset.id
+        
+        // Set placeholder immediately
+        previewImg.image = UIImage(named: "NoImage")
+        defaultFileType.isHidden = true
+        if asset.hasThumbnail() == true {
+            previewImg.isHidden = false
+            defaultFileType.isHidden = true
             asset.getThumbnailAsync { [weak self] thumbnail in
                 guard self?.currentAssetId == asset.id else { return }
                 self?.previewImg.image = thumbnail
             }
+            movieIndicator.isHidden = !(asset.isAv)
+            movieIndicator.set(duration: asset.duration)
         }
+        else{
+            defaultFileType.isHidden = false
+            previewImg.isHidden = true
+            movieIndicator.isHidden = true
+            filename.text = asset.filename
+            fileImage.image = UIImage(named: asset.getFileType().placeholder)
+        }
+    }
 }

@@ -63,11 +63,25 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
     
     
     private func setImage(_ iv: UIImageView, _ asset: Asset?) {
-        if let image = asset?.getThumbnail() {
-            iv.image = image
-            iv.show2()
-        }
-        else {
+        if let asset = asset {
+            if(asset.hasThumbnail()){
+                if let image = asset.getThumbnail() {
+                    iv.image = image
+                    iv.show2()
+                }
+            }
+            else {
+                let placeholderImage = UIImage(named: asset.getFileType().placeholder)?
+                    .withRenderingMode(.alwaysTemplate)
+                
+                iv.image = placeholderImage
+                iv.backgroundColor = .placeholderBackground
+                iv.tintColor = .placeholderFile
+                iv.contentMode = .scaleAspectFit
+                iv.clipsToBounds = true
+                iv.show2()
+            }
+        } else{
             iv.hide()
         }
     }

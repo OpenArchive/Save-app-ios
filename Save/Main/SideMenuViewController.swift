@@ -91,7 +91,7 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
     @IBOutlet weak var addFolderBt: UIButton! {
         didSet {
             addFolderBt.titleLabel?.font = .montserrat(forTextStyle: .headline, with: .traitUIOptimized)
-            addFolderBt.titleLabel?.text = NSLocalizedString("New Folder", comment: "")
+            addFolderBt.setTitle(NSLocalizedString("New Folder", comment: ""))
         }
     }
 
@@ -120,7 +120,6 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
         projectsTable.register(SideMenuItemCell.nib, forCellReuseIdentifier: SideMenuItemCell.reuseId)
         
         setupSpaceHeader()
-
         Db.add(observer: self, #selector(yapDatabaseModified))
     }
     

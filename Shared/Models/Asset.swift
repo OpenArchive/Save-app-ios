@@ -564,17 +564,31 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
 
      - returns: A thumbnail `UIImage` of the asset or a default image.
     */
+
+    func hasThumbnail() -> Bool {
+        // Safely unwrap thumb
+        guard let thumbURL = thumb else {
+            return false
+        }
+        
+        // Check if file exists and can be read
+        guard let _ = try? Data(contentsOf: thumbURL) else {
+            return false
+        }
+        
+        return true
+    }
+    
     func getThumbnail() -> UIImage? {
         if let thumb = thumb,
-            let data = try? Data(contentsOf: thumb),
-            let image = UIImage(data: data) {
+           let data = try? Data(contentsOf: thumb),
+           let image = UIImage(data: data) {
             return image
         }
-
         return UIImage(named: "NoImage")
     }
     func getThumbnailAsync(completion: @escaping (UIImage?) -> Void) {
-        // First, try to load from local thumb cache
+       
         if let thumb = thumb,
             let data = try? Data(contentsOf: thumb),
             let image = UIImage(data: data) {
@@ -582,10 +596,6 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
             return
         }
         
-        if isAudioFile() {
-                completion(UIImage(named: "audio_waveform"))
-                return
-            }
         guard let phAsset = self.phAsset else {
             completion(UIImage(named: "NoImage"))
             return
@@ -608,17 +618,71 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
             }
         }
     }
-    private func isAudioFile() -> Bool {
-        let audioExtensions = ["mp3", "m4a", "wav", "aac", "flac", "aiff", "wma", "ogg"]
+    enum FileType {
+        case audio
+        case video
+        case pdf
+        case zip
+        case text
+        case image
+        case document
+        case unknown
         
-        // Check from file URL if available
-        if let fileUrl = self.file {
-            return audioExtensions.contains(fileUrl.pathExtension.lowercased())
+        var displayName: String {
+            switch self {
+            case .audio: return "Audio"
+            case .video: return "Video"
+            case .pdf: return "PDF"
+            case .zip: return "Archive"
+            case .text: return "Text"
+            case .image: return "Image"
+            case .document: return "Document"
+            case .unknown: return "Unknown"
+            }
         }
         
-        // Check from filename if available
-        let ext = (self.filename as NSString).pathExtension.lowercased()
-        return audioExtensions.contains(ext)
+        var placeholder: String {
+            switch self {
+            case .audio: return "music_file"
+            case .video: return "video_file"
+            case .pdf: return "pdf_default"
+            case .zip: return "zip_file"
+            case .text: return "text_file"
+            case .image: return "img_default"
+            case .document: return "text_file"
+            case .unknown: return "unknown"
+            }
+        }
+    }
+
+     func getFileType() -> FileType {
+        // Get file extension
+        let ext: String
+        if let fileUrl = self.file {
+            ext = fileUrl.pathExtension.lowercased()
+        } else {
+            ext = (self.filename as NSString).pathExtension.lowercased()
+        }
+        
+        // Define file type mappings
+        let fileTypes: [FileType: [String]] = [
+            .audio: ["mp3", "m4a", "wav", "aac", "flac", "aiff", "wma", "ogg", "opus", "amr"],
+            .video: ["mp4", "mov", "avi", "mkv", "flv", "wmv", "webm", "m4v", "3gp", "mpeg", "mpg"],
+            .pdf: ["pdf"],
+            .zip: ["zip", "rar", "7z", "tar", "gz", "bz2", "xz", "iso"],
+            .text: ["txt", "log", "md", "rtf", "csv", "json", "xml", "html", "htm"],
+            .image: ["jpg", "jpeg", "png", "gif", "bmp", "svg", "webp", "heic", "tiff", "ico"],
+            .document: ["doc", "docx", "xls", "xlsx", "ppt", "pptx", "odt", "ods", "odp"]
+        ]
+        
+        // Find matching file type
+        for (type, extensions) in fileTypes {
+            if extensions.contains(ext) {
+                return type
+            }
+        }
+        
+        return .unknown
     }
     /**
      Asynchronously deletes this asset from the database.

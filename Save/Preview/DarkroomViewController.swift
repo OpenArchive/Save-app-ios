@@ -318,8 +318,9 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     private func getImageVc(_ index: Int) -> ImageViewController {
         let vc = UIStoryboard.main.instantiate(ImageViewController.self)
         let asset = sc.getAsset(index)
-
+        vc.isThumbnail = asset?.hasThumbnail()
         vc.image = asset?.getThumbnail()
+        vc.placeholderImage = UIImage(named: asset?.getFileType().placeholder ?? "unknown")
         vc.index = index
         vc.isAv = asset?.isAv
         vc.duration = asset?.duration

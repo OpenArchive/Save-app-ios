@@ -13,7 +13,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                           UINavigationControllerDelegate, SideMenuDelegate,
                           AssetPickerDelegate,UITextFieldDelegate,UICollectionViewDelegate
 {
-   
+    
     @IBOutlet weak var renameView: UIView!{
         didSet {
             renameView.isHidden = true
@@ -70,7 +70,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     @IBOutlet weak var folderAssetCountLb: UILabel! {
         didSet {
-          
+            
             folderAssetCountLb.clipsToBounds = true
         }
     }
@@ -124,7 +124,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
     }
     
-
+    
     @IBOutlet weak var settingsBt: UIButton! {
         didSet {
             settingsBt.setAttributedTitle(.init(
@@ -138,7 +138,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         renameView.isHidden = true
     }
     
-  
+    
     @IBAction func closeMedia(_ sender: Any) {
         selectMediaView.isHidden = true
         self.toggleMode(newMode: false)
@@ -210,7 +210,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         collectionsReadConn?.update(mappings: collectionsMappings)
         assetsReadConn?.update(mappings: assetsMappings)
         Db.add(observer: self, #selector(yapDatabaseModified))
-      
+        
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backBarButtonItem
         
@@ -360,7 +360,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             toggleMode()
         }
         updateManageBt()
-    
+        
     }
     @available(iOS 14.0, *)
     private func updateDropdownMenu() {
@@ -413,15 +413,15 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
     private func configureNavigationBarLogo() {
         guard let logoImage = UIImage(named: "save_logo_navbar") else { return }
-
+        
         let logoImageView = UIImageView(image: logoImage)
         logoImageView.contentMode = .scaleAspectFit
         logoImageView.translatesAutoresizingMaskIntoConstraints = false
-
+        
         let logoContainer = UIView()
         logoContainer.translatesAutoresizingMaskIntoConstraints = false
         logoContainer.addSubview(logoImageView)
-
+        
         NSLayoutConstraint.activate([
             logoImageView.topAnchor.constraint(equalTo: logoContainer.topAnchor),
             logoImageView.bottomAnchor.constraint(equalTo: logoContainer.bottomAnchor,constant: -10),
@@ -429,14 +429,14 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             logoImageView.widthAnchor.constraint(equalToConstant: 60),
             logoImageView.heightAnchor.constraint(equalToConstant: 36)
         ])
-
-       
+        
+        
         let logoItem = UIBarButtonItem(customView: logoContainer)
-
+        
         navigationItem.leftBarButtonItems = [logoItem]
     }
-
-
+    
+    
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
@@ -495,7 +495,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         let group = assetsMappings.group(forSection: UInt(indexPath.section))
         let collection: Collection? = collectionsReadConn?.object(for: AssetsByCollectionView.collectionId(from: group))
         
-       
+        
         collection?.assets.removeAll()
         
         collection?.assets.append(contentsOf: assetsReadConn?.objects(in: indexPath.section, with: assetsMappings) ?? [])
@@ -528,17 +528,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                     return UploadErrorAlert.present(self, upload)
                 }
                 performSegue(withIdentifier: "editAssetsSegue", sender: indexPath.row)
-                
-//                switch upload.state {
-//                case .paused:
-//                    NotificationCenter.default.post(name: .uploadManagerUnpause, object: upload.id)
-//                case .pending, .uploading:
-//                    performSegue(withIdentifier: "editAssetsSegue", sender: indexPath.row)
-//
-//                    //      NotificationCenter.default.post(name: .uploadManagerPause, object: upload.id)
-//                default:
-//                    break
-//                }
                 
                 return
             }
@@ -608,7 +597,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             if self.selectedProject == nil {
                 self.toggleVisibility(ishidden: true)
             }
-           
+            
             self.titleContainerHeight.constant = 44
             self.myMediaBt.setImage(UIImage(named: "media_image"))
             self.settingsBt.setImage(UIImage(systemName: "gearshape"))
@@ -694,43 +683,43 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             }
         }
         else{
-           
-                let popup = MediaPopupViewController()
-                popup.modalPresentationStyle = .overCurrentContext
-                popup.modalTransitionStyle = .crossDissolve
-                self.mediaArrow.isHidden = true
-                
-                popup.onCameraTap = { [weak self] in
-                    self?.mediaArrow.isHidden = false
-                    self?.assetPicker.openCamera()
-                }
-                popup.onGalleryTap = { [weak self] in
-                    self?.mediaArrow.isHidden = false
-                    self?.assetPicker.pickMedia()
-                }
-                popup.onFilesTap = { [weak self] in
-                    self?.mediaArrow.isHidden = false
-                    self?.assetPicker.pickDocuments()
-                }
-                popup.onAppear = { [weak self] in
-                    self?.mediaArrow.isHidden = true
-                }
-                popup.onDisappear = { [weak self] in
-                    self?.mediaArrow.isHidden = false
-                }
-                
-                present(popup, animated: true)
             
-      }
+            let popup = MediaPopupViewController()
+            popup.modalPresentationStyle = .overCurrentContext
+            popup.modalTransitionStyle = .crossDissolve
+            self.mediaArrow.isHidden = true
+            
+            popup.onCameraTap = { [weak self] in
+                self?.mediaArrow.isHidden = false
+                self?.assetPicker.openCamera()
+            }
+            popup.onGalleryTap = { [weak self] in
+                self?.mediaArrow.isHidden = false
+                self?.assetPicker.pickMedia()
+            }
+            popup.onFilesTap = { [weak self] in
+                self?.mediaArrow.isHidden = false
+                self?.assetPicker.pickDocuments()
+            }
+            popup.onAppear = { [weak self] in
+                self?.mediaArrow.isHidden = true
+            }
+            popup.onDisappear = { [weak self] in
+                self?.mediaArrow.isHidden = false
+            }
+            
+            present(popup, animated: true)
+            
+        }
     }
-
+    
     @IBAction func showAddMenu() {
         showMediaPickerSheet()
-       
+        
     }
     
     @IBAction func closeAddMenu() {
-       
+        
     }
     
     @IBAction func longPressItem(_ sender: UILongPressGestureRecognizer) {
@@ -752,7 +741,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 return
             }
             self?.toggleMode(newMode: false)
-          
+            
             if(self?.getAllAssets().count == 1 || self?.getAllAssets().count == 0 ){
                 self?.selectMediaView.isHidden = true
             }
@@ -791,7 +780,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 }
                 
                 if upload.state == .uploaded {
-              
+                    
                     DispatchQueue.main.async {
                         UIView.performWithoutAnimation { // Less flickering: no fading animation.
                             self.collectionView.reloadSections([indexPath.section])
@@ -813,7 +802,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
         
         if projectsReadConn?.hasChanges(projectsMappings) ?? false {
-          
+            
             updateSpace()
             sideMenu.reload()
             updateProject()
@@ -822,11 +811,11 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         var forceFull = false
         
         if let changes = collectionsReadConn?.getChanges(collectionsMappings) {
-         
+            
             forceFull = changes.forceFull || changes.rowChanges.contains(where: { $0.type == .update && $0.finalGroup == selectedProject?.id })
         }
         
-       
+        
         if let changes = assetsReadConn?.getChanges(assetsMappings) {
             forceFull = forceFull || changes.forceFull
             || changes.sectionChanges.contains(where: { $0.type == .delete || $0.type == .insert })
@@ -855,12 +844,12 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                     print(self.numberOfSections(in: self.collectionView))
                     self.collectionView.toggle(self.collectionView.isHidden, animated: true)
                 }
-         }
+            }
         }
         if #available(iOS 14.0, *) {
             updateDropdownMenu()
         } else {
-          
+            
         }
     }
     
@@ -872,7 +861,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
      */
     private func updateManageBt() {
         uploadsReadConn?.asyncRead { [weak self] tx in
-            let count = UploadsView.countUploading(tx)
+            _ = UploadsView.countUploading(tx)
         }
     }
     
@@ -898,7 +887,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         
         inEditMode = newMode
         if(inEditMode){
-          
+            
             selectMediaView.isHidden = !inEditMode
         }
         
@@ -932,7 +921,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             sideMenu.space = nil
             self.titleContainer.isHidden = true
             
-           
+            
             hintLb.text =  NSLocalizedString(
                 "Tap the button below to add a server",
                 comment: "")
@@ -949,7 +938,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
     
     private func updateProject() {
-       
+        
         if let project = selectedProject{
             
             AbcFilteredByProjectView.updateFilter(project.id)
@@ -977,11 +966,12 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 self.titleContainerHeight.constant = 44
                 toggleVisibility(ishidden: true)
             }
-          
+            
         }
         
     }
     func toggleVisibility(ishidden:Bool) {
+        
         editButton.isHidden = ishidden
         folderIndicator.isHidden = ishidden
         folderNameLb.isHidden = ishidden
