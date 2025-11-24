@@ -28,18 +28,30 @@ enum FileType: CaseIterable {
     case image
     case video
     case audio
+    case pdf
+    case zip
+    case text
+    case document
     case unknown
     
     var systemIconName: String {
         switch self {
         case .image:
-            return "photo"
+            return "img_default"
         case .video:
-            return "video"
+            return "video_file"
         case .audio:
-            return "waveform"
+            return "music_file"
+        case .pdf:
+            return "pdf_default"
+        case .zip:
+            return "zip_file"
+        case .text:
+            return "text_file"
+        case .document:
+            return "text_file"
         case .unknown:
-            return "doc"
+            return "unknown"
         }
     }
 }
@@ -54,14 +66,15 @@ class FileMetadataFetcher: ObservableObject {
     }
     
     func fetchFileMetadata(from gatewayUrl: String) async -> FileMetadata? {
-        // Check cache first
-        print("gatewayUrl: \(gatewayUrl)")
-        let cacheKey = NSString(string: gatewayUrl)
+        // Replace w3s.link with dweb.link
+        let normalizedUrl = gatewayUrl.replacingOccurrences(of: "w3s.link", with: "dweb.link")
+       
+        let cacheKey = NSString(string: normalizedUrl)
         if let cached = cache.object(forKey: cacheKey) {
             return cached
         }
         
-        guard let url = URL(string: gatewayUrl) else { return nil }
+        guard let url = URL(string: normalizedUrl) else { return nil }
         
         do {
             let (data, response) = try await session.data(from: url)
@@ -72,14 +85,8 @@ class FileMetadataFetcher: ObservableObject {
                 return nil
             }
             
-            // Debug: Print HTML structure for w3s.link URLs
-            if gatewayUrl.contains("w3s.link") {
-                print("W3S.LINK HTML STRUCTURE:")
-                print(String(html.prefix(1000)))
-                print("END OF HTML PREVIEW")
-            }
             
-            let metadata = parseFileMetadata(from: html, baseUrl: gatewayUrl)
+            let metadata = parseFileMetadata(from: html, baseUrl: normalizedUrl)
             
             // Cache the result
             if let metadata = metadata {
@@ -88,14 +95,13 @@ class FileMetadataFetcher: ObservableObject {
             
             return metadata
         } catch {
-            print("Error fetching file metadata: \(error)")
+           
             return nil
         }
     }
     
     private func parseFileMetadata(from html: String, baseUrl: String) -> FileMetadata? {
-        print("Parsing HTML content, length: \(html.count)")
-        
+      
         // Check if this is actually a file (not a directory) by looking for common file indicators
         if html.contains("Content-Type:") || html.contains("content-type:") ||
            html.contains("<img") || html.contains("<video") || html.contains("<audio") ||
@@ -108,7 +114,7 @@ class FileMetadataFetcher: ObservableObject {
         let patterns = [
             // Original pattern for storacha gateway
             #"<a\s+href="(?:/ipfs/[^/]+/)?([^"]+)">([^<]+)</a>"#,
-            // w3s.link pattern - they might use relative paths
+            // dweb.link pattern - they might use relative paths
             #"<a[^>]*href="\.?/?([^"./][^"]*)"[^>]*>([^<]+)</a>"#,
             // More flexible pattern for any gateway
             #"<a[^>]*href="([^"]*)"[^>]*>([^<]+)</a>"#,
@@ -117,14 +123,13 @@ class FileMetadataFetcher: ObservableObject {
         ]
         
         for (index, pattern) in patterns.enumerated() {
-            print("Trying pattern \(index + 1): \(pattern)")
+         
             if let metadata = tryParseWithPattern(pattern, html: html, baseUrl: baseUrl) {
-                print("Successfully parsed with pattern \(index + 1)")
+              
                 return metadata
             }
         }
         
-        print("No patterns matched, returning nil")
         return nil
     }
     
@@ -158,18 +163,17 @@ class FileMetadataFetcher: ObservableObject {
     
     private func tryParseWithPattern(_ pattern: String, html: String, baseUrl: String) -> FileMetadata? {
         guard let regex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive]) else {
-            print("Failed to create regex for pattern: \(pattern)")
+           
             return nil
         }
         
         let range = NSRange(html.startIndex..<html.endIndex, in: html)
         let matches = regex.matches(in: html, options: [], range: range)
         
-        print("Found \(matches.count) matches for current pattern")
         
         for (index, match) in matches.enumerated() {
             guard match.numberOfRanges >= 3 else {
-                print("Match \(index) has insufficient ranges: \(match.numberOfRanges)")
+            
                 continue
             }
             
@@ -178,29 +182,29 @@ class FileMetadataFetcher: ObservableObject {
             
             guard let hrefSubstring = Range(hrefRange, in: html),
                   let linkTextSubstring = Range(linkTextRange, in: html) else {
-                print("Match \(index) has invalid ranges")
+            
                 continue
             }
             
             let href = String(html[hrefSubstring]).trimmingCharacters(in: .whitespacesAndNewlines)
             let linkText = String(html[linkTextSubstring]).trimmingCharacters(in: .whitespacesAndNewlines)
             
-            print("Match \(index): href='\(href)', linkText='\(linkText)'")
+           
             
             // Skip parent directory links and empty links
             if href == "../" || linkText == ".." || href.isEmpty || linkText.isEmpty {
-                print("Skipping match \(index): parent directory or empty")
+               
                 continue
             }
             
             if (linkText.hasPrefix("bafy") || linkText.hasPrefix("Qm")) && !linkText.contains(".") {
-                print("Skipping match \(index): looks like a hash")
+               
                 continue
             }
 
             // Skip extremely long names that are likely hashes (but allow reasonable filenames)
             if linkText.count > 100 && !linkText.contains(".") {
-                print("Skipping match \(index): too long without extension")
+              
                 continue
             }
             
@@ -209,7 +213,6 @@ class FileMetadataFetcher: ObservableObject {
                linkText.lowercased().contains("back") ||
                linkText.lowercased().contains("index") ||
                href.contains("..") {
-                print("Skipping match \(index): navigation element")
                 continue
             }
             
@@ -242,8 +245,6 @@ class FileMetadataFetcher: ObservableObject {
             let context = (html as NSString).substring(with: contextRange)
             let fileSize = extractFileSize(from: context)
             
-            print("Successfully parsed file: \(fileName), size: \(fileSize), direct URL: \(directUrl)")
-            
             return FileMetadata(
                 fileName: fileName,
                 fileSize: fileSize,
@@ -272,17 +273,24 @@ class FileMetadataFetcher: ObservableObject {
     }
     
     private func determineFileType(from fileName: String) -> FileType {
-        let fileExtension = (fileName as NSString).pathExtension.lowercased()
+        let ext = (fileName as NSString).pathExtension.lowercased()
         
-        switch fileExtension {
-        case "jpg", "jpeg", "png", "gif", "bmp", "webp", "avif", "heic", "heif":
-            return .image
-        case "mp4", "avi", "mkv", "mov", "wmv", "flv", "webm", "m4v":
-            return .video
-        case "mp3", "wav", "flac", "aac", "ogg", "m4a", "wma":
-            return .audio
-        default:
-            return .unknown
+        let fileTypes: [FileType: [String]] = [
+            .audio: ["mp3", "m4a", "wav", "aac", "flac", "aiff", "wma", "ogg", "opus", "amr"],
+            .video: ["mp4", "mov", "avi", "mkv", "flv", "wmv", "webm", "m4v", "3gp", "mpeg", "mpg"],
+            .pdf: ["pdf"],
+            .zip: ["zip", "rar", "7z", "tar", "gz", "bz2", "xz", "iso"],
+            .text: ["txt", "log", "md", "rtf", "csv", "json", "xml", "html", "htm"],
+            .image: ["jpg", "jpeg", "png", "gif", "bmp", "svg", "webp", "heic", "tiff", "ico", "avif", "heif"],
+            .document: ["doc", "docx", "xls", "xlsx", "ppt", "pptx", "odt", "ods", "odp"]
+        ]
+        
+        for (type, extensions) in fileTypes {
+            if extensions.contains(ext) {
+                return type
+            }
         }
+        
+        return .unknown
     }
 }

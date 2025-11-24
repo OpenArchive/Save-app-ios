@@ -6,7 +6,6 @@
 //  Copyright © 2025 Open Archive. All rights reserved.
 //
 
-
 import SwiftUI
 
 // MARK: - Individual File Grid Item
@@ -18,7 +17,6 @@ struct FileGridItemView: View {
     
     var body: some View {
         VStack(spacing: 8) {
-            // File Icon/Thumbnail
             ZStack {
                 RoundedRectangle(cornerRadius: 8)
                     .fill(Color.gray.opacity(0.1))
@@ -34,20 +32,26 @@ struct FileGridItemView: View {
                                 .resizable()
                                 .aspectRatio(contentMode: .fill)
                         } placeholder: {
-                            Image(systemName: metadata.fileType.systemIconName)
-                                .font(.system(size: 24))
+                            Image(metadata.fileType.systemIconName)
+                                .resizable()
+                                .aspectRatio(contentMode: .fit)
+                                .frame(width: 40, height: 40)
                                 .foregroundColor(.gray)
                         }
                         .frame(width: 80, height: 80)
                         .clipShape(RoundedRectangle(cornerRadius: 8))
                     } else {
-                        Image(systemName: metadata.fileType.systemIconName)
-                            .font(.system(size: 24))
-                            .foregroundColor(.accentColor)
+                        // File type icon
+                        Image(metadata.fileType.systemIconName)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 40, height: 40)
                     }
                 } else {
-                    Image(systemName: FileType.unknown.systemIconName)
-                        .font(.system(size: 24))
+                    Image(FileType.unknown.systemIconName)
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 40, height: 40)
                         .foregroundColor(.gray)
                 }
             }
@@ -58,17 +62,6 @@ struct FileGridItemView: View {
                     .font(.montserrat(.medium, for: .caption))
                     .lineLimit(2)
                     .multilineTextAlignment(.center)
-                
-//                if let metadata = fileMetadata, metadata.fileSize != "Unknown size" {
-//                    Text(metadata.fileSize)
-//                        .font(.montserrat(.regular, for: .caption2))
-//                        .foregroundColor(.secondary)
-//                }
-//                
-//                Text(upload.cid.prefix(8) + "...")
-//                    .font(.montserrat(.regular, for: .caption2))
-//                    .foregroundColor(.secondary)
-//                    .lineLimit(1)
             }
         }
         .frame(width: 100)
@@ -91,10 +84,7 @@ struct FileGridItemView: View {
     private func loadMetadata() async {
         isLoading = true
         
-        // Construct gateway URL - you may need to adjust this based on your upload structure
-        let gatewayUrl = "https://gateway.storacha.network/ipfs/\(upload.cid)"
-        
-        if let metadata = await metadataFetcher.fetchFileMetadata(from: gatewayUrl) {
+        if let metadata = await metadataFetcher.fetchFileMetadata(from: upload.gatewayUrl) {
             await MainActor.run {
                 self.fileMetadata = metadata
                 self.isLoading = false
@@ -118,5 +108,3 @@ struct FileGridItemView: View {
         }
     }
 }
-
-
