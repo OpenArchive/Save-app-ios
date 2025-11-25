@@ -203,10 +203,15 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
                             
                             if let error = error {
                                 if let self = self {
-                                    self.errorText.text = error.friendlyMessage
-                                    self.usernameTb.status = .bad
-                                    self.passwordTb.status = .bad
-                                    self.urlTb.status = .unknown
+                                    if(error.localizedDescription.contains("404")){
+                                        self.showServerNotFoundError()
+                                    }else{
+                                        self.errorText.text = error.friendlyMessage
+                                        self.usernameTb.status = .bad
+                                        self.passwordTb.status = .bad
+                                        self.urlTb.status = .unknown
+                                    }
+                                  
                                 }
                             }
                             else {
@@ -226,26 +231,29 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
                 }
             
             } else {
-                self.workingOverlay.isHidden = true
-                self.urlTb.status = .bad
-                self.usernameTb.status = .unknown
-                self.passwordTb.status = .unknown
-                let alertVC = CustomAlertViewController(
-                    title: NSLocalizedString("Error", comment: ""),
-                    message: NSLocalizedString("A server with the specified hostname could not be found.", comment: ""),
-                    primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
-                    primaryButtonAction: {
-                        
-                    }, showCheckbox: false, iconImage: Image("ic_error"),
-                    iconTint:.gray
-                )
-                self.present(alertVC, animated: true)
+                self.showServerNotFoundError()
               
             }
         }
             
     }
-
+    private func showServerNotFoundError(){
+        self.workingOverlay.isHidden = true
+        self.urlTb.status = .bad
+        self.usernameTb.status = .unknown
+        self.passwordTb.status = .unknown
+        let alertVC = CustomAlertViewController(
+            title: NSLocalizedString("Error", comment: ""),
+            message: NSLocalizedString("A server with the specified hostname could not be found.", comment: ""),
+            primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
+            primaryButtonAction: {
+                
+            }, showCheckbox: false, iconImage: Image("ic_error"),
+            iconTint:.gray
+        )
+        self.present(alertVC, animated: true)
+    }
+    
     func canOpen(_ urlString: String, completion: @escaping (Bool) -> Void) {
         guard let url = URL(string: urlString),
               let host = url.host, !host.isEmpty else {

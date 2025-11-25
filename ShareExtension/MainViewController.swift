@@ -235,7 +235,7 @@ class MainViewController: TableWithSpacesViewController {
                         let error = NSLocalizedString("Couldn't import item!", comment: "")
 
                         if let url = item as? URL {
-                            AssetFactory.create(fromFileUrl: url,
+                            AssetFactory.create(isCamera: false, fromFileUrl: url,
                                                 thumbnail: thumbnail as? UIImage,
                                                 collection)
                             { asset in

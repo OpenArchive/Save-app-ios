@@ -135,7 +135,7 @@ class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPic
         for url in urls {
             let id = UIApplication.shared.beginBackgroundTask()
 
-            AssetFactory.create(fromFileUrl: url, collection) { asset in
+            AssetFactory.create(isCamera: false, fromFileUrl: url, collection) { asset in
                 UIApplication.shared.endBackgroundTask(id)
             }
         }
@@ -219,7 +219,7 @@ class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPic
         
         if let mediaURL = info[.mediaURL] as? URL {
             // Video captured
-            AssetFactory.create(fromFileUrl: mediaURL, collection) { asset in
+            AssetFactory.create(isCamera: true, fromFileUrl: mediaURL, collection) { asset in
                 UIApplication.shared.endBackgroundTask(id)
             }
         } else if let image = info[.originalImage] as? UIImage {
