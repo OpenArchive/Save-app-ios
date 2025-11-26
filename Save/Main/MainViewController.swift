@@ -662,8 +662,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
     
     @IBAction func add() {
-        closeAddMenu()
-        
+        if(MainViewController.isSettingsEnabled){
+            hideSettings()
+        }
         // Don't allow to add assets without a space or a project.
         if selectedProject == nil {
             return  self.addFolder()
@@ -714,6 +715,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
     
     @IBAction func showAddMenu() {
+        if(MainViewController.isSettingsEnabled){
+            hideSettings()
+        }
         showMediaPickerSheet()
         
     }
@@ -723,7 +727,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
     
     @IBAction func longPressItem(_ sender: UILongPressGestureRecognizer) {
-        
+       
         if sender.state != .began {
             return
         }
