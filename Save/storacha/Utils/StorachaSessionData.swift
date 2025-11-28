@@ -31,6 +31,7 @@ public class SessionManager {
     private let sessionKey = "storacha_session"
     private let lastEmailKey = "storacha_last_email"
     private let spaceCount = "storacha_space_count"
+    private let delegatedSpaceCount = "delegated_space_count"
     
     private init() {}
     
@@ -40,11 +41,18 @@ public class SessionManager {
         userDefaults.set(sessionData.email, forKey: lastEmailKey)
     }
     
-    func saveSpaces(_ count: Int) throws {
+    func saveSpacesCount(_ count: Int) throws {
         guard let data = "\(count)".data(using: .utf8) else {
             throw StorachaAPIError.authenticationFailed("Failed to convert count to data")
         }
         try keychain.save(data, for: spaceCount)
+    }
+    
+    func saveDelegatedSpaceCount(_ count: Int) throws {
+        guard let data = "\(count)".data(using: .utf8) else {
+            throw StorachaAPIError.authenticationFailed("Failed to convert count to data")
+        }
+        try keychain.save(data, for: delegatedSpaceCount)
     }
     
     func loadSession() -> StorachaSessionData? {
@@ -60,6 +68,16 @@ public class SessionManager {
     func loadSpaceCount() -> Int? {
         do {
                let data = try keychain.load(for: spaceCount)
+               let string = String(data: data, encoding: .utf8)
+               return string.flatMap { Int($0) }
+           } catch {
+               return nil
+           }
+    }
+    
+    func loadDelegatedSpceCount() -> Int? {
+        do {
+               let data = try keychain.load(for: delegatedSpaceCount)
                let string = String(data: data, encoding: .utf8)
                return string.flatMap { Int($0) }
            } catch {

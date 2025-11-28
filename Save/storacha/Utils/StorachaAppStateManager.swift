@@ -19,6 +19,7 @@ class StorachaAppState: ObservableObject {
     @Published var error: StorachaAPIError?
     @Published var isBusy: Bool = false
     @Published var spaceCount:Int = 0
+    @Published var delegatedSpaceCount:Int = 0
     @Published var didState = DIDState()
     @Published var authState = AuthState()
     @Published var spaceState = SpaceState()
@@ -29,20 +30,22 @@ class StorachaAppState: ObservableObject {
    
     init() {
         self.lastUsedEmail = sessionManager.getLastEmail() ?? ""
-        // Call synchronous version in init
         restoreSessionSync()
         spaceCount = sessionManager.loadSpaceCount() ?? 0
+        delegatedSpaceCount = sessionManager.loadDelegatedSpceCount() ?? 0
     }
    
     // MARK: - Space Count Management
     @MainActor
     func loadSpaceCount() {
         spaceCount = sessionManager.loadSpaceCount() ?? 0
+        delegatedSpaceCount = sessionManager.loadDelegatedSpceCount() ?? 0
     }
     
     @MainActor
     func refreshSpaceCount() {
         loadSpaceCount()
+        delegatedSpaceCount = sessionManager.loadDelegatedSpceCount() ?? 0
     }
     
     // MARK: - Account Listing
@@ -88,12 +91,9 @@ class StorachaAppState: ObservableObject {
     @MainActor
     func restoreSession() {
         guard let sessionData = sessionManager.loadSession() else {
-            print("⚠️ [restoreSession] No session data found")
             return
         }
-        
-        print("✅ [restoreSession] Restoring session for: \(sessionData.email)")
-        
+    
         self.currentUser = StorachaUser(
             did: sessionData.did,
             email: sessionData.email,
@@ -148,20 +148,17 @@ class StorachaAppState: ObservableObject {
     
     @MainActor
     func loadUsage(sessionId: String) async {
-        print("🔄 [loadUsage] Starting - Task is cancelled: \(Task.isCancelled)")
         
         isLoading = true
         error = nil
         
         do {
-            print("🔄 [loadUsage] Calling API...")
+           
             let result = try await apiService.getAccountUsage()
-            print("✅ [loadUsage] Got response: \(result)")
             
             // Update state on main actor
             usage = result
             error = nil // Clear any previous errors
-            print("✅ [loadUsage] Updated state with response")
             
         } catch {
             print("❌ [loadUsage] Error: \(error)")

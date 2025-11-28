@@ -1,11 +1,3 @@
-//
-//  StyledButton.swift
-//  Save
-//
-//  Created by navoda on 2025-05-26.
-//  Copyright © 2025 Open Archive. All rights reserved.
-//
-
 import SwiftUI
 import Combine
 
@@ -69,6 +61,8 @@ struct StorachaSettingView: View {
     var disableBackAction: ((Bool) -> Void)?
     var manageAccountsAction: ((String) -> Void)?
     
+    private let sessionManager = SessionManager.shared
+    
     init(
         appState: StorachaAppState,
         disableBackAction: ((Bool) -> Void)? = nil,
@@ -114,7 +108,7 @@ struct StorachaSettingView: View {
                     title: NSLocalizedString("My Spaces", comment: ""),
                     subtitle: NSLocalizedString("Access your spaces",comment: ""),
                     icon: "folder",
-                    isDisabled: appState.isBusy || appState.spaceCount < 1
+                    isDisabled: appState.isBusy || appState.delegatedSpaceCount < 1 || !hasValidSession()
                 ) {
                     manageAccountsAction?("spaces")
                 }
@@ -173,7 +167,15 @@ struct StorachaSettingView: View {
             disableBackAction?(isBusy)
         }
     }
+    
+    private func hasValidSession() -> Bool {
+        guard let sessionId = sessionManager.loadSession()?.sessionId else {
+            return false
+        }
+        return !sessionId.isEmpty
+    }
 }
+
 struct StorachaContentDescription: View {
     var body: some View {
         Text(NSLocalizedString("Files uploaded to the Storacha network are publicly accessible through their CID and may remain permanently available across decentralized nodes. ", comment: "ProofMode description"))
