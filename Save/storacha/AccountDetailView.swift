@@ -15,8 +15,8 @@ struct AccountDetailView: View {
     
     @State private var activeSortType: SortType = .name
     @State private var nameSortAscending = true
-    @State private var sizeSortAscending = false // Start with descending for size
-    @State private var showLogoutAlert = false // Add state for logout confirmation
+    @State private var sizeSortAscending = false
+    @State private var showLogoutAlert = false
     
     enum SortType {
         case name, size
@@ -26,215 +26,256 @@ struct AccountDetailView: View {
         ZStack {
             ScrollView {
                 VStack(alignment: .leading, spacing: 20) {
-                    
-                    Text(email)
-                        .font(.montserrat(.medium, for: .body))
-                        .foregroundColor(.gray)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(Color.black, lineWidth: 1)
-                        )
-                        .padding(.horizontal)
-                        .padding(.top, 20)
+                    emailSection
                     
                     if appState.isLoading {
-                        // Single progress indicator for both plan and spaces
-                        ProgressView()
-                            .frame(maxWidth: .infinity)
-                            .padding(.top, 40)
+                        loadingView
                     } else {
-                        // Plan Section
-                        VStack(alignment: .leading, spacing: 8) {
-                            Text("\(extractPlanName()) Plan")
-                                .font(.montserrat(.bold, for: .headline))
-                                .foregroundColor(.primary)
-                            if let usage = appState.usage {
-                                Text("\(formatStorageSize(bytes: Int64(usage.totalUsage.bytes))) used")
-                                    .font(.montserrat(.medium, for: .body))
-                                    .foregroundColor(.gray70)
-                            } else {
-                                Text("0 MB used")
-                                    .font(.montserrat(.medium, for: .body))
-                                    .foregroundColor(.gray70)
-                            }
-                        }
-                        .padding(.horizontal)
-                        
-                        // Storage Spaces Section
-                        VStack(alignment: .leading, spacing: 16) {
-                            Text(NSLocalizedString("Storage Spaces", comment: ""))
-                                .font(.montserrat(.bold, for: .headline))
-                                .foregroundColor(.primary)
-                                .padding(.horizontal)
-                            
-                            // Sort buttons
-                            HStack(spacing: 12) {
-                                Button(action: {
-                                    if activeSortType == .name {
-                                        // Toggle ascending/descending
-                                        nameSortAscending.toggle()
-                                    } else {
-                                        // Switch to name sort
-                                        activeSortType = .name
-                                    }
-                                }) {
-                                    HStack(spacing: 4) {
-                                        Text(NSLocalizedString("Sort by Name", comment: ""))
-                                            .font(.montserrat(.medium, for: .caption))
-                                        if activeSortType == .name {
-                                            Image(systemName: nameSortAscending ? "arrow.up" : "arrow.down")
-                                                .font(.system(size: 10, weight: .medium))
-                                        }
-                                    }
-                                    .foregroundColor(activeSortType == .name ? .accentColor : .gray70)
-                                    .padding()
-                                    .frame(maxWidth: .infinity)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 25)
-                                            .stroke(activeSortType == .name ? Color.accentColor : .gray30, lineWidth: 1)
-                                    )
-                                }
-                                
-                                Button(action: {
-                                    if activeSortType == .size {
-                                        // Toggle ascending/descending
-                                        sizeSortAscending.toggle()
-                                    } else {
-                                        // Switch to size sort
-                                        activeSortType = .size
-                                    }
-                                }) {
-                                    HStack(spacing: 4) {
-                                        Text(NSLocalizedString("Sort by Size", comment: ""))
-                                            .font(.montserrat(.medium, for: .caption))
-                                        if activeSortType == .size {
-                                            Image(systemName: sizeSortAscending ? "arrow.up" : "arrow.down")
-                                                .font(.system(size: 10, weight: .medium))
-                                        }
-                                    }
-                                    .foregroundColor(activeSortType == .size ? .accentColor : .gray70)
-                                    .padding()
-                                    .frame(maxWidth: .infinity)
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 25)
-                                            .stroke(activeSortType == .size ? Color.accentColor : .gray30, lineWidth: 1)
-                                    )
-                                }
-                            }
-                            .padding(.horizontal)
-                            
-                            // Spaces list
-                            if let usage = appState.usage {
-                                let sortedSpaces: [StorachaSpaceUsage] = {
-                                    if activeSortType == .name {
-                                        return nameSortAscending
-                                        ? usage.spaces.sorted(by: { $0.name < $1.name })
-                                        : usage.spaces.sorted(by: { $0.name > $1.name })
-                                    } else {
-                                        return sizeSortAscending
-                                        ? usage.spaces.sorted(by: { $0.usage.bytes < $1.usage.bytes })
-                                        : usage.spaces.sorted(by: { $0.usage.bytes > $1.usage.bytes })
-                                    }
-                                }()
-                                
-                                VStack(spacing: 8) {
-                                    ForEach(sortedSpaces) { space in
-                                        HStack {
-                                            Text(space.name)
-                                                .font(.montserrat(.medium, for: .body))
-                                                .foregroundColor(.primary)
-                                            Spacer()
-                                            Text(formatStorageSize(bytes: Int64(space.usage.bytes)))
-                                                .font(.montserrat(.medium, for: .body))
-                                                .foregroundColor(.gray70)
-                                        }
-                                        .padding(.horizontal)
-                                        .padding(.vertical, 4)
-                                    }
-                                }
-                            } else if appState.error != nil {
-                                Text("Error loading spaces")
-                                    .foregroundColor(.red)
-                                    .font(.montserrat(.medium, for: .caption))
-                                    .padding(.horizontal)
-                            }
-                        }
+                        planSection
+                        storageSpacesSection
                     }
                     
                     Spacer(minLength: 40)
                     
-                    // Logout button - now shows confirmation alert
-                    Button(action: {
-                        showLogoutAlert = true
-                    }) {
-                        Text(NSLocalizedString("Logout", comment: ""))
-                            .font(.montserrat(.semibold, for: .headline))
-                            .foregroundColor(.black)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(
-                                RoundedRectangle(cornerRadius: 8)
-                                    .fill(Color.accentColor)
-                            )
-                    }
-                    .padding(.horizontal)
-                    .padding(.bottom, 40)
+                    logoutButton
                 }
                 .frame(maxWidth: .infinity)
             }
             .refreshable {
                 await refreshUsage()
             }
-            .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(.systemBackground))
             .onAppear {
-                Task {
-                    if let sessionId = appState.currentUser?.sessionId {
-                        await appState.loadUsage(sessionId: sessionId)
-                    }
+                loadUsageData()
+            }
+            
+            if showLogoutAlert {
+                logoutAlertOverlay
+            }
+        }
+    }
+    
+    // MARK: - Subviews
+    
+    private var emailSection: some View {
+        Text(email)
+            .font(.montserrat(.medium, for: .body))
+            .foregroundColor(.gray)
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(
+                RoundedRectangle(cornerRadius: 8)
+                    .stroke(Color.gray, lineWidth: 1)
+            )
+            .padding(.horizontal)
+            .padding(.top, 20)
+    }
+    
+    private var loadingView: some View {
+        ProgressView()
+            .frame(maxWidth: .infinity)
+            .padding(.top, 40)
+    }
+    
+    private var planSection: some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text("\(extractPlanName()) Plan")
+                .font(.montserrat(.bold, for: .headline))
+                .foregroundColor(.primary)
+            
+            Text(usageText)
+                .font(.montserrat(.medium, for: .body))
+                .foregroundColor(.gray70)
+        }
+        .padding(.horizontal)
+    }
+    
+    private var usageText: String {
+        if let usage = appState.usage {
+            return "\(formatStorageSize(bytes: Int64(usage.totalUsage.bytes))) used"
+        } else {
+            return "0 MB used"
+        }
+    }
+    
+    private var storageSpacesSection: some View {
+        VStack(alignment: .leading, spacing: 16) {
+            Text(NSLocalizedString("Storage Spaces", comment: ""))
+                .font(.montserrat(.bold, for: .headline))
+                .foregroundColor(.primary)
+                .padding(.horizontal)
+            
+            sortButtons
+            spacesList
+        }
+    }
+    
+    private var sortButtons: some View {
+        HStack(spacing: 12) {
+            sortButton(
+                type: .name,
+                title: NSLocalizedString("Sort by Name", comment: ""),
+                isAscending: nameSortAscending
+            )
+            
+            sortButton(
+                type: .size,
+                title: NSLocalizedString("Sort by Size", comment: ""),
+                isAscending: sizeSortAscending
+            )
+        }
+        .padding(.horizontal)
+    }
+    
+    private func sortButton(type: SortType, title: String, isAscending: Bool) -> some View {
+        Button(action: {
+            handleSortTap(type: type)
+        }) {
+            HStack(spacing: 4) {
+                Text(title)
+                    .font(.montserrat(.medium, for: .caption))
+                
+                if activeSortType == type {
+                    Image(systemName: isAscending ? "arrow.up" : "arrow.down")
+                        .font(.system(size: 10, weight: .medium))
                 }
             }
-       
-            if showLogoutAlert {
-                Color.black.opacity(0.7)
-                                   .ignoresSafeArea()
-                                   .transition(.opacity)
-                CustomAlertView(
-                    title: NSLocalizedString("Logout", comment: ""),
-                    message:NSLocalizedString("Are you sure you want to logout?", comment: ""),
-                    primaryButtonTitle: NSLocalizedString("Logout", comment: ""),
-                    iconImage: Image(systemName: "exclamationmark.triangle.fill"),
-                    iconTint: .accent,
-                    primaryButtonAction: {
-                        showLogoutAlert = false
-                        onLogout()
-                    },
-                    secondaryButtonTitle: NSLocalizedString("Cancel", comment: ""),
-                    secondaryButtonAction: {
-                        showLogoutAlert = false
-                    },
-                    showCheckbox: false
-                )
-                
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .transition(.opacity)
+            .foregroundColor(activeSortType == type ? .accentColor : .gray70)
+            .padding()
+            .frame(maxWidth: .infinity)
+            .background(
+                RoundedRectangle(cornerRadius: 25)
+                    .stroke(activeSortType == type ? Color.accentColor : .gray30, lineWidth: 1)
+            )
+        }
+    }
+    
+    @ViewBuilder
+    private var spacesList: some View {
+        if let usage = appState.usage {
+            VStack(spacing: 8) {
+                ForEach(sortedSpaces(from: usage)) { space in
+                    spaceRow(space: space)
+                }
+            }
+        } else if appState.error != nil {
+            errorView
+        }
+    }
+    
+    private func spaceRow(space: StorachaSpaceUsage) -> some View {
+        HStack {
+            Text(space.name)
+                .font(.montserrat(.medium, for: .subheadline))
+                .foregroundColor(.primary)
+            
+            Spacer()
+            
+            Text(formatStorageSize(bytes: Int64(space.usage.bytes)))
+                .font(.montserrat(.medium, for: .subheadline))
+                .foregroundColor(.gray70)
+        }
+        .padding(.horizontal)
+        .padding(.vertical, 4)
+    }
+    
+    private var errorView: some View {
+        Text("Error loading spaces")
+            .foregroundColor(.red)
+            .font(.montserrat(.medium, for: .caption))
+            .padding(.horizontal)
+    }
+    
+    private var logoutButton: some View {
+        HStack {
+            Spacer()
+            Button(action: {
+                showLogoutAlert = true
+            }) {
+                Text(NSLocalizedString("Logout", comment: ""))
+                    .frame(maxWidth: .infinity)
+            }
+            .frame(maxWidth: UIScreen.main.bounds.width / 2)
+            .padding()
+            .background(Color.accent)
+            .foregroundColor(.black)
+            .cornerRadius(10)
+            .font(.montserrat(.semibold, for: .headline))
+            Spacer()
+        }
+        .padding(.horizontal, 24)
+        .padding(.bottom, 40)
+    }
+    
+    private var logoutAlertOverlay: some View {
+        ZStack {
+            Color.black.opacity(0.7)
+                .ignoresSafeArea()
+            
+            CustomAlertView(
+                title: NSLocalizedString("Logout", comment: ""),
+                message: NSLocalizedString("Are you sure you want to logout?", comment: ""),
+                primaryButtonTitle: NSLocalizedString("Logout", comment: ""),
+                iconImage: Image(systemName: "exclamationmark.triangle.fill"),
+                iconTint: .accent,
+                primaryButtonAction: {
+                    showLogoutAlert = false
+                    onLogout()
+                },
+                secondaryButtonTitle: NSLocalizedString("Cancel", comment: ""),
+                secondaryButtonAction: {
+                    showLogoutAlert = false
+                },
+                showCheckbox: false
+            )
+        }
+        .transition(.opacity)
+    }
+    
+    // MARK: - Helper Methods
+    
+    private func loadUsageData() {
+        Task {
+            if let sessionId = appState.currentUser?.sessionId {
+                await appState.loadUsage(sessionId: sessionId)
             }
         }
     }
     
     private func refreshUsage() async {
-        
-        guard let sessionId = appState.currentUser?.sessionId else {
-          
-            return
-        }
+        guard let sessionId = appState.currentUser?.sessionId else { return }
         
         await Task.detached(priority: .userInitiated) {
             await self.appState.loadUsage(sessionId: sessionId)
         }.value
-        
+    }
+    
+    private func handleSortTap(type: SortType) {
+        if activeSortType == type {
+            // Toggle ascending/descending
+            switch type {
+            case .name:
+                nameSortAscending.toggle()
+            case .size:
+                sizeSortAscending.toggle()
+            }
+        } else {
+            // Switch to new sort type
+            activeSortType = type
+        }
+    }
+    
+    private func sortedSpaces(from usage: StorachaAccountUsageResponse) -> [StorachaSpaceUsage] {
+        switch activeSortType {
+        case .name:
+            return nameSortAscending
+                ? usage.spaces.sorted(by: { $0.name < $1.name })
+                : usage.spaces.sorted(by: { $0.name > $1.name })
+        case .size:
+            return sizeSortAscending
+                ? usage.spaces.sorted(by: { $0.usage.bytes < $1.usage.bytes })
+                : usage.spaces.sorted(by: { $0.usage.bytes > $1.usage.bytes })
+        }
     }
     
     private func formatStorageSize(bytes: Int64) -> String {

@@ -12,16 +12,14 @@ struct StorachaLoginView: View {
     @ObservedObject var state: AuthState
     var dispatch: (StorachaLoginAction) -> Void
     @Environment(\.colorScheme) var colorScheme
+    
     @State private var showingAlert = false
     @State private var alertMessage = ""
-
-    enum Field {
-        case email
-    }
+    @State private var showIncorrectEmailMessage = false
     
     var dismissAction: (() -> Void)?
     var disableBackAction: ((Bool) -> Void)?
-   
+    
     init(
         state: AuthState,
         dispatch: @escaping (StorachaLoginAction) -> Void,
@@ -34,109 +32,60 @@ struct StorachaLoginView: View {
         self.disableBackAction = disableBackAction
     }
     
-    // Email validation function
-    private func isValidEmail(_ email: String) -> Bool {
-        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-        let emailPred = NSPredicate(format:"SELF MATCHES %@", emailRegEx)
-        return emailPred.evaluate(with: email)
-    }
-    
-    // Check if email format is invalid
-    private var isEmailFormatInvalid: Bool {
-        !state.email.isEmpty && !isValidEmail(state.email)
-    }
-    
     var body: some View {
         ZStack {
             GeometryReader { reader in
                 VStack {
-                
-                    HStack {
-                        Circle().fill(.gray10)
-                            .frame(width: 53, height: 53)
-                            .overlay(
-                                Image("storachaBird")
-                                    .resizable()
-                                    .aspectRatio(contentMode: .fit)
-                                    .frame(width: 30, height: 30)
-                            ).padding(.trailing, 6)
-                        VStack(alignment: .leading) {
-                            Text(NSLocalizedString("Log in using your registered email address", comment: ""))
-                                .font(.montserrat(.medium, for: .subheadline))
-                        }
-                    }
-                    .padding(.top,50).padding(.leading,20).padding(.trailing,40)
+                    // Header
+                    headerView
+                        .padding(.top, 50)
+                        .padding(.horizontal, 20)
+                        .padding(.trailing, 20)
                     
-                    Text(NSLocalizedString("Email", comment: ""))
+                    // Account Label
+                    Text(NSLocalizedString("Account", comment: ""))
                         .font(.montserrat(.semibold, for: .headline))
                         .foregroundColor(.gray70)
-                        .padding(.top,50)
+                        .padding(.top, 50)
                         .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.leading,20)
+                        .padding(.leading, 20)
                     
+                    // Email Field
                     CustomTextField(
-                        placeholder: NSLocalizedString("Email Address", comment: ""),
+                        placeholder: NSLocalizedString("Email", comment: ""),
                         text: $state.email,
-                        onEditingChanged: { _ in
-                            if state.isLoginError {
+                        hasError: showIncorrectEmailMessage || state.isLoginError,
+                        onEditingChanged: { began in
+                            if began {
+                                showIncorrectEmailMessage = false
                                 state.isLoginError = false
+                            }
+                        },
+                        onCommit: {
+                            if !isValidEmail(state.email) && !state.email.isEmpty {
+                                showIncorrectEmailMessage = true
                             }
                         }
                     )
                     .autocapitalization(.none)
                     .keyboardType(.emailAddress)
                     .padding(.horizontal, 20)
-                    .padding(.top, 15)
+                    .padding(.top, 8)
                     
-                    VStack(alignment: .leading, spacing: 4) {
-                        
-                        if state.isLoginError {
-                            Text(NSLocalizedString("Incorrect email or login failed.",comment: ""))
-                                .foregroundColor(.red)
-                                .font(.montserrat(.medium, for: .caption2))
-                                .padding(.leading, 20)
-                                .padding(.trailing, 20)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                        }
-                    }
-                    .padding(.top, state.isLoginError ? 4 : 0)
+                    // Error Messages
+                    errorMessagesView
+                        .padding(.top, hasError ? 4 : 0)
                     
-                    HStack(alignment: .center) {
-                        Text(NSLocalizedString("No Account?",comment: ""))
-                            .foregroundColor(.gray70)
-                            .font(.montserrat(.semibold, for: .callout))
-                        Button(action: { dispatch(.createAccount) }) {
-                            Text("[\(NSLocalizedString("Create one", comment: "Learn more link"))](https://console.storacha.network/)")
-                                .underline()
-                        }
-                        .foregroundColor(.accent)
-                        .font(.montserrat(.semibold, for: .callout))
-                        .disabled(state.isBusy)
-                    }
-                    .padding(.top, 40)
+                    // Sign Up Link
+                    signUpLinkView
+                        .padding(.top, 40)
                     
                     Spacer()
                     
-                    HStack(alignment: .bottom) {
-                      
-                        Button(action: {
-                            if !state.isBusy && isValidFormState {
-                                dispatch(.login)
-                            }
-                        }) {
-                            Text(NSLocalizedString("Login",comment: ""))
-                        }
-                        .disabled(!isValidFormState || state.isBusy)
-                        .padding()
-                        .frame(maxWidth: .infinity)
-                        .background(!isValidFormState || state.isBusy ? .gray50 : Color.accent)
-                        .foregroundColor(.black)
-                        .cornerRadius(10)
-                        .font(.montserrat(.semibold, for: .headline))
-                    }
-                    .padding(.bottom, 40)
-                    .padding(.leading, 20)
-                    .padding(.trailing, 20)
+                    // Login Button
+                    loginButton
+                        .padding(.bottom, 40)
+                        .padding(.horizontal, 20)
                 }
                 .frame(minHeight: reader.size.height)
                 .ignoresSafeArea(.keyboard, edges: .bottom)
@@ -144,21 +93,10 @@ struct StorachaLoginView: View {
             .background(Color(.systemBackground))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .edgesIgnoringSafeArea(.all)
-      
+            
+            // Loading Overlay
             if state.isBusy {
-                Color.black.opacity(0.7)
-                    .ignoresSafeArea()
-                    .overlay(
-                        VStack(spacing: 16) {
-                            ActivityIndicator(style: .large, animate: .constant(true))
-                                .foregroundColor(.white)
-                            Text(NSLocalizedString("Logging in...",comment: ""))
-                                .font(.montserrat(.medium, for: .callout))
-                                .foregroundColor(.white)
-                        }
-                        .padding(24)
-                        .background(Color.clear)
-                    )
+                loadingOverlay
             }
         }
         .alert(isPresented: $showingAlert) {
@@ -172,7 +110,7 @@ struct StorachaLoginView: View {
             if let error = error {
                 alertMessage = error.localizedDescription
                 showingAlert = true
-                state.error = nil   // clear error inside AuthState
+                state.error = nil
             }
         }
         .onAppear {
@@ -183,9 +121,109 @@ struct StorachaLoginView: View {
         }
     }
     
+    // MARK: - Subviews
+    
+    private var headerView: some View {
+        HStack {
+            Circle()
+                .fill(.gray10)
+                .frame(width: 53, height: 53)
+                .overlay(
+                    Image("storachaBird")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 30, height: 30)
+                )
+                .padding(.trailing, 6)
+            
+            Text(NSLocalizedString("Log in using your registered email address.", comment: ""))
+                .font(.montserrat(.medium, for: .subheadline))
+        }
+    }
+    
+    private var errorMessagesView: some View {
+        VStack(alignment: .leading, spacing: 4) {
+            if state.isLoginError {
+                Text(NSLocalizedString("Invalid email or login failed.", comment: ""))
+                    .foregroundColor(.red)
+                    .font(.montserrat(.medium, for: .caption2))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+            
+            if showIncorrectEmailMessage {
+                Text(NSLocalizedString("Invalid email", comment: ""))
+                    .foregroundColor(.red)
+                    .font(.montserrat(.medium, for: .caption2))
+                    .frame(maxWidth: .infinity, alignment: .leading)
+            }
+        }
+        .padding(.horizontal, 20)
+    }
+    
+    private var signUpLinkView: some View {
+        HStack(alignment: .center) {
+            Text(NSLocalizedString("Don't have an account?", comment: ""))
+                .foregroundColor(.gray70)
+                .font(.montserrat(.semibold, for: .callout))
+            
+            Button(action: { dispatch(.createAccount) }) {
+                Text("[\(NSLocalizedString("Create one", comment: ""))](https://console.storacha.network/)")
+            }
+            .foregroundColor(.accent)
+            .font(.montserrat(.semibold, for: .callout))
+            .disabled(state.isBusy)
+        }
+    }
+    
+    private var loginButton: some View {
+        Button(action: {
+            if !state.isBusy && isValidFormState {
+                dispatch(.login)
+            }
+        }) {
+            Text(NSLocalizedString("Login", comment: ""))
+                .frame(maxWidth: .infinity)
+        }
+        .frame(maxWidth: UIScreen.main.bounds.width / 2)
+        .disabled(!isValidFormState || state.isBusy)
+        .padding()
+        .background(!isValidFormState || state.isBusy ? .gray50 : Color.accent)
+        .foregroundColor(.black)
+        .cornerRadius(10)
+        .font(.montserrat(.semibold, for: .headline))
+    }
+    
+    private var loadingOverlay: some View {
+        Color.black.opacity(0.7)
+            .ignoresSafeArea()
+            .overlay(
+                VStack(spacing: 16) {
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .scaleEffect(1.5)
+                    
+                    Text(NSLocalizedString("Logging in...", comment: ""))
+                        .font(.montserrat(.medium, for: .callout))
+                        .foregroundColor(.white)
+                }
+                .padding(24)
+            )
+    }
+    
+    // MARK: - Helpers
+    
+    private func isValidEmail(_ email: String) -> Bool {
+        let emailRegEx = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailPred = NSPredicate(format: "SELF MATCHES %@", emailRegEx)
+        return emailPred.evaluate(with: email)
+    }
+    
     private var isValidFormState: Bool {
-        return !state.email.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty &&
-               isValidEmail(state.email) &&
-               !isEmailFormatInvalid
+        let trimmedEmail = state.email.trimmingCharacters(in: .whitespacesAndNewlines)
+        return !trimmedEmail.isEmpty && isValidEmail(trimmedEmail)
+    }
+    
+    private var hasError: Bool {
+        showIncorrectEmailMessage || state.isLoginError
     }
 }

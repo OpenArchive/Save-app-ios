@@ -17,7 +17,6 @@ struct ManageDIDsView: View {
     @State private var showDeleteConfirmation = false
     
     var body: some View {
-        if #available(iOS 15.0, *) {
             VStack(spacing: 12) {
                 if didState.isLoading {
                     ProgressView(NSLocalizedString("Loading DIDs...", comment: ""))
@@ -41,13 +40,9 @@ struct ManageDIDsView: View {
                                     VStack(spacing: 12) {
                                 ForEach(didState.dids, id: \.self) { did in
                                     HStack {
-                                        Image(systemName: "person.circle")
-                                            .resizable()
-                                            .frame(width: 30, height: 30)
-                                            .foregroundColor(.accentColor)
-                                            .padding(.trailing, 8)
+                                       
                                         Text(did)
-                                            .font(.montserrat(.medium, for: .body))
+                                            .font(.montserrat(.medium, for: .subheadline))
                                             .foregroundColor(Color(.label))
                                             .lineLimit(2)
                                             .multilineTextAlignment(.leading)
@@ -65,11 +60,6 @@ struct ManageDIDsView: View {
                                         .buttonStyle(.plain)
                                     }
                                     .padding()
-                                    .background(
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .stroke(.gray30, lineWidth: 1)
-                                    )
-                                    .padding(.horizontal)
                                 }  }
                                 .padding(.top, 20)
                             }
@@ -119,8 +109,5 @@ struct ManageDIDsView: View {
                     }
                 }
             }
-        } else {
-            // Fallback on earlier versions
-        }
     }
 }

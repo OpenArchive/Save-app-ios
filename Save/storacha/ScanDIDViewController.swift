@@ -92,7 +92,6 @@ class ScanDIDViewController: UIViewController {
             preferredStyle: .alert
         )
         
-        // Only "Back to Login" button (no "Stay Here" for admin operations)
         alert.addAction(UIAlertAction(title: "Back to Login", style: .default) { [weak self] _ in
             self?.didState.handleBackToLoginAction()
         })
@@ -101,7 +100,7 @@ class ScanDIDViewController: UIViewController {
     }
     
     private func navigateToLogin() {
-        // Reset navigation state
+      
         didState.resetNavigationState()
         login()
     }

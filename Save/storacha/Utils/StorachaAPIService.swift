@@ -46,14 +46,8 @@ class StorachaAPIService {
     // MARK: - Authentication Methods
     func login(email: String) async throws -> StorachaSessionData {
         // Generate or load existing key pair
-        let keyPair: DIDKeyManager.DIDKeyPair
-        do {
-            keyPair = try keyManager.loadKeyPair()
-        } catch {
-            keyPair = keyManager.generateKeyPair()
-            try keyManager.saveKeyPair(keyPair)
-        }
-        
+        let keyPair = getOrCreateKeyPair()
+      
         // Step 1: Initiate login
         let loginResponse = try await initiateLogin(email: email, did: keyPair.did)
         if(!loginResponse.verified){
@@ -79,6 +73,7 @@ class StorachaAPIService {
             expiresAt: nil,
             verified: loginResponse.verified
         )
+        print("loginResponse.did\(loginResponse.did)")
         
         try sessionManager.saveSession(sessionData)
         return sessionData
@@ -196,7 +191,8 @@ class StorachaAPIService {
         guard let url = URL(string: "\(baseURL)/auth/logout") else {
             throw StorachaAPIError.invalidURL
         }
-        
+        let keyPair = try keyManager.loadKeyPair()
+        print("key pair \(keyPair.did)")
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue(sessionData.sessionId, forHTTPHeaderField: "x-session-id")
@@ -278,57 +274,7 @@ class StorachaAPIService {
         return usageResponse.usage
     }
     
-    // MARK: - File Upload
-    func uploadFile(_ fileData: Data, fileName: String, spaceDid: String) async throws -> StorachaUploadResponse {
-        guard let sessionData = sessionManager.loadSession() else {
-            throw StorachaAPIError.authenticationFailed("No active session")
-        }
-        
-        guard let url = URL(string: "\(baseURL)/upload") else {
-            throw StorachaAPIError.invalidURL
-        }
-        
-        let boundary = UUID().uuidString
-        var request = URLRequest(url: url)
-        request.httpMethod = "POST"
-        request.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
-        request.setValue(sessionData.sessionId, forHTTPHeaderField: "x-session-id")
-        
-        var body = Data()
-        
-        // Add file data
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"file\"; filename=\"\(fileName)\"\r\n".data(using: .utf8)!)
-        body.append("Content-Type: application/octet-stream\r\n\r\n".data(using: .utf8)!)
-        body.append(fileData)
-        body.append("\r\n".data(using: .utf8)!)
-        
-        // Add spaceDid
-        body.append("--\(boundary)\r\n".data(using: .utf8)!)
-        body.append("Content-Disposition: form-data; name=\"spaceDid\"\r\n\r\n".data(using: .utf8)!)
-        body.append(spaceDid.data(using: .utf8)!)
-        body.append("\r\n".data(using: .utf8)!)
-        
-        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
-        
-        request.httpBody = body
-        
-        let (data, response) = try await session.data(for: request)
-        
-        if let rawResponse = String(data: data, encoding: .utf8) {
-            print("Upload File Raw API Response: \(rawResponse)")
-        }
-        
-        if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
-            if httpResponse.statusCode == 401 {
-                throw StorachaAPIError.unauthorized
-            }
-            let errorMessage = String(data: data, encoding: .utf8) ?? "Unknown error"
-            throw StorachaAPIError.uploadFailed(errorMessage)
-        }
-        
-        return try JSONDecoder().decode(StorachaUploadResponse.self, from: data)
-    }
+ 
     
     // MARK: - create Delegation
     func createDelegation(userDid: String, spaceDid: String, expiresInHours: Int = 24) async throws -> StorachaDelegationResponse {
@@ -464,6 +410,7 @@ class StorachaAPIService {
     
         if isAdmin {
             if let sessionData = sessionManager.loadSession() {
+                print("sessionId\(sessionData.sessionId)")
                 request.setValue(sessionData.sessionId, forHTTPHeaderField: "x-session-id")
             }
         }
@@ -584,5 +531,29 @@ class StorachaAPIService {
         logger.info("Generated tokens successfully")
         
         return tokenResponse.tokens
+    }
+    
+    
+    func getOrCreateKeyPair() -> DIDKeyManager.DIDKeyPair {
+        do {
+            let keyPair = try keyManager.loadKeyPair()
+            print("✅ Using existing key pair: \(keyPair.did)")
+            return keyPair
+        } catch {
+            print("ℹ️ No existing key pair found (\(error.localizedDescription))")
+            print("🔑 Creating new key pair...")
+            
+            let keyPair = keyManager.generateKeyPair()
+            
+            do {
+                try keyManager.saveKeyPair(keyPair)
+                print("✅ New key pair saved: \(keyPair.did)")
+            } catch {
+                print("⚠️ Warning: Could not save key pair: \(error.localizedDescription)")
+                // Key pair still works, just won't persist
+            }
+            
+            return keyPair
+        }
     }
 }

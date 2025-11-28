@@ -8,13 +8,12 @@
 
 import SwiftUI
 
-import SwiftUI
-
 struct CustomTextField: View {
     var placeholder: String
     @Binding var text: String
     var isSecure: Bool = false
     var isDisabled: Bool = false
+    var hasError: Bool = false
     var onEditingChanged: ((Bool) -> Void)? = nil
     var onCommit: (() -> Void)? = nil
     
@@ -42,9 +41,6 @@ struct CustomTextField: View {
                     }, onCommit: {
                         onCommit?()
                     })
-                    .onChange(of: text) { _ in
-                        onEditingChanged?(true)
-                    }
                     .font(.montserrat(.medium, for: .footnote))
                     .padding(12)
                 } else {
@@ -66,7 +62,9 @@ struct CustomTextField: View {
     }
     
     private func borderColor() -> Color {
-        if isFocused {
+        if hasError {
+            return .redButton
+        } else if isFocused {
             return .accent
         } else {
             return .gray70

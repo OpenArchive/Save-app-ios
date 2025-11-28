@@ -92,8 +92,9 @@ class AuthState: ObservableObject {
         Task {
             try? await apiService.logout()
         }
-        sessionManager.clearSession()
-        KeychainService.shared.clearKeychainOnFirstInstall(forceDelete: true)
+//        sessionManager.clearSession()
+//        KeychainService.shared.clearKeychainOnFirstInstall(forceDelete: true)
+        
         sessionManager.setLastEmail("")
         currentUser = nil
         isAuthenticated = false

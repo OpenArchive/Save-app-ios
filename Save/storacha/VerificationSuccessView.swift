@@ -17,9 +17,9 @@ struct VerificationSuccessView: View {
             Spacer()
             
             Text(NSLocalizedString("Your email has been verified,\nand the spaces have been added to Save.", comment: ""))
-                .font(.montserrat(.medium, for: .subheadline))
+                .font(.montserrat(.bold, for: .headline))
                 .multilineTextAlignment(.center)
-                .foregroundColor(.gray)
+                .foregroundColor(.primary)
                 .padding(.horizontal)
 
             Image("hands-mobile")
@@ -33,16 +33,16 @@ struct VerificationSuccessView: View {
             Button(action: {
                 onDismiss()
             }) {
-                Text(LocalizedStringKey("Done"))
+                Text(LocalizedStringKey("Done")).frame(maxWidth: .infinity)
                     .font(.montserrat(.semibold, for: .headline))
                     .frame(maxWidth: .infinity)
                     .padding()
                     .background(Color.accentColor)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
+                    .frame(maxWidth: UIScreen.main.bounds.width / 2)
+                    .foregroundColor(.black)
+                    .cornerRadius(10)
             }
-            .padding(.horizontal, 40)
-            .padding(.bottom, 30)
+            .padding()
         }
         .background(Color(.systemBackground))
     }

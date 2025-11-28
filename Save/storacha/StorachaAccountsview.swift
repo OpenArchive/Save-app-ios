@@ -28,7 +28,7 @@ struct AccountListView: View {
                     ForEach(accountState.accounts, id: \.self) { email in
                         Button(action: { onSelect(email) }) {
                             HStack {
-                                Image(systemName: "person.circle")
+                                Image("user_icon")
                                     .resizable()
                                     .frame(width: 30, height: 30)
                                     .padding(.trailing, 8)

@@ -10,18 +10,11 @@ import Foundation
 import UIKit
 
 // MARK: - File Metadata Models
-class FileMetadata {
+struct FileMetadata {
     let fileName: String
     let fileSize: String
     let fileType: FileType
     let directUrl: String
-    
-    init(fileName: String, fileSize: String, fileType: FileType, directUrl: String) {
-        self.fileName = fileName
-        self.fileSize = fileSize
-        self.fileType = fileType
-        self.directUrl = directUrl
-    }
 }
 
 enum FileType: CaseIterable {
@@ -57,21 +50,36 @@ enum FileType: CaseIterable {
 }
 
 // MARK: - File Metadata Fetcher
-class FileMetadataFetcher: ObservableObject {
-    private let session: URLSession
-    private let cache = NSCache<NSString, FileMetadata>()
+class FileMetadataFetcher {
+    static let shared = FileMetadataFetcher()
     
-    init(session: URLSession = URLSession.shared) {
+    private let session: URLSession
+    private let cache = NSCache<NSString, CachedMetadata>()
+    
+    private init(session: URLSession = URLSession.shared) {
         self.session = session
+        
+        // Configure cache with reasonable limits
+        cache.countLimit = 200 // Maximum 200 items
+        cache.totalCostLimit = 1024 * 1024 * 10 // 10 MB for metadata only
+    }
+    
+    // Wrapper class for NSCache (NSCache requires class types)
+    private class CachedMetadata {
+        let metadata: FileMetadata
+        
+        init(metadata: FileMetadata) {
+            self.metadata = metadata
+        }
     }
     
     func fetchFileMetadata(from gatewayUrl: String) async -> FileMetadata? {
-        // Replace w3s.link with dweb.link
         let normalizedUrl = gatewayUrl.replacingOccurrences(of: "w3s.link", with: "dweb.link")
-       
         let cacheKey = NSString(string: normalizedUrl)
+        
+        // Check cache
         if let cached = cache.object(forKey: cacheKey) {
-            return cached
+            return cached.metadata
         }
         
         guard let url = URL(string: normalizedUrl) else { return nil }
@@ -85,47 +93,54 @@ class FileMetadataFetcher: ObservableObject {
                 return nil
             }
             
-            
             let metadata = parseFileMetadata(from: html, baseUrl: normalizedUrl)
             
             // Cache the result
             if let metadata = metadata {
-                cache.setObject(metadata, forKey: cacheKey)
+                cache.setObject(CachedMetadata(metadata: metadata), forKey: cacheKey)
             }
             
             return metadata
         } catch {
-           
             return nil
         }
     }
     
+    // Check if metadata is cached
+    func getCachedMetadata(for gatewayUrl: String) -> FileMetadata? {
+        let normalizedUrl = gatewayUrl.replacingOccurrences(of: "w3s.link", with: "dweb.link")
+        let cacheKey = NSString(string: normalizedUrl)
+        return cache.object(forKey: cacheKey)?.metadata
+    }
+    
+    // Clear cache when needed (e.g., logout, space change)
+    func clearCache() {
+        cache.removeAllObjects()
+    }
+    
+    // Clear specific item from cache
+    func clearCache(for gatewayUrl: String) {
+        let normalizedUrl = gatewayUrl.replacingOccurrences(of: "w3s.link", with: "dweb.link")
+        let cacheKey = NSString(string: normalizedUrl)
+        cache.removeObject(forKey: cacheKey)
+    }
+    
     private func parseFileMetadata(from html: String, baseUrl: String) -> FileMetadata? {
-      
-        // Check if this is actually a file (not a directory) by looking for common file indicators
         if html.contains("Content-Type:") || html.contains("content-type:") ||
            html.contains("<img") || html.contains("<video") || html.contains("<audio") ||
            html.lowercased().contains("content-disposition") {
-            // This might be a direct file, try to extract filename from URL
             return extractFileFromDirectURL(baseUrl: baseUrl)
         }
         
-        // Try multiple patterns for different gateways
         let patterns = [
-            // Original pattern for storacha gateway
             #"<a\s+href="(?:/ipfs/[^/]+/)?([^"]+)">([^<]+)</a>"#,
-            // dweb.link pattern - they might use relative paths
             #"<a[^>]*href="\.?/?([^"./][^"]*)"[^>]*>([^<]+)</a>"#,
-            // More flexible pattern for any gateway
             #"<a[^>]*href="([^"]*)"[^>]*>([^<]+)</a>"#,
-            // Even more flexible - just look for href and text
             #"href\s*=\s*"([^"]*)"[^>]*>([^<]+)"#
         ]
         
-        for (index, pattern) in patterns.enumerated() {
-         
+        for pattern in patterns {
             if let metadata = tryParseWithPattern(pattern, html: html, baseUrl: baseUrl) {
-              
                 return metadata
             }
         }
@@ -138,7 +153,6 @@ class FileMetadataFetcher: ObservableObject {
         
         let fileName = url.lastPathComponent
         if fileName.isEmpty || fileName.hasPrefix("bafy") || fileName.hasPrefix("Qm") {
-            // If no filename in URL, create a generic one based on the hash
             let pathComponents = url.pathComponents
             if let hash = pathComponents.last, hash.hasPrefix("bafy") || hash.hasPrefix("Qm") {
                 return FileMetadata(
@@ -163,17 +177,14 @@ class FileMetadataFetcher: ObservableObject {
     
     private func tryParseWithPattern(_ pattern: String, html: String, baseUrl: String) -> FileMetadata? {
         guard let regex = try? NSRegularExpression(pattern: pattern, options: [.caseInsensitive]) else {
-           
             return nil
         }
         
         let range = NSRange(html.startIndex..<html.endIndex, in: html)
         let matches = regex.matches(in: html, options: [], range: range)
         
-        
-        for (index, match) in matches.enumerated() {
+        for match in matches {
             guard match.numberOfRanges >= 3 else {
-            
                 continue
             }
             
@@ -182,33 +193,24 @@ class FileMetadataFetcher: ObservableObject {
             
             guard let hrefSubstring = Range(hrefRange, in: html),
                   let linkTextSubstring = Range(linkTextRange, in: html) else {
-            
                 continue
             }
             
             let href = String(html[hrefSubstring]).trimmingCharacters(in: .whitespacesAndNewlines)
             let linkText = String(html[linkTextSubstring]).trimmingCharacters(in: .whitespacesAndNewlines)
             
-           
-            
-            // Skip parent directory links and empty links
             if href == "../" || linkText == ".." || href.isEmpty || linkText.isEmpty {
-               
                 continue
             }
             
             if (linkText.hasPrefix("bafy") || linkText.hasPrefix("Qm")) && !linkText.contains(".") {
-               
                 continue
             }
 
-            // Skip extremely long names that are likely hashes (but allow reasonable filenames)
             if linkText.count > 100 && !linkText.contains(".") {
-              
                 continue
             }
             
-            // Skip common navigation elements
             if linkText.lowercased().contains("parent") ||
                linkText.lowercased().contains("back") ||
                linkText.lowercased().contains("index") ||
@@ -218,26 +220,21 @@ class FileMetadataFetcher: ObservableObject {
             
             let fileName = linkText
             
-            // Construct direct URL - handle different href formats
             var directUrl: String
             if href.hasPrefix("http") {
-                // Absolute URL
                 directUrl = href
             } else if href.hasPrefix("/") {
-                // Root-relative URL
                 if let urlComponents = URLComponents(string: baseUrl) {
                     directUrl = "\(urlComponents.scheme!)://\(urlComponents.host!)\(href)"
                 } else {
                     directUrl = baseUrl.trimmingCharacters(in: CharacterSet(charactersIn: "/")) + href
                 }
             } else {
-                // Relative URL
                 directUrl = baseUrl.trimmingCharacters(in: CharacterSet(charactersIn: "/")) + "/" + href
             }
             
             let fileType = determineFileType(from: fileName)
             
-            // Try to extract file size from the HTML around this link
             let contextStart = max(0, match.range.location - 100)
             let contextEnd = min(html.count, match.range.location + match.range.length + 200)
             let contextRange = NSRange(location: contextStart, length: contextEnd - contextStart)

@@ -90,7 +90,7 @@ struct StorachaSettingView: View {
                     Image("storachaLogo")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
-                        .frame(width: 200, height: 60)
+                        .frame(width: 150, height: 60)
                     
                     Text(NSLocalizedString("Storacha lets you store media securely using decentralized technologies (IPFS, UCAN, and DIDs).", comment: ""))
                         .font(.montserrat(.medium, for: .subheadline))
@@ -158,18 +158,12 @@ struct StorachaSettingView: View {
                     .ignoresSafeArea(.all)
                 
                 VStack(spacing: 16) {
-                    ActivityIndicator(style: .large, animate: .constant(true))
-                        .foregroundColor(.white)
-                    
-                    Text("Checking session...")
-                        .font(.montserrat(.medium, for: .callout))
-                        .foregroundColor(.white)
-                        .multilineTextAlignment(.center)
+                    ProgressView()
+                        .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                        .scaleEffect(1.5)
                 }
-                .padding(.horizontal, 24)
-                .padding(.vertical, 32)
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(Color.clear)
+                .padding(24)
+                
             }
         }
         .onAppear {

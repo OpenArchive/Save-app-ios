@@ -86,12 +86,10 @@ class StorachaAccountsViewController: UIViewController {
     }
     
     private func handleLogout() {
-        // Clear session and accounts
+       
         appState.clearAccounts()
         appState.authState.logout()
         appState.clearError()
-        
-        // Navigate to login
         navigateToLogin()
     }
     

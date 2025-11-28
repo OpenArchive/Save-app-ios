@@ -11,9 +11,10 @@ import SwiftUI
 // MARK: - Individual File Grid Item
 struct FileGridItemView: View {
     let upload: StorachaUploadItem
-    @StateObject private var metadataFetcher = FileMetadataFetcher()
     @State private var fileMetadata: FileMetadata?
-    @State private var isLoading = true
+    @State private var isLoading = false
+    
+    private let metadataFetcher = FileMetadataFetcher.shared
     
     var body: some View {
         VStack(spacing: 8) {
@@ -27,21 +28,28 @@ struct FileGridItemView: View {
                         .scaleEffect(0.8)
                 } else if let metadata = fileMetadata {
                     if metadata.fileType == .image {
-                        AsyncImage(url: URL(string: metadata.directUrl)) { image in
-                            image
-                                .resizable()
-                                .aspectRatio(contentMode: .fill)
-                        } placeholder: {
-                            Image(metadata.fileType.systemIconName)
-                                .resizable()
-                                .aspectRatio(contentMode: .fit)
-                                .frame(width: 40, height: 40)
-                                .foregroundColor(.gray)
+                        AsyncImage(url: URL(string: metadata.directUrl)) { phase in
+                            switch phase {
+                            case .empty:
+                                ProgressView()
+                                    .scaleEffect(0.8)
+                            case .success(let image):
+                                image
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fill)
+                                    .frame(width: 80, height: 80)
+                                    .clipShape(RoundedRectangle(cornerRadius: 8))
+                            case .failure:
+                                Image(metadata.fileType.systemIconName)
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                                    .frame(width: 40, height: 40)
+                                    .foregroundColor(.gray)
+                            @unknown default:
+                                EmptyView()
+                            }
                         }
-                        .frame(width: 80, height: 80)
-                        .clipShape(RoundedRectangle(cornerRadius: 8))
                     } else {
-                        // File type icon
                         Image(metadata.fileType.systemIconName)
                             .resizable()
                             .aspectRatio(contentMode: .fit)
@@ -56,7 +64,6 @@ struct FileGridItemView: View {
                 }
             }
             
-            // File Name
             VStack(spacing: 2) {
                 Text(displayName)
                     .font(.montserrat(.medium, for: .caption))
@@ -65,7 +72,7 @@ struct FileGridItemView: View {
             }
         }
         .frame(width: 100)
-        .task {
+        .task(id: upload.cid) { 
             await loadMetadata()
         }
         .onTapGesture {
@@ -82,17 +89,24 @@ struct FileGridItemView: View {
     }
     
     private func loadMetadata() async {
+        // Check cache first (synchronous, no await needed)
+        if let cached = metadataFetcher.getCachedMetadata(for: upload.gatewayUrl) {
+            self.fileMetadata = cached
+            return
+        }
+        
+        // Already loaded
+        if fileMetadata != nil {
+            return
+        }
+        
         isLoading = true
         
         if let metadata = await metadataFetcher.fetchFileMetadata(from: upload.gatewayUrl) {
-            await MainActor.run {
-                self.fileMetadata = metadata
-                self.isLoading = false
-            }
+            self.fileMetadata = metadata
+            self.isLoading = false
         } else {
-            await MainActor.run {
-                self.isLoading = false
-            }
+            self.isLoading = false
         }
     }
     
@@ -101,7 +115,6 @@ struct FileGridItemView: View {
            let url = URL(string: metadata.directUrl) {
             UIApplication.shared.open(url)
         } else {
-            // Fallback - open with CID
             if let url = URL(string: "https://gateway.storacha.network/ipfs/\(upload.cid)") {
                 UIApplication.shared.open(url)
             }

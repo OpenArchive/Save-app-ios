@@ -13,6 +13,7 @@ struct VerificationSentView: View {
     var email: String
     var onVerified: () -> Void
     var onTimeout: () -> Void
+    
     @State private var isPolling = false
     @Environment(\.presentationMode) var presentationMode
 
@@ -20,53 +21,40 @@ struct VerificationSentView: View {
         VStack(spacing: 20) {
             Spacer()
             
-            if #available(iOS 14.0, *) {
-                ProgressView()
-                    .scaleEffect(1.5)
-            } else {
-                ActivityIndicator(style: .large, animate: .constant(true))
-            }
+            // Loading Indicator
+            loadingIndicator
             
+            // Icon
             Image(systemName: "envelope.badge")
                 .resizable()
                 .scaledToFit()
                 .frame(width: 24, height: 24)
                 .foregroundColor(.accentColor)
             
+            // Title
             Text(NSLocalizedString("Verification Email Sent", comment: ""))
                 .font(.montserrat(.bold, for: .headline))
                 .multilineTextAlignment(.center)
 
+            // Description
             Text(NSLocalizedString("Please check your inbox and click the link on the verification email.", comment: ""))
                 .font(.montserrat(.medium, for: .subheadline))
                 .multilineTextAlignment(.center)
                 .foregroundColor(.gray)
                 .padding(.horizontal)
             
+            // Email Address
             if !email.isEmpty {
-                Text(  String(format: NSLocalizedString(
-                    "Sent to: %@",
-                    comment: "placeholder is 'email'"), email))
+                Text(String(format: NSLocalizedString("Sent to: %@", comment: "placeholder is 'email'"), email))
                     .font(.montserrat(.medium, for: .caption))
                     .foregroundColor(.gray)
             }
-            HStack(spacing: 4) {
-                            Text(NSLocalizedString("Email is incorrect?", comment: ""))
-                                .font(.montserrat(.bold, for: .subheadline))
-                                .foregroundColor(.gray70)
-                            
-                            Button(action: {
-                                authState.stopVerificationPolling()
-                                presentationMode.wrappedValue.dismiss()
-                            }) {
-                                Text(NSLocalizedString("Change now.", comment: ""))
-                                    .font(.montserrat(.bold, for: .subheadline))
-                                    .underline()
-                                    .foregroundColor(.accentColor)
-                            }
-                        }
-                        .padding(.top, 10)
+            
             Spacer()
+            
+            // Change Email Section (Bottom)
+            changeEmailSection
+                .padding(.bottom, 40)
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -78,6 +66,34 @@ struct VerificationSentView: View {
             authState.stopVerificationPolling()
         }
     }
+    
+    // MARK: - Subviews
+    
+    private var loadingIndicator: some View {
+                ProgressView()
+                    .progressViewStyle(CircularProgressViewStyle(tint: .accentColor))
+                    .scaleEffect(1.5)
+    }
+    
+    private var changeEmailSection: some View {
+        HStack(spacing: 4) {
+            Text(NSLocalizedString("Email is incorrect?", comment: ""))
+                .font(.montserrat(.bold, for: .subheadline))
+                .foregroundColor(.gray70)
+            
+            Button(action: {
+                authState.stopVerificationPolling()
+                presentationMode.wrappedValue.dismiss()
+            }) {
+                Text(NSLocalizedString("Change now.", comment: ""))
+                    .font(.montserrat(.bold, for: .subheadline))
+                    .underline()
+                    .foregroundColor(.accentColor)
+            }
+        }
+    }
+    
+    // MARK: - Helper Methods
     
     private func startVerificationPolling() {
         guard !isPolling else { return }

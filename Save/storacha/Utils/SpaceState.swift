@@ -73,7 +73,7 @@ class SpaceState: ObservableObject {
         do {
             let response = try await apiService.listUploads(spaceDid: spaceDid, cursor: uploadsCursor, isAdmin: isAdmin)
             uploads.append(contentsOf: response.uploads)
-            uploadsCursor = response.cursor
+            uploadsCursor = response.uploads.last?.cid
             uploadsHasMore = response.hasMore
         } catch {
             print("Failed to load uploads: \(error)")

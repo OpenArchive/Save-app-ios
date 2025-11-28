@@ -11,12 +11,6 @@
 enum StorachaUploadError: LocalizedError {
     case fileAccessError(String)
     case fileProcessingError(String)
-    case invalidCid(String)
-    case networkError(String)
-    case bridgeError(String)
-    case tokenExpired(String)
-    case s3UploadFailed(String)
-    case parseError(String)
     
     var errorDescription: String? {
         switch self {
@@ -24,18 +18,6 @@ enum StorachaUploadError: LocalizedError {
             return "File access error: \(message)"
         case .fileProcessingError(let message):
             return "File processing error: \(message)"
-        case .invalidCid(let message):
-            return "Invalid CID: \(message)"
-        case .networkError(let message):
-            return "Network error: \(message)"
-        case .bridgeError(let message):
-            return "Bridge error: \(message)"
-        case .tokenExpired(let message):
-            return "Token expired: \(message)"
-        case .s3UploadFailed(let message):
-            return "S3 upload failed: \(message)"
-        case .parseError(let message):
-            return "Parse error: \(message)"
         }
     }
 }
@@ -48,21 +30,46 @@ enum BridgeUploadError: LocalizedError {
     case bridgeError(String)
     case tokenExpired(String)
     case s3UploadFailed(String)
+    case storageServiceUnavailable
+    case requestTooLarge
+    case rateLimitExceeded
+    case serverError
+    case insufficientStorage
     
     var errorDescription: String? {
         switch self {
         case .invalidCid(let message):
             return "Invalid CID: \(message)"
+            
         case .networkError(let message):
-            return "Network error: \(message)"
+            return message.isEmpty ? NSLocalizedString("Something went wrong with the upload. Please try again.", comment: "") : message
+            
         case .parseError(let message):
             return "Parse error: \(message)"
+            
         case .bridgeError(let message):
-            return "Bridge error: \(message)"
+            return message
+            
         case .tokenExpired(let message):
-            return "Token expired: \(message)"
+            return message.isEmpty ? NSLocalizedString("There was an authentication issue. The app will try again automatically.", comment: "") : message
+            
         case .s3UploadFailed(let message):
-            return "S3 upload failed: \(message)"
+            return message.isEmpty ? NSLocalizedString("There was a problem with the storage service. Please try again.", comment: "") : message
+            
+        case .storageServiceUnavailable:
+            return NSLocalizedString("The storage service is temporarily unavailable. Please try again in a few minutes.", comment: "")
+            
+        case .requestTooLarge:
+            return NSLocalizedString("The file may be too large or the upload is taking too long. Try with a smaller file or check your connection.", comment: "")
+            
+        case .rateLimitExceeded:
+            return NSLocalizedString("The server is busy. Please wait a moment and try again.", comment: "")
+            
+        case .serverError:
+            return NSLocalizedString("Something went wrong on the server. Please try again.", comment: "")
+            
+        case .insufficientStorage:
+            return NSLocalizedString("There might not be enough storage space available. Please try again or contact support.", comment: "")
         }
     }
 }

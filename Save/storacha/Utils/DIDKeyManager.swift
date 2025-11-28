@@ -115,17 +115,52 @@ class DIDKeyManager {
     }
     
     func saveKeyPair(_ keyPair: DIDKeyPair) throws {
-        try keychain.save(keyPair.privateKey.rawRepresentation, for: "key_private")
-        try keychain.save(keyPair.did.data(using: .utf8)!, for: "key_did")
+        print("💾 Saving key pair...")
+        
+        do {
+            try keychain.save(keyPair.privateKey.rawRepresentation, for: "key_private")
+            print("   ✅ Private key saved")
+        } catch {
+            print("   ❌ Failed to save private key: \(error)")
+            throw error
+        }
+        
+        do {
+            try keychain.save(keyPair.did.data(using: .utf8)!, for: "key_did")
+            print("   ✅ DID saved")
+        } catch {
+            print("   ❌ Failed to save DID: \(error)")
+            throw error
+        }
+        
+        print("✅ Key pair saved successfully - DID: \(keyPair.did)")
     }
-    
+
     func loadKeyPair() throws -> DIDKeyPair {
-        let privateKeyData = try keychain.load(for: "key_private")
-        let didData = try keychain.load(for: "key_did")
+        print("📂 Loading key pair...")
+        
+        let privateKeyData: Data
+        do {
+            privateKeyData = try keychain.load(for: "key_private")
+            print("   ✅ Private key loaded (\(privateKeyData.count) bytes)")
+        } catch {
+            print("   ❌ Failed to load private key: \(error)")
+            throw error
+        }
+        
+        let didData: Data
+        do {
+            didData = try keychain.load(for: "key_did")
+            print("   ✅ DID loaded (\(didData.count) bytes)")
+        } catch {
+            print("   ❌ Failed to load DID: \(error)")
+            throw error
+        }
         
         let privateKey = try Curve25519.Signing.PrivateKey(rawRepresentation: privateKeyData)
         let did = String(data: didData, encoding: .utf8)!
         
+        print("✅ Key pair loaded successfully - DID: \(did)")
         return DIDKeyPair(privateKey: privateKey, publicKey: privateKey.publicKey, did: did)
     }
     

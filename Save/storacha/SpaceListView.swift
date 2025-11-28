@@ -39,11 +39,10 @@ struct SpaceListView: View {
                             Button(action: {
                                 onSelect(space)
                             }) {
-                                HStack(alignment: .top, spacing: 12) {
+                                HStack(alignment: .center, spacing: 12) {
                                     Image("folder")
                                         .resizable()
-                                        .frame(width: 30, height: 30)
-                                        .foregroundColor(.accentColor)
+                                        .frame(width: 40, height: 40)
                                     
                                     VStack(alignment: .leading, spacing: 4) {
                                         Text(space.name)
