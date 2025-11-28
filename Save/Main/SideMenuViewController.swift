@@ -327,6 +327,7 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
                 updateSpaceHeader(with: SelectedSpace.space)
             }
         }
+        updateNewFolderButtonVisibility()
     }
 
 
@@ -391,5 +392,11 @@ class SideMenuViewController: UIViewController, UITableViewDataSource, UITableVi
 
     private func setToggleIcon(_ toggle: Bool) {
         toggleIcon.image = UIImage(systemName: toggle ? "chevron.up" : "chevron.down")
+    }
+    
+    private func updateNewFolderButtonVisibility() {
+        let hasSpaces = spacesMappings.numberOfItems(inSection: 0) > 0
+        addFolderBt.isHidden = !hasSpaces
+        addFolderBt.isEnabled = hasSpaces
     }
 }

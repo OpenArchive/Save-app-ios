@@ -5,6 +5,7 @@ struct FileListView: View {
     let spaceDid: String
     let onUploadTapped: () -> Void
     let isSpaceAdmin: Bool
+    let onRetryUpload: () -> Void
     
     @State private var isLoadingMore = false
     
@@ -63,7 +64,7 @@ struct FileListView: View {
     private var emptyView: some View {
         VStack {
             Spacer()
-            Text(NSLocalizedString("No Media Available", comment: ""))
+            Text(NSLocalizedString("No Media Available.", comment: ""))
                 .foregroundColor(.gray)
                 .font(.montserrat(.medium, for: .body))
             Spacer()
@@ -168,13 +169,15 @@ struct FileListView: View {
             CustomAlertView(
                 title: NSLocalizedString("Upload Failed", comment: ""),
                 message: getErrorMessage(from: error),
-                primaryButtonTitle: NSLocalizedString("OK", comment: ""),
-                iconImage: Image(systemName: "exclamationmark.triangle.fill"),
-                iconTint: .red,
-                primaryButtonAction: {
+                primaryButtonTitle: NSLocalizedString("Try Again", comment: ""),
+                iconImage: Image(systemName: "exclamationmark.triangle.fill"), iconTint: .red, primaryButtonAction: {
                     spaceState.resetUploadState()
+                    onRetryUpload()
                 },
-                showCheckbox: false
+                secondaryButtonTitle: NSLocalizedString("Cancel", comment: ""),
+                secondaryButtonIsOutlined: false, secondaryButtonAction: {
+                    spaceState.resetUploadState()
+                }
             )
         }
     }

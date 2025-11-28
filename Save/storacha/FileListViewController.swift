@@ -18,6 +18,10 @@ class FileListViewController: UIViewController {
     private let space: StorachaSpace
     private var cancellables = Set<AnyCancellable>()
     
+    // Store the last uploaded file for retry functionality
+    private var lastUploadedFileURL: URL?
+    private var lastUploadIsTemporary: Bool = false
+    
     init(appState: StorachaAppState, space: StorachaSpace) {
         self.appState = appState
         self.space = space
@@ -53,7 +57,10 @@ class FileListViewController: UIViewController {
                     if !self.appState.spaceState.isUploading {
                         self.showUploadOptions()
                     }
-                }, isSpaceAdmin: space.isAdmin
+                },
+                isSpaceAdmin: space.isAdmin, onRetryUpload: {
+                    self.retryUpload()
+                }
             )
             .environmentObject(appState.spaceState)
             
@@ -172,11 +179,11 @@ class FileListViewController: UIViewController {
     
     // MARK: - Upload Options
     private func showUploadOptions() {
-        let alert = UIAlertController(title: "Upload File", message: "Choose upload source", preferredStyle: .actionSheet)
+        let alert = UIAlertController(title: NSLocalizedString("Upload File", comment: ""), message: NSLocalizedString("Choose upload source", comment: ""), preferredStyle: .actionSheet)
         
         // Camera option
         if UIImagePickerController.isSourceTypeAvailable(.camera) {
-            alert.addAction(UIAlertAction(title: "Camera", style: .default) { _ in
+            alert.addAction(UIAlertAction(title: NSLocalizedString("Camera", comment: ""), style: .default) { _ in
                 self.requestCameraPermission {
                     self.presentCamera()
                 }
@@ -184,18 +191,18 @@ class FileListViewController: UIViewController {
         }
         
         // Photo Library option
-        alert.addAction(UIAlertAction(title: "Photo Library", style: .default) { _ in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Photo Library", comment: ""), style: .default) { _ in
             self.requestPhotoLibraryPermission {
                 self.presentPhotoLibrary()
             }
         })
         
         // Document picker option
-        alert.addAction(UIAlertAction(title: "Files", style: .default) { _ in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Files", comment: ""), style: .default) { _ in
             self.presentFilePicker()
         })
         
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
         
         // For iPad
         if let popover = alert.popoverPresentationController {
@@ -255,18 +262,18 @@ class FileListViewController: UIViewController {
     
     private func showPermissionAlert(for source: String) {
         let alert = UIAlertController(
-            title: "\(source) Access Required",
-            message: "Please grant access to \(source) in Settings to upload files.",
+            title: "\(source) " + NSLocalizedString("Access Required", comment: ""),
+            message: NSLocalizedString("Please grant access to", comment: "") + " \(source) " + NSLocalizedString("in Settings to upload files.", comment: ""),
             preferredStyle: .alert
         )
         
-        alert.addAction(UIAlertAction(title: "Settings", style: .default) { _ in
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Settings", comment: ""), style: .default) { _ in
             if let settingsURL = URL(string: UIApplication.openSettingsURLString) {
                 UIApplication.shared.open(settingsURL)
             }
         })
         
-        alert.addAction(UIAlertAction(title: "Cancel", style: .cancel))
+        alert.addAction(UIAlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .cancel))
         present(alert, animated: true)
     }
     
@@ -311,6 +318,10 @@ class FileListViewController: UIViewController {
     private func uploadFile(from url: URL, isTemporary: Bool = false) {
         print("Uploading file: \(url.lastPathComponent)")
         
+        // Store file URL for retry functionality
+        lastUploadedFileURL = url
+        lastUploadIsTemporary = isTemporary
+        
         Task { @MainActor in
             // Upload the file
             await appState.spaceState.uploadFile(
@@ -319,13 +330,26 @@ class FileListViewController: UIViewController {
                 isAdmin: space.isAdmin
             )
             
-            // Clean up temporary file if needed
-            if isTemporary {
-                try? FileManager.default.removeItem(at: url)
-            }
-            
             // Note: File list will be refreshed automatically by the SwiftUI view
             // when uploadResult changes to success in the onChange modifier
+        }
+    }
+    
+    private func retryUpload() {
+        guard let fileURL = lastUploadedFileURL else {
+            print("No file to retry")
+            return
+        }
+        
+        print("Retrying upload for file: \(fileURL.lastPathComponent)")
+        
+        Task { @MainActor in
+            // Upload the file again
+            await appState.spaceState.uploadFile(
+                fileURL: fileURL,
+                spaceDid: space.id,
+                isAdmin: space.isAdmin
+            )
         }
     }
     
@@ -364,7 +388,7 @@ extension FileListViewController: UIImagePickerControllerDelegate, UINavigationC
                 
             } else if let videoURL = info[.mediaURL] as? URL {
                 // Handle video
-                self?.uploadFile(from: videoURL)
+                self?.uploadFile(from: videoURL, isTemporary: false)
             }
         }
     }
@@ -456,7 +480,7 @@ extension FileListViewController: UIDocumentPickerDelegate {
         
         // Start upload after a brief delay to ensure picker is dismissed
         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-            self?.uploadFile(from: picked)
+            self?.uploadFile(from: picked, isTemporary: false)
         }
     }
 }

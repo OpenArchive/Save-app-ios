@@ -43,8 +43,7 @@ class KeychainService {
     private init() {}
     
     func save(_ data: Data, for key: String) throws {
-        print("💾 Saving to keychain: \(key) (\(data.count) bytes)")
-        
+      
         // Delete existing item first to avoid duplicates
         let deleteQuery: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
@@ -68,13 +67,11 @@ class KeychainService {
             print("❌ Keychain save failed for '\(key)' - Status: \(status)")
             throw KeychainError.unableToSave
         }
-        
-        print("✅ Keychain saved '\(key)' successfully")
+     
     }
     
     func load(for key: String) throws -> Data {
-        print("🔐 Loading from keychain: \(key)")
-        
+       
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: serviceName,
@@ -86,11 +83,9 @@ class KeychainService {
         var result: AnyObject?
         let status = SecItemCopyMatching(query as CFDictionary, &result)
         
-        print("   Status: \(status)")
-        
         guard status == errSecSuccess else {
             if status == errSecItemNotFound {
-                print("   ℹ️ Item '\(key)' not found")
+        
                 throw KeychainError.itemNotFound
             } else if status == errSecInteractionNotAllowed {
                 print("   ⚠️ Device is locked")
@@ -106,13 +101,11 @@ class KeychainService {
             throw KeychainError.invalidData
         }
         
-        print("   ✅ Loaded \(data.count) bytes")
         return data
     }
     
     func delete(for key: String) throws {
-        print("🗑️ Deleting from keychain: \(key)")
-        
+      
         let query: [String: Any] = [
             kSecClass as String: kSecClassGenericPassword,
             kSecAttrService as String: serviceName,
@@ -126,13 +119,11 @@ class KeychainService {
             throw KeychainError.unknown(status)
         }
         
-        print("✅ Deleted '\(key)' successfully")
     }
     
     // MARK: - First Install Cleanup
     func clearKeychainOnFirstInstall(forceDelete: Bool = false) {
-        print("🧹 Checking keychain cleanup...")
-        
+       
         let firstLaunchKey = "HasLaunchedBefore"
         
         if !UserDefaults.standard.bool(forKey: firstLaunchKey) || forceDelete {
@@ -182,37 +173,9 @@ class KeychainService {
             // Mark as launched (only on first launch, not on force delete)
             if !UserDefaults.standard.bool(forKey: firstLaunchKey) {
                 UserDefaults.standard.set(true, forKey: firstLaunchKey)
-                print("   ✅ Marked as first launch complete")
             }
         } else {
             print("   Skipping - not first launch")
-        }
-    }
-    
-    // MARK: - Diagnostic
-    func testKeychain() {
-        print("🧪 Testing Keychain...")
-        
-        let testData = "test_data".data(using: .utf8)!
-        let testKey = "test_key"
-        
-        do {
-            try save(testData, for: testKey)
-            print("✅ Save test passed")
-            
-            let loaded = try load(for: testKey)
-            if loaded == testData {
-                print("✅ Load test passed - Data matches")
-            } else {
-                print("⚠️ Load test: Data mismatch")
-            }
-            
-            try delete(for: testKey)
-            print("✅ Delete test passed")
-            
-            print("✅ Keychain is working correctly!")
-        } catch {
-            print("❌ Keychain test failed: \(error)")
         }
     }
 }

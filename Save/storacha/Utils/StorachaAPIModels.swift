@@ -40,6 +40,49 @@ struct StorachaSessionResponse: Codable {
     let verified: Int
     let expiresAt: String?
     let message: String
+    
+    enum CodingKeys: String, CodingKey {
+        case valid
+        case verified
+        case expiresAt
+        case message
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        
+        self.valid = try container.decode(Bool.self, forKey: .valid)
+        self.expiresAt = try container.decodeIfPresent(String.self, forKey: .expiresAt)
+        self.message = try container.decode(String.self, forKey: .message)
+        
+        // Handle verified as either Bool or Int
+        do {
+            // Try to decode as Int first
+            self.verified = try container.decode(Int.self, forKey: .verified)
+        } catch {
+            // If Int fails, try Bool
+            do {
+                let verifiedBool = try container.decode(Bool.self, forKey: .verified)
+                self.verified = verifiedBool ? 1 : 0
+            } catch {
+                throw DecodingError.keyNotFound(
+                    CodingKeys.verified,
+                    DecodingError.Context(
+                        codingPath: container.codingPath,
+                        debugDescription: "verified must be either Int or Bool"
+                    )
+                )
+            }
+        }
+    }
+    
+    func encode(to encoder: Encoder) throws {
+        var container = encoder.container(keyedBy: CodingKeys.self)
+        try container.encode(valid, forKey: .valid)
+        try container.encode(verified, forKey: .verified)
+        try container.encodeIfPresent(expiresAt, forKey: .expiresAt)
+        try container.encode(message, forKey: .message)
+    }
 }
 
 struct StorachaSpace: Codable, Identifiable {

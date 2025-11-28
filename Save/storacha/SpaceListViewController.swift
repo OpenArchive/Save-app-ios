@@ -23,8 +23,7 @@ class SpaceListViewController: UIViewController {
         // Hide default back text
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backBarButtonItem
-        navigationItem.hidesBackButton = true
-
+        
         // Custom back button
         navigationItem.leftBarButtonItem = UIBarButtonItem(
             image: UIImage(systemName: "chevron.left"),
