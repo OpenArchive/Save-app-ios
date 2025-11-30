@@ -73,6 +73,7 @@ struct InternetArchiveLoginContent: View {
                                 .font(.montserrat(.medium, for: .footnote))
                                 .foregroundColor(.gray70)
                                 .submitLabel(.next)
+                                .keyboardType(.emailAddress)
                                 .focused($focusedField, equals: .username)
                                 .onSubmit {
                                     focusedField = .password
@@ -146,7 +147,7 @@ struct InternetArchiveLoginContent: View {
                             Button(action: {
                                 dispatch(.Cancel)
                             }, label: {
-                                Text(NSLocalizedString("Back",comment: ""))
+                                Text(NSLocalizedString("Back",comment: "")).frame(maxWidth: .infinity)
                             })
                             .padding()
                             .frame(maxWidth: .infinity)
@@ -159,7 +160,7 @@ struct InternetArchiveLoginContent: View {
                                     dispatch(.Login)
                                 }
                             }, label: {
-                                Text(NSLocalizedString("Next",comment: ""))
+                                Text(NSLocalizedString("Next",comment: "")).frame(maxWidth: .infinity)
                             })
                             .disabled(!state.isValid)
                             .padding()
