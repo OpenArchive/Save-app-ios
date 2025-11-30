@@ -167,13 +167,13 @@ struct CreateFolderView: View {
                 .padding()
                 .font(.montserrat(.semibold, for: .headline))
                 .cornerRadius(8)
-                
-                Button(NSLocalizedString("Create", comment: "")) {
+                Button(action: {
                     hideKeyboard()
                     disableBackAction?(true)
                     store.dispatch(action: .saveFolderName)
-                    
-                }
+                }, label: {
+                    Text(NSLocalizedString("Create",comment: "")).frame(maxWidth: .infinity)
+                })
                 .frame(maxWidth: .infinity)
                 .padding()
                 .font(.montserrat(.semibold, for: .headline))
@@ -188,6 +188,9 @@ struct CreateFolderView: View {
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .padding(.top, 52)
+        .onTapGesture {
+            hideKeyboard()
+        }
         .overlay(
             Group {
                 if store.state.status {
