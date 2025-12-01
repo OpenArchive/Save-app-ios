@@ -92,8 +92,8 @@ struct EditFolderView: View {
                         placeholder: "",
                         text: $folderName,
                         isDisabled: (!(store.state.project?.active ?? false) ),
-                        onEditingChanged: {_ in 
-                            store.dispatch(action: .updateFolderName(folderName))
+                        onTextChanged: {text in
+                            store.dispatch(action: .updateFolderName(text))
                         },onCommit: {
                             store.dispatch(action:.saveFolderName)
                             changeName?(folderName)
