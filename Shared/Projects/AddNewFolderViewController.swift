@@ -145,8 +145,8 @@ struct CreateFolderView: View {
                         placeholder: NSLocalizedString("Enter folder name", comment: ""),
                         text: $folderName,
                         isDisabled: false,
-                        onEditingChanged: {_ in 
-                            store.dispatch(action: .updateFolderName(folderName))
+                        onTextChanged:  { text  in
+                            store.dispatch(action: .updateFolderName(text))
                         }
                     )
                 }
