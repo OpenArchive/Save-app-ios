@@ -176,37 +176,59 @@ class IaConduit: Conduit {
     }
     
     private func copyMetadataWithoutProofmode(to folder: URL, _ progress: Progress, headers: [String: String]) -> Error? {
-        // Upload meta.json file
+        // Upload meta.json file - write to temp file so background session can handle it
         do {
             let json = try Conduit.jsonEncoder.encode(asset)
-            
+
             // Construct URL: {ARCHIVE_API_ENDPOINT}/{identifier}/{filename}.meta.json
             let metaUrl = folder
                 .appendingPathComponent(asset.filename + ".meta.json")
-            
-            let group = DispatchGroup()
-            group.enter()
-            
-            let metaTask = foregroundSession.upload(
-                json, to: metaUrl, headers: headers, credential: nil
-            ) { error in
-                if let error = error {
+
+            // Write JSON to a temporary file for background session upload
+            let tempDir = FileManager.default.temporaryDirectory
+            let tempMetaFile = tempDir.appendingPathComponent(UUID().uuidString + ".meta.json")
+            try json.write(to: tempMetaFile, options: .atomic)
+
+            let semaphore = DispatchSemaphore(value: 0)
+            var uploadError: Error? = nil
+
+            // Use background session for meta.json
+            let metaTask = backgroundSession.upload(tempMetaFile, to: metaUrl, headers: headers, credential: nil)
+
+            // Monitor task completion on a background thread to avoid blocking upload queue directly
+            DispatchQueue.global(qos: .userInitiated).async {
+              
+                while metaTask.state != .completed && metaTask.state != .canceling {
+                    Thread.sleep(forTimeInterval: 0.1)
+                }
+                // Clean up temp file
+                try? FileManager.default.removeItem(at: tempMetaFile)
+
+                if let error = metaTask.error {
                     print("meta.json upload failed: \(error.localizedDescription)")
+                    uploadError = error
                 } else {
                     print("meta.json uploaded successfully to Internet Archive.")
                 }
-                group.leave()
+
+                semaphore.signal()
             }
-            
+
             progress.addChild(metaTask.progress, withPendingUnitCount: 1)
-            group.wait(signal: progress)
-            
+
+            let timeout = DispatchTime.now() + .seconds(60)
+            if semaphore.wait(timeout: timeout) == .timedOut {
+                print("meta.json upload timed out after 60 seconds")
+                return NSError(domain: "org.open-archive.save", code: -1,
+                              userInfo: [NSLocalizedDescriptionKey: "meta.json upload timed out"])
+            }
+
+            return uploadError
+
         } catch let e {
             print("Failed to encode meta.json: \(e.localizedDescription)")
             return e
         }
-        
-        return nil
     }
     private func url(for asset: Asset) -> URL? {
         if let url = asset.publicUrl {
