@@ -15,6 +15,7 @@ struct CustomTextField: View {
     var isDisabled: Bool = false
     var hasError: Bool = false
     var onEditingChanged: ((Bool) -> Void)? = nil
+    var onTextChanged: ((String) -> Void)? = nil
     var onCommit: (() -> Void)? = nil
     
     @State private var isFocused: Bool = false
@@ -41,6 +42,9 @@ struct CustomTextField: View {
                     }, onCommit: {
                         onCommit?()
                     })
+                    .onChange(of: text) { newValue in
+                        onTextChanged?(newValue)
+                    }
                     .font(.montserrat(.medium, for: .footnote))
                     .padding(12)
                 } else {

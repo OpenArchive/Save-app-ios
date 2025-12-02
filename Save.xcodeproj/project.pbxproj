@@ -1228,6 +1228,7 @@
 				CURRENT_PROJECT_VERSION = 146;
 				DEVELOPMENT_TEAM = YF7TV4HW2S;
 				INFOPLIST_FILE = "Save Screenshots/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
