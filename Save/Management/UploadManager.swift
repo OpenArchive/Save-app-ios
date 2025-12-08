@@ -238,7 +238,13 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
      */
     func urlSession(_ session: URLSession, task: URLSessionTask, didCompleteWithError error: Error?) {
         debug("#task:didCompleteWithError task=\(task), state=\(self.getTaskStateName(task.state)), url=\(task.originalRequest?.url?.absoluteString ?? "nil") error=\(String(describing: error))")
-        
+
+        // Clean up temp file if it exists
+        if let tempFilePath = task.taskDescription, !tempFilePath.isEmpty {
+            let tempFileURL = URL(fileURLWithPath: tempFilePath)
+            try? FileManager.default.removeItem(at: tempFileURL)
+        }
+
         // Ignore incomplete tasks. Ignore canceled tasks.
         guard task.state == .completed,
               let url = task.originalRequest?.url,
@@ -246,41 +252,41 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         else {
             return
         }
-        
+
         let filename = url.lastPathComponent
-        
+
         // Ignore Metadata files.
         for file in Asset.Files.allCases {
             if !file.isInternal && filename =~ "\(file.rawValue)$" {
                 return
             }
         }
-        
+
         guard task is URLSessionUploadTask && filename !~ "\\d{15}-\\d{15}" /* ignore chunks */ else {
             return
         }
-        
+
         if current?.filename == filename {
             done(current?.id, error, url, synchronous: true)
         }
         else {
             if let found = Db.bgRwConn?.find(group: UploadsView.groups.first, in: UploadsView.name, where: { (tx, upload: inout Upload) in
-                
+
                 // Look at next, if it's paused or delayed.
                 guard !upload.paused else {
                     return false
                 }
-                
+
                 // First attach object chain to upload before next call,
                 // otherwise, that will trigger more DB reads and with that
                 // a deadlock.
                 upload.preheat(tx)
-                
+
                 // Look at next, if it's not ready, yet.
                 guard  upload.filename == filename && upload.isReady else {
                     return false
                 }
-                
+
                 return true
             })
             {
