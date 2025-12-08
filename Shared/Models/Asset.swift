@@ -529,7 +529,8 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     func yapDatabaseRelationshipEdges() -> [YapDatabaseRelationshipEdge]? {
         var edges = [YapDatabaseRelationshipEdge]()
 
-        if let file = file, file.exists {
+        // Only track file if not uploaded yet (uploaded files are deleted manually)
+        if !isUploaded, let file = file, file.exists {
             edges.append(.init(
                 name: "file", destinationFileURL: file,
                 nodeDeleteRules: .deleteDestinationIfSourceDeleted))

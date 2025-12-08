@@ -45,11 +45,47 @@ class IaConduit: Conduit {
         //Fix to 10% from here, so uploaded bytes can be calculated properly
         // in `UploadCell.upload#didSet`!
         progress.completedUnitCount = 10
-        
-        // No callback, handling of the finished upload will be done in
-        // ``UploadManager.urlSession(:task:didCompleteWithError:)``.
-        upload(file, to: url, progress, headers: generateHeaders(accessKey, secretKey))
-        
+
+        // Validate file exists before attempting upload
+        guard FileManager.default.fileExists(atPath: file.path) else {
+            let error = NSError(domain: "org.open-archive.save", code: -1,
+                              userInfo: [NSLocalizedDescriptionKey: "File not found: \(file.path)"])
+            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
+                self.done(uploadId, error: error)
+            }
+            return progress
+        }
+
+        // Copy file to temp directory for background session access
+        // Background URLSession cannot reliably access App Group files when app is backgrounded
+        let tempDir = FileManager.default.temporaryDirectory
+        let tempFile = tempDir.appendingPathComponent(UUID().uuidString + "_" + file.lastPathComponent)
+
+        do {
+            // Try hard link first (instant), fall back to copy if it fails
+            do {
+                try FileManager.default.linkItem(at: file, to: tempFile)
+            } catch {
+                try FileManager.default.copyItem(at: file, to: tempFile)
+            }
+
+            guard FileManager.default.fileExists(atPath: tempFile.path) else {
+                throw NSError(domain: "org.open-archive.save", code: -1,
+                            userInfo: [NSLocalizedDescriptionKey: "Failed to create temp file"])
+            }
+
+            let task = backgroundSession.upload(tempFile, to: url, headers: generateHeaders(accessKey, secretKey), credential: nil)
+
+            // Store temp file path for cleanup
+            task.taskDescription = tempFile.path
+
+            progress.addChild(task.progress, withPendingUnitCount: progress.totalUnitCount - progress.completedUnitCount)
+        } catch {
+            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
+                self.done(uploadId, error: error)
+            }
+        }
+
         return progress
     }
     
