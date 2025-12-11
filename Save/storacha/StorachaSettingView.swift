@@ -108,7 +108,8 @@ struct StorachaSettingView: View {
                     title: NSLocalizedString("My Spaces", comment: ""),
                     subtitle: NSLocalizedString("Access your spaces",comment: ""),
                     icon: "folder",
-                    isDisabled: appState.isBusy || appState.delegatedSpaceCount < 1 || !hasValidSession()
+                    isDisabled : appState.isBusy || (!appState.hasValidSession && appState.delegatedSpaceCount < 1)
+
                 ) {
                     manageAccountsAction?("spaces")
                 }
@@ -167,13 +168,7 @@ struct StorachaSettingView: View {
             disableBackAction?(isBusy)
         }
     }
-    
-    private func hasValidSession() -> Bool {
-        guard let sessionId = sessionManager.loadSession()?.sessionId else {
-            return false
-        }
-        return !sessionId.isEmpty
-    }
+  
 }
 
 struct StorachaContentDescription: View {

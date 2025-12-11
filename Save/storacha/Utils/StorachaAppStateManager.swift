@@ -20,6 +20,7 @@ class StorachaAppState: ObservableObject {
     @Published var isBusy: Bool = false
     @Published var spaceCount:Int = 0
     @Published var delegatedSpaceCount:Int = 0
+    @Published var hasValidSession:Bool = false
     @Published var didState = DIDState()
     @Published var authState = AuthState()
     @Published var spaceState = SpaceState()
@@ -31,21 +32,24 @@ class StorachaAppState: ObservableObject {
     init() {
         self.lastUsedEmail = sessionManager.getLastEmail() ?? ""
         restoreSessionSync()
-        spaceCount = sessionManager.loadSpaceCount() ?? 0
-        delegatedSpaceCount = sessionManager.loadDelegatedSpceCount() ?? 0
     }
    
     // MARK: - Space Count Management
-    @MainActor
-    func loadSpaceCount() {
+    private func loadSpaceCount() {
         spaceCount = sessionManager.loadSpaceCount() ?? 0
         delegatedSpaceCount = sessionManager.loadDelegatedSpceCount() ?? 0
     }
+    private func checkValidSession() -> Bool {
+        guard let sessionId = sessionManager.loadSession()?.sessionId else {
+            return false
+        }
+        return !sessionId.isEmpty
+    }
     
     @MainActor
-    func refreshSpaceCount() {
+    func refreshSpaceCountAndSession() {
         loadSpaceCount()
-        delegatedSpaceCount = sessionManager.loadDelegatedSpceCount() ?? 0
+        hasValidSession = checkValidSession()
     }
     
     // MARK: - Account Listing

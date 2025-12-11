@@ -27,7 +27,7 @@ enum BridgeUploadError: LocalizedError {
     case invalidCid(String)
     case networkError(String)
     case parseError(String)
-    case bridgeError(String)
+    case bridgeError
     case tokenExpired(String)
     case s3UploadFailed(String)
     case storageServiceUnavailable
@@ -46,9 +46,9 @@ enum BridgeUploadError: LocalizedError {
             
         case .parseError(let message):
             return "Parse error: \(message)"
-            
-        case .bridgeError(let message):
-            return message
+
+        case .bridgeError:
+            return NSLocalizedString("Something went wrong. Please try again.", comment: "")
             
         case .tokenExpired(let message):
             return message.isEmpty ? NSLocalizedString("There was an authentication issue. The app will try again automatically.", comment: "") : message

@@ -66,7 +66,8 @@ class BridgeService: ObservableObject {
         } else if lowercased.contains("500") || lowercased.contains("server") {
             throw BridgeUploadError.serverError
         } else {
-            throw BridgeUploadError.bridgeError(errorMessage)
+            // For any unmapped error message, return generic error
+            throw BridgeUploadError.networkError(NSLocalizedString("Something went wrong. Please try again.", comment: ""))
         }
     }
     
@@ -127,7 +128,7 @@ class BridgeService: ObservableObject {
                 let errorString = String(describing: errorValue.value)
                 logger.error("Bridge store/add error: \(errorString)")
                 try parseErrorFromMessage(errorString)
-                throw BridgeUploadError.bridgeError(errorString) // Fallback
+                throw BridgeUploadError.bridgeError // Fallback - should not reach here
             }
             
             guard let success = storeResponse.p.out.ok else {
@@ -208,7 +209,7 @@ class BridgeService: ObservableObject {
                 let errorString = String(describing: errorValue.value)
                 logger.error("Bridge upload/add error: \(errorString)")
                 try parseErrorFromMessage(errorString)
-                throw BridgeUploadError.bridgeError(errorString) // Fallback
+                throw BridgeUploadError.bridgeError // Fallback - should not reach here
             }
             
             guard let success = uploadResponse.p.out.ok else {

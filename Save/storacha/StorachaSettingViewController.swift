@@ -70,14 +70,11 @@ class StorachaSettingViewController: UIViewController {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        appState.refreshSpaceCount()
+        appState.refreshSpaceCountAndSession()
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-            self.appState.refreshSpaceCount()
-        }
     }
     
     func handleManageNavigation() {

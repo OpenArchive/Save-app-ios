@@ -183,7 +183,7 @@ enum StorachaAPIError: Error, LocalizedError {
     case unauthorized
     case insufficientPermissions
     case uploadFailed(String)
-    case serverError(Int, String)
+    case serverError
     
     var errorDescription: String? {
         switch self {
@@ -209,8 +209,8 @@ enum StorachaAPIError: Error, LocalizedError {
             return "Insufficient permissions for this operation"
         case .uploadFailed(let message):
             return "Upload failed: \(message)"
-        case .serverError(let code, let message):
-            return "Server error (\(code)): \(message)"
+        case .serverError:
+            return NSLocalizedString("Something went wrong. Please try again.", comment: "")
         }
     }
 }

@@ -33,13 +33,13 @@ class StorachaAPIService {
     // MARK: - Helper to handle HTTP errors
     private func handleHTTPError(statusCode: Int, data: Data) throws {
         let errorMessage = String(data: data, encoding: .utf8) ?? "Unknown error"
-        
+
         if statusCode == 401 {
             logger.error("Unauthorized access - Status: 401, Message: \(errorMessage)")
             throw StorachaAPIError.unauthorized
         } else {
             logger.error("API Error - Status: \(statusCode), Message: \(errorMessage)")
-            throw StorachaAPIError.serverError(statusCode, errorMessage)
+            throw StorachaAPIError.serverError
         }
     }
     

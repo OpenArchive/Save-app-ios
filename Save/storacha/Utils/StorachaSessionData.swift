@@ -79,7 +79,8 @@ public class SessionManager {
         do {
                let data = try keychain.load(for: delegatedSpaceCount)
                let string = String(data: data, encoding: .utf8)
-               return string.flatMap { Int($0) }
+               return (string.flatMap { Int($0) }) ?? 0
+            
            } catch {
                return nil
            }
