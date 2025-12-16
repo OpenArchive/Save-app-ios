@@ -29,6 +29,7 @@ struct GeneralConstants {
     static let dark = "Dark"
     static let light = "Light"
     static let unspecified = "System"
+    static let mix_panel_token = "9f3cbee521d5ca0774cc3935e77a26ca"
 
 }
 func getServerIcon(space:Space?) -> UIImage?{

@@ -46,7 +46,12 @@ class InternetArchiveLoginViewController : ViewModelController<InternetArchiveLo
             }
         }
     }
-    
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        trackScreenViewSafely("InternetArchiveLogin")
+    }
+
     private func onNext(_ space: IaSpace) {
         let vc = UIStoryboard.main.instantiate(CreateCCLViewController.self)
         vc.space = space

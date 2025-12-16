@@ -67,6 +67,9 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
         button.bottomAnchor.constraint(lessThanOrEqualTo: container.bottomAnchor, constant: -16).isActive = true
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        trackScreenViewSafely("SpaceType")
+    }
     
     // MARK: Actions
     

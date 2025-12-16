@@ -57,6 +57,10 @@ class GeneralSettingsViewController:UIViewController,ViewControllerNavigationDel
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        trackScreenViewSafely("Settings")
+    }
+    
 }
 protocol GeneralSettingsDelegate: AnyObject {
     func pushServerListScreen()

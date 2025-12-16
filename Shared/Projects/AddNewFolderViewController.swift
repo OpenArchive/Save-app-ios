@@ -53,6 +53,10 @@ class AddNewFolderViewController: UIViewController {
             self.view.backgroundColor = UIColor.systemBackground
         }
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        trackScreenViewSafely("AddNewFolder")
+    }
 }
 
 

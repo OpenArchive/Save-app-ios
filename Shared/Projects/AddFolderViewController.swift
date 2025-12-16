@@ -69,7 +69,10 @@ class AddFolderViewController: BaseViewController {
             above: button1,
             equalHeight: true)
     }
-
+    
+    override func viewDidAppear(_ animated: Bool) {
+        trackScreenViewSafely("AddFolder")
+    }
 
     @IBAction func createNew() {
         navigationController?.pushViewController(AddNewFolderViewController(), animated: true)

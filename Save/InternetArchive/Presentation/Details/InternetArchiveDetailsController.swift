@@ -42,4 +42,10 @@ class InternetArchiveDetailsController : ViewModelController<InternetArchiveDeta
             }
         }
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        trackScreenViewSafely("InternetArchiveDetails")
+    }
+
 }

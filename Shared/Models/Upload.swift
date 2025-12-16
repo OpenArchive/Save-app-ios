@@ -73,6 +73,7 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
     var error: String?
     var tries = 0
     var lastTry: Date?
+    var startTime: Date?
 
     /**
      Returns the date after which another try should be done.
@@ -165,6 +166,7 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
         paused = decoder.decodeBool(forKey: "paused")
         tries = decoder.decodeInteger(forKey: "tries")
         lastTry = decoder.decodeObject(of: NSDate.self, forKey: "lastTry") as? Date
+        startTime = decoder.decodeObject(of: NSDate.self, forKey: "startTime") as? Date
         error = decoder.decodeObject(of: NSString.self, forKey: "error") as? String
         assetId = decoder.decodeObject(of: NSString.self, forKey: "assetId") as? String
     }
@@ -176,6 +178,7 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
         coder.encode(paused, forKey: "paused")
         coder.encode(tries, forKey: "tries")
         coder.encode(lastTry, forKey: "lastTry")
+        coder.encode(startTime, forKey: "startTime")
         coder.encode(error, forKey: "error")
         coder.encode(assetId, forKey: "assetId")
     }
@@ -223,6 +226,20 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
         }
     }
 
+    func trackCancellation(reason: String = "user_cancelled") {
+        guard let asset = self.asset,
+              let space = asset.space else { return }
+
+        let backendType = space is WebDavSpace ? "WebDAV" : (space is IaSpace ? "Internet Archive" : "Unknown")
+        let fileType = AnalyticsEvent.mediaType(from: asset.file)
+
+        trackEvent(.uploadCancelled(
+            backendType: backendType,
+            fileType: fileType,
+            reason: reason
+        ))
+    }
+
     func hasProgressChanged() -> Bool {
         return _progress != liveProgress?.fractionCompleted ?? 0
     }
@@ -244,7 +261,7 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
             }
 
             // Reorder uploads.
-            tx.iterate(group: UploadsView.groups.first, in: UploadsView.name) 
+            tx.iterate(group: UploadsView.groups.first, in: UploadsView.name)
             { (collection, key, upload: Upload, index, stop) in
                 if upload.order != index {
                     upload.order = index

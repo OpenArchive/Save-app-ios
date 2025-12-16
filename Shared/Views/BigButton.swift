@@ -11,6 +11,8 @@ import UIKit
 @IBDesignable
 class BigButton: UIView {
 
+    private var _borderUIColor: UIColor = .borderBg
+
     @discardableResult
     class func create(icon: UIImage? = nil, title: String, subtitle: String? = nil,
                       target: Any? = nil, action: Selector? = nil, container: UIView,
@@ -52,7 +54,6 @@ class BigButton: UIView {
                     switch constraint.firstAttribute {
                     case .leading, .centerY, .trailing:
                         constraint.isActive = false
-
                     default:
                         break
                     }
@@ -73,7 +74,10 @@ class BigButton: UIView {
                 titleLb.leadingAnchor.constraint(equalTo: leadIv.trailingAnchor, constant: 15).isActive = true
             }
 
+            // set and tint
             leadIv.image = newValue
+            leadIv.tintColor = .accent
+            leadIv.image = leadIv.image?.withRenderingMode(.alwaysTemplate)
         }
     }
 
@@ -115,10 +119,30 @@ class BigButton: UIView {
         }
     }
 
+    // Apply the current resolved color to the layer
+    private func applyBorderColorForCurrentTraits() {
+        let resolved = _borderUIColor.resolvedColor(with: traitCollection)
+        layer.borderColor = resolved.cgColor
+    }
+
     override class var requiresConstraintBasedLayout: Bool {
         true
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+
+        // Only re-apply if the relevant appearance actually changed
+        if previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle {
+            applyBorderColorForCurrentTraits()
+        }
+    }
+
+    // Re-apply when moved to window to cover storyboard/segue timing cases
+    override func didMoveToWindow() {
+        super.didMoveToWindow()
+        applyBorderColorForCurrentTraits()
+    }
 
     // MARK: Private Properties
 
@@ -128,6 +152,9 @@ class BigButton: UIView {
 
         view.widthAnchor.constraint(equalToConstant: 24).isActive = true
         view.heightAnchor.constraint(equalToConstant: 24).isActive = true
+
+        view.tintColor = .accent
+        view.contentMode = .scaleAspectFit
 
         return view
     }()
@@ -178,7 +205,7 @@ class BigButton: UIView {
 
         setup()
     }
-    
+
     required init?(coder: NSCoder) {
         super.init(coder: coder)
 
@@ -209,6 +236,7 @@ class BigButton: UIView {
     private func setup() {
         translatesAutoresizingMaskIntoConstraints = false
 
+        // use the inspectable default (and ensure it's applied)
         borderColor = .borderBg
         borderWidth = 1
         cornerRadius = 8
