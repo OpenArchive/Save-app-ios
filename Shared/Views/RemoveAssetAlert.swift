@@ -29,6 +29,7 @@ class RemoveAssetAlert {
             message: message,
             primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
             primaryButtonAction: {
+                trackEvent(.mediaDeleted(count: assets.count))
                 for asset in assets {
                     if asset == assets.last {
                         asset.remove() {

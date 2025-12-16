@@ -91,7 +91,9 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
         
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
-    
+    override func viewDidAppear(_ animated: Bool) {
+        trackScreenViewSafely("BatchEdit")
+    }
     
     // MARK: BaseViewController
     
@@ -174,6 +176,7 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
         
         FlagInfoAlert.presentIfNeeded()
     }
+    
 }
 extension Notification {
     func keyboardHeight() -> CGFloat? {

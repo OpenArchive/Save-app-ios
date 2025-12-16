@@ -79,7 +79,7 @@ class PreviewViewController: UIViewController,
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        
+        trackScreenViewSafely("MediaPreview")
         DispatchQueue.main.async {
             BatchInfoAlert.presentIfNeeded(viewController: self, additionalCondition: self.sc.count >= 1)
         }

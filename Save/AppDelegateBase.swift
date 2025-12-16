@@ -14,6 +14,7 @@ import TorManager
 import OrbotKit
 import SwiftUI
 import Firebase
+import Mixpanel
 
 class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
     
@@ -58,20 +59,31 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         uploadManager = UploadManager.shared
         
         cleanCache()
-      
+
         UIFont.setUpMontserrat()
-        
+
         FirebaseApp.configure()
-        
+
+        let mixpanelProvider = MixpanelProvider(token: GeneralConstants.mix_panel_token)
+        AnalyticsManager.shared.initialize(providers: [mixpanelProvider])
+
+        AnalyticsManager.shared.startSession()
+
+        // Track app opened
+        let isFirstLaunch = !UserDefaults.standard.bool(forKey: "has_launched_before")
+        if isFirstLaunch {
+            UserDefaults.standard.set(true, forKey: "has_launched_before")
+        }
+        let appVersion = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "unknown"
+        trackEvent(.appOpened(isFirstLaunch: isFirstLaunch, appVersion: appVersion))
+
         applyTheme(AppSettings.theme)
         
         return true
     }
     
     func applicationWillResignActive(_ application: UIApplication) {
-        // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
-        // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
-        
+       
         if AppSettings.passcodeEnabled {
             BlurredSnapshot.create(window)
             hadResigned = true
@@ -81,6 +93,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        trackEvent(.appBackgrounded)
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
@@ -99,20 +112,23 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     }
     
     func applicationDidBecomeActive(_ application: UIApplication) {
-        
+
+        trackEvent(.appForegrounded)
+
         if AppSettings.passcodeEnabled {
             BlurredSnapshot.remove()
         }
         maybePromptForReview()
-        
-        
+
+
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
-        
+     
+        AnalyticsManager.shared.endSession()
+
         TorManager.shared.stop()
-        
+
         cleanCache()
     }
     
@@ -219,7 +235,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     //            }
     //        }
     //    }
-    //    
+    //
     //    func setUpOrbotAndTor() {
     //        if Settings.useOrbot {
     //            OrbotManager.shared.start()
@@ -228,11 +244,11 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     //            // Always set up Orbot API token, so TorManager can work around Orbot, if need be.
     //            OrbotKit.shared.apiToken = Settings.orbotApiToken
     //        }
-    //        
+    //
     //        // Always initialize TorManager, so PT_STATE directory gets set and users
     //        // can fetch bridges before they switch on Tor.
     //        _ = TorManager.shared
-    //        
+    //
     //        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
     //            OrbotManager.shared.alertCannotUpload()
     //        }

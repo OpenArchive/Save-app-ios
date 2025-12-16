@@ -39,6 +39,11 @@ class ProofModeSettingsViewController: UIViewController {
             view.backgroundColor = UIColor.systemBackground
         }
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        trackScreenViewSafely("ProofMode")
+    }
+    
 }
 
 struct ProofModeSettingsView: View {
@@ -70,6 +75,7 @@ struct ProofModeSettingsView: View {
                     case .authorizedWhenInUse, .authorizedAlways:
                         Settings.proofMode = true
                         isProofModeEnabled = true
+                        trackFeatureToggled(featureName: "proof_mode", enabled: true)
                         if !(URL.proofModePrivateKey?.exists ?? false) {
                             Proof.shared.initializeWithDefaultKeys()
                         }
@@ -77,6 +83,7 @@ struct ProofModeSettingsView: View {
                     case .denied, .restricted:
                         Settings.proofMode = false
                         isProofModeEnabled = false
+                        trackFeatureToggled(featureName: "proof_mode", enabled: false)
                         showAlert = true
                         
                     @unknown default:
@@ -85,6 +92,7 @@ struct ProofModeSettingsView: View {
                 } else {
                     userManuallyToggledOn = false
                     Settings.proofMode = false
+                    trackFeatureToggled(featureName: "proof_mode", enabled: false)
                 }
             }
             
@@ -166,6 +174,7 @@ struct ProofModeSettingsView: View {
                         if userManuallyToggledOn {
                             Settings.proofMode = true
                             isProofModeEnabled = true
+                            trackFeatureToggled(featureName: "proof_mode", enabled: true)
                             if !(URL.proofModePrivateKey?.exists ?? false) {
                                 Proof.shared.initializeWithDefaultKeys()
                             }
@@ -173,6 +182,7 @@ struct ProofModeSettingsView: View {
                     } else if status == .denied || status == .restricted {
                         Settings.proofMode = false
                         isProofModeEnabled = false
+                        trackFeatureToggled(featureName: "proof_mode", enabled: false)
                         showAlert = true
                     }
                 }

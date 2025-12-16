@@ -146,6 +146,9 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
         self.title = NSLocalizedString("Private Server", comment: "")
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        trackScreenViewSafely("PrivateServerLogin")
+    }
     
     @objc func updateButtonState() {
         nextBt.isEnabled = ![urlTb, usernameTb, passwordTb].contains { $0?.text?.isEmpty ?? true }
@@ -221,7 +224,7 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
                                     SelectedSpace.store(tx)
                                     tx.setObject(space)
                                 }
-                                
+                                trackEvent(.backendConfigured(backendType: "WebDAV", isNew: true))
                                 let vc = UIStoryboard.main.instantiate(CreateCCLViewController.self)
                                 vc.space = space
                                 self?.navigationController?.pushViewController(vc, animated: true)

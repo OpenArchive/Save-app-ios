@@ -22,7 +22,7 @@ func maybePromptForReview() {
     if Settings.appLaunchCount >= 5 && daysSinceLastPrompt >= 90 {
      
         Settings.lastReviewPromptDate = Date()
-        
+        trackEvent(.reviewPromptShown)
         DispatchQueue.main.asyncAfter(deadline: .now() + 5) {
             if let scene = UIApplication.shared.connectedScenes.first as? UIWindowScene {
                 SKStoreReviewController.requestReview(in: scene)

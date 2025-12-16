@@ -40,6 +40,10 @@ class SpaceSuccessViewController: BaseViewController, WizardDelegatable {
         titleLb.font = .montserrat(forTextStyle: .headline ,with: .traitUIOptimized)
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        trackScreenViewSafely("SpaceSetupSuccess")
+    }
+    
     @IBAction func done() {
     
         if let navigationController = self.navigationController {

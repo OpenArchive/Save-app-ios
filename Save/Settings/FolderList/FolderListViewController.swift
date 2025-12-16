@@ -74,7 +74,11 @@ class FolderListNewViewController: UIViewController, UITableViewDelegate, UITabl
 
         reload()
     }
-   
+    
+    override func viewDidAppear(_ animated: Bool) {
+        trackScreenViewSafely("ArchivedFolders")
+    }
+    
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return projectList.count
     }

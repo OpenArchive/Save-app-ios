@@ -63,6 +63,10 @@ class PrivateServerSettingViewController: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        trackScreenViewSafely("PrivateServerDetails")
+    }
+    
     @objc private func confirmTapped() {
            view.endEditing(true)
         NotificationCenter.default.post(name: Foundation.Notification.Name.privateServerSettingsConfirm, object: nil)

@@ -45,6 +45,10 @@ class ServerListViewController: UIViewController, UITableViewDelegate, UITableVi
         
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        trackScreenViewSafely("ServerLList")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
