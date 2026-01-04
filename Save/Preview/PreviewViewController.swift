@@ -228,11 +228,11 @@ class PreviewViewController: UIViewController,
                 
                 let count = UploadsView.countUploading(tx)
                 
-                DispatchQueue.main.async {
-                    OrbotManager.shared.alertCannotUpload(count: count) { [weak self] in
-                        self?.navigationController?.popViewController(animated: true)
-                    }
-                }
+//                DispatchQueue.main.async {
+//                    OrbotManager.shared.alertCannotUpload(count: count) { [weak self] in
+//                        self?.navigationController?.popViewController(animated: true)
+//                    }
+//                }
             }
         }
     }

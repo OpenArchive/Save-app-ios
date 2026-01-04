@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import OrbotKit
-import TorManager
 
 class SlideshowViewController: BasePageViewController, SlideViewControllerDelegate
 {

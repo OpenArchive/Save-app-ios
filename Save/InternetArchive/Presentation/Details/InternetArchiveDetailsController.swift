@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import Factory
+import FactoryKit
 
 class InternetArchiveDetailsController : ViewModelController<InternetArchiveDetailState, InternetArchiveDetailAction, InternetArchiveDetailViewModel, InternetArchiveDetailView> {
     

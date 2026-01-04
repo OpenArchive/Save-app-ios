@@ -83,6 +83,6 @@ class SpaceTypeViewController: UIViewController, WizardDelegatable {
     }
     
     @IBAction func newGdrive() {
-        delegate?.next(UIStoryboard.main.instantiate(GdriveWizardViewController.self), pos: 1)
+      //  delegate?.next(UIStoryboard.main.instantiate(GdriveWizardViewController.self), pos: 1)
     }
 }

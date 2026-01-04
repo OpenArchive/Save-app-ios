@@ -225,9 +225,10 @@ class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBox
                                     tx.setObject(space)
                                 }
                                 trackEvent(.backendConfigured(backendType: "WebDAV", isNew: true))
-                                let vc = UIStoryboard.main.instantiate(CreateCCLViewController.self)
-                                vc.space = space
-                                self?.navigationController?.pushViewController(vc, animated: true)
+                               
+                                    let vc = CreateCCLWrapperViewController()
+                                    vc.space = space
+                                    self?.navigationController?.pushViewController(vc, animated: true)
                             }
                         }
                     }

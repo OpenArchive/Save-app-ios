@@ -8,7 +8,7 @@
 
 import SwiftUI
 import UIKit
-import Factory
+import FactoryKit
 
 class InternetArchiveLoginViewController : ViewModelController<InternetArchiveLoginState, InternetArchiveLoginAction, InternetArchiveLoginViewModel, InternetArchiveLoginView>, WizardDelegatable  {
     
@@ -53,9 +53,10 @@ class InternetArchiveLoginViewController : ViewModelController<InternetArchiveLo
     }
 
     private func onNext(_ space: IaSpace) {
-        let vc = UIStoryboard.main.instantiate(CreateCCLViewController.self)
-        vc.space = space
-        self.navigationController?.pushViewController(vc, animated: true)
+       
+            let vc = CreateCCLWrapperViewController()
+            vc.space = space
+            self.navigationController?.pushViewController(vc, animated: true)
     }
     
     private func onCancel() {

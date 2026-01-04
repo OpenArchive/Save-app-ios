@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import TorManager
 
 class MainNavigationController: UINavigationController {
 
@@ -19,11 +18,11 @@ class MainNavigationController: UINavigationController {
 
     func setRoot() {
         if Settings.firstRunDone {
-            if Settings.useTor && !TorManager.shared.connected {
-                setViewControllers([UIStoryboard.main.instantiate(TorStartViewController.self)],
-                                   animated: true)
-            }
-            else if !(topViewController is MainViewController) {
+//            if Settings.useTor && !TorManager.shared.connected {
+//                setViewControllers([UIStoryboard.main.instantiate(TorStartViewController.self)],
+//                                   animated: true)
+//            }
+             if !(topViewController is MainViewController) {
                 setViewControllers([UIStoryboard.main.instantiate(MainViewController.self)],
                                    animated: true)
             }

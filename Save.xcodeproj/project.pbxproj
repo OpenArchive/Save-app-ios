@@ -9,6 +9,23 @@
 /* Begin PBXBuildFile section */
 		1C5A127C70A8C295D49F0426 /* Pods_ShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FABB5D01C237B2D7FC1008A2 /* Pods_ShareExtension.framework */; };
 		6EB3CAE32EEBAA89007317EB /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = 6EB3CAE22EEBAA89007317EB /* Mixpanel */; };
+		6EA90A412F0A99D200767B63 /* UIImageViewAlignedSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA90A402F0A99D200767B63 /* UIImageViewAlignedSwift */; };
+		6EA9EBB02F0A465D00767B63 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA9EBAF2F0A465D00767B63 /* FirebaseAnalytics */; };
+		6EA9EBB22F0A465D00767B63 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA9EBB12F0A465D00767B63 /* FirebaseCrashlytics */; };
+		6EA9EBB52F0A641700767B63 /* TLPhotoPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA9EBB42F0A641700767B63 /* TLPhotoPicker */; };
+		6EA9EBBE2F0A6A5500767B63 /* FactoryKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA9EBBD2F0A6A5500767B63 /* FactoryKit */; };
+		6EA9FEC12F0A76C900767B63 /* FontBlaster in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA9FEC02F0A76C900767B63 /* FontBlaster */; };
+		6EA9FEC32F0A76D900767B63 /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA9FEC22F0A76D900767B63 /* Mixpanel */; };
+		6EA9FEC52F0A76E100767B63 /* TLPhotoPicker in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA9FEC42F0A76E100767B63 /* TLPhotoPicker */; };
+		6EA9FEC72F0A76FA00767B63 /* FontBlaster in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA9FEC62F0A76FA00767B63 /* FontBlaster */; };
+		6EA9FEC92F0A770600767B63 /* MBProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA9FEC82F0A770600767B63 /* MBProgressHUD */; };
+		6EA9FECB2F0A778E00767B63 /* MBProgressHUD in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA9FECA2F0A778E00767B63 /* MBProgressHUD */; };
+		6EA9FECD2F0A7A9E00767B63 /* FontBlaster in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA9FECC2F0A7A9E00767B63 /* FontBlaster */; };
+		6EA9FECF2F0A7D3600767B63 /* FactoryKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA9FECE2F0A7D3600767B63 /* FactoryKit */; };
+		6EA9FED12F0A7D4000767B63 /* FactoryKit in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA9FED02F0A7D4000767B63 /* FactoryKit */; };
+		6EA9FED32F0A7D7C00767B63 /* Reachability in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA9FED22F0A7D7C00767B63 /* Reachability */; };
+		6EA9FED52F0A7D8200767B63 /* Regex in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA9FED42F0A7D8200767B63 /* Regex */; };
+		6EA9FED72F0A7D9000767B63 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA9FED62F0A7D9000767B63 /* SwiftUIIntrospect */; };
 		6EB3D6DA2EEBBB81007317EB /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = 6EB3D6D92EEBBB81007317EB /* Mixpanel */; };
 		6EB3D6DC2EEBBB8E007317EB /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = 6EB3D6DB2EEBBB8E007317EB /* Mixpanel */; };
 		7D294CA198526B76E9A90039 /* Pods_Save_Screenshots.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27981A63E67D5F420A0C87BA /* Pods_Save_Screenshots.framework */; };
@@ -194,7 +211,6 @@
 				Onboarding/SlideViewController.swift,
 				Projects/BrowseWebDavViewController.swift,
 				Settings/ProofModeSettingsViewController.swift,
-				Space/CreateCCLViewController.swift,
 				Space/WebDavWizardViewController.swift,
 				Tor/TorStartViewController.swift,
 			);
@@ -258,27 +274,12 @@
 			);
 			target = A09B537723266F02005266C2 /* Save Screenshots */;
 		};
-		EAB284C82D0265B60023D594 /* Exceptions for "Views" folder in "Save" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"LinkRow-extension.swift",
-			);
-			target = A0E739D320E4C85D00DB31E1 /* Save */;
-		};
 		EAB284C92D0265B60023D594 /* Exceptions for "Views" folder in "ShareExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				LinkRow.swift,
 				RemoveAssetAlert.swift,
 			);
 			target = A07128FA2111CC90007A432A /* ShareExtension */;
-		};
-		EAB284CA2D0265B60023D594 /* Exceptions for "Views" folder in "Save Screenshots" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				"LinkRow-extension.swift",
-			);
-			target = A09B537723266F02005266C2 /* Save Screenshots */;
 		};
 		EAB284F12D0265BC0023D594 /* Exceptions for "Montserrat" folder in "Save" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -354,6 +355,8 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		6EB3CF2C2EEBADBC007317EB /* MixPanelAnalytics */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = MixPanelAnalytics;
 			sourceTree = "<group>";
 		};
@@ -413,9 +416,7 @@
 		EAB2846A2D0265B60023D594 /* Views */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				EAB284C82D0265B60023D594 /* Exceptions for "Views" folder in "Save" target */,
 				EAB284C92D0265B60023D594 /* Exceptions for "Views" folder in "ShareExtension" target */,
-				EAB284CA2D0265B60023D594 /* Exceptions for "Views" folder in "Save Screenshots" target */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -468,8 +469,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6EB3CAE32EEBAA89007317EB /* Mixpanel in Frameworks */,
-				1C5A127C70A8C295D49F0426 /* Pods_ShareExtension.framework in Frameworks */,
+				6EA9FEC32F0A76D900767B63 /* Mixpanel in Frameworks */,
+				6EA9FEC52F0A76E100767B63 /* TLPhotoPicker in Frameworks */,
+				6EA9FECB2F0A778E00767B63 /* MBProgressHUD in Frameworks */,
+				6EA9FECD2F0A7A9E00767B63 /* FontBlaster in Frameworks */,
+				243768E39BC491C270A9A352 /* Pods_ShareExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -480,6 +484,8 @@
 				6EB3D6DC2EEBBB8E007317EB /* Mixpanel in Frameworks */,
 				A0102DA82B18F1180054D3D4 /* XCTest.framework in Frameworks */,
 				7D294CA198526B76E9A90039 /* Pods_Save_Screenshots.framework in Frameworks */,
+				6EA9FECF2F0A7D3600767B63 /* FactoryKit in Frameworks */,
+				6EA9FEC12F0A76C900767B63 /* FontBlaster in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -487,8 +493,19 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EA9FED52F0A7D8200767B63 /* Regex in Frameworks */,
+				6EA9EBBE2F0A6A5500767B63 /* FactoryKit in Frameworks */,
 				6EB3D6DA2EEBBB81007317EB /* Mixpanel in Frameworks */,
 				F507042940A061A22263C055 /* Pods_Save.framework in Frameworks */,
+				6EA9FED72F0A7D9000767B63 /* SwiftUIIntrospect in Frameworks */,
+				6EA90A412F0A99D200767B63 /* UIImageViewAlignedSwift in Frameworks */,
+				6EA9FEC92F0A770600767B63 /* MBProgressHUD in Frameworks */,
+				6EA9FED12F0A7D4000767B63 /* FactoryKit in Frameworks */,
+				6EA9EBB22F0A465D00767B63 /* FirebaseCrashlytics in Frameworks */,
+				6EA9EBB02F0A465D00767B63 /* FirebaseAnalytics in Frameworks */,
+				6EA9EBB52F0A641700767B63 /* TLPhotoPicker in Frameworks */,
+				6EA9FED32F0A7D7C00767B63 /* Reachability in Frameworks */,
+				6EA9FEC72F0A76FA00767B63 /* FontBlaster in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -782,6 +799,14 @@
 			packageReferences = (
 				6ED29CFB2D68B608002E0189 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
 				6EB3CAE12EEBA9D9007317EB /* XCRemoteSwiftPackageReference "mixpanel-swift" */,
+				6EA9EBAE2F0A465D00767B63 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
+				6EA9EBB32F0A5EE300767B63 /* XCRemoteSwiftPackageReference "TLPhotoPicker" */,
+				6EA9EBB82F0A657100767B63 /* XCRemoteSwiftPackageReference "FontBlaster" */,
+				6EA9EBB92F0A668C00767B63 /* XCRemoteSwiftPackageReference "MBProgressHUD" */,
+				6EA9EBBA2F0A67F900767B63 /* XCRemoteSwiftPackageReference "Reachability.swift" */,
+				6EA9EBBB2F0A686200767B63 /* XCRemoteSwiftPackageReference "Regex" */,
+				6EA9EBBC2F0A6A5500767B63 /* XCRemoteSwiftPackageReference "Factory" */,
+				6EA9FED82F0A800200767B63 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A0E739D520E4C85D00DB31E1 /* Products */;
@@ -925,7 +950,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/FirebaseCrashlytics/run\"\n";
+			shellScript = "\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
 		};
 		8D49F10B5297F48ABD2558BC /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -1542,6 +1567,70 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		6EA9EBAE2F0A465D00767B63 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 12.7.0;
+			};
+		};
+		6EA9EBB32F0A5EE300767B63 /* XCRemoteSwiftPackageReference "TLPhotoPicker" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/tilltue/TLPhotoPicker.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.1.15;
+			};
+		};
+		6EA9EBB82F0A657100767B63 /* XCRemoteSwiftPackageReference "FontBlaster" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ArtSabintsev/FontBlaster.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.3.0;
+			};
+		};
+		6EA9EBB92F0A668C00767B63 /* XCRemoteSwiftPackageReference "MBProgressHUD" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/jdg/MBProgressHUD.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.0;
+			};
+		};
+		6EA9EBBA2F0A67F900767B63 /* XCRemoteSwiftPackageReference "Reachability.swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ashleymills/Reachability.swift";
+			requirement = {
+				kind = exactVersion;
+				version = 5.2.4;
+			};
+		};
+		6EA9EBBB2F0A686200767B63 /* XCRemoteSwiftPackageReference "Regex" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/crossroadlabs/Regex.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.2.0;
+			};
+		};
+		6EA9EBBC2F0A6A5500767B63 /* XCRemoteSwiftPackageReference "Factory" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/hmlongco/Factory";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.5.3;
+			};
+		};
+		6EA9FED82F0A800200767B63 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sochalewski/UIImageViewAlignedSwift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.8.3;
+			};
+		};
 		6EB3CAE12EEBA9D9007317EB /* XCRemoteSwiftPackageReference "mixpanel-swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/mixpanel/mixpanel-swift";
@@ -1561,10 +1650,90 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		6EB3CAE22EEBAA89007317EB /* Mixpanel */ = {
+		6EA90A402F0A99D200767B63 /* UIImageViewAlignedSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EA9FED82F0A800200767B63 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */;
+			productName = UIImageViewAlignedSwift;
+		};
+		6EA9EBAF2F0A465D00767B63 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EA9EBAE2F0A465D00767B63 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		6EA9EBB12F0A465D00767B63 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EA9EBAE2F0A465D00767B63 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
+		};
+		6EA9EBB42F0A641700767B63 /* TLPhotoPicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EA9EBB32F0A5EE300767B63 /* XCRemoteSwiftPackageReference "TLPhotoPicker" */;
+			productName = TLPhotoPicker;
+		};
+		6EA9EBBD2F0A6A5500767B63 /* FactoryKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EA9EBBC2F0A6A5500767B63 /* XCRemoteSwiftPackageReference "Factory" */;
+			productName = FactoryKit;
+		};
+		6EA9FEC02F0A76C900767B63 /* FontBlaster */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EA9EBB82F0A657100767B63 /* XCRemoteSwiftPackageReference "FontBlaster" */;
+			productName = FontBlaster;
+		};
+		6EA9FEC22F0A76D900767B63 /* Mixpanel */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = 6EB3CAE12EEBA9D9007317EB /* XCRemoteSwiftPackageReference "mixpanel-swift" */;
 			productName = Mixpanel;
+		};
+		6EA9FEC42F0A76E100767B63 /* TLPhotoPicker */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EA9EBB32F0A5EE300767B63 /* XCRemoteSwiftPackageReference "TLPhotoPicker" */;
+			productName = TLPhotoPicker;
+		};
+		6EA9FEC62F0A76FA00767B63 /* FontBlaster */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EA9EBB82F0A657100767B63 /* XCRemoteSwiftPackageReference "FontBlaster" */;
+			productName = FontBlaster;
+		};
+		6EA9FEC82F0A770600767B63 /* MBProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EA9EBB92F0A668C00767B63 /* XCRemoteSwiftPackageReference "MBProgressHUD" */;
+			productName = MBProgressHUD;
+		};
+		6EA9FECA2F0A778E00767B63 /* MBProgressHUD */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EA9EBB92F0A668C00767B63 /* XCRemoteSwiftPackageReference "MBProgressHUD" */;
+			productName = MBProgressHUD;
+		};
+		6EA9FECC2F0A7A9E00767B63 /* FontBlaster */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EA9EBB82F0A657100767B63 /* XCRemoteSwiftPackageReference "FontBlaster" */;
+			productName = FontBlaster;
+		};
+		6EA9FECE2F0A7D3600767B63 /* FactoryKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EA9EBBC2F0A6A5500767B63 /* XCRemoteSwiftPackageReference "Factory" */;
+			productName = FactoryKit;
+		};
+		6EA9FED02F0A7D4000767B63 /* FactoryKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EA9EBBC2F0A6A5500767B63 /* XCRemoteSwiftPackageReference "Factory" */;
+			productName = FactoryKit;
+		};
+		6EA9FED22F0A7D7C00767B63 /* Reachability */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EA9EBBA2F0A67F900767B63 /* XCRemoteSwiftPackageReference "Reachability.swift" */;
+			productName = Reachability;
+		};
+		6EA9FED42F0A7D8200767B63 /* Regex */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EA9EBBB2F0A686200767B63 /* XCRemoteSwiftPackageReference "Regex" */;
+			productName = Regex;
+		};
+		6EA9FED62F0A7D9000767B63 /* SwiftUIIntrospect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6ED29CFB2D68B608002E0189 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = SwiftUIIntrospect;
 		};
 		6EB3D6D92EEBBB81007317EB /* Mixpanel */ = {
 			isa = XCSwiftPackageProductDependency;

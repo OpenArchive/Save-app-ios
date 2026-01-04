@@ -7,7 +7,7 @@
 //
 
 import SwiftUI
-import Factory
+import FactoryKit
 
 struct InternetArchiveLoginView: View  {
     

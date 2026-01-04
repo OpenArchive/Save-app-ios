@@ -9,7 +9,7 @@
 
 import SwiftUI
 import UIKit
-import Factory
+import FactoryKit
 
 class PasscodeSetupController : ViewModelController<PasscodeSetupState, PasscodeSetupAction, PasscodeSetupViewModel, PasscodeSetupView>{
     

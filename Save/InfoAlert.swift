@@ -7,10 +7,13 @@
 //
 
 import UIKit
-import SDCAlertView
+import SwiftUI
 
 /**
  A special alert which gives the user a hint about a special feature.
+
+ Note: This class is deprecated. New alerts should use CustomAlertViewController directly.
+ See UploadInfoAlert.swift and AddInfoAlert.swift for examples.
  */
 class InfoAlert {
 
@@ -22,11 +25,20 @@ class InfoAlert {
     }
 
     /**
-     The color with which the illustrative image gets tinted. If set, image
-     will be used as template and tinted, else as-is.
+     A SwiftUI Image for the icon. Override this in subclasses.
     */
-    class var tintColor: UIColor? {
-        nil
+    class var iconImage: Image? {
+        if let uiImage = image {
+            return Image(uiImage: uiImage)
+        }
+        return Image(systemName: "info.circle.fill")
+    }
+
+    /**
+     The color with which the illustrative image gets tinted.
+    */
+    class var tintColor: Color {
+        .accentColor
     }
 
     /**
@@ -79,92 +91,28 @@ class InfoAlert {
             return
         }
 
-        let illustration: UIImageView?
-
-        if let image = image {
-            if let tintColor = tintColor {
-                illustration = UIImageView(image: image.withRenderingMode(.alwaysTemplate))
-                illustration?.tintColor = tintColor
-            }
-            else {
-                illustration = UIImageView(image: image)
-            }
-
-            illustration?.translatesAutoresizingMaskIntoConstraints = false
-        }
-        else {
-            illustration = nil
-        }
-
-        let title: UILabel?
-
-        if !self.title.isEmpty {
-            title = UILabel()
-            title?.translatesAutoresizingMaskIntoConstraints = false
-            title?.text = self.title
-            title?.font = .montserrat(forTextStyle: .title2, with: .traitBold)
-            title?.adjustsFontForContentSizeCategory = true
-            title?.textAlignment = .center
-            title?.adjustsFontSizeToFitWidth = true
-        }
-        else {
-            title = nil
-        }
-
-        let message = UILabel()
-        message.translatesAutoresizingMaskIntoConstraints = false
-        message.text = self.message
-        message.font = .montserrat(forTextStyle: .footnote)
-        message.adjustsFontForContentSizeCategory = true
-        message.textAlignment = .center
-        message.numberOfLines = 0
-
-        let alert = AlertController(title: nil, message: nil)
-        alert.visualStyle.backgroundColor = .systemBackground
-
-        let cv = alert.contentView
-        cv.backgroundColor = .systemBackground
-
-        if let illustration = illustration {
-            cv.addSubview(illustration)
-        }
-
-        if let title = title {
-            cv.addSubview(title)
-        }
-
-        cv.addSubview(message)
-
-        illustration?.topAnchor.constraint(equalTo: cv.topAnchor, constant: -16).isActive = true
-        illustration?.widthAnchor.constraint(equalToConstant: 24).isActive = true
-        illustration?.heightAnchor.constraint(equalToConstant: 24).isActive = true
-        illustration?.centerXAnchor.constraint(equalTo: cv.centerXAnchor).isActive = true
-
-        title?.topAnchor.constraint(equalTo: illustration?.bottomAnchor ?? cv.topAnchor, constant: 16).isActive = true
-        title?.leftAnchor.constraint(equalTo: cv.leftAnchor).isActive = true
-        title?.rightAnchor.constraint(equalTo: cv.rightAnchor).isActive = true
-
-        message.topAnchor.constraint(equalTo: title?.bottomAnchor ?? illustration?.bottomAnchor ?? cv.topAnchor, constant: 8).isActive = true
-        message.leftAnchor.constraint(equalTo: cv.leftAnchor).isActive = true
-        message.rightAnchor.constraint(equalTo: cv.rightAnchor).isActive = true
-        message.bottomAnchor.constraint(equalTo: cv.bottomAnchor, constant: -16).isActive = true
-
-
-        alert.addAction(AlertAction(title: buttonTitle, style: .normal, handler: { _ in
-            wasAlreadyShown = true
-
-            success?()
-        }))
-
-        if success != nil {
-            alert.addAction(AlertAction(title: NSLocalizedString("Cancel", comment: ""), style: .preferred))
-        }
+        let alertVC = CustomAlertViewController(
+            title: title,
+            message: message,
+            primaryButtonTitle: buttonTitle,
+            primaryButtonAction: {
+                wasAlreadyShown = true
+                success?()
+            },
+            secondaryButtonTitle: success != nil ? NSLocalizedString("Cancel", comment: "") : nil,
+            secondaryButtonAction: success != nil ? {} : nil,
+            showCheckbox: false,
+            iconImage: iconImage ?? Image(systemName: "info.circle.fill"),
+            iconTint: tintColor
+        )
 
         if let vc = viewController {
-            vc.present(alert, animated: true)
-        }
-        else {
-            alert.present(animated: true)
+            vc.present(alertVC, animated: true)
+        } else {
+            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+               let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
+                window.rootViewController?.present(alertVC, animated: true)
+            }
         }
     }
 }

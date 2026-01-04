@@ -174,7 +174,7 @@ class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPic
         var actions = [AlertHelper.cancelAction()]
 
         if let url = URL(string: UIApplication.openSettingsURLString) {
-            actions.append(AlertHelper.defaultAction(NSLocalizedString("Settings", comment: ""), handler: { _ in
+            actions.append(AlertHelper.defaultAction(NSLocalizedString("Settings", comment: ""), handler: { 
                 UIApplication.shared.open(url)
             }))
         }

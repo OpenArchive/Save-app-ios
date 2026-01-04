@@ -9,11 +9,10 @@
 import UIKit
 import UserNotifications
 import LibProofMode
-import GoogleSignIn
-import TorManager
-import OrbotKit
 import SwiftUI
-import Firebase
+import FirebaseCore
+import FirebaseAnalytics
+import FirebaseCrashlytics
 import Mixpanel
 
 class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
@@ -126,8 +125,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     func applicationWillTerminate(_ application: UIApplication) {
      
         AnalyticsManager.shared.endSession()
-
-        TorManager.shared.stop()
+     //   TorManager.shared.stop()
 
         cleanCache()
     }
@@ -135,19 +133,19 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     func application(_ app: UIApplication, open url: URL,
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool
     {
-        if let urlc = URLComponents(url: url, resolvingAgainstBaseURL: true),
-           urlc.path == "token-callback"
-        {
-            if let token = urlc.queryItems?.first(where: { $0.name == "token" })?.value {
-                OrbotManager.shared.received(token: token)
-            }
-            
-            return true
-        }
+//        if let urlc = URLComponents(url: url, resolvingAgainstBaseURL: true),
+//           urlc.path == "token-callback"
+//        {
+//            if let token = urlc.queryItems?.first(where: { $0.name == "token" })?.value {
+//                OrbotManager.shared.received(token: token)
+//            }
+//            
+//            return true
+//        }
         
-        if GIDSignIn.sharedInstance.handle(url) {
-            return true
-        }
+//        if GIDSignIn.sharedInstance.handle(url) {
+//            return true
+//        }
         
         return true
     }
@@ -301,9 +299,9 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     
 }
 
-extension TorManager {
-    static let shared = TorManager(directory: .groupDir!.appendingPathComponent("tor", isDirectory: true))
-}
+//extension TorManager {
+//    static let shared = TorManager(directory: .groupDir!.appendingPathComponent("tor", isDirectory: true))
+//}
 
 extension AppDelegateBase {
     
