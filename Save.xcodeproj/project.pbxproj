@@ -803,7 +803,7 @@
 				6EA9EBB32F0A5EE300767B63 /* XCRemoteSwiftPackageReference "TLPhotoPicker" */,
 				6EA9EBB82F0A657100767B63 /* XCRemoteSwiftPackageReference "FontBlaster" */,
 				6EA9EBB92F0A668C00767B63 /* XCRemoteSwiftPackageReference "MBProgressHUD" */,
-				6EA9EBBA2F0A67F900767B63 /* XCRemoteSwiftPackageReference "Reachability.swift" */,
+				6EA9EBBA2F0A67F900767B63 /* XCRemoteSwiftPackageReference "Reachability" */,
 				6EA9EBBB2F0A686200767B63 /* XCRemoteSwiftPackageReference "Regex" */,
 				6EA9EBBC2F0A6A5500767B63 /* XCRemoteSwiftPackageReference "Factory" */,
 				6EA9FED82F0A800200767B63 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */,
@@ -1599,7 +1599,7 @@
 				minimumVersion = 1.2.0;
 			};
 		};
-		6EA9EBBA2F0A67F900767B63 /* XCRemoteSwiftPackageReference "Reachability.swift" */ = {
+		6EA9EBBA2F0A67F900767B63 /* XCRemoteSwiftPackageReference "Reachability" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ashleymills/Reachability.swift";
 			requirement = {
@@ -1722,7 +1722,7 @@
 		};
 		6EA9FED22F0A7D7C00767B63 /* Reachability */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 6EA9EBBA2F0A67F900767B63 /* XCRemoteSwiftPackageReference "Reachability.swift" */;
+			package = 6EA9EBBA2F0A67F900767B63 /* XCRemoteSwiftPackageReference "Reachability" */;
 			productName = Reachability;
 		};
 		6EA9FED42F0A7D8200767B63 /* Regex */ = {

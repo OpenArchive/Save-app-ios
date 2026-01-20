@@ -28,7 +28,7 @@ struct CreateCCLView: View {
     @State private var isKeyboardVisible: Bool = false
 
     private var isInternetArchive: Bool {
-        space is WebDavSpace
+        space is IaSpace
     }
 
     var body: some View {
@@ -141,11 +141,14 @@ struct CreateCCLView: View {
                     }
 
                     // Learn More Link
-                    if URL(string: Self.ccMoreUrl) != nil {
+                    if let learnMoreUrl =  URL(string: CreateCCLView.ccMoreUrl) {
                         Text(AttributedString(NSLocalizedString("Learn more about Creative Commons.", comment: ""), attributes: AttributeContainer([.underlineStyle: NSUnderlineStyle.single.rawValue])))
                             .foregroundColor(.accentColor)
                             .font(.montserrat(.medium, for: .subheadline))
                             .padding(.top, 10)
+                            .onTapGesture {
+                                UIApplication.shared.open(learnMoreUrl)
+                            }
                     }
 
                     // Bottom padding to account for fixed button
@@ -163,7 +166,7 @@ struct CreateCCLView: View {
                 }) {
                     Text(NSLocalizedString("Next", comment: ""))
                         .font(.montserrat(.semibold, for: .headline))
-                        .foregroundColor(.primary)
+                        .foregroundColor(.black)
                         .frame(height: 50)
                         .frame(maxWidth: .infinity)
                         .background(Color.accent)
@@ -174,7 +177,7 @@ struct CreateCCLView: View {
             }
             .background(
                 LinearGradient(
-                    gradient: Gradient(colors: [Color.clear, Color(UIColor.systemBackground)]),
+                    gradient: Gradient(colors: [Color.clear]),
                     startPoint: .top,
                     endPoint: .bottom
                 )

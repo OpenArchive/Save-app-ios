@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="24127" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
     <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
+        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="24063"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -29,16 +30,18 @@
                         </constraints>
                     </imageView>
                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="3" baselineAdjustment="alignBaselines" adjustsLetterSpacingToFitWidth="YES" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="vCK-QV-c2Z">
-                        <rect key="frame" x="42" y="14.333333333333336" width="270" height="15.666666666666664"/>
+                        <rect key="frame" x="42" y="8" width="270" height="28"/>
                         <fontDescription key="fontDescription" name=".SFUI-Regular" family=".AppleSystemUIFont" pointSize="14"/>
                         <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <nil key="highlightedColor"/>
                     </label>
                 </subviews>
                 <constraints>
+                    <constraint firstItem="vCK-QV-c2Z" firstAttribute="top" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="ALP-N0-dEc"/>
                     <constraint firstItem="vCK-QV-c2Z" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="GPz-5g-ZAQ"/>
                     <constraint firstItem="LaL-2o-0xx" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="JOB-Nk-h21"/>
                     <constraint firstItem="vCK-QV-c2Z" firstAttribute="leading" secondItem="LaL-2o-0xx" secondAttribute="trailing" constant="8" id="OLv-Ud-1J7"/>
+                    <constraint firstAttribute="bottom" secondItem="vCK-QV-c2Z" secondAttribute="bottom" constant="8" id="gp8-Nm-vpt"/>
                 </constraints>
             </tableViewCellContentView>
             <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
@@ -51,7 +54,7 @@
                 <outlet property="iconLeadingConstraint" destination="Q9e-53-SEg" id="YJV-52-cgz"/>
                 <outlet property="nameLb" destination="vCK-QV-c2Z" id="oD0-M6-xrY"/>
             </connections>
-            <point key="canvasLocation" x="130" y="-11"/>
+            <point key="canvasLocation" x="129.7709923664122" y="-11.267605633802818"/>
         </tableViewCell>
     </objects>
 </document>

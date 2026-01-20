@@ -45,6 +45,9 @@ class ServerSettingsStore: ObservableObject {
             objectWillChange.send()
         }
     }
+    
+    deinit {
+    }
 }
 
 func serverSettingsReducer(state: inout ServerSettingsState, action: ServerSettingsAction) {
@@ -103,7 +106,6 @@ func serverSettingsReducer(state: inout ServerSettingsState, action: ServerSetti
 
 func saveLicenseToDatabase(state: ServerSettingsState) {
     guard let space = state.space else { return }
-    print(state.licenseURL)
     space.license = state.licenseURL
     
     Db.writeConn?.asyncReadWrite { tx in
@@ -142,11 +144,19 @@ func saveSpaceToDatabase(state: ServerSettingsState) {
     guard let space = state.space as? WebDavSpace else {
         return
     }
-    space.name = state.serverName
-    if(SelectedSpace.space is  WebDavSpace){
-        SelectedSpace.space?.name = space.name
+    
+    Db.writeConn?.asyncReadWrite { tx in
+        // Update the space object
+        space.name = state.serverName
+        tx.setObject(space, forKey: space.id, inCollection: Space.collection)
+        
+        // Update SelectedSpace if it matches
+        if let selectedSpace = SelectedSpace.space,
+           selectedSpace.id == space.id {
+            SelectedSpace.space?.name = space.name
+            SelectedSpace.store(tx)
+        }
     }
-    Db.writeConn?.setObject(space)
 }
 
 // Helper function to construct license URL

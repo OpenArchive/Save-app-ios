@@ -50,6 +50,9 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
 
     private let sc = SelectedCollection()
     private var dh: DarkroomHelper?
+    
+    // Store the original right bar button item to restore it after keyboard dismissal
+    private var originalRightBarButtonItem: UIBarButtonItem?
 
     private var asset: Asset? {
         return selected < 0 || selected >= sc.count
@@ -69,6 +72,8 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "DONE", style: .done, target: self, action: #selector(dismiss(_:)))
+        
         flagIv.unselectedTintColor = .white
         addChild(pageVc)
         container.addSubview(pageVc.view)
@@ -100,8 +105,14 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     // MARK: BaseViewController
 
     override func keyboardWillShow(notification: Notification) {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .done, target: self, action: #selector(dismissKeyboard))
+        // Store the original right bar button item if not already stored
+        if originalRightBarButtonItem == nil {
+            originalRightBarButtonItem = navigationItem.rightBarButtonItem
+        }
+        
+        // Create a custom "DONE" button to match the original styling
+        let doneButton = UIBarButtonItem(title: "DONE", style: .done, target: self, action: #selector(dismissKeyboard))
+        navigationItem.rightBarButtonItem = doneButton
         
         if let kbSize = getKeyboardSize(notification) {
             let safeAreaBottom = view.safeAreaInsets.bottom
@@ -112,8 +123,8 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     }
 
     override func keyboardWillBeHidden(notification: Notification) {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .done, target: self, action: #selector(dismiss(_:)))
+        // Restore the original right bar button item
+        navigationItem.rightBarButtonItem = originalRightBarButtonItem
 
         infoViewBottomConstraint?.constant = GeneralConstants.constraint_20
 

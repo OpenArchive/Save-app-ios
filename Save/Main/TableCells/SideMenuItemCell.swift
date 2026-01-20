@@ -31,6 +31,7 @@ class SideMenuItemCell: UITableViewCell {
         nameLb.text = space?.prettyName ?? Bundle.main.displayName
         nameLb.font =  .montserrat(forTextStyle: .subheadline)
         nameLb.textColor = .label
+        nameLb.numberOfLines = 0 // Allow multiple lines
         icon.tintColor = UIColor.label
         contentView.backgroundColor = select ? .accent :  .pillBackground
     }
@@ -44,6 +45,7 @@ class SideMenuItemCell: UITableViewCell {
         nameLb.text = project?.name
         nameLb.font = .montserrat(forTextStyle: .callout ,with: .traitUIOptimized)
         nameLb.textColor = select ? UIColor.label : .gray70
+        nameLb.numberOfLines = 0 // Allow multiple lines
         
         contentView.backgroundColor = .clear
     }

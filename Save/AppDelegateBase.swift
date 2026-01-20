@@ -223,34 +223,34 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         completionHandler()
     }
     
-    //    func setUpGdrive() {
-    //        GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
-    //            if error != nil || user == nil {
-    //                GdriveConduit.user = nil
-    //            }
-    //            else {
-    //                GdriveConduit.user = user
-    //            }
-    //        }
-    //    }
-    //
-    //    func setUpOrbotAndTor() {
-    //        if Settings.useOrbot {
-    //            OrbotManager.shared.start()
-    //        }
-    //        else {
-    //            // Always set up Orbot API token, so TorManager can work around Orbot, if need be.
-    //            OrbotKit.shared.apiToken = Settings.orbotApiToken
-    //        }
-    //
-    //        // Always initialize TorManager, so PT_STATE directory gets set and users
-    //        // can fetch bridges before they switch on Tor.
-    //        _ = TorManager.shared
-    //
-    //        DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-    //            OrbotManager.shared.alertCannotUpload()
-    //        }
-    //    }
+//        func setUpGdrive() {
+//            GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
+//                if error != nil || user == nil {
+//                    GdriveConduit.user = nil
+//                }
+//                else {
+//                    GdriveConduit.user = user
+//                }
+//            }
+//        }
+    
+//        func setUpOrbotAndTor() {
+//            if Settings.useOrbot {
+//                OrbotManager.shared.start()
+//            }
+//            else {
+//                // Always set up Orbot API token, so TorManager can work around Orbot, if need be.
+//                OrbotKit.shared.apiToken = Settings.orbotApiToken
+//            }
+//    
+//            // Always initialize TorManager, so PT_STATE directory gets set and users
+//            // can fetch bridges before they switch on Tor.
+//            _ = TorManager.shared
+//    
+//            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
+//                OrbotManager.shared.alertCannotUpload()
+//            }
+//        }
     
     /**
      Somehow SwiftyDropbox still leaves traces in the URL cache, even, if we configure it to not cache anything.
