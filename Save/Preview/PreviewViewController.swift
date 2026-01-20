@@ -228,8 +228,10 @@ class PreviewViewController: UIViewController,
                 
                 let count = UploadsView.countUploading(tx)
                 
-//                    }
-//                }
+                DispatchQueue.main.async {
+                    self.alertCannotUploadNoWifi(count: count) { [weak self] in
+                        self?.navigationController?.popViewController(animated: true)
+                    }
                 }
             }
         }
