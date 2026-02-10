@@ -139,30 +139,4 @@ final class SideMenuViewModel: StoreViewModel<SideMenuState, SideMenuAction> {
             // Don't auto-select here - let viewWillAppear handle it
         }
     }
-
-    private func autoSelectProject(from projects: [Project]) {
-        guard !projects.isEmpty else { return }
-
-        // If there's already a valid selection, don't override it
-        if let currentId = store().selectedProjectId,
-           projects.contains(where: { $0.id == currentId }) {
-            return
-        }
-
-        // Try to restore previously selected project
-        if let selected = SelectedProject.project,
-           selected.spaceId == SelectedSpace.id,
-           selected.active,
-           projects.contains(where: { $0.id == selected.id }) {
-            store.dispatch(.selectProject(selected.id))
-            return
-        }
-
-        // Default to first project
-        let first = projects[0]
-        store.dispatch(.selectProject(first.id))
-        SelectedProject.project = first
-        SelectedProject.store()
-        coordinator.selectedProject(first)
-    }
 }
