@@ -63,8 +63,10 @@ final class SideMenuViewModel: StoreViewModel<SideMenuState, SideMenuAction> {
     }
 
     func reload() {
+       
         databaseObserver?.yapDatabaseModified(notification: .init(name: .YapDatabaseModified))
 
+        // Handle project selection after observer updates state
         if store().selectedProjectId == nil, !store().projects.isEmpty {
             if let selectedProject = SelectedProject.project,
                selectedProject.spaceId == SelectedSpace.id,
@@ -97,14 +99,11 @@ final class SideMenuViewModel: StoreViewModel<SideMenuState, SideMenuAction> {
         let iconName = space is IaSpace ? "internet_archive" : "private_server"
         store.dispatch(.updateSpaceHeader(name: space.prettyName, iconName: iconName))
 
-        // Don't update spaces list here - the database observer handles that
-        // Calling updateSpaceInList here causes a race condition where we read stale data from store
     }
 
     private func updateSpaceInList(_ updatedSpace: Space) {
         var spaces = store().spaces
 
-        // Find and replace the space in the array
         if let index = spaces.firstIndex(where: { $0.id == updatedSpace.id }) {
             spaces[index] = updatedSpace
         } else {
@@ -136,7 +135,6 @@ final class SideMenuViewModel: StoreViewModel<SideMenuState, SideMenuAction> {
 
         DispatchQueue.main.async {
             self.store.dispatch(.updateProjects(projects))
-            // Don't auto-select here - let viewWillAppear handle it
         }
     }
 }
