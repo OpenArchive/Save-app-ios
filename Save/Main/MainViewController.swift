@@ -50,6 +50,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         button.setImage(UIImage(named: "menu_icon"), for: .normal)
         button.accessibilityIdentifier = "btMenu"
         button.addTarget(self, action: #selector(didTapMenuButton), for: .touchUpInside)
+        // Increase tap area without changing icon size
+        button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
+        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         return button
     }()
     private lazy var menuBarButtonItem: UIBarButtonItem = {
@@ -145,10 +148,10 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     var selectedProject: Project? {
         get {
-            sideMenu.selectedProject
+            sideMenuViewModel.selectedProject
         }
         set {
-            sideMenu.selectedProject = newValue
+            sideMenuViewModel.selectedProject = newValue
         }
     }
     
@@ -169,28 +172,58 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     private lazy var assetsReadConn = Db.newLongLivedReadConn()
     
     private lazy var assetsMappings = AbcFilteredByProjectView.createMappings()
-    
+
     private var inEditMode = false
     
     
-    private lazy var sideMenu: SideMenuViewController = {
-        let vc = SideMenuViewController()
-        vc.delegate = self
-        vc.projectsConn = projectsReadConn
-        vc.projectsMappings = projectsMappings
-        
-        addChild(vc)
-        menu.addSubview(vc.view)
-        
-        vc.view.translatesAutoresizingMaskIntoConstraints = false
-        vc.view.leadingAnchor.constraint(equalTo: menu.leadingAnchor).isActive = true
-        vc.view.topAnchor.constraint(equalTo: menu.topAnchor).isActive = true
-        vc.view.trailingAnchor.constraint(equalTo: menu.trailingAnchor).isActive = true
-        vc.view.bottomAnchor.constraint(equalTo: menu.bottomAnchor).isActive = true
-        
-        vc.didMove(toParent: self)
-        
-        return vc
+    private lazy var sideMenuViewModel: SideMenuViewModel = {
+        let coordinator = NavigationCoordinator(delegate: self)
+
+        let spacesConn = Db.newLongLivedReadConn()
+        let spacesMappings = YapDatabaseViewMappings(
+            groups: SpacesView.groups,
+            view: SpacesView.name
+        )
+        spacesConn?.update(mappings: spacesMappings)
+
+        // Create separate connections for side menu to avoid interference
+        let sideMenuProjectsConn = Db.newLongLivedReadConn()
+        let sideMenuProjectsMappings = YapDatabaseViewMappings(
+            groups: ActiveProjectsView.groups, view: ActiveProjectsView.name)
+
+        let viewModel = SideMenuViewModel(
+            spacesConn: spacesConn!,
+            spacesMappings: spacesMappings,
+            projectsConn: sideMenuProjectsConn,
+            projectsMappings: sideMenuProjectsMappings,
+            coordinator: coordinator
+        )
+
+        return viewModel
+    }()
+
+    private lazy var sideMenuHostingController: UIHostingController<AnyView> = {
+        let coordinator = sideMenuViewModel.coordinator
+
+        let contentView = SideMenuView()
+            .environmentObject(sideMenuViewModel)
+            .environmentObject(coordinator)
+
+        let hostingController = UIHostingController(rootView: AnyView(contentView))
+        hostingController.view.backgroundColor = .clear
+
+        addChild(hostingController)
+        menu.addSubview(hostingController.view)
+
+        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        hostingController.view.leadingAnchor.constraint(equalTo: menu.leadingAnchor).isActive = true
+        hostingController.view.topAnchor.constraint(equalTo: menu.topAnchor).isActive = true
+        hostingController.view.trailingAnchor.constraint(equalTo: menu.trailingAnchor).isActive = true
+        hostingController.view.bottomAnchor.constraint(equalTo: menu.bottomAnchor).isActive = true
+
+        hostingController.didMove(toParent: self)
+
+        return hostingController
     }()
     
     private lazy var settingsVc: GeneralSettingsViewController = {
@@ -206,21 +239,21 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         folderNameText.delegate = self
         collectionView.allowsMultipleSelection = true
         uploadsReadConn?.update(mappings: uploadsMappings)
-        projectsReadConn?.update(mappings: projectsMappings)
         collectionsReadConn?.update(mappings: collectionsMappings)
         assetsReadConn?.update(mappings: assetsMappings)
         Db.add(observer: self, #selector(yapDatabaseModified))
-        
+
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backBarButtonItem
-        
+
         if Settings.proofMode && LocationMananger.shared.status == .notDetermined {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 LocationMananger.shared.requestAuthorization()
             }
         }
         NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
-        
+        NotificationCenter.default.addObserver(self, selector: #selector(spaceUpdated), name: .spaceUpdated, object: nil)
+
     }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -294,23 +327,29 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
         
         let archiveAction = UIAction(title: NSLocalizedString("Archive folder", comment: ""), image: nil) { _ in
-            
+
             if let project = self.selectedProject{
                 project.active = false
                 Db.writeConn?.setObject(project)
                 self.selectedProject?.active = false
+
+                // Update view grouping to exclude archived project
+                ProjectsView.updateGrouping()
+
+                // Database observer will handle selecting the next project
+
                 let alertVC = CustomAlertViewController(
                     title:NSLocalizedString("Success!", comment: "") ,
                     message: NSLocalizedString("Folder archived successfully.", comment: ""),
                     primaryButtonTitle: NSLocalizedString("Got it", comment: ""),
                     primaryButtonAction: {
                         if let navigationController = self.navigationController {
-                            
+
                             if let existingVC = navigationController.viewControllers.first(where: { $0 is MainViewController }) {
-                                
+
                                 navigationController.popToViewController(existingVC, animated: true)
                             } else {
-                                
+
                                 let newVC = MainViewController()
                                 navigationController.pushViewController(newVC, animated: true)
                             }
@@ -324,17 +363,18 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
         
         let removeAction = UIAction(title: NSLocalizedString("Remove folder from app", comment: ""), image: nil) { _ in
-            
+
             if let project = self.selectedProject{
                 RemoveProjectAlert.present(self, project, { [weak self] success in
                     guard success else {
                         return
                     }
                     self?.showToast(message:  NSLocalizedString("Folder removed.",comment: ""))
+                    // Database observer will handle selecting the next project
                 })
-                
+
             }
-            
+
         }
         
         return UIMenu(title: "", children: [renameAction, selectMediaAction, archiveAction, removeAction])
@@ -342,11 +382,19 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
+
         uploadsReadConn?.update(mappings: uploadsMappings)
-        projectsReadConn?.update(mappings: projectsMappings)
         collectionsReadConn?.update(mappings: collectionsMappings)
         assetsReadConn?.update(mappings: assetsMappings)
+
+       
+        if let project = SelectedProject.project, project.active {
+            selectedProject = project
+            sideMenuViewModel.reloadAndSelect(project.id)
+        } else {
+            sideMenuViewModel.reload()
+        }
+
         configureNavigationBar()
         updateSpace()
         updateProject()
@@ -364,9 +412,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             toggleMode()
         }
         updateManageBt()
-        
     }
-    @available(iOS 14.0, *)
+ 
+    
     private func updateDropdownMenu() {
         editButton.menu = createDropdownMenu()
         editButton.showsMenuAsPrimaryAction = true
@@ -376,6 +424,17 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             self.titleContainer.isHidden = true
             self.titleContainerHeight.constant = 0
         }
+    }
+
+    @objc private func spaceUpdated(_ notification: Notification) {
+        guard let updatedSpace = notification.object as? Space else {
+            return
+        }
+
+        if SelectedSpace.id == updatedSpace.id {
+            SelectedSpace.space = updatedSpace
+        }
+        updateSpace()
     }
     
     deinit {
@@ -410,9 +469,13 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     @objc private func didTapMenuButton() {
         if menu.isHidden {
-            sideMenu.reload()
+            if let currentProject = selectedProject {
+                sideMenuViewModel.store.dispatch(.selectProject(currentProject.id))
+            }
+            sideMenuViewModel.reload()
+            _ = sideMenuHostingController
         }
-        
+
         toggleMenu(menu.isHidden)
     }
     private func configureNavigationBarLogo() {
@@ -569,8 +632,12 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
     
     func selected(project: Project?) {
+        selectedProject = project
+        SelectedProject.project = project
+        SelectedProject.store()
+
         toggleMenu(false)
-        
+
         if AbcFilteredByProjectView.projectId != project?.id {
             toggleMode(newMode: false)
         }
@@ -640,9 +707,13 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     @IBAction func toggleMenu() {
         if menu.isHidden {
-            sideMenu.reload()
+            if let currentProject = selectedProject {
+                sideMenuViewModel.store.dispatch(.selectProject(currentProject.id))
+            }
+            sideMenuViewModel.reload()
+            _ = sideMenuHostingController
         }
-        
+
         toggleMenu(menu.isHidden)
     }
     
@@ -776,6 +847,11 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
      Will be called, when something changed the database.
      */
     @objc func yapDatabaseModified(notification: Notification) {
+        // Update only the mappings we actually use (not projects - side menu handles that)
+        uploadsReadConn?.update(mappings: uploadsMappings)
+        collectionsReadConn?.update(mappings: collectionsMappings)
+        assetsReadConn?.update(mappings: assetsMappings)
+
         if let changes = uploadsReadConn?.getChanges(uploadsMappings) {
             for change in changes.rowChanges {
                 guard change.type == .update,
@@ -808,14 +884,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 updateManageBt()
             }
         }
-        
-        if projectsReadConn?.hasChanges(projectsMappings) ?? false {
-            
-            updateSpace()
-            sideMenu.reload()
-            updateProject()
-        }
-        
+
+        // Project changes are handled by SideMenuDatabaseObserver, which notifies us via selected(project:) delegate
+
         var forceFull = false
         
         if let changes = collectionsReadConn?.getChanges(collectionsMappings) {
@@ -857,7 +928,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         if #available(iOS 14.0, *) {
             updateDropdownMenu()
         } else {
-            
+
         }
     }
     
@@ -915,21 +986,21 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     private func updateSpace() {
         if let space = SelectedSpace.space {
             spaceFavIcon.image = getServerIcon(space: space)
-            sideMenu.space = space
+            sideMenuViewModel.updateSpace(space)
             navigationItem.rightBarButtonItem = menuBarButtonItem
             hintLb.text =   NSLocalizedString(
                 "Tap the button below to add a folder",
                 comment: "")
             welcomeLb.text = ""
             welcomeLb.isHidden = true
-            
+
         }
         else {
             spaceFavIcon.image = nil
-            sideMenu.space = nil
+            sideMenuViewModel.updateSpace(nil)
             self.titleContainer.isHidden = true
-            
-            
+
+
             hintLb.text =  NSLocalizedString(
                 "Tap the button below to add a server",
                 comment: "")
@@ -937,16 +1008,14 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             welcomeLb.isHidden = false
             welcomeLb.text = NSLocalizedString("Welcome!", comment: "")
         }
-        
+
         if !container.isHidden {
             //  settingsVc.reload()
         }
     }
     
     private func updateProject() {
-        
-        if let project = selectedProject{
-            
+        if let project = selectedProject {
             AbcFilteredByProjectView.updateFilter(project.id)
             hintLb.text =  NSLocalizedString(
                 "Tap the button below to add media",
@@ -972,16 +1041,32 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 self.titleContainerHeight.constant = 44
                 toggleVisibility(ishidden: true)
             }
-            
+
         }
-        
+
     }
     func toggleVisibility(ishidden:Bool) {
-        
+
         editButton.isHidden = ishidden
         folderIndicator.isHidden = ishidden
         folderNameLb.isHidden = ishidden
         folderAssetCountLb.isHidden = ishidden
+    }
+
+    private func selectNextAvailableProject() {
+        let currentProjectId = selectedProject?.id
+        let projects = sideMenuViewModel.store().projects.filter { $0.id != currentProjectId }
+
+        if let nextProject = projects.first {
+            selectedProject = nextProject
+            SelectedProject.project = nextProject
+            SelectedProject.store()
+            updateProject()
+        } else {
+            selectedProject = nil
+            SelectedProject.project = nil
+            updateProject()
+        }
     }
     private func getSelectedAssets() -> [Asset] {
         assetsReadConn?.objects(at: collectionView.indexPathsForSelectedItems, in: assetsMappings) ?? []
@@ -994,21 +1079,25 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             completion?(true)
             return
         }
-        
+
+        // Ensure hosting controller is initialized
+        _ = sideMenuHostingController
+
         if toggle {
             if !SelectedSpace.available {
                 addSpace()
             }
             else {
                 menu.isHidden = false
-                sideMenu.animate(toggle, completion)
+                sideMenuViewModel.animateMenu(show: toggle) {
+                    completion?(true)
+                }
             }
         }
         else {
-            sideMenu.animate(toggle) { finished in
+            sideMenuViewModel.animateMenu(show: toggle) {
                 self.menu.isHidden = true
-                
-                completion?(finished)
+                completion?(true)
             }
         }
     }

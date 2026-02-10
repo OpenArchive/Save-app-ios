@@ -99,6 +99,10 @@ func saveFolderName(state:inout AppState) {
             state.status = true
             project.name = state.folderName
             Db.writeConn?.setObject(project)
+
+            // Set as selected project
+            SelectedProject.project = project
+            SelectedProject.store()
         }
     }
 }

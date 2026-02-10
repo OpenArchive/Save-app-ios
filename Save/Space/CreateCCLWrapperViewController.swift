@@ -2,7 +2,7 @@
 //  CreateCCLWrapperViewController.swift
 //  Save
 //
-//  Created by Claude Code on 2026-01-04.
+//  Created by Navoda on 2026-01-04.
 //  Copyright © 2026 Open Archive. All rights reserved.
 //
 
@@ -65,12 +65,19 @@ class CreateCCLWrapperViewController: UIViewController, WizardDelegatable {
     private func handleNext(serverName: String) {
         guard let space = space else { return }
 
-        // Update space name if provided
+        // Update space name if provided and wait for completion before navigating
         if !serverName.isEmpty && !(space is IaSpace) {
-            updateSpaceName(for: space.id, newName: serverName)
+            // Update the local space object first
+            space.name = serverName
+            updateSpaceName(space: space) { [weak self] in
+                self?.navigateToSuccess(space: space)
+            }
+        } else {
+            navigateToSuccess(space: space)
         }
+    }
 
-        // Navigate to success screen
+    private func navigateToSuccess(space: Space) {
         let vc = UIStoryboard.main.instantiate(SpaceSuccessViewController.self)
         if space is IaSpace {
             vc.spaceName = NSLocalizedString("the Internet Archive", comment: "")
@@ -81,15 +88,21 @@ class CreateCCLWrapperViewController: UIViewController, WizardDelegatable {
         navigationController?.pushViewController(vc, animated: true)
     }
 
-    private func updateSpaceName(for spaceId: String, newName: String) {
-        Db.writeConn?.asyncReadWrite { tx in
-            if let space = tx.object(forKey: spaceId, inCollection: Space.collection) as? Space {
-                space.name = newName
-                tx.setObject(space, forKey: space.id, inCollection: Space.collection)
-                if SelectedSpace.id == spaceId {
-                    SelectedSpace.space?.name = space.name
-                }
-            }
+    private func updateSpaceName(space: Space, completion: @escaping () -> Void) {
+        // Update SelectedSpace reference immediately in memory
+
+        if SelectedSpace.id == space.id {
+            SelectedSpace.space = space
         }
+
+        // Then save to database
+        Db.writeConn?.asyncReadWrite({ tx in
+            tx.setObject(space, forKey: space.id, inCollection: Space.collection)
+            SelectedSpace.store(tx)
+        }, completionBlock: {
+            DispatchQueue.main.async {
+                completion()
+            }
+        })
     }
 }

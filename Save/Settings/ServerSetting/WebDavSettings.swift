@@ -2,6 +2,10 @@
 import Combine
 import Foundation
 
+extension Notification.Name {
+    static let spaceUpdated = Notification.Name("spaceUpdated")
+}
+
 struct ServerSettingsState {
     var space: Space?
     var serverName: String = ""
@@ -144,19 +148,26 @@ func saveSpaceToDatabase(state: ServerSettingsState) {
     guard let space = state.space as? WebDavSpace else {
         return
     }
-    
-    Db.writeConn?.asyncReadWrite { tx in
-        // Update the space object
-        space.name = state.serverName
-        tx.setObject(space, forKey: space.id, inCollection: Space.collection)
-        
-        // Update SelectedSpace if it matches
-        if let selectedSpace = SelectedSpace.space,
-           selectedSpace.id == space.id {
-            SelectedSpace.space?.name = space.name
-            SelectedSpace.store(tx)
-        }
+
+    // Update the space object name
+    space.name = state.serverName
+
+    // Update SelectedSpace immediately in memory if it matches
+    if let selectedSpace = SelectedSpace.space,
+       selectedSpace.id == space.id {
+        SelectedSpace.space = space
     }
+
+    // Then save to database
+    Db.writeConn?.asyncReadWrite({ tx in
+        tx.setObject(space, forKey: space.id, inCollection: Space.collection)
+        SelectedSpace.store(tx)
+    }, completionBlock: {
+        // Notify that space was updated so side menu can refresh
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .spaceUpdated, object: space)
+        }
+    })
 }
 
 // Helper function to construct license URL
