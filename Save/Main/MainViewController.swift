@@ -1033,6 +1033,14 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             }
         }
         else{
+           
+            if SelectedSpace.space != nil {
+                hintLb.text = NSLocalizedString(
+                    "Tap the button below to add a folder",
+                    comment: "")
+                welcomeLb.text = ""
+                welcomeLb.isHidden = true
+            }
             DispatchQueue.main.async {
                 self.collectionView.isHidden = true
             }

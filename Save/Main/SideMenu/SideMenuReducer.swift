@@ -20,6 +20,18 @@ private func areSameSpaces(_ lhs: [Space], _ rhs: [Space]) -> Bool {
     return true
 }
 
+private func areSameProjects(_ lhs: [Project], _ rhs: [Project]) -> Bool {
+    guard lhs.count == rhs.count else { return false }
+    for (index, leftProject) in lhs.enumerated() {
+        let rightProject = rhs[index]
+        // Compare by ID and name to detect changes (not object identity!)
+        if leftProject.id != rightProject.id || leftProject.name != rightProject.name {
+            return false
+        }
+    }
+    return true
+}
+
 let sideMenuReducer: Reducer<SideMenuState, SideMenuAction> = { state, action in
     var newState = state
 
@@ -42,7 +54,8 @@ let sideMenuReducer: Reducer<SideMenuState, SideMenuAction> = { state, action in
         newState.spaces = spaces
 
     case .updateProjects(let projects):
-        guard state.projects.map(\.id) != projects.map(\.id) else {
+        // Check if projects changed (IDs or names)
+        guard !areSameProjects(state.projects, projects) else {
             return nil
         }
         newState.projects = projects
