@@ -383,27 +383,39 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        uploadsReadConn?.update(mappings: uploadsMappings)
-        collectionsReadConn?.update(mappings: collectionsMappings)
-        assetsReadConn?.update(mappings: assetsMappings)
-
-       
+        // Set selected project and filter FIRST
         if let project = SelectedProject.project, project.active {
             selectedProject = project
             sideMenuViewModel.reloadAndSelect(project.id)
+            AbcFilteredByProjectView.updateFilter(project.id)
         } else {
             sideMenuViewModel.reload()
         }
 
+        // NOW update mappings with filter applied
+        uploadsReadConn?.update(mappings: uploadsMappings)
+        collectionsReadConn?.update(mappings: collectionsMappings)
+        assetsReadConn?.update(mappings: assetsMappings)
+
         configureNavigationBar()
         updateSpace()
         updateProject()
+
+        // Update mappings again after updateProject() since it may have changed the filter
+        uploadsReadConn?.update(mappings: uploadsMappings)
+        collectionsReadConn?.update(mappings: collectionsMappings)
+        assetsReadConn?.update(mappings: assetsMappings)
+
+        // Reload collection view before checking sections
+        collectionView.reloadData()
+        let finalSections = numberOfSections(in: collectionView)
+        collectionView.toggle(finalSections != 0, animated: animated)
+
         isLongPressTapped = false
         if #available(iOS 14.0, *) {
             editButton.menu = createDropdownMenu()
             editButton.showsMenuAsPrimaryAction = true
         }
-        collectionView.toggle(numberOfSections(in: collectionView) != 0, animated: animated)
         if(MainViewController.isSettingsEnabled){
             self.titleContainer.isHidden = true
             self.titleContainerHeight.constant = 0
@@ -434,7 +446,10 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         if SelectedSpace.id == updatedSpace.id {
             SelectedSpace.space = updatedSpace
         }
+        // User just switched space - clear selectedProject; observer will select first project
+        selectedProject = nil
         updateSpace()
+        updateProject()
     }
     
     deinit {
@@ -847,7 +862,23 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
      Will be called, when something changed the database.
      */
     @objc func yapDatabaseModified(notification: Notification) {
-        // Update only the mappings we actually use (not projects - side menu handles that)
+     
+        projectsReadConn?.beginLongLivedReadTransaction()
+        projectsReadConn?.update(mappings: projectsMappings)
+        let activeProjects: [Project] = projectsReadConn?.objects(in: 0, with: projectsMappings) ?? []
+        let activeProjectIds = Set(activeProjects.map(\.id))
+
+        if let current = selectedProject, !activeProjectIds.contains(current.id) {
+            let next = activeProjects.first
+            selectedProject = next
+            SelectedProject.project = next
+            SelectedProject.store()
+            sideMenuViewModel.store.dispatch(.selectProject(next?.id))
+            AbcFilteredByProjectView.updateFilter(next?.id)
+            // Update folder name and UI; observer won't call selected(project:) since store already has next
+            updateProject()
+        }
+
         uploadsReadConn?.update(mappings: uploadsMappings)
         collectionsReadConn?.update(mappings: collectionsMappings)
         assetsReadConn?.update(mappings: assetsMappings)
@@ -904,24 +935,37 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
         
         collectionView.apply(YapDatabaseChanges(forceFull, [], [])) { [weak self] countChanged in
+            guard let self = self else { return }
             
-            guard let self = self, countChanged else {
-                return
+            let storeSelectedId = self.sideMenuViewModel.store().selectedProjectId
+            let storeProjects = self.sideMenuViewModel.store().projects
+            
+            // Sync selectedProject from store if it's nil but store has selectedProjectId
+            if self.selectedProject == nil, let projectId = storeSelectedId {
+                if let project = storeProjects.first(where: { $0.id == projectId }) {
+                    self.selectedProject = project
+                } else if let project = SelectedProject.project, project.id == projectId {
+                    self.selectedProject = project
+                }
             }
-            if self.selectedProject != nil {
+            
+            let hasSelectedProject = storeSelectedId != nil || self.selectedProject != nil
+            
+            if hasSelectedProject {
                 self.folderAssetCountLb.text = "  \(Formatters.format(self.assetsMappings.numberOfItemsInAllGroups()))  "
-            }
-            if self.selectedProject == nil {
-                if(!collectionView.isHidden){
+                
+                // Ensure collection view visibility is correct based on sections
+                let currentSections = self.numberOfSections(in: self.collectionView)
+                let shouldBeHidden = currentSections < 1
+                
+                if self.collectionView.isHidden != shouldBeHidden {
+                    self.collectionView.toggle(!shouldBeHidden, animated: true)
+                }
+            } else {
+                if !self.collectionView.isHidden {
                     DispatchQueue.main.async {
                         self.collectionView.isHidden = true
                     }
-                }
-            }
-            else{
-                if self.collectionView.isHidden != (self.numberOfSections(in: self.collectionView) < 1) {
-                    print(self.numberOfSections(in: self.collectionView))
-                    self.collectionView.toggle(self.collectionView.isHidden, animated: true)
                 }
             }
         }
@@ -998,8 +1042,8 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         else {
             spaceFavIcon.image = nil
             sideMenuViewModel.updateSpace(nil)
+            navigationItem.rightBarButtonItem = nil
             self.titleContainer.isHidden = true
-
 
             hintLb.text =  NSLocalizedString(
                 "Tap the button below to add a server",
@@ -1016,7 +1060,38 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     private func updateProject() {
         if let project = selectedProject {
+            // Update filter synchronously to avoid race conditions
             AbcFilteredByProjectView.updateFilter(project.id)
+
+            // Update mappings synchronously first to ensure they're ready
+            assetsReadConn?.update(mappings: assetsMappings)
+            collectionsReadConn?.update(mappings: collectionsMappings)
+
+            // Update mappings and reload collection view after filter change
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self, self.selectedProject?.id == project.id else { return }
+
+                // Update mappings again after filter change (in case they changed)
+                self.assetsReadConn?.update(mappings: self.assetsMappings)
+                self.collectionsReadConn?.update(mappings: self.collectionsMappings)
+
+                // Always force full reload to ensure media loads (especially on project changes)
+                self.collectionView.apply(YapDatabaseChanges(true, [], [])) { countChanged in
+                    self.folderAssetCountLb.text = "  \(Formatters.format(self.assetsMappings.numberOfItemsInAllGroups()))  "
+                    
+                    // Ensure collection view visibility is correct based on sections
+                    let shouldBeHidden = self.numberOfSections(in: self.collectionView) < 1
+                    
+                    if self.collectionView.isHidden != shouldBeHidden {
+                        self.collectionView.toggle(!shouldBeHidden, animated: true)
+                    }
+                }
+            }
+
+            // Trigger database notification to ensure yapDatabaseModified fires
+            // This provides a backup reload mechanism
+            NotificationCenter.default.post(name: .YapDatabaseModified, object: nil)
+
             hintLb.text =  NSLocalizedString(
                 "Tap the button below to add media",
                 comment: "")
@@ -1033,7 +1108,8 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             }
         }
         else{
-           
+            folderNameLb.text = nil
+            folderNameText.text = nil
             if SelectedSpace.space != nil {
                 hintLb.text = NSLocalizedString(
                     "Tap the button below to add a folder",
@@ -1049,9 +1125,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 self.titleContainerHeight.constant = 44
                 toggleVisibility(ishidden: true)
             }
-
         }
-
     }
     func toggleVisibility(ishidden:Bool) {
 
@@ -1061,21 +1135,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         folderAssetCountLb.isHidden = ishidden
     }
 
-    private func selectNextAvailableProject() {
-        let currentProjectId = selectedProject?.id
-        let projects = sideMenuViewModel.store().projects.filter { $0.id != currentProjectId }
-
-        if let nextProject = projects.first {
-            selectedProject = nextProject
-            SelectedProject.project = nextProject
-            SelectedProject.store()
-            updateProject()
-        } else {
-            selectedProject = nil
-            SelectedProject.project = nil
-            updateProject()
-        }
-    }
     private func getSelectedAssets() -> [Asset] {
         assetsReadConn?.objects(at: collectionView.indexPathsForSelectedItems, in: assetsMappings) ?? []
     }

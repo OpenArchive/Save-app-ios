@@ -99,12 +99,9 @@ final class SideMenuDatabaseObserver {
 
     private func handleProjectsChanges() {
         guard let projectsConn = projectsConn,
-              let projectsMappings = projectsMappings else {
-            return
-        }
+              let projectsMappings = projectsMappings else { return }
 
         projectsConn.beginLongLivedReadTransaction()
-        
         projectsConn.update(mappings: projectsMappings)
         let allProjects: [Project] = projectsConn.objects(in: 0, with: projectsMappings)
         let projects = allProjects.filter(\.active)

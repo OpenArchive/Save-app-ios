@@ -277,14 +277,17 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     }
 
     @IBAction func toggleFlagged() {
+        guard let asset = asset else { return }
+
+        let flagged = !asset.flagged
         let update = dh?.assign(dh?.getFirstResponder())
 
-        asset?.update({ asset in
-            asset.flagged = !asset.flagged
-
+        asset.update({ asset in
+            asset.flagged = flagged
             update?(asset)
         })
 
+        flagIv.isSelected = flagged
         dh?.setInfos(asset, defaults: true, infoView.frame.height * 0.5)
 
         FlagInfoAlert.presentIfNeeded()

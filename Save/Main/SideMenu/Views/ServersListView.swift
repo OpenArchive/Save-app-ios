@@ -20,11 +20,12 @@ struct ServersListView: View {
                         SelectedSpace.space = space
                         SelectedSpace.store()
                         SelectedProject.project = nil
+                        SelectedProject.store()
+
+                        viewModel.store(.selectSpace(space.id))
 
                         // Notify MainViewController to update the space icon
                         NotificationCenter.default.post(name: .spaceUpdated, object: space)
-
-                        viewModel.store(.selectSpace(space.id))
                         withAnimation(.easeInOut(duration: 0.25)) {
                             viewModel.store(.toggleSpaceHeader(show: true))
                             viewModel.store(.toggleServersExpanded)

@@ -205,7 +205,7 @@ struct InternetArchiveLoginContent: View {
         } else if focusedField == field {
             return .accent // teal
         } else {
-            return Color.gray.opacity(0.7)
+            return .gray70
         }
     }
 }

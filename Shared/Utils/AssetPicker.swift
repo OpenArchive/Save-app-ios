@@ -10,6 +10,7 @@ import Foundation
 import TLPhotoPicker
 import Photos
 import LegacyUTType
+import AVFoundation
 
 protocol AssetPickerDelegate: AnyObject {
 
@@ -225,6 +226,7 @@ class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPic
         picker.sourceType = .camera
         picker.delegate = self
         picker.mediaTypes = [UTType.image.identifier, UTType.movie.identifier]
+        picker.videoQuality = .typeHigh
         delegate?.present(picker, animated: true)
     }
 
