@@ -68,11 +68,10 @@ class PrivateServerSettingViewController: UIViewController {
     }
     
     @objc private func confirmTapped() {
-           view.endEditing(true)
-        NotificationCenter.default.post(name: Foundation.Notification.Name.privateServerSettingsConfirm, object: nil)
-
-       }
+        view.endEditing(true)
+        NotificationCenter.default.post(
+            name: Foundation.Notification.Name.privateServerSettingsConfirm,
+            object: space?.id
+        )
+    }
 }
-
-
-

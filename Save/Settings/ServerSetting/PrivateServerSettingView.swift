@@ -8,6 +8,7 @@
 
 
 import SwiftUI
+import Combine
 extension Notification.Name {
     static let privateServerSettingsConfirm = Notification.Name("privateServerSettingsConfirm")
 }
@@ -17,6 +18,7 @@ struct PrivateServerSettingsView: View {
     let ccMoreUrl = "https://creativecommons.org/about/cclicenses/"
     @StateObject private var store: ServerSettingsStore
     @State private var serverName: String
+    @State private var notificationCancellable: AnyCancellable?
     var dismissAction: (() -> Void)?
     var disableBackAction: ((Bool) -> Void)?
     var changetitle: ((String) -> Void)?
@@ -60,12 +62,17 @@ struct PrivateServerSettingsView: View {
                     )
                     CustomTextField(
                         placeholder: NSLocalizedString("Server Name",comment: ""),
-                        text: $serverName,
+                        text: Binding(
+                            get: { store.state.serverName },
+                            set: { newValue in
+                                serverName = newValue
+                                store.dispatch(action: .updateServerName(newValue))
+                            }
+                        ),
                         isDisabled: false,
                         onEditingChanged: { began in
                             onEditingChanged?(began)
                         }, onCommit:  {
-                            store.dispatch(action: .updateServerName(serverName))
                             store.dispatch(action: .saveToDatabase)
                             showSuccessAlert = true
                         })
@@ -127,10 +134,11 @@ struct PrivateServerSettingsView: View {
                 .padding(.horizontal, 16)
                 .padding(.top, 10)
             }
-        }.onReceive(NotificationCenter.default.publisher(for: Foundation.Notification.Name.privateServerSettingsConfirm)) { _ in
-            store.dispatch(action: .updateServerName(serverName))
-            store.dispatch(action: .saveToDatabase)
-            showSuccessAlert = true
+        }.onAppear {
+            setupNotificationListener()
+        }.onDisappear {
+            notificationCancellable?.cancel()
+            notificationCancellable = nil
         }.overlay(
             Group {
                 if showDeleteAlert {
@@ -178,7 +186,7 @@ struct PrivateServerSettingsView: View {
                                     iconImage: Image("check_icon"),
                                     primaryButtonAction: {
                                         showSuccessAlert = false
-                                        changetitle?(serverName)
+                                        changetitle?(store.state.serverName)
                                     },
                                     showCheckbox: false
                                 )
@@ -194,10 +202,27 @@ struct PrivateServerSettingsView: View {
                 
             })
         
-    }}
+    }
+    
+    private func setupNotificationListener() {
+        notificationCancellable = NotificationCenter.default
+            .publisher(for: Foundation.Notification.Name.privateServerSettingsConfirm)
+            .sink { [self] notification in
+                guard let notificationSpaceId = notification.object as? String,
+                      notificationSpaceId == store.state.space?.id else {
+                    return
+                }
+                
+                notificationCancellable?.cancel()
+                notificationCancellable = nil
+                
+                store.dispatch(action: .saveToDatabase)
+                showSuccessAlert = true
+            }
+    }
+}
 
 
-// MARK: - License Toggles
 struct LicenseToggles: View {
     @ObservedObject var store: ServerSettingsStore
     
@@ -253,7 +278,6 @@ struct LicenseToggles: View {
     }
 }
 
-// MARK: - Section Header
 struct SectionHeader: View {
     var title: String
     
@@ -272,10 +296,9 @@ struct ToggleTintModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         if #available(iOS 15.0, *) {
-            content.tint(color) 
+            content.tint(color)
         } else {
             content.accentColor(color)
         }
     }
 }
-
