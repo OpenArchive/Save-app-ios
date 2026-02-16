@@ -12,7 +12,7 @@ import SwiftUI
 class RemoveAssetAlert {
     
     class func present(_ vc: UIViewController, _ assets: [Asset], _ completionHandler: ((_ success: Bool) -> Void)? = nil) {
-        let appName = Bundle.main.displayName
+        let appName = Bundle.main.displayName.uppercased()
         let itemCount = assets.count
         
         let message = [

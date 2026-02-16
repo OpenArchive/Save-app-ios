@@ -111,8 +111,9 @@ func serverSettingsReducer(state: inout ServerSettingsState, action: ServerSetti
 func saveLicenseToDatabase(state: ServerSettingsState) {
     guard let space = state.space else { return }
     space.license = state.licenseURL
-    
+
     Db.writeConn?.asyncReadWrite { tx in
+        guard tx.hasObject(forKey: space.id, inCollection: Space.collection) else { return }
         tx.setObject(space, forKey: space.id, inCollection: Space.collection)
         
         let projects: [Project] = tx.findAll { $0.active && $0.spaceId == space.id }
@@ -155,6 +156,7 @@ func saveSpaceToDatabase(state: ServerSettingsState) {
     }
 
     Db.writeConn?.asyncReadWrite({ tx in
+        guard tx.hasObject(forKey: space.id, inCollection: Space.collection) else { return }
         tx.setObject(space, forKey: space.id, inCollection: Space.collection)
         SelectedSpace.store(tx)
     }, completionBlock: {

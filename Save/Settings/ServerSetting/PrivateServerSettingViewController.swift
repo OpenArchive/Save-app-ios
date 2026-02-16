@@ -31,10 +31,10 @@ class PrivateServerSettingViewController: UIViewController {
             if let space = space {
                 let settingsView = PrivateServerSettingsView(space: space, disableBackAction: { [weak self] isDisabled in
                     self?.navigationItem.hidesBackButton = isDisabled
-                }, dismissAction: {
-                    
-                    self.navigationController?.popViewController(animated: true)
-                }, changeTitle: { [weak self] titleValue in
+                },  dismissAction: { [weak self] in
+                    self?.navigationController?.popViewController(animated: true)
+                }
+                , changeTitle: { [weak self] titleValue in
                     
                     self?.title = titleValue
                 }, onEditingChanged: { [weak self] isEditing in
