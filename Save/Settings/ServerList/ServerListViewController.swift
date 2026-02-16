@@ -144,8 +144,8 @@ class ServerListViewController: UIViewController, UITableViewDelegate, UITableVi
     
     @objc
     private func yapDatabaseModified(_ notification: Notification) {
-        noDataLabel.isHidden = (spacesMappings.numberOfItems(inSection: 0) > 0)
         if spacesConn?.hasChanges(spacesMappings) ?? false {
+            noDataLabel.isHidden = (spacesMappings.numberOfItems(inSection: 0) > 0)
             tableView.reloadData()
         }
     }
