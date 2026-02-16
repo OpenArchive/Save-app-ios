@@ -287,8 +287,6 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
             update?(asset)
         })
 
-        dh?.setInfos(asset, defaults: true, infoView.frame.height * 0.5)
-
         FlagInfoAlert.presentIfNeeded()
     }
 
