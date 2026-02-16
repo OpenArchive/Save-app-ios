@@ -17,7 +17,7 @@ let sideMenuReducer: Reducer<SideMenuState, SideMenuAction> = { state, action in
             return nil
         }
         newState.isMenuVisible = show
-        newState.menuWidth = show ? 240 : 0
+        newState.menuWidth = show ? SideMenuState.menuWidth : 0
         if !show { newState.isServersExpanded = false }
         
     case .setMenuWidth(let width):

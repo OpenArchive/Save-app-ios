@@ -9,6 +9,8 @@
 import Foundation
 
 struct SideMenuState: Equatable {
+    static let menuWidth: CGFloat = 240
+
     var isMenuVisible = false
     var menuWidth: CGFloat = 0
     var spaces: [Space] = []

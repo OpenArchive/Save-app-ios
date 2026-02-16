@@ -13,10 +13,11 @@ struct ServersListView: View {
     @EnvironmentObject var coordinator: NavigationCoordinator
 
     var body: some View {
-        VStack(spacing: 0) {
-            ForEach(viewModel.store().spaces, id: \.id) { space in
-                ServerItemView(space: space, isSelected: space.id == viewModel.store().selectedSpaceId)
-                    .onTapGesture {
+        ScrollView {
+            VStack(spacing: 0) {
+                ForEach(viewModel.store().spaces, id: \.id) { space in
+                    ServerItemView(space: space, isSelected: space.id == viewModel.store().selectedSpaceId)
+                        .onTapGesture {
                         SelectedSpace.space = space
                         SelectedSpace.store()
                         SelectedProject.project = nil
@@ -31,9 +32,10 @@ struct ServersListView: View {
                             viewModel.store(.toggleServersExpanded)
                         }
                         coordinator.hideSelectMedia()
-                    }
+                        }
+                }
+                AddServerButton()
             }
-            AddServerButton()
         }
     }
 }
