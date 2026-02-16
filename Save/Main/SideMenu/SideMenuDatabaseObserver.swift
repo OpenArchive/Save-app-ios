@@ -67,7 +67,7 @@ final class SideMenuDatabaseObserver {
         
         let workItem = DispatchWorkItem(block: updateBlock)
         pendingUpdateWorkItem = workItem
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.05, execute: workItem)
+        DispatchQueue.main.async(execute: workItem)
     }
 
     private func handleSpacesChanges() {

@@ -160,11 +160,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     private lazy var uploadsMappings = YapDatabaseViewMappings(
         groups: UploadsView.groups, view: UploadsView.name)
     
-    private lazy var projectsReadConn = Db.newLongLivedReadConn()
-    
-    private lazy var projectsMappings = YapDatabaseViewMappings(
-        groups: ActiveProjectsView.groups, view: ActiveProjectsView.name)
-    
     private lazy var collectionsReadConn = Db.newLongLivedReadConn()
     
     private lazy var collectionsMappings = CollectionsView.createMappings()
@@ -383,7 +378,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
 
-        // Set selected project and filter FIRST
         if let project = SelectedProject.project, project.active {
             selectedProject = project
             sideMenuViewModel.reloadAndSelect(project.id)
@@ -392,7 +386,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             sideMenuViewModel.reload()
         }
 
-        // NOW update mappings with filter applied
         uploadsReadConn?.update(mappings: uploadsMappings)
         collectionsReadConn?.update(mappings: collectionsMappings)
         assetsReadConn?.update(mappings: assetsMappings)
@@ -401,12 +394,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         updateSpace()
         updateProject()
 
-        // Update mappings again after updateProject() since it may have changed the filter
-        uploadsReadConn?.update(mappings: uploadsMappings)
-        collectionsReadConn?.update(mappings: collectionsMappings)
-        assetsReadConn?.update(mappings: assetsMappings)
-
-        // Reload collection view before checking sections
         collectionView.reloadData()
         let finalSections = numberOfSections(in: collectionView)
         collectionView.toggle(finalSections != 0, animated: animated)
@@ -862,23 +849,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
      Will be called, when something changed the database.
      */
     @objc func yapDatabaseModified(notification: Notification) {
-     
-        projectsReadConn?.beginLongLivedReadTransaction()
-        projectsReadConn?.update(mappings: projectsMappings)
-        let activeProjects: [Project] = projectsReadConn?.objects(in: 0, with: projectsMappings) ?? []
-        let activeProjectIds = Set(activeProjects.map(\.id))
-
-        if let current = selectedProject, !activeProjectIds.contains(current.id) {
-            let next = activeProjects.first
-            selectedProject = next
-            SelectedProject.project = next
-            SelectedProject.store()
-            sideMenuViewModel.store.dispatch(.selectProject(next?.id))
-            AbcFilteredByProjectView.updateFilter(next?.id)
-            // Update folder name and UI; observer won't call selected(project:) since store already has next
-            updateProject()
-        }
-
         uploadsReadConn?.update(mappings: uploadsMappings)
         collectionsReadConn?.update(mappings: collectionsMappings)
         assetsReadConn?.update(mappings: assetsMappings)
@@ -934,22 +904,10 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             })
         }
         
-        collectionView.apply(YapDatabaseChanges(forceFull, [], [])) { [weak self] countChanged in
+        collectionView.apply(YapDatabaseChanges(forceFull, [], [])) { [weak self] _ in
             guard let self = self else { return }
             
-            let storeSelectedId = self.sideMenuViewModel.store().selectedProjectId
-            let storeProjects = self.sideMenuViewModel.store().projects
-            
-            // Sync selectedProject from store if it's nil but store has selectedProjectId
-            if self.selectedProject == nil, let projectId = storeSelectedId {
-                if let project = storeProjects.first(where: { $0.id == projectId }) {
-                    self.selectedProject = project
-                } else if let project = SelectedProject.project, project.id == projectId {
-                    self.selectedProject = project
-                }
-            }
-            
-            let hasSelectedProject = storeSelectedId != nil || self.selectedProject != nil
+            let hasSelectedProject = self.selectedProject != nil
             
             if hasSelectedProject {
                 self.folderAssetCountLb.text = "  \(Formatters.format(self.assetsMappings.numberOfItemsInAllGroups()))  "
@@ -1087,10 +1045,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                     }
                 }
             }
-
-            // Trigger database notification to ensure yapDatabaseModified fires
-            // This provides a backup reload mechanism
-            NotificationCenter.default.post(name: .YapDatabaseModified, object: nil)
 
             hintLb.text =  NSLocalizedString(
                 "Tap the button below to add media",
