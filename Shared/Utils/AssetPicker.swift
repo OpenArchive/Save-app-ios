@@ -225,6 +225,7 @@ class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPic
         picker.sourceType = .camera
         picker.delegate = self
         picker.mediaTypes = [UTType.image.identifier, UTType.movie.identifier]
+        picker.videoQuality = .typeHigh
         delegate?.present(picker, animated: true)
     }
 
@@ -251,7 +252,14 @@ class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPic
             trackEvent(.mediaCaptured(mediaType: "image", source: "camera"))
 
             if let imageData = image.jpegData(compressionQuality: 1.0) {
-                AssetFactory.create(from: imageData, uti: UTType.jpeg, name: "captured.jpg", thumbnail: image, collection) { asset in
+                // Generate unique filename using timestamp with milliseconds
+                let dateFormatter = DateFormatter()
+                dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+                dateFormatter.dateFormat = "yyyyMMdd_HHmmssSSS"
+                let timestamp = dateFormatter.string(from: Date())
+                let uniqueName = "IMG_\(timestamp).jpg"
+
+                AssetFactory.create(from: imageData, uti: UTType.jpeg, name: uniqueName, thumbnail: image, collection) { asset in
                     UIApplication.shared.endBackgroundTask(id)
                 }
             } else {
