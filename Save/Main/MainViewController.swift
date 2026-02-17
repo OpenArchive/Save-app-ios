@@ -148,10 +148,10 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     var selectedProject: Project? {
         get {
-            sideMenuViewModel.selectedProject
+            homeViewModel.selectedProject
         }
         set {
-            sideMenuViewModel.selectedProject = newValue
+            homeViewModel.selectedProject = newValue
         }
     }
     
@@ -171,7 +171,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     private var inEditMode = false
     
     
-    private lazy var sideMenuViewModel: SideMenuViewModel = {
+    private lazy var homeViewModel: HomeViewModel = {
         let coordinator = NavigationCoordinator(delegate: self)
 
         let spacesConn = Db.newLongLivedReadConn()
@@ -186,7 +186,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         let sideMenuProjectsMappings = YapDatabaseViewMappings(
             groups: ActiveProjectsView.groups, view: ActiveProjectsView.name)
 
-        let viewModel = SideMenuViewModel(
+        let viewModel = HomeViewModel(
             spacesConn: spacesConn!,
             spacesMappings: spacesMappings,
             projectsConn: sideMenuProjectsConn,
@@ -198,10 +198,10 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }()
 
     private lazy var sideMenuHostingController: UIHostingController<AnyView> = {
-        let coordinator = sideMenuViewModel.coordinator
+        let coordinator = homeViewModel.coordinator
 
         let contentView = SideMenuView()
-            .environmentObject(sideMenuViewModel)
+            .environmentObject(homeViewModel)
             .environmentObject(coordinator)
 
         let hostingController = UIHostingController(rootView: AnyView(contentView))
@@ -380,10 +380,16 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
         if let project = SelectedProject.project, project.active {
             selectedProject = project
-            sideMenuViewModel.reloadAndSelect(project.id)
+            homeViewModel.reloadAndSelect(project.id)
             AbcFilteredByProjectView.updateFilter(project.id)
+            updateProject(project: project)
+            // Retry reloadAndSelect after a short delay in case the first fetch missed the new project
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                self?.homeViewModel.reloadAndSelect(project.id)
+                self?.updateProject()
+            }
         } else {
-            sideMenuViewModel.reload()
+            homeViewModel.reload()
         }
 
         uploadsReadConn?.update(mappings: uploadsMappings)
@@ -392,7 +398,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
         configureNavigationBar()
         updateSpace()
-        updateProject()
+        if SelectedProject.project == nil || !(SelectedProject.project?.active ?? false) {
+            updateProject()
+        }
 
         collectionView.reloadData()
         let finalSections = numberOfSections(in: collectionView)
@@ -471,14 +479,18 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     @objc private func didTapMenuButton() {
         if menu.isHidden {
-            if let currentProject = selectedProject {
-                sideMenuViewModel.store.dispatch(.selectProject(currentProject.id))
-            }
-            sideMenuViewModel.reload()
+            syncMenuSelection()
             _ = sideMenuHostingController
         }
 
         toggleMenu(menu.isHidden)
+    }
+
+    private func syncMenuSelection() {
+        if let currentProject = selectedProject {
+            homeViewModel.selectedProject = currentProject
+        }
+        homeViewModel.reload()
     }
     private func configureNavigationBarLogo() {
         guard let logoImage = UIImage(named: "save_logo_navbar") else { return }
@@ -709,10 +721,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     @IBAction func toggleMenu() {
         if menu.isHidden {
-            if let currentProject = selectedProject {
-                sideMenuViewModel.store.dispatch(.selectProject(currentProject.id))
-            }
-            sideMenuViewModel.reload()
+            syncMenuSelection()
             _ = sideMenuHostingController
         }
 
@@ -886,7 +895,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             }
         }
 
-        // Project changes are handled by SideMenuDatabaseObserver, which notifies us via selected(project:) delegate
+        // Project changes are handled by HomeDatabaseObserver, which notifies us via selected(project:) delegate
 
         var forceFull = false
         
@@ -988,7 +997,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     private func updateSpace() {
         if let space = SelectedSpace.space {
             spaceFavIcon.image = getServerIcon(space: space)
-            sideMenuViewModel.updateSpace(space)
+            homeViewModel.updateSpace(space)
             navigationItem.rightBarButtonItem = menuBarButtonItem
             hintLb.text =   NSLocalizedString(
                 "Tap the button below to add a folder",
@@ -999,7 +1008,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
         else {
             spaceFavIcon.image = nil
-            sideMenuViewModel.updateSpace(nil)
+            homeViewModel.updateSpace(nil as Space?)
             navigationItem.rightBarButtonItem = nil
             self.titleContainer.isHidden = true
 
@@ -1016,8 +1025,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
     }
     
-    private func updateProject() {
-        if let project = selectedProject {
+    private func updateProject(project passedProject: Project? = nil) {
+        let project = passedProject ?? selectedProject
+        if let project = project {
             // Update filter synchronously to avoid race conditions
             AbcFilteredByProjectView.updateFilter(project.id)
 
@@ -1027,7 +1037,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
             // Update mappings and reload collection view after filter change
             DispatchQueue.main.async { [weak self] in
-                guard let self = self, self.selectedProject?.id == project.id else { return }
+                guard let self = self else { return }
+                // Skip if user switched to a different project (allow when selectedProject is nil, e.g. new folder not yet in list)
+                if let current = self.selectedProject, current.id != project.id { return }
 
                 // Update mappings again after filter change (in case they changed)
                 self.assetsReadConn?.update(mappings: self.assetsMappings)
@@ -1110,13 +1122,13 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             }
             else {
                 menu.isHidden = false
-                sideMenuViewModel.animateMenu(show: toggle) {
+                homeViewModel.animateMenu(show: toggle) {
                     completion?(true)
                 }
             }
         }
         else {
-            sideMenuViewModel.animateMenu(show: toggle) {
+            homeViewModel.animateMenu(show: toggle) {
                 self.menu.isHidden = true
                 completion?(true)
             }

@@ -1,5 +1,5 @@
 //
-//  SideMenuState.swift
+//  HomeState.swift
 //  Save
 //
 //  Created by Navoda on 2026-02-04.
@@ -7,12 +7,12 @@
 //
 
 import Foundation
+import UIKit
 
-struct SideMenuState: Equatable {
+struct HomeState: Equatable {
     static let menuWidth: CGFloat = 240
 
     var isMenuVisible = false
-    var menuWidth: CGFloat = 0
     var spaces: [Space] = []
     var isServersExpanded = false
     var selectedSpaceId: String?
@@ -23,9 +23,8 @@ struct SideMenuState: Equatable {
     var currentSpaceIcon = ""
     var isAnimating = false
 
-    static func == (lhs: SideMenuState, rhs: SideMenuState) -> Bool {
+    static func == (lhs: HomeState, rhs: HomeState) -> Bool {
         lhs.isMenuVisible == rhs.isMenuVisible &&
-        lhs.menuWidth == rhs.menuWidth &&
         lhs.spaces.map(\.id) == rhs.spaces.map(\.id) &&
         lhs.isServersExpanded == rhs.isServersExpanded &&
         lhs.selectedSpaceId == rhs.selectedSpaceId &&

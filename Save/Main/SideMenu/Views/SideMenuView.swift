@@ -9,12 +9,13 @@
 import SwiftUI
 
 struct SideMenuView: View {
-    @EnvironmentObject var viewModel: SideMenuViewModel
+    @EnvironmentObject var viewModel: HomeViewModel
     @EnvironmentObject var coordinator: NavigationCoordinator
 
     var body: some View {
+        let isMenuVisible = viewModel.isMenuVisible
         ZStack(alignment: .trailing) {
-            if viewModel.store().isMenuVisible {
+            if isMenuVisible {
                 Color.black.opacity(0.3)
                     .ignoresSafeArea()
                     .transition(.opacity)
@@ -24,12 +25,12 @@ struct SideMenuView: View {
             VStack(spacing: 0) {
                 ServerHeaderView()
 
-                if viewModel.store().isServersExpanded {
+                if viewModel.isServersExpanded {
                     ServersListView()
                         .transition(.opacity)
                     Spacer()
                 } else {
-                    if viewModel.store().showSpaceHeader {
+                    if viewModel.showSpaceHeader {
                         SpaceHeaderView()
                             .transition(.opacity.combined(with: .move(edge: .top)))
                     }
@@ -38,13 +39,13 @@ struct SideMenuView: View {
                     AddFolderButton()
                 }
             }
-            .frame(width: SideMenuState.menuWidth)
+            .frame(width: HomeState.menuWidth)
             .frame(maxHeight: .infinity, alignment: .top)
             .background(Color(UIColor.systemBackground))
-            .offset(x: viewModel.store().isMenuVisible ? 0 : SideMenuState.menuWidth)
+            .offset(x: isMenuVisible ? 0 : HomeState.menuWidth)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .allowsHitTesting(viewModel.store().isMenuVisible)
-        .animation(.easeInOut(duration: 0.25), value: viewModel.store().isMenuVisible)
+        .allowsHitTesting(isMenuVisible)
+        .animation(.easeInOut(duration: 0.25), value: isMenuVisible)
     }
 }

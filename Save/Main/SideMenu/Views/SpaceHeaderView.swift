@@ -9,17 +9,17 @@
 import SwiftUI
 
 struct SpaceHeaderView: View {
-    @EnvironmentObject var viewModel: SideMenuViewModel
+    @EnvironmentObject var viewModel: HomeViewModel
 
     var body: some View {
         HStack(spacing: 12) {
-            Image(viewModel.store().currentSpaceIcon)
+            Image(viewModel.currentSpaceIcon)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 24, height: 24)
                 .foregroundColor(Color(UIColor.label))
 
-            Text(viewModel.store().currentSpaceName)
+            Text(viewModel.currentSpaceName)
                 .font(.montserrat(.semibold, for: .callout))
                 .foregroundColor(Color(UIColor.label))
                 .lineLimit(2)

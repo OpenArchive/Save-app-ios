@@ -14,7 +14,7 @@ struct ServerItemView: View {
 
     var body: some View {
         HStack(spacing: 12) {
-            Image(space is IaSpace ? "internet_archive" : "private_server")
+            Image(space.iconName)
                 .resizable()
                 .frame(width: 24, height: 24)
                 .foregroundColor(Color(UIColor.label))

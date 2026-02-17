@@ -9,17 +9,17 @@
 import SwiftUI
 
 struct ProjectsListView: View {
-    @EnvironmentObject var viewModel: SideMenuViewModel
+    @EnvironmentObject var viewModel: HomeViewModel
     @EnvironmentObject var coordinator: NavigationCoordinator
 
     var body: some View {
         ScrollView {
             VStack(spacing: 0) {
-                ForEach(viewModel.store().projects, id: \.id) { project in
+                ForEach(viewModel.projects, id: \.id) { project in
                     ProjectItemView(
                         project: project,
-                        isSelected: project.id == viewModel.store().selectedProjectId,
-                        isIndented: viewModel.store().showSpaceHeader
+                        isSelected: project.id == viewModel.selectedProjectId,
+                        isIndented: viewModel.showSpaceHeader
                     )
                     .onTapGesture {
                         handleProjectTap(project)
@@ -30,9 +30,6 @@ struct ProjectsListView: View {
     }
 
     private func handleProjectTap(_ project: Project) {
-        viewModel.store(.selectProject(project.id))
-        SelectedProject.project = project
-        SelectedProject.store()
-        coordinator.selectedProject(project)
+        viewModel.selectProject(project)
     }
 }

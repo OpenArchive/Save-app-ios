@@ -9,14 +9,12 @@
 import SwiftUI
 
 struct ServerHeaderView: View {
-    @EnvironmentObject var viewModel: SideMenuViewModel
+    @EnvironmentObject var viewModel: HomeViewModel
 
     var body: some View {
         VStack(spacing: 0) {
             Button(action: {
-                withAnimation(.easeInOut(duration: 0.25)) {
-                    viewModel.store(.toggleServersExpanded)
-                }
+                viewModel.toggleServersExpanded()
             }) {
                 HStack(spacing: 12) {
                     Text(NSLocalizedString("Servers", comment: ""))
@@ -25,7 +23,7 @@ struct ServerHeaderView: View {
 
                     Spacer()
 
-                    Image(systemName: viewModel.store().isServersExpanded ? "chevron.up" : "chevron.down")
+                    Image(systemName: viewModel.isServersExpanded ? "chevron.up" : "chevron.down")
                         .font(.system(size: 14))
                         .foregroundColor(Color(UIColor.label))
                 }
