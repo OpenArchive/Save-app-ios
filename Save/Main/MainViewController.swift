@@ -887,7 +887,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             }
         }
 
-        // Project changes are handled by HomeDatabaseObserver, which notifies us via selected(project:) delegate
 
         var forceFull = false
         
