@@ -52,7 +52,6 @@ final class HomeDatabaseObserver {
     private func performFetch() {
         let spaces = fetchSpaces()
         let projects = fetchProjects() ?? []
-        print("[HomeDBObserver] performFetch: \(projects.count) projects, ids=\(projects.map(\.id))")
 
         DispatchQueue.main.async { [weak self] in
             self?.onFetchComplete(spaces, projects)

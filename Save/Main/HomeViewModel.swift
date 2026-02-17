@@ -88,7 +88,6 @@ final class HomeViewModel: ObservableObject {
 
     func reconcileSelection(spaces: [Space], projects: [Project]) {
         let currentId = selectedProjectId
-        print("[HomeVM] reconcileSelection: currentId=\(currentId ?? "nil"), projects.count=\(projects.count), SelectedProject.id=\(SelectedProject.project?.id ?? "nil")")
 
         // If SelectedProject was set externally (e.g. Add/Browse) and is in the list, prefer it
         if let selectedFromStore = SelectedProject.project,
@@ -98,7 +97,6 @@ final class HomeViewModel: ObservableObject {
         {
             selectedProjectId = selectedFromStore.id
             coordinator.selectedProject(selectedFromStore)
-            print("[HomeVM] reconcileSelection: synced from SelectedProject (external selection), selectedProjectId=\(selectedProjectId ?? "nil")")
             return
         }
 
@@ -108,7 +106,6 @@ final class HomeViewModel: ObservableObject {
                 SelectedProject.store()
                 coordinator.selectedProject(project)
             }
-            print("[HomeVM] reconcileSelection: branch 1 (currentId in projects), selectedProjectId=\(selectedProjectId ?? "nil")")
             return
         }
 
@@ -128,7 +125,6 @@ final class HomeViewModel: ObservableObject {
                 }
                 coordinator.selectedProject(nil)
             }
-            print("[HomeVM] reconcileSelection: branch 2 (currentId not in projects), selectedProjectId=\(selectedProjectId ?? "nil")")
             return
         }
 
@@ -139,7 +135,6 @@ final class HomeViewModel: ObservableObject {
                projects.contains(where: { $0.id == selectedProject.id }) {
                 selectedProjectId = selectedProject.id
                 coordinator.selectedProject(selectedProject)
-                print("[HomeVM] reconcileSelection: branch 3a (synced from SelectedProject), selectedProjectId=\(selectedProjectId ?? "nil")")
             } else if let first = projects.first {
                 selectedProjectId = first.id
                 if SelectedProject.project?.id != first.id {
@@ -147,10 +142,7 @@ final class HomeViewModel: ObservableObject {
                     SelectedProject.store()
                 }
                 coordinator.selectedProject(first)
-                print("[HomeVM] reconcileSelection: branch 3b (picked first), selectedProjectId=\(selectedProjectId ?? "nil")")
             }
-        } else {
-            print("[HomeVM] reconcileSelection: branch 4 (no-op), currentId=\(currentId ?? "nil"), projects.isEmpty=\(projects.isEmpty)")
         }
     }
 
@@ -175,14 +167,10 @@ final class HomeViewModel: ObservableObject {
 
     func reloadAndSelect(_ projectId: String) {
         guard let projectsConn = databaseObserver?.projectsConn,
-              let projectsMappings = databaseObserver?.projectsMappings else {
-            print("[HomeVM] reloadAndSelect: no projectsConn/mappings")
-            return
-        }
+              let projectsMappings = databaseObserver?.projectsMappings else { return }
         projectsConn.update(mappings: projectsMappings)
         let allProjects: [Project] = projectsConn.objects(in: 0, with: projectsMappings)
         let projects = allProjects.filter(\.active)
-        print("[HomeVM] reloadAndSelect(\(projectId)): fetched \(projects.count) projects, ids=\(projects.map(\.id))")
         applyProjects(projects)
         if projects.contains(where: { $0.id == projectId }) {
             selectedProjectId = projectId
@@ -190,10 +178,7 @@ final class HomeViewModel: ObservableObject {
                 SelectedProject.project = project
                 SelectedProject.store()
                 coordinator.selectedProject(project)
-                print("[HomeVM] reloadAndSelect: found project, set selectedProjectId")
             }
-        } else {
-            print("[HomeVM] reloadAndSelect: project \(projectId) NOT in fetched list")
         }
     }
 
