@@ -78,6 +78,10 @@ final class HomeViewModel: ObservableObject {
                 currentSpaceIcon = iconName
                 showSpaceHeader = true
             }
+        } else {
+            currentSpaceName = ""
+            currentSpaceIcon = ""
+            showSpaceHeader = false
         }
     }
 
@@ -86,62 +90,73 @@ final class HomeViewModel: ObservableObject {
     }
 
     func reconcileSelection(projects: [Project]) {
-        let currentId = selectedProjectId
+        if syncFromExternalSelectionIfNeeded(projects: projects) { return }
+        if syncCurrentSelectionIfNeeded(projects: projects) { return }
+        if handleCurrentProjectMissing(projects: projects) { return }
+        handleNoSelection(projects: projects)
+    }
 
-        // If SelectedProject was set externally (e.g. Add/Browse) and is in the list, prefer it
-        if let selectedFromStore = SelectedProject.project,
-           selectedFromStore.active,
-           projects.contains(where: { $0.id == selectedFromStore.id }),
-           selectedProjectId != selectedFromStore.id
-        {
-            selectedProjectId = selectedFromStore.id
-            coordinator.selectedProject(selectedFromStore)
-            return
+    /// If SelectedProject was set externally (e.g. Add/Browse) and differs from our state, sync to it.
+    private func syncFromExternalSelectionIfNeeded(projects: [Project]) -> Bool {
+        guard let selectedFromStore = SelectedProject.project,
+              selectedFromStore.active,
+              projects.contains(where: { $0.id == selectedFromStore.id }),
+              selectedProjectId != selectedFromStore.id else { return false }
+        selectedProjectId = selectedFromStore.id
+        coordinator.selectedProject(selectedFromStore)
+        return true
+    }
+
+    /// Current selection is in list; ensure SelectedProject and coordinator are in sync.
+    private func syncCurrentSelectionIfNeeded(projects: [Project]) -> Bool {
+        guard let currentId = selectedProjectId,
+              projects.contains(where: { $0.id == currentId }) else { return false }
+        if SelectedProject.project?.id != currentId, let project = projects.first(where: { $0.id == currentId }) {
+            SelectedProject.project = project
+            SelectedProject.store()
+            coordinator.selectedProject(project)
         }
+        return true
+    }
 
-        if let currentId = currentId, projects.contains(where: { $0.id == currentId }) {
-            if SelectedProject.project?.id != currentId, let project = projects.first(where: { $0.id == currentId }) {
-                SelectedProject.project = project
+    /// Current selection was removed (archived/deleted); pick next or clear.
+    private func handleCurrentProjectMissing(projects: [Project]) -> Bool {
+        guard let currentId = selectedProjectId,
+              !projects.contains(where: { $0.id == currentId }) else { return false }
+        if let next = projects.first {
+            selectedProjectId = next.id
+            if SelectedProject.project?.id != next.id {
+                SelectedProject.project = next
                 SelectedProject.store()
-                coordinator.selectedProject(project)
             }
-            return
+            coordinator.selectedProject(next)
+        } else {
+            selectedProjectId = nil
+            if SelectedProject.project != nil {
+                SelectedProject.project = nil
+                SelectedProject.store()
+            }
+            coordinator.selectedProject(nil)
         }
+        return true
+    }
 
-        if let currentId = currentId, !projects.contains(where: { $0.id == currentId }) {
-            if let next = projects.first {
-                selectedProjectId = next.id
-                if SelectedProject.project?.id != next.id {
-                    SelectedProject.project = next
-                    SelectedProject.store()
-                }
-                coordinator.selectedProject(next)
-            } else {
-                selectedProjectId = nil
-                if SelectedProject.project != nil {
-                    SelectedProject.project = nil
-                    SelectedProject.store()
-                }
-                coordinator.selectedProject(nil)
+    /// No selection yet; restore from SelectedProject or pick first.
+    private func handleNoSelection(projects: [Project]) {
+        guard selectedProjectId == nil, !projects.isEmpty else { return }
+        if let selectedProject = SelectedProject.project,
+           selectedProject.spaceId == SelectedSpace.id,
+           selectedProject.active,
+           projects.contains(where: { $0.id == selectedProject.id }) {
+            selectedProjectId = selectedProject.id
+            coordinator.selectedProject(selectedProject)
+        } else if let first = projects.first {
+            selectedProjectId = first.id
+            if SelectedProject.project?.id != first.id {
+                SelectedProject.project = first
+                SelectedProject.store()
             }
-            return
-        }
-
-        if currentId == nil, !projects.isEmpty {
-            if let selectedProject = SelectedProject.project,
-               selectedProject.spaceId == SelectedSpace.id,
-               selectedProject.active,
-               projects.contains(where: { $0.id == selectedProject.id }) {
-                selectedProjectId = selectedProject.id
-                coordinator.selectedProject(selectedProject)
-            } else if let first = projects.first {
-                selectedProjectId = first.id
-                if SelectedProject.project?.id != first.id {
-                    SelectedProject.project = first
-                    SelectedProject.store()
-                }
-                coordinator.selectedProject(first)
-            }
+            coordinator.selectedProject(first)
         }
     }
 
@@ -165,19 +180,14 @@ final class HomeViewModel: ObservableObject {
     }
 
     func reloadAndSelect(_ projectId: String) {
-        guard let projectsConn = databaseObserver?.projectsConn,
-              let projectsMappings = databaseObserver?.projectsMappings else { return }
-        projectsConn.update(mappings: projectsMappings)
-        let allProjects: [Project] = projectsConn.objects(in: 0, with: projectsMappings)
-        let projects = allProjects.filter(\.active)
+        let projects = databaseObserver?.fetchProjectsSync() ?? []
         applyProjects(projects)
-        if projects.contains(where: { $0.id == projectId }) {
+        if projects.contains(where: { $0.id == projectId }),
+           let project = projects.first(where: { $0.id == projectId }) {
             selectedProjectId = projectId
-            if let project = projects.first(where: { $0.id == projectId }) {
-                SelectedProject.project = project
-                SelectedProject.store()
-                coordinator.selectedProject(project)
-            }
+            SelectedProject.project = project
+            SelectedProject.store()
+            coordinator.selectedProject(project)
         }
     }
 
@@ -211,10 +221,4 @@ final class HomeViewModel: ObservableObject {
         }
     }
 
-    func updateSpace(_ space: Space?) {
-        guard let space = space else { return }
-        currentSpaceName = space.prettyName
-        currentSpaceIcon = space.iconName
-        showSpaceHeader = true
-    }
 }

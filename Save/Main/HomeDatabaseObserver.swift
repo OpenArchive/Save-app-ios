@@ -43,6 +43,11 @@ final class HomeDatabaseObserver {
         }
     }
 
+    /// Synchronous fetch of projects (for use when immediate data is needed, e.g. returning from Add/Browse).
+    func fetchProjectsSync() -> [Project] {
+        fetchProjects() ?? []
+    }
+
     @objc func yapDatabaseModified(notification: Notification) {
         fetchQueue.async { [weak self] in
             self?.performFetch()
@@ -64,7 +69,7 @@ final class HomeDatabaseObserver {
         return spacesConn.objects(in: 0, with: spacesMappings)
     }
 
-    private func fetchProjects() -> [Project]? {
+    func fetchProjects() -> [Project]? {
         guard let projectsConn = projectsConn,
               let projectsMappings = projectsMappings else { return nil }
         projectsConn.beginLongLivedReadTransaction()

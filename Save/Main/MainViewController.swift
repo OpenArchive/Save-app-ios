@@ -989,7 +989,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     private func updateSpace() {
         if let space = SelectedSpace.space {
             spaceFavIcon.image = getServerIcon(space: space)
-            homeViewModel.updateSpace(space)
             navigationItem.rightBarButtonItem = menuBarButtonItem
             hintLb.text =   NSLocalizedString(
                 "Tap the button below to add a folder",
@@ -1000,7 +999,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
         else {
             spaceFavIcon.image = nil
-            homeViewModel.updateSpace(nil as Space?)
             navigationItem.rightBarButtonItem = nil
             self.titleContainer.isHidden = true
 
