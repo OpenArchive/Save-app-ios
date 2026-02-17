@@ -383,11 +383,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             homeViewModel.reloadAndSelect(project.id)
             AbcFilteredByProjectView.updateFilter(project.id)
             updateProject(project: project)
-            // Retry reloadAndSelect after a short delay in case the first fetch missed the new project
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) { [weak self] in
-                self?.homeViewModel.reloadAndSelect(project.id)
-                self?.updateProject()
-            }
         } else {
             homeViewModel.reload()
         }
@@ -487,9 +482,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
 
     private func syncMenuSelection() {
-        if let currentProject = selectedProject {
-            homeViewModel.selectedProject = currentProject
-        }
         homeViewModel.reload()
     }
     private func configureNavigationBarLogo() {

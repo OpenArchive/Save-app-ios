@@ -11,7 +11,6 @@
 
 import Foundation
 import SwiftUI
-import Combine
 import YapDatabase
 
 final class HomeViewModel: ObservableObject {
@@ -58,7 +57,7 @@ final class HomeViewModel: ObservableObject {
             onFetchComplete: { [weak self] spaces, projects in
                 self?.applySpaces(spaces)
                 self?.applyProjects(projects)
-                self?.reconcileSelection(spaces: spaces, projects: projects)
+                self?.reconcileSelection(projects: projects)
             }
         )
 
@@ -86,7 +85,7 @@ final class HomeViewModel: ObservableObject {
         self.projects = projects
     }
 
-    func reconcileSelection(spaces: [Space], projects: [Project]) {
+    func reconcileSelection(projects: [Project]) {
         let currentId = selectedProjectId
 
         // If SelectedProject was set externally (e.g. Add/Browse) and is in the list, prefer it
