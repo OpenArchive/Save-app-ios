@@ -50,6 +50,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
 
     private let sc = SelectedCollection()
     private var dh: DarkroomHelper?
+    private var originalRightBarButtonItem: UIBarButtonItem?
 
     private var asset: Asset? {
         return selected < 0 || selected >= sc.count
@@ -76,7 +77,15 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         pageVc.didMove(toParent: self)
         
         dh = DarkroomHelper(self, infoView)
-        
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "DONE",
+            style: .done,
+            target: self,
+            action: #selector(dismiss(_:))
+        )
+        originalRightBarButtonItem = navigationItem.rightBarButtonItem
+
         Db.add(observer: self, #selector(yapDatabaseModified))
         infoViewBottomConstraint?.constant = GeneralConstants.constraint_20
         dh?.setInfos(asset, defaults: true, infoView.frame.height * 0.5)
@@ -100,9 +109,14 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     // MARK: BaseViewController
 
     override func keyboardWillShow(notification: Notification) {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .done, target: self, action: #selector(dismissKeyboard))
-        
+        let doneButton = UIBarButtonItem(
+            title: "DONE",
+            style: .done,
+            target: self,
+            action: #selector(dismissKeyboard)
+        )
+        navigationItem.rightBarButtonItem = doneButton
+
         if let kbSize = getKeyboardSize(notification) {
             let safeAreaBottom = view.safeAreaInsets.bottom
             let viewMaxY = view.bounds.maxY - safeAreaBottom
@@ -112,8 +126,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     }
 
     override func keyboardWillBeHidden(notification: Notification) {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .done, target: self, action: #selector(dismiss(_:)))
+        navigationItem.rightBarButtonItem = originalRightBarButtonItem
 
         infoViewBottomConstraint?.constant = GeneralConstants.constraint_20
 
@@ -273,8 +286,6 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
 
             update?(asset)
         })
-
-        dh?.setInfos(asset, defaults: true, infoView.frame.height * 0.5)
 
         FlagInfoAlert.presentIfNeeded()
     }

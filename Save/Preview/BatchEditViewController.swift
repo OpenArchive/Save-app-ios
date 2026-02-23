@@ -28,17 +28,25 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
     @IBOutlet weak var infosBottom: NSLayoutConstraint?
     private var keyboardConstraint: NSLayoutConstraint?
     private var dh: DarkroomHelper?
+    private var originalRightBarButtonItem: UIBarButtonItem?
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        title =   NSLocalizedString("Bulk Edit Media Info", comment: "") 
+
+        title =   NSLocalizedString("Bulk Edit Media Info", comment: "")
 
         navigationItem.title = title
-        
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "DONE",
+            style: .done,
+            target: self,
+            action: #selector(dismiss(_:))
+        )
+        originalRightBarButtonItem = navigationItem.rightBarButtonItem
+
         counterLb.text = Formatters.format(assets?.count ?? 0)
         flagIv.isSelected = assets?.reduce(true, { $0 && $1.flagged }) ?? false
-        flagIv.tintColor = .label
         setImage(image1, assets?.first)
         setImage(image2, assets?.count ?? 0 > 1 ? assets?[1] : nil)
         setImage(image3, assets?.count ?? 0 > 2 ? assets?[2] : nil)
@@ -91,15 +99,21 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
         
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
-    
+    override func viewDidAppear(_ animated: Bool) {
+        trackScreenViewSafely("BatchEdit")
+    }
     
     // MARK: BaseViewController
     
     override func keyboardWillShow(notification: Notification) {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .done, target: self, action: #selector(dismissKeyboard)
+        let doneButton = UIBarButtonItem(
+            title: "DONE",
+            style: .done,
+            target: self,
+            action: #selector(dismissKeyboard)
         )
-        
+        navigationItem.rightBarButtonItem = doneButton
+
         if #available(iOS 15.0, *) {
             keyboardConstraint?.constant = GeneralConstants.zeroConstraint
             view.layoutIfNeeded()
@@ -111,9 +125,8 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
     }
     
     override func keyboardWillBeHidden(notification: Notification) {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(
-            barButtonSystemItem: .done, target: self, action: #selector(dismiss(_:)))
-        
+        navigationItem.rightBarButtonItem = originalRightBarButtonItem
+
         animateDuringKeyboardMovement(notification)
         if #available(iOS 15.0, *) {
             keyboardConstraint?.constant = GeneralConstants.constraint_minus_20
@@ -167,13 +180,12 @@ class BatchEditViewController: BaseViewController, InfoBoxDelegate {
         }) { [weak self] in
             self?.assets = $0
         }
-        
+
         flagIv.isSelected = flagged
-        
-        dh?.setInfos(assets.first, defaults: true,infos.frame.height * 0.6)
-        
+
         FlagInfoAlert.presentIfNeeded()
     }
+    
 }
 extension Notification {
     func keyboardHeight() -> CGFloat? {

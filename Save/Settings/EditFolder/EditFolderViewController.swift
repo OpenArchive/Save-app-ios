@@ -55,6 +55,10 @@ class EditFolderViewController: UIViewController {
             self.view.backgroundColor = .systemBackground
         }
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        trackScreenViewSafely("FolderDetails")
+    }
 }
 
 // MARK: - SwiftUI View
@@ -220,6 +224,7 @@ struct EditFolderView: View {
             })
     }
     
+ 
 }
 
 

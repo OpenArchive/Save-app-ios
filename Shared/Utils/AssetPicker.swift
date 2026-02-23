@@ -98,13 +98,28 @@ class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPic
             return
         }
 
+        // Track media selection
+        var mediaTypes: [String] = []
         for asset in assets {
+            switch asset.mediaType {
+            case .image:
+                mediaTypes.append("image")
+            case .video:
+                mediaTypes.append("video")
+            case .audio:
+                mediaTypes.append("audio")
+            default:
+                mediaTypes.append("other")
+            }
+
             let id = UIApplication.shared.beginBackgroundTask()
 
             AssetFactory.create(fromPhasset: asset, collection) { asset in
                 UIApplication.shared.endBackgroundTask(id)
             }
         }
+
+        trackEvent(.mediaSelected(count: assets.count, source: "gallery", mediaTypes: mediaTypes))
 
         AbcFilteredByCollectionView.updateFilter(collection.id)
 
@@ -132,13 +147,20 @@ class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPic
             return
         }
 
+        // Track document selection
+        var mediaTypes: [String] = []
         for url in urls {
+            let mediaType = AnalyticsEvent.mediaType(from: url)
+            mediaTypes.append(mediaType)
+
             let id = UIApplication.shared.beginBackgroundTask()
 
             AssetFactory.create(isCamera: false, fromFileUrl: url, collection) { asset in
                 UIApplication.shared.endBackgroundTask(id)
             }
         }
+
+        trackEvent(.mediaSelected(count: urls.count, source: "documents", mediaTypes: mediaTypes))
 
         AbcFilteredByCollectionView.updateFilter(collection.id)
 
@@ -203,29 +225,41 @@ class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPic
         picker.sourceType = .camera
         picker.delegate = self
         picker.mediaTypes = [UTType.image.identifier, UTType.movie.identifier]
+        picker.videoQuality = .typeHigh
         delegate?.present(picker, animated: true)
     }
 
 
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        
+
         picker.dismiss(animated: true)
-        
+
         guard let collection = (delegate as? AssetPickerDelegate)?.currentCollection else {
             return
         }
-        
+
         let id = UIApplication.shared.beginBackgroundTask()
-        
+
         if let mediaURL = info[.mediaURL] as? URL {
             // Video captured
+            trackEvent(.mediaCaptured(mediaType: "video", source: "camera"))
+
             AssetFactory.create(isCamera: true, fromFileUrl: mediaURL, collection) { asset in
                 UIApplication.shared.endBackgroundTask(id)
             }
         } else if let image = info[.originalImage] as? UIImage {
             // Photo captured
+            trackEvent(.mediaCaptured(mediaType: "image", source: "camera"))
+
             if let imageData = image.jpegData(compressionQuality: 1.0) {
-                AssetFactory.create(from: imageData, uti: UTType.jpeg, name: "captured.jpg", thumbnail: image, collection) { asset in
+                // Generate unique filename using timestamp with milliseconds
+                let dateFormatter = DateFormatter()
+                dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+                dateFormatter.dateFormat = "yyyyMMdd_HHmmssSSS"
+                let timestamp = dateFormatter.string(from: Date())
+                let uniqueName = "IMG_\(timestamp).jpg"
+
+                AssetFactory.create(from: imageData, uti: UTType.jpeg, name: uniqueName, thumbnail: image, collection) { asset in
                     UIApplication.shared.endBackgroundTask(id)
                 }
             } else {
@@ -234,7 +268,7 @@ class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPic
         } else {
             UIApplication.shared.endBackgroundTask(id)
         }
-        
+
         AbcFilteredByCollectionView.updateFilter(collection.id)
         
         (delegate as? AssetPickerDelegate)?.picked()

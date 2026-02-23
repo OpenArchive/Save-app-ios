@@ -48,6 +48,12 @@ class PasscodeSetupController : ViewModelController<PasscodeSetupState, Passcode
     }
     
     private func onComplete() {
+        trackFeatureToggled(featureName: "passcode_protection", enabled: true)
         navigationController?.popViewController(animated: true)
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        trackScreenViewSafely("PasscodeSetup")
     }
 }

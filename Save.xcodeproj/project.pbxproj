@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		1C5A127C70A8C295D49F0426 /* Pods_ShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FABB5D01C237B2D7FC1008A2 /* Pods_ShareExtension.framework */; };
+		6EB3CAE32EEBAA89007317EB /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = 6EB3CAE22EEBAA89007317EB /* Mixpanel */; };
+		6EB3D6DA2EEBBB81007317EB /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = 6EB3D6D92EEBBB81007317EB /* Mixpanel */; };
+		6EB3D6DC2EEBBB8E007317EB /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = 6EB3D6DB2EEBBB8E007317EB /* Mixpanel */; };
 		7D294CA198526B76E9A90039 /* Pods_Save_Screenshots.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27981A63E67D5F420A0C87BA /* Pods_Save_Screenshots.framework */; };
 		A0102D772B18EAC80054D3D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DE20E4C85E00DB31E1 /* Assets.xcassets */; };
 		A0102DA82B18F1180054D3D4 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0102D5A2B18E1430054D3D4 /* XCTest.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -349,6 +352,11 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
+		6EB3CF2C2EEBADBC007317EB /* MixPanelAnalytics */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			path = MixPanelAnalytics;
+			sourceTree = "<group>";
+		};
 		EAB282292D02655C0023D594 /* Save */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
@@ -397,8 +405,6 @@
 		};
 		EAB2840B2D0265AF0023D594 /* Models */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-			);
 			path = Models;
 			sourceTree = "<group>";
 		};
@@ -460,6 +466,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EB3CAE32EEBAA89007317EB /* Mixpanel in Frameworks */,
 				1C5A127C70A8C295D49F0426 /* Pods_ShareExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -468,6 +475,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EB3D6DC2EEBBB8E007317EB /* Mixpanel in Frameworks */,
 				A0102DA82B18F1180054D3D4 /* XCTest.framework in Frameworks */,
 				7D294CA198526B76E9A90039 /* Pods_Save_Screenshots.framework in Frameworks */,
 			);
@@ -477,6 +485,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EB3D6DA2EEBBB81007317EB /* Mixpanel in Frameworks */,
 				F507042940A061A22263C055 /* Pods_Save.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -543,6 +552,7 @@
 				A0FE2C2622E1FE7C00C5443F /* Localizable.strings */,
 				A09CC29027E0B16500D6415D /* Localizable.stringsdict */,
 				A0B132DB2BAAFD4E00340BA5 /* PrivacyInfo.xcprivacy */,
+				6EB3CF2C2EEBADBC007317EB /* MixPanelAnalytics */,
 			);
 			path = Shared;
 			sourceTree = "<group>";
@@ -636,6 +646,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
+				6EB3CF2C2EEBADBC007317EB /* MixPanelAnalytics */,
 				EAB2832A2D0265A10023D594 /* Projects */,
 				EAB283462D0265A60023D594 /* BaseClasses */,
 				EAB283802D0265AB0023D594 /* Utils */,
@@ -665,6 +676,7 @@
 				A09B537823266F02005266C2 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
+				6EB3CF2C2EEBADBC007317EB /* MixPanelAnalytics */,
 				EAB282292D02655C0023D594 /* Save */,
 				EAB2832A2D0265A10023D594 /* Projects */,
 				EAB283462D0265A60023D594 /* BaseClasses */,
@@ -697,6 +709,7 @@
 				A07129042111CC90007A432A /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
+				6EB3CF2C2EEBADBC007317EB /* MixPanelAnalytics */,
 				EAB282292D02655C0023D594 /* Save */,
 				EAB2832A2D0265A10023D594 /* Projects */,
 				EAB283462D0265A60023D594 /* BaseClasses */,
@@ -766,6 +779,7 @@
 			mainGroup = A0E739CB20E4C85D00DB31E1;
 			packageReferences = (
 				6ED29CFB2D68B608002E0189 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */,
+				6EB3CAE12EEBA9D9007317EB /* XCRemoteSwiftPackageReference "mixpanel-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A0E739D520E4C85D00DB31E1 /* Products */;
@@ -878,9 +892,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Save/Pods-Save-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Save/Pods-Save-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -919,9 +937,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Save/Pods-Save-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Save/Pods-Save-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -936,9 +958,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -994,9 +1020,13 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
+			inputPaths = (
+			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1107,7 +1137,6 @@
 				CURRENT_PROJECT_VERSION = 146;
 				DEVELOPMENT_TEAM = YF7TV4HW2S;
 				INFOPLIST_FILE = Screenshots/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1133,7 +1162,6 @@
 				CURRENT_PROJECT_VERSION = 146;
 				DEVELOPMENT_TEAM = YF7TV4HW2S;
 				INFOPLIST_FILE = Screenshots/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				IPHONEOS_DEPLOYMENT_TARGET = 15.6;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1425,7 +1453,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.0.2;
+				MARKETING_VERSION = 4.0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.open-archive.save";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1462,7 +1490,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 4.0.2;
+				MARKETING_VERSION = 4.0.5;
 				PRODUCT_BUNDLE_IDENTIFIER = "org.open-archive.save";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1526,6 +1554,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		6EB3CAE12EEBA9D9007317EB /* XCRemoteSwiftPackageReference "mixpanel-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mixpanel/mixpanel-swift";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.8.0;
+			};
+		};
 		6ED29CFB2D68B608002E0189 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect.git";
@@ -1535,6 +1571,24 @@
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		6EB3CAE22EEBAA89007317EB /* Mixpanel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EB3CAE12EEBA9D9007317EB /* XCRemoteSwiftPackageReference "mixpanel-swift" */;
+			productName = Mixpanel;
+		};
+		6EB3D6D92EEBBB81007317EB /* Mixpanel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EB3CAE12EEBA9D9007317EB /* XCRemoteSwiftPackageReference "mixpanel-swift" */;
+			productName = Mixpanel;
+		};
+		6EB3D6DB2EEBBB8E007317EB /* Mixpanel */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EB3CAE12EEBA9D9007317EB /* XCRemoteSwiftPackageReference "mixpanel-swift" */;
+			productName = Mixpanel;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A0E739CC20E4C85D00DB31E1 /* Project object */;
 }

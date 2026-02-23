@@ -157,6 +157,7 @@ struct SettingsView: View {
                          [
                             AnyView(ToggleSwitch(title: NSLocalizedString("Only upload media when you are connected to Wi-Fi", comment: ""), isOn: $viewModel.isWifiOnlyOn) { value in
                                 Settings.wifiOnly = value
+                                trackFeatureToggled(featureName: "wifi_only_upload", enabled: value)
                                 NotificationCenter.default.post(name: .uploadManagerDataUsageChange, object: value)
                             }),
                             AnyView(SubItem(title: NSLocalizedString("Media Servers", comment: ""), subtitle: NSLocalizedString("Manage your servers", comment: "")) {
@@ -279,6 +280,7 @@ struct SettingsView: View {
                                         viewModel.isPasscodeOn = false
                                         passcodeToggleState = false
                                         showPasscodeAlert = false
+                                        trackFeatureToggled(featureName: "passcode_protection", enabled: false)
                                     },
                                     secondaryButtonTitle: NSLocalizedString("Cancel", comment: ""),
                                     secondaryButtonIsOutlined: false,
@@ -356,7 +358,9 @@ struct SettingsView: View {
         var buttons: [ActionSheet.Button] = SettingsView.compressionOptions.map { option in
             .default(Text(option)) {
                 selectedCompressionOption = option
-                Settings.highCompression = (option == SettingsView.compressionOptions[1])
+                let highCompressionEnabled = (option == SettingsView.compressionOptions[1])
+                Settings.highCompression = highCompressionEnabled
+                trackFeatureToggled(featureName: "high_compression", enabled: highCompressionEnabled)
             }
         }
         buttons.append(.cancel())
@@ -365,8 +369,10 @@ struct SettingsView: View {
     private func applyTheme(for index: Int) {
         if index == 1 {
             Utils.setLightMode()
+            trackFeatureToggled(featureName: "dark_mode", enabled: false)
         } else if index == 2 {
             Utils.setDarkMode()
+            trackFeatureToggled(featureName: "dark_mode", enabled: true)
         } else {
             Utils.setUnspecifiedMode()
         }

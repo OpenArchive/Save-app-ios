@@ -39,6 +39,7 @@ class InternetArchiveLoginUseCase {
                 if let data = try? encoder.encode(result.metaData) {
                     space.metaData = String(data: data, encoding: .utf8)
                 }
+                trackEvent(.backendConfigured(backendType: "Internet Archive", isNew: true))
                 SelectedSpace.space = space
 
                 Db.writeConn?.asyncReadWrite() { tx in
