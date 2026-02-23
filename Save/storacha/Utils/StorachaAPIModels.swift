@@ -99,6 +99,16 @@ struct StorachaUploadResponse: Codable {
     let size: Int
 }
 
+/// Response from Token Service /upload endpoint (temporary backend upload path).
+/// Backend performs full Storacha workflow via JS client; bridge store/add is broken.
+struct TokenServiceUploadResponse: Codable {
+    let success: Bool
+    let cid: String
+    let filename: String
+    let gatewayUrl: String
+    let size: Int
+}
+
 struct StorachaUsageResponse: Codable {
     let spaceDid: String
     let usage: StorachaUsageDetail

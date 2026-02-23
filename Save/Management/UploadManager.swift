@@ -468,7 +468,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                                 fileSizeKB: fileSizeKB
                             ))
 
-                            SessionManager.shared.incrementUploadsFailed()
+                            MixPanelSessionManager.shared.incrementUploadsFailed()
                         }
                     }
                 }
@@ -501,7 +501,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                         uploadSpeedKbps: uploadSpeedKbps
                     ))
 
-                    SessionManager.shared.incrementUploadsCompleted()
+                    MixPanelSessionManager.shared.incrementUploadsCompleted()
                 }
             }
             
@@ -633,8 +633,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 // Track upload session completion if one was in progress
                 if self.sessionStartTime != nil {
                     let duration = Date().timeIntervalSince(self.sessionStartTime!)
-                    let successCount = SessionManager.shared.sessionUploadsCompleted
-                    let failedCount = SessionManager.shared.sessionUploadsFailed
+                    let successCount = MixPanelSessionManager.shared.sessionUploadsCompleted
+                    let failedCount = MixPanelSessionManager.shared.sessionUploadsFailed
                     let successRate = self.sessionUploadCount > 0 ? Double(successCount) / Double(self.sessionUploadCount) : 0
 
                     trackEvent(.uploadSessionCompleted(
@@ -659,7 +659,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 self.sessionStartTime = Date()
                 self.sessionUploadCount = 0
                 self.sessionTotalSize = 0
-                SessionManager.shared.resetUploadCounters()
+                MixPanelSessionManager.shared.resetUploadCounters()
             }
 
             // Increment session counters

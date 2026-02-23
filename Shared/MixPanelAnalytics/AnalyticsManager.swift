@@ -87,20 +87,20 @@ public class AnalyticsManager {
 
     /// Start a new analytics session
     public func startSession() {
-        SessionManager.shared.startSession()
+        MixPanelSessionManager.shared.startSession()
 
-        let isFirstSession = SessionManager.shared.isFirstSessionEver()
-        let sessionNumber = SessionManager.shared.getSessionNumber()
+        let isFirstSession = MixPanelSessionManager.shared.isFirstSessionEver()
+        let sessionNumber = MixPanelSessionManager.shared.getSessionNumber()
 
         trackEvent(.sessionStarted(isFirstSession: isFirstSession, sessionNumber: sessionNumber))
     }
 
     /// End the current analytics session
     public func endSession() {
-        let duration = SessionManager.shared.endSession()
-        let lastScreen = SessionManager.shared.getLastScreen()
-        let uploadsCompleted = SessionManager.shared.sessionUploadsCompleted
-        let uploadsFailed = SessionManager.shared.sessionUploadsFailed
+        let duration = MixPanelSessionManager.shared.endSession()
+        let lastScreen = MixPanelSessionManager.shared.getLastScreen()
+        let uploadsCompleted = MixPanelSessionManager.shared.sessionUploadsCompleted
+        let uploadsFailed = MixPanelSessionManager.shared.sessionUploadsFailed
 
         trackEvent(.sessionEnded(
             lastScreen: lastScreen,
@@ -133,7 +133,7 @@ public class AnalyticsManager {
         trackingQueue.async { [weak self] in
             guard let self = self else { return }
             self.providers.forEach { $0.reset() }
-            SessionManager.shared.reset()
+            MixPanelSessionManager.shared.reset()
             print("[AnalyticsManager] 🔄 Reset complete")
         }
     }

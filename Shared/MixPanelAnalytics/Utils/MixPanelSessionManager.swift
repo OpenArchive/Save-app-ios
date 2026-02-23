@@ -16,9 +16,9 @@
 
 import Foundation
 
-public class SessionManager {
+public class MixPanelSessionManager {
 
-    public static let shared = SessionManager()
+    public static let shared = MixPanelSessionManager()
 
     // MARK: - Properties
 

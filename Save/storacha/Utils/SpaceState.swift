@@ -96,50 +96,56 @@ class SpaceState: ObservableObject {
         
         let sessionData = sessionManager.loadSession()
         do {
-            // Get user DID
+            // Get user DID (required for delegated uploads; delegated users can upload without login via x-user-did)
             let userDid = try getOrCreateDID()
             
             // Step 1: Create temporary file from URL (if needed)
             let tempFile = try createTempFileIfNeeded(from: fileURL)
             uploadProgress = 0.1
             
-            // Step 2: Generate CAR file
-            print("Generating CAR file for: \(fileURL.lastPathComponent)")
-            let carResult = try CarFileCreator.createCarFile(from: tempFile)
-            uploadProgress = 0.3
-            
-            // Step 3: Save CAR data for debugging (optional)
-            try saveCarFileForDebugging(carResult: carResult, originalFileName: fileURL.lastPathComponent)
-            uploadProgress = 0.4
-    
-            print("Starting bridge upload")
-            let bridgeResult = try await bridgeUploader.uploadFile(
-                file: tempFile,
-                carData: carResult.carData,
-                carCid: carResult.carCid,
-                rootCid: carResult.rootCid,
+            // --- TEMPORARY: Bridge store/add broken; using Token Service /upload until native space/blob/add or long-term decision ---
+            print("Starting Token Service upload (bridge store/add is broken)")
+            let tokenResult = try await apiService.uploadFileViaTokenService(
+                fileURL: tempFile,
                 spaceDid: spaceDid,
+                isAdmin: isAdmin,
                 userDid: userDid,
-                sessionId: sessionData?.sessionId,
-                isAdmin: isAdmin
+                sessionId: sessionData?.sessionId
             )
             uploadProgress = 1.0
             
-            // Step 5: Create success response
             let uploadResponse = UploadResponse(
-                success: true,
-                cid: bridgeResult.rootCid,
-                size: bridgeResult.size
+                success: tokenResult.success,
+                cid: tokenResult.cid,
+                size: tokenResult.size
             )
-            
             uploadResult = .success(uploadResponse)
-            print("Upload completed successfully. CID: \(bridgeResult.rootCid)")
+            print("Upload completed successfully via Token Service. CID: \(tokenResult.cid)")
             
-            // Step 6: Refresh the uploads list
             await loadUploads(for: spaceDid, isAdmin: isAdmin, reset: true)
-            
-            // Cleanup temp file if we created one
             cleanupTempFile(tempFile, originalURL: fileURL)
+            
+            // --- OLD BRIDGE PATH (commented out, bridge store/add broken) ---
+            // let userDid = try getOrCreateDID()
+            // print("Generating CAR file for: \(fileURL.lastPathComponent)")
+            // let carResult = try CarFileCreator.createCarFile(from: tempFile)
+            // uploadProgress = 0.3
+            // try saveCarFileForDebugging(carResult: carResult, originalFileName: fileURL.lastPathComponent)
+            // uploadProgress = 0.4
+            // let bridgeResult = try await bridgeUploader.uploadFile(
+            //     file: tempFile,
+            //     carData: carResult.carData,
+            //     carCid: carResult.carCid,
+            //     rootCid: carResult.rootCid,
+            //     spaceDid: spaceDid,
+            //     userDid: userDid,
+            //     sessionId: sessionData?.sessionId,
+            //     isAdmin: isAdmin
+            // )
+            // let uploadResponse = UploadResponse(success: true, cid: bridgeResult.rootCid, size: bridgeResult.size)
+            // uploadResult = .success(uploadResponse)
+            // print("Upload completed successfully. CID: \(bridgeResult.rootCid)")
+            // --- END OLD BRIDGE PATH ---
             
         } catch {
             print("Upload failed: \(error.localizedDescription)")

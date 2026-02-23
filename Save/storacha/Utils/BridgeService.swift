@@ -19,9 +19,9 @@ class BridgeService: ObservableObject {
     }
     
     // MARK: - Error Parsing
-    
-    private func parseErrorFromResponse(_ statusCode: Int, responseBody: String) throws {
-        logger.error("Parsing error - Status: \(statusCode), Body: \(responseBody)")
+    /// Shared error parsing for bridge and Token Service upload responses. Never exposes raw server messages.
+    static func parseErrorFromResponse(_ statusCode: Int, responseBody: String, logger: Logger? = nil) throws {
+        (logger ?? Logger(subsystem: "BridgeUploader", category: "Upload")).error("Parsing error - Status: \(statusCode), Body: \(responseBody)")
         
         switch statusCode {
         case 503:
@@ -32,10 +32,17 @@ class BridgeService: ObservableObject {
             throw BridgeUploadError.rateLimitExceeded
         case 500...599:
             throw BridgeUploadError.serverError
+        case 403:
+            let lower = responseBody.lowercased()
+            if lower.contains("admin does not have access") {
+                throw BridgeUploadError.networkError(NSLocalizedString("Admin does not have access to this space.", comment: ""))
+            }
+            if lower.contains("no valid delegation") {
+                throw BridgeUploadError.networkError(NSLocalizedString("No valid delegation found for this space.", comment: ""))
+            }
+            throw BridgeUploadError.networkError(NSLocalizedString("Access denied.", comment: ""))
         default:
-            // Check response body for specific errors
             let lowercasedBody = responseBody.lowercased()
-            
             if lowercasedBody.contains("invalidtoken") || lowercasedBody.contains("expired") {
                 throw BridgeUploadError.tokenExpired(NSLocalizedString("There was an authentication issue. The app will try again automatically.", comment: ""))
             } else if lowercasedBody.contains("s3 upload failed") || lowercasedBody.contains("s3") {
@@ -108,7 +115,7 @@ class BridgeService: ObservableObject {
             // Handle HTTP errors
             guard httpResponse.statusCode == 200 else {
                 logger.error("Bridge API request failed - Status: \(httpResponse.statusCode), Body: \(responseBody)")
-                try parseErrorFromResponse(httpResponse.statusCode, responseBody: responseBody)
+                try BridgeService.parseErrorFromResponse(httpResponse.statusCode, responseBody: responseBody, logger: logger)
                 throw BridgeUploadError.networkError("Unexpected error") // Should not reach here
             }
             
@@ -191,7 +198,7 @@ class BridgeService: ObservableObject {
             
             // Handle HTTP errors
             guard httpResponse.statusCode == 200 else {
-                try parseErrorFromResponse(httpResponse.statusCode, responseBody: responseBody)
+                try BridgeService.parseErrorFromResponse(httpResponse.statusCode, responseBody: responseBody, logger: logger)
                 throw BridgeUploadError.networkError("Unexpected error") // Should not reach here
             }
             

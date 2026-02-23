@@ -330,8 +330,6 @@ class FileListViewController: UIViewController {
                 isAdmin: space.isAdmin
             )
             
-            // Note: File list will be refreshed automatically by the SwiftUI view
-            // when uploadResult changes to success in the onChange modifier
         }
     }
     

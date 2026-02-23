@@ -129,14 +129,14 @@ class BigButton: UIView {
         true
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-
-        // Only re-apply if the relevant appearance actually changed
-        if previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle {
-            applyBorderColorForCurrentTraits()
-        }
-    }
+//    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+//        super.traitCollectionDidChange(previousTraitCollection)
+//
+//        // Only re-apply if the relevant appearance actually changed
+//        if previousTraitCollection?.userInterfaceStyle != traitCollection.userInterfaceStyle {
+//            applyBorderColorForCurrentTraits()
+//        }
+//    }
 
     // Re-apply when moved to window to cover storyboard/segue timing cases
     override func didMoveToWindow() {

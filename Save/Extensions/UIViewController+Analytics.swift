@@ -17,8 +17,8 @@ extension UIViewController {
             .replacingOccurrences(of: "ViewController", with: "")
             .replacingOccurrences(of: "Controller", with: "")
 
-        SessionManager.shared.setCurrentScreen(screen)
-        let previousScreen = SessionManager.shared.getPreviousScreen()
+        MixPanelSessionManager.shared.setCurrentScreen(screen)
+        let previousScreen = MixPanelSessionManager.shared.getPreviousScreen()
         trackScreenViewed(screenName: screen, previousScreen: previousScreen)
     }
 }

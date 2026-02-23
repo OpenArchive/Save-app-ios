@@ -533,6 +533,69 @@ class StorachaAPIService {
         return tokenResponse.tokens
     }
     
+    // MARK: - Upload via Token Service (TEMPORARY)
+    /// TEMPORARY: Upload via Token Service /upload endpoint. Bridge store/add is broken.
+    /// Backend performs full Storacha workflow using JS client. Remove when bridge is fixed
+    /// or long-term path is decided.
+    /// - Parameters:
+    ///   - userDid: User DID (from getOrCreateDID). Required for delegated users; also used when session unavailable.
+    ///   - sessionId: Admin session ID. Required only for admin uploads. Delegated users can upload without login via x-user-did.
+    func uploadFileViaTokenService(fileURL: URL, spaceDid: String, isAdmin: Bool, userDid: String, sessionId: String?) async throws -> TokenServiceUploadResponse {
+        if isAdmin, sessionId == nil {
+            throw StorachaAPIError.authenticationFailed("No active session")
+        }
+        
+        let fileData = try Data(contentsOf: fileURL)
+        let filename = fileURL.lastPathComponent
+        let boundary = "----StorachaUploadBoundary\(UUID().uuidString.replacingOccurrences(of: "-", with: ""))"
+        
+        var body = Data()
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"file\"; filename=\"\(filename)\"\r\n".data(using: .utf8)!)
+        body.append("Content-Type: application/octet-stream\r\n\r\n".data(using: .utf8)!)
+        body.append(fileData)
+        body.append("\r\n".data(using: .utf8)!)
+        body.append("--\(boundary)\r\n".data(using: .utf8)!)
+        body.append("Content-Disposition: form-data; name=\"spaceDid\"\r\n\r\n".data(using: .utf8)!)
+        body.append(spaceDid.data(using: .utf8)!)
+        body.append("\r\n".data(using: .utf8)!)
+        body.append("--\(boundary)--\r\n".data(using: .utf8)!)
+        
+        guard let url = URL(string: "\(baseURL)/upload") else {
+            throw StorachaAPIError.invalidURL
+        }
+        
+        var urlRequest = URLRequest(url: url)
+        urlRequest.httpMethod = "POST"
+        urlRequest.setValue("multipart/form-data; boundary=\(boundary)", forHTTPHeaderField: "Content-Type")
+        urlRequest.setValue("\(body.count)", forHTTPHeaderField: "Content-Length")
+        urlRequest.httpBody = body
+        
+        if isAdmin, let sessionId = sessionId {
+            urlRequest.setValue(sessionId, forHTTPHeaderField: "x-session-id")
+        } else {
+            urlRequest.setValue(userDid, forHTTPHeaderField: "x-user-did")
+        }
+        
+        let (data, response) = try await session.data(for: urlRequest)
+        
+        guard let httpResponse = response as? HTTPURLResponse else {
+            throw BridgeUploadError.networkError(NSLocalizedString("Invalid response from server", comment: ""))
+        }
+        
+        let responseBody = String(data: data, encoding: .utf8) ?? ""
+        
+        guard httpResponse.statusCode == 200 else {
+            logger.error("Token Service upload failed - Status: \(httpResponse.statusCode), Body: \(responseBody)")
+            if httpResponse.statusCode == 401 {
+                throw StorachaAPIError.unauthorized
+            }
+            try BridgeService.parseErrorFromResponse(httpResponse.statusCode, responseBody: responseBody, logger: logger)
+            throw BridgeUploadError.networkError(NSLocalizedString("Something went wrong with the upload. Please try again.", comment: ""))
+        }
+        
+        return try JSONDecoder().decode(TokenServiceUploadResponse.self, from: data)
+    }
     
     func getOrCreateKeyPair() -> DIDKeyManager.DIDKeyPair {
         do {
