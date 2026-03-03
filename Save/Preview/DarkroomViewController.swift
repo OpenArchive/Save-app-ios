@@ -291,6 +291,7 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
             update?(asset)
         })
 
+        flagIv.isSelected = flagged
         FlagInfoAlert.presentIfNeeded()
     }
 
