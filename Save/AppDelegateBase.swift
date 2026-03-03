@@ -167,26 +167,12 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
   
     func cleanCache()
     {
-        // This will clean the contents of the Cache.db file, but unfortunately not
-        // backup copies, which also exist.
+        // Clear URL cache contents. Do NOT delete the cache directory — URLCache uses
+        // SQLite (Cache.db) and deleting it while open causes "vnode unlinked while in use"
+        // and database integrity errors.
         URLCache.shared.removeAllCachedResponses()
         
         let fm = FileManager.default
-        
-        if let id = Bundle.main.bundleIdentifier,
-           let cache = fm.urls(for: .cachesDirectory, in: .userDomainMask).first?.appendingPathComponent(id),
-           cache.exists
-        {
-            do {
-                // Try to remove *all* URL cache files.
-                try fm.removeItem(at: cache)
-            }
-            catch {
-                #if DEBUG
-                debugPrint(error)
-                #endif
-            }
-        }
         
         // Remove cached files from Dropbox web authentication.
         if let safariLib = fm.urls(for: .libraryDirectory, in: .userDomainMask).first?
