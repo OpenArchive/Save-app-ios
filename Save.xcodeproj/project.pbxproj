@@ -928,8 +928,9 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Save/Pods-Save-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6E78F3342DF30C8B008DB278 /* ShellScript */ = {
+		6E78F3342DF30C8B008DB278 /* Run Script */ = {
 			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
 			files = (
 			);

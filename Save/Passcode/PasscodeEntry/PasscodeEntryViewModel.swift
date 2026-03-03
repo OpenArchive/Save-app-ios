@@ -78,7 +78,9 @@ class PasscodeEntryViewModel: ObservableObject {
             self.repository.hashPasscode(passcode: self.passcode, salt: salt).sink(
                 receiveCompletion: { completion in
                     if case .failure(let error) = completion {
+                        #if DEBUG
                         print("Hashing error: \(error)")
+                        #endif
                         self.triggerShakeAnimation()
                         self.passcode = ""
                     }

@@ -18,7 +18,9 @@ class Db {
 
     private static var shared: YapDatabase? = {
         if let path = URL.groupDir?.appendingPathComponent(DB_NAME) {
+            #if DEBUG
             print("[\(String(describing: Db.self))] path=\(path)")
+            #endif
 
             let options = YapDatabaseOptions()
             options.enableMultiProcessSupport = true

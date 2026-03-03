@@ -182,7 +182,9 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                 try fm.removeItem(at: cache)
             }
             catch {
+                #if DEBUG
                 debugPrint(error)
+                #endif
             }
         }
         
@@ -198,7 +200,9 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                 try fm.removeItem(at: safariLib)
             }
             catch {
+                #if DEBUG
                 debugPrint(error)
+                #endif
             }
         }
     }

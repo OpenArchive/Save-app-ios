@@ -265,7 +265,9 @@ class MainViewController: TableWithSpacesViewController {
                                                 thumbnail: thumbnail as? UIImage,
                                                 collection)
                             { asset in
+                                #if DEBUG
                                 debugPrint("[\(String(describing: type(of: self)))] asset=\(asset?.description ?? "(nil)")")
+                                #endif
                                 self.onCompletion(error: asset == nil ? error : nil)
                             }
 

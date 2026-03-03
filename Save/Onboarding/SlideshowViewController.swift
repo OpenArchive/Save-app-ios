@@ -67,7 +67,9 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
                
                 var style: UIFont.TextStyle =  .subheadline
 
+                #if DEBUG
                 print(UIScreen.main.bounds.height)
+                #endif
                 let baseSize = UIFont.preferredFont(forTextStyle: style).pointSize
                 let letterSpacing =  0.02
                 let lineHeight: CGFloat =  22

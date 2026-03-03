@@ -97,7 +97,9 @@ class InternetArchiveDetailViewModel : StoreViewModel<InternetArchiveDetailState
             
         case .updateLicense:
             var licence = generateLicenseURL(state: state)
+            #if DEBUG
             print(licence)
+            #endif
             saveLicense(licenseURL: licence)
             return state.copy(licenseURL:licence )
             

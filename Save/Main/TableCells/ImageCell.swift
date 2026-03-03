@@ -81,7 +81,9 @@ class ImageCell: UICollectionViewCell {
         
         progress.isHidden = upload == nil || asset?.isUploaded ?? true || upload?.state == .uploaded
         progress.state = upload?.state ?? .pending
+        #if DEBUG
         print("upload progress\(String(describing: upload?.progress))")
+        #endif
         progress.progress = upload?.progress ?? 0
         
         errorIcon.isHidden = true

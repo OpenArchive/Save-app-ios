@@ -48,7 +48,7 @@ class PasscodeSetupViewModel : StoreViewModel<PasscodeSetupState, PasscodeSetupA
     private func effects(state: PasscodeSetupState, action: PasscodeSetupAction) -> Scoped? {
         switch action {
             
-        case .OnNumberClick(let number):
+        case .OnNumberClick(_):
             break
         case .OnBackspaceClick:
             break
@@ -125,14 +125,25 @@ class PasscodeSetupViewModel : StoreViewModel<PasscodeSetupState, PasscodeSetupA
             .sink(
                 receiveCompletion: { completion in
                     if case .failure(let error) = completion {
+                        #if DEBUG
                         print("Hashing error: \(error)")
+                        #endif
                     }
                     self.triggerShakeAnimation()
                 }, receiveValue: { hash in
-                    self.repository.storePasscodeHashAndSalt(hash: hash, salt: salt)
-                    print("Hashed passcode: \(hash)")
-                    // send event to ui (Passcode set)
-                    self.store.dispatcher.dispatch(.OnComplete)
+                    do {
+                        try self.repository.storePasscodeHashAndSalt(hash: hash, salt: salt)
+                        #if DEBUG
+                        print("Hashed passcode: \(hash)")
+                        #endif
+                        // send event to ui (Passcode set)
+                        self.store.dispatcher.dispatch(.OnComplete)
+                    } catch {
+                        #if DEBUG
+                        print("Error storing passcode: \(error)")
+                        #endif
+                        self.triggerShakeAnimation()
+                    }
                 })
             .store(in: &cancellable)
     }

@@ -443,14 +443,14 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                         : NSLocalizedString("Unknown error.", comment: ""))
 
                     if upload.paused {
-                        let filesize = upload.asset?.filesize
+                       // let filesize = upload.asset?.filesize
 
-                        let data: [String: String?] = [
-                            "error": upload.error,
-                            "filesize": filesize != nil ? String(filesize!) : nil,
-                            "type": upload.asset?.uti.identifier,
-                            "retries": String(upload.tries),
-                            "network": self.reachability?.connection.description]
+//                        let data: [String: String?] = [
+//                            "error": upload.error,
+//                            "filesize": filesize != nil ? String(filesize!) : nil,
+//                            "type": upload.asset?.uti.identifier,
+//                            "retries": String(upload.tries),
+//                            "network": self.reachability?.connection.description]
 
                         // Track upload failed
                         let backendType = space is WebDavSpace ? "WebDAV" : (space is IaSpace ? "Internet Archive" : nil)

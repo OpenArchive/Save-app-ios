@@ -45,6 +45,9 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // With UISceneStoryboardFile, the system creates the window
         window = windowScene.windows.first
         window?.tintColor = .accent
+
+        // Apply saved theme (window exists now; didFinishLaunching runs before scene exists)
+        (UIApplication.shared.delegate as? AppDelegateBase)?.applyTheme(AppSettings.theme)
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
@@ -88,13 +91,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         let onPasscodeSuccess = {
             rootVC.dismiss(animated: true) {
+                #if DEBUG
                 print("Passcode verified successfully!")
+                #endif
                 AppUpdateManager.shared.checkForUpdateIfNeeded()
             }
         }
 
         let onExit = {
+            #if DEBUG
             print("Exiting the application...")
+            #endif
             UIControl().sendAction(#selector(NSXPCConnection.suspend), to: UIApplication.shared, for: nil)
             DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
                 exit(0)

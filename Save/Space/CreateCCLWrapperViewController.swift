@@ -22,7 +22,9 @@ class CreateCCLWrapperViewController: UIViewController, WizardDelegatable {
         super.viewDidLoad()
 
         guard let space = space else {
+            #if DEBUG
             print("Error: No space provided to CreateCCLWrapperViewController")
+            #endif
             return
         }
 

@@ -75,7 +75,9 @@ class AppUpdateManager {
             
             // Handle network errors - FALLBACK: Allow user to continue
             if let error = error {
+                #if DEBUG
                 print("Update check failed: \(error.localizedDescription)")
+                #endif
                 self?.handleNetworkFailure()
                 return
             }
@@ -103,7 +105,9 @@ class AppUpdateManager {
                     self?.handleNetworkFailure()
                 }
             } catch {
+                #if DEBUG
                 print("Failed to decode App Store response: \(error)")
+                #endif
                 self?.handleNetworkFailure()
             }
         }
@@ -117,7 +121,9 @@ class AppUpdateManager {
         if isVersionOlder(currentVersion: currentVersion, appStoreVersion: appStoreVersion) {
             // Check if user already canceled this version
             if shouldSkipVersion(appStoreVersion) {
+                #if DEBUG
                 print("Skipping update alert for version \(appStoreVersion) - user canceled")
+                #endif
                 return
             }
             
@@ -145,7 +151,9 @@ class AppUpdateManager {
         }
         
         // FALLBACK: Allow user to continue using the app
+        #if DEBUG
         print("Update check failed and no valid cache. Allowing user to continue.")
+        #endif
     }
     
     private func isVersionOlder(currentVersion: String, appStoreVersion: String) -> Bool {
@@ -212,10 +220,16 @@ class AppUpdateManager {
         // Dismiss any existing alert
         updateAlertController?.dismiss(animated: false)
         
-        guard let window = UIApplication.shared.windows.first(where: { $0.isKeyWindow })
-                ?? UIApplication.shared.windows.first,
+        let windowScenes = UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+        guard let windowScene = windowScenes.first(where: { $0.activationState == .foregroundActive })
+                ?? windowScenes.first,
+              let window = windowScene.windows.first(where: { $0.isKeyWindow })
+                ?? windowScene.windows.first,
               let rootViewController = window.rootViewController else {
+            #if DEBUG
             print("Could not find window or root view controller")
+            #endif
             return
         }
         
@@ -244,7 +258,9 @@ class AppUpdateManager {
         let laterAction = UIAlertAction(title: "Cancel", style: .cancel) { [weak self] _ in
             // Store this version as canceled - will never show again
             self?.setCanceledVersion(appStoreVersion)
+            #if DEBUG
             print("User canceled update for version \(appStoreVersion) - will not show again")
+            #endif
         }
         
         alert.addAction(updateAction)

@@ -31,24 +31,12 @@ struct ToggleSwitch: View {
                 }
             }.padding(.vertical, 6)
             Spacer()
-            if #available(iOS 15.0, *) {
-                Toggle("", isOn: $isOn)
+            Toggle("", isOn: $isOn)
                     .labelsHidden()
                     .disabled(isDisabled)
                     .tint(.accent)
                     .onChange(of: isOn) { value in
                         action?(value)
-                    }
-            } else if #available(iOS 14.0, *) {
-                Toggle("", isOn: $isOn)
-                    .labelsHidden()
-                    .disabled(isDisabled)
-                    .accentColor(isOn ? .accentColor : .gray30)
-                    .onChange(of: isOn) { value in
-                        action?(value)
-                    }
-            } else {
-                
             }
         }
     }
@@ -227,7 +215,9 @@ struct SettingsView: View {
                                 }
                             }),
                             AnyView(SubItem(title: NSLocalizedString("Version", comment: ""), subtitle: Bundle.main.version) {
+                                #if DEBUG
                                 print("version tapped")
+                                #endif
                             }),
                          ])
                     ]

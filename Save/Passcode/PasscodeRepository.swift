@@ -43,9 +43,16 @@ class PasscodeRepository {
         }.eraseToAnyPublisher()
     }
 
-    func storePasscodeHashAndSalt(hash: Data, salt: Data) {
-        KeychainHelper.save(key: passcodeHashKey, data: hash)
-        KeychainHelper.save(key: passcodeSaltKey, data: salt)
+    func storePasscodeHashAndSalt(hash: Data, salt: Data) throws {
+        guard KeychainHelper.save(key: passcodeHashKey, data: hash) else {
+            throw NSError(domain: "PasscodeRepository", code: -1, 
+                         userInfo: [NSLocalizedDescriptionKey: "Failed to save passcode hash to keychain"])
+        }
+        
+        guard KeychainHelper.save(key: passcodeSaltKey, data: salt) else {
+            throw NSError(domain: "PasscodeRepository", code: -2, 
+                         userInfo: [NSLocalizedDescriptionKey: "Failed to save passcode salt to keychain"])
+        }
         
         AppSettings.passcodeEnabled.toggle()
     }

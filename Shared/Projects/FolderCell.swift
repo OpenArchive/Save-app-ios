@@ -11,7 +11,11 @@ import UIKit
 class FolderCell: BaseCell {
 
     @IBOutlet weak var folderIcon: TintedImageView!
-    @IBOutlet weak var nameLb: UILabel!
+    @IBOutlet weak var nameLb: UILabel! {
+        didSet {
+            nameLb.font = .montserrat(forTextStyle: .headline, with: .traitUIOptimized)
+        }
+    }
 
     private var customBackgroundView: UIView!
     override func awakeFromNib() {

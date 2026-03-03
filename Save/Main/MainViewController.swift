@@ -46,13 +46,21 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     @IBOutlet weak var folderIndicator: UIImageView!
     @IBOutlet weak var editButton: UIButton!
     private lazy var menuBt: UIButton = {
-        let button = UIButton(type: .system)
-        button.setImage(UIImage(named: "menu_icon"), for: .normal)
+        let button: UIButton
+        if #available(iOS 15.0, *) {
+            var config = UIButton.Configuration.plain()
+            config.image = UIImage(named: "menu_icon")
+            config.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
+            button = UIButton(configuration: config, primaryAction: nil)
+        } else {
+            button = UIButton(type: .system)
+            button.setImage(UIImage(named: "menu_icon"), for: .normal)
+            button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
+        }
         button.accessibilityIdentifier = "btMenu"
         button.addTarget(self, action: #selector(didTapMenuButton), for: .touchUpInside)
         // Increase tap area without changing icon size
         button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
-        button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
         return button
     }()
     private lazy var menuBarButtonItem: UIBarButtonItem = {
@@ -513,13 +521,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         super.prepare(for: segue, sender: sender)
-        
-        if segue.identifier == Self.segueConnectSpace,
-           let navC = segue.destination as? UINavigationController,
-           let vc = navC.viewControllers.first as? SpaceWizardViewController
-        {
-            vc.delegate = self
-        }
     }
     
     /**
@@ -940,7 +941,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
      Shows/hides the upload manager button. Sets the number of currently queued items.
      */
     private func updateManageBt() {
-        uploadsReadConn?.asyncRead { [weak self] tx in
+        uploadsReadConn?.asyncRead { tx in
             _ = UploadsView.countUploading(tx)
         }
     }

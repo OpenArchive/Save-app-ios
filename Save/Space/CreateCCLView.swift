@@ -250,7 +250,9 @@ struct CreateCCLView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             CreateCCLView(space: IaSpace()) { serverName in
+                #if DEBUG
                 print("Next tapped with name: \(serverName)")
+                #endif
             }
         }
     }
