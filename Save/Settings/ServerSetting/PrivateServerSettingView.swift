@@ -296,10 +296,9 @@ struct ToggleTintModifier: ViewModifier {
     
     func body(content: Content) -> some View {
         if #available(iOS 15.0, *) {
-            content.tint(color) 
+            content.tint(color)
         } else {
             content.accentColor(color)
         }
     }
 }
-

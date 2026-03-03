@@ -50,8 +50,6 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
 
     private let sc = SelectedCollection()
     private var dh: DarkroomHelper?
-    
-    // Store the original right bar button item to restore it after keyboard dismissal
     private var originalRightBarButtonItem: UIBarButtonItem?
 
     private var asset: Asset? {
@@ -81,7 +79,15 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
         pageVc.didMove(toParent: self)
         
         dh = DarkroomHelper(self, infoView)
-        
+
+        navigationItem.rightBarButtonItem = UIBarButtonItem(
+            title: "DONE",
+            style: .done,
+            target: self,
+            action: #selector(dismiss(_:))
+        )
+        originalRightBarButtonItem = navigationItem.rightBarButtonItem
+
         Db.add(observer: self, #selector(yapDatabaseModified))
         infoViewBottomConstraint?.constant = GeneralConstants.constraint_20
         dh?.setInfos(asset, defaults: true, infoView.frame.height * 0.5)
@@ -105,15 +111,14 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     // MARK: BaseViewController
 
     override func keyboardWillShow(notification: Notification) {
-        // Store the original right bar button item if not already stored
-        if originalRightBarButtonItem == nil {
-            originalRightBarButtonItem = navigationItem.rightBarButtonItem
-        }
-        
-        // Create a custom "DONE" button to match the original styling
-        let doneButton = UIBarButtonItem(title: "DONE", style: .done, target: self, action: #selector(dismissKeyboard))
+        let doneButton = UIBarButtonItem(
+            title: "DONE",
+            style: .done,
+            target: self,
+            action: #selector(dismissKeyboard)
+        )
         navigationItem.rightBarButtonItem = doneButton
-        
+
         if let kbSize = getKeyboardSize(notification) {
             let safeAreaBottom = view.safeAreaInsets.bottom
             let viewMaxY = view.bounds.maxY - safeAreaBottom
@@ -123,7 +128,6 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     }
 
     override func keyboardWillBeHidden(notification: Notification) {
-        // Restore the original right bar button item
         navigationItem.rightBarButtonItem = originalRightBarButtonItem
 
         infoViewBottomConstraint?.constant = GeneralConstants.constraint_20
@@ -286,9 +290,6 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
             asset.flagged = flagged
             update?(asset)
         })
-
-        flagIv.isSelected = flagged
-        dh?.setInfos(asset, defaults: true, infoView.frame.height * 0.5)
 
         FlagInfoAlert.presentIfNeeded()
     }

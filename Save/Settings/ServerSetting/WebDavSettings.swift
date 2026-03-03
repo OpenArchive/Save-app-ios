@@ -111,8 +111,9 @@ func serverSettingsReducer(state: inout ServerSettingsState, action: ServerSetti
 func saveLicenseToDatabase(state: ServerSettingsState) {
     guard let space = state.space else { return }
     space.license = state.licenseURL
-    
+
     Db.writeConn?.asyncReadWrite { tx in
+        guard tx.hasObject(forKey: space.id, inCollection: Space.collection) else { return }
         tx.setObject(space, forKey: space.id, inCollection: Space.collection)
         
         let projects: [Project] = tx.findAll { $0.active && $0.spaceId == space.id }
@@ -131,11 +132,9 @@ func removeSpace(space:Space?){
     Db.writeConn?.asyncReadWrite { tx in
         tx.removeObject(forKey: id, inCollection: Space.collection)
         
-        // Delete selected space, too.
         SelectedSpace.space = nil
         SelectedSpace.store(tx)
         
-        // Find new selected space.
         tx.iterateKeysAndObjects(inCollection: Space.collection) { (key, space: Space, stop) in
             SelectedSpace.space = space
             stop = true
