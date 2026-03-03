@@ -10,6 +10,7 @@ import Foundation
 import TLPhotoPicker
 import Photos
 import LegacyUTType
+import UniformTypeIdentifiers
 import AVFoundation
 
 protocol AssetPickerDelegate: AnyObject {
@@ -83,7 +84,7 @@ class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPic
     }
 
     func pickDocuments() {
-        let vc = UIDocumentPickerViewController(documentTypes: [LegacyUTType.item.identifier], in: .import)
+        let vc = UIDocumentPickerViewController(forOpeningContentTypes: [.item], asCopy: true)
         vc.delegate = self
         
         delegate?.present(vc, animated: true)
