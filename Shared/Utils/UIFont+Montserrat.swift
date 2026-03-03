@@ -36,6 +36,7 @@ extension UIFont {
 
     class func setUpMontserrat() {
         guard !fontsLoaded else { return }
+        if UIFont(name: defaultFontName, size: 1) != nil {
             fontsLoaded = true
             return
         }
