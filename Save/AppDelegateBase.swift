@@ -16,43 +16,14 @@ import FirebaseCrashlytics
 import Mixpanel
 
 class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCenterDelegate {
-    
-    var window: UIWindow?
-    
+
     var uploadManager: UploadManager?
-    
-    private var hadResigned = false
-    
-    
-    /**
-     Flag, if biometric/password authentication after activation was successful.
-     
-     Return to false immediately after positive check, otherwise, security issues will arise!
-     */
-    private var verified = false
-    
-    private var mainVc: MainViewController? {
-        var vc = window?.rootViewController
-        
-        while vc != nil {
-            if let mainVc = vc as? MainViewController {
-                return mainVc
-            }
-            
-            vc = vc?.subViewController
-        }
-        
-        return nil
-    }
-    
-    
+
     func application(_ application: UIApplication, didFinishLaunchingWithOptions
                      launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         UNUserNotificationCenter.current().delegate = self
-        
-        window?.tintColor = .accent
-        
+
         Db.setup()
         
         uploadManager = UploadManager.shared
@@ -81,71 +52,24 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         return true
     }
     
-    func applicationWillResignActive(_ application: UIApplication) {
-       
-        if AppSettings.passcodeEnabled {
-            BlurredSnapshot.create(window)
-            hadResigned = true
-        }
+    func application(_ application: UIApplication,
+                     configurationForConnecting connectingSceneSession: UISceneSession,
+                     options: UIScene.ConnectionOptions) -> UISceneConfiguration {
+        UISceneConfiguration(
+            name: "Default Configuration",
+            sessionRole: connectingSceneSession.role
+        )
     }
-    
-    func applicationDidEnterBackground(_ application: UIApplication) {
-        // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
-        // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
-        trackEvent(.appBackgrounded)
-    }
-    
-    func applicationWillEnterForeground(_ application: UIApplication) {
-        
-        
-        mainVc?.updateFilter()
-        
-        uploadManager?.restart()
-        if(shouldShowAppPasscodeEntryScreen()){
-            showAppPasscodeEntryScreen()
-        }else{
-            AppUpdateManager.shared.checkForUpdateIfNeeded()
-            
-        }
-        
-    }
-    
-    func applicationDidBecomeActive(_ application: UIApplication) {
 
-        trackEvent(.appForegrounded)
-
-        if AppSettings.passcodeEnabled {
-            BlurredSnapshot.remove()
-        }
-        maybePromptForReview()
-
-
-    }
-    
     func applicationWillTerminate(_ application: UIApplication) {
      
         AnalyticsManager.shared.endSession()
-     //   TorManager.shared.stop()
-
         cleanCache()
     }
     
     func application(_ app: UIApplication, open url: URL,
                      options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool
     {
-//        if let urlc = URLComponents(url: url, resolvingAgainstBaseURL: true),
-//           urlc.path == "token-callback"
-//        {
-//            if let token = urlc.queryItems?.first(where: { $0.name == "token" })?.value {
-//                OrbotManager.shared.received(token: token)
-//            }
-//            
-//            return true
-//        }
-        
-//        if GIDSignIn.sharedInstance.handle(url) {
-//            return true
-//        }
         
         return true
     }
@@ -186,12 +110,12 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                                 notification: UNNotification, withCompletionHandler completionHandler:
                                 @escaping (UNNotificationPresentationOptions) -> Void) {
         
-        completionHandler([.alert, .badge, .sound])
+        completionHandler([.banner, .badge, .sound])
     }
     
     /**
      Handle tap on the notification from Share Extension:
-     
+
      - Select the project, where the user added something in the Share Extension.
      - Update MainViewController display.
      - Jump to preview scene showing all assets of the currently open collection.
@@ -199,66 +123,48 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive
                                 response: UNNotificationResponse, withCompletionHandler completionHandler:
                                 @escaping () -> Void) {
-        
-        if let projectId = response.notification.request.content.userInfo[Project.collection] as? String,
-           let project: Project = Db.bgRwConn?.object(for: projectId)
-        {
-            SelectedSpace.space = project.space
-            
-            if let navVc = window?.rootViewController as? UINavigationController,
-               let mainVc = mainVc
-            {
-                navVc.popToViewController(mainVc, animated: false)
-                
-                // When launching, the app needs some time to initialize everything,
-                // otherwise it will crash.
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                    mainVc.selectedProject = project
-                    mainVc.updateFilter()
-                    mainVc.picked()
-                }
+
+        guard let projectId = response.notification.request.content.userInfo[Project.collection] as? String,
+              let project: Project = Db.bgRwConn?.object(for: projectId) else {
+            completionHandler()
+            return
+        }
+
+        SelectedSpace.space = project.space
+
+        let window = UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .flatMap { $0.windows }
+            .first { $0.isKeyWindow }
+
+        guard let navVc = window?.rootViewController as? UINavigationController else {
+            completionHandler()
+            return
+        }
+
+        var mainVc: MainViewController?
+        var vc: UIViewController? = navVc
+        while vc != nil {
+            if let found = vc as? MainViewController {
+                mainVc = found
+                break
+            }
+            vc = vc?.subViewController
+        }
+
+        if let mainVc {
+            navVc.popToViewController(mainVc, animated: false)
+
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
+                mainVc.selectedProject = project
+                mainVc.updateFilter()
+                mainVc.picked()
             }
         }
-        
+
         completionHandler()
     }
-    
-//        func setUpGdrive() {
-//            GIDSignIn.sharedInstance.restorePreviousSignIn { user, error in
-//                if error != nil || user == nil {
-//                    GdriveConduit.user = nil
-//                }
-//                else {
-//                    GdriveConduit.user = user
-//                }
-//            }
-//        }
-    
-//        func setUpOrbotAndTor() {
-//            if Settings.useOrbot {
-//                OrbotManager.shared.start()
-//            }
-//            else {
-//                // Always set up Orbot API token, so TorManager can work around Orbot, if need be.
-//                OrbotKit.shared.apiToken = Settings.orbotApiToken
-//            }
-//    
-//            // Always initialize TorManager, so PT_STATE directory gets set and users
-//            // can fetch bridges before they switch on Tor.
-//            _ = TorManager.shared
-//    
-//            DispatchQueue.main.asyncAfter(deadline: .now() + 1) {
-//                OrbotManager.shared.alertCannotUpload()
-//            }
-//        }
-    
-    /**
-     Somehow SwiftyDropbox still leaves traces in the URL cache, even, if we configure it to not cache anything.
-     
-     So, we clean the cache here as a last resort.
-     
-     Additionally, when Dropbox authentication is done via a web view, there's also remnants we try to remove here.
-     */
+  
     func cleanCache()
     {
         // This will clean the contents of the Cache.db file, but unfortunately not
@@ -299,56 +205,14 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     
 }
 
-//extension TorManager {
-//    static let shared = TorManager(directory: .groupDir!.appendingPathComponent("tor", isDirectory: true))
-//}
-
 extension AppDelegateBase {
-    
-    func showAppPasscodeEntryScreen() {
-        guard let rootVC = window?.rootViewController else { return }
-        
-        if let presented = rootVC.presentedViewController,
-           presented is UIHostingController<PasscodeEntryView> {
-            return
-        }
-        
-        
-        let onPasscodeSuccess = {
-            rootVC.dismiss(animated: true) {
-                print("Passcode verified successfully!")
-                AppUpdateManager.shared.checkForUpdateIfNeeded()
-            }
-        }
-        
-        let onExit = {
-            print("Exiting the application...")
-            UIControl().sendAction(#selector(NSXPCConnection.suspend), to: UIApplication.shared, for: nil)
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                exit(0)
-            }
-        }
-        
-        let passcodeEntryView = PasscodeEntryView(
-            onPasscodeSuccess: onPasscodeSuccess,
-            onExit: onExit
-        )
-        
-        let hostingController = UIHostingController(rootView: passcodeEntryView)
-        hostingController.modalPresentationStyle = .fullScreen
-        rootVC.present(hostingController, animated: true)
-    }
-    
-    func shouldShowAppPasscodeEntryScreen() -> Bool {
-        return AppSettings.passcodeEnabled
-    }
+
     func applyTheme(_ theme: String) {
         if theme == GeneralConstants.dark {
             Utils.setDarkMode()
         } else if theme == GeneralConstants.light {
             Utils.setLightMode()
-        }
-        else {
+        } else {
             Utils.setUnspecifiedMode()
         }
     }

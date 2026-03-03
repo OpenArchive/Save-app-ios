@@ -530,7 +530,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
      */
     func updateFilter() {
         ProjectsView.updateGrouping()
-        
         updateProject()
     }
     

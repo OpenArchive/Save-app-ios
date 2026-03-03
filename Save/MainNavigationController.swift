@@ -34,14 +34,13 @@ class MainNavigationController: UINavigationController {
         }
         
         DispatchQueue.main.async {
-                if let appDelegate = UIApplication.shared.delegate as? AppDelegateBase {
-                    if(appDelegate.shouldShowAppPasscodeEntryScreen()){
-                        appDelegate.showAppPasscodeEntryScreen()
-                    }else{
-                        AppUpdateManager.shared.checkForUpdateIfNeeded()
-                        
-                    }
+            if let sceneDelegate = SceneDelegate.current {
+                if sceneDelegate.shouldShowAppPasscodeEntryScreen() {
+                    sceneDelegate.showAppPasscodeEntryScreen()
+                } else {
+                    AppUpdateManager.shared.checkForUpdateIfNeeded()
                 }
             }
+        }
     }
 }
