@@ -9,43 +9,46 @@
 import SwiftUI
 import FactoryKit
 
-class InternetArchiveDetailsController : ViewModelController<InternetArchiveDetailState, InternetArchiveDetailAction, InternetArchiveDetailViewModel, InternetArchiveDetailView> {
-    
-    private static func createViewModel(_ space: Space) -> InternetArchiveDetailViewModel {
-        return Container.shared.internetArchiveDetailViewModel(space)
-    }
-    
+class InternetArchiveDetailsController: UIHostingController<InternetArchiveDetailView> {
+
+    private let viewModel: InternetArchiveDetailViewModel
+
     required init(space: Space) {
-        let viewModel = InternetArchiveDetailsController.createViewModel(space)
-        super.init(viewModel: viewModel, rootView: InternetArchiveDetailView(viewModel: viewModel))
-    }
-    
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.navigationController?.setNavigationBarHidden(false, animated: true)
-        self.navigationItem.title = viewModel?.space.prettyName
-        
-        viewModel?.store.listen { [weak self] action in
-            switch action {
-            case .Removed:
-                fallthrough
-            case .Cancel:
-                self?.dismiss(completion: nil)
-            case .HandleBackButton(let status):
-                self?.navigationItem.hidesBackButton = status
-                
-            default: break
-            }
+        viewModel = Container.shared.internetArchiveDetailViewModel(space)
+        super.init(rootView: InternetArchiveDetailView(viewModel: viewModel))
+
+        viewModel.onDismiss = { [weak self] in
+            self?.dismissOrPop(completion: nil)
+        }
+        viewModel.onBackButtonVisibility = { [weak self] hidden in
+            self?.navigationItem.hidesBackButton = hidden
         }
     }
-    
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        navigationItem.title = viewModel.space.prettyName
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         trackScreenViewSafely("InternetArchiveDetails")
     }
 
+    /// Pops if in a navigation stack, otherwise dismisses (matches former ViewModelController behavior).
+    private func dismissOrPop(completion: (() -> Void)?) {
+        if let nav = navigationController, nav.viewControllers.first != self {
+            nav.popViewController(animated: true)
+            if let completion = completion {
+                nav.transitionCoordinator?.animate(alongsideTransition: nil, completion: { _ in completion() })
+            }
+        } else {
+            dismiss(animated: true, completion: completion)
+        }
+    }
 }

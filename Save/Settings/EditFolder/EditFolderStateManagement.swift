@@ -6,91 +6,67 @@
 //  Copyright © 2025 Open Archive. All rights reserved.
 //
 
+import Foundation
 
-// MARK: - State
 struct EditFolderState {
-    var project:Project?
+    var project: Project?
     var folderName: String = ""
-    var status:Bool = false
+    var status: Bool = false
     var errorMessage: String?
 }
 
-// MARK: - Actions
-enum EditFolderAction {
-    case updateFolderName(String)
-    case saveFolderName
-    case resetStatus
-    case archiveFolder
-    case deleteFolder
-}
+final class EditFolderStore: ObservableObject {
 
-// MARK: - Reducer
-func editAppReducer(state: inout EditFolderState, action: EditFolderAction) {
-    switch action {
-    case .updateFolderName(let name):
-        state.folderName = name
-    case .saveFolderName:
-        editFolderName(state:&state)
-    case .resetStatus:
-        resetEditStatus(state:&state)
-    case .archiveFolder:
-        changeArchiveStatus(state:&state)
-    case .deleteFolder:
-        removeFolder(state:&state)
-    }
-}
+    @Published private(set) var state: EditFolderState
 
-// MARK: - Store
-class EditFolderStore: ObservableObject {
-    @Published private(set) var state = EditFolderState()
-    
     init(initialState: EditFolderState) {
         self.state = initialState
     }
-    func dispatch(action: EditFolderAction) {
-        editAppReducer(state: &state, action: action)
-    }
-}
 
-func editFolderName(state:inout EditFolderState) {
-    
-    if let currentProject = state.project {
-        
-        let isExsists =  Db.bgRwConn?.find(where: { (project:Project) in
-            project.spaceId == currentProject.spaceId && project.name == state.folderName && project.id != currentProject.id
+    func updateFolderName(_ name: String) {
+        state.folderName = name
+    }
+
+    func saveFolderName() {
+        guard let currentProject = state.project else { return }
+
+        let exists = Db.bgRwConn?.find(where: { (project: Project) in
+            let matchesSpace = project.spaceId == currentProject.spaceId
+            let matchesName = project.name == state.folderName
+            let isDifferentProject = project.id != currentProject.id
+            return matchesSpace && matchesName && isDifferentProject
         }) != nil
-        
-        if (isExsists){
+
+        if exists {
             state.status = false
             state.errorMessage = NSLocalizedString("Please choose another name/folder or use the existing one instead.", comment: "")
-        }else{
+        } else {
             state.status = true
             currentProject.name = state.folderName
             Db.writeConn?.setObject(currentProject)
         }
-    }}
-
-func removeFolder(state:inout EditFolderState) {
-    
-    if let currentProject = state.project {
-        Db.writeConn?.asyncReadWrite() { tx in
-            tx.remove(currentProject)}
-    }}
-
-func changeArchiveStatus(state:inout EditFolderState) {
-    state.project?.active.toggle()
-    if (state.project?.active ?? false), let license = SelectedSpace.space?.license {
-        state.project?.license = license
     }
-    if let project = state.project {
-        Db.writeConn?.setObject(project)
+
+    func resetStatus() {
+        state.status = false
+        state.errorMessage = nil
     }
-    
+
+    func archiveFolder() {
+        state.project?.active.toggle()
+        if state.project?.active == true, let license = SelectedSpace.space?.license {
+            state.project?.license = license
+        }
+        if let project = state.project {
+            Db.writeConn?.setObject(project)
+        }
+    }
+
+    func deleteFolder() {
+        if let currentProject = state.project {
+            Db.writeConn?.asyncReadWrite { tx in
+                tx.remove(currentProject)
+            }
+        }
+    }
 }
-
-func resetEditStatus(state:inout EditFolderState) {
-    state.status = false
-    state.errorMessage = nil
-}
-
-

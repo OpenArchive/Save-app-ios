@@ -15,54 +15,54 @@ struct PasscodeSetupView: View  {
     var body: some View {
         
         PasscodeSetupContent(
-            state: viewModel.store.dispatcher.state,
-            dispatch: viewModel.store.dispatch,
+            passcodeLength: viewModel.passcodeLength,
             passcode: viewModel.passcode,
             isConfirming: viewModel.isConfirming,
             isProcessing: viewModel.isProcessing,
             shouldShake: viewModel.shouldShake,
-            onNumberClick: viewModel.onNumberClick, showPasscodeError: viewModel.showPasswordMismatch,
-            onBackspaceClick: viewModel.onBackspaceClick, onEnterClick: viewModel.onEnterClick,
+            showPasscodeError: viewModel.showPasswordMismatch,
+            onNumberClick: viewModel.onNumberClick,
+            onBackspaceClick: viewModel.onBackspaceClick,
+            onEnterClick: viewModel.onEnterClick,
+            onExit: viewModel.cancel,
             onAnimationCompleted: viewModel.onAnimationCompleted
         )
     }
 }
 
 struct PasscodeSetupContent: View {
-    
-    let state: PasscodeSetupState
-    let dispatch: Dispatch<PasscodeSetupAction>
-    
+
+    let passcodeLength: Int
     let passcode: String
-    
     let isConfirming: Bool
     let isProcessing: Bool
     let shouldShake: Bool
+    let showPasscodeError: Bool
     let onNumberClick: (String) -> Void
-    let showPasscodeError:Bool
     let onBackspaceClick: () -> Void
     let onEnterClick: () -> Void
+    let onExit: () -> Void
     let onAnimationCompleted: () -> Void
-    
+
     @Environment(\.colorScheme) var colorScheme
-    
+
     var body: some View {
         PasscodeContentWrapper(
-            title: isConfirming ? NSLocalizedString("Confirm Passcode",comment: "Confirm Passcode")  : NSLocalizedString("Set Passcode",comment: "Set Passcode"),
-            subtitle: NSLocalizedString("Make sure you remember this pin. If you forget it, you will need to reset the app, and all in-app data will be erased.",comment: "subtitle"),
+            title: isConfirming ? NSLocalizedString("Confirm Passcode", comment: "Confirm Passcode") : NSLocalizedString("Set Passcode", comment: "Set Passcode"),
+            subtitle: NSLocalizedString("Make sure you remember this pin. If you forget it, you will need to reset the app, and all in-app data will be erased.", comment: "subtitle"),
             passcode: passcode,
-            passcodeLength: state.passcodeLength,
+            passcodeLength: passcodeLength,
             shouldShake: shouldShake,
-            isEnabled: !isProcessing, isPasscodeEntry: false, showPasswordMismatch: showPasscodeError,
+            isEnabled: !isProcessing,
+            isPasscodeEntry: false,
+            showPasswordMismatch: showPasscodeError,
             onNumberClick: onNumberClick,
-            onBackspaceClick: onBackspaceClick, onEnterClick: onEnterClick,
-            onExit: {
-                dispatch(.OnComplete)
-            },
+            onBackspaceClick: onBackspaceClick,
+            onEnterClick: onEnterClick,
+            onExit: onExit,
             onAnimationCompleted: onAnimationCompleted
         )
     }
-    
 }
 
 

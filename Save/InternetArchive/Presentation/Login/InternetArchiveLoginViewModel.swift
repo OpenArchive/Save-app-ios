@@ -10,77 +10,71 @@ import Foundation
 import Combine
 import SwiftUI
 
-class InternetArchiveLoginViewModel : StoreViewModel<InternetArchiveLoginState, InternetArchiveLoginAction> {
-    typealias Action = InternetArchiveLoginAction
-    typealias State = InternetArchiveLoginState
-    
+final class InternetArchiveLoginViewModel: ObservableObject {
+
     private let useCase: InternetArchiveLoginUseCase
-    
+    private var loginSubscription: Scoped?
+
+    @Published var userName: String = "" {
+        didSet { isValid = validateCredentials() }
+    }
+    @Published var password: String = "" {
+        didSet { isValid = validateCredentials() }
+    }
+    @Published private(set) var isLoginError: Bool = false
+    @Published private(set) var isBusy: Bool = false
+    @Published private(set) var isValid: Bool = false
+
+    var onNext: ((IaSpace) -> Void)?
+    var onCancel: (() -> Void)?
+    var onLoginProgress: ((Bool) -> Void)?
+
     init(useCase: InternetArchiveLoginUseCase) {
         self.useCase = useCase
-        super.init(initialState: InternetArchiveLoginState())
-        self.store.set(reducer: self.reduce)
-        self.store.set(effects: self.effects)
     }
-    
-    func state() -> State.Bindings {
-        State.Bindings(
-            userName: self.store.bind(\.userName) { .UpdateEmail($0) },
-            password: self.store.bind(\.password) { .UpdatePassword($0) },
-            isLoginError: self.store.dispatcher.state.isLoginError,
-            isBusy: self.store.dispatcher.state.isBusy,
-            isValid: self.store.dispatcher.state.isValid
-        )
+
+    func updateEmail(_ value: String) {
+        userName = value
     }
-    
-    // updates read-only state, copying structs is effecient in swift, but could be inout
-    private func reduce(state: InternetArchiveLoginState, action: Action) -> InternetArchiveLoginState? {
-        return switch action {
-        case .UpdateEmail(let value):
-            state.copy(userName: value, isValid: validateCredentials(value, state.password))
-        case .UpdatePassword(let value):
-            state.copy(password: value, isValid: validateCredentials(state.userName, value))
-        case .Login:
-            state.copy(isBusy: true)
-        case .LoginError:
-            state.copy(isLoginError: true, isBusy: false)
-        case .LoggedIn:
-            state.copy(isBusy: false)
-        case .ClearError:
-            state.copy(isLoginError: false)
-        default:
-            nil
-        }
+
+    func updatePassword(_ value: String) {
+        password = value
     }
-    
-    private func validateCredentials(_ email: String, _ password: String) -> Bool {
-        return !email.isEmpty && !password.isEmpty
+
+    func clearError() {
+        isLoginError = false
     }
-    
-    // applies side effects to store state and returns a value to keep in scope
-    private func effects(state: InternetArchiveLoginState, action: Action) -> Scoped? {
-        switch action {
-        case .Login:
-            self.store.notify(.isLoginOnprogress)
-            return useCase(email: state.userName, password: state.password, completion: { result in
+
+    func login() {
+        guard !isBusy, isValid else { return }
+        isBusy = true
+        onLoginProgress?(true)
+
+        loginSubscription = useCase(email: userName, password: password) { [weak self] result in
+            DispatchQueue.main.async {
+                self?.isBusy = false
+                self?.onLoginProgress?(false)
                 switch result {
                 case .success(let space):
-                    self.store.notify(.isLoginFinished)
-                    self.store.dispatch(.LoggedIn(space))
-                case .failure(_):
-                    self.store.notify(.isLoginFinished)
-                    self.store.dispatch(.LoginError)
+                    self?.onNext?(space)
+                case .failure:
+                    self?.isLoginError = true
                 }
-            })
-        case .LoggedIn(let space):
-            self.store.notify(.Next(space))
-        case .Cancel:
-            self.store.notify(.Cancel)
-        case .CreateAccount:
-            UIApplication.shared.open(URL(string: "https://archive.org/account/signup")!)
-        default: break
+            }
         }
-        
-        return nil
+    }
+
+    func cancel() {
+        onCancel?()
+    }
+
+    func createAccount() {
+        if let url = URL(string: "https://archive.org/account/signup") {
+            UIApplication.shared.open(url)
+        }
+    }
+
+    private func validateCredentials() -> Bool {
+        !userName.isEmpty && !password.isEmpty
     }
 }

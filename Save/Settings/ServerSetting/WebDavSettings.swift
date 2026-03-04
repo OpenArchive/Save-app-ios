@@ -22,90 +22,76 @@ struct ServerSettingsState {
     var licenseURL: String? = nil
 }
 
-enum ServerSettingsAction {
-    case updateServerName(String)
-    case updateServerURL(String)
-    
-    case toggleCcEnabled(Bool)
-    case toggleCc0Enabled(Bool)
-    case toggleAllowRemix(Bool)
-    case toggleRequireShareAlike(Bool)
-    case toggleAllowCommercialUse(Bool)
-    case saveToDatabase
-    case removeSpace(Space?)
-    case updateLicense
-}
+final class ServerSettingsStore: ObservableObject {
 
-class ServerSettingsStore: ObservableObject {
     @Published private(set) var state: ServerSettingsState
-    
+
     init(initialState: ServerSettingsState) {
         self.state = initialState
     }
-    
-    func dispatch(action: ServerSettingsAction) {
-        serverSettingsReducer(state: &state, action: action)
-        if case .updateLicense = action {
-            objectWillChange.send()
+
+    func updateServerName(_ name: String) {
+        state.serverName = name
+    }
+
+    func updateServerURL(_ url: String) {
+        state.serverURL = url
+    }
+
+    func toggleCcEnabled(_ isEnabled: Bool) {
+        state.isCcEnabled = isEnabled
+        if !isEnabled {
+            state.isCc0Enabled = false
+            state.allowRemix = false
+            state.requireShareAlike = false
+            state.allowCommercialUse = false
+        } else {
+            updateLicense()
         }
     }
-    
-    deinit {
-    }
-}
 
-func serverSettingsReducer(state: inout ServerSettingsState, action: ServerSettingsAction) {
-    switch action {
-    case .updateServerName(let name):
-        state.serverName = name
-        
-    case .updateServerURL(let url):
-        state.serverURL = url
-        
-    case .toggleCcEnabled(let isEnabled):
-            state.isCcEnabled = isEnabled
-            if !isEnabled {
-                state.isCc0Enabled = false
-                state.allowRemix = false
-                state.requireShareAlike = false
-                state.allowCommercialUse = false
-            }
-            
-        case .toggleCc0Enabled(let isEnabled):
-            state.isCc0Enabled = isEnabled
-            if isEnabled {
-           
-                state.allowRemix = false
-                state.requireShareAlike = false
-                state.allowCommercialUse = false
-            }
-            
-        case .toggleAllowRemix(let value):
-            state.allowRemix = value
-            if !value { state.requireShareAlike = false }
-         
-            if value { state.isCc0Enabled = false }
-            
-        case .toggleRequireShareAlike(let value):
-            state.requireShareAlike = value
-          
-            if value { state.isCc0Enabled = false }
-            
-        case .toggleAllowCommercialUse(let value):
-            state.allowCommercialUse = value
-          
-            if value { state.isCc0Enabled = false }
-            
-        case .updateLicense:
+    func toggleCc0Enabled(_ isEnabled: Bool) {
+        state.isCc0Enabled = isEnabled
+        if isEnabled {
+            state.allowRemix = false
+            state.requireShareAlike = false
+            state.allowCommercialUse = false
+        }
+        updateLicense()
+    }
+
+    func toggleAllowRemix(_ value: Bool) {
+        state.allowRemix = value
+        if !value { state.requireShareAlike = false }
+        if value { state.isCc0Enabled = false }
+        updateLicense()
+    }
+
+    func toggleRequireShareAlike(_ value: Bool) {
+        state.requireShareAlike = value
+        if value { state.isCc0Enabled = false }
+        updateLicense()
+    }
+
+    func toggleAllowCommercialUse(_ value: Bool) {
+        state.allowCommercialUse = value
+        if value { state.isCc0Enabled = false }
+        updateLicense()
+    }
+
+    func updateLicense() {
         state.licenseURL = generateLicenseURL(state: state)
         saveLicenseToDatabase(state: state)
-    case .saveToDatabase:
-        saveSpaceToDatabase(state: state)
-    case .removeSpace(let value):
-        removeSpace(space: value)
+        objectWillChange.send()
     }
-    
-    
+
+    func saveToDatabase() {
+        saveSpaceToDatabase(state: state)
+    }
+
+    func removeSpaceFromDatabase(_ space: Space?) {
+        removeSpace(space: space)
+    }
 }
 
 func saveLicenseToDatabase(state: ServerSettingsState) {

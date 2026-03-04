@@ -14,7 +14,7 @@ struct ServersListView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 0) {
+            LazyVStack(spacing: 0) {
                 ForEach(viewModel.spaces, id: \.id) { space in
                     ServerItemView(space: space, isSelected: space.id == viewModel.selectedSpaceId)
                         .onTapGesture {

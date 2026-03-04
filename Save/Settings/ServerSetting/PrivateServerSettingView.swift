@@ -66,14 +66,14 @@ struct PrivateServerSettingsView: View {
                             get: { store.state.serverName },
                             set: { newValue in
                                 serverName = newValue
-                                store.dispatch(action: .updateServerName(newValue))
+                                store.updateServerName(newValue)
                             }
                         ),
                         isDisabled: false,
                         onEditingChanged: { began in
                             onEditingChanged?(began)
                         }, onCommit:  {
-                            store.dispatch(action: .saveToDatabase)
+                            store.saveToDatabase()
                             showSuccessAlert = true
                         })
                     
@@ -98,8 +98,7 @@ struct PrivateServerSettingsView: View {
                     Toggle(NSLocalizedString("Set creative commons licenses for folders on this server.", comment: "Creative Commons Toggle"), isOn: Binding(
                         get: { store.state.isCcEnabled },
                         set: { newValue in
-                            store.dispatch(action: .toggleCcEnabled(newValue))
-                            store.dispatch(action: .updateLicense)
+                            store.toggleCcEnabled(newValue)
                         }
                     )) .toggleTint(.accent).font(.montserrat(.medium, for: .subheadline))
                     
@@ -152,7 +151,7 @@ struct PrivateServerSettingsView: View {
                                     primaryButtonTitle: NSLocalizedString("Remove", comment: ""),
                                     iconImage: Image("trash_icon"),
                                     primaryButtonAction: {
-                                        store.dispatch(action: .removeSpace(store.state.space!))
+                                        store.removeSpaceFromDatabase(store.state.space!)
                                         showDeleteAlert = false
                                         disableBackAction?(false)
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -216,7 +215,7 @@ struct PrivateServerSettingsView: View {
                 notificationCancellable?.cancel()
                 notificationCancellable = nil
                 
-                store.dispatch(action: .saveToDatabase)
+                store.saveToDatabase()
                 showSuccessAlert = true
             }
     }
@@ -231,8 +230,7 @@ struct LicenseToggles: View {
             Toggle(NSLocalizedString("Waive all restrictions, requirements, and attribution (CC0).", comment: "CC0 Toggle"), isOn: Binding(
                 get: { store.state.isCc0Enabled },
                 set: { newValue in
-                    store.dispatch(action: .toggleCc0Enabled(newValue))
-                    store.dispatch(action: .updateLicense)
+                    store.toggleCc0Enabled(newValue)
                 }
             ))
             .toggleTint(.accent)
@@ -241,8 +239,7 @@ struct LicenseToggles: View {
             Toggle(NSLocalizedString("Allow anyone to remix and share?", comment: "Remix Toggle"), isOn: Binding(
                 get: { store.state.allowRemix },
                 set: { newValue in
-                    store.dispatch(action: .toggleAllowRemix(newValue))
-                    store.dispatch(action: .updateLicense)
+                    store.toggleAllowRemix(newValue)
                 }
             )) .toggleTint(.accent).font(.montserrat(.medium, for: .subheadline))
             
@@ -250,8 +247,7 @@ struct LicenseToggles: View {
             Toggle(NSLocalizedString("Require them to share like you have?", comment: "ShareAlike Toggle"), isOn: Binding(
                 get: { store.state.requireShareAlike },
                 set: { newValue in
-                    store.dispatch(action: .toggleRequireShareAlike(newValue))
-                    store.dispatch(action: .updateLicense)
+                    store.toggleRequireShareAlike(newValue)
                 }
             )) .toggleTint(.accent)
                 .disabled(!store.state.allowRemix).font(.montserrat(.medium, for: .subheadline))
@@ -259,8 +255,7 @@ struct LicenseToggles: View {
             Toggle(NSLocalizedString("Allow commercial use?", comment: "Commercial Use Toggle"), isOn: Binding(
                 get: { store.state.allowCommercialUse },
                 set: { newValue in
-                    store.dispatch(action: .toggleAllowCommercialUse(newValue))
-                    store.dispatch(action: .updateLicense)
+                    store.toggleAllowCommercialUse(newValue)
                 }
             )) .toggleTint(.accent).font(.montserrat(.medium, for: .subheadline))
             

@@ -208,11 +208,13 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     private lazy var sideMenuHostingController: UIHostingController<AnyView> = {
         let coordinator = homeViewModel.coordinator
 
-        let contentView = SideMenuView()
-            .environmentObject(homeViewModel)
-            .environmentObject(coordinator)
+        let contentView = AnyView(
+            SideMenuView()
+                .environmentObject(homeViewModel)
+                .environmentObject(coordinator)
+        )
 
-        let hostingController = UIHostingController(rootView: AnyView(contentView))
+        let hostingController = UIHostingController(rootView: contentView)
         hostingController.view.backgroundColor = .clear
 
         addChild(hostingController)

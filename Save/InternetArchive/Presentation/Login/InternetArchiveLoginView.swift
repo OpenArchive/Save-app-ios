@@ -9,18 +9,15 @@
 import SwiftUI
 import FactoryKit
 
-struct InternetArchiveLoginView: View  {
-    
+struct InternetArchiveLoginView: View {
+
     @ObservedObject var viewModel: InternetArchiveLoginViewModel
-    
+
     var body: some View {
         if #available(iOS 15.0, *) {
-            InternetArchiveLoginContent(
-                state: viewModel.state(),
-                dispatch: viewModel.store.dispatch
-            )
+            InternetArchiveLoginContent(viewModel: viewModel)
         } else {
-            // Fallback on earlier versions
+            EmptyView()
         }
     }
 }
@@ -30,9 +27,8 @@ enum Field: Hashable {
 }
 
 struct InternetArchiveLoginContent: View {
-    
-    let state: InternetArchiveLoginState.Bindings
-    let dispatch: Dispatch<InternetArchiveLoginAction>
+
+    @ObservedObject var viewModel: InternetArchiveLoginViewModel
     @State private var keyboardOffset: CGFloat = 0
     @State private var isShowPassword = false
     @Environment(\.colorScheme) var colorScheme
@@ -60,7 +56,7 @@ struct InternetArchiveLoginContent: View {
                         Text(NSLocalizedString("Account",comment: "")).font(.montserrat(.semibold, for: .headline)).foregroundColor(.gray70).padding(.top,50).frame(maxWidth: .infinity, alignment: .leading).padding(.leading,20)
                         
                         ZStack(alignment: .leading) {
-                            if state.userName.wrappedValue.isEmpty {
+                            if viewModel.userName.isEmpty {
                                 Text(NSLocalizedString("Email", comment: ""))
                                     .italic()
                                     .font(.montserrat(.medium, for: .footnote))
@@ -68,7 +64,7 @@ struct InternetArchiveLoginContent: View {
                                     .padding(.leading, 5)
                             }
                             
-                            TextField("", text: state.userName)
+                            TextField("", text: $viewModel.userName)
                                 .autocapitalization(.none)
                                 .font(.montserrat(.medium, for: .footnote))
                                 .foregroundColor(.gray70)
@@ -82,7 +78,7 @@ struct InternetArchiveLoginContent: View {
                         .padding()
                         .overlay(
                             RoundedRectangle(cornerRadius: 8)
-                                .stroke(borderColor(for: .username), lineWidth: 1)
+                                .stroke(borderColor(forField: .username), lineWidth: 1)
                         )
                         .padding(.horizontal, 20)
                         .padding(.top, 15)
@@ -90,7 +86,7 @@ struct InternetArchiveLoginContent: View {
                         ZStack(alignment: .leading) {
                             HStack {
                                 ZStack(alignment: .leading) {
-                                    if state.password.wrappedValue.isEmpty {
+                                    if viewModel.password.isEmpty {
                                         Text(NSLocalizedString("Password",comment: ""))
                                             .italic()
                                             .font(.montserrat(.medium, for: .footnote))
@@ -99,12 +95,12 @@ struct InternetArchiveLoginContent: View {
                                     }
                                     
                                     if isShowPassword {
-                                        TextField("", text: state.password)
+                                        TextField("", text: $viewModel.password)
                                             .font(.montserrat(.medium, for: .footnote))
                                             .focused($focusedField, equals: .password)
                                             .foregroundColor(.gray70)
                                     } else {
-                                        SecureField("", text: state.password)
+                                        SecureField("", text: $viewModel.password)
                                             .font(.montserrat(.medium, for: .footnote))
                                             .focused($focusedField, equals: .password)
                                             .foregroundColor(.gray70)
@@ -122,21 +118,19 @@ struct InternetArchiveLoginContent: View {
                         .padding()
                         .overlay(
                             RoundedRectangle(cornerRadius: 8)
-                                .stroke(borderColor(for: .password), lineWidth: 1)
+                                .stroke(borderColor(forField: .password), lineWidth: 1)
                         )
                         .padding(.horizontal, 20)
                         .padding(.top, 15)
                         
-                        if (state.isLoginError) {
+                        if viewModel.isLoginError {
                             Text(NSLocalizedString("Incorrect email or password",comment: "")).foregroundColor(.red).padding(.top,1) .padding(.leading,20).font(.montserrat(.medium, for: .caption2))
                                 .padding(.trailing,20) .frame(maxWidth: .infinity, alignment: .leading)
                         }
                         
                         HStack(alignment: .center) {
                             Text(NSLocalizedString("No Account?",comment: "")).foregroundColor(.gray70).font(.montserrat(.semibold, for: .callout))
-                            Button(action: {
-                                dispatch(.CreateAccount)
-                            }) {
+                            Button(action: { viewModel.createAccount() }) {
                                 Text(NSLocalizedString("Create one",comment: ""))
                             }.foregroundColor(.accent).font(.montserrat(.semibold, for: .callout))
                         }.padding(.top,40)
@@ -144,28 +138,22 @@ struct InternetArchiveLoginContent: View {
                         Spacer()
                         
                         HStack(alignment: .bottom) {
-                            Button(action: {
-                                dispatch(.Cancel)
-                            }, label: {
+                            Button(action: { viewModel.cancel() }, label: {
                                 Text(NSLocalizedString("Back",comment: "")).frame(maxWidth: .infinity)
                             })
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .foregroundColor(state.isBusy ? .gray50 : (colorScheme == .dark ? Color.white : Color.black))
+                            .foregroundColor(viewModel.isBusy ? .gray50 : (colorScheme == .dark ? Color.white : Color.black))
                             .font(.montserrat(.semibold, for: .headline))
-                            .disabled(state.isBusy)
+                            .disabled(viewModel.isBusy)
                             
-                            Button(action: {
-                                if (!state.isBusy) {
-                                    dispatch(.Login)
-                                }
-                            }, label: {
+                            Button(action: { viewModel.login() }, label: {
                                 Text(NSLocalizedString("Next",comment: "")).frame(maxWidth: .infinity)
                             })
-                            .disabled(!state.isValid)
+                            .disabled(!viewModel.isValid)
                             .padding()
                             .frame(maxWidth: .infinity)
-                            .background(!state.isValid ? .gray50 :  Color.accent)
+                            .background(!viewModel.isValid ? .gray50 : Color.accent)
                             .foregroundColor(.black)
                             .cornerRadius(10)
                             .font(.montserrat(.semibold, for: .headline))
@@ -175,7 +163,7 @@ struct InternetArchiveLoginContent: View {
                     .frame(minHeight: reader.size.height)
                     .ignoresSafeArea(.keyboard, edges: .bottom)
                     
-                    if state.isBusy {
+                    if viewModel.isBusy {
                                           Color.black.opacity(0.7)
                                               .edgesIgnoringSafeArea(.all)
                                               .overlay(
@@ -187,20 +175,16 @@ struct InternetArchiveLoginContent: View {
                 }
             
         }
-        .onChange(of: state.userName.wrappedValue) { _ in
-            if state.isLoginError {
-                dispatch(.ClearError)
-            }
+        .onChange(of: viewModel.userName) { _ in
+            if viewModel.isLoginError { viewModel.clearError() }
         }
-        .onChange(of: state.password.wrappedValue) { _ in
-            if state.isLoginError {
-                dispatch(.ClearError)
-            }
+        .onChange(of: viewModel.password) { _ in
+            if viewModel.isLoginError { viewModel.clearError() }
         }
     }
     
-    private func borderColor(for field: Field) -> Color {
-        if state.isLoginError {
+    private func borderColor(forField field: Field) -> Color {
+        if viewModel.isLoginError {
             return .red
         } else if focusedField == field {
             return .accent // teal
@@ -211,27 +195,11 @@ struct InternetArchiveLoginContent: View {
 }
 
 struct InternetArchiveLoginView_Previews: PreviewProvider {
-    static let state = InternetArchiveLoginState(
-        userName: "abcuser",
-        password: "abc",
-        isLoginError: true,
-        isValid: true,
-        isBusy: false
-    )
-    
     static var previews: some View {
         if #available(iOS 15.0, *) {
-            InternetArchiveLoginContent(
-                state: InternetArchiveLoginState.Bindings(
-                    userName: Binding.constant(state.userName),
-                    password: Binding.constant(state.password),
-                    isLoginError: state.isLoginError,
-                    isBusy: state.isBusy,
-                    isValid: state.isValid
-                )
-            ) { _ in }
+            InternetArchiveLoginContent(viewModel: InternetArchiveLoginViewModel(useCase: Container.shared.internetArchiveLoginUseCase()))
         } else {
-            // Fallback on earlier versions
+            EmptyView()
         }
     }
 }

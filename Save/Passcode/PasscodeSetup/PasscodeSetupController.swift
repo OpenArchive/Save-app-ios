@@ -6,52 +6,33 @@
 //  Copyright © 2024 Open Archive. All rights reserved.
 //
 
-
 import SwiftUI
 import UIKit
 import FactoryKit
 
-class PasscodeSetupController : ViewModelController<PasscodeSetupState, PasscodeSetupAction, PasscodeSetupViewModel, PasscodeSetupView>{
-    
-    typealias Action = PasscodeSetupAction
-    
-    
+class PasscodeSetupController: UIHostingController<PasscodeSetupView> {
+
+    private let viewModel = Container.shared.passcodeSetupViewModel()
+
     required init() {
-        let viewModel = Container.shared.passcodeSetupViewModel()
-        super.init(
-            viewModel: viewModel,
-            rootView: PasscodeSetupView(
-                viewModel: viewModel
-            )
-        )
+        super.init(rootView: PasscodeSetupView(viewModel: viewModel))
+        navigationItem.title = NSLocalizedString("Lock app with passcode", comment: "")
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.title = NSLocalizedString("Lock app with passcode", comment: "")
-        viewModel?.store.listen { [weak self] action in
-            switch action {
-            case .OnComplete:
-                self?.onComplete()
-            default:
-                break
+        viewModel.onComplete = { [weak self] success in
+            if success {
+                trackFeatureToggled(featureName: "passcode_protection", enabled: true)
             }
+            self?.navigationController?.popViewController(animated: true)
         }
     }
-    
-    private func onNext() {
-        navigationController?.popViewController(animated: true)
-    }
-    
-    private func onComplete() {
-        trackFeatureToggled(featureName: "passcode_protection", enabled: true)
-        navigationController?.popViewController(animated: true)
-    }
-    
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         trackScreenViewSafely("PasscodeSetup")

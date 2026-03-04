@@ -14,7 +14,7 @@ struct ProjectsListView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 0) {
+            LazyVStack(spacing: 0) {
                 ForEach(viewModel.projects, id: \.id) { project in
                     ProjectItemView(
                         project: project,

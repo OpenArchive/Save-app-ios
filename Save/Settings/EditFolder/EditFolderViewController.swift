@@ -97,9 +97,9 @@ struct EditFolderView: View {
                         text: $folderName,
                         isDisabled: (!(store.state.project?.active ?? false) ),
                         onTextChanged: {text in
-                            store.dispatch(action: .updateFolderName(text))
+                            store.updateFolderName(text)
                         },onCommit: {
-                            store.dispatch(action:.saveFolderName)
+                            store.saveFolderName()
                             changeName?(folderName)
                             disableBackAction?(true)
                         }
@@ -110,7 +110,7 @@ struct EditFolderView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 
                 Button((store.state.project?.active ?? false) ? NSLocalizedString("Archive Project", comment: "") :  NSLocalizedString("Unarchive Project", comment: "")) {
-                    store.dispatch(action:.archiveFolder)
+                    store.archiveFolder()
                     if (store.state.project?.active ?? false) {
                            dismissAction?()
                        }
@@ -150,7 +150,7 @@ struct EditFolderView: View {
                                     primaryButtonTitle: NSLocalizedString("Got it", comment: ""),
                                     iconImage: Image("check_icon"),
                                     primaryButtonAction: {
-                                        store.dispatch(action: .resetStatus)
+                                        store.resetStatus()
                                         disableBackAction?(false)
                                     },
                                     showCheckbox: false
@@ -175,7 +175,7 @@ struct EditFolderView: View {
                                     iconImage: Image("ic_error"),
                                     iconTint:.gray,
                                     primaryButtonAction: {
-                                        store.dispatch(action: .resetStatus)
+                                        store.resetStatus()
                                         disableBackAction?(false)
                                     },
                                     showCheckbox: false
@@ -202,7 +202,7 @@ struct EditFolderView: View {
                                     iconTint:.gray,
                                     primaryButtonAction: {
                                         showDeleteAlert = false
-                                        store.dispatch(action: .deleteFolder)
+                                        store.deleteFolder()
                                         dismissAction?()
                                     },
                                     secondaryButtonTitle: NSLocalizedString("Cancel", comment: ""),
