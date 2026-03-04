@@ -24,7 +24,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     @IBOutlet weak var EditButtonTrailingContraint: NSLayoutConstraint!
     @IBOutlet weak var titleContainerHeight: NSLayoutConstraint!
     @IBOutlet weak var titleContainer: UIView!
-    private static let segueConnectSpace = "connectSpaceSegue"
     private static let segueShowPreview = "showPreviewSegue"
     private static let segueShowPrivateServerSetting = "showPrivateServerSetting"
     private static var isSettingsEnabled = false
@@ -654,7 +653,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     func addSpace() {
         toggleMenu(false) { [weak self] _ in
-            self?.performSegue(withIdentifier: Self.segueConnectSpace, sender: self)
+            self?.navigationController?.pushViewController(SpaceTypeViewController(), animated: true)
         }
     }
     
@@ -735,7 +734,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 
             }
             else {
-                self.performSegue(withIdentifier: Self.segueConnectSpace, sender: self)
+                self.navigationController?.pushViewController(SpaceTypeViewController(), animated: true)
             }
         }
     }
@@ -763,10 +762,9 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             }
         }
         else{
-            
+            guard presentedViewController == nil else { return }
+
             let popup = MediaPopupViewController()
-            popup.modalPresentationStyle = .overCurrentContext
-            popup.modalTransitionStyle = .crossDissolve
             self.mediaArrow.isHidden = true
             
             popup.onCameraTap = { [weak self] in

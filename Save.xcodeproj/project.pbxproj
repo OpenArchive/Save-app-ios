@@ -179,6 +179,8 @@
 				CustomComponents/CustomButton.swift,
 				CustomComponents/CustomTextField.swift,
 				Extensions/MontserratExtension.swift,
+				"Extensions/View+Analytics.swift",
+				Space/WizardDelegate.swift,
 			);
 			target = A07128FA2111CC90007A432A /* ShareExtension */;
 		};

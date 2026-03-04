@@ -29,7 +29,7 @@ class MainNavigationController: UINavigationController {
         }
         else {
             setViewControllers(
-                [UIStoryboard.main.instantiate(ClaimViewController.self)],
+                [ClaimViewController()],
                 animated: true)
         }
         

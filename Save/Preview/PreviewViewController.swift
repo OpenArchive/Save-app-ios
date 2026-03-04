@@ -237,11 +237,9 @@ class PreviewViewController: UIViewController,
         }
     }
     func showMediaPickerSheet() {
-        
-        
+        guard presentedViewController == nil else { return }
+
         let popup = MediaPopupViewController()
-        popup.modalPresentationStyle = .overCurrentContext
-        popup.modalTransitionStyle = .crossDissolve
         
         popup.onCameraTap = { [weak self] in
             self?.assetPicker.openCamera()

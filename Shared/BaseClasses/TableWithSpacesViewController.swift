@@ -83,7 +83,7 @@ class TableWithSpacesViewController: BaseTableViewController, UICollectionViewDe
             tableView.reloadData()
         }
         else {
-            performSegue(withIdentifier: "connectSpaceSegue", sender: self)
+         //   navigationController?.pushViewController(SpaceTypeViewController(), animated: true)
         }
     }
 

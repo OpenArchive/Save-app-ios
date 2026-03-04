@@ -80,13 +80,15 @@ class CreateCCLWrapperViewController: UIViewController, WizardDelegatable {
     }
 
     private func navigateToSuccess(space: Space) {
-        let vc = UIStoryboard.main.instantiate(SpaceSuccessViewController.self)
+        let name: String
         if space is IaSpace {
-            vc.spaceName = NSLocalizedString("the Internet Archive", comment: "")
+            name = NSLocalizedString("the Internet Archive", comment: "")
         } else {
-            vc.spaceName = NSLocalizedString("a private server", comment: "")
+            name = NSLocalizedString("a private server", comment: "")
         }
 
+        let vc = SpaceSuccessViewController(spaceName: name)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationController?.pushViewController(vc, animated: true)
     }
 

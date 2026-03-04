@@ -54,7 +54,7 @@ class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPic
 
         case .notDetermined:
             PHPhotoLibrary.requestAuthorization() { newStatus in
-                if newStatus == .authorized {
+                if newStatus == .authorized || newStatus == .limited {
                     DispatchQueue.main.async {
                         self.delegate?.present(tlpp, animated: true)
                     }

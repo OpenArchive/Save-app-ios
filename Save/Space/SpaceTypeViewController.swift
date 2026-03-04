@@ -7,82 +7,55 @@
 //
 
 import UIKit
+import SwiftUI
 
-class SpaceTypeViewController: UIViewController, WizardDelegatable {
-    
+class SpaceTypeViewController: UIHostingController<SpaceTypeView>, WizardDelegatable {
+
     weak var delegate: WizardDelegate?
-    
-    @IBOutlet weak var container: UIView!
-    
-    @IBOutlet weak var emptyView: UIView!
-    @IBOutlet weak var titleLb: UILabel! {
-        didSet {
-            titleLb.text = NSLocalizedString(
-                "To get started, connect to a server to store your media.",
-                comment: "")
-            titleLb.font = .montserrat(forTextStyle: .headline ,with: .traitUIOptimized)
-        }
+
+    required init() {
+        let placeholder = SpaceTypeView(
+            showInternetArchive: false,
+            onWebDav: {},
+            onInternetArchive: {}
+        )
+        super.init(rootView: placeholder)
+        title = NSLocalizedString("Select a Server", comment: "")
     }
-    
-    @IBOutlet weak var subtitleLb: UILabel! {
-        didSet {
-            subtitleLb.text = NSLocalizedString(
-                "You can add multiple private servers and one IA Account at any time.",
-                comment: "")
-            subtitleLb.font = .montserrat(forTextStyle: .subheadline)
-            subtitleLb.textColor = .subtitleText
-        }
+
+    @MainActor @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = NSLocalizedString("Select a Server", comment: "")
-        var button = BigButton.create(
-            icon: UIImage(named: "private_server_teal"),
-            title: WebDavSpace.defaultPrettyName,
-            subtitle: NSLocalizedString("Connect to a secure \nWebDAV server", comment: ""),
-            target: self,
-            action: #selector(newWebDav),
-            container: container,
-            above: emptyView)
-        button.accessibilityIdentifier = "viewPrivateServer"
+
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-               navigationItem.backBarButtonItem = backBarButtonItem
-        
+        navigationItem.backBarButtonItem = backBarButtonItem
+
+        var showIA = false
         Db.bgRwConn?.read { tx in
             if tx.find(where: { (_: IaSpace) in true }) == nil {
-                button = BigButton.create(
-                    icon: UIImage(named: "internet_archive_teal"),
-                    title: IaSpace.defaultPrettyName,
-                    subtitle: NSLocalizedString("Connect to a free \npublic server", comment: ""),
-                    target: self,
-                    action: #selector(newIa),
-                    container: container,
-                    above: button,
-                    equalHeight: true)
+                showIA = true
             }
-            
         }
-        
-        button.bottomAnchor.constraint(lessThanOrEqualTo: container.bottomAnchor, constant: -16).isActive = true
+
+        rootView = SpaceTypeView(
+            showInternetArchive: showIA,
+            onWebDav: { [weak self] in self?.newWebDav() },
+            onInternetArchive: { [weak self] in self?.newIa() }
+        )
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        trackScreenViewSafely("SpaceType")
+
+    private func newWebDav() {
+        navigationController?.pushViewController(
+            UIStoryboard.main.instantiate(WebDavWizardViewController.self),
+            animated: true)
     }
-    
-    // MARK: Actions
-    
-    @IBAction func newWebDav() {
-        navigationController?.pushViewController(UIStoryboard.main.instantiate(WebDavWizardViewController.self),animated: true)
-    }
-    
-    @IBAction func newIa() {
-        navigationController?.pushViewController(InternetArchiveLoginViewController(),animated: true)
-        
-    }
-    
-    @IBAction func newGdrive() {
-      //  delegate?.next(UIStoryboard.main.instantiate(GdriveWizardViewController.self), pos: 1)
+
+    private func newIa() {
+        navigationController?.pushViewController(
+            InternetArchiveLoginViewController(),
+            animated: true)
     }
 }

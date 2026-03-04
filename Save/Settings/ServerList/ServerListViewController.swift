@@ -105,11 +105,7 @@ class ServerListViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     @objc private func addServerTapped() {
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let spaceSelectionVC = storyboard.instantiateViewController(withIdentifier: "SpaceTypeViewController") as? SpaceTypeViewController {
-               navigationController?.pushViewController(spaceSelectionVC, animated: true)
-           }
+        navigationController?.pushViewController(SpaceTypeViewController(), animated: true)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
