@@ -193,7 +193,7 @@ struct ProofModeSettingsView: View {
             Group {
                 if showAlert {
                     Color.black.opacity(0.7)
-                        .edgesIgnoringSafeArea(.all)
+                        .ignoresSafeArea()
                         .overlay(
                             VStack {
                                 CustomAlertView(

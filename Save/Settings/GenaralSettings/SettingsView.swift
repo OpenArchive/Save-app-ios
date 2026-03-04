@@ -120,7 +120,7 @@ struct SettingsView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                Color(UIColor.systemBackground).edgesIgnoringSafeArea(.all)
+                Color(UIColor.systemBackground).ignoresSafeArea()
                 
                 List {
                     settingsShareSection
@@ -142,7 +142,7 @@ struct SettingsView: View {
             Group {
                 if showPasscodeAlert {
                     Color.black.opacity(0.7)
-                        .edgesIgnoringSafeArea(.all)
+                        .ignoresSafeArea()
                         .overlay(
                             VStack {
                                 CustomAlertView(
@@ -183,7 +183,7 @@ struct SettingsView: View {
                 }
                 if showTorAlert {
                     Color.black.opacity(0.7)
-                        .edgesIgnoringSafeArea(.all)
+                        .ignoresSafeArea()
                         .overlay(
                             VStack {
                                 CustomAlertView(

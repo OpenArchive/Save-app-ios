@@ -69,7 +69,7 @@ struct PasscodeContentWrapper: View {
         }
         .frame(maxWidth: .infinity, alignment: .topLeading)
         .padding(.top, 40)
-        .edgesIgnoringSafeArea(.bottom)
+        .ignoresSafeArea(edges: .bottom)
         .toast(isShowing: $showToast, message: NSLocalizedString("Passcodes do not match. Try again.", comment: ""))
                 .onChange(of: showPasswordMismatch) { shouldShow in
                     if shouldShow && !isPasscodeEntry {

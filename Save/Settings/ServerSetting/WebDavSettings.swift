@@ -175,10 +175,5 @@ func generateLicenseURL(state: ServerSettingsState) -> String? {
         license += "-nd"
     }
     
-    // Format the URL properly
-    if #available(iOS 14.0, *) {
-        return String(format: PrivateServerSettingsView.ccUrl, license)
-    } else {
-        return String(format: "https://creativecommons.org/licenses/%@/4.0/", license)
-    }
+    return "https://creativecommons.org/licenses/\(license)/4.0/"
 }

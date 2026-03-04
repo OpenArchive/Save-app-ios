@@ -14,8 +14,6 @@ extension Notification.Name {
 }
 @available(iOS 14.0, *)
 struct PrivateServerSettingsView: View {
-    static let ccUrl = "https://creativecommons.org/licenses/%@/4.0/"
-    let ccMoreUrl = "https://creativecommons.org/about/cclicenses/"
     @StateObject private var store: ServerSettingsStore
     @State private var serverName: String
     @State private var notificationCancellable: AnyCancellable?
@@ -108,7 +106,7 @@ struct PrivateServerSettingsView: View {
                     
                     if  let url = URL(string: "https://creativecommons.org/") {
                         
-                        Text(AttributedString(NSLocalizedString(NSLocalizedString("Learn more about Creative Commons.", comment: "More Info Link"), comment: "License Link"), attributes: AttributeContainer([.underlineStyle: NSUnderlineStyle.single.rawValue])))
+                        Text(AttributedString(NSLocalizedString("Learn more about Creative Commons.", comment: "More Info Link"), attributes: AttributeContainer([.underlineStyle: NSUnderlineStyle.single.rawValue])))
                             .foregroundColor(.accentColor)
                             .font(.montserrat(.medium, for: .subheadline))
                             .padding(.top, 10)
@@ -142,7 +140,7 @@ struct PrivateServerSettingsView: View {
             Group {
                 if showDeleteAlert {
                     Color.black.opacity(0.7)
-                        .edgesIgnoringSafeArea(.all)
+                        .ignoresSafeArea()
                         .overlay(
                             VStack {
                                 CustomAlertView(
@@ -175,7 +173,7 @@ struct PrivateServerSettingsView: View {
                 }
                 if showSuccessAlert {
                     Color.black.opacity(0.7)
-                        .edgesIgnoringSafeArea(.all)
+                        .ignoresSafeArea()
                         .overlay(
                             VStack {
                                 CustomAlertView(
@@ -277,7 +275,7 @@ struct SectionHeader: View {
     var title: String
     
     var body: some View {
-        Text(NSLocalizedString(title, comment: "\(title) Section"))
+        Text(title)
             .font(.montserrat(.semibold, for: .headline))
             .foregroundColor(.gray70)
             .padding(.top,20)

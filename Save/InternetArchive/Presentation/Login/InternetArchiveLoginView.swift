@@ -165,7 +165,7 @@ struct InternetArchiveLoginContent: View {
                     
                     if viewModel.isBusy {
                                           Color.black.opacity(0.7)
-                                              .edgesIgnoringSafeArea(.all)
+                                              .ignoresSafeArea()
                                               .overlay(
                                                   ProgressView()
                                                       .progressViewStyle(CircularProgressViewStyle(tint: .white))

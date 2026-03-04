@@ -62,7 +62,6 @@ class EditFolderViewController: UIViewController {
 }
 
 // MARK: - SwiftUI View
-@available(iOS 14.0, *)
 struct EditFolderView: View {
     @StateObject private var store:  EditFolderStore
     @State private var folderName: String
@@ -85,9 +84,9 @@ struct EditFolderView: View {
     }
     
     var body: some View {
-        VStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 10) {
+        ScrollView {
+            VStack(spacing: 0) {
+                LazyVStack(alignment: .leading, spacing: 10) {
                     Text("Folder Name")
                         .font(.montserrat(.semibold, for: .headline))
                         .multilineTextAlignment(.leading)
@@ -112,8 +111,8 @@ struct EditFolderView: View {
                 Button((store.state.project?.active ?? false) ? NSLocalizedString("Archive Project", comment: "") :  NSLocalizedString("Unarchive Project", comment: "")) {
                     store.archiveFolder()
                     if (store.state.project?.active ?? false) {
-                           dismissAction?()
-                       }
+                        dismissAction?()
+                    }
                 }
                 .frame(maxWidth: .infinity)
                 .foregroundColor(.primary)
@@ -124,15 +123,12 @@ struct EditFolderView: View {
                 Button(NSLocalizedString("Remove from app", comment: "")) {
                     showDeleteAlert = true
                     disableBackAction?(true)
-                    
                 }
                 .frame(maxWidth: .infinity)
                 .font(.montserrat(.semibold, for: .headline))
                 .foregroundColor(.redButton)
                 .cornerRadius(8)
             }
-            
-            
         }
         .frame(maxHeight: .infinity, alignment: .top)
         .padding(.top, 52)
@@ -141,7 +137,7 @@ struct EditFolderView: View {
             Group {
                 if store.state.status {
                     Color.black.opacity(0.7)
-                        .edgesIgnoringSafeArea(.all)
+                        .ignoresSafeArea()
                         .overlay(
                             VStack {
                                 CustomAlertView(
@@ -165,7 +161,7 @@ struct EditFolderView: View {
                 }
                 if (store.state.errorMessage != nil) {
                     Color.black.opacity(0.7)
-                        .edgesIgnoringSafeArea(.all)
+                        .ignoresSafeArea()
                         .overlay(
                             VStack {
                                 CustomAlertView(
@@ -189,7 +185,7 @@ struct EditFolderView: View {
                 }
                 if (showDeleteAlert) {
                     Color.black.opacity(0.7)
-                        .edgesIgnoringSafeArea(.all)
+                        .ignoresSafeArea()
                         .overlay(
                             VStack {
                                 CustomAlertView(

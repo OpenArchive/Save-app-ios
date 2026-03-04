@@ -9,7 +9,6 @@
 import SwiftUI
 import YapDatabase
 
-@available(iOS 14.0, *)
 struct CreateCCLView: View {
     static let ccUrl = "https://creativecommons.org/licenses/%@/4.0/"
     static let cc0Url = "https://creativecommons.org/publicdomain/zero/1.0/"
