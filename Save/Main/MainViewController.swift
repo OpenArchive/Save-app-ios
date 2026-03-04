@@ -195,8 +195,8 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             groups: ActiveProjectsView.groups, view: ActiveProjectsView.name)
 
         let viewModel = HomeViewModel(
-            spacesConn: spacesConn!,
-            spacesMappings: spacesMappings,
+            spacesConn: spacesConn,
+            spacesMappings: spacesConn == nil ? nil : spacesMappings,
             projectsConn: sideMenuProjectsConn,
             projectsMappings: sideMenuProjectsMappings,
             coordinator: coordinator
@@ -205,13 +205,12 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         return viewModel
     }()
 
-    private lazy var sideMenuHostingController: UIHostingController<AnyView> = {
+    private lazy var sideMenuHostingController: UIHostingController<SideMenuRootView> = {
         let coordinator = homeViewModel.coordinator
 
-        let contentView = AnyView(
-            SideMenuView()
-                .environmentObject(homeViewModel)
-                .environmentObject(coordinator)
+        let contentView = SideMenuRootView(
+            homeViewModel: homeViewModel,
+            coordinator: coordinator
         )
 
         let hostingController = UIHostingController(rootView: contentView)
@@ -1128,6 +1127,17 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     func pushPrivateServerSetting(space:Space) {
         privateServer = space
         performSegue(withIdentifier: MainViewController.segueShowPrivateServerSetting, sender: self)
+    }
+}
+
+private struct SideMenuRootView: View {
+    @ObservedObject var homeViewModel: HomeViewModel
+    let coordinator: NavigationCoordinator
+
+    var body: some View {
+        SideMenuView()
+            .environmentObject(homeViewModel)
+            .environmentObject(coordinator)
     }
 }
 

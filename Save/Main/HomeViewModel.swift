@@ -41,25 +41,31 @@ final class HomeViewModel: ObservableObject {
     }
 
     init(
-        spacesConn: YapDatabaseConnection,
-        spacesMappings: YapDatabaseViewMappings,
+        spacesConn: YapDatabaseConnection?,
+        spacesMappings: YapDatabaseViewMappings?,
         projectsConn: YapDatabaseConnection?,
         projectsMappings: YapDatabaseViewMappings?,
         coordinator: NavigationCoordinator
     ) {
         self.coordinator = coordinator
 
-        databaseObserver = HomeDatabaseObserver(
-            spacesConn: spacesConn,
-            spacesMappings: spacesMappings,
-            projectsConn: projectsConn,
-            projectsMappings: projectsMappings,
-            onFetchComplete: { [weak self] spaces, projects in
-                self?.applySpaces(spaces)
-                self?.applyProjects(projects)
-                self?.reconcileSelection(projects: projects)
-            }
-        )
+        if let spacesConn, let spacesMappings {
+            databaseObserver = HomeDatabaseObserver(
+                spacesConn: spacesConn,
+                spacesMappings: spacesMappings,
+                projectsConn: projectsConn,
+                projectsMappings: projectsMappings,
+                onFetchComplete: { [weak self] spaces, projects in
+                    self?.applySpaces(spaces)
+                    self?.applyProjects(projects)
+                    self?.reconcileSelection(projects: projects)
+                }
+            )
+        } else {
+            // Graceful fallback when DB connection is temporarily unavailable.
+            applySpaces([])
+            applyProjects([])
+        }
 
         databaseObserver?.refresh()
     }

@@ -107,7 +107,7 @@ final class InternetArchiveDetailViewModel: ObservableObject {
     // MARK: - License URL
 
     private func updateLicense() {
-        let url = generateLicenseURL(viewModel: self)
+        let url = generateLicenseURL()
         #if DEBUG
         print(url ?? "")
         #endif
@@ -129,7 +129,8 @@ final class InternetArchiveDetailViewModel: ObservableObject {
     }
 
     private func remove() {
-        Db.writeConn?.readWrite { tx in
+        guard let writeConn = Db.writeConn else { return }
+        writeConn.readWrite { tx in
             tx.removeObject(forKey: space.id, inCollection: Space.collection)
             SelectedSpace.space = nil
             SelectedSpace.store(tx)
@@ -141,21 +142,20 @@ final class InternetArchiveDetailViewModel: ObservableObject {
         }
         onDismiss?()
     }
-}
 
-// MARK: - License URL Helper (internal for ViewModel, keep for preview if needed)
-func generateLicenseURL(viewModel: InternetArchiveDetailViewModel) -> String? {
-    guard viewModel.isCcEnabled else { return nil }
-    if viewModel.isCc0Enabled {
-        return "https://creativecommons.org/publicdomain/zero/1.0/"
+    private func generateLicenseURL() -> String? {
+        guard isCcEnabled else { return nil }
+        if isCc0Enabled {
+            return "https://creativecommons.org/publicdomain/zero/1.0/"
+        }
+        var license = "by"
+        if allowRemix {
+            if !allowCommercialUse { license += "-nc" }
+            if requireShareAlike { license += "-sa" }
+        } else {
+            if !allowCommercialUse { license += "-nc" }
+            license += "-nd"
+        }
+        return "https://creativecommons.org/licenses/\(license)/4.0/"
     }
-    var license = "by"
-    if viewModel.allowRemix {
-        if !viewModel.allowCommercialUse { license += "-nc" }
-        if viewModel.requireShareAlike { license += "-sa" }
-    } else {
-        if !viewModel.allowCommercialUse { license += "-nc" }
-        license += "-nd"
-    }
-    return "https://creativecommons.org/licenses/\(license)/4.0/"
 }

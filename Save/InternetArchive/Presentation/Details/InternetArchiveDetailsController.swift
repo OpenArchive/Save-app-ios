@@ -40,7 +40,7 @@ class InternetArchiveDetailsController: UIHostingController<InternetArchiveDetai
         trackScreenViewSafely("InternetArchiveDetails")
     }
 
-    /// Pops if in a navigation stack, otherwise dismisses (matches former ViewModelController behavior).
+    /// Pops if in a navigation stack, otherwise dismisses.
     private func dismissOrPop(completion: (() -> Void)?) {
         if let nav = navigationController, nav.viewControllers.first != self {
             nav.popViewController(animated: true)

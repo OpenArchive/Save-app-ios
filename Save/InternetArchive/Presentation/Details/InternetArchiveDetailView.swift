@@ -125,7 +125,7 @@ struct InternetArchiveDetailContent: View {
                 }
 
                 if let url = URL(string: "https://creativecommons.org/") {
-                    Text(AttributedString(NSLocalizedString(NSLocalizedString("Learn more about Creative Commons.", comment: "More Info Link"), comment: "License Link"), attributes: AttributeContainer([.underlineStyle: NSUnderlineStyle.single.rawValue])))
+                    Text(AttributedString(NSLocalizedString("Learn more about Creative Commons.", comment: "More Info Link"), attributes: AttributeContainer([.underlineStyle: NSUnderlineStyle.single.rawValue])))
                         .foregroundColor(.accentColor)
                         .font(.montserrat(.medium, for: .subheadline))
                         .padding(.top, 10)
