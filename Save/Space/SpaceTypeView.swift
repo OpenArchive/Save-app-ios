@@ -14,6 +14,8 @@ struct SpaceTypeView: View {
     var onInternetArchive: () -> Void
     var onStoracha: () -> Void
 
+    @State private var showPublicDataWarning = false
+
     var body: some View {
         VStack(spacing: 16) {
             Text(NSLocalizedString(
@@ -51,9 +53,15 @@ struct SpaceTypeView: View {
 
             BigButtonView(
                 icon: "storachaBird",
-                title: "Storacha",
-                subtitle: NSLocalizedString("Connect to the Storacha \nnetwork", comment: ""),
-                action: onStoracha
+                title: "Storacha (Filecoin/IPFS)",
+                subtitle: NSLocalizedString("Connect to \ndecentralized storage.", comment: ""),
+                action: {
+                    if Settings.publicDataWarningShown {
+                        onStoracha()
+                    } else {
+                        showPublicDataWarning = true
+                    }
+                }
             )
             .accessibilityIdentifier("viewStoracha")
 
@@ -63,5 +71,23 @@ struct SpaceTypeView: View {
         .frame(maxWidth: .infinity)
         .background(Color(UIColor.systemBackground))
         .trackScreen("SpaceType")
+        .overlay {
+            if showPublicDataWarning {
+                Color.black.opacity(0.5)
+                    .ignoresSafeArea()
+                    .overlay {
+                        PublicDataWarningAlertView(
+                            onContinue: {
+                                Settings.publicDataWarningShown = true
+                                showPublicDataWarning = false
+                                onStoracha()
+                            },
+                            onCancel: {
+                                showPublicDataWarning = false
+                            }
+                        )
+                    }
+            }
+        }
     }
 }

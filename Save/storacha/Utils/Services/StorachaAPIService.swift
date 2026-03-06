@@ -175,7 +175,6 @@ class StorachaAPIService {
         guard let url = URL(string: "\(baseURL)/auth/logout") else {
             throw StorachaAPIError.invalidURL
         }
-        let keyPair = try keyManager.loadKeyPair()
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue(sessionData.sessionId, forHTTPHeaderField: "x-session-id")

@@ -26,6 +26,7 @@ class Settings {
     private static let kThirdPartyKeyboards = "third_party_keyboards"
     private static let kHideContent = "hide_content"
     private static let kFirstFolderDone = "first_folder_done"
+    private static let kPublicDataWarningShown = "public_data_warning_shown"
     private static let kInterfaceStyle = "interface_style"
     private static let kAppLaunchCount = "app_launch_count"
     private static let kHasPromptedReview = "has_prompted_review"
@@ -206,6 +207,16 @@ class Settings {
             defaults?.set(newValue, forKey: kFirstFolderDone)
         }
     }
+
+    class var publicDataWarningShown: Bool {
+        get {
+            defaults?.bool(forKey: kPublicDataWarningShown) ?? false
+        }
+        set {
+            defaults?.set(newValue, forKey: kPublicDataWarningShown)
+        }
+    }
+
     class var hasPromptedReview: Bool {
         get {
             defaults?.bool(forKey: kHasPromptedReview) ?? false

@@ -184,7 +184,7 @@ struct StorachaInfoCard: View {
 
 struct StorachaContentDescription: View {
     var body: some View {
-        Text(NSLocalizedString("Files uploaded to the Storacha network are publicly accessible through their CID and may remain permanently available across decentralized nodes. ", comment: "ProofMode description"))
+        Text(NSLocalizedString("Files uploaded to the Storacha (Filecoin/IPFS) network are publicly accessible through their CID and may remain permanently available across decentralized nodes. ", comment: "ProofMode description"))
             .font(.montserrat(.medium, for: .caption))
             .foregroundColor(.gray70)
         +

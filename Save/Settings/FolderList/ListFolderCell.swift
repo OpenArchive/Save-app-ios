@@ -12,7 +12,7 @@ class ListFolderCell: UITableViewCell {
     
     let folderIcon: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "folder_icon")
+        imageView.image = UIImage(named: "folder")
         imageView.contentMode = .scaleAspectFit
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
