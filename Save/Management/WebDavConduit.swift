@@ -204,20 +204,28 @@ class WebDavConduit: Conduit {
                 json, to: to, headers: nil, credential: credential
             ) { error in
                 if let error = error {
+                    #if DEBUG
                     print("meta.json upload failed: \(error.localizedDescription)")
+                    #endif
                 } else {
+                    #if DEBUG
                     print("meta.json uploaded successfully.")
+                    #endif
                 }
             }
             
         } catch {
+            #if DEBUG
             print("Failed to encode meta.json: \(error.localizedDescription)")
+            #endif
         }
         
         if(!hasPhAsset){
             uploadProofMode(to: folder) { source, destination in
                 guard source.exists else {
+                    #if DEBUG
                     print("Missing proof file: \(source.lastPathComponent)")
+                    #endif
                     return true
                 }
                 
@@ -225,9 +233,13 @@ class WebDavConduit: Conduit {
                     source, to: destination, headers: nil, credential: credential
                 ) { error in
                     if let error = error {
+                        #if DEBUG
                         print("Failed to upload proof file \(source.lastPathComponent): \(error.localizedDescription)")
+                        #endif
                     } else {
+                        #if DEBUG
                         print("Uploaded proof file: \(destination.lastPathComponent)")
+                        #endif
                     }
                 }
                 

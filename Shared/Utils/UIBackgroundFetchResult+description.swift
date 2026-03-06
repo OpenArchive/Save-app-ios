@@ -9,9 +9,9 @@
 import Foundation
 import UIKit
 
-extension UIBackgroundFetchResult: CustomStringConvertible {
+extension UIBackgroundFetchResult {
 
-    public var description: String {
+    public var debugDescription: String {
         switch self {
         case .newData:
             return "newData"

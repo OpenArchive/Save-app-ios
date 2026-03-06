@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import TorManager
 
 class MainNavigationController: UINavigationController {
 
@@ -19,30 +18,29 @@ class MainNavigationController: UINavigationController {
 
     func setRoot() {
         if Settings.firstRunDone {
-            if Settings.useTor && !TorManager.shared.connected {
-                setViewControllers([UIStoryboard.main.instantiate(TorStartViewController.self)],
-                                   animated: true)
-            }
-            else if !(topViewController is MainViewController) {
+//            if Settings.useTor && !TorManager.shared.connected {
+//                setViewControllers([UIStoryboard.main.instantiate(TorStartViewController.self)],
+//                                   animated: true)
+//            }
+             if !(topViewController is MainViewController) {
                 setViewControllers([UIStoryboard.main.instantiate(MainViewController.self)],
                                    animated: true)
             }
         }
         else {
             setViewControllers(
-                [UIStoryboard.main.instantiate(ClaimViewController.self)],
+                [ClaimViewController()],
                 animated: true)
         }
         
         DispatchQueue.main.async {
-                if let appDelegate = UIApplication.shared.delegate as? AppDelegateBase {
-                    if(appDelegate.shouldShowAppPasscodeEntryScreen()){
-                        appDelegate.showAppPasscodeEntryScreen()
-                    }else{
-                        AppUpdateManager.shared.checkForUpdateIfNeeded()
-                        
-                    }
+            if let sceneDelegate = SceneDelegate.current {
+                if sceneDelegate.shouldShowAppPasscodeEntryScreen() {
+                    sceneDelegate.showAppPasscodeEntryScreen()
+                } else {
+                    AppUpdateManager.shared.checkForUpdateIfNeeded()
                 }
             }
+        }
     }
 }

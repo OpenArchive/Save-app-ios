@@ -70,6 +70,8 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "DONE", style: .done, target: self, action: #selector(dismiss(_:)))
+        
         flagIv.unselectedTintColor = .white
         addChild(pageVc)
         container.addSubview(pageVc.view)
@@ -279,14 +281,17 @@ UIPageViewControllerDelegate, InfoBoxDelegate {
     }
 
     @IBAction func toggleFlagged() {
+        guard let asset = asset else { return }
+
+        let flagged = !asset.flagged
         let update = dh?.assign(dh?.getFirstResponder())
 
-        asset?.update({ asset in
-            asset.flagged = !asset.flagged
-
+        asset.update({ asset in
+            asset.flagged = flagged
             update?(asset)
         })
 
+        flagIv.isSelected = flagged
         FlagInfoAlert.presentIfNeeded()
     }
 

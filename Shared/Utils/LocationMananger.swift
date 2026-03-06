@@ -72,34 +72,16 @@ class LocationMananger {
     /**
      Fetch the address for a `PHAsset` object. (Known as "reverse geocoding".)
 
-     This will try to extract a location from a "moment" collection, that asset
-     belongs to, if the asset itself doesn't have a location.
-
      - parameter location: The `PHAsset` to fetch the address for.
      - parameter completionHandler: The handler to call after completion.
      */
     func fetchAddress(from phasset: PHAsset, completionHandler: @escaping CompletionHandler) {
-        var location = phasset.location
-
-        // Try to get the location from the moment collection.
-        if location == nil {
-            let moments = PHAssetCollection.fetchAssetCollectionsContaining(phasset, with: .moment, options: nil)
-
-            for i in 0 ..< moments.count {
-                location = moments.object(at: i).approximateLocation
-
-                if location != nil {
-                    break
-                }
-            }
-        }
-
-        if location != nil {
-            fetchAddress(from: location!, completionHandler: completionHandler)
-        }
-        else {
+        guard let location = phasset.location else {
             completionHandler(nil)
+            return
         }
+
+        fetchAddress(from: location, completionHandler: completionHandler)
     }
 
     /**

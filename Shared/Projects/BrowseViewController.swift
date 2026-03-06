@@ -242,8 +242,13 @@ class BrowseViewController: BaseTableViewController {
         }
         else{
             let project = Project(name: folder.name, space: space)
-            
+
             Db.writeConn?.setObject(project)
+
+            // Set as selected project
+            SelectedProject.project = project
+            SelectedProject.store()
+
             let alertVC = CustomAlertViewController(
                 title:NSLocalizedString("Success!", comment: "") ,
                 message: NSLocalizedString("You have added a folder successfully.", comment: ""),

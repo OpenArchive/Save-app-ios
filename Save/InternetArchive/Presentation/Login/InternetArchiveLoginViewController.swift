@@ -8,42 +8,34 @@
 
 import SwiftUI
 import UIKit
-import Factory
+import FactoryKit
 
-class InternetArchiveLoginViewController : ViewModelController<InternetArchiveLoginState, InternetArchiveLoginAction, InternetArchiveLoginViewModel, InternetArchiveLoginView>, WizardDelegatable  {
-    
-    typealias Action = InternetArchiveLoginAction
-    
+class InternetArchiveLoginViewController: UIHostingController<InternetArchiveLoginView>, WizardDelegatable {
+
     weak var delegate: WizardDelegate?
-    
+
+    private let viewModel: InternetArchiveLoginViewModel
+
     required init() {
-        let viewModel = Container.shared.internetArchiveLoginViewModel()
-        super.init(
-            viewModel: viewModel,
-            rootView: InternetArchiveLoginView(viewModel: viewModel)
-        )
+        viewModel = Container.shared.internetArchiveLoginViewModel()
+        super.init(rootView: InternetArchiveLoginView(viewModel: viewModel))
+        title = NSLocalizedString("Internet Archive", comment: "")
     }
-    
+
     required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
+        fatalError("init(coder:) has not been implemented")
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.title = NSLocalizedString("Internet Archive", comment: "")
-        viewModel?.store.listen { [weak self] action in
-            switch action {
-            case .Next(let space):
-                self?.onNext(space)
-            case .Cancel:
-                self?.onCancel()
-            case .isLoginOnprogress:
-                self?.navigationItem.hidesBackButton = true
-            case .isLoginFinished:
-                self?.navigationItem.hidesBackButton = false
-            default:
-                break
-            }
+        viewModel.onNext = { [weak self] space in
+            self?.onNext(space)
+        }
+        viewModel.onCancel = { [weak self] in
+            self?.onCancel()
+        }
+        viewModel.onLoginProgress = { [weak self] inProgress in
+            self?.navigationItem.hidesBackButton = inProgress
         }
     }
 
@@ -53,12 +45,12 @@ class InternetArchiveLoginViewController : ViewModelController<InternetArchiveLo
     }
 
     private func onNext(_ space: IaSpace) {
-        let vc = UIStoryboard.main.instantiate(CreateCCLViewController.self)
+        let vc = CreateCCLWrapperViewController()
         vc.space = space
-        self.navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(vc, animated: true)
     }
-    
+
     private func onCancel() {
-        self.navigationController?.popViewController(animated: true)
+        navigationController?.popViewController(animated: true)
     }
 }

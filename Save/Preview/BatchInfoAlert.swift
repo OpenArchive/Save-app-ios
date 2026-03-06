@@ -59,8 +59,11 @@ class BatchInfoAlert {
 
         if let vc = viewController {
             vc.present(alertVC, animated: true)
-        } else {
-            UIApplication.shared.windows.first?.rootViewController?.present(alertVC, animated: true)
+        } else if let windowScene = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene }).first,
+            let rootVC = windowScene.windows.first(where: { $0.isKeyWindow })?.rootViewController
+            ?? windowScene.windows.first?.rootViewController {
+            rootVC.present(alertVC, animated: true)
         }
     }
 }

@@ -22,21 +22,25 @@ class ServerListViewController: UIViewController, UITableViewDelegate, UITableVi
     }()
     
     private let addServerButton: UIButton = {
-         let button = UIButton(type: .system)
-         button.setTitle(NSLocalizedString("Add Server", comment: ""), for: .normal)
-         button.backgroundColor = .accent
-        button.setTitleColor(.black, for: .normal)
-         button.titleLabel?.font = .montserrat(forTextStyle: .headline, with: .traitUIOptimized)
-         button.layer.cornerRadius = 10
+         var config = UIButton.Configuration.filled()
+         config.title = NSLocalizedString("Add Server", comment: "")
+         config.baseBackgroundColor = .accent
+         config.baseForegroundColor = .black
+         
+         let imageConfig = UIImage.SymbolConfiguration(pointSize: 16, weight: .medium)
+         let plusImage = UIImage(systemName: "plus", withConfiguration: imageConfig)
+         config.image = plusImage
+         config.imagePadding = 8
+         config.imagePlacement = .leading
+         
+         config.cornerStyle = .medium
+         
+         let button = UIButton(configuration: config)
          button.translatesAutoresizingMaskIntoConstraints = false
          
-         // Add plus icon
-         let config = UIImage.SymbolConfiguration(pointSize: 16, weight: .medium)
-         let plusImage = UIImage(systemName: "plus", withConfiguration: config)
-         button.setImage(plusImage, for: .normal)
-        button.tintColor = .black
-         button.imageEdgeInsets = UIEdgeInsets(top: 0, left: -8, bottom: 0, right: 0)
-         button.titleEdgeInsets = UIEdgeInsets(top: 0, left: 8, bottom: 0, right: 0)
+         var attributedTitle = AttributedString(NSLocalizedString("Add Server", comment: ""))
+         attributedTitle.font = .montserrat(forTextStyle: .headline, with: .traitUIOptimized)
+         button.configuration?.attributedTitle = attributedTitle
          
          return button
      }()
@@ -101,11 +105,7 @@ class ServerListViewController: UIViewController, UITableViewDelegate, UITableVi
     }
     
     @objc private func addServerTapped() {
-        
-        let storyboard = UIStoryboard(name: "Main", bundle: nil)
-        if let spaceSelectionVC = storyboard.instantiateViewController(withIdentifier: "SpaceTypeViewController") as? SpaceTypeViewController {
-               navigationController?.pushViewController(spaceSelectionVC, animated: true)
-           }
+        navigationController?.pushViewController(SpaceTypeViewController(), animated: true)
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -137,7 +137,9 @@ class ServerListViewController: UIViewController, UITableViewDelegate, UITableVi
                 vc.space = space
                 navigationController?.pushViewController(vc, animated: true)
             default:
+                #if DEBUG
                 print("no navigation")
+                #endif
             }
         }
     }

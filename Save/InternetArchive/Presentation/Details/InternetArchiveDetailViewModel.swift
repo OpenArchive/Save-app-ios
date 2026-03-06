@@ -8,191 +8,154 @@
 
 import Foundation
 
-class InternetArchiveDetailViewModel : StoreViewModel<InternetArchiveDetailState, InternetArchiveDetailAction> {
-    typealias State = InternetArchiveDetailState
-    typealias Action = InternetArchiveDetailAction
-    
+final class InternetArchiveDetailViewModel: ObservableObject {
+
     let space: Space
-    
+
+    @Published var screenName: String = ""
+    @Published var userName: String = ""
+    @Published var email: String = ""
+    @Published var isCcEnabled: Bool = false
+    @Published var isCc0Enabled: Bool = false
+    @Published var allowRemix: Bool = false
+    @Published var requireShareAlike: Bool = false
+    @Published var allowCommercialUse: Bool = false
+    @Published var licenseURL: String?
+
+    /// Called when the space is removed or flow should dismiss (e.g. Cancel).
+    var onDismiss: (() -> Void)?
+    /// Called with true to hide back button, false to show it (e.g. when "Remove" alert is shown).
+    var onBackButtonVisibility: ((Bool) -> Void)?
+
     init(space: Space) {
         self.space = space
-        
-        super.init(initialState: InternetArchiveDetailState())
-        
-        self.store.set(reducer: self.reduce)
-        self.store.set(effects: self.effects)
-        
-        self.store.dispatch(.Load)
+        load()
     }
-    
-    // MARK: - Reducer
-    private func reduce(state: State, action: Action) -> State? {
-        switch action {
-        case .Loaded(let data):
-            let isCC0 = space.license?.contains("publicdomain/zero") == true
-            
-            return state.copy(
-                screenName: data.screenName,
-                userName: data.userName,
-                email: data.email,
-                isCcEnabled: space.license != nil,
-                isCc0Enabled: isCC0, // New CC0 state
-                allowRemix: isCC0 ? false : space.license?.contains("-nd") == false,
-                requireShareAlike: isCC0 ? false : space.license?.contains("-sa") == true,
-                allowCommercialUse: isCC0 ? false : space.license?.contains("-nc") == false,
-                licenseURL: space.license
-            )
-            
-        case .toggleCcEnabled(let value):
-            var newState = state.copy(isCcEnabled: value)
-            if !value {
-                
-                newState = newState.copy(
-                    isCc0Enabled: false,
-                    allowRemix: false,
-                    requireShareAlike: false,
-                    allowCommercialUse: false
-                )
-            }
-            return newState
-            
-        case .toggleCc0Enabled(let value):
-            var newState = state.copy(isCc0Enabled: value)
-            if value {
-                
-                newState = newState.copy(
-                    allowRemix: false,
-                    requireShareAlike: false,
-                    allowCommercialUse: false
-                )
-            }
-            return newState
-            
-        case .toggleAllowRemix(let value):
-            var newState = state.copy(
-                allowRemix: value,
-                requireShareAlike: value ? state.requireShareAlike : false
-            )
-            
-            if value {
-                newState = newState.copy(isCc0Enabled: false)
-            }
-            return newState
-            
-        case .toggleRequireShareAlike(let value):
-            var newState = state.copy(requireShareAlike: value)
-            
-            if value {
-                newState = newState.copy(isCc0Enabled: false)
-            }
-            return newState
-            
-        case .toggleAllowCommercialUse(let value):
-            var newState = state.copy(allowCommercialUse: value)
-            
-            if value {
-                newState = newState.copy(isCc0Enabled: false)
-            }
-            return newState
-            
-        case .updateLicense:
-            var licence = generateLicenseURL(state: state)
-            print(licence)
-            saveLicense(licenseURL: licence)
-            return state.copy(licenseURL:licence )
-            
-        default:
-            return nil
+
+    // MARK: - License toggles (replace reducer actions)
+
+    func toggleCcEnabled(_ value: Bool) {
+        isCcEnabled = value
+        if !value {
+            isCc0Enabled = false
+            allowRemix = false
+            requireShareAlike = false
+            allowCommercialUse = false
         }
+        updateLicense()
     }
-    
-    // MARK: - Effects
-    private func effects(state: State, action: Action) -> Scoped? {
-        switch action {
-        case .Load:
-            load()
-            
-        case .Remove:
-            remove()
-            
-        case .HandleBackButton(let status):
-            self.store.notify(.HandleBackButton(status: status))
-            
-        default:
-            break
+
+    func toggleCc0Enabled(_ value: Bool) {
+        isCc0Enabled = value
+        if value {
+            allowRemix = false
+            requireShareAlike = false
+            allowCommercialUse = false
         }
-        return nil
+        updateLicense()
     }
-    
-    // MARK: - Load Account Info
+
+    func toggleAllowRemix(_ value: Bool) {
+        allowRemix = value
+        if value {
+            // keep requireShareAlike as-is
+        } else {
+            requireShareAlike = false
+        }
+        isCc0Enabled = false
+        updateLicense()
+    }
+
+    func toggleRequireShareAlike(_ value: Bool) {
+        requireShareAlike = value
+        if value { isCc0Enabled = false }
+        updateLicense()
+    }
+
+    func toggleAllowCommercialUse(_ value: Bool) {
+        allowCommercialUse = value
+        if value { isCc0Enabled = false }
+        updateLicense()
+    }
+
+    func setBackButtonVisibility(_ hidden: Bool) {
+        onBackButtonVisibility?(hidden)
+    }
+
+    func removeSpace() {
+        remove()
+    }
+
+    // MARK: - Load
+
     private func load() {
         let decoder = JSONDecoder()
-        guard let data: Data = (space as? IaSpace)?.metaData?.data(using: .utf8) else { return }
-        
-        if let metaData = try? decoder.decode(InternetArchive.MetaData.self, from: data) {
-            self.store.dispatch(.Loaded(metaData))
-        }
+        guard let data = (space as? IaSpace)?.metaData?.data(using: .utf8) else { return }
+        guard let metaData = try? decoder.decode(InternetArchive.MetaData.self, from: data) else { return }
+
+        screenName = metaData.screenName
+        userName = metaData.userName
+        email = metaData.email
+        isCcEnabled = space.license != nil
+        isCc0Enabled = space.license?.contains("publicdomain/zero") == true
+        allowRemix = isCc0Enabled ? false : (space.license?.contains("-nd") == false)
+        requireShareAlike = isCc0Enabled ? false : (space.license?.contains("-sa") == true)
+        allowCommercialUse = isCc0Enabled ? false : (space.license?.contains("-nc") == false)
+        licenseURL = space.license
     }
-    
-    // MARK: - Save License
-    private func saveLicense(licenseURL:String?) {
-        guard let space = self.space as? IaSpace else { return }
-        
+
+    // MARK: - License URL
+
+    private func updateLicense() {
+        let url = generateLicenseURL()
+        #if DEBUG
+        print(url ?? "")
+        #endif
+        saveLicense(licenseURL: url)
+        licenseURL = url
+    }
+
+    private func saveLicense(licenseURL: String?) {
+        guard let space = space as? IaSpace else { return }
         space.license = licenseURL
-        
         Db.writeConn?.asyncReadWrite { tx in
             tx.setObject(space, forKey: space.id, inCollection: Space.collection)
-            
-            // update active projects for this space
             let projects: [Project] = tx.findAll { $0.active && $0.spaceId == space.id }
-            
             for project in projects {
                 project.license = space.license
                 tx.setObject(project)
             }
         }
     }
-    
-    // MARK: - Remove Space
+
     private func remove() {
-        Db.writeConn?.readWrite { tx in
+        guard let writeConn = Db.writeConn else { return }
+        writeConn.readWrite { tx in
             tx.removeObject(forKey: space.id, inCollection: Space.collection)
-            
-            // clear selected space
             SelectedSpace.space = nil
             SelectedSpace.store(tx)
-            
-            // select another space if available
-            tx.iterateKeysAndObjects(inCollection: Space.collection) { (key, space: Space, stop) in
+            tx.iterateKeysAndObjects(inCollection: Space.collection) { (_: String, space: Space, stop: inout Bool) in
                 SelectedSpace.space = space
                 stop = true
             }
             SelectedSpace.store(tx)
-            
-            self.store.notify(.Removed)
         }
+        onDismiss?()
     }
-}
 
-// MARK: - License URL Helper
-func generateLicenseURL(state: InternetArchiveDetailState) -> String? {
-    guard state.isCcEnabled else { return nil }
-    
-    // If CC0 is enabled, return CC0 URL
-    if state.isCc0Enabled {
-        return "https://creativecommons.org/publicdomain/zero/1.0/"
+    private func generateLicenseURL() -> String? {
+        guard isCcEnabled else { return nil }
+        if isCc0Enabled {
+            return "https://creativecommons.org/publicdomain/zero/1.0/"
+        }
+        var license = "by"
+        if allowRemix {
+            if !allowCommercialUse { license += "-nc" }
+            if requireShareAlike { license += "-sa" }
+        } else {
+            if !allowCommercialUse { license += "-nc" }
+            license += "-nd"
+        }
+        return "https://creativecommons.org/licenses/\(license)/4.0/"
     }
-    
-    // Regular CC license
-    var license = "by"
-    
-    if state.allowRemix {
-        if !state.allowCommercialUse { license += "-nc" }
-        if state.requireShareAlike { license += "-sa" }
-    } else {
-        if !state.allowCommercialUse { license += "-nc" }
-        license += "-nd"
-    }
-    
-    return "https://creativecommons.org/licenses/\(license)/4.0/"
 }

@@ -30,7 +30,9 @@ public class AnalyticsManager {
     /// - Parameter providers: Array of analytics providers to use
     public func initialize(providers: [AnalyticsProvider]) {
         guard !isInitialized else {
+            #if DEBUG
             print("[AnalyticsManager] ⚠️ Already initialized")
+            #endif
             return
         }
 
@@ -40,7 +42,9 @@ public class AnalyticsManager {
         providers.forEach { $0.initialize() }
 
         isInitialized = true
+        #if DEBUG
         print("[AnalyticsManager] ✅ Initialized with \(providers.count) provider(s)")
+        #endif
     }
 
     // MARK: - Event Tracking
@@ -50,7 +54,9 @@ public class AnalyticsManager {
     /// - Parameter event: The event to track
     public func trackEvent(_ event: AnalyticsEvent) {
         guard isInitialized else {
+            #if DEBUG
             print("[AnalyticsManager] ⚠️ Not initialized - skipping event: \(event.eventName)")
+            #endif
             return
         }
 
@@ -135,6 +141,7 @@ public class AnalyticsManager {
             self.providers.forEach { $0.reset() }
             MixPanelSessionManager.shared.reset()
             print("[AnalyticsManager] 🔄 Reset complete")
+            #endif
         }
     }
 

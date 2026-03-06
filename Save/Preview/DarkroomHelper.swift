@@ -38,11 +38,14 @@ class DarkroomHelper {
     // MARK: Public Methods
     
     func setInfos(_ asset: Asset?, defaults: Bool = false, isEditable: Bool = true,_ noteHeight: CGFloat) {
+        // Preserve text in fields that are currently being edited
+        let locationText = location?.textView.isFirstResponder ?? false ? location?.textView.text : asset?.location
+        let notesText = notes?.textView.isFirstResponder ?? false ? notes?.textView.text : asset?.notes
         
-        location?.set(asset?.location, with: defaults ? DarkroomHelper.locPlaceholder : nil, textHeightContraint: nil, hideIcon: true)
+        location?.set(locationText, with: defaults ? DarkroomHelper.locPlaceholder : nil, textHeightContraint: nil, hideIcon: true)
         location?.textView.isEditable = isEditable
         
-        notes?.set(asset?.notes, with: defaults ? DarkroomHelper.notesPlaceholder : nil, textHeightContraint: noteHeight, hideIcon: true)
+        notes?.set(notesText, with: defaults ? DarkroomHelper.notesPlaceholder : nil, textHeightContraint: noteHeight, hideIcon: true)
         notes?.textView.isEditable = isEditable
       
     }

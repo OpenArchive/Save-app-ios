@@ -61,65 +61,47 @@ class AddNewFolderViewController: UIViewController {
 
 
 
-// MARK: - State
 struct AppState {
     var folderName: String = ""
-    var status:Bool = false
+    var status: Bool = false
     var errorMessage: String?
 }
 
-// MARK: - Actions
-enum AppAction {
-    case updateFolderName(String)
-    case saveFolderName
-    case resetStatus
-}
+final class NewFolderStore: ObservableObject {
 
-// MARK: - Reducer
-func appReducer(state: inout AppState, action: AppAction) {
-    switch action {
-    case .updateFolderName(let name):
+    @Published private(set) var state = AppState()
+
+    func updateFolderName(_ name: String) {
         state.folderName = name
-    case .saveFolderName:
-        saveFolderName(state:&state)
-    case .resetStatus:
-        resetStatus(state:&state)
     }
-}
-func saveFolderName(state:inout AppState) {
-    let project = Project(space: SelectedSpace.space)
-    if let spaceId = project.spaceId {
-        
+
+    func saveFolderName() {
+        let project = Project(space: SelectedSpace.space)
+        guard let spaceId = project.spaceId else { return }
+
         let alert = DuplicateFolderAlert(nil)
-        if alert.exists(spaceId: spaceId, name: state.folderName){
+        if alert.exists(spaceId: spaceId, name: state.folderName) {
             state.status = false
             state.errorMessage = NSLocalizedString("Please choose another name/folder or use the existing one instead.", comment: "")
-        }
-        else{
+        } else {
             state.status = true
             project.name = state.folderName
             Db.writeConn?.setObject(project)
+            SelectedProject.project = project
+            SelectedProject.store()
         }
     }
-}
-func resetStatus(state:inout AppState) {
-    state.status = false
-    state.errorMessage = nil
-}
 
-// MARK: - Store
-class NewFolderStore: ObservableObject {
-    @Published private(set) var state = AppState()
-    
-    func dispatch(action: AppAction) {
-        appReducer(state: &state, action: action)
+    func resetStatus() {
+        state.status = false
+        state.errorMessage = nil
     }
 }
 
 
 // MARK: - SwiftUI View
 struct CreateFolderView: View {
-    @ObservedObject var store: NewFolderStore
+    @StateObject var store: NewFolderStore
     @State var folderName: String = ""
     var dismissAction: (() -> Void)?
     var disableBackAction: ((Bool) -> Void)?
@@ -128,7 +110,7 @@ struct CreateFolderView: View {
         self.dismissAction = dismissAction
         self.disableBackAction = disableBackAction
         _folderName = .init(initialValue: "")
-        _store = .init(wrappedValue: NewFolderStore())
+        _store = StateObject(wrappedValue: NewFolderStore())
       
     }
     
@@ -150,7 +132,7 @@ struct CreateFolderView: View {
                         text: $folderName,
                         isDisabled: false,
                         onTextChanged:  { text  in
-                            store.dispatch(action: .updateFolderName(text))
+                            store.updateFolderName(text)
                         }
                     )
                 }
@@ -162,7 +144,7 @@ struct CreateFolderView: View {
             
             HStack(spacing: 20) {
                 Button(NSLocalizedString("Cancel", comment: "")) {
-                    store.dispatch(action: .updateFolderName(""))
+                    store.updateFolderName("")
                     dismissAction?()
                   
                 }
@@ -174,7 +156,7 @@ struct CreateFolderView: View {
                 Button(action: {
                     hideKeyboard()
                     disableBackAction?(true)
-                    store.dispatch(action: .saveFolderName)
+                    store.saveFolderName()
                 }, label: {
                     Text(NSLocalizedString("Create",comment: "")).frame(maxWidth: .infinity)
                 })
@@ -208,7 +190,7 @@ struct CreateFolderView: View {
                                     primaryButtonTitle: NSLocalizedString("Got it", comment: ""),
                                     iconImage: Image("check_icon"),
                                     primaryButtonAction: {
-                                        store.dispatch(action: .resetStatus)
+                                        store.resetStatus()
                                         disableBackAction?(false)
                                         dismissAction?()
                                     },
@@ -235,7 +217,7 @@ struct CreateFolderView: View {
                                     iconTint:.gray,
                                     primaryButtonAction: {
                                         disableBackAction?(false)
-                                        store.dispatch(action: .resetStatus)
+                                        store.resetStatus()
                                     },
                                     showCheckbox: false
                                 )

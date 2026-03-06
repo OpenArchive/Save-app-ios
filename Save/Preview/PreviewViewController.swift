@@ -229,7 +229,7 @@ class PreviewViewController: UIViewController,
                 let count = UploadsView.countUploading(tx)
                 
                 DispatchQueue.main.async {
-                    OrbotManager.shared.alertCannotUpload(count: count) { [weak self] in
+                    self.alertCannotUploadNoWifi(count: count) { [weak self] in
                         self?.navigationController?.popViewController(animated: true)
                     }
                 }
@@ -237,11 +237,9 @@ class PreviewViewController: UIViewController,
         }
     }
     func showMediaPickerSheet() {
-        
-        
+        guard presentedViewController == nil else { return }
+
         let popup = MediaPopupViewController()
-        popup.modalPresentationStyle = .overCurrentContext
-        popup.modalTransitionStyle = .crossDissolve
         
         popup.onCameraTap = { [weak self] in
             self?.assetPicker.openCamera()
@@ -318,15 +316,31 @@ class PreviewViewController: UIViewController,
     }
     
     @IBAction func removeAssets() {
+        let assetsToRemove = getSelectedAssets()
         
-        for asset in getSelectedAssets() {
-            if asset == getSelectedAssets().last {
-                asset.remove() {
-                    self.toggleToolbar(false)
-                }
-            } else {
-                asset.remove()
+        guard !assetsToRemove.isEmpty else { return }
+        
+        // Clear selection first to avoid UI inconsistencies
+        for indexPath in collectionView.indexPathsForSelectedItems ?? [] {
+            collectionView.deselectItem(at: indexPath, animated: false)
+            collectionView.cellForItem(at: indexPath)?.isSelected = false
+        }
+        
+        toggleToolbar(false)
+        
+        // Remove all assets in a batch operation
+        let group = DispatchGroup()
+        
+        for asset in assetsToRemove {
+            group.enter()
+            asset.remove {
+                group.leave()
             }
+        }
+        
+        group.notify(queue: .main) {
+            // All deletions completed
+            // The UI will be updated via yapDatabaseModified notification
         }
     }
     
@@ -343,15 +357,18 @@ class PreviewViewController: UIViewController,
         
         updateTitle()
         
-        // If multiple deletions or force full, just reload
+        // Check if we're about to have an empty collection
+        let willBeEmpty = sc.count < 1
+        
+        // If multiple deletions, force full, or will be empty, just reload
         let deleteCount = changes.rowChanges.filter { $0.type == .delete }.count
         
-        if changes.forceFull || deleteCount > 1 {
+        if changes.forceFull || deleteCount > 1 || willBeEmpty {
             UIView.performWithoutAnimation {
                 collectionView.reloadData()
             }
             
-            if sc.count < 1 {
+            if willBeEmpty {
                 navigationController?.popViewController(animated: true)
             }
             return
@@ -390,5 +407,46 @@ class PreviewViewController: UIViewController,
     
     private func getSelectedAssets() -> [Asset] {
         sc.getAssets(collectionView.indexPathsForSelectedItems)
+    }
+    
+    func alertCannotUploadNoWifi(count: Int? = nil, _ completed: (() -> Void)? = nil) {
+        guard Settings.wifiOnly && UploadManager.shared.reachability?.connection == .unavailable,
+              let topVc = UIApplication.shared.delegate?.window??.rootViewController?.top
+        else {
+            completed?()
+            return
+        }
+        
+        var ownCount = count ?? 0
+        
+        if count == nil {
+            Db.bgRwConn?.read { tx in
+                ownCount = UploadsView.countUploading(tx)
+            }
+        }
+        
+        guard ownCount > 0 else {
+            completed?()
+            return
+        }
+        
+        let message = NSLocalizedString(
+            "Uploads are blocked until you connect to a Wi-Fi network or allow uploads over a mobile connection again.",
+            comment: "") + "\n"
+        
+        let title = NSLocalizedString("Wi-Fi not connected", comment: "")
+        
+        let actions = [
+            AlertHelper.cancelAction(NSLocalizedString("Ignore", comment: ""), handler: { 
+                completed?()
+            }),
+            AlertHelper.destructiveAction(NSLocalizedString("Allow any connection", comment: ""), handler: { 
+                Settings.wifiOnly = false
+                NotificationCenter.default.post(name: .uploadManagerDataUsageChange, object: Settings.wifiOnly)
+                completed?()
+            })
+        ]
+        
+        AlertHelper.present(topVc, message: message, title: title, actions: actions)
     }
 }

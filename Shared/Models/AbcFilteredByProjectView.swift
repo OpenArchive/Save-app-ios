@@ -57,7 +57,7 @@ class AbcFilteredByProjectView: YapDatabaseFilteredView {
     */
     class func updateFilter(_ projectId: String? = nil) {
         Self.projectId = projectId
-        Db.writeConn?.asyncReadWrite { tx in
+        Db.writeConn?.readWrite { tx in
             (tx.ext(name) as? YapDatabaseFilteredViewTransaction)?
                 .setFiltering(getFilter(), versionTag: UUID().uuidString)
         }

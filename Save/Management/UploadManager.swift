@@ -12,7 +12,6 @@ import Reachability
 import Regex
 import BackgroundTasks
 import Photos
-import TorManager
 import StoreKit
 
 extension Notification.Name {
@@ -61,9 +60,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     
     var waiting: Bool {
         globalPause || 
-        (reachability?.connection ?? Reachability.Connection.unavailable == .unavailable) ||
-        (Settings.useOrbot && OrbotManager.shared.status == .stopped) ||
-        (Settings.useTor && !TorManager.shared.connected)
+        (reachability?.connection ?? Reachability.Connection.unavailable == .unavailable)
+//        || (Settings.useOrbot && OrbotManager.shared.status == .stopped) || (Settings.useTor && !TorManager.shared.connected)
     }
     
     private var current: Upload?
@@ -138,9 +136,9 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     public class func improvedSessionConf(_ conf: URLSessionConfiguration? = nil) -> URLSessionConfiguration {
         let conf = URLSessionConfiguration.improved(conf)
         
-        if Settings.useTor {
-            conf.connectionProxyDictionary = TorManager.shared.torSocks5ProxyConf
-        }
+//        if Settings.useTor {
+//            conf.connectionProxyDictionary = TorManager.shared.torSocks5ProxyConf
+//        }
         
         return conf
     }
@@ -199,8 +197,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         nc.addObserver(self, selector: #selector(dataUsageChanged),
                        name: .uploadManagerDataUsageChange, object: nil)
         
-        nc.addObserver(self, selector: #selector(orbotStopped),
-                       name: .orbotStopped, object: nil)
+//        nc.addObserver(self, selector: #selector(orbotStopped),
+//                       name: .orbotStopped, object: nil)
         
         try? reachability?.startNotifier()
         
@@ -445,14 +443,14 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                         : NSLocalizedString("Unknown error.", comment: ""))
 
                     if upload.paused {
-                        let filesize = upload.asset?.filesize
+                       // let filesize = upload.asset?.filesize
 
-                        let data: [String: String?] = [
-                            "error": upload.error,
-                            "filesize": filesize != nil ? String(filesize!) : nil,
-                            "type": upload.asset?.uti.identifier,
-                            "retries": String(upload.tries),
-                            "network": self.reachability?.connection.description]
+//                        let data: [String: String?] = [
+//                            "error": upload.error,
+//                            "filesize": filesize != nil ? String(filesize!) : nil,
+//                            "type": upload.asset?.uti.identifier,
+//                            "retries": String(upload.tries),
+//                            "network": self.reachability?.connection.description]
 
                         // Track upload failed
                         let backendType = space is WebDavSpace ? "WebDAV" : (space is IaSpace ? "Internet Archive" : nil)
@@ -612,17 +610,17 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 return self.endBackgroundTask(.noData)
             }
             
-            if Settings.useOrbot && OrbotManager.shared.status == .stopped {
-                self.debug("#uploadNext should use Orbot, but Orbot not started")
-                
-                return self.endBackgroundTask(.noData)
-            }
-            
-            if Settings.useTor && !TorManager.shared.connected {
-                self.debug("#uploadNext should use built-in Tor, but Tor not started")
-                
-                return self.endBackgroundTask(.noData)
-            }
+//            if Settings.useOrbot && OrbotManager.shared.status == .stopped {
+//                self.debug("#uploadNext should use Orbot, but Orbot not started")
+//                
+//                return self.endBackgroundTask(.noData)
+//            }
+//            
+//            if Settings.useTor && !TorManager.shared.connected {
+//                self.debug("#uploadNext should use built-in Tor, but Tor not started")
+//                
+//                return self.endBackgroundTask(.noData)
+//            }
             
             guard let upload = self.getNext(),
                   let asset = upload.asset
@@ -755,9 +753,9 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 upload.preheat(tx)
                 
                 // Do not try uploading to Google Drive before the user is properly logged into Google.
-                if upload.asset?.space is GdriveSpace && GdriveConduit.user == nil {
-                    return false
-                }
+//                if upload.asset?.space is GdriveSpace && GdriveConduit.user == nil {
+//                    return false
+//                }
                 
                 
                 guard upload.isReady else {
