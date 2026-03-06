@@ -1,6 +1,12 @@
 import SwiftUI
 import Combine
 
+enum StorachaSettingAction {
+    case manageAccounts
+    case mySpaces
+    case joinSpace
+}
+
 struct StyledButton: View {
     let title: String
     let subtitle: String
@@ -38,7 +44,8 @@ struct StyledButton: View {
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 
-                Image(uiImage: (UIImage(named: "forward_arrow")?.withRenderingMode(.alwaysTemplate))!)
+                Image("forward_arrow")
+                    .renderingMode(.template)
                     .foregroundColor(isDisabled ? .gray50 : Color(.label))
                     .frame(width: 24, height: 24)
             }
@@ -59,22 +66,20 @@ struct StorachaSettingView: View {
     @ObservedObject var appState: StorachaAppState
     var dismissAction: (() -> Void)?
     var disableBackAction: ((Bool) -> Void)?
-    var manageAccountsAction: ((String) -> Void)?
-    
-    private let sessionManager = SessionManager.shared
+    var manageAccountsAction: ((StorachaSettingAction) -> Void)?
     
     init(
         appState: StorachaAppState,
         disableBackAction: ((Bool) -> Void)? = nil,
         dismissAction: (() -> Void)? = nil,
-        manageAccountsAction: ((String) -> Void)? = nil
+        manageAccountsAction: ((StorachaSettingAction) -> Void)? = nil
     ) {
         self.appState = appState
         self.dismissAction = dismissAction
         self.disableBackAction = disableBackAction
         self.manageAccountsAction = manageAccountsAction
     }
-    
+
     var body: some View {
         ZStack {
             
@@ -101,7 +106,7 @@ struct StorachaSettingView: View {
                     icon: "person.circle",
                     isDisabled: appState.isBusy
                 ) {
-                    manageAccountsAction?("manage")
+                    manageAccountsAction?(.manageAccounts)
                 }
                 
                 StyledButton(
@@ -111,7 +116,7 @@ struct StorachaSettingView: View {
                     isDisabled : appState.isBusy || (!appState.hasValidSession && appState.delegatedSpaceCount < 1)
 
                 ) {
-                    manageAccountsAction?("spaces")
+                    manageAccountsAction?(.mySpaces)
                 }
                 
                 StyledButton(
@@ -120,37 +125,22 @@ struct StorachaSettingView: View {
                     icon: "plus",
                     isDisabled: appState.isBusy
                 ) {
-                    manageAccountsAction?("join")
+                    manageAccountsAction?(.joinSpace)
                 }
                 
-                VStack(spacing: 8) {
-                    HStack(alignment: .top, spacing: 12) {
-                        Image(systemName: "info.circle.fill")
-                            .foregroundColor(.gray70)
-                            .font(.system(size: 16))
-                            .padding(.top, 2)
-                        
-                        StorachaContentDescription()
-                    }
-                }
-                .padding(.horizontal)
-                .padding(.vertical, 12)
-                .background(Color.gray.opacity(0.1))
-                .cornerRadius(8)
-                .padding(.horizontal)
-                .padding(.top,20)
+                StorachaInfoCard()
                 
                 Spacer(minLength: 20)
             }
             .padding(.top, 20)
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(.systemBackground))
-            .edgesIgnoringSafeArea(.all)
+            .ignoresSafeArea()
             
             if appState.isBusy {
                 Color.black
                     .opacity(0.7)
-                    .ignoresSafeArea(.all)
+                    .ignoresSafeArea()
                 
                 VStack(spacing: 16) {
                     ProgressView()
@@ -169,6 +159,27 @@ struct StorachaSettingView: View {
         }
     }
   
+}
+
+struct StorachaInfoCard: View {
+    var body: some View {
+        VStack(spacing: 8) {
+            HStack(alignment: .top, spacing: 12) {
+                Image(systemName: "info.circle.fill")
+                    .foregroundColor(.gray70)
+                    .font(.system(size: 16))
+                    .padding(.top, 2)
+
+                StorachaContentDescription()
+            }
+        }
+        .padding(.horizontal)
+        .padding(.vertical, 12)
+        .background(Color.gray.opacity(0.1))
+        .cornerRadius(8)
+        .padding(.horizontal)
+        .padding(.top, 20)
+    }
 }
 
 struct StorachaContentDescription: View {

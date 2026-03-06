@@ -17,7 +17,8 @@ class SpaceTypeViewController: UIHostingController<SpaceTypeView>, WizardDelegat
         let placeholder = SpaceTypeView(
             showInternetArchive: false,
             onWebDav: {},
-            onInternetArchive: {}
+            onInternetArchive: {},
+            onStoracha: {}
         )
         super.init(rootView: placeholder)
         title = NSLocalizedString("Select a Server", comment: "")
@@ -43,7 +44,8 @@ class SpaceTypeViewController: UIHostingController<SpaceTypeView>, WizardDelegat
         rootView = SpaceTypeView(
             showInternetArchive: showIA,
             onWebDav: { [weak self] in self?.newWebDav() },
-            onInternetArchive: { [weak self] in self?.newIa() }
+            onInternetArchive: { [weak self] in self?.newIa() },
+            onStoracha: { [weak self] in self?.newStoracha() }
         )
     }
 
@@ -59,8 +61,7 @@ class SpaceTypeViewController: UIHostingController<SpaceTypeView>, WizardDelegat
             animated: true)
     }
     
-    @IBAction func newStoracha() {
-        navigationController?.pushViewController(StorachaSettingViewController(),animated: true)
-        
+    private func newStoracha() {
+        navigationController?.pushViewController(StorachaSettingViewController(), animated: true)
     }
 }

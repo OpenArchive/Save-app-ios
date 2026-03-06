@@ -119,7 +119,6 @@ class DIDKeyManager {
         do {
             try keychain.save(keyPair.privateKey.rawRepresentation, for: "key_private")
         } catch {
-            print("   ❌ Failed to save private key: \(error)")
             throw error
         }
         
@@ -127,7 +126,6 @@ class DIDKeyManager {
             try keychain.save(keyPair.did.data(using: .utf8)!, for: "key_did")
     
         } catch {
-            print("   ❌ Failed to save DID: \(error)")
             throw error
         }
         
@@ -139,7 +137,6 @@ class DIDKeyManager {
         do {
             privateKeyData = try keychain.load(for: "key_private")
         } catch {
-            print("   ❌ Failed to load private key: \(error)")
             throw error
         }
         
@@ -147,7 +144,6 @@ class DIDKeyManager {
         do {
             didData = try keychain.load(for: "key_did")
         } catch {
-            print("   ❌ Failed to load DID: \(error)")
             throw error
         }
         

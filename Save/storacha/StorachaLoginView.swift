@@ -10,26 +10,30 @@ import Combine
 
 struct StorachaLoginView: View {
     @ObservedObject var state: AuthState
-    var dispatch: (StorachaLoginAction) -> Void
-    @Environment(\.colorScheme) var colorScheme
-    
+    var onLogin: () -> Void
+    var onCreateAccount: () -> Void
+    var onCancel: () -> Void
+    var disableBackAction: ((Bool) -> Void)?
+    var dismissAction: (() -> Void)?
+
     @State private var showingAlert = false
     @State private var alertMessage = ""
     @State private var showIncorrectEmailMessage = false
-    
-    var dismissAction: (() -> Void)?
-    var disableBackAction: ((Bool) -> Void)?
-    
+
     init(
         state: AuthState,
-        dispatch: @escaping (StorachaLoginAction) -> Void,
+        onLogin: @escaping () -> Void,
+        onCreateAccount: @escaping () -> Void,
+        onCancel: @escaping () -> Void,
         disableBackAction: ((Bool) -> Void)? = nil,
         dismissAction: (() -> Void)? = nil
     ) {
         self.state = state
-        self.dispatch = dispatch
-        self.dismissAction = dismissAction
+        self.onLogin = onLogin
+        self.onCreateAccount = onCreateAccount
+        self.onCancel = onCancel
         self.disableBackAction = disableBackAction
+        self.dismissAction = dismissAction
     }
     
     var body: some View {
@@ -92,7 +96,7 @@ struct StorachaLoginView: View {
             }
             .background(Color(.systemBackground))
             .frame(maxWidth: .infinity, maxHeight: .infinity)
-            .edgesIgnoringSafeArea(.all)
+            .ignoresSafeArea()
             
             // Loading Overlay
             if state.isBusy {
@@ -166,7 +170,7 @@ struct StorachaLoginView: View {
                 .foregroundColor(.gray70)
                 .font(.montserrat(.semibold, for: .callout))
             
-            Button(action: { dispatch(.createAccount) }) {
+            Button(action: onCreateAccount) {
                 Text("[\(NSLocalizedString("Create one", comment: ""))](https://console.storacha.network/)")
             }
             .foregroundColor(.accent)
@@ -178,7 +182,7 @@ struct StorachaLoginView: View {
     private var loginButton: some View {
         Button(action: {
             if !state.isBusy && isValidFormState {
-                dispatch(.login)
+                onLogin()
             }
         }) {
             Text(NSLocalizedString("Login", comment: ""))

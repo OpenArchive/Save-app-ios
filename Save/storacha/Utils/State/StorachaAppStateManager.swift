@@ -10,17 +10,24 @@ import Foundation
 import SwiftUI
 import Combine
 
-// MARK: - Storacha States
+/// Space count and session validity; updated together in `refreshSpaceCountAndSession()`.
+struct SpaceSessionStats: Equatable {
+    var spaceCount: Int
+    var delegatedSpaceCount: Int
+    var hasValidSession: Bool
+}
+
+// MARK: - Storacha App State
+
+@MainActor
 class StorachaAppState: ObservableObject {
+    @Published private(set) var spaceStats: SpaceSessionStats
     @Published var isAuthenticated: Bool = false
     @Published var accounts: [String] = []
     @Published var isLoading: Bool = false
     @Published var usage: StorachaAccountUsageResponse?
     @Published var error: StorachaAPIError?
     @Published var isBusy: Bool = false
-    @Published var spaceCount:Int = 0
-    @Published var delegatedSpaceCount:Int = 0
-    @Published var hasValidSession:Bool = false
     @Published var didState = DIDState()
     @Published var authState = AuthState()
     @Published var spaceState = SpaceState()
@@ -28,32 +35,35 @@ class StorachaAppState: ObservableObject {
     @Published var lastUsedEmail: String = ""
     private let apiService = StorachaAPIService.shared
     private let sessionManager = SessionManager.shared
+
+    var spaceCount: Int { spaceStats.spaceCount }
+    var delegatedSpaceCount: Int { spaceStats.delegatedSpaceCount }
+    var hasValidSession: Bool { spaceStats.hasValidSession }
    
     init() {
+        let session = SessionManager.shared.loadSession()
+        self.spaceStats = SpaceSessionStats(
+            spaceCount: SessionManager.shared.loadSpaceCount() ?? 0,
+            delegatedSpaceCount: SessionManager.shared.loadDelegatedSpaceCount() ?? 0,
+            hasValidSession: (session.map { !$0.sessionId.isEmpty }) ?? false
+        )
         self.lastUsedEmail = sessionManager.getLastEmail() ?? ""
-        restoreSessionSync()
+        restoreSessionSync() // Local-only, no network; required for initial state
     }
-   
+
     // MARK: - Space Count Management
-    private func loadSpaceCount() {
-        spaceCount = sessionManager.loadSpaceCount() ?? 0
-        delegatedSpaceCount = sessionManager.loadDelegatedSpceCount() ?? 0
-    }
-    private func checkValidSession() -> Bool {
-        guard let sessionId = sessionManager.loadSession()?.sessionId else {
-            return false
-        }
-        return !sessionId.isEmpty
-    }
-    
-    @MainActor
+
     func refreshSpaceCountAndSession() {
-        loadSpaceCount()
-        hasValidSession = checkValidSession()
+        let session = sessionManager.loadSession()
+        spaceStats = SpaceSessionStats(
+            spaceCount: sessionManager.loadSpaceCount() ?? 0,
+            delegatedSpaceCount: sessionManager.loadDelegatedSpaceCount() ?? 0,
+            hasValidSession: (session.map { !$0.sessionId.isEmpty }) ?? false
+        )
     }
     
     // MARK: - Account Listing
-    @MainActor
+
     func loadAccounts() {
         isLoading = true
         accounts.removeAll()
@@ -71,14 +81,13 @@ class StorachaAppState: ObservableObject {
         isLoading = false
     }
     
-    @MainActor
     func clearAccounts() {
         accounts = []
     }
 
     // MARK: - Session Restoration
     
-    // Synchronous version for init
+    /// Restores session from local storage only (no network). Safe to call from init.
     private func restoreSessionSync() {
         guard let sessionData = sessionManager.loadSession() else { return }
         self.currentUser = StorachaUser(
@@ -91,8 +100,7 @@ class StorachaAppState: ObservableObject {
         self.isAuthenticated = sessionData.verified
     }
     
-    // MainActor version for view controllers
-    @MainActor
+    /// Restores session from local storage (no network). Call from view controllers.
     func restoreSession() {
         guard let sessionData = sessionManager.loadSession() else {
             return
@@ -106,12 +114,10 @@ class StorachaAppState: ObservableObject {
         self.lastUsedEmail = sessionData.email
         sessionManager.setLastEmail(self.lastUsedEmail)
         self.isAuthenticated = sessionData.verified
-        
-        print("✅ [restoreSession] Session restored - User: \(sessionData.email), DID: \(sessionData.did)")
     }
     
     // MARK: - Session Management
-    @MainActor
+
     func checkSessionAndNavigate() async -> (shouldGoToLogin: Bool,isVerified:Bool, userEmail: String?) {
         isBusy = true
         isLoading = true
@@ -150,7 +156,6 @@ class StorachaAppState: ObservableObject {
         }
     }
     
-    @MainActor
     func loadUsage(sessionId: String) async {
         
         isLoading = true
@@ -165,74 +170,19 @@ class StorachaAppState: ObservableObject {
             error = nil // Clear any previous errors
             
         } catch {
-            print("❌ [loadUsage] Error: \(error)")
-            
             // Convert to StorachaAPIError and set error state
             let apiError = error as? StorachaAPIError ?? .networkError(error)
             self.error = apiError
             usage = nil
-            
-            // Log if it's a 401 error
-            if case .unauthorized = apiError {
-                print("⚠️ [loadUsage] Unauthorized error detected - observers should handle this")
-            }
         }
         
         isLoading = false
     }
     
     // MARK: - Error Handling
-    @MainActor
+
     func clearError() {
         error = nil
     }
 }
 
-// MARK: - Supporting Models
-struct StorachaUser {
-    let did: String
-    let email: String
-    let sessionId: String
-}
-
-struct StorachaUpload: Identifiable {
-    let id = UUID()
-    let cid: String
-    let fileName: String
-    let size: Int
-    let uploadDate: Date
-    let gatewayUrl: String
-}
-
-enum StorachaError: Error, LocalizedError {
-    case authenticationFailed(String)
-    case networkError(Error)
-    case uploadFailed(String)
-    case insufficientPermissions
-    case sessionExpired
-    case unknownError(String)
-    
-    var errorDescription: String? {
-        switch self {
-        case .authenticationFailed(let message):
-            return message
-        case .networkError(let error):
-            return "Network error: \(error.localizedDescription)"
-        case .uploadFailed(let message):
-            return "Upload failed: \(message)"
-        case .insufficientPermissions:
-            return "Insufficient permissions"
-        case .sessionExpired:
-            return "Session has expired"
-        case .unknownError(let message):
-            return "Unknown error: \(message)"
-        }
-    }
-}
-
-// MARK: - Actions (Simplified for login only)
-enum StorachaLoginAction {
-    case login
-    case cancel
-    case createAccount
-}

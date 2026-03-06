@@ -12,6 +12,11 @@ struct ServersListView: View {
     @EnvironmentObject var viewModel: HomeViewModel
     @EnvironmentObject var coordinator: NavigationCoordinator
 
+    private var showStoracha: Bool {
+        SessionManager.shared.loadSession()?.sessionId != nil
+            || (SessionManager.shared.loadSpaceCount() ?? 0) > 0
+    }
+
     var body: some View {
         ScrollView {
             LazyVStack(spacing: 0) {
@@ -20,6 +25,9 @@ struct ServersListView: View {
                         .onTapGesture {
                             viewModel.selectSpace(space)
                         }
+                }
+                if showStoracha {
+                    StorachaServerButton()
                 }
                 AddServerButton()
             }

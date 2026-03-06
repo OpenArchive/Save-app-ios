@@ -9,6 +9,7 @@
 
 import Foundation
 
+@MainActor
 class AuthState: ObservableObject {
     @Published var isAuthenticated: Bool = false
     @Published var currentUser: StorachaUser?
@@ -37,12 +38,13 @@ class AuthState: ObservableObject {
             email: sessionData.email,
             sessionId: sessionData.sessionId
         )
-        sessionManager.setLastEmail( self.lastUsedEmail)
+        self.lastUsedEmail = sessionData.email
+        sessionManager.setLastEmail(sessionData.email)
         self.isAuthenticated = sessionData.verified
     }
 
     // MARK: - Authentication Actions
-    @MainActor
+
     func login(email: String) async {
         // Set busy state to show progress indicator
         isBusy = true
@@ -87,7 +89,7 @@ class AuthState: ObservableObject {
     }
 
     // MARK: - Logout
-    @MainActor
+
     func logout() {
         Task {
             try? await apiService.logout()
@@ -103,14 +105,13 @@ class AuthState: ObservableObject {
     }
 
     // MARK: - Email Verification Polling
-    @MainActor
+
     func startVerificationPolling(completion: @escaping (Bool) -> Void) {
         Task {
             await pollForVerification(completion: completion)
         }
     }
     
-    @MainActor
     private func pollForVerification(completion: @escaping (Bool) -> Void) async {
         var pollAttempts = 0
         let maxAttempts = 10 // Poll for 5 minutes (60 * 5 seconds)
@@ -167,7 +168,6 @@ class AuthState: ObservableObject {
     }
     
    
-    @MainActor
     func stopVerificationPolling() {
         // This will be handled by the Task cancellation in the view
     }
@@ -179,7 +179,7 @@ class AuthState: ObservableObject {
         return emailPred.evaluate(with: email)
     }
     // MARK: - Error Handling
-    @MainActor
+
     func clearError() {
         error = nil
         isLoginError = false

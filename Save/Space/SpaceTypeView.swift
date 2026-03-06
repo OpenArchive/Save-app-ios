@@ -12,6 +12,7 @@ struct SpaceTypeView: View {
     let showInternetArchive: Bool
     var onWebDav: () -> Void
     var onInternetArchive: () -> Void
+    var onStoracha: () -> Void
 
     var body: some View {
         VStack(spacing: 16) {
@@ -47,6 +48,14 @@ struct SpaceTypeView: View {
                     action: onInternetArchive
                 )
             }
+
+            BigButtonView(
+                icon: "storachaBird",
+                title: "Storacha",
+                subtitle: NSLocalizedString("Connect to the Storacha \nnetwork", comment: ""),
+                action: onStoracha
+            )
+            .accessibilityIdentifier("viewStoracha")
 
             Spacer()
         }

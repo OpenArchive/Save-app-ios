@@ -11,8 +11,8 @@ extension View {
 
     func trackScreen(_ screenName: String) -> some View {
         onAppear {
-            SessionManager.shared.setCurrentScreen(screenName)
-            let previousScreen = SessionManager.shared.getPreviousScreen()
+            MixPanelSessionManager.shared.setCurrentScreen(screenName)
+            let previousScreen = MixPanelSessionManager.shared.getPreviousScreen()
             trackScreenViewed(screenName: screenName, previousScreen: previousScreen)
         }
     }

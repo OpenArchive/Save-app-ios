@@ -114,7 +114,7 @@ class ManageDIDsViewController: UIViewController {
             navigationController.popToViewController(loginVC, animated: true)
         } else if let settingsVC = navigationController.viewControllers.first(where: { $0 is StorachaSettingViewController }) {
         
-            let loginVC = StorachaLoginViewController()
+            let loginVC = StorachaLoginViewController(appState: (settingsVC as! StorachaSettingViewController).storachaAppState)
             
             if let settingsIndex = navigationController.viewControllers.firstIndex(of: settingsVC) {
               

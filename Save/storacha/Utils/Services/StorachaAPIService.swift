@@ -73,8 +73,6 @@ class StorachaAPIService {
             expiresAt: nil,
             verified: loginResponse.verified
         )
-        print("loginResponse.did\(loginResponse.did)")
-        
         try sessionManager.saveSession(sessionData)
         return sessionData
     }
@@ -93,9 +91,6 @@ class StorachaAPIService {
         
         let (data, response) = try await session.data(for: urlRequest)
         
-        if let rawResponse = String(data: data, encoding: .utf8) {
-            print("Raw Login API Response: \(rawResponse)")
-        }
         
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
             try handleHTTPError(statusCode: httpResponse.statusCode, data: data)
@@ -134,9 +129,6 @@ class StorachaAPIService {
             try handleHTTPError(statusCode: httpResponse.statusCode, data: data)
         }
         
-        if let rawResponse = String(data: data, encoding: .utf8) {
-            print("Raw verify signature API Response: \(rawResponse)")
-        }
         
         let verifyResponse = try JSONDecoder().decode(StorachaVerifyResponse.self, from: data)
         
@@ -167,18 +159,10 @@ class StorachaAPIService {
         let (data, response) = try await session.data(for: request)
         
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
-            if let errorString = String(data: data, encoding: .utf8) {
-                print("Check Session HTTP Error \(httpResponse.statusCode): \(errorString)")
-            }
-            
             if httpResponse.statusCode == 401 {
                 throw StorachaAPIError.unauthorized
             }
             return nil
-        }
-        
-        if let rawResponse = String(data: data, encoding: .utf8) {
-            print("Check Session Raw API Response: \(rawResponse)")
         }
         
         let sessionResponse = try JSONDecoder().decode(StorachaSessionResponse.self, from: data)
@@ -192,16 +176,11 @@ class StorachaAPIService {
             throw StorachaAPIError.invalidURL
         }
         let keyPair = try keyManager.loadKeyPair()
-        print("key pair \(keyPair.did)")
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue(sessionData.sessionId, forHTTPHeaderField: "x-session-id")
         
         let (data, response) = try await session.data(for: request)
-        
-        if let rawResponse = String(data: data, encoding: .utf8) {
-            print("Logout Raw API Response: \(rawResponse)")
-        }
         
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
             try handleHTTPError(statusCode: httpResponse.statusCode, data: data)
@@ -262,9 +241,6 @@ class StorachaAPIService {
         
         let (data, response) = try await session.data(for: request)
         
-        if let rawResponse = String(data: data, encoding: .utf8) {
-            print("Get Space Usage Raw API Response: \(rawResponse)")
-        }
         
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
             try handleHTTPError(statusCode: httpResponse.statusCode, data: data)
@@ -300,9 +276,6 @@ class StorachaAPIService {
         
         let (data, response) = try await session.data(for: urlRequest)
         
-        if let rawResponse = String(data: data, encoding: .utf8) {
-            print("Create Delegation Raw API Response: \(rawResponse)")
-        }
         
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
             try handleHTTPError(statusCode: httpResponse.statusCode, data: data)
@@ -327,9 +300,6 @@ class StorachaAPIService {
         
         let (data, response) = try await session.data(for: request)
         
-        if let rawResponse = String(data: data, encoding: .utf8) {
-            print("List Delegations Raw API Response: \(rawResponse)")
-        }
         
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
             try handleHTTPError(statusCode: httpResponse.statusCode, data: data)
@@ -359,9 +329,6 @@ class StorachaAPIService {
         
         let (data, response) = try await session.data(for: request)
         
-        if let rawResponse = String(data: data, encoding: .utf8) {
-            print("Revoke Delegation Raw API Response: \(rawResponse)")
-        }
         
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
             try handleHTTPError(statusCode: httpResponse.statusCode, data: data)
@@ -410,16 +377,12 @@ class StorachaAPIService {
     
         if isAdmin {
             if let sessionData = sessionManager.loadSession() {
-                print("sessionId\(sessionData.sessionId)")
                 request.setValue(sessionData.sessionId, forHTTPHeaderField: "x-session-id")
             }
         }
         
         let (data, response) = try await session.data(for: request)
         
-        if let rawResponse = String(data: data, encoding: .utf8) {
-            print("List Uploads Raw API Response: \(rawResponse)")
-        }
         
         if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
             try handleHTTPError(statusCode: httpResponse.statusCode, data: data)
@@ -430,44 +393,24 @@ class StorachaAPIService {
     
     // MARK: - Get account usage
     func getAccountUsage() async throws -> StorachaAccountUsageResponse {
-        print("🔍 [getAccountUsage] Starting request...")
-        
         guard let sessionData = sessionManager.loadSession() else {
-            print("❌ [getAccountUsage] No active session found")
             throw StorachaAPIError.authenticationFailed("No active session")
         }
-        
-        print("✅ [getAccountUsage] Session ID: \(sessionData.sessionId)")
-        
+
         guard let url = URL(string: "\(baseURL)/spaces/account-usage") else {
-            print("❌ [getAccountUsage] Invalid URL")
             throw StorachaAPIError.invalidURL
         }
 
         var request = URLRequest(url: url)
         request.setValue(sessionData.sessionId, forHTTPHeaderField: "x-session-id")
-        
-        print("📤 [getAccountUsage] Making request to: \(url.absoluteString)")
-        print("📤 [getAccountUsage] Session ID header: \(sessionData.sessionId)")
-        
+
         let (data, response) = try await session.data(for: request)
 
-        if let rawResponse = String(data: data, encoding: .utf8) {
-            print("📥 [getAccountUsage] Raw API Response: \(rawResponse)")
-        }
-        
-        if let httpResponse = response as? HTTPURLResponse {
-            print("📥 [getAccountUsage] Status Code: \(httpResponse.statusCode)")
-            
-            if httpResponse.statusCode != 200 {
-                print("❌ [getAccountUsage] HTTP Error: \(httpResponse.statusCode)")
-                try handleHTTPError(statusCode: httpResponse.statusCode, data: data)
-            }
+        if let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode != 200 {
+            try handleHTTPError(statusCode: httpResponse.statusCode, data: data)
         }
 
-        let decoded = try JSONDecoder().decode(StorachaAccountUsageResponse.self, from: data)
-        print("✅ [getAccountUsage] Successfully decoded response")
-        return decoded
+        return try JSONDecoder().decode(StorachaAccountUsageResponse.self, from: data)
     }
     
     // MARK: - Generate bridge Tokens
@@ -505,9 +448,6 @@ class StorachaAPIService {
         
         let (data, response) = try await session.data(for: urlRequest)
         
-        if let rawResponse = String(data: data, encoding: .utf8) {
-            print("Generate Bridge Tokens Raw API Response: \(rawResponse)")
-        }
         
         guard let httpResponse = response as? HTTPURLResponse else {
             throw BridgeUploadError.networkError("Invalid response")
@@ -599,23 +539,10 @@ class StorachaAPIService {
     
     func getOrCreateKeyPair() -> DIDKeyManager.DIDKeyPair {
         do {
-            let keyPair = try keyManager.loadKeyPair()
-            print("✅ Using existing key pair: \(keyPair.did)")
-            return keyPair
+            return try keyManager.loadKeyPair()
         } catch {
-            print("ℹ️ No existing key pair found (\(error.localizedDescription))")
-            print("🔑 Creating new key pair...")
-            
             let keyPair = keyManager.generateKeyPair()
-            
-            do {
-                try keyManager.saveKeyPair(keyPair)
-                print("✅ New key pair saved: \(keyPair.did)")
-            } catch {
-                print("⚠️ Warning: Could not save key pair: \(error.localizedDescription)")
-                // Key pair still works, just won't persist
-            }
-            
+            try? keyManager.saveKeyPair(keyPair)
             return keyPair
         }
     }

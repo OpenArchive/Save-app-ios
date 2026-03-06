@@ -141,7 +141,6 @@ public class AnalyticsManager {
             self.providers.forEach { $0.reset() }
             MixPanelSessionManager.shared.reset()
             print("[AnalyticsManager] 🔄 Reset complete")
-            #endif
         }
     }
 

@@ -34,7 +34,7 @@ struct SpaceListView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             } else {
                 ScrollView {
-                    VStack(spacing: 12) {
+                    LazyVStack(spacing: 12) {
                         ForEach(spaceState.spaces) { space in
                             Button(action: {
                                 onSelect(space)

@@ -8,6 +8,7 @@
 
 import Foundation
 
+@MainActor
 class SpaceState: ObservableObject {
     @Published var spaces: [StorachaSpace] = []
     @Published var isLoading: Bool = false
@@ -35,7 +36,6 @@ class SpaceState: ObservableObject {
     private let sessionManager = SessionManager.shared
     
     // MARK: - Load Spaces
-    @MainActor
     func loadSpaces() async {
         isLoading = true
         error = nil
@@ -58,7 +58,6 @@ class SpaceState: ObservableObject {
     }
   
     // MARK: - Load files in space for a user
-    @MainActor
     func loadUploads(for spaceDid: String, isAdmin: Bool, reset: Bool = false) async {
         if reset {
             uploads = []
@@ -77,7 +76,6 @@ class SpaceState: ObservableObject {
             uploadsCursor = response.uploads.last?.cid
             uploadsHasMore = response.hasMore
         } catch {
-            print("Failed to load uploads: \(error)")
             uploads = []
             uploadsHasMore = false
             
@@ -88,7 +86,6 @@ class SpaceState: ObservableObject {
     }
     
     // MARK: - Upload File
-    @MainActor
     func uploadFile(fileURL: URL, spaceDid: String, isAdmin: Bool) async {
         isUploading = true
         uploadProgress = 0.0
@@ -104,7 +101,6 @@ class SpaceState: ObservableObject {
             uploadProgress = 0.1
             
             // --- TEMPORARY: Bridge store/add broken; using Token Service /upload until native space/blob/add or long-term decision ---
-            print("Starting Token Service upload (bridge store/add is broken)")
             let tokenResult = try await apiService.uploadFileViaTokenService(
                 fileURL: tempFile,
                 spaceDid: spaceDid,
@@ -120,8 +116,6 @@ class SpaceState: ObservableObject {
                 size: tokenResult.size
             )
             uploadResult = .success(uploadResponse)
-            print("Upload completed successfully via Token Service. CID: \(tokenResult.cid)")
-            
             await loadUploads(for: spaceDid, isAdmin: isAdmin, reset: true)
             cleanupTempFile(tempFile, originalURL: fileURL)
             
@@ -148,7 +142,6 @@ class SpaceState: ObservableObject {
             // --- END OLD BRIDGE PATH ---
             
         } catch {
-            print("Upload failed: \(error.localizedDescription)")
             uploadResult = .failure(error)
             
             // Handle 401 errors
@@ -160,7 +153,6 @@ class SpaceState: ObservableObject {
     }
     
     // MARK: - 401 Error Handling
-    @MainActor
     private func handle401Error(_ error: StorachaAPIError, isDelegatedUser: Bool = false) async {
         // Check if it's a 401 error
         if case .unauthorized = error {
@@ -177,14 +169,12 @@ class SpaceState: ObservableObject {
     }
     
     // MARK: - Alert Actions
-    @MainActor
     func handleStayHereAction() async {
         showUnauthorizedAlert = false
         // Refresh spaces for delegated user
         await loadSpaces()
     }
     
-    @MainActor
     func handleBackToLoginAction() {
         showUnauthorizedAlert = false
         shouldNavigateToLogin = true
@@ -192,21 +182,18 @@ class SpaceState: ObservableObject {
         sessionManager.clearSession()
     }
     
-    @MainActor
     func resetNavigationState() {
         shouldNavigateToLogin = false
     }
     
     // MARK: - Helper Methods
     private func createTempFileIfNeeded(from url: URL) throws -> URL {
-        print("Processing file URL: \(url)")
         
         // Check if it's already in our app's container (like temp files we created)
         let tempDirectory = FileManager.default.temporaryDirectory
         let cachesDirectory = FileManager.default.urls(for: .cachesDirectory, in: .userDomainMask).first!
         
         if url.path.hasPrefix(tempDirectory.path) || url.path.hasPrefix(cachesDirectory.path) {
-            print("File is already in app container, using directly")
             return url
         }
         
@@ -233,12 +220,10 @@ class SpaceState: ObservableObject {
             
             // Write to temp file
             try data.write(to: tempFile)
-            print("Created temp file: \(tempFile.path)")
             
             return tempFile
             
         } catch {
-            print("Failed to read file at \(url): \(error)")
             throw StorachaUploadError.fileAccessError("Cannot read file: \(error.localizedDescription)")
         }
     }
@@ -257,7 +242,6 @@ class SpaceState: ObservableObject {
         
         // Write CAR data
         try carResult.carData.write(to: carFile)
-        print("CAR file saved for debugging: \(carFile.path)")
     }
     
     private func cleanupTempFile(_ tempFile: URL, originalURL: URL) {
@@ -265,14 +249,11 @@ class SpaceState: ObservableObject {
         if tempFile.lastPathComponent.hasPrefix("upload_") {
             do {
                 try FileManager.default.removeItem(at: tempFile)
-                print("Cleaned up temp file: \(tempFile.path)")
             } catch {
-                print("Failed to cleanup temp file: \(error)")
             }
         }
     }
     
-    @MainActor
     func resetUploadState() {
         uploadResult = nil
         uploadProgress = 0.0
@@ -280,7 +261,6 @@ class SpaceState: ObservableObject {
     }
     
     // Optionally: helper to clear error
-    @MainActor
     func clearError() {
         error = nil
     }

@@ -13,12 +13,9 @@ import SwiftUI
 class StorachaSettingViewController: UIViewController {
     
     private var appState: StorachaAppState!
-   
-    private lazy var storachaLoginViewController: StorachaLoginViewController = {
-        let vc = StorachaLoginViewController()
-        return vc
-    }()
-    
+
+    var storachaAppState: StorachaAppState { appState }
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -35,16 +32,17 @@ class StorachaSettingViewController: UIViewController {
                 disableBackAction: { [weak self] isDisabled in
                     self?.navigationItem.hidesBackButton = isDisabled
                 },
-                dismissAction: {
-                    self.navigationController?.popViewController(animated: true)
+                dismissAction: { [weak self] in
+                    self?.navigationController?.popViewController(animated: true)
                 },
-                manageAccountsAction: { type in
-                    if type == "manage" {
-                        self.handleManageNavigation()
-                    } else if type == "join" {
-                        self.manageSpaceNavigation(isNew: true)
-                    } else {
-                        self.manageSpaceNavigation(isNew: false)
+                manageAccountsAction: { [weak self] action in
+                    switch action {
+                    case .manageAccounts:
+                        self?.handleManageNavigation()
+                    case .joinSpace:
+                        self?.manageSpaceNavigation(isNew: true)
+                    case .mySpaces:
+                        self?.manageSpaceNavigation(isNew: false)
                     }
                 }
             )
@@ -96,8 +94,8 @@ class StorachaSettingViewController: UIViewController {
     }
     
     private func navigateToLogin() {
-        let loginVC = StorachaLoginViewController()
-        self.navigationController?.pushViewController(loginVC, animated: true)
+        let loginVC = StorachaLoginViewController(appState: appState)
+        navigationController?.pushViewController(loginVC, animated: true)
     }
     
     private func navigateToAccountDetails(email: String) {

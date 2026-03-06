@@ -75,29 +75,31 @@ public class SessionManager {
            }
     }
     
-    func loadDelegatedSpceCount() -> Int? {
+    func loadDelegatedSpaceCount() -> Int? {
         do {
-               let data = try keychain.load(for: delegatedSpaceCount)
-               let string = String(data: data, encoding: .utf8)
-               return (string.flatMap { Int($0) }) ?? 0
-            
-           } catch {
-               return nil
-           }
+            let data = try keychain.load(for: delegatedSpaceCount)
+            let string = String(data: data, encoding: .utf8)
+            return string.flatMap { Int($0) } ?? 0
+        } catch {
+            return nil
+        }
     }
+
+    /// Legacy name; use `loadDelegatedSpaceCount` instead.
+    func loadDelegatedSpceCount() -> Int? { loadDelegatedSpaceCount() }
     
     func clearSession() {
         try? keychain.delete(for: sessionKey)
     }
     
 }
-// MARK: - Session Manager Extension
+// MARK: - Session Manager Extension (uses same key as saveSession)
 extension SessionManager {
     func setLastEmail(_ email: String) {
-        UserDefaults.standard.set(email, forKey: "lastUsedEmail")
+        userDefaults.set(email, forKey: lastEmailKey)
     }
-    
+
     func getLastEmail() -> String? {
-        return UserDefaults.standard.string(forKey: "lastUsedEmail")
+        userDefaults.string(forKey: lastEmailKey)
     }
 }

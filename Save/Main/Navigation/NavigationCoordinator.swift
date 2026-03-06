@@ -15,6 +15,7 @@ protocol SideMenuDelegate: AnyObject {
     func addFolder()
     func hideSelectMedia()
     func pushPrivateServerSetting(space: Space)
+    func manageStoracha()
 }
 
 class NavigationCoordinator: ObservableObject {
@@ -30,4 +31,5 @@ class NavigationCoordinator: ObservableObject {
     func addFolder() { delegate?.addFolder() }
     func hideSelectMedia() { delegate?.hideSelectMedia() }
     func pushPrivateServerSetting(space: Space) { delegate?.pushPrivateServerSetting(space: space) }
+    func manageStoracha() { delegate?.manageStoracha() }
 }

@@ -16,8 +16,7 @@ struct AccountListView: View {
 
     var body: some View {
         ScrollView {
-            VStack(spacing: 12) {
-              
+            LazyVStack(spacing: 12) {
                 if accountState.accounts.isEmpty {
                     Spacer()
                     Text(NSLocalizedString("No Accounts Available", comment: ""))

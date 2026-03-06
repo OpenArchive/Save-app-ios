@@ -8,6 +8,7 @@
 
 import Foundation
 
+@MainActor
 class DIDState: ObservableObject {
     @Published var dids: [String] = []
     @Published var isLoading: Bool = false
@@ -21,7 +22,6 @@ class DIDState: ObservableObject {
     private let apiService = StorachaAPIService.shared
     private let sessionManager = SessionManager.shared
 
-    @MainActor
     func loadDIDs(for spaceDid: String) async {
         isLoading = true
         error = nil
@@ -39,7 +39,6 @@ class DIDState: ObservableObject {
         isLoading = false
     }
 
-    @MainActor
     func addDID(for spaceDid: String, did: String, expiresInHours: Int = 24) async {
         isLoading = true
         error = nil
@@ -64,7 +63,6 @@ class DIDState: ObservableObject {
     }
 
     // MARK: - Revoke DID
-    @MainActor
     func revokeDID(for spaceDid: String, did: String) async {
         isLoading = true
         error = nil
@@ -85,7 +83,6 @@ class DIDState: ObservableObject {
     }
     
     // MARK: - 401 Error Handling
-    @MainActor
     private func handle401Error(_ error: StorachaAPIError) async {
         // Check if it's a 401 error
         if case .unauthorized = error {
@@ -96,14 +93,12 @@ class DIDState: ObservableObject {
     }
     
     // MARK: - Alert Actions
-    @MainActor
     func handleBackToLoginAction() {
         showUnauthorizedAlert = false
         shouldNavigateToLogin = true
         sessionManager.clearSession()
     }
     
-    @MainActor
     func resetNavigationState() {
         shouldNavigateToLogin = false
     }
