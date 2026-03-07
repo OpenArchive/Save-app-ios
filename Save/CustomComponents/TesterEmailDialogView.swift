@@ -44,11 +44,8 @@ struct TesterEmailDialogView: View {
                 CustomTextField(
                     placeholder: "Email",
                     text: $email,
-                    keyboardType: .emailAddress
-                )
-                .overlay(
-                    RoundedRectangle(cornerRadius: 8)
-                        .stroke(showInvalidEmail ? Color.red : Color.clear, lineWidth: showInvalidEmail ? 2 : 0)
+                    keyboardType: .emailAddress,
+                    hasError: showInvalidEmail
                 )
 
                 if showInvalidEmail {
