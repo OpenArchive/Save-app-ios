@@ -152,6 +152,15 @@ public class AnalyticsManager {
             self.providers.forEach { $0.flush() }
         }
     }
+
+    // MARK: - User Identification (Enhanced Analytics)
+
+    /// Identify user for providers that support it (e.g. EnhancedMixpanelProvider)
+    public func identifyUser(email: String, name: String? = nil) {
+        providers.forEach { provider in
+            (provider as? UserIdentifiableProvider)?.identifyUser(email: email, name: name)
+        }
+    }
 }
 
 // MARK: - Global Convenience Functions

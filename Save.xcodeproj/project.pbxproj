@@ -28,6 +28,9 @@
 		6EA9FED72F0A7D9000767B63 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA9FED62F0A7D9000767B63 /* SwiftUIIntrospect */; };
 		6EB3D6DA2EEBBB81007317EB /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = 6EB3D6D92EEBBB81007317EB /* Mixpanel */; };
 		6EB3D6DC2EEBBB8E007317EB /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = 6EB3D6DB2EEBBB8E007317EB /* Mixpanel */; };
+		6EBD3F5A2F5B98E10006DF84 /* MixpanelSessionReplay in Frameworks */ = {isa = PBXBuildFile; productRef = 6EBD3F592F5B98E10006DF84 /* MixpanelSessionReplay */; };
+		6EBD3F5C2F5B98EB0006DF84 /* MixpanelSessionReplay in Frameworks */ = {isa = PBXBuildFile; productRef = 6EBD3F5B2F5B98EB0006DF84 /* MixpanelSessionReplay */; };
+		6EBD3F5E2F5B98F50006DF84 /* MixpanelSessionReplay in Frameworks */ = {isa = PBXBuildFile; productRef = 6EBD3F5D2F5B98F50006DF84 /* MixpanelSessionReplay */; };
 		7D294CA198526B76E9A90039 /* Pods_Save_Screenshots.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27981A63E67D5F420A0C87BA /* Pods_Save_Screenshots.framework */; };
 		A0102D772B18EAC80054D3D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DE20E4C85E00DB31E1 /* Assets.xcassets */; };
 		A0102DA82B18F1180054D3D4 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0102D5A2B18E1430054D3D4 /* XCTest.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -178,6 +181,8 @@
 				CustomComponents/CustomAlert.swift,
 				CustomComponents/CustomButton.swift,
 				CustomComponents/CustomTextField.swift,
+				CustomComponents/TesterEmailAlertViewController.swift,
+				CustomComponents/TesterEmailDialogView.swift,
 				Extensions/MontserratExtension.swift,
 				"Extensions/View+Analytics.swift",
 				Space/WizardDelegate.swift,
@@ -471,6 +476,7 @@
 			files = (
 				6EA9FEC32F0A76D900767B63 /* Mixpanel in Frameworks */,
 				6EA9FEC52F0A76E100767B63 /* TLPhotoPicker in Frameworks */,
+				6EBD3F5C2F5B98EB0006DF84 /* MixpanelSessionReplay in Frameworks */,
 				6EA9FECB2F0A778E00767B63 /* MBProgressHUD in Frameworks */,
 				6EA9FECD2F0A7A9E00767B63 /* FontBlaster in Frameworks */,
 				243768E39BC491C270A9A352 /* Pods_ShareExtension.framework in Frameworks */,
@@ -485,6 +491,7 @@
 				A0102DA82B18F1180054D3D4 /* XCTest.framework in Frameworks */,
 				7D294CA198526B76E9A90039 /* Pods_Save_Screenshots.framework in Frameworks */,
 				6EA9FECF2F0A7D3600767B63 /* FactoryKit in Frameworks */,
+				6EBD3F5E2F5B98F50006DF84 /* MixpanelSessionReplay in Frameworks */,
 				6EA9FEC12F0A76C900767B63 /* FontBlaster in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -493,6 +500,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6EBD3F5A2F5B98E10006DF84 /* MixpanelSessionReplay in Frameworks */,
 				6EA9FED52F0A7D8200767B63 /* Regex in Frameworks */,
 				6EA9EBBE2F0A6A5500767B63 /* FactoryKit in Frameworks */,
 				6EB3D6DA2EEBBB81007317EB /* Mixpanel in Frameworks */,
@@ -719,7 +727,6 @@
 				A0E739D220E4C85D00DB31E1 /* Resources */,
 				A07129092111CC90007A432A /* Embed Foundation Extensions */,
 				39ADDA7DF5BD3D09D9C26BDF /* [CP] Embed Pods Frameworks */,
-				8D49F10B5297F48ABD2558BC /* [CP] Copy Pods Resources */,
 				6E78F3342DF30C8B008DB278 /* ShellScript */,
 			);
 			buildRules = (
@@ -807,6 +814,7 @@
 				6EA9EBBB2F0A686200767B63 /* XCRemoteSwiftPackageReference "Regex" */,
 				6EA9EBBC2F0A6A5500767B63 /* XCRemoteSwiftPackageReference "Factory" */,
 				6EA9FED82F0A800200767B63 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */,
+				6EBD3F582F5B98BB0006DF84 /* XCRemoteSwiftPackageReference "mixpanel-ios-session-replay-package" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A0E739D520E4C85D00DB31E1 /* Products */;
@@ -932,7 +940,7 @@
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Save/Pods-Save-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6E78F3342DF30C8B008DB278 /* Run Script */ = {
+		6E78F3342DF30C8B008DB278 /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			alwaysOutOfDate = 1;
 			buildActionMask = 2147483647;
@@ -1647,7 +1655,15 @@
 			repositoryURL = "https://github.com/mixpanel/mixpanel-swift";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 2.8.0;
+				minimumVersion = 4.3.1;
+			};
+		};
+		6EBD3F582F5B98BB0006DF84 /* XCRemoteSwiftPackageReference "mixpanel-ios-session-replay-package" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/mixpanel/mixpanel-ios-session-replay-package";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.3.0;
 			};
 		};
 		6ED29CFB2D68B608002E0189 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */ = {
@@ -1755,6 +1771,21 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6EB3CAE12EEBA9D9007317EB /* XCRemoteSwiftPackageReference "mixpanel-swift" */;
 			productName = Mixpanel;
+		};
+		6EBD3F592F5B98E10006DF84 /* MixpanelSessionReplay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EBD3F582F5B98BB0006DF84 /* XCRemoteSwiftPackageReference "mixpanel-ios-session-replay-package" */;
+			productName = MixpanelSessionReplay;
+		};
+		6EBD3F5B2F5B98EB0006DF84 /* MixpanelSessionReplay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EBD3F582F5B98BB0006DF84 /* XCRemoteSwiftPackageReference "mixpanel-ios-session-replay-package" */;
+			productName = MixpanelSessionReplay;
+		};
+		6EBD3F5D2F5B98F50006DF84 /* MixpanelSessionReplay */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6EBD3F582F5B98BB0006DF84 /* XCRemoteSwiftPackageReference "mixpanel-ios-session-replay-package" */;
+			productName = MixpanelSessionReplay;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

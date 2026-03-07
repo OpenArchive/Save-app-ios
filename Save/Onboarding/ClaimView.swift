@@ -41,6 +41,11 @@ struct ClaimView: View {
         }
         .ignoresSafeArea(.container, edges: .bottom)
         .background(Color(UIColor.systemBackground))
+        .overlay(alignment: .bottom) {
+            if EnhancedAnalyticsConfig.isEnabled {
+                TestingBannerView()
+            }
+        }
         .onTapGesture {
             onNext()
         }

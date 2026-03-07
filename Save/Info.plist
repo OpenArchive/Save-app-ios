@@ -125,5 +125,7 @@
 			</array>
 		</dict>
 	</dict>
+	<key>ENHANCED_ANALYTICS_ENABLED</key>
+	<string>$(ENHANCED_ANALYTICS_ENABLED)</string>
 </dict>
 </plist>

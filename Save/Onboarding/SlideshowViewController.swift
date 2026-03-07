@@ -261,6 +261,7 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        addTestingBannerIfNeeded()
         if UIScreen.main.bounds.height <= 667 {
             bottomButtonContraint.constant = 16
         
@@ -406,6 +407,28 @@ class SlideshowViewController: BasePageViewController, SlideViewControllerDelega
             }
         }
     
+    }
+
+    private func addTestingBannerIfNeeded() {
+        guard EnhancedAnalyticsConfig.isEnabled else { return }
+        guard view.viewWithTag(9999) == nil else { return }
+
+        let banner = UILabel()
+        banner.tag = 9999
+        banner.text = "▲ TESTING ONLY — NOT FOR PUBLIC USE"
+        banner.textColor = .white
+        banner.font = .boldSystemFont(ofSize: 12)
+        banner.textAlignment = .center
+        banner.backgroundColor = UIColor(red: 0.55, green: 0, blue: 0, alpha: 0.8)
+        banner.translatesAutoresizingMaskIntoConstraints = false
+
+        view.addSubview(banner)
+        NSLayoutConstraint.activate([
+            banner.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            banner.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            banner.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+            banner.heightAnchor.constraint(equalToConstant: 28)
+        ])
     }
 
     private func getSlide(_ index: Int) -> SlideViewController {

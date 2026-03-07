@@ -42,6 +42,11 @@ public protocol AnalyticsProvider {
     var providerName: String { get }
 }
 
+/// Protocol for providers that support named user identification (e.g. EnhancedMixpanelProvider)
+public protocol UserIdentifiableProvider: AnalyticsProvider {
+    func identifyUser(email: String, name: String?)
+}
+
 /// Default implementations
 public extension AnalyticsProvider {
     func setUserProperty(key: String, value: Any) {

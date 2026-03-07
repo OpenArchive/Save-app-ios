@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct CustomTextField: View {
     var placeholder: String
@@ -14,6 +15,7 @@ struct CustomTextField: View {
     var isSecure: Bool = false
     var isDisabled: Bool = false
     var hasError: Bool = false
+    var keyboardType: UIKeyboardType = .default
     var onEditingChanged: ((Bool) -> Void)? = nil
     var onTextChanged: ((String) -> Void)? = nil
     var onCommit: (() -> Void)? = nil
@@ -42,6 +44,9 @@ struct CustomTextField: View {
                     }, onCommit: {
                         onCommit?()
                     })
+                    .keyboardType(keyboardType)
+                    .textInputAutocapitalization(keyboardType == .emailAddress ? .never : .sentences)
+                    .autocorrectionDisabled()
                     .onChange(of: text) { newValue in
                         onTextChanged?(newValue)
                     }
@@ -49,6 +54,7 @@ struct CustomTextField: View {
                     .padding(12)
                 } else {
                     TextField("", text: $text)
+                        .keyboardType(keyboardType)
                         .font(.montserrat(.medium, for: .footnote))
                         .padding(12)
                 }
