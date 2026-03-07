@@ -15,6 +15,7 @@ struct CustomTextField: View {
     var isSecure: Bool = false
     var isDisabled: Bool = false
     var keyboardType: UIKeyboardType = .default
+    var hasError: Bool = false
     var onEditingChanged: ((Bool) -> Void)? = nil
     var onTextChanged: ((String) -> Void)? = nil
     var onCommit: (() -> Void)? = nil
@@ -63,7 +64,7 @@ struct CustomTextField: View {
         .cornerRadius(8)
         .overlay(
             RoundedRectangle(cornerRadius: 8)
-                .stroke(borderColor(), lineWidth: 1)
+                .stroke(borderColor(), lineWidth: hasError ? 2 : 1)
         )
         .background(isDisabled ? Color.gray.opacity(0.2) : Color.textboxBg)
         .disabled(isDisabled)
@@ -71,7 +72,9 @@ struct CustomTextField: View {
     }
     
     private func borderColor() -> Color {
-        if isFocused {
+        if hasError {
+            return .red
+        } else if isFocused {
             return .accent
         } else {
             return .gray70
