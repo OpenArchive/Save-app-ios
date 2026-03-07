@@ -261,6 +261,11 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         trackScreenViewSafely("MediaScreen")
+        EnhancedAnalyticsHelper.shared.setupUserIdentification(
+            from: self,
+            onIdentified: nil,
+            onSkipped: nil
+        )
     }
     
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {

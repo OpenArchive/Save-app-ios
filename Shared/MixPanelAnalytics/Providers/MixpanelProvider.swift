@@ -28,7 +28,7 @@ public class MixpanelProvider: AnalyticsProvider {
     }
 
     public func initialize() {
-        mixpanel = Mixpanel.initialize(token: token)
+        mixpanel = Mixpanel.initialize(token: token, trackAutomaticEvents: true)
     }
 
     public func trackEvent(_ event: AnalyticsEvent) {

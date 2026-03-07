@@ -34,8 +34,13 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 
         FirebaseApp.configure()
 
-        let mixpanelProvider = MixpanelProvider(token: GeneralConstants.mix_panel_token)
-        AnalyticsManager.shared.initialize(providers: [mixpanelProvider])
+        let provider: AnalyticsProvider
+        if EnhancedAnalyticsConfig.isEnabled {
+            provider = EnhancedMixpanelProvider(token: GeneralConstants.mix_panel_token)
+        } else {
+            provider = MixpanelProvider(token: GeneralConstants.mix_panel_token)
+        }
+        AnalyticsManager.shared.initialize(providers: [provider])
 
         AnalyticsManager.shared.startSession()
 
