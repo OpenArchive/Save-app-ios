@@ -16,7 +16,6 @@ struct CustomTextField: View {
     var isDisabled: Bool = false
     var hasError: Bool = false
     var keyboardType: UIKeyboardType = .default
-    var hasError: Bool = false
     var onEditingChanged: ((Bool) -> Void)? = nil
     var onTextChanged: ((String) -> Void)? = nil
     var onCommit: (() -> Void)? = nil

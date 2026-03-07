@@ -44,8 +44,7 @@ struct TesterEmailDialogView: View {
                 CustomTextField(
                     placeholder: "Email",
                     text: $email,
-                    keyboardType: .emailAddress,
-                    hasError: showInvalidEmail
+                    hasError: showInvalidEmail, keyboardType: .emailAddress
                 )
 
                 if showInvalidEmail {
