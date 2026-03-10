@@ -133,13 +133,17 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     }
     
     
+    /// Session config used for uploads and WebDAV operations (e.g. browse folders).
+    /// When Onion Routing is enabled, routes traffic through Tor. To re-enable Tor:
+    /// 1. Uncomment the block below.
+    /// 2. Ensure TorManager is initialized and provides torSocks5ProxyConf.
     public class func improvedSessionConf(_ conf: URLSessionConfiguration? = nil) -> URLSessionConfiguration {
         let conf = URLSessionConfiguration.improved(conf)
-        
+
 //        if Settings.useTor {
 //            conf.connectionProxyDictionary = TorManager.shared.torSocks5ProxyConf
 //        }
-        
+
         return conf
     }
     
