@@ -725,11 +725,10 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         
         toggleMenu(false) { _ in
             if SelectedSpace.available {
-                if(SelectedSpace.space is  IaSpace){
+                if SelectedSpace.space is IaSpace {
                     self.navigationController?.pushViewController(AddNewFolderViewController(), animated: true)
-                }
-                else{
-                    self.navigationController?.pushViewController(AppAddFolderViewController(), animated: true)
+                } else {
+                    self.navigationController?.pushViewController(AddFolderViewController(), animated: true)
                 }
                 
             }

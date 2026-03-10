@@ -12,10 +12,7 @@ import SwiftUI
 class BrowseViewController: UIViewController {
 
     private let useTorSession: Bool
-    private var selectedFolder: BrowseFolder?
 
-    /// - Parameter useTorSession: When true, browse uses Tor-capable session (for WebDavSpace when Onion Routing enabled).
-    ///   See BrowseViewModel and UploadManager.improvedSessionConf(). Tor currently commented out.
     init(useTorSession: Bool = false) {
         self.useTorSession = useTorSession
         super.init(nibName: nil, bundle: nil)
@@ -25,6 +22,8 @@ class BrowseViewController: UIViewController {
         self.useTorSession = false
         super.init(coder: coder)
     }
+
+    private var selectedFolder: BrowseFolder?
 
     override func viewDidLoad() {
         super.viewDidLoad()
