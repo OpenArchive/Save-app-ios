@@ -2,8 +2,6 @@
 //  BigButtonView.swift
 //  Save
 //
-//  SwiftUI equivalent of BigButton UIView
-//
 
 import SwiftUI
 

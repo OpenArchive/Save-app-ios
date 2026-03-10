@@ -59,9 +59,6 @@ class AddFolderViewController: UIViewController {
     }
 
     func performBrowse() {
-        // For WebDavSpace: use Tor-capable session so browse requests route through Tor when
-        // Onion Routing is enabled. To re-enable: uncomment Tor block in UploadManager.improvedSessionConf().
-        let useTorSession = SelectedSpace.space is WebDavSpace
-        navigationController?.pushViewController(BrowseViewController(useTorSession: useTorSession), animated: true)
+        navigationController?.pushViewController(BrowseViewController(), animated: true)
     }
 }

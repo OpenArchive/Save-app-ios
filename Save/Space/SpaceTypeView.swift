@@ -48,7 +48,8 @@ struct SpaceTypeView: View {
                     title: IaSpace.defaultPrettyName,
                     subtitle: NSLocalizedString("Connect to a free \npublic server", comment: ""),
                     action: onInternetArchive
-                )
+                ).accessibilityIdentifier("viewPrivateServer")
+                .padding(.bottom, 16)
             }
 
             BigButtonView(
