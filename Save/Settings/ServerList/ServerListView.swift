@@ -61,7 +61,7 @@ struct ServerListView: View {
                 Text(NSLocalizedString("Add Server", comment: ""))
                     .font(.montserrat(.semibold, for: .headline))
             }
-            .foregroundColor(.primary)
+            .foregroundColor(.black)
             .frame(maxWidth: .infinity)
             .frame(height: 50)
             .background(Color.accent)

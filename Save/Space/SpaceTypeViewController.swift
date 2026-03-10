@@ -9,9 +9,7 @@
 import UIKit
 import SwiftUI
 
-class SpaceTypeViewController: UIHostingController<SpaceTypeView>, WizardDelegatable {
-
-    weak var delegate: WizardDelegate?
+class SpaceTypeViewController: UIHostingController<SpaceTypeView> {
 
     required init() {
         let placeholder = SpaceTypeView(
@@ -49,7 +47,7 @@ class SpaceTypeViewController: UIHostingController<SpaceTypeView>, WizardDelegat
 
     private func newWebDav() {
         navigationController?.pushViewController(
-            UIStoryboard.main.instantiate(WebDavWizardViewController.self),
+            WebDavWizardViewController(),
             animated: true)
     }
 
