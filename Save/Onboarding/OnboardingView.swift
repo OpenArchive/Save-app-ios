@@ -38,17 +38,32 @@ enum OnboardingLayout {
     static let topBarHeight: CGFloat            = 0
     static let rightBarWidthMultiplier: CGFloat = 0.25
     static let skipTopPadding: CGFloat          = 0
-    static let skipButtonHeight: CGFloat        = 44
+    static let skipButtonHeight: CGFloat        = 32
     static let nextButtonSize: CGFloat          = 50
     static let nextBottomPadding: CGFloat       = 15  
     static let pageControlLeading: CGFloat      = 35
     static let contentLeading: CGFloat          = 35
     static let textTrailingGap: CGFloat         = 8
 
-    static var isSmallScreen: Bool       { UIScreen.main.bounds.height <= 667 }
-    static var imageHeightRatio: CGFloat { isSmallScreen ? 0.5 : 0.6 }
-    static var imageToHeading: CGFloat   { isSmallScreen ? 10  : 30  }
-    static var headingToBody: CGFloat    { isSmallScreen ? 8   : 12  }
+    static var screenHeight: CGFloat { UIScreen.main.bounds.height }
+    static var isSmallScreen: Bool   { screenHeight <= 667 }
+    static var isCompactScreen: Bool { screenHeight > 667 && screenHeight <= 812 }
+
+    static var imageHeightRatio: CGFloat {
+        if isSmallScreen { return 0.5 }
+        if isCompactScreen { return 0.7 }
+        return 0.6
+    }
+    static var imageToHeading: CGFloat {
+        if isSmallScreen { return 10 }
+        if isCompactScreen { return 12 }
+        return 30
+    }
+    static var headingToBody: CGFloat {
+        if isSmallScreen { return 8 }
+        if isCompactScreen { return 6 }
+        return 12
+    }
 
     static var skipHeight: CGFloat { skipTopPadding + skipButtonHeight }
 }
@@ -219,6 +234,7 @@ struct OnboardingView: View {
                                     }
                                 } label: {
                                     Image(isLastPage ? "check" : "forward_arrow")
+                                        .renderingMode(.template)
                                         .font(.system(size: 20, weight: .semibold))
                                 }
                                 .foregroundColor(.black)
