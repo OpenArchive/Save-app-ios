@@ -19,10 +19,10 @@ struct WebDavWizardView: View {
     // MARK: - Layout Constants
     private enum Layout {
         static let horizontalPadding: CGFloat = 20
-        static let headerTopPadding: CGFloat = 46
-        static let headerBottomPadding: CGFloat = 45
+        static let headerTopPadding: CGFloat = 40
+        static let headerBottomPadding: CGFloat = 40
         static let sectionSpacing: CGFloat = 20
-        static let accountTopPadding: CGFloat = 45
+        static let accountTopPadding: CGFloat = 35
         static let buttonSpacing: CGFloat = 10
         static let buttonBottomPadding: CGFloat = 20
         static let cornerRadius: CGFloat = 10
@@ -30,26 +30,29 @@ struct WebDavWizardView: View {
 
     var body: some View {
         ZStack {
-            ScrollView {
-                VStack(alignment: .leading, spacing: 0) {
-                    headerSection
-                    serverSection
-                    accountSection
-                    errorSection
-                    Spacer(minLength: Layout.sectionSpacing)
+            GeometryReader { geometry in
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 0) {
+                        headerSection
+                        serverSection
+                        accountSection
+                        errorSection
+                        Spacer(minLength: Layout.sectionSpacing)
+                        buttonsSection
+                    }
+                    .padding(.bottom, 8)
+                    .frame(minHeight: geometry.size.height)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        focusedField = nil
+                    }
                 }
-            }
-
-            VStack {
-                Spacer()
-                buttonsSection
             }
 
             if viewModel.isBusy {
                 loadingOverlay
             }
         }
-        .ignoresSafeArea(.keyboard, edges: .bottom)
         .overlay(alertOverlay)
     }
 
@@ -116,6 +119,7 @@ struct WebDavWizardView: View {
                     viewModel.connect()
                 }
             )
+            .padding(.bottom, 40)
         }
         .padding(.horizontal, Layout.horizontalPadding)
     }

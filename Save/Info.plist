@@ -77,8 +77,6 @@
 	<string>Please grant this app access to your microphone, if you directly want to take videos.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Please grant this app access to your camera roll, if you want to upload photos or videos.</string>
-	<key>UIDesignRequiresCompatibility</key>
-	<true/>
 	<key>UILaunchStoryboardName</key>
 	<string>LaunchScreen</string>
 	<key>UIMainStoryboardFile</key>

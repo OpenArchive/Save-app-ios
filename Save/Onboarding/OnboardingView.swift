@@ -46,23 +46,16 @@ enum OnboardingLayout {
     static let textTrailingGap: CGFloat         = 8
 
     static var screenHeight: CGFloat { UIScreen.main.bounds.height }
-    static var isSmallScreen: Bool   { screenHeight <= 667 }
-    static var isCompactScreen: Bool { screenHeight > 667 && screenHeight <= 812 }
+    static var isSmallScreen: Bool { screenHeight <= 667 }
 
     static var imageHeightRatio: CGFloat {
-        if isSmallScreen { return 0.5 }
-        if isCompactScreen { return 0.7 }
-        return 0.6
+        isSmallScreen ? 0.5 : 0.6
     }
     static var imageToHeading: CGFloat {
-        if isSmallScreen { return 10 }
-        if isCompactScreen { return 12 }
-        return 30
+        isSmallScreen ? 10 : 30
     }
     static var headingToBody: CGFloat {
-        if isSmallScreen { return 8 }
-        if isCompactScreen { return 6 }
-        return 12
+        isSmallScreen ? 8 : 12
     }
 
     static var skipHeight: CGFloat { skipTopPadding + skipButtonHeight }

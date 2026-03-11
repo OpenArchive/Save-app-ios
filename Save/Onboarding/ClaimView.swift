@@ -34,7 +34,7 @@ struct ClaimView: View {
 
                 wordsSection
 
-                if OnboardingLayout.isSmallScreen || OnboardingLayout.isCompactScreen {
+                if OnboardingLayout.isSmallScreen {
                     Spacer(minLength: 12)
                     subtitleSection
                     Spacer(minLength: 12)

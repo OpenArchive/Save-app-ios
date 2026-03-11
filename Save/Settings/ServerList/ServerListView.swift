@@ -32,7 +32,9 @@ struct ServerListView: View {
                     .padding(.bottom, 16)
                 }
             }
-            
+
+            Spacer()
+
             addServerButton
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
