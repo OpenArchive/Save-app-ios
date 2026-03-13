@@ -246,9 +246,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         assetsReadConn?.update(mappings: assetsMappings)
         Db.add(observer: self, #selector(yapDatabaseModified))
 
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem = backBarButtonItem
-
         if Settings.proofMode && LocationMananger.shared.status == .notDetermined {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 LocationMananger.shared.requestAuthorization()
@@ -513,7 +510,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         
         
         let logoItem = UIBarButtonItem(customView: logoContainer)
-        
         navigationItem.leftBarButtonItems = [logoItem]
     }
     

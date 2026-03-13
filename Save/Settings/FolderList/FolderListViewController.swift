@@ -49,8 +49,9 @@ class FolderListNewViewController: UIViewController {
         ])
         hostingController.didMove(toParent: self)
         
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem = backBarButtonItem
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        
         navigationItem.title = NSLocalizedString("Archived Folders", comment: "")
     }
+    
 }

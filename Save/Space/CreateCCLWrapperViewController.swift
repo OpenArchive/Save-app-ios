@@ -87,7 +87,6 @@ class CreateCCLWrapperViewController: UIViewController {
         }
 
         let vc = SpaceSuccessViewController(spaceName: name)
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationController?.pushViewController(vc, animated: true)
     }
 

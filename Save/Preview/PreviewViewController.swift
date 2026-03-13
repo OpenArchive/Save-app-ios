@@ -22,6 +22,7 @@ class PreviewViewController: UIViewController,
         didSet {
             uploadBt.title = NSLocalizedString("UPLOAD", comment: "")
             uploadBt.accessibilityIdentifier = "btUpload"
+            uploadBt.tintColor = .white
         }
     }
     @IBOutlet weak var collectionView: UICollectionView!
