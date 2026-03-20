@@ -11,7 +11,7 @@ import YapDatabase
 import SwiftUI
 class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,
                           UINavigationControllerDelegate, SideMenuDelegate,
-                          AssetPickerDelegate,UITextFieldDelegate,UICollectionViewDelegate
+                          AssetPickerDelegate, UITextFieldDelegate, UICollectionViewDelegate, DoneDelegate
 {
     
     @IBOutlet weak var renameView: UIView!{
@@ -419,6 +419,11 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             toggleMode()
         }
         updateManageBt()
+        
+        if #available(iOS 26.0, *) {
+            navigationItem.leftBarButtonItems?.forEach { $0.hidesSharedBackground = true }
+            navigationItem.rightBarButtonItems?.forEach { $0.hidesSharedBackground = true }
+        }
     }
  
     
@@ -596,7 +601,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 if upload.error != nil {
                     return UploadErrorAlert.present(self, upload)
                 }
-                performSegue(withIdentifier: "editAssetsSegue", sender: indexPath.row)
+                presentManagement()
                 
                 return
             }
@@ -614,6 +619,24 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             from: assetsMappings.group(forSection: UInt(indexPath.section))))
         
         performSegue(withIdentifier: Self.segueShowPreview, sender: indexPath.row)
+    }
+
+    // MARK: Upload manager (SwiftUI)
+    private func presentManagement() {
+        // Present modally to match the old storyboard flow.
+        guard presentedViewController == nil else { return }
+        
+        let managementVC = ManagementViewController()
+        managementVC.delegate = self
+        let nav = UINavigationController(rootViewController: managementVC)
+        nav.modalPresentationStyle = .fullScreen
+        nav.view.backgroundColor = .systemBackground
+        present(nav, animated: true)
+    }
+    
+    // MARK: DoneDelegate
+    func done() {
+        // Modal dismisses; collection view refreshes via database observers.
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
