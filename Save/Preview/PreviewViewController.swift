@@ -12,14 +12,6 @@ import YapDatabase
 
 class PreviewViewController: UIViewController, AssetPickerDelegate, DoneDelegate {
     
-    @IBOutlet weak var uploadBt: UIBarButtonItem! {
-        didSet {
-            uploadBt.title = NSLocalizedString("UPLOAD", comment: "")
-            uploadBt.accessibilityIdentifier = "btUpload"
-            uploadBt.tintColor = .white
-        }
-    }
-    
     // MARK: Storyboard outlet placeholders (hidden, SwiftUI handles UI)
     @IBOutlet weak var collectionView: UICollectionView! {
         didSet {
@@ -54,6 +46,16 @@ class PreviewViewController: UIViewController, AssetPickerDelegate, DoneDelegate
         
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backBarButtonItem
+        
+        let uploadItem = UIBarButtonItem(
+            title: NSLocalizedString("UPLOAD", comment: ""),
+            style: .plain,
+            target: self,
+            action: #selector(upload)
+        )
+        uploadItem.accessibilityIdentifier = "btUpload"
+        uploadItem.tintColor = .white
+        navigationItem.rightBarButtonItem = uploadItem
         
         setupSwiftUIView()
     }
@@ -133,7 +135,7 @@ class PreviewViewController: UIViewController, AssetPickerDelegate, DoneDelegate
     
     // MARK: Actions
     
-    @IBAction func upload() {
+    @objc private func upload() {
         UploadInfoAlert.presentIfNeeded(viewController: self) {
             Db.writeConn?.asyncReadWrite { tx in
                 guard let group = self.sc.group else {

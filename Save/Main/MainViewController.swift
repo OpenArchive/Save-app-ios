@@ -24,7 +24,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     @IBOutlet weak var EditButtonTrailingContraint: NSLayoutConstraint!
     @IBOutlet weak var titleContainerHeight: NSLayoutConstraint!
     @IBOutlet weak var titleContainer: UIView!
-    private static let segueShowPreview = "showPreviewSegue"
     private static let segueShowPrivateServerSetting = "showPrivateServerSetting"
     private static var isSettingsEnabled = false
     lazy var privateServer:Space? = nil
@@ -618,7 +617,13 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         AbcFilteredByCollectionView.updateFilter(AssetsByCollectionView.collectionId(
             from: assetsMappings.group(forSection: UInt(indexPath.section))))
         
-        performSegue(withIdentifier: Self.segueShowPreview, sender: indexPath.row)
+        showPreview(initialRow: indexPath.row)
+    }
+
+    // MARK: Preview
+    private func showPreview(initialRow: Int? = nil) {
+        let vc = PreviewViewController()
+        navigationController?.pushViewController(vc, animated: true)
     }
 
     // MARK: Upload manager (SwiftUI)
@@ -855,7 +860,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
     
     func picked() {
-        performSegue(withIdentifier: Self.segueShowPreview, sender: nil)
+        showPreview()
     }
     
     
