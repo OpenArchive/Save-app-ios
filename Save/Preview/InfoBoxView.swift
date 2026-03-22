@@ -40,6 +40,7 @@ struct InfoBoxView: View {
                 singleLineTextField
             }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
         .padding(.horizontal, 16)
         .padding(.vertical, 14)
         .background(Color(UIColor.systemBackground))
@@ -66,6 +67,7 @@ struct InfoBoxView: View {
                     onTextChanged?(newValue)
                 }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
     
     @ViewBuilder
@@ -100,6 +102,7 @@ struct InfoBoxView: View {
                     .frame(minHeight: 80)
             }
         }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 }
 

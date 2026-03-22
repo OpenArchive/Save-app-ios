@@ -9,28 +9,23 @@ import SwiftUI
 
 struct DarkroomView: View {
     @StateObject private var viewModel: DarkroomViewModel
-    @FocusState private var focusedField: Field?
+    @FocusState private var focusedField: MediaInfoField?
     @Environment(\.dismiss) private var dismiss
-    
+
     var onDismiss: (() -> Void)?
     var onRemoveAsset: (() -> Void)?
-    
-    enum Field {
-        case location
-        case notes
-    }
-    
+
     init(initialIndex: Int = 0, onDismiss: (() -> Void)? = nil, onRemoveAsset: (() -> Void)? = nil) {
         self._viewModel = StateObject(wrappedValue: DarkroomViewModel(initialIndex: initialIndex))
         self.onDismiss = onDismiss
         self.onRemoveAsset = onRemoveAsset
     }
-    
+
     var body: some View {
         GeometryReader { geometry in
             VStack(spacing: 0) {
                 imageSection(geometry: geometry)
-                
+
                 infoSection
                     .frame(height: geometry.size.height * 0.5)
             }
@@ -46,7 +41,7 @@ struct DarkroomView: View {
             }
         }
     }
-    
+
     @ViewBuilder
     private func imageSection(geometry: GeometryProxy) -> some View {
         ZStack {
@@ -60,12 +55,12 @@ struct DarkroomView: View {
             .onChange(of: viewModel.selectedIndex) { newIndex in
                 viewModel.onPageChange(to: newIndex)
             }
-            
+
             imageOverlay
         }
         .frame(height: geometry.size.height * 0.5)
     }
-    
+
     private var imageOverlay: some View {
         VStack {
             HStack {
@@ -76,9 +71,9 @@ struct DarkroomView: View {
                     .padding(.vertical, 5)
                     .background(Color.black.opacity(0.5))
                     .cornerRadius(12)
-                
+
                 Spacer()
-                
+
                 FlagView(
                     isSelected: $viewModel.isFlagged,
                     unselectedColor: .white,
@@ -89,13 +84,11 @@ struct DarkroomView: View {
             }
             .padding(.horizontal, 16)
             .padding(.top, 12)
-            
+
             Spacer()
-            
+
             HStack {
-                Button(action: {
-                    viewModel.goBackward()
-                }) {
+                Button(action: { viewModel.goBackward() }) {
                     Image(systemName: "chevron.left")
                         .font(.system(size: 24, weight: .bold))
                         .foregroundColor(.white)
@@ -106,12 +99,10 @@ struct DarkroomView: View {
                 .opacity(viewModel.canGoBackward ? 1 : 0)
                 .disabled(!viewModel.canGoBackward)
                 .padding(.leading, 12)
-                
+
                 Spacer()
-                
-                Button(action: {
-                    viewModel.goForward()
-                }) {
+
+                Button(action: { viewModel.goForward() }) {
                     Image(systemName: "chevron.right")
                         .font(.system(size: 24, weight: .bold))
                         .foregroundColor(.white)
@@ -123,11 +114,11 @@ struct DarkroomView: View {
                 .disabled(!viewModel.canGoForward)
                 .padding(.trailing, 12)
             }
-            
+
             Spacer()
         }
     }
-    
+
     @ViewBuilder
     private func assetImageView(asset: Asset) -> some View {
         ZStack {
@@ -136,7 +127,7 @@ struct DarkroomView: View {
             } else {
                 placeholderView(for: asset)
             }
-            
+
             if asset.isAv {
                 VStack {
                     Spacer()
@@ -149,59 +140,33 @@ struct DarkroomView: View {
             }
         }
     }
-    
+
     private func placeholderView(for asset: Asset) -> some View {
-        VStack {
+        ZStack {
+            Color(UIColor.systemGray6)
             Image(asset.getFileType().placeholder)
                 .resizable()
                 .aspectRatio(contentMode: .fit)
                 .frame(width: 80, height: 80)
                 .foregroundColor(.gray)
         }
-        .frame(maxWidth: .infinity, maxHeight: .infinity)
-        .background(Color(.systemGray6))
     }
-    
-    
+
     private var infoSection: some View {
-        VStack(spacing: 0) {
-            ScrollView {
-                VStack(spacing: 16) {
-                    InfoBoxView(
-                        iconName: "ic_location",
-                        placeholder: NSLocalizedString("Add a location (optional)", comment: ""),
-                        text: $viewModel.location,
-                        isMultiline: false,
-                        onTextChanged: { newValue in
-                            viewModel.updateLocation(newValue)
-                        }
-                    )
-                    .focused($focusedField, equals: .location)
-                    
-                    InfoBoxView(
-                        iconName: "ic_edit",
-                        placeholder: NSLocalizedString("Add notes (optional)", comment: ""),
-                        text: $viewModel.notes,
-                        isMultiline: true,
-                        onTextChanged: { newValue in
-                            viewModel.updateNotes(newValue)
-                        }
-                    )
-                    .focused($focusedField, equals: .notes)
-                }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 20)
-            }
-            .modifier(ScrollDismissesKeyboardModifier())
-        }
-        .background(Color(UIColor.systemBackground))
+        MediaInfoSectionView(
+            location: $viewModel.location,
+            notes: $viewModel.notes,
+            focusedField: $focusedField,
+            onLocationChanged: { viewModel.updateLocation($0) },
+            onNotesChanged: { viewModel.updateNotes($0) }
+        )
     }
 }
 
 struct AsyncThumbnailView: View {
     let asset: Asset
     @State private var thumbnail: UIImage?
-    
+
     var body: some View {
         Group {
             if let thumbnail = thumbnail {
@@ -218,7 +183,7 @@ struct AsyncThumbnailView: View {
             loadThumbnail()
         }
     }
-    
+
     private func loadThumbnail() {
         asset.getThumbnailAsync { loadedThumbnail in
             DispatchQueue.main.async {
@@ -241,7 +206,7 @@ struct ScrollDismissesKeyboardModifier: ViewModifier {
 struct RoundedCorner: Shape {
     var radius: CGFloat
     var corners: UIRectCorner
-    
+
     func path(in rect: CGRect) -> Path {
         let path = UIBezierPath(
             roundedRect: rect,
