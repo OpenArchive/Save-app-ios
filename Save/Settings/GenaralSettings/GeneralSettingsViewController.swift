@@ -33,6 +33,7 @@ class GeneralSettingsViewController:UIViewController,ViewControllerNavigationDel
         
         
         settingsViewModel.delegate = self
+        // Set empty title for back button (chevron only)
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backBarButtonItem
         if #available(iOS 14.0, *) {

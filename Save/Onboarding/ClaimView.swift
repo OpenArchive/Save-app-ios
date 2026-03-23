@@ -32,9 +32,17 @@ struct ClaimView: View {
             VStack(spacing: 0) {
                 logoSection(height: topHeight)
 
-                claimSection
+                wordsSection
 
-                Spacer(minLength: 0)
+                if OnboardingLayout.isSmallScreen {
+                    Spacer(minLength: 12)
+                    subtitleSection
+                    Spacer(minLength: 12)
+                } else {
+                    Spacer().frame(height: 36)
+                    subtitleSection
+                    Spacer(minLength: 0)
+                }
 
                 bottomSection(height: bottomHeight)
             }
@@ -69,20 +77,22 @@ struct ClaimView: View {
         .frame(height: height, alignment: .topLeading)
     }
 
-    private var claimSection: some View {
-        VStack(alignment: .leading, spacing: 36) {
-            VStack(alignment: .leading, spacing: 0) {
-                ForEach(words, id: \.self) { word in
-                    accentedWord(word)
-                }
+    private var wordsSection: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            ForEach(words, id: \.self) { word in
+                accentedWord(word)
             }
-
-            Text(NSLocalizedString("Secure Mobile Media Preservation", comment: ""))
-                .font(.montserrat(.bold, for: .body))
-                .minimumScaleFactor(0.5)
         }
         .padding(.leading, 16)
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private var subtitleSection: some View {
+        Text(NSLocalizedString("Secure Mobile Media Preservation", comment: ""))
+            .font(.montserrat(.bold, for: .body))
+            .minimumScaleFactor(0.5)
+            .padding(.leading, 16)
+            .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     private func accentedWord(_ word: String) -> some View {

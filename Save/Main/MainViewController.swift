@@ -11,7 +11,7 @@ import YapDatabase
 import SwiftUI
 class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,
                           UINavigationControllerDelegate, SideMenuDelegate,
-                          AssetPickerDelegate,UITextFieldDelegate,UICollectionViewDelegate
+                          AssetPickerDelegate, UITextFieldDelegate, UICollectionViewDelegate, DoneDelegate
 {
     
     @IBOutlet weak var renameView: UIView!{
@@ -24,7 +24,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     @IBOutlet weak var EditButtonTrailingContraint: NSLayoutConstraint!
     @IBOutlet weak var titleContainerHeight: NSLayoutConstraint!
     @IBOutlet weak var titleContainer: UIView!
-    private static let segueShowPreview = "showPreviewSegue"
     private static let segueShowPrivateServerSetting = "showPrivateServerSetting"
     private static var isSettingsEnabled = false
     lazy var privateServer:Space? = nil
@@ -247,9 +246,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         assetsReadConn?.update(mappings: assetsMappings)
         Db.add(observer: self, #selector(yapDatabaseModified))
 
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem = backBarButtonItem
-
         if Settings.proofMode && LocationMananger.shared.status == .notDetermined {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 LocationMananger.shared.requestAuthorization()
@@ -428,6 +424,11 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             toggleMode()
         }
         updateManageBt()
+        
+        if #available(iOS 26.0, *) {
+            navigationItem.leftBarButtonItems?.forEach { $0.hidesSharedBackground = true }
+            navigationItem.rightBarButtonItems?.forEach { $0.hidesSharedBackground = true }
+        }
     }
  
     
@@ -519,7 +520,6 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         
         
         let logoItem = UIBarButtonItem(customView: logoContainer)
-        
         navigationItem.leftBarButtonItems = [logoItem]
     }
     
@@ -606,7 +606,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 if upload.error != nil {
                     return UploadErrorAlert.present(self, upload)
                 }
-                performSegue(withIdentifier: "editAssetsSegue", sender: indexPath.row)
+                presentManagement()
                 
                 return
             }
@@ -623,7 +623,31 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         AbcFilteredByCollectionView.updateFilter(AssetsByCollectionView.collectionId(
             from: assetsMappings.group(forSection: UInt(indexPath.section))))
         
-        performSegue(withIdentifier: Self.segueShowPreview, sender: indexPath.row)
+        showPreview(initialRow: indexPath.row)
+    }
+
+    // MARK: Preview
+    private func showPreview(initialRow: Int? = nil) {
+        let vc = PreviewViewController()
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
+    // MARK: Upload manager (SwiftUI)
+    private func presentManagement() {
+        // Present modally to match the old storyboard flow.
+        guard presentedViewController == nil else { return }
+        
+        let managementVC = ManagementViewController()
+        managementVC.delegate = self
+        let nav = UINavigationController(rootViewController: managementVC)
+        nav.modalPresentationStyle = .fullScreen
+        nav.view.backgroundColor = .systemBackground
+        present(nav, animated: true)
+    }
+    
+    // MARK: DoneDelegate
+    func done() {
+        // Modal dismisses; collection view refreshes via database observers.
     }
     
     func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
@@ -842,7 +866,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
     
     func picked() {
-        performSegue(withIdentifier: Self.segueShowPreview, sender: nil)
+        showPreview()
     }
     
     

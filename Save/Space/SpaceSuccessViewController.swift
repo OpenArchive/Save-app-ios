@@ -9,9 +9,7 @@
 import UIKit
 import SwiftUI
 
-class SpaceSuccessViewController: UIHostingController<SpaceSuccessView>, WizardDelegatable {
-
-    weak var delegate: WizardDelegate?
+class SpaceSuccessViewController: UIHostingController<SpaceSuccessView> {
 
     var spaceName = ""
 

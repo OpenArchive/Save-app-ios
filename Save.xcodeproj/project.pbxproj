@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1C5A127C70A8C295D49F0426 /* Pods_ShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FABB5D01C237B2D7FC1008A2 /* Pods_ShareExtension.framework */; };
-		6EB3CAE32EEBAA89007317EB /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = 6EB3CAE22EEBAA89007317EB /* Mixpanel */; };
+		0D81FA6D13F8418930AB1D89 /* Pods_ShareExtension.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FABB5D01C237B2D7FC1008A2 /* Pods_ShareExtension.framework */; };
 		6EA90A412F0A99D200767B63 /* UIImageViewAlignedSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA90A402F0A99D200767B63 /* UIImageViewAlignedSwift */; };
 		6EA9EBB02F0A465D00767B63 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA9EBAF2F0A465D00767B63 /* FirebaseAnalytics */; };
 		6EA9EBB22F0A465D00767B63 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA9EBB12F0A465D00767B63 /* FirebaseCrashlytics */; };
@@ -399,6 +398,8 @@
 		};
 		EAB2840B2D0265AF0023D594 /* Models */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+			);
 			path = Models;
 			sourceTree = "<group>";
 		};
@@ -463,7 +464,7 @@
 				6EBD3F5C2F5B98EB0006DF84 /* MixpanelSessionReplay in Frameworks */,
 				6EA9FECB2F0A778E00767B63 /* MBProgressHUD in Frameworks */,
 				6EA9FECD2F0A7A9E00767B63 /* FontBlaster in Frameworks */,
-				243768E39BC491C270A9A352 /* Pods_ShareExtension.framework in Frameworks */,
+				0D81FA6D13F8418930AB1D89 /* Pods_ShareExtension.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -677,7 +678,6 @@
 				A09B53E523266F02005266C2 /* Resources */,
 				A09B540923266F02005266C2 /* Embed Foundation Extensions */,
 				9613BA7D693FA8D02D9BD9F0 /* [CP] Embed Pods Frameworks */,
-				D73998FEF3AD69C9BAB011C3 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -790,7 +790,7 @@
 				6EA9EBB32F0A5EE300767B63 /* XCRemoteSwiftPackageReference "TLPhotoPicker" */,
 				6EA9EBB82F0A657100767B63 /* XCRemoteSwiftPackageReference "FontBlaster" */,
 				6EA9EBB92F0A668C00767B63 /* XCRemoteSwiftPackageReference "MBProgressHUD" */,
-				6EA9EBBA2F0A67F900767B63 /* XCRemoteSwiftPackageReference "Reachability" */,
+				6EA9EBBA2F0A67F900767B63 /* XCRemoteSwiftPackageReference "Reachability.swift" */,
 				6EA9EBBB2F0A686200767B63 /* XCRemoteSwiftPackageReference "Regex" */,
 				6EA9EBBC2F0A6A5500767B63 /* XCRemoteSwiftPackageReference "Factory" */,
 				6EA9FED82F0A800200767B63 /* XCRemoteSwiftPackageReference "UIImageViewAlignedSwift" */,
@@ -907,13 +907,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Save/Pods-Save-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Save/Pods-Save-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -945,27 +941,6 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
 		};
-		8D49F10B5297F48ABD2558BC /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Save/Pods-Save-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Save/Pods-Save-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Save/Pods-Save-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		9613BA7D693FA8D02D9BD9F0 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -974,13 +949,9 @@
 			inputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
-			inputPaths = (
-			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
 				"${PODS_ROOT}/Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -1026,27 +997,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		D73998FEF3AD69C9BAB011C3 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Save Screenshots/Pods-Save Screenshots-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -1598,7 +1548,7 @@
 				minimumVersion = 1.2.0;
 			};
 		};
-		6EA9EBBA2F0A67F900767B63 /* XCRemoteSwiftPackageReference "Reachability" */ = {
+		6EA9EBBA2F0A67F900767B63 /* XCRemoteSwiftPackageReference "Reachability.swift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ashleymills/Reachability.swift";
 			requirement = {
@@ -1729,7 +1679,7 @@
 		};
 		6EA9FED22F0A7D7C00767B63 /* Reachability */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 6EA9EBBA2F0A67F900767B63 /* XCRemoteSwiftPackageReference "Reachability" */;
+			package = 6EA9EBBA2F0A67F900767B63 /* XCRemoteSwiftPackageReference "Reachability.swift" */;
 			productName = Reachability;
 		};
 		6EA9FED42F0A7D8200767B63 /* Regex */ = {

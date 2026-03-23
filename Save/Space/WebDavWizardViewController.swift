@@ -7,358 +7,50 @@
 //
 
 import UIKit
-import YapDatabase
 import SwiftUI
-class WebDavWizardViewController: BaseViewController, WizardDelegatable, TextBoxDelegate {
-    
-    weak var delegate: WizardDelegate?
-    private var spacesConn = Db.newLongLivedReadConn()
-    private var spacesMappings = YapDatabaseViewMappings(
-        groups: SpacesView.groups, view: SpacesView.name)
-    @IBOutlet weak var iconIv: UIImageView!
-    
-    @IBOutlet weak var titleLb: UILabel! {
-        didSet {
-            titleLb.text = NSLocalizedString("Connect to a WebDAV-compatible servers, e.g. Nexcloud and ownCloud.", comment: "")
-            titleLb.font = .montserrat(forTextStyle: .subheadline )
-            titleLb.textColor = .gray70
-        }
+
+final class WebDavWizardViewController: UIHostingController<WebDavWizardView> {
+
+    private let viewModel = WebDavWizardViewModel()
+
+    required init() {
+        super.init(rootView: WebDavWizardView(viewModel: viewModel))
+        title = NSLocalizedString("Private Server", comment: "")
     }
-    
-    
-    @IBOutlet weak var serverLb: UILabel! {
-        didSet {
-            serverLb.text = NSLocalizedString("Server info", comment: "")
-            serverLb.font = .montserrat(forTextStyle: .headline, with: .traitUIOptimized)
-            serverLb.textColor = .gray70
-        }
+
+    @MainActor required dynamic init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
-    
-    @IBOutlet weak var urlTb: TextBox! {
-        didSet {
-            urlTb.textField.font = .montserrat(forTextStyle: .footnote)
-            urlTb.placeholder = NSLocalizedString("Enter URL", comment: "")
-            urlTb.delegate = self
-            urlTb.autocorrectionType = .no
-            urlTb.autocapitalizationType = .none
-            urlTb.textField.returnKeyType = .next
-            urlTb.textField.textColor = .gray70
-        }
-    }
-    
-    
-    @IBOutlet weak var accountLb: UILabel! {
-        didSet {
-            accountLb.text = NSLocalizedString("Account", comment: "")
-            accountLb.font = .montserrat(forTextStyle: .headline, with: .traitUIOptimized)
-            accountLb.textColor = .gray70
-        }
-    }
-    
-    @IBOutlet weak var usernameTb: TextBox! {
-        didSet {
-            usernameTb.textField.font = .montserrat(forTextStyle: .footnote)
-            usernameTb.placeholder = NSLocalizedString("Username", comment: "")
-            usernameTb.delegate = self
-            usernameTb.autocorrectionType = .no
-            usernameTb.autocapitalizationType = .none
-            usernameTb.textField.returnKeyType = .next
-          
-            usernameTb.textField.textColor = .gray70
-        }
-    }
-    
-    @IBOutlet weak var passwordTb: TextBox! {
-        didSet {
-            passwordTb.textField.font = .montserrat(forTextStyle: .footnote)
-            passwordTb.placeholder = NSLocalizedString("Password", comment: "")
-            passwordTb.delegate = self
-            passwordTb.autocorrectionType = .no
-            passwordTb.autocapitalizationType = .none
-            passwordTb.status = .reveal
-            passwordTb.textField.returnKeyType = .done
-            passwordTb.textField.textColor = .gray70
-        }
-    }
-    
-    
-    @IBOutlet weak var errorText: UILabel!{
-        didSet{
-            errorText?.font = .montserrat(forTextStyle: .caption2)
-            errorText.text? = ""
-        }
-    }
-    @IBOutlet weak var backBt: UIButton! {
-        didSet {
-            backBt.setTitle(NSLocalizedString("Back", comment: ""))
-            backBt.titleLabel?.font = .montserrat(forTextStyle: .headline, with: .traitUIOptimized)
-            
-        }
-    }
-    
-    @IBOutlet weak var nextBt: UIButton! {
-        didSet {
-            nextBt.setTitle(NSLocalizedString("Next", comment: ""))
-            nextBt.isEnabled = false
-            nextBt.cornerRadius = 10
-            nextBt.backgroundColor =  .gray50
-            nextBt.titleLabel?.font = .montserrat(forTextStyle: .headline, with: .traitUIOptimized)
-        }
-    }
-    
-    private lazy var workingOverlay: WorkingOverlay = {
-        return WorkingOverlay().addToSuperview(navigationController?.view ?? view)
-    }()
-    
-    private var url: URL? {
-        Formatters.URLFormatter.fix(url: urlTb.text)
-    }
-    private func getSpace(at indexPath: IndexPath) -> Space? {
-        spacesConn?.object(at: indexPath, in: spacesMappings)
-    }
-    private func spaceExists(username: String) -> Bool {
-            let numberOfItems = spacesMappings.numberOfItems(inSection: 0)
-            for row in 0..<numberOfItems {
-                let indexPath = IndexPath(row: Int(row), section: 0)
-                if let space = getSpace(at: indexPath){
-                    if (space.username?.lowercased() == username.lowercased()){
-                        return true
-                    }
-                }
-            }
-        
-        return false
-    }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        spacesConn?.update(mappings: spacesMappings)
-        
-        [urlTb, usernameTb, passwordTb].forEach { textField in
-            textField?.textField.addTarget(self, action: #selector(updateButtonState), for: .editingChanged)
+
+        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.backBarButtonItem = backBarButtonItem
+
+        viewModel.onSuccess = { [weak self] space in
+            self?.onSuccess(space)
         }
-        urlTb.status = .unknown
-        usernameTb.status = .unknown
-        passwordTb.status = .reveal
-        updateButtonState()
-        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
-        view.addGestureRecognizer(tapGesture)
-        self.title = NSLocalizedString("Private Server", comment: "")
+        viewModel.onCancel = { [weak self] in
+            self?.onCancel()
+        }
+        viewModel.onBusyChanged = { [weak self] isBusy in
+            self?.navigationItem.hidesBackButton = isBusy
+        }
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         trackScreenViewSafely("PrivateServerLogin")
     }
-    
-    @objc func updateButtonState() {
-        nextBt.isEnabled = ![urlTb, usernameTb, passwordTb].contains { $0?.text?.isEmpty ?? true }
-        nextBt.backgroundColor = nextBt.isEnabled ? .accent : .gray50
+
+    private func onSuccess(_ space: WebDavSpace) {
+        let vc = CreateCCLWrapperViewController()
+        vc.space = space
+        navigationController?.pushViewController(vc, animated: true)
     }
-    @objc override func dismissKeyboard() {
-        view.endEditing(true)
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    @IBAction func back() {
-        self.navigationController?.popViewController(animated: true)
-    }
-    
-    @IBAction func next() {
-        guard check() else {
-            return
-        }
-        workingOverlay.isHidden = false
-        canOpen(url?.absoluteString ?? "") { isValid in
-          
-            if isValid {
-                if(self.spaceExists(username: self.usernameTb.text ?? "")){
-                    self.workingOverlay.isHidden = true
-                    self.usernameTb.status = .bad
-                    self.passwordTb.status = .unknown
-                    self.urlTb.status = .unknown
-                    let alertVC = CustomAlertViewController(
-                        title: NSLocalizedString("Error", comment: ""),
-                        message: NSLocalizedString("You already have a server with these credentials.", comment: ""),
-                        primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
-                        primaryButtonAction: {
-                            
-                        }, showCheckbox: false, iconImage: Image("ic_error"),
-                        iconTint:.gray
-                    )
-                    self.present(alertVC, animated: true)
-                }
-                else{
-                let space = WebDavSpace(
-                    name: "",
-                    url: self.url,
-                    favIcon: UIImage(named: "private_server"),
-                    username: self.usernameTb.text,
-                    password: self.passwordTb.text)
-                
-                    self.workingOverlay.isHidden = false
-                
-                    URLSession(configuration: UploadManager.improvedSessionConf()).info(space.url!, credential: space.credential) { [weak self] info, error in
-                        DispatchQueue.main.async {
-                            self?.workingOverlay.isHidden = true
-                            
-                            if let error = error {
-                                if let self = self {
-                                    if(error.localizedDescription.contains("404")){
-                                        self.showServerNotFoundError()
-                                    }else{
-                                        self.errorText.text = error.friendlyMessage
-                                        self.usernameTb.status = .bad
-                                        self.passwordTb.status = .bad
-                                        self.urlTb.status = .unknown
-                                    }
-                                  
-                                }
-                            }
-                            else {
-                                SelectedSpace.space = space
-                                self?.errorText.text = ""
-                                Db.writeConn?.asyncReadWrite() { tx in
-                                    SelectedSpace.store(tx)
-                                    tx.setObject(space)
-                                }
-                                trackEvent(.backendConfigured(backendType: "WebDAV", isNew: true))
-                               
-                                    let vc = CreateCCLWrapperViewController()
-                                    vc.space = space
-                                    self?.navigationController?.pushViewController(vc, animated: true)
-                            }
-                        }
-                    }
-                }
-            
-            } else {
-                self.showServerNotFoundError()
-              
-            }
-        }
-            
-    }
-    private func showServerNotFoundError(){
-        self.workingOverlay.isHidden = true
-        self.urlTb.status = .bad
-        self.usernameTb.status = .unknown
-        self.passwordTb.status = .unknown
-        let alertVC = CustomAlertViewController(
-            title: NSLocalizedString("Error", comment: ""),
-            message: NSLocalizedString("A server with the specified hostname could not be found.", comment: ""),
-            primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
-            primaryButtonAction: {
-                
-            }, showCheckbox: false, iconImage: Image("ic_error"),
-            iconTint:.gray
-        )
-        self.present(alertVC, animated: true)
-    }
-    
-    func canOpen(_ urlString: String, completion: @escaping (Bool) -> Void) {
-        guard let url = URL(string: urlString),
-              let host = url.host, !host.isEmpty else {
-            completion(false)
-            return
-        }
-        
-        var request = URLRequest(url: url)
-        request.timeoutInterval = 5
-        
-        URLSession.shared.dataTask(with: request) { _, response, error in
-            DispatchQueue.main.async {
-                completion(response != nil)
-            }
-        }.resume()
-    }
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        
-        if traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
-            [urlTb, usernameTb, passwordTb].forEach { $0?.status = $0?.status ?? .unknown }
-        }
-    }
-    override func keyboardWillShow(notification: Notification) {
-        guard let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue else {
-            return
-        }
-        
-        // Convert keyboard frame to scrollView's coordinate space
-        let keyboardFrameInWindow = keyboardSize
-        let scrollViewFrameInWindow = scrollView.convert(scrollView.bounds, to: nil)
-        
-        // Calculate the intersection of the keyboard and scrollView
-        let intersection = scrollViewFrameInWindow.intersection(keyboardFrameInWindow)
-        
-        // If there's no intersection, we don't need any padding
-        if intersection.isNull {
-            scrollView.contentInset = .zero
-            scrollView.scrollIndicatorInsets = .zero
-            return
-        }
-        
-        // Only add the height of the overlapping area as bottom inset
-        let contentInsets = UIEdgeInsets(
-            top: 0.0,
-            left: 0.0,
-            bottom: intersection.height,
-            right: 0.0
-        )
-        
-        // Adjust scroll view content insets
-        scrollView.contentInset = contentInsets
-        scrollView.scrollIndicatorInsets = contentInsets
-        
-        // If there's an active text field, scroll to make it visible
-        if let activeField = view.findFirstResponder() as? UITextField {
-            let rect = activeField.convert(activeField.bounds, to: scrollView)
-            // Add some extra padding to ensure the text field isn't right at the keyboard
-            let visibleRect = CGRect(
-                x: rect.origin.x,
-                y: rect.origin.y,
-                width: rect.width,
-                height: rect.height + 20 // Extra padding
-            )
-            scrollView.scrollRectToVisible(visibleRect, animated: true)
-        }
-    }
-    
-    // MARK: TextBoxDelegate
-    
-    func textBox(didUpdate textBox: TextBox) {
-        urlTb.text = url?.absoluteString
-        self.errorText.text = ""
-    }
-    
-    func textBox(shouldReturn textBox: TextBox) -> Bool {
-        switch textBox {
-        case urlTb:
-            usernameTb.becomeFirstResponder()
-            
-        case usernameTb:
-            passwordTb.becomeFirstResponder()
-            
-        default:
-            dismissKeyboard()
-            next()
-        }
-        
-        return true
-    }
-    
-    
-    // MARK: Private Methods
-    
-    @discardableResult
-    private func check() -> Bool {
-        urlTb.status = url == nil ? .bad : .unknown
-        usernameTb.status = usernameTb.text?.isEmpty ?? true ? .bad : .unknown
-        passwordTb.status = passwordTb.text?.isEmpty ?? true ? .bad : .unknown
-        
-        return urlTb.status == .unknown && usernameTb.status == .unknown && passwordTb.status == .unknown
-        
+
+    private func onCancel() {
+        navigationController?.popViewController(animated: true)
     }
 }

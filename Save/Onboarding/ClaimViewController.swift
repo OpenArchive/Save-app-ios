@@ -30,7 +30,6 @@ class ClaimViewController: UIHostingController<ClaimView> {
     }
 
     private func goToSlideshow() {
-        let vc = UIStoryboard.main.instantiate(SlideshowViewController.self)
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(OnboardingViewController(), animated: true)
     }
 }
