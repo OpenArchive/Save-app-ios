@@ -18,9 +18,9 @@ struct BigButtonView: View {
                 if let icon = icon {
                     Image(icon)
                         .resizable()
-                        .renderingMode(.template)
-                        .foregroundColor(Color(UIColor.accent))
-                        .frame(width: 24, height: 24)
+                        .renderingMode(.original)
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 28, height: 28)
                 }
 
                 VStack(alignment: .leading, spacing: 4) {

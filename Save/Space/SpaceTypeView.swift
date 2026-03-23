@@ -53,9 +53,9 @@ struct SpaceTypeView: View {
             }
 
             BigButtonView(
-                icon: "storachaBird",
-                title: "Storacha (Filecoin/IPFS)",
-                subtitle: NSLocalizedString("Connect to \ndecentralized storage.", comment: ""),
+                icon: "filecoin_logo_teal",
+                title: "Filecoin",
+                subtitle: NSLocalizedString("Connect to a public \nDWeb server", comment: ""),
                 action: {
                     if Settings.publicDataWarningShown {
                         onStoracha()

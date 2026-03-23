@@ -85,7 +85,7 @@ struct WebDavWizardView: View {
             CustomTextField(
                 placeholder: NSLocalizedString("Enter URL", comment: ""),
                 text: $viewModel.urlString,
-                isError: viewModel.urlHasError,
+                hasError: viewModel.urlHasError,
                 onCommit: {
                     viewModel.fixUrlOnCommit()
                     focusedField = .username
@@ -103,7 +103,7 @@ struct WebDavWizardView: View {
             CustomTextField(
                 placeholder: NSLocalizedString("Username", comment: ""),
                 text: $viewModel.username,
-                isError: viewModel.usernameHasError,
+                hasError: viewModel.usernameHasError,
                 onCommit: { focusedField = .password }
             )
 

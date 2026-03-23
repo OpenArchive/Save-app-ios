@@ -133,7 +133,7 @@ struct StorachaLoginView: View {
                 .fill(.gray10)
                 .frame(width: 53, height: 53)
                 .overlay(
-                    Image("storachaBird")
+                    Image("filecoin_logo_circle")
                         .resizable()
                         .aspectRatio(contentMode: .fit)
                         .frame(width: 30, height: 30)

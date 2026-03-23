@@ -81,24 +81,26 @@ struct StorachaSettingView: View {
     }
 
     var body: some View {
-        ZStack {
-            
-            VStack(spacing: 20) {
+        GeometryReader { geometry in
+            ZStack {
                 
-                VStack(spacing: 16) {
-                    Image("storachaLogo")
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .frame(width: 150, height: 60)
+                VStack(spacing: 20) {
                     
-                    Text(NSLocalizedString("Storacha lets you store media securely using decentralized technologies (IPFS, UCAN, and DIDs).", comment: ""))
-                        .font(.montserrat(.medium, for: .subheadline))
-                        .foregroundColor(.gray70)
-                        .multilineTextAlignment(.center)
-                        .padding(.horizontal, 20)
-                        .lineLimit(nil)
-                }
-                .padding(.vertical, 10)
+                    VStack(spacing: 2) {
+                        Image("Filecoin-logo")
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: geometry.size.width / 2)
+                            .frame(maxWidth: .infinity)
+                        
+                        Text(NSLocalizedString("Filecoin lets you store media securely using decentralized technologies (IPFS, UCAN, and DIDs).", comment: ""))
+                            .font(.montserrat(.medium, for: .subheadline))
+                            .foregroundColor(.gray70)
+                            .multilineTextAlignment(.center)
+                            .padding(.horizontal, 20)
+                            .lineLimit(nil)
+                    }
+                    .padding(.vertical, 10)
                 
                 StyledButton(
                     title: NSLocalizedString("Manage Accounts", comment: ""),
@@ -157,6 +159,7 @@ struct StorachaSettingView: View {
         .onReceive(Just(appState.isBusy)) { isBusy in
             disableBackAction?(isBusy)
         }
+        }
     }
   
 }
@@ -184,7 +187,7 @@ struct StorachaInfoCard: View {
 
 struct StorachaContentDescription: View {
     var body: some View {
-        Text(NSLocalizedString("Files uploaded to the Storacha (Filecoin/IPFS) network are publicly accessible through their CID and may remain permanently available across decentralized nodes. ", comment: "ProofMode description"))
+        Text(NSLocalizedString("Uploads to the decentralized web/Filecoin- are accessible to anyone who has the file identifier (CID). Decentralized storage is designed for long-term durability. Removing a file will not remove all copies that exist across the network. ", comment: "filecoin warning description"))
             .font(.montserrat(.medium, for: .caption))
             .foregroundColor(.gray70)
         +

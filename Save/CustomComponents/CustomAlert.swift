@@ -114,7 +114,9 @@ struct CustomAlertView: View {
 struct CheckboxToggleStyle: ToggleStyle {
     func makeBody(configuration: Configuration) -> some View {
         HStack {
-            Image(systemName: configuration.isOn ? "checkmark.square.fill" : "square").frame(width: 30, height: 30)
+            Image(systemName: configuration.isOn ? "checkmark.square.fill" : "square")
+                .foregroundColor(configuration.isOn ? .accent : .alertSubtitle)
+                .frame(width: 30, height: 30)
                 .onTapGesture {
                     configuration.isOn.toggle()
                 }

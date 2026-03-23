@@ -44,7 +44,7 @@ struct CustomTextField: View {
         }
         .frame(height: 50)
         .cornerRadius(8)
-        .overlay(RoundedRectangle(cornerRadius: 8).stroke(borderColor, lineWidth: 1))
+        .overlay(RoundedRectangle(cornerRadius: 8).stroke(borderColor(), lineWidth: 1))
         .background(isDisabled ? Color.gray.opacity(0.2) : Color.textboxBg)
         .disabled(isDisabled)
         .padding(.bottom, 8)

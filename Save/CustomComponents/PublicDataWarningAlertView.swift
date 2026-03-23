@@ -16,7 +16,7 @@ struct PublicDataWarningAlertView: View {
     @State private var timer: Timer?
 
     private let message = NSLocalizedString(
-        "Do not upload private or sensitive information unless it is encrypted.\n\nUploads to the decentralized web (Filecoin) are accessible to anyone who has the file identifier (CID).\n\nDecentralized storage is designed for long-term durability. Removing a file will not remove all copies that exist across the network",
+        "Do not upload private or sensitive information unless it is encrypted.\n\nUploads to the decentralized web/Filecoin- are accessible to anyone who has the file identifier (CID).\n\nDecentralized storage is designed for long-term durability. Removing a file will not remove all copies that exist across the network.",
         comment: "Public data warning - full message"
     )
 
@@ -24,7 +24,7 @@ struct PublicDataWarningAlertView: View {
         VStack(spacing: 12) {
             Image(systemName: "exclamationmark.triangle.fill")
                 .resizable()
-                .frame(width: 36, height: 36)
+                .frame(width: 30, height: 30)
                 .foregroundColor(Color.accentColor)
                 .padding(.top, 8)
                 .padding(.bottom, 4)
@@ -49,19 +49,20 @@ struct PublicDataWarningAlertView: View {
             .toggleStyle(CheckboxToggleStyle())
             .padding(.bottom, 16)
 
-            HStack(spacing: 12) {
+            HStack(spacing: 8) {
                 Button(action: onCancel) {
                     Text(NSLocalizedString("Cancel", comment: ""))
                         .font(.montserrat(.semibold, for: .callout))
+                        .lineLimit(1)
                         .frame(maxWidth: .infinity)
                         .padding()
                         .foregroundColor(.primary)
                 }
-                .padding(.horizontal, 8)
 
                 Button(action: onContinue) {
                     Text(continueButtonTitle)
                         .font(.montserrat(.semibold, for: .callout))
+                        .lineLimit(1)
                         .frame(maxWidth: .infinity)
                         .padding()
                         .foregroundColor(isContinueEnabled ? .primary : .gray)
@@ -69,7 +70,6 @@ struct PublicDataWarningAlertView: View {
                         .cornerRadius(8)
                 }
                 .disabled(!isContinueEnabled)
-                .padding(.horizontal, 8)
             }
             .padding(.bottom, 16)
         }
