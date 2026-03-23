@@ -16,7 +16,7 @@ class ProofModeSettingsViewController: UIViewController {
         super.viewDidLoad()
         
         navigationItem.title = NSLocalizedString("ProofMode", comment: "")
-        
+
         if #available(iOS 14.0, *) {
             
             let settingsView = ProofModeSettingsView()

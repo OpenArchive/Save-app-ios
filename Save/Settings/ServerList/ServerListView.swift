@@ -32,7 +32,9 @@ struct ServerListView: View {
                     .padding(.bottom, 16)
                 }
             }
-            
+
+            Spacer()
+
             addServerButton
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -61,7 +63,7 @@ struct ServerListView: View {
                 Text(NSLocalizedString("Add Server", comment: ""))
                     .font(.montserrat(.semibold, for: .headline))
             }
-            .foregroundColor(.primary)
+            .foregroundColor(.black)
             .frame(maxWidth: .infinity)
             .frame(height: 50)
             .background(Color.accent)

@@ -73,16 +73,18 @@ struct SubItem: View {
 struct HideItemSeparator: ViewModifier {
     func body(content: Content) -> some View {
         if #available(iOS 15.0, *) {
-            content.listRowSeparator(.hidden) // Works in iOS 15+
+            content.listRowSeparator(.hidden)
         } else {
-            content.listRowBackground(Color.clear) // Hides background in iOS 14
+            content.listRowBackground(Color.clear)
         }
     }
 }
 struct ListSpacingModifier: ViewModifier {
     func body(content: Content) -> some View {
         if #available(iOS 17, *) {
-            content.listSectionSpacing(1) 
+            content
+                .listSectionSpacing(1)
+                .listRowSpacing(0)
         } else {
             content
                 .environment(\.defaultMinListHeaderHeight, 0)
@@ -259,10 +261,11 @@ struct SettingsView: View {
                 .font(Font(UIFont.montserrat(forTextStyle: .headline, with: .traitUIOptimized)))
                 .kerning(0.01)
                 .foregroundColor(.accentColor),
-            footer: Divider()
-                .frame(maxWidth: .infinity, alignment: .leading)
+            footer: Rectangle()
+                .fill(Color.menuDivider)
+                .frame(height: 1)
+                .frame(maxWidth: .infinity)
                 .padding(.horizontal, -16)
-                .background(Color.menuDivider)
         ) {
             content()
         }

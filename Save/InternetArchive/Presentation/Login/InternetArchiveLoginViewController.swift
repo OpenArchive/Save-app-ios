@@ -10,9 +10,7 @@ import SwiftUI
 import UIKit
 import FactoryKit
 
-class InternetArchiveLoginViewController: UIHostingController<InternetArchiveLoginView>, WizardDelegatable {
-
-    weak var delegate: WizardDelegate?
+class InternetArchiveLoginViewController: UIHostingController<InternetArchiveLoginView> {
 
     private let viewModel: InternetArchiveLoginViewModel
 

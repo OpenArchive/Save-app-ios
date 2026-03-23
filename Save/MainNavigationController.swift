@@ -8,12 +8,28 @@
 
 import UIKit
 
-class MainNavigationController: UINavigationController {
+class MainNavigationController: UINavigationController, UINavigationControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        delegate = self
         setRoot()
+    }
+
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        if #available(iOS 26.0, *) {
+            hideGlassBackground(on: viewController)
+        }
+    }
+
+    @available(iOS 26.0, *)
+    private func hideGlassBackground(on viewController: UIViewController) {
+        // Only hide glass on MainViewController's logo and menu buttons
+        // Other view controllers (PreviewViewController, BrowseViewController) keep the glass effect
+        if viewController is MainViewController {
+            viewController.navigationItem.leftBarButtonItems?.forEach { $0.hidesSharedBackground = true }
+            viewController.navigationItem.rightBarButtonItems?.forEach { $0.hidesSharedBackground = true }
+        }
     }
 
     func setRoot() {

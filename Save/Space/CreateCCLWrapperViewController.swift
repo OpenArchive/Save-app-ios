@@ -11,9 +11,8 @@ import SwiftUI
 
 /// UIKit wrapper for CreateCCLView to maintain compatibility with existing navigation flow
 @available(iOS 14.0, *)
-class CreateCCLWrapperViewController: UIViewController, WizardDelegatable {
+class CreateCCLWrapperViewController: UIViewController {
 
-    weak var delegate: WizardDelegate?
     var space: Space?
 
     private var hostingController: UIHostingController<CreateCCLView>?
@@ -88,7 +87,6 @@ class CreateCCLWrapperViewController: UIViewController, WizardDelegatable {
         }
 
         let vc = SpaceSuccessViewController(spaceName: name)
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationController?.pushViewController(vc, animated: true)
     }
 

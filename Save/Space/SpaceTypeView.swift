@@ -36,7 +36,7 @@ struct SpaceTypeView: View {
             BigButtonView(
                 icon: "private_server_teal",
                 title: WebDavSpace.defaultPrettyName,
-                subtitle: NSLocalizedString("Connect to a secure \nWebDAV server", comment: ""),
+                subtitle: NSLocalizedString("Connect to a secure\nWebDAV server", comment: ""),
                 action: onWebDav
             )
             .accessibilityIdentifier("viewPrivateServer")

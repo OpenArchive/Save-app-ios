@@ -33,6 +33,7 @@ struct BigButtonView: View {
                             .font(.montserrat(.regular, for: .subheadline))
                             .foregroundColor(.gray70)
                             .multilineTextAlignment(.leading)
+                            .fixedSize(horizontal: false, vertical: true)
                     }
                 }
 
