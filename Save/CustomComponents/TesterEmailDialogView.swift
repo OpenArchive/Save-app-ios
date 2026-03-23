@@ -50,7 +50,7 @@ struct TesterEmailDialogView: View {
                 if showInvalidEmail {
                     Text("Please enter a valid email address")
                         .font(.montserrat(.medium, for: .caption2))
-                        .foregroundColor(.red)
+                        .foregroundColor(.redButton)
                 }
 
             HStack(spacing: 10) {

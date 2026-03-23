@@ -14,6 +14,9 @@ private let userDefaultsSuite = "staging_analytics"
 final class EnhancedAnalyticsHelper {
 
     static let shared = EnhancedAnalyticsHelper()
+    
+    /// Tracks whether the dialog has been shown during the current app session
+    private var hasShownDialogThisSession = false
 
     private var defaults: UserDefaults? {
         UserDefaults(suiteName: userDefaultsSuite)
@@ -33,6 +36,9 @@ final class EnhancedAnalyticsHelper {
             return
         }
 
+        // Only show the dialog once per app session
+        guard !hasShownDialogThisSession else { return }
+        
         showTesterEmailDialog(from: viewController, onIdentified: onIdentified, onSkipped: onSkipped)
     }
 
@@ -41,6 +47,8 @@ final class EnhancedAnalyticsHelper {
         onIdentified: ((String) -> Void)?,
         onSkipped: (() -> Void)?
     ) {
+        hasShownDialogThisSession = true
+        
         let alertVC = TesterEmailAlertViewController(
             onContinue: { [weak self] email in
                 self?.persistAndIdentify(email: email)

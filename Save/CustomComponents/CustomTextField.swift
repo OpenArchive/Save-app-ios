@@ -36,12 +36,10 @@ struct CustomTextField: View {
                     .font(.montserrat(.medium, for: .footnote))
                     .padding(12)
             } else {
-
                 TextField("", text: $text, onEditingChanged: handleEditingChanged, onCommit: { onCommit?() })
                  .keyboardType(keyboardType)
                     .textInputAutocapitalization(keyboardType == .emailAddress ? .never : .sentences)
                     .autocorrectionDisabled()
-
                     .onChange(of: text) { newValue in
                         onTextChanged?(newValue)
                     }
