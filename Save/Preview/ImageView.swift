@@ -46,7 +46,7 @@ struct ImageView: View {
     
     @ViewBuilder
     private var thumbnailView: some View {
-        ZStack(alignment: .bottomLeading) {
+        ZStack(alignment: .bottom) {
             if let uiImage = image {
                 Image(uiImage: uiImage)
                     .resizable()
@@ -55,7 +55,6 @@ struct ImageView: View {
             
             if isAv {
                 MovieIndicatorView(duration: duration)
-                    .padding(9.5)
             }
         }
     }
@@ -72,29 +71,6 @@ struct ImageView: View {
         } else {
             Color(.placeholderBackground)
         }
-    }
-}
-
-struct MovieIndicatorView: View {
-    let duration: TimeInterval?
-    
-    var body: some View {
-        HStack(spacing: 4) {
-            Image("video")
-                .resizable()
-                .aspectRatio(contentMode: .fit)
-                .frame(width: 16, height: 16)
-            
-            if let duration = duration {
-                Text(Formatters.format(duration))
-                    .font(.system(size: 11, weight: .medium))
-                    .foregroundColor(.white)
-            }
-        }
-        .padding(.horizontal, 6)
-        .padding(.vertical, 4)
-        .background(Color.black.opacity(0.6))
-        .cornerRadius(4)
     }
 }
 

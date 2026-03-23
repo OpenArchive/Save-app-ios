@@ -9,10 +9,14 @@
 import UIKit
 import YapDatabase
 import SwiftUI
+import Combine
+
 class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,
                           UINavigationControllerDelegate, SideMenuDelegate,
                           AssetPickerDelegate, UITextFieldDelegate, UICollectionViewDelegate, DoneDelegate
 {
+    
+    private var cancellables = Set<AnyCancellable>()
     
     @IBOutlet weak var renameView: UIView!{
         didSet {
@@ -149,6 +153,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     @IBAction func closeMedia(_ sender: Any) {
         selectMediaView.isHidden = true
+        mediaGridViewModel.exitEditMode()
         self.toggleMode(newMode: false)
     }
     
@@ -175,7 +180,39 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     private lazy var assetsMappings = AbcFilteredByProjectView.createMappings()
 
     private var inEditMode = false
-    
+
+    private lazy var mediaGridViewModel: MediaGridViewModel = {
+        let vm = MediaGridViewModel(
+            assetsReadConn: assetsReadConn,
+            collectionsReadConn: collectionsReadConn,
+            uploadsReadConn: uploadsReadConn,
+            assetsMappings: assetsMappings,
+            collectionsMappings: collectionsMappings,
+            uploadsMappings: uploadsMappings
+        )
+        return vm
+    }()
+
+    private lazy var mediaGridHostingController: UIHostingController<MediaGridView> = {
+        let view = MediaGridView(
+            viewModel: mediaGridViewModel,
+            onSelectAsset: { [weak self] asset in
+                self?.openPreview(for: asset)
+            },
+            onLongPress: { [weak self] in
+                self?.showSelectMediaBar()
+            },
+            onTapAssetWithUpload: { [weak self] asset, upload in
+                self?.handleTapAssetWithUpload(asset: asset, upload: upload)
+            }
+        )
+
+        let hosting = UIHostingController(rootView: view)
+        hosting.view.backgroundColor = .systemBackground
+        hosting.view.isHidden = true
+        return hosting
+    }()
+
     
     private lazy var homeViewModel: HomeViewModel = {
         let coordinator = NavigationCoordinator(delegate: self)
@@ -244,6 +281,36 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         collectionsReadConn?.update(mappings: collectionsMappings)
         assetsReadConn?.update(mappings: assetsMappings)
         Db.add(observer: self, #selector(yapDatabaseModified))
+
+        // Observe selection changes from SwiftUI grid
+        mediaGridViewModel.$selectedAssetIds
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.updateRemove()
+            }
+            .store(in: &cancellables)
+
+        mediaGridViewModel.$isInEditMode
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] isInEditMode in
+                if !isInEditMode {
+                    self?.inEditMode = false
+                    self?.selectMediaView.isHidden = true
+                    self?.updateRemove()
+                }
+            }
+            .store(in: &cancellables)
+
+        addChild(mediaGridHostingController)
+        view.insertSubview(mediaGridHostingController.view, belowSubview: collectionView)
+        mediaGridHostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            mediaGridHostingController.view.topAnchor.constraint(equalTo: titleContainer.bottomAnchor),
+            mediaGridHostingController.view.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor),
+            mediaGridHostingController.view.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor),
+            mediaGridHostingController.view.bottomAnchor.constraint(equalTo: bottomMenu.topAnchor),
+        ])
+        mediaGridHostingController.didMove(toParent: self)
 
         if Settings.proofMode && LocationMananger.shared.status == .notDetermined {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
@@ -314,7 +381,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
     //MARK: = Dropdown menu
     private func createDropdownMenu() -> UIMenu {
-        let isAssetsEmpty = !(numberOfSections(in: collectionView) != 0)
+        let isAssetsEmpty = mediaGridViewModel.sections.isEmpty
         let renameAction = UIAction(title: NSLocalizedString("Rename folder", comment: ""), image: nil) { _ in
             self.updateProject()
             self.renameView.isHidden = false
@@ -322,6 +389,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
         
         let selectMediaAction = UIAction(title: NSLocalizedString("Select media", comment: ""), image: nil, attributes: isAssetsEmpty ? [.disabled] : []) { _ in
+            self.mediaGridViewModel.enterEditMode()
             self.toggleMode(newMode: true)
         }
         
@@ -395,6 +463,8 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         collectionsReadConn?.update(mappings: collectionsMappings)
         assetsReadConn?.update(mappings: assetsMappings)
 
+        mediaGridViewModel.setSelectedProject(selectedProject?.id)
+
         configureNavigationBar()
         updateSpace()
         if SelectedProject.project == nil || !(SelectedProject.project?.active ?? false) {
@@ -402,8 +472,10 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         }
 
         collectionView.reloadData()
-        let finalSections = numberOfSections(in: collectionView)
-        collectionView.toggle(finalSections != 0, animated: animated)
+        _ = mediaGridViewModel.sections.isEmpty ? 0 : 1
+        let hasContent = !mediaGridViewModel.sections.isEmpty
+        collectionView.isHidden = true
+        mediaGridHostingController.view.toggle(hasContent, animated: animated)
 
         isLongPressTapped = false
         if #available(iOS 14.0, *) {
@@ -414,7 +486,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             self.titleContainer.isHidden = true
             self.titleContainerHeight.constant = 0
         }
-        if inEditMode && collectionView.numberOfSelectedItems < 1 {
+        if inEditMode && !mediaGridViewModel.hasSelection {
             toggleMode()
         }
         updateManageBt()
@@ -626,6 +698,28 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
         navigationController?.pushViewController(vc, animated: true)
     }
 
+    private func openPreview(for asset: Asset) {
+        guard let collectionId = asset.collection?.id else { return }
+        AbcFilteredByCollectionView.updateFilter(collectionId)
+        showPreview()
+    }
+
+    private func showSelectMediaBar() {
+        if !inEditMode {
+            inEditMode = true
+        }
+        selectMediaView.isHidden = false
+        updateRemove()
+    }
+
+    private func handleTapAssetWithUpload(asset: Asset, upload: Upload?) {
+        if let upload = upload, upload.error != nil {
+            UploadErrorAlert.present(self, upload)
+            return
+        }
+        presentManagement()
+    }
+
     // MARK: Upload manager (SwiftUI)
     private func presentManagement() {
         // Present modally to match the old storyboard flow.
@@ -683,6 +777,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     
     func hideSelectMedia() {
         selectMediaView.isHidden = true
+        mediaGridViewModel.exitEditMode()
         self.toggleMode(newMode: false)
     }
     
@@ -840,13 +935,13 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
     
     @IBAction func removeAssets() {
-        RemoveAssetAlert.present(self, getSelectedAssets(), { [weak self] success in
+        RemoveAssetAlert.present(self, mediaGridViewModel.selectedAssets(), { [weak self] success in
             guard success else {
                 return
             }
             self?.toggleMode(newMode: false)
             
-            if(self?.getAllAssets().count == 1 || self?.getAllAssets().count == 0 ){
+            if self?.mediaGridViewModel.totalItemCount == 0 {
                 self?.selectMediaView.isHidden = true
             }
         })
@@ -911,41 +1006,36 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
 
 
         var forceFull = false
-        
+
         if let changes = collectionsReadConn?.getChanges(collectionsMappings) {
-            
             forceFull = changes.forceFull || changes.rowChanges.contains(where: { $0.type == .update && $0.finalGroup == selectedProject?.id })
         }
-        
-        
+
         if let changes = assetsReadConn?.getChanges(assetsMappings) {
             forceFull = forceFull || changes.forceFull
-            || changes.sectionChanges.contains(where: { $0.type == .delete || $0.type == .insert })
-            || changes.rowChanges.contains(where: {
-                $0.type == .delete || $0.type == .insert || $0.type == .move || $0.type == .update
-            })
+                || changes.sectionChanges.contains(where: { $0.type == .delete || $0.type == .insert })
+                || changes.rowChanges.contains(where: {
+                    $0.type == .delete || $0.type == .insert || $0.type == .move || $0.type == .update
+                })
         }
-        
-        collectionView.apply(YapDatabaseChanges(forceFull, [], [])) { [weak self] _ in
+
+        DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
-            
+            self.mediaGridViewModel.rebuildSections()
+
             let hasSelectedProject = self.selectedProject != nil
-            
+
             if hasSelectedProject {
-                self.folderAssetCountLb.text = "  \(Formatters.format(self.assetsMappings.numberOfItemsInAllGroups()))  "
-                
-                // Ensure collection view visibility is correct based on sections
-                let currentSections = self.numberOfSections(in: self.collectionView)
-                let shouldBeHidden = currentSections < 1
-                
-                if self.collectionView.isHidden != shouldBeHidden {
-                    self.collectionView.toggle(!shouldBeHidden, animated: true)
+                self.folderAssetCountLb.text = "  \(Formatters.format(self.mediaGridViewModel.totalItemCount))  "
+
+                let shouldBeHidden = self.mediaGridViewModel.sections.isEmpty
+
+                if self.mediaGridHostingController.view.isHidden == !shouldBeHidden {
+                    self.mediaGridHostingController.view.toggle(!shouldBeHidden, animated: true)
                 }
             } else {
-                if !self.collectionView.isHidden {
-                    DispatchQueue.main.async {
-                        self.collectionView.isHidden = true
-                    }
+                if !self.mediaGridHostingController.view.isHidden {
+                    self.mediaGridHostingController.view.isHidden = true
                 }
             }
         }
@@ -982,17 +1072,12 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             return
         }
         
-        if inEditMode && collectionView.numberOfSections > 0 {
-            for i in 0 ... collectionView.numberOfSections - 1 {
-                collectionView.deselectSection(i, animated: true)
-            }
+        if inEditMode {
+            mediaGridViewModel.exitEditMode()
         }
         
         inEditMode = newMode
-        if(inEditMode){
-            
-            selectMediaView.isHidden = !inEditMode
-        }
+        selectMediaView.isHidden = !inEditMode
         
         updateRemove()
     }
@@ -1001,7 +1086,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
      Shows/hides the  remove button, depending on if and what is selected.
      */
     private func updateRemove() {
-        removeBt.isHidden = !inEditMode || collectionView.numberOfSelectedItems < 1
+        removeBt.isHidden = !inEditMode || !mediaGridViewModel.hasSelection
     }
     
     /**
@@ -1046,7 +1131,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
             assetsReadConn?.update(mappings: assetsMappings)
             collectionsReadConn?.update(mappings: collectionsMappings)
 
-            // Update mappings and reload collection view after filter change
+            // Update mappings and reload media grid after filter change
             DispatchQueue.main.async { [weak self] in
                 guard let self = self else { return }
                 // Skip if user switched to a different project (allow when selectedProject is nil, e.g. new folder not yet in list)
@@ -1055,17 +1140,14 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 // Update mappings again after filter change (in case they changed)
                 self.assetsReadConn?.update(mappings: self.assetsMappings)
                 self.collectionsReadConn?.update(mappings: self.collectionsMappings)
+                self.mediaGridViewModel.setSelectedProject(project.id)
 
-                // Always force full reload to ensure media loads (especially on project changes)
-                self.collectionView.apply(YapDatabaseChanges(true, [], [])) { countChanged in
-                    self.folderAssetCountLb.text = "  \(Formatters.format(self.assetsMappings.numberOfItemsInAllGroups()))  "
-                    
-                    // Ensure collection view visibility is correct based on sections
-                    let shouldBeHidden = self.numberOfSections(in: self.collectionView) < 1
-                    
-                    if self.collectionView.isHidden != shouldBeHidden {
-                        self.collectionView.toggle(!shouldBeHidden, animated: true)
-                    }
+                self.folderAssetCountLb.text = "  \(Formatters.format(self.mediaGridViewModel.totalItemCount))  "
+
+                let shouldBeHidden = self.mediaGridViewModel.sections.isEmpty
+
+                if self.mediaGridHostingController.view.isHidden == !shouldBeHidden {
+                    self.mediaGridHostingController.view.toggle(!shouldBeHidden, animated: true)
                 }
             }
 
@@ -1095,7 +1177,7 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
                 welcomeLb.isHidden = true
             }
             DispatchQueue.main.async {
-                self.collectionView.isHidden = true
+                self.mediaGridHostingController.view.isHidden = true
             }
             if(!MainViewController.isSettingsEnabled){
                 self.titleContainer.isHidden = false

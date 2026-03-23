@@ -96,12 +96,8 @@ struct PreviewCellView: View {
     
     private var movieIndicatorOverlay: some View {
         VStack {
-            HStack {
-                MovieIndicatorView(duration: asset.duration)
-                    .padding(8)
-                Spacer()
-            }
             Spacer()
+            MovieIndicatorView(duration: asset.duration)
         }
     }
     
