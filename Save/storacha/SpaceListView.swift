@@ -51,11 +51,11 @@ struct SpaceListView: View {
                                             .multilineTextAlignment(.leading)
                                             .frame(maxWidth: .infinity, alignment: .leading)
                                         
-                                        Text(space.id)
-                                            .font(.montserrat(.medium, for: .caption))
-                                            .foregroundColor(.gray)
-                                            .multilineTextAlignment(.leading)
-                                            .frame(maxWidth: .infinity, alignment: .leading)
+//                                        Text(space.id)
+//                                            .font(.montserrat(.medium, for: .caption))
+//                                            .foregroundColor(.gray)
+//                                            .multilineTextAlignment(.leading)
+//                                            .frame(maxWidth: .infinity, alignment: .leading)
                                     }
                                     
                                     Image(systemName: "chevron.right")
