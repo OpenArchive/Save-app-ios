@@ -33,18 +33,6 @@ struct MainHeaderView: View {
         .frame(minHeight: 44)
         .padding(.horizontal, 16)
         .background(Color(.systemBackground))
-        .confirmationDialog(
-            "",
-            isPresented: $uiState.isFolderMenuVisible,
-            titleVisibility: .hidden
-        ) {
-            Button(NSLocalizedString("Rename folder", comment: ""), action: onStartRename)
-            Button(NSLocalizedString("Select media", comment: ""), action: onStartSelectMedia)
-                .disabled(mediaGridViewModel.totalItemCount == 0)
-            Button(NSLocalizedString("Archive folder", comment: ""), action: onArchiveFolder)
-            Button(NSLocalizedString("Remove folder from app", comment: ""), role: .destructive, action: onRemoveFolder)
-            Button(NSLocalizedString("Cancel", comment: ""), role: .cancel) {}
-        }
     }
 
     private var hasFolder: Bool {
@@ -79,6 +67,18 @@ struct MainHeaderView: View {
                 Button(action: { uiState.isFolderMenuVisible = true }) {
                     Image("edit_menu")
                         .frame(width: 24, height: 24)
+                }
+                .confirmationDialog(
+                    "",
+                    isPresented: $uiState.isFolderMenuVisible,
+                    titleVisibility: .hidden
+                ) {
+                    Button(NSLocalizedString("Rename folder", comment: ""), action: onStartRename)
+                    Button(NSLocalizedString("Select media", comment: ""), action: onStartSelectMedia)
+                        .disabled(mediaGridViewModel.totalItemCount == 0)
+                    Button(NSLocalizedString("Archive folder", comment: ""), action: onArchiveFolder)
+                    Button(NSLocalizedString("Remove folder from app", comment: ""), role: .destructive, action: onRemoveFolder)
+                    Button(NSLocalizedString("Cancel", comment: ""), role: .cancel) {}
                 }
 
                 Text(folderAssetCountText)

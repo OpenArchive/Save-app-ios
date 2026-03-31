@@ -25,7 +25,6 @@ final class MediaGridViewModel: NSObject, ObservableObject {
     @Published private(set) var sections: [MediaGridSection] = []
     @Published private(set) var totalItemCount: Int = 0
     @Published private(set) var isRefreshing = false
-    @Published private(set) var uploadsByAssetId: [String: Upload] = [:]
     @Published var isInEditMode = false
     @Published private(set) var selectedAssetIds: Set<String> = []
 
@@ -57,9 +56,8 @@ final class MediaGridViewModel: NSObject, ObservableObject {
 
         super.init()
 
-        assetsReadConn?.update(mappings: assetsMappings)
-        collectionsReadConn?.update(mappings: collectionsMappings)
-        uploadsReadConn?.update(mappings: uploadsMappings)
+        debugLogMissingConnections(context: "init")
+        updateAllMappings()
         rebuildSections()
     }
 
@@ -67,20 +65,27 @@ final class MediaGridViewModel: NSObject, ObservableObject {
     func setSelectedProject(_ projectId: String?) {
         selectedProjectId = projectId
         isRefreshing = true
+        debugLogMissingConnections(context: "setSelectedProject")
+        // Advance long-lived read transactions so mapping reads see the latest committed snapshot.
         _ = assetsReadConn?.beginLongLivedReadTransaction()
         _ = collectionsReadConn?.beginLongLivedReadTransaction()
         _ = uploadsReadConn?.beginLongLivedReadTransaction()
-        assetsReadConn?.update(mappings: assetsMappings)
-        collectionsReadConn?.update(mappings: collectionsMappings)
-        uploadsReadConn?.update(mappings: uploadsMappings)
-        rebuildUploadIndex()
+        updateAllMappings()
         rebuildSections()
         isRefreshing = false
     }
 
     /// Returns the upload for the given asset if it exists and is not yet uploaded.
     func upload(for assetId: String) -> Upload? {
-        uploadsByAssetId[assetId]
+        var result: Upload?
+        uploadsReadConn?.read { tx in
+            tx.iterateKeysAndObjects(inCollection: Upload.collection) { (_: String, upload: Upload, stop: inout Bool) in
+                guard upload.state != .uploaded, upload.assetId == assetId else { return }
+                result = upload
+                stop = true
+            }
+        }
+        return result
     }
 
     func selectAsset(_ assetId: String) {
@@ -127,18 +132,13 @@ final class MediaGridViewModel: NSObject, ObservableObject {
         assetsReadConn?.objects(at: indexPathsForSelectedAssets(), in: assetsMappings) ?? []
     }
 
-    private func rebuildUploadIndex() {
-        var next: [String: Upload] = [:]
-        uploadsReadConn?.read { tx in
-            tx.iterateKeysAndObjects(inCollection: Upload.collection) { (_, upload: Upload, _) in
-                guard upload.state != .uploaded, let assetId = upload.assetId else { return }
-                next[assetId] = upload
-            }
-        }
-        uploadsByAssetId = next
-    }
-
     func rebuildSections() {
+        guard let selectedProjectId else {
+            sections = []
+            totalItemCount = 0
+            return
+        }
+
         let sectionCount = Int(assetsMappings.numberOfSections())
         var newSections: [MediaGridSection] = []
         var total = 0
@@ -148,8 +148,8 @@ final class MediaGridViewModel: NSObject, ObservableObject {
                 continue
             }
 
-            guard let selectedProjectId,
-                  AssetsByCollectionView.projectId(from: group) == selectedProjectId else {
+            // Keep parsing centralized in AssetsByCollectionView to avoid duplicating group format assumptions.
+            guard AssetsByCollectionView.projectId(from: group) == selectedProjectId else {
                 continue
             }
 
@@ -177,6 +177,20 @@ final class MediaGridViewModel: NSObject, ObservableObject {
 
         sections = newSections
         totalItemCount = total
+    }
+
+    private func updateAllMappings() {
+        assetsReadConn?.update(mappings: assetsMappings)
+        collectionsReadConn?.update(mappings: collectionsMappings)
+        uploadsReadConn?.update(mappings: uploadsMappings)
+    }
+
+    private func debugLogMissingConnections(context: String) {
+#if DEBUG
+        if assetsReadConn == nil || collectionsReadConn == nil || uploadsReadConn == nil {
+            assertionFailure("[MediaGridViewModel] Missing YapDatabase connection(s) in \(context)")
+        }
+#endif
     }
 
     private func indexPathsForSelectedAssets() -> [IndexPath] {
