@@ -21,7 +21,6 @@ class AppSettings {
         case uploadWifiOnly = "upload_wifi_only"
         case nearbyUseBluetooth = "nearby_use_bluetooth"
         case nearbyUseWifi = "nearby_use_wifi"
-        case useTor = "use_tor"
         case currentSpaceId = "current_space_id"
         case prohibitScreenshots = "prohibit_screenshots"
         case theme = "theme"

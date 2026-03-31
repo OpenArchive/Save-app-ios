@@ -26,9 +26,6 @@ final class OnboardingViewController: UIHostingController<OnboardingView> {
     }
 
     private func complete(enableTor: Bool) {
-        if enableTor {
-            Settings.useTor = true
-        }
         Settings.firstRunDone = true
 
         if let navC = navigationController as? MainNavigationController {

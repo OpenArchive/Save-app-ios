@@ -11,15 +11,11 @@ import SwiftUI
 
 class BrowseViewController: UIViewController {
 
-    private let useTorSession: Bool
-
-    init(useTorSession: Bool = false) {
-        self.useTorSession = useTorSession
+    init() {
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder: NSCoder) {
-        self.useTorSession = false
         super.init(coder: coder)
     }
 
@@ -31,7 +27,6 @@ class BrowseViewController: UIViewController {
         navigationItem.title = NSLocalizedString("Browse Existing", comment: "")
 
         let browseView = BrowseView(
-            useTorSession: useTorSession,
             onAddFolder: { [weak self] folder in
                 self?.addFolder(folder)
             },

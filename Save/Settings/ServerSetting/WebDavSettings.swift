@@ -115,18 +115,23 @@ func removeSpace(space:Space?){
     guard let id = space?.id else {
         return
     }
-    Db.writeConn?.asyncReadWrite { tx in
+    Db.writeConn?.asyncReadWrite({ tx in
         tx.removeObject(forKey: id, inCollection: Space.collection)
-        
+
         SelectedSpace.space = nil
         SelectedSpace.store(tx)
-        
+
         tx.iterateKeysAndObjects(inCollection: Space.collection) { (key, space: Space, stop) in
             SelectedSpace.space = space
             stop = true
         }
         SelectedSpace.store(tx)
-    }
+    }, completionBlock: {
+        // Notify that space was removed so MainView can refresh
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: .spaceUpdated, object: nil)
+        }
+    })
 }
 
 func saveSpaceToDatabase(state: ServerSettingsState) {

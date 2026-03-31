@@ -137,38 +137,40 @@ class PreviewViewController: UIViewController, AssetPickerDelegate, DoneDelegate
     
     @objc private func upload() {
         UploadInfoAlert.presentIfNeeded(viewController: self) {
-            Db.writeConn?.asyncReadWrite { tx in
+            var uploadCount: Int = 0
+
+            Db.writeConn?.asyncReadWrite({ tx in
                 guard let group = self.sc.group else {
                     return
                 }
-                
+
                 var order = 0
-                
+
                 tx.iterate { (key, upload: Upload, stop) in
                     if upload.order >= order {
                         order = upload.order + 1
                     }
                 }
-                
+
                 if let collection: Collection = tx.object(for: self.sc.id) {
                     collection.close()
                     tx.setObject(collection)
                 }
-                
+
                 tx.iterate(group: group, in: AbcFilteredByCollectionView.name) { (collection, key, asset: Asset, index, stop) in
                     let upload = Upload(order: order, asset: asset)
                     tx.setObject(upload)
                     order += 1
                 }
-                
-                let count = UploadsView.countUploading(tx)
-                
+
+                uploadCount = UploadsView.countUploading(tx)
+            }, completionBlock: {
                 DispatchQueue.main.async {
-                    self.alertCannotUploadNoWifi(count: count) { [weak self] in
+                    self.alertCannotUploadNoWifi(count: uploadCount) { [weak self] in
                         self?.navigationController?.popViewController(animated: true)
                     }
                 }
-            }
+            })
         }
     }
     

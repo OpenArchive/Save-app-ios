@@ -35,14 +35,7 @@ final class BrowseViewModel: ObservableObject {
     @Published private(set) var isLoading = false
     @Published var selectedFolder: BrowseFolder?
 
-    private let useTorSession: Bool
-
-    /// - Parameter useTorSession: When true, uses `UploadManager.improvedSessionConf()` so that
-    ///   WebDAV browse requests can route through Tor when Onion Routing is enabled (see Settings).
-    ///   Used when coming from main app's Add Folder → Browse (WebDavSpace). When Tor is re-enabled,
-    ///   uncomment the Tor proxy block in `UploadManager.improvedSessionConf()`.
-    init(useTorSession: Bool = false) {
-        self.useTorSession = useTorSession
+    init() {
     }
 
     func loadFolders() {
@@ -54,11 +47,7 @@ final class BrowseViewModel: ObservableObject {
             return
         }
 
-        // Use UploadManager session when useTorSession so browse respects Tor (when re-enabled).
-        // See UploadManager.improvedSessionConf() for Tor proxy setup.
-        let config = useTorSession
-            ? UploadManager.improvedSessionConf()
-            : URLSessionConfiguration.improved()
+        let config = URLSessionConfiguration.improved()
         let session = URLSession(configuration: config)
         
         session.info(url, credential: space.credential) { [weak self] info, error in

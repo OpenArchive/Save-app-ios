@@ -46,6 +46,16 @@ class AssetsByCollectionView: YapDatabaseAutoView {
         super.init(grouping: grouping, sorting: sorting, versionTag: nil, options: nil)
     }
 
+    class func createMappings() -> YapDatabaseViewMappings {
+        YapDatabaseViewMappings(
+            groupFilterBlock: { _, _ in true },
+            sortBlock: { group1, group2, _ in
+                group2.compare(group1)
+            },
+            view: name
+        )
+    }
+
     /**
      - parameter asset: The `Asset` to generate a group key for.
      - returns: a group key from the asset's collection which is sortable by

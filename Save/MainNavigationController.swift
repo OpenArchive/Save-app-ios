@@ -39,7 +39,7 @@ class MainNavigationController: UINavigationController, UINavigationControllerDe
 //                                   animated: true)
 //            }
              if !(topViewController is MainViewController) {
-                setViewControllers([UIStoryboard.main.instantiate(MainViewController.self)],
+                setViewControllers([MainViewController()],
                                    animated: true)
             }
         }

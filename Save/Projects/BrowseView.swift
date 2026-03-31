@@ -13,8 +13,8 @@ struct BrowseView: View {
     var onAddFolder: (BrowseFolder) -> Void
     var onSelectionChange: (BrowseFolder?) -> Void
 
-    init(useTorSession: Bool = false, onAddFolder: @escaping (BrowseFolder) -> Void, onSelectionChange: @escaping (BrowseFolder?) -> Void) {
-        _viewModel = StateObject(wrappedValue: BrowseViewModel(useTorSession: useTorSession))
+    init(onAddFolder: @escaping (BrowseFolder) -> Void, onSelectionChange: @escaping (BrowseFolder?) -> Void) {
+        _viewModel = StateObject(wrappedValue: BrowseViewModel())
         self.onAddFolder = onAddFolder
         self.onSelectionChange = onSelectionChange
     }

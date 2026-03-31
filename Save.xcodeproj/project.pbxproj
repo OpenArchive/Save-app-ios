@@ -181,7 +181,6 @@
 				Extensions/MontserratExtension.swift,
 				"Extensions/View+Analytics.swift",
 				Projects/AddFolderView.swift,
-				Space/WizardDelegate.swift,
 			);
 			target = A07128FA2111CC90007A432A /* ShareExtension */;
 		};
@@ -202,8 +201,6 @@
 				CustomComponents/KeyboardHandling.swift,
 				Extensions/TimeIntervalExtension.swift,
 				Info.plist,
-				Onboarding/SlideshowViewController.swift,
-				Onboarding/SlideViewController.swift,
 				Settings/ProofModeSettingsViewController.swift,
 				Space/WebDavWizardViewController.swift,
 				Tor/TorStartViewController.swift,

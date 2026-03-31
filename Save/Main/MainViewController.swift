@@ -1,701 +1,401 @@
-//
-//  MainViewController.swift
-//  Save
-//
-//  Created by Benjamin Erhart on 23.01.19.
-//  Copyright © 2019 Open Archive. All rights reserved.
-//
-
 import UIKit
 import YapDatabase
 import SwiftUI
 import Combine
 
-class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,
-                          UINavigationControllerDelegate, SideMenuDelegate,
-                          AssetPickerDelegate, UITextFieldDelegate, UICollectionViewDelegate, DoneDelegate
-{
-    
+class MainViewController: UIViewController, UINavigationControllerDelegate, SideMenuDelegate, AssetPickerDelegate, DoneDelegate {
+
     private var cancellables = Set<AnyCancellable>()
-    
-    @IBOutlet weak var renameView: UIView!{
-        didSet {
-            renameView.isHidden = true
-        }
-    }
-    
-    @IBOutlet weak var mediaArrow: UIImageView!
-    @IBOutlet weak var EditButtonTrailingContraint: NSLayoutConstraint!
-    @IBOutlet weak var titleContainerHeight: NSLayoutConstraint!
-    @IBOutlet weak var titleContainer: UIView!
-    private static let segueShowPrivateServerSetting = "showPrivateServerSetting"
-    private static var isSettingsEnabled = false
-    lazy var privateServer:Space? = nil
-    private var isLongPressTapped: Bool = false
-    @IBOutlet weak var logo: UIImageView!
-    
-    @IBOutlet weak var removeBt: UIButton! {
-        didSet {
-            removeBt.isHidden = true
-        }
-    }
-    @IBOutlet weak var selectMediaView: UIView!{
-        didSet {
-            selectMediaView.isHidden = true
-        }
-    }
-    
-    @IBOutlet weak var folderIndicator: UIImageView!
-    @IBOutlet weak var editButton: UIButton!
-    private lazy var menuBt: UIButton = {
-        let button: UIButton
-        if #available(iOS 15.0, *) {
-            var config = UIButton.Configuration.plain()
-            config.image = UIImage(named: "menu_icon")
-            config.contentInsets = NSDirectionalEdgeInsets(top: 10, leading: 10, bottom: 10, trailing: 10)
-            button = UIButton(configuration: config, primaryAction: nil)
-        } else {
-            button = UIButton(type: .system)
-            button.setImage(UIImage(named: "menu_icon"), for: .normal)
-            button.imageEdgeInsets = UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
-        }
-        button.accessibilityIdentifier = "btMenu"
-        button.addTarget(self, action: #selector(didTapMenuButton), for: .touchUpInside)
-        // Increase tap area without changing icon size
-        button.frame = CGRect(x: 0, y: 0, width: 44, height: 44)
-        return button
-    }()
-    private lazy var menuBarButtonItem: UIBarButtonItem = {
-        return UIBarButtonItem(customView: menuBt)
-    }()
-    
-    
-    @IBOutlet weak var menu: UIView! {
-        didSet {
-            menu.isHidden = true
-        }
-    }
-    
-    @IBOutlet weak var folderNameText: UITextField!
-    @IBOutlet weak var spaceFavIcon: UIImageView!
-    @IBOutlet weak var folderNameLb: UILabel!
-    
-    @IBOutlet weak var folderAssetCountLb: UILabel! {
-        didSet {
-            
-            folderAssetCountLb.clipsToBounds = true
-        }
-    }
-    
-    @IBOutlet weak var manageBt: UIButton! {
-        didSet {
-            manageBt.setTitle(NSLocalizedString("Edit", comment: ""))
-            manageBt.accessibilityIdentifier = "btManageUploads"
-        }
-    }
-    
-    @IBOutlet weak var welcomeLb: UILabel! {
-        didSet {
-            welcomeLb.font = .montserrat(forTextStyle: .largeTitle, with: .traitBold)
-            welcomeLb.textColor = .welcome
-            welcomeLb.text = NSLocalizedString("Welcome!", comment: "")
-        }
-    }
-    
-    @IBOutlet weak var hintLb: UILabel! {
-        didSet {
-            hintLb.font = UIFont(name: "Montserrat-Bold", size: 24)
-            hintLb.textColor = .mediaSubtitle
-            hintLb.text = NSLocalizedString("Press the button below to add media", comment: "")
-        }
-    }
-    
-    @IBOutlet weak var collectionView: UICollectionView!
-    
-    @IBOutlet weak var bottomMenu: UIView! {
-        didSet {
-            // Only round top corners.
-            bottomMenu.layer.cornerRadius = 9
-            bottomMenu.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
-        }
-    }
-    
-    @IBOutlet weak var myMediaBt: UIButton! {
-        didSet {
-            myMediaBt.setAttributedTitle(.init(
-                string: NSLocalizedString("My Media", comment: ""),
-                attributes: [.font: UIFont.montserrat(forTextStyle: .caption1)]))
-        }
-    }
-    
-    @IBOutlet weak var container: UIView!
-    
-    @IBOutlet weak var addBt: UIButton! {
-        didSet {
-            addBt.setTitle("")
-        }
-    }
-    
-    
-    @IBOutlet weak var settingsBt: UIButton! {
-        didSet {
-            settingsBt.setAttributedTitle(.init(
-                string: NSLocalizedString("Settings", comment: ""),
-                attributes: [.font: UIFont.montserrat(forTextStyle: .caption1)]))
-            settingsBt.accessibilityIdentifier = "btSettings"
-        }
-    }
-    
-    @IBAction func closeRenameView(_ sender: Any) {
-        renameView.isHidden = true
-    }
-    
-    
-    @IBAction func closeMedia(_ sender: Any) {
-        selectMediaView.isHidden = true
-        mediaGridViewModel.exitEditMode()
-        self.toggleMode(newMode: false)
-    }
-    
+    private var isLongPressTapped = false
+
     var selectedProject: Project? {
-        get {
-            homeViewModel.selectedProject
-        }
-        set {
-            homeViewModel.selectedProject = newValue
-        }
+        get { homeViewModel.selectedProject }
+        set { homeViewModel.selectedProject = newValue }
     }
-    
+
+    private var selectedProjectId: String? {
+        homeViewModel.selectedProjectId
+    }
+
+    private func resolveSelectedProject() -> Project? {
+        guard let id = selectedProjectId else { return nil }
+        if let project: Project = Db.bgRwConn?.object(for: id, in: Project.collection) {
+            return project
+        }
+        return homeViewModel.projects.first(where: { $0.id == id }) ?? SelectedProject.project
+    }
+
+    private func refreshGrid() {
+        mediaGridViewModel.setSelectedProject(selectedProjectId)
+    }
+
     private lazy var uploadsReadConn = Db.newLongLivedReadConn()
-    
-    private lazy var uploadsMappings = YapDatabaseViewMappings(
-        groups: UploadsView.groups, view: UploadsView.name)
-    
+    private lazy var uploadsMappings = YapDatabaseViewMappings(groups: UploadsView.groups, view: UploadsView.name)
     private lazy var collectionsReadConn = Db.newLongLivedReadConn()
-    
     private lazy var collectionsMappings = CollectionsView.createMappings()
-    
     private lazy var assetsReadConn = Db.newLongLivedReadConn()
-    
-    private lazy var assetsMappings = AbcFilteredByProjectView.createMappings()
+    private lazy var assetsMappings = AssetsByCollectionView.createMappings()
 
-    private var inEditMode = false
+    private lazy var mediaGridViewModel = MediaGridViewModel(
+        assetsReadConn: assetsReadConn,
+        collectionsReadConn: collectionsReadConn,
+        uploadsReadConn: uploadsReadConn,
+        assetsMappings: assetsMappings,
+        collectionsMappings: collectionsMappings,
+        uploadsMappings: uploadsMappings
+    )
 
-    private lazy var mediaGridViewModel: MediaGridViewModel = {
-        let vm = MediaGridViewModel(
-            assetsReadConn: assetsReadConn,
-            collectionsReadConn: collectionsReadConn,
-            uploadsReadConn: uploadsReadConn,
-            assetsMappings: assetsMappings,
-            collectionsMappings: collectionsMappings,
-            uploadsMappings: uploadsMappings
-        )
-        return vm
-    }()
-
-    private lazy var mediaGridHostingController: UIHostingController<MediaGridView> = {
-        let view = MediaGridView(
-            viewModel: mediaGridViewModel,
-            onSelectAsset: { [weak self] asset in
-                self?.openPreview(for: asset)
-            },
-            onLongPress: { [weak self] in
-                self?.showSelectMediaBar()
-            },
-            onTapAssetWithUpload: { [weak self] asset, upload in
-                self?.handleTapAssetWithUpload(asset: asset, upload: upload)
-            }
-        )
-
-        let hosting = UIHostingController(rootView: view)
-        hosting.view.backgroundColor = .systemBackground
-        hosting.view.isHidden = true
-        return hosting
-    }()
-
-    
     private lazy var homeViewModel: HomeViewModel = {
         let coordinator = NavigationCoordinator(delegate: self)
-
         let spacesConn = Db.newLongLivedReadConn()
-        let spacesMappings = YapDatabaseViewMappings(
-            groups: SpacesView.groups,
-            view: SpacesView.name
-        )
+        let spacesMappings = YapDatabaseViewMappings(groups: SpacesView.groups, view: SpacesView.name)
         spacesConn?.update(mappings: spacesMappings)
-
-        // Create separate connections for side menu to avoid interference
         let sideMenuProjectsConn = Db.newLongLivedReadConn()
-        let sideMenuProjectsMappings = YapDatabaseViewMappings(
-            groups: ActiveProjectsView.groups, view: ActiveProjectsView.name)
-
-        let viewModel = HomeViewModel(
+        let sideMenuProjectsMappings = YapDatabaseViewMappings(groups: ActiveProjectsView.groups, view: ActiveProjectsView.name)
+        return HomeViewModel(
             spacesConn: spacesConn,
             spacesMappings: spacesConn == nil ? nil : spacesMappings,
             projectsConn: sideMenuProjectsConn,
             projectsMappings: sideMenuProjectsMappings,
             coordinator: coordinator
         )
-
-        return viewModel
     }()
 
-    private lazy var sideMenuHostingController: UIHostingController<SideMenuRootView> = {
-        let coordinator = homeViewModel.coordinator
-
-        let contentView = SideMenuRootView(
-            homeViewModel: homeViewModel,
-            coordinator: coordinator
-        )
-
-        let hostingController = UIHostingController(rootView: contentView)
-        hostingController.view.backgroundColor = .clear
-
-        addChild(hostingController)
-        menu.addSubview(hostingController.view)
-
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        hostingController.view.leadingAnchor.constraint(equalTo: menu.leadingAnchor).isActive = true
-        hostingController.view.topAnchor.constraint(equalTo: menu.topAnchor).isActive = true
-        hostingController.view.trailingAnchor.constraint(equalTo: menu.trailingAnchor).isActive = true
-        hostingController.view.bottomAnchor.constraint(equalTo: menu.bottomAnchor).isActive = true
-
-        hostingController.didMove(toParent: self)
-
-        return hostingController
+    private let uiState = MainViewUIState()
+    private lazy var menuButton: UIBarButtonItem = {
+        let button = UIButton(type: .custom)
+        button.setImage(UIImage(named: "menu_icon"), for: .normal)
+        button.addTarget(self, action: #selector(menuButtonTapped), for: .touchUpInside)
+        button.accessibilityIdentifier = "btMenu"
+        let item = UIBarButtonItem(customView: button)
+        return item
     }()
-    
-    private lazy var settingsVc: GeneralSettingsViewController = {
-        let vc = GeneralSettingsViewController()
-        return vc
-    }()
-    
+
     private lazy var assetPicker = AssetPicker(self)
-    
-    
+
+    private lazy var mainHostingController: UIHostingController<MainView> = {
+        let view = MainView(
+            homeViewModel: homeViewModel,
+            mediaGridViewModel: mediaGridViewModel,
+            uiState: uiState,
+            folderAssetCountText: folderAssetCountText,
+            onTapAdd: { [weak self] in self?.add() },
+            onLongPressAdd: { [weak self] in self?.showAddMenu() },
+            onTapSettings: { [weak self] in self?.toggleSettings() },
+            onTapMedia: { [weak self] in self?.hideSettings() },
+            onSelectAsset: { [weak self] asset in self?.openPreview(for: asset) },
+            onLongPressAsset: { [weak self] in self?.showSelectMediaBar() },
+            onTapAssetWithUpload: { [weak self] asset, upload in self?.handleTapAssetWithUpload(asset: asset, upload: upload) },
+            onStartRename: { [weak self] in self?.showRename() },
+            onSubmitRename: { [weak self] in self?.updateName() },
+            onCloseRename: { [weak self] in self?.hideRename() },
+            onStartSelectMedia: { [weak self] in self?.toggleMode(newMode: true) },
+            onCloseSelectMedia: { [weak self] in self?.hideSelectMedia() },
+            onRemoveAssets: { [weak self] in self?.removeAssets() },
+            onArchiveFolder: { [weak self] in self?.archiveFolder() },
+            onRemoveFolder: { [weak self] in self?.removeFolder() },
+            onHideMenu: { [weak self] in self?.hideMenu() }
+        )
+        let host = UIHostingController(rootView: view)
+        host.view.backgroundColor = .systemBackground
+        return host
+    }()
+
+    private var folderAssetCountText: String {
+        "  \(Formatters.format(mediaGridViewModel.totalItemCount))  "
+    }
+
+    override func loadView() {
+        view = UIView()
+        view.backgroundColor = .systemBackground
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        folderNameText.delegate = self
-        collectionView.allowsMultipleSelection = true
+
         uploadsReadConn?.update(mappings: uploadsMappings)
         collectionsReadConn?.update(mappings: collectionsMappings)
         assetsReadConn?.update(mappings: assetsMappings)
-        Db.add(observer: self, #selector(yapDatabaseModified))
 
-        // Observe selection changes from SwiftUI grid
-        mediaGridViewModel.$selectedAssetIds
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] _ in
-                self?.updateRemove()
-            }
-            .store(in: &cancellables)
-
-        mediaGridViewModel.$isInEditMode
-            .receive(on: DispatchQueue.main)
-            .sink { [weak self] isInEditMode in
-                if !isInEditMode {
-                    self?.inEditMode = false
-                    self?.selectMediaView.isHidden = true
-                    self?.updateRemove()
-                }
-            }
-            .store(in: &cancellables)
-
-        addChild(mediaGridHostingController)
-        view.insertSubview(mediaGridHostingController.view, belowSubview: collectionView)
-        mediaGridHostingController.view.translatesAutoresizingMaskIntoConstraints = false
+        addChild(mainHostingController)
+        view.addSubview(mainHostingController.view)
+        mainHostingController.view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            mediaGridHostingController.view.topAnchor.constraint(equalTo: titleContainer.bottomAnchor),
-            mediaGridHostingController.view.leadingAnchor.constraint(equalTo: collectionView.leadingAnchor),
-            mediaGridHostingController.view.trailingAnchor.constraint(equalTo: collectionView.trailingAnchor),
-            mediaGridHostingController.view.bottomAnchor.constraint(equalTo: bottomMenu.topAnchor),
+            mainHostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
+            mainHostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            mainHostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            mainHostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
-        mediaGridHostingController.didMove(toParent: self)
+        mainHostingController.didMove(toParent: self)
+
+        Db.add(observer: self, #selector(yapDatabaseModified))
+        NotificationCenter.default.addObserver(self, selector: #selector(spaceUpdated), name: .spaceUpdated, object: nil)
 
         if Settings.proofMode && LocationMananger.shared.status == .notDetermined {
             DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                 LocationMananger.shared.requestAuthorization()
             }
         }
-        NotificationCenter.default.addObserver(self, selector: #selector(appDidBecomeActive), name: UIApplication.didBecomeActiveNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(spaceUpdated), name: .spaceUpdated, object: nil)
 
+        mediaGridViewModel.$totalItemCount
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.updateMenuButtonVisibility()
+            }
+            .store(in: &cancellables)
+
+        mediaGridViewModel.$sections
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.updateMenuButtonVisibility()
+            }
+            .store(in: &cancellables)
+
+        homeViewModel.$selectedProjectId
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.updateMenuButtonVisibility()
+            }
+            .store(in: &cancellables)
+
+        homeViewModel.$spaces
+            .combineLatest(homeViewModel.$currentSpaceIcon)
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] _, _ in
+                self?.updateMenuButtonVisibility()
+            }
+            .store(in: &cancellables)
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        configureNavigationBar()
+
+        if let project = SelectedProject.project, project.active {
+            homeViewModel.reloadAndSelect(project.id)
+            // updateProject will call setSelectedProject which calls updateFilter internally
+            updateProject(project: project)
+        } else {
+            homeViewModel.reload()
+            updateProject()
+        }
+
+        isLongPressTapped = false
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         trackScreenViewSafely("MediaScreen")
     }
-    
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        textField.resignFirstResponder()
-        updateName()
-        return true
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
     }
-    
-    // MARK: - Update Name
-    private func updateName() {
-        if(folderNameText.text != ""){
-            if let currentProject = selectedProject{
-                let isExsists =  Db.bgRwConn?.find(where: { (project:Project) in
-                    project.spaceId == currentProject.spaceId && project.name == folderNameText.text && project.id != currentProject.id
-                }) != nil
-                
-                if (isExsists){
-                    let alertVC = CustomAlertViewController(
-                        title: NSLocalizedString("Error", comment: ""),
-                        message: NSLocalizedString("Please choose another name/folder or use the existing one instead.", comment: ""),
-                        primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
-                        primaryButtonAction: {
-                            
-                        }, showCheckbox: false, iconImage: Image("ic_error"),
-                        
-                    )
-                    self.present(alertVC, animated: true)
-                    
-                }else{
-                    selectedProject?.name = folderNameText.text
-                    Db.writeConn?.setObject(currentProject)
-                    renameView.isHidden = true
-                    updateProject()
-                    showToast(message:  NSLocalizedString("Folder renamed.",comment: ""))
-                    
+
+    // MARK: Public integrations
+    func updateFilter() {
+        ProjectsView.updateGrouping()
+        refreshGrid()
+    }
+
+    // MARK: SideMenuDelegate
+    func hideMenu() {
+        toggleMenu(false)
+    }
+
+    func selected(project: Project?) {
+        selectedProject = project
+        toggleMenu(false)
+        hideSelectMedia()
+        updateProject(project: project)
+    }
+
+    func addSpace() {
+        toggleMenu(false) { [weak self] _ in
+            self?.navigationController?.pushViewController(SpaceTypeViewController(), animated: true)
+        }
+    }
+
+    func addFolder() {
+        toggleMode(newMode: false)
+        toggleMenu(false) { [weak self] _ in
+            guard let self else { return }
+            if SelectedSpace.available {
+                if SelectedSpace.space is IaSpace {
+                    self.navigationController?.pushViewController(AddNewFolderViewController(), animated: true)
+                } else {
+                    self.navigationController?.pushViewController(AddFolderViewController(), animated: true)
                 }
-            }}
-        else{
+            } else {
+                self.navigationController?.pushViewController(SpaceTypeViewController(), animated: true)
+            }
+        }
+    }
+
+    func hideSelectMedia() {
+        mediaGridViewModel.exitEditMode()
+        uiState.isSelectMediaVisible = false
+    }
+
+    func pushPrivateServerSetting(space: Space) {
+        let vc = PrivateServerSettingViewController()
+        vc.space = space
+        navigationController?.pushViewController(vc, animated: true)
+    }
+
+    // MARK: AssetPickerDelegate
+    var currentCollection: Collection? {
+        resolveSelectedProject()?.currentCollection
+    }
+
+    func picked() {
+        refreshGrid()
+        showPreview()
+    }
+
+    // MARK: DoneDelegate
+    func done() {
+        DispatchQueue.main.async { [weak self] in
+            self?.refreshGrid()
+        }
+    }
+
+    // MARK: Actions
+    private func add() {
+        if uiState.isSettingsVisible {
+            hideSettings()
+        }
+        guard selectedProjectId != nil else {
+            addFolder()
+            return
+        }
+        AddInfoAlert.presentIfNeeded(viewController: self) {
+            self.assetPicker.pickMedia()
+        }
+    }
+
+    private func showAddMenu() {
+        if uiState.isSettingsVisible {
+            hideSettings()
+        }
+        showMediaPickerSheet()
+    }
+
+    private func showMediaPickerSheet() {
+        if selectedProjectId == nil {
+            if !isLongPressTapped {
+                isLongPressTapped = true
+                addFolder()
+            }
+            return
+        }
+
+        guard presentedViewController == nil else { return }
+        let popup = MediaPopupViewController()
+        popup.onCameraTap = { [weak self] in self?.assetPicker.openCamera() }
+        popup.onGalleryTap = { [weak self] in self?.assetPicker.pickMedia() }
+        popup.onFilesTap = { [weak self] in self?.assetPicker.pickDocuments() }
+        present(popup, animated: true)
+    }
+
+    private func toggleSettings() {
+        uiState.isSettingsVisible ? hideSettings() : showSettings()
+    }
+
+    private func showSettings() {
+        hideMenu()
+        let settingsVC = GeneralSettingsViewController()
+        navigationController?.pushViewController(settingsVC, animated: true)
+    }
+
+    private func hideSettings() {
+        uiState.isSettingsVisible = false
+    }
+
+    private func showRename() {
+        uiState.renameText = resolveSelectedProject()?.name ?? ""
+        uiState.isRenameVisible = true
+    }
+
+    private func hideRename() {
+        uiState.isRenameVisible = false
+    }
+
+    private func updateName() {
+        guard !uiState.renameText.isEmpty else {
             let alertVC = CustomAlertViewController(
                 title: NSLocalizedString("Error", comment: ""),
                 message: NSLocalizedString("Folder name cannot be empty", comment: ""),
                 primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
-                primaryButtonAction: {
-                    
-                }, showCheckbox: false, iconImage: Image("ic_error"),
-                iconTint:.gray
+                primaryButtonAction: {},
+                showCheckbox: false,
+                iconImage: Image("ic_error"),
+                iconTint: .gray
             )
-            self.present(alertVC, animated: true)
-        }
-    }
-    
-    // MARK: - Dismiss Keyboard on Background Tap
-    @objc private func dismissKeyboard() {
-        view.endEditing(true)
-    }
-    //MARK: = Dropdown menu
-    private func createDropdownMenu() -> UIMenu {
-        let isAssetsEmpty = mediaGridViewModel.sections.isEmpty
-        let renameAction = UIAction(title: NSLocalizedString("Rename folder", comment: ""), image: nil) { _ in
-            self.updateProject()
-            self.renameView.isHidden = false
-            
-        }
-        
-        let selectMediaAction = UIAction(title: NSLocalizedString("Select media", comment: ""), image: nil, attributes: isAssetsEmpty ? [.disabled] : []) { _ in
-            self.mediaGridViewModel.enterEditMode()
-            self.toggleMode(newMode: true)
-        }
-        
-        let archiveAction = UIAction(title: NSLocalizedString("Archive folder", comment: ""), image: nil) { _ in
-
-            if let project = self.selectedProject{
-                project.active = false
-                Db.writeConn?.setObject(project)
-                self.selectedProject?.active = false
-
-                // Update view grouping to exclude archived project
-                ProjectsView.updateGrouping()
-
-                // Database observer will handle selecting the next project
-
-                let alertVC = CustomAlertViewController(
-                    title:NSLocalizedString("Success!", comment: "") ,
-                    message: NSLocalizedString("Folder archived successfully.", comment: ""),
-                    primaryButtonTitle: NSLocalizedString("Got it", comment: ""),
-                    primaryButtonAction: {
-                        if let navigationController = self.navigationController {
-
-                            if let existingVC = navigationController.viewControllers.first(where: { $0 is MainViewController }) {
-
-                                navigationController.popToViewController(existingVC, animated: true)
-                            } else {
-
-                                let newVC = MainViewController()
-                                navigationController.pushViewController(newVC, animated: true)
-                            }
-                        }
-                    },
-                    showCheckbox: false,
-                    iconImage: Image("check_icon")
-                )
-                self.present(alertVC, animated: true)
-            }
-        }
-        
-        let removeAction = UIAction(title: NSLocalizedString("Remove folder from app", comment: ""), image: nil) { _ in
-
-            if let project = self.selectedProject{
-                RemoveProjectAlert.present(self, project, { [weak self] success in
-                    guard success else {
-                        return
-                    }
-                    self?.showToast(message:  NSLocalizedString("Folder removed.",comment: ""))
-                    // Database observer will handle selecting the next project
-                })
-
-            }
-
-        }
-        
-        return UIMenu(title: "", children: [renameAction, selectMediaAction, archiveAction, removeAction])
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        if let project = SelectedProject.project, project.active {
-            selectedProject = project
-            homeViewModel.reloadAndSelect(project.id)
-            AbcFilteredByProjectView.updateFilter(project.id)
-            updateProject(project: project)
-        } else {
-            homeViewModel.reload()
-        }
-
-        uploadsReadConn?.update(mappings: uploadsMappings)
-        collectionsReadConn?.update(mappings: collectionsMappings)
-        assetsReadConn?.update(mappings: assetsMappings)
-
-        mediaGridViewModel.setSelectedProject(selectedProject?.id)
-
-        configureNavigationBar()
-        updateSpace()
-        if SelectedProject.project == nil || !(SelectedProject.project?.active ?? false) {
-            updateProject()
-        }
-
-        collectionView.reloadData()
-        _ = mediaGridViewModel.sections.isEmpty ? 0 : 1
-        let hasContent = !mediaGridViewModel.sections.isEmpty
-        collectionView.isHidden = true
-        mediaGridHostingController.view.toggle(hasContent, animated: animated)
-
-        isLongPressTapped = false
-        if #available(iOS 14.0, *) {
-            editButton.menu = createDropdownMenu()
-            editButton.showsMenuAsPrimaryAction = true
-        }
-        if(MainViewController.isSettingsEnabled){
-            self.titleContainer.isHidden = true
-            self.titleContainerHeight.constant = 0
-        }
-        if inEditMode && !mediaGridViewModel.hasSelection {
-            toggleMode()
-        }
-        updateManageBt()
-        
-        if #available(iOS 26.0, *) {
-            navigationItem.leftBarButtonItems?.forEach { $0.hidesSharedBackground = true }
-            navigationItem.rightBarButtonItems?.forEach { $0.hidesSharedBackground = true }
-        }
-    }
- 
-    
-    private func updateDropdownMenu() {
-        editButton.menu = createDropdownMenu()
-        editButton.showsMenuAsPrimaryAction = true
-    }
-    @objc private func appDidBecomeActive() {
-        if(MainViewController.isSettingsEnabled){
-            self.titleContainer.isHidden = true
-            self.titleContainerHeight.constant = 0
-        }
-    }
-
-    @objc private func spaceUpdated(_ notification: Notification) {
-        guard let updatedSpace = notification.object as? Space else {
+            present(alertVC, animated: true)
             return
         }
 
-        if SelectedSpace.id == updatedSpace.id {
-            SelectedSpace.space = updatedSpace
-        }
-        // User just switched space - clear selectedProject; observer will select first project
-        selectedProject = nil
-        updateSpace()
-        updateProject()
-    }
-    
-    deinit {
-        NotificationCenter.default.removeObserver(self)
-    }
-    
-    
-    private func configureNavigationBar() {
-        navigationController?.setNavigationBarHidden(false, animated: true)
-        
-        let appearance = UINavigationBarAppearance()
-        appearance.configureWithOpaqueBackground()
-        if #available(iOS 15.0, *) {
-            appearance.backgroundColor = .menuBackground
-        } else {
-            appearance.backgroundColor = .menuBackground
-        }
-        appearance.titleTextAttributes = [
-            .foregroundColor: UIColor.white,
-            .font: UIFont(name: "Montserrat-SemiBold", size: 18) ??  UIFont.systemFont(ofSize: 18),
-        ]
-        
-        navigationController?.navigationBar.standardAppearance = appearance
-        navigationController?.navigationBar.scrollEdgeAppearance = appearance
-        navigationController?.navigationBar.compactAppearance = appearance
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.navigationBar.tintColor = UIColor.white
-        
-        configureNavigationBarLogo()
-        
-    }
-    
-    @objc private func didTapMenuButton() {
-        if menu.isHidden {
-            syncMenuSelection()
-            _ = sideMenuHostingController
+        guard let currentProject = resolveSelectedProject() else { return }
+        let exists = Db.bgRwConn?.find(where: { (project: Project) in
+            project.spaceId == currentProject.spaceId && project.name == self.uiState.renameText && project.id != currentProject.id
+        }) != nil
+
+        guard !exists else {
+            let alertVC = CustomAlertViewController(
+                title: NSLocalizedString("Error", comment: ""),
+                message: NSLocalizedString("Please choose another name/folder or use the existing one instead.", comment: ""),
+                primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
+                primaryButtonAction: {},
+                showCheckbox: false,
+                iconImage: Image("ic_error")
+            )
+            present(alertVC, animated: true)
+            return
         }
 
-        toggleMenu(menu.isHidden)
+        currentProject.name = uiState.renameText
+        Db.writeConn?.setObject(currentProject)
+        hideRename()
+        updateProject(project: currentProject)
+        showToast(message: NSLocalizedString("Folder renamed.", comment: ""))
     }
 
-    private func syncMenuSelection() {
-        homeViewModel.reload()
+    private func removeAssets() {
+        RemoveAssetAlert.present(self, mediaGridViewModel.selectedAssets()) { [weak self] success in
+            guard success else { return }
+            self?.toggleMode(newMode: false)
+            self?.refreshGrid()
+        }
     }
-    private func configureNavigationBarLogo() {
-        guard let logoImage = UIImage(named: "save_logo_navbar") else { return }
-        
-        let logoImageView = UIImageView(image: logoImage)
-        logoImageView.contentMode = .scaleAspectFit
-        logoImageView.translatesAutoresizingMaskIntoConstraints = false
-        
-        let logoContainer = UIView()
-        logoContainer.translatesAutoresizingMaskIntoConstraints = false
-        logoContainer.addSubview(logoImageView)
-        
-        NSLayoutConstraint.activate([
-            logoImageView.topAnchor.constraint(equalTo: logoContainer.topAnchor),
-            logoImageView.bottomAnchor.constraint(equalTo: logoContainer.bottomAnchor,constant: -10),
-            logoImageView.leadingAnchor.constraint(equalTo: logoContainer.leadingAnchor, constant: 0),
-            logoImageView.widthAnchor.constraint(equalToConstant: 60),
-            logoImageView.heightAnchor.constraint(equalToConstant: 36)
-        ])
-        
-        
-        let logoItem = UIBarButtonItem(customView: logoContainer)
-        navigationItem.leftBarButtonItems = [logoItem]
-    }
-    
-    
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        super.prepare(for: segue, sender: sender)
-    }
-    
-    /**
-     Workaround for the filtered view, which potentially got reset by the share
-     extension's `Db#setup` call.
-     
-     Needs to be called from `AppDelegate#applicationWillEnterForeground`.
-     */
-    func updateFilter() {
+
+    private func archiveFolder() {
+        guard let project = resolveSelectedProject() else { return }
+        project.active = false
+        Db.writeConn?.setObject(project)
         ProjectsView.updateGrouping()
-        updateProject()
-    }
-    
-    
-    // MARK: UICollectionViewDataSource
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
-        let noOfCellsInRow = 3
-        
-        let flowLayout = collectionViewLayout as! UICollectionViewFlowLayout
-        
-        let totalSpace = flowLayout.sectionInset.left
-        + flowLayout.sectionInset.right
-        + (flowLayout.minimumInteritemSpacing * CGFloat(noOfCellsInRow - 1))
-        
-        let size = Int((collectionView.bounds.width - totalSpace) / CGFloat(noOfCellsInRow))
-        
-        return CGSize(width: size, height: size)
-    }
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return Int(assetsMappings.numberOfItems(inSection: UInt(section)))
-    }
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return Int(assetsMappings.numberOfSections())
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, viewForSupplementaryElementOfKind
-                        kind: String, at indexPath: IndexPath) -> UICollectionReusableView
-    {
-        let view = collectionView.dequeueReusableSupplementaryView(
-            ofKind: kind, withReuseIdentifier: HeaderView.reuseId, for: indexPath) as! HeaderView
-        
-        let group = assetsMappings.group(forSection: UInt(indexPath.section))
-        let collection: Collection? = collectionsReadConn?.object(for: AssetsByCollectionView.collectionId(from: group))
-        
-        
-        collection?.assets.removeAll()
-        
-        collection?.assets.append(contentsOf: assetsReadConn?.objects(in: indexPath.section, with: assetsMappings) ?? [])
-        
-        view.collection = collection
-        
-        return view
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: ImageCell.reuseId, for: indexPath) as! ImageCell
-        
-        let asset: Asset? = assetsReadConn?.object(at: indexPath, in: assetsMappings)
-        
-        cell.set(asset, !(asset?.isUploaded ?? true) ? uploadsReadConn?.find(where: { $0.assetId == asset?.id }) : nil)
-        
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        if inEditMode {
-            return updateRemove()
-        }
-        
-        if let cell = collectionView.cellForItem(at: indexPath) as? ImageCell {
-            if let upload = cell.upload {
-                collectionView.deselectItem(at: indexPath, animated: false)
-                
-                if upload.error != nil {
-                    return UploadErrorAlert.present(self, upload)
-                }
-                presentManagement()
-                
-                return
-            }
-            
-            if cell.asset?.isUploaded ?? false || cell.upload != nil {
-                toggleMode(newMode: true)
-                
-                return updateRemove()
-            }
-        }
-        
-        collectionView.deselectItem(at: indexPath, animated: false)
-        
-        AbcFilteredByCollectionView.updateFilter(AssetsByCollectionView.collectionId(
-            from: assetsMappings.group(forSection: UInt(indexPath.section))))
-        
-        showPreview(initialRow: indexPath.row)
+        let alertVC = CustomAlertViewController(
+            title: NSLocalizedString("Success!", comment: ""),
+            message: NSLocalizedString("Folder archived successfully.", comment: ""),
+            primaryButtonTitle: NSLocalizedString("Got it", comment: ""),
+            primaryButtonAction: {},
+            showCheckbox: false,
+            iconImage: Image("check_icon")
+        )
+        present(alertVC, animated: true)
     }
 
-    // MARK: Preview
+    private func removeFolder() {
+        guard let project = resolveSelectedProject() else { return }
+        RemoveProjectAlert.present(self, project) { [weak self] success in
+            guard success else { return }
+            self?.showToast(message: NSLocalizedString("Folder removed.", comment: ""))
+        }
+    }
+
+    // MARK: Preview / upload
     private func showPreview(initialRow: Int? = nil) {
-        let vc = PreviewViewController()
-        navigationController?.pushViewController(vc, animated: true)
+        navigationController?.pushViewController(PreviewViewController(), animated: true)
     }
 
     private func openPreview(for asset: Asset) {
@@ -705,542 +405,122 @@ class MainViewController: UIViewController, UICollectionViewDelegateFlowLayout, 
     }
 
     private func showSelectMediaBar() {
-        if !inEditMode {
-            inEditMode = true
-        }
-        selectMediaView.isHidden = false
-        updateRemove()
+        toggleMode(newMode: true)
     }
 
     private func handleTapAssetWithUpload(asset: Asset, upload: Upload?) {
-        if let upload = upload, upload.error != nil {
+        if let upload, upload.error != nil {
             UploadErrorAlert.present(self, upload)
             return
         }
         presentManagement()
     }
 
-    // MARK: Upload manager (SwiftUI)
     private func presentManagement() {
-        // Present modally to match the old storyboard flow.
         guard presentedViewController == nil else { return }
-        
         let managementVC = ManagementViewController()
         managementVC.delegate = self
         let nav = UINavigationController(rootViewController: managementVC)
         nav.modalPresentationStyle = .fullScreen
-        nav.view.backgroundColor = .systemBackground
         present(nav, animated: true)
     }
-    
-    // MARK: DoneDelegate
-    func done() {
-        // Modal dismisses; collection view refreshes via database observers.
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        // Switch off edit mode, when last item was deselected.
-        if collectionView.numberOfSelectedItems < 1 {
-            toggleMode(newMode: false)
-        }
-        else {
-            updateRemove()
-        }
-    }
-    
-    
-    // MARK: SideMenuDelegate
-    
-    func hideMenu() {
-        toggleMenu(false)
-    }
-    
-    func selected(project: Project?) {
-        selectedProject = project
-        SelectedProject.project = project
-        SelectedProject.store()
 
-        toggleMenu(false)
-
-        if AbcFilteredByProjectView.projectId != project?.id {
-            toggleMode(newMode: false)
+    // MARK: Data updates
+    @objc private func yapDatabaseModified(notification: Notification) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            self.refreshGrid()
         }
-        hideSelectMedia()
+    }
+
+    @objc private func spaceUpdated(_ notification: Notification) {
+        homeViewModel.selectedProjectId = nil
+        // Immediately sync space state so the UI updates before the async reload completes.
+        if let space = SelectedSpace.space {
+            homeViewModel.applySpaces(homeViewModel.spaces.isEmpty ? [space] : homeViewModel.spaces)
+        } else {
+            homeViewModel.applySpaces([])
+        }
+        homeViewModel.reload()
         updateProject()
     }
-    
-    func addSpace() {
-        toggleMenu(false) { [weak self] _ in
-            self?.navigationController?.pushViewController(SpaceTypeViewController(), animated: true)
-        }
-    }
-    
-    func hideSelectMedia() {
-        selectMediaView.isHidden = true
-        mediaGridViewModel.exitEditMode()
-        self.toggleMode(newMode: false)
-    }
-    
-    // MARK: Actions
-    
-    @IBAction func hideSettings() {
-        toggleMenu(false) { _ in
-            self.container.hide(animated: true) { _ in
-                self.settingsVc.view.removeFromSuperview()
-                self.settingsVc.removeFromParent()
-            }
-            self.titleContainer.isHidden = false
-            if self.selectedProject == nil {
-                self.toggleVisibility(ishidden: true)
-            }
-            
-            self.titleContainerHeight.constant = 44
-            self.myMediaBt.setImage(UIImage(named: "media_image"))
-            self.settingsBt.setImage(UIImage(systemName: "gearshape"))
-            self.settingsBt.tintColor = .white
-            self.menuBt.isHidden = false
-            MainViewController.isSettingsEnabled=false
-            self.updateProject()
-        }
-    }
-    
-    @IBAction func showSettings() {
-        toggleMenu(false) { _ in
-            
-            self.container.addSubview(self.settingsVc.view)
-            
-            self.container.translatesAutoresizingMaskIntoConstraints = false
-            self.settingsVc.view.translatesAutoresizingMaskIntoConstraints = false
-            
-            self.container.topAnchor.constraint(equalTo: self.settingsVc.view.topAnchor).isActive = true
-            self.container.bottomAnchor.constraint(equalTo: self.settingsVc.view.bottomAnchor).isActive = true
-            self.container.leadingAnchor.constraint(equalTo: self.settingsVc.view.leadingAnchor).isActive = true
-            self.container.trailingAnchor.constraint(equalTo: self.settingsVc.view.trailingAnchor).isActive = true
-            
-            self.addChild(self.settingsVc)
-            self.settingsVc.didMove(toParent: self)
-            self.titleContainer.isHidden = true
-            self.titleContainerHeight.constant = 0
-            self.container.show2(animated: true)
-            MainViewController.isSettingsEnabled = true
-            self.myMediaBt.setImage(UIImage(named: "media_unselected"))
-            self.menuBt.isHidden = true
-            self.settingsBt.setImage(UIImage(systemName: "gearshape.fill"))
-            self.settingsBt.tintColor = .white
-        }
-    }
-    
-    @IBAction func toggleMenu() {
-        if menu.isHidden {
-            syncMenuSelection()
-            _ = sideMenuHostingController
-        }
 
-        toggleMenu(menu.isHidden)
-    }
-    
-    @IBAction func addFolder() {
-        toggleMode(newMode: false)
-        
-        toggleMenu(false) { _ in
-            if SelectedSpace.available {
-                if SelectedSpace.space is IaSpace {
-                    self.navigationController?.pushViewController(AddNewFolderViewController(), animated: true)
-                } else {
-                    self.navigationController?.pushViewController(AddFolderViewController(), animated: true)
-                }
-                
-            }
-            else {
-                self.navigationController?.pushViewController(SpaceTypeViewController(), animated: true)
-            }
-        }
-    }
-    
-    @IBAction func add() {
-        if(MainViewController.isSettingsEnabled){
-            hideSettings()
-        }
-        // Don't allow to add assets without a space or a project.
-        if selectedProject == nil {
-            return  self.addFolder()
-        }
-        
-        AddInfoAlert.presentIfNeeded(viewController: self) {
-            self.assetPicker.pickMedia()
-        }
-    }
-    
-    func showMediaPickerSheet() {
-        
-        if selectedProject == nil {
-            if(!isLongPressTapped){
-                isLongPressTapped.toggle()
-                return addFolder()
-            }
-        }
-        else{
-            guard presentedViewController == nil else { return }
-
-            let popup = MediaPopupViewController()
-            self.mediaArrow.isHidden = true
-            
-            popup.onCameraTap = { [weak self] in
-                self?.mediaArrow.isHidden = false
-                self?.assetPicker.openCamera()
-            }
-            popup.onGalleryTap = { [weak self] in
-                self?.mediaArrow.isHidden = false
-                self?.assetPicker.pickMedia()
-            }
-            popup.onFilesTap = { [weak self] in
-                self?.mediaArrow.isHidden = false
-                self?.assetPicker.pickDocuments()
-            }
-            popup.onAppear = { [weak self] in
-                self?.mediaArrow.isHidden = true
-            }
-            popup.onDisappear = { [weak self] in
-                self?.mediaArrow.isHidden = false
-            }
-            
-            present(popup, animated: true)
-            
-        }
-    }
-    
-    @IBAction func showAddMenu() {
-        if(MainViewController.isSettingsEnabled){
-            hideSettings()
-        }
-        showMediaPickerSheet()
-        
-    }
-    
-    @IBAction func closeAddMenu() {
-        
-    }
-    
-    @IBAction func longPressItem(_ sender: UILongPressGestureRecognizer) {
-       
-        if sender.state != .began {
-            return
-        }
-        
-        if let indexPath = collectionView.indexPathForItem(at: sender.location(in: collectionView)) {
-            collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredVertically)
-            updateRemove()
-            toggleMode(newMode: true)
-        }
-    }
-    
-    @IBAction func removeAssets() {
-        RemoveAssetAlert.present(self, mediaGridViewModel.selectedAssets(), { [weak self] success in
-            guard success else {
-                return
-            }
-            self?.toggleMode(newMode: false)
-            
-            if self?.mediaGridViewModel.totalItemCount == 0 {
-                self?.selectMediaView.isHidden = true
-            }
-        })
-    }
-    
-    
-    // MARK: AssetPickerDelegate
-    
-    var currentCollection: Collection? {
-        selectedProject?.currentCollection
-    }
-    
-    func picked() {
-        showPreview()
-    }
-    
-    
-    // MARK: Observers
-    
-    /**
-     Callback for `YapDatabaseModified` and `YapDatabaseModifiedExternally` notifications.
-     
-     Will be called, when something changed the database.
-     */
-    @objc func yapDatabaseModified(notification: Notification) {
-        uploadsReadConn?.update(mappings: uploadsMappings)
-        collectionsReadConn?.update(mappings: collectionsMappings)
-        assetsReadConn?.update(mappings: assetsMappings)
-
-        if let changes = uploadsReadConn?.getChanges(uploadsMappings) {
-            for change in changes.rowChanges {
-                guard change.type == .update,
-                      let indexPath = change.indexPath,
-                      let upload: Upload = uploadsReadConn?.object(at: indexPath, in: uploadsMappings),
-                      let assetId = upload.assetId,
-                      let indexPath = assetsReadConn?.indexPath(for: assetId, in: Asset.collection, with: assetsMappings)
-                else {
-                    continue
-                }
-                
-                if upload.state == .uploaded {
-                    
-                    DispatchQueue.main.async {
-                        UIView.performWithoutAnimation { // Less flickering: no fading animation.
-                            self.collectionView.reloadSections([indexPath.section])
-                        }
-                    }
-                }
-                else {
-                    DispatchQueue.main.async {
-                        UIView.performWithoutAnimation {
-                            self.collectionView.reloadItems(at: [indexPath])
-                        }
-                    }
-                }
-            }
-            
-            if changes.forceFull || !changes.rowChanges.isEmpty {
-                updateManageBt()
-            }
-        }
-
-
-        var forceFull = false
-
-        if let changes = collectionsReadConn?.getChanges(collectionsMappings) {
-            forceFull = changes.forceFull || changes.rowChanges.contains(where: { $0.type == .update && $0.finalGroup == selectedProject?.id })
-        }
-
-        if let changes = assetsReadConn?.getChanges(assetsMappings) {
-            forceFull = forceFull || changes.forceFull
-                || changes.sectionChanges.contains(where: { $0.type == .delete || $0.type == .insert })
-                || changes.rowChanges.contains(where: {
-                    $0.type == .delete || $0.type == .insert || $0.type == .move || $0.type == .update
-                })
-        }
-
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.mediaGridViewModel.rebuildSections()
-
-            let hasSelectedProject = self.selectedProject != nil
-
-            if hasSelectedProject {
-                self.folderAssetCountLb.text = "  \(Formatters.format(self.mediaGridViewModel.totalItemCount))  "
-
-                let shouldBeHidden = self.mediaGridViewModel.sections.isEmpty
-
-                if self.mediaGridHostingController.view.isHidden == !shouldBeHidden {
-                    self.mediaGridHostingController.view.toggle(!shouldBeHidden, animated: true)
-                }
-            } else {
-                if !self.mediaGridHostingController.view.isHidden {
-                    self.mediaGridHostingController.view.isHidden = true
-                }
-            }
-        }
-        if #available(iOS 14.0, *) {
-            updateDropdownMenu()
-        } else {
-
-        }
-    }
-    
-    
-    // MARK: Private Methods
-    
-    /**
-     Shows/hides the upload manager button. Sets the number of currently queued items.
-     */
-    private func updateManageBt() {
-        uploadsReadConn?.asyncRead { tx in
-            _ = UploadsView.countUploading(tx)
-        }
-    }
-    
-    private func toggleMode() {
-        toggleMode(newMode: !inEditMode)
-    }
-    
-    /**
-     Enables/disables edit mode. Updates all UI depending on it.
-     
-     - parameter newMode: The new mode to set. If the same as the current one, nothing happens.
-     */
-    private func toggleMode(newMode: Bool) {
-        if inEditMode == newMode {
-            return
-        }
-        
-        if inEditMode {
-            mediaGridViewModel.exitEditMode()
-        }
-        
-        inEditMode = newMode
-        selectMediaView.isHidden = !inEditMode
-        
-        updateRemove()
-    }
-    
-    /**
-     Shows/hides the  remove button, depending on if and what is selected.
-     */
-    private func updateRemove() {
-        removeBt.isHidden = !inEditMode || !mediaGridViewModel.hasSelection
-    }
-    
-    /**
-     UI update: Space icon and name.
-     */
-    private func updateSpace() {
-        if let space = SelectedSpace.space {
-            spaceFavIcon.image = getServerIcon(space: space)
-            navigationItem.rightBarButtonItem = menuBarButtonItem
-            hintLb.text =   NSLocalizedString(
-                "Tap the button below to add a folder",
-                comment: "")
-            welcomeLb.text = ""
-            welcomeLb.isHidden = true
-
-        }
-        else {
-            spaceFavIcon.image = nil
-            navigationItem.rightBarButtonItem = nil
-            self.titleContainer.isHidden = true
-
-            hintLb.text =  NSLocalizedString(
-                "Tap the button below to add a server",
-                comment: "")
-            self.titleContainerHeight.constant = 0
-            welcomeLb.isHidden = false
-            welcomeLb.text = NSLocalizedString("Welcome!", comment: "")
-        }
-
-        if !container.isHidden {
-            //  settingsVc.reload()
-        }
-    }
-    
     private func updateProject(project passedProject: Project? = nil) {
-        let project = passedProject ?? selectedProject
-        if let project = project {
-            // Update filter synchronously to avoid race conditions
-            AbcFilteredByProjectView.updateFilter(project.id)
-
-            // Update mappings synchronously first to ensure they're ready
-            assetsReadConn?.update(mappings: assetsMappings)
-            collectionsReadConn?.update(mappings: collectionsMappings)
-
-            // Update mappings and reload media grid after filter change
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                // Skip if user switched to a different project (allow when selectedProject is nil, e.g. new folder not yet in list)
-                if let current = self.selectedProject, current.id != project.id { return }
-
-                // Update mappings again after filter change (in case they changed)
-                self.assetsReadConn?.update(mappings: self.assetsMappings)
-                self.collectionsReadConn?.update(mappings: self.collectionsMappings)
-                self.mediaGridViewModel.setSelectedProject(project.id)
-
-                self.folderAssetCountLb.text = "  \(Formatters.format(self.mediaGridViewModel.totalItemCount))  "
-
-                let shouldBeHidden = self.mediaGridViewModel.sections.isEmpty
-
-                if self.mediaGridHostingController.view.isHidden == !shouldBeHidden {
-                    self.mediaGridHostingController.view.toggle(!shouldBeHidden, animated: true)
-                }
-            }
-
-            hintLb.text =  NSLocalizedString(
-                "Tap the button below to add media",
-                comment: "")
-            folderNameLb.text = project.name
-            folderNameText.text = project.name
-            if(!MainViewController.isSettingsEnabled){
-                self.titleContainer.isHidden = false
-                self.titleContainerHeight.constant = 44
-                toggleVisibility(ishidden: false)
-            }
-            else{
-                self.titleContainer.isHidden = true
-                self.titleContainerHeight.constant = 0
-            }
-        }
-        else{
-            folderNameLb.text = nil
-            folderNameText.text = nil
-            if SelectedSpace.space != nil {
-                hintLb.text = NSLocalizedString(
-                    "Tap the button below to add a folder",
-                    comment: "")
-                welcomeLb.text = ""
-                welcomeLb.isHidden = true
-            }
-            DispatchQueue.main.async {
-                self.mediaGridHostingController.view.isHidden = true
-            }
-            if(!MainViewController.isSettingsEnabled){
-                self.titleContainer.isHidden = false
-                self.titleContainerHeight.constant = 44
-                toggleVisibility(ishidden: true)
-            }
+        let project = passedProject ?? resolveSelectedProject()
+        if let project {
+            // setSelectedProject will call updateFilter internally
+            mediaGridViewModel.setSelectedProject(project.id)
+            uiState.renameText = project.name ?? ""
+        } else {
+            mediaGridViewModel.setSelectedProject(nil)
         }
     }
-    func toggleVisibility(ishidden:Bool) {
 
-        editButton.isHidden = ishidden
-        folderIndicator.isHidden = ishidden
-        folderNameLb.isHidden = ishidden
-        folderAssetCountLb.isHidden = ishidden
+    private func toggleMode(newMode: Bool) {
+        if newMode {
+            mediaGridViewModel.enterEditMode()
+            uiState.isSelectMediaVisible = true
+        } else {
+            mediaGridViewModel.exitEditMode()
+            uiState.isSelectMediaVisible = false
+        }
     }
 
-    private func getSelectedAssets() -> [Asset] {
-        assetsReadConn?.objects(at: collectionView.indexPathsForSelectedItems, in: assetsMappings) ?? []
+    private func toggleMenu() {
+        toggleMenu(!homeViewModel.isMenuVisible)
     }
-    private func getAllAssets()-> [Asset] {
-        assetsReadConn?.objects(at: collectionView.indexPathsForVisibleItems, in: assetsMappings) ?? []
-    }
+
     private func toggleMenu(_ toggle: Bool, _ completion: ((_ finished: Bool) -> Void)? = nil) {
-        guard menu.isHidden != !toggle else {
+        guard homeViewModel.isMenuVisible != toggle else {
             completion?(true)
             return
         }
-
-        // Ensure hosting controller is initialized
-        _ = sideMenuHostingController
-
+        if toggle && !SelectedSpace.available {
+            addSpace()
+            completion?(true)
+            return
+        }
         if toggle {
-            if !SelectedSpace.available {
-                addSpace()
-            }
-            else {
-                menu.isHidden = false
-                homeViewModel.animateMenu(show: toggle) {
-                    completion?(true)
-                }
-            }
+            homeViewModel.reload()
         }
-        else {
-            homeViewModel.animateMenu(show: toggle) {
-                self.menu.isHidden = true
-                completion?(true)
-            }
+        homeViewModel.animateMenu(show: toggle) {
+            completion?(true)
         }
     }
-    func pushPrivateServerSetting(space:Space) {
-        privateServer = space
-        performSegue(withIdentifier: MainViewController.segueShowPrivateServerSetting, sender: self)
+
+    @objc private func menuButtonTapped() {
+        toggleMenu()
     }
-}
 
-private struct SideMenuRootView: View {
-    @ObservedObject var homeViewModel: HomeViewModel
-    let coordinator: NavigationCoordinator
+    private func configureNavigationBar() {
+        navigationController?.setNavigationBarHidden(false, animated: true)
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithOpaqueBackground()
+        appearance.backgroundColor = .menuBackground
+        appearance.titleTextAttributes = [
+            .foregroundColor: UIColor.white,
+            .font: UIFont(name: "Montserrat-SemiBold", size: 18) ?? UIFont.systemFont(ofSize: 18),
+        ]
+        navigationController?.navigationBar.standardAppearance = appearance
+        navigationController?.navigationBar.scrollEdgeAppearance = appearance
+        navigationController?.navigationBar.compactAppearance = appearance
+        navigationController?.navigationBar.isTranslucent = false
+        navigationController?.navigationBar.tintColor = .white
 
-    var body: some View {
-        SideMenuView()
-            .environmentObject(homeViewModel)
-            .environmentObject(coordinator)
+        navigationItem.hidesBackButton = true
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(named: "save_logo_navbar")?.withRenderingMode(.alwaysOriginal),
+            style: .plain,
+            target: nil,
+            action: nil
+        )
+        navigationItem.rightBarButtonItem = menuButton
+        updateMenuButtonVisibility()
+    }
+
+    private func updateMenuButtonVisibility() {
+        let hasSpace = !homeViewModel.spaces.isEmpty
+        menuButton.customView?.isHidden = !hasSpace
     }
 }
 

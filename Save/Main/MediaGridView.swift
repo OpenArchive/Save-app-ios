@@ -76,7 +76,7 @@ struct MediaGridView: View {
 
     private func sectionHeader(section: MediaGridSection) -> some View {
         HStack(spacing: 8) {
-            Text(headerText(for: section.collection))
+            Text(headerText(for: section))
                 .font(.montserrat(.regular, for: .caption))
                 .foregroundColor(Color(.label))
 
@@ -94,7 +94,8 @@ struct MediaGridView: View {
         }
     }
 
-    private func headerText(for collection: Collection?) -> String {
+    private func headerText(for section: MediaGridSection) -> String {
+        let collection = section.collection
         guard let collection = collection else { return "" }
         if let uploadedTs = collection.uploaded, collection.waitingAssetsCount == 0 {
             let fiveMinAgo = Date(timeIntervalSinceNow: -5 * 60)
@@ -103,9 +104,13 @@ struct MediaGridView: View {
                 : Formatters.format(uploadedTs)
         }
         if collection.closed != nil {
-            return collection.uploadedAssetsCount == 0
-                ? NSLocalizedString("Waiting…", comment: "")
-                : NSLocalizedString("Uploading…", comment: "")
+            let hasActiveUpload = section.assets.contains { asset in
+                viewModel.upload(for: asset.id)?.state == .uploading
+            }
+            let hasStartedUploading = hasActiveUpload || collection.uploadedAssetsCount > 0
+            return hasStartedUploading
+                ? NSLocalizedString("Uploading…", comment: "")
+                : NSLocalizedString("Waiting…", comment: "")
         }
         return NSLocalizedString("Ready to upload", comment: "")
     }

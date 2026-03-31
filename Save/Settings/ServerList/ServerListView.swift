@@ -31,9 +31,9 @@ struct ServerListView: View {
                     .padding(.top, 16)
                     .padding(.bottom, 16)
                 }
+                
+                Spacer()
             }
-
-            Spacer()
 
             addServerButton
         }
@@ -51,8 +51,7 @@ struct ServerListView: View {
             .foregroundColor(.gray70)
             .multilineTextAlignment(.center)
             .padding(.horizontal, 40)
-            .frame(maxWidth: .infinity)
-            .frame(minHeight: 200)
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
     
     private var addServerButton: some View {

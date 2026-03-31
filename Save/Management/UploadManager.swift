@@ -61,7 +61,6 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     var waiting: Bool {
         globalPause || 
         (reachability?.connection ?? Reachability.Connection.unavailable == .unavailable)
-//        || (Settings.useOrbot && OrbotManager.shared.status == .stopped) || (Settings.useTor && !TorManager.shared.connected)
     }
     
     private var current: Upload?
@@ -134,17 +133,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     
     
     /// Session config used for uploads and WebDAV operations (e.g. browse folders).
-    /// When Onion Routing is enabled, routes traffic through Tor. To re-enable Tor:
-    /// 1. Uncomment the block below.
-    /// 2. Ensure TorManager is initialized and provides torSocks5ProxyConf.
     public class func improvedSessionConf(_ conf: URLSessionConfiguration? = nil) -> URLSessionConfiguration {
-        let conf = URLSessionConfiguration.improved(conf)
-
-//        if Settings.useTor {
-//            conf.connectionProxyDictionary = TorManager.shared.torSocks5ProxyConf
-//        }
-
-        return conf
+        return URLSessionConfiguration.improved(conf)
     }
     
     
@@ -200,9 +190,6 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         
         nc.addObserver(self, selector: #selector(dataUsageChanged),
                        name: .uploadManagerDataUsageChange, object: nil)
-        
-//        nc.addObserver(self, selector: #selector(orbotStopped),
-//                       name: .orbotStopped, object: nil)
         
         try? reachability?.startNotifier()
         
@@ -562,17 +549,6 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         }
     }
     
-    @objc func orbotStopped(notification: Notification) {
-        debug("#orbotStopped")
-
-        current?.cancel()
-        current?.trackCancellation(reason: "orbot_stopped")
-
-        storeCurrent()
-
-        current = nil
-    }
-    
     @objc func uploadNext() {
         if backgroundTask == .invalid {
             backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
@@ -613,18 +589,6 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 
                 return self.endBackgroundTask(.noData)
             }
-            
-//            if Settings.useOrbot && OrbotManager.shared.status == .stopped {
-//                self.debug("#uploadNext should use Orbot, but Orbot not started")
-//                
-//                return self.endBackgroundTask(.noData)
-//            }
-//            
-//            if Settings.useTor && !TorManager.shared.connected {
-//                self.debug("#uploadNext should use built-in Tor, but Tor not started")
-//                
-//                return self.endBackgroundTask(.noData)
-//            }
             
             guard let upload = self.getNext(),
                   let asset = upload.asset

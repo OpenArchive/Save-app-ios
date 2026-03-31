@@ -45,7 +45,7 @@ class AbcFilteredByProjectView: YapDatabaseFilteredView {
         options.isPersistent = false
 
         super.init(parentViewName: AssetsByCollectionView.name,
-                   filtering: Self.getFilter(),
+                   filtering: Self.getFilter(Self.projectId),
                    versionTag: nil, options: options)
     }
 
@@ -59,7 +59,7 @@ class AbcFilteredByProjectView: YapDatabaseFilteredView {
         Self.projectId = projectId
         Db.writeConn?.readWrite { tx in
             (tx.ext(name) as? YapDatabaseFilteredViewTransaction)?
-                .setFiltering(getFilter(), versionTag: UUID().uuidString)
+                .setFiltering(getFilter(projectId), versionTag: UUID().uuidString)
         }
     }
 
@@ -68,10 +68,11 @@ class AbcFilteredByProjectView: YapDatabaseFilteredView {
      `nil` will disable the filter and show no entries.
      - returns: a filter block using the given projectId as criteria.
      */
-    private class func getFilter() -> YapDatabaseViewFiltering {
+    private class func getFilter(_ projectId: String?) -> YapDatabaseViewFiltering {
+        let resolvedProjectId = projectId
         return YapDatabaseViewFiltering.withKeyBlock { _, group, _, _ in
-            return projectId != nil &&
-                AssetsByCollectionView.projectId(from: group) == projectId
+            return resolvedProjectId != nil &&
+                AssetsByCollectionView.projectId(from: group) == resolvedProjectId
         }
     }
 }

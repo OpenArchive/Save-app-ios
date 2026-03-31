@@ -14,6 +14,4 @@
 
 @property (class, nonatomic, assign, readonly, nonnull) NSString *teamId NS_REFINED_FOR_SWIFT;
 
-@property (class, nonatomic, assign, readonly, nonnull) NSString *dropboxKey NS_REFINED_FOR_SWIFT;
-
 @end

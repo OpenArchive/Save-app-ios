@@ -174,23 +174,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         
         let fm = FileManager.default
         
-        // Remove cached files from Dropbox web authentication.
-        if let safariLib = fm.urls(for: .libraryDirectory, in: .userDomainMask).first?
-            .appendingPathComponent("..")
-            .appendingPathComponent("SystemData")
-            .appendingPathComponent("com.apple.SafariViewService")
-            .appendingPathComponent("Library"),
-           safariLib.exists
-        {
-            do {
-                try fm.removeItem(at: safariLib)
-            }
-            catch {
-                #if DEBUG
-                debugPrint(error)
-                #endif
-            }
-        }
+
     }
     
 }

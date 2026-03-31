@@ -72,19 +72,26 @@ final class HomeViewModel: ObservableObject {
 
     func applySpaces(_ spaces: [Space]) {
         self.spaces = spaces
-        if let currentSpace = SelectedSpace.space, spaces.contains(where: { $0.id == currentSpace.id }) {
-            if selectedSpaceId != currentSpace.id {
-                selectedSpaceId = currentSpace.id
+
+        let effectiveSpace: Space?
+        if let selected = SelectedSpace.space,
+           spaces.contains(where: { $0.id == selected.id }) {
+            effectiveSpace = selected
+        } else {
+            effectiveSpace = nil
+            if SelectedSpace.space != nil {
+                SelectedSpace.space = nil
+                SelectedSpace.store()
             }
         }
-        if let space = SelectedSpace.space {
-            let iconName = space.iconName
-            if currentSpaceName != space.prettyName || currentSpaceIcon != iconName {
-                currentSpaceName = space.prettyName
-                currentSpaceIcon = iconName
-                showSpaceHeader = true
-            }
+
+        if let space = effectiveSpace {
+            selectedSpaceId = space.id
+            currentSpaceName = space.prettyName
+            currentSpaceIcon = space.iconName
+            showSpaceHeader = true
         } else {
+            selectedSpaceId = nil
             currentSpaceName = ""
             currentSpaceIcon = ""
             showSpaceHeader = false
