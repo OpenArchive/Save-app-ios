@@ -126,7 +126,7 @@ struct BatchEditView: View {
                     .foregroundColor(.white)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 5)
-                    .background(Color.black.opacity(0.7))
+                    .background(.countLabel)
                     .clipShape(Capsule())
 
                 Spacer()
@@ -141,7 +141,7 @@ struct BatchEditView: View {
             }
             .padding(.horizontal, 16)
             .frame(height: 64)
-            .background(Color.black.opacity(0.3))
+            .background(.clear)
 
             Spacer()
         }

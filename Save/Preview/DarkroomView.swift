@@ -69,7 +69,7 @@ struct DarkroomView: View {
                     .foregroundColor(.white)
                     .padding(.horizontal, 10)
                     .padding(.vertical, 5)
-                    .background(Color.black.opacity(0.5))
+                    .background(.countLabel)
                     .cornerRadius(12)
 
                 Spacer()
