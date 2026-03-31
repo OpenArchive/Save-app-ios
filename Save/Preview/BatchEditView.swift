@@ -46,7 +46,7 @@ struct BatchEditView: View {
                     .frame(height: geometry.size.height * Layout.infoSectionHeightFraction)
             }
         }
-        .background(Color.black)
+        .background(Color(UIColor.systemBackground))
         .onTapGesture {
             focusedField = nil
         }
@@ -68,7 +68,7 @@ struct BatchEditView: View {
             imageOverlay
         }
         .frame(height: geometry.size.height * Layout.imageSectionHeightFraction)
-        .background(Color.black)
+        .background(Color(UIColor.systemBackground))
         .clipped()
     }
 
@@ -140,7 +140,7 @@ struct BatchEditView: View {
                 }
             }
             .padding(.horizontal, 16)
-            .frame(height: 64) // ← matches storyboard brown view exactly
+            .frame(height: 64)
             .background(Color.black.opacity(0.3))
 
             Spacer()
