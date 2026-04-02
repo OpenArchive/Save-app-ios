@@ -52,11 +52,12 @@ struct MainHeaderView: View {
             if hasFolder {
                 Image("folder_arrow")
                     .renderingMode(.template)
-                    .foregroundColor(.white)
+                    .foregroundColor(Color(.label))
                     .frame(width: 24, height: 24)
 
                 Text(homeViewModel.selectedProject?.name ?? "")
                     .font(.montserrat(.semibold, for: .body))
+                    .foregroundColor(Color(.label))
                     .lineLimit(2)
                     .padding(.leading, 2)
             }
@@ -66,6 +67,8 @@ struct MainHeaderView: View {
             if hasFolder {
                 Button(action: { uiState.isFolderMenuVisible = true }) {
                     Image("edit_menu")
+                        .renderingMode(.template)
+                        .foregroundColor(Color(.label))
                         .frame(width: 24, height: 24)
                 }
                 .confirmationDialog(

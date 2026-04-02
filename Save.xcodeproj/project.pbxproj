@@ -174,13 +174,11 @@
 		6E5A320D2D74FE220068FB41 /* Exceptions for "Save" folder in "ShareExtension" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
-				CustomComponents/AlertController.swift,
 				CustomComponents/CustomAlert.swift,
 				CustomComponents/CustomButton.swift,
 				CustomComponents/CustomTextField.swift,
 				Extensions/MontserratExtension.swift,
 				"Extensions/View+Analytics.swift",
-				Projects/AddFolderView.swift,
 			);
 			target = A07128FA2111CC90007A432A /* ShareExtension */;
 		};
@@ -198,12 +196,10 @@
 				"/Localized: LaunchScreen.storyboard",
 				AppDelegate.swift,
 				Constants/Constants.swift,
-				CustomComponents/KeyboardHandling.swift,
 				Extensions/TimeIntervalExtension.swift,
 				Info.plist,
 				Settings/ProofModeSettingsViewController.swift,
 				Space/WebDavWizardViewController.swift,
-				Tor/TorStartViewController.swift,
 			);
 			target = A09B537723266F02005266C2 /* Save Screenshots */;
 		};
@@ -228,13 +224,6 @@
 			);
 			target = A09B537723266F02005266C2 /* Save Screenshots */;
 		};
-		EAB283592D0265A60023D594 /* Exceptions for "BaseClasses" folder in "ShareExtension" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				BasePageViewController.swift,
-			);
-			target = A07128FA2111CC90007A432A /* ShareExtension */;
-		};
 		EAB283F32D0265AB0023D594 /* Exceptions for "Utils" folder in "Save" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -249,6 +238,7 @@
 				AppConfig.swift,
 				AppSettings.swift,
 				AssetPicker.swift,
+				CustomAlertHostedPresentation.swift,
 				DialogHelper.swift,
 				"Dictionary+Utils.swift",
 				KeychainHelper.swift,
@@ -264,13 +254,6 @@
 				"Request+debug.swift",
 			);
 			target = A09B537723266F02005266C2 /* Save Screenshots */;
-		};
-		EAB284C92D0265B60023D594 /* Exceptions for "Views" folder in "ShareExtension" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				RemoveAssetAlert.swift,
-			);
-			target = A07128FA2111CC90007A432A /* ShareExtension */;
 		};
 		EAB284F12D0265BC0023D594 /* Exceptions for "Montserrat" folder in "Save" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
@@ -373,9 +356,6 @@
 		};
 		EAB283462D0265A60023D594 /* BaseClasses */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				EAB283592D0265A60023D594 /* Exceptions for "BaseClasses" folder in "ShareExtension" target */,
-			);
 			path = BaseClasses;
 			sourceTree = "<group>";
 		};
@@ -396,9 +376,6 @@
 		};
 		EAB2846A2D0265B60023D594 /* Views */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				EAB284C92D0265B60023D594 /* Exceptions for "Views" folder in "ShareExtension" target */,
-			);
 			path = Views;
 			sourceTree = "<group>";
 		};

@@ -23,6 +23,8 @@ struct MediaGridSection: Identifiable {
 final class MediaGridViewModel: NSObject, ObservableObject {
 
     @Published private(set) var sections: [MediaGridSection] = []
+    /// Populated in `rebuildSections()` so `upload(for:)` is O(1) instead of scanning Yap per call.
+    @Published private(set) var uploadsByAssetId: [String: Upload] = [:]
     @Published private(set) var totalItemCount: Int = 0
     @Published private(set) var isRefreshing = false
     @Published var isInEditMode = false
@@ -75,17 +77,22 @@ final class MediaGridViewModel: NSObject, ObservableObject {
         isRefreshing = false
     }
 
-    /// Returns the upload for the given asset if it exists and is not yet uploaded.
+    /// Lookup from `uploadsByAssetId` (refreshed on each `rebuildSections()`).
     func upload(for assetId: String) -> Upload? {
-        var result: Upload?
+        uploadsByAssetId[assetId]
+    }
+
+    private func rebuildUploadsByAssetId() {
+        var map: [String: Upload] = [:]
         uploadsReadConn?.read { tx in
-            tx.iterateKeysAndObjects(inCollection: Upload.collection) { (_: String, upload: Upload, stop: inout Bool) in
-                guard upload.state != .uploaded, upload.assetId == assetId else { return }
-                result = upload
-                stop = true
+            tx.iterateKeysAndObjects(inCollection: Upload.collection) { (_: String, upload: Upload, _: inout Bool) in
+                guard upload.state != .uploaded, let aid = upload.assetId else { return }
+                if map[aid] == nil {
+                    map[aid] = upload
+                }
             }
         }
-        return result
+        uploadsByAssetId = map
     }
 
     func selectAsset(_ assetId: String) {
@@ -136,6 +143,7 @@ final class MediaGridViewModel: NSObject, ObservableObject {
         guard let selectedProjectId else {
             sections = []
             totalItemCount = 0
+            uploadsByAssetId = [:]
             return
         }
 
@@ -177,6 +185,7 @@ final class MediaGridViewModel: NSObject, ObservableObject {
 
         sections = newSections
         totalItemCount = total
+        rebuildUploadsByAssetId()
     }
 
     private func updateAllMappings() {

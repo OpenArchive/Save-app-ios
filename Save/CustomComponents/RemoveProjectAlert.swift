@@ -6,14 +6,14 @@
 //  Copyright © 2019 Open Archive. All rights reserved.
 //
 
-import UIKit
 import SwiftUI
+import UIKit
+
 class RemoveProjectAlert {
 
     class func present(_ vc: UIViewController, _ project: Project, _ completionHandler: ((_ success: Bool) -> Void)? = nil) {
-       
-        
-        let alertVC = CustomAlertViewController(
+
+        let model = CustomAlertPresentationModel(
             title: NSLocalizedString("Remove from app", comment: ""),
             message: String(format: NSLocalizedString(
                 "Are you sure you want to remove your project?",
@@ -37,11 +37,13 @@ class RemoveProjectAlert {
                         completionHandler(false)
                     }
                 }
-            }, showCheckbox: false, secondaryButtonIsOutlined: false,
-            iconImage: Image("trash_icon"),isRemoveAlert: true
+            },
+            secondaryButtonIsOutlined: false,
+            showCheckbox: false,
+            iconImage: Image("trash_icon"),
+            isRemoveAlert: true
         )
-        
-        vc.present(alertVC, animated: true)
-        
+
+        CustomAlertPresenter.present(model, from: vc)
     }
 }

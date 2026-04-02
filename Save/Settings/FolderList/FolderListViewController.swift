@@ -8,50 +8,37 @@
 import UIKit
 import SwiftUI
 
-class FolderListNewViewController: UIViewController {
-    
+final class FolderListNewViewController: UIHostingController<FolderListView> {
+
     private let archived: Bool
-    
+
     init(archived: Bool) {
         self.archived = archived
-        super.init(nibName: nil, bundle: nil)
+        super.init(rootView: FolderListView(archived: archived) { _ in })
     }
 
-    required init?(coder aDecoder: NSCoder) {
-        archived = aDecoder.decodeBool(forKey: "archived")
-        super.init(coder: aDecoder)
+    @MainActor required dynamic init?(coder aDecoder: NSCoder) {
+        let archived = aDecoder.decodeBool(forKey: "archived")
+        self.archived = archived
+        super.init(rootView: FolderListView(archived: archived) { _ in })
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.title = NSLocalizedString("Archived Folders", comment: "")
+
+        rootView = FolderListView(archived: archived) { [weak self] project in
+            guard self != nil else { return }
+            if #available(iOS 14.0, *) {
+                AppNavigationRouter.shared.push(EditFolderViewController(project), animated: true)
+            }
+        }
     }
 
     override func encode(with coder: NSCoder) {
         coder.encode(archived, forKey: "archived")
         super.encode(with: coder)
     }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        view.backgroundColor = .systemBackground
-        
-        let folderListView = FolderListView(archived: archived) { [weak self] project in
-            self?.navigationController?.pushViewController(EditFolderViewController(project), animated: true)
-        }
-        
-        let hostingController = UIHostingController(rootView: folderListView)
-        addChild(hostingController)
-        view.addSubview(hostingController.view)
-        
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
-            hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-        hostingController.didMove(toParent: self)
-        
-        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        
-        navigationItem.title = NSLocalizedString("Archived Folders", comment: "")
-    }
-    
 }

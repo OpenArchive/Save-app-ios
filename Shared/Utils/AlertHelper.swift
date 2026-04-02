@@ -14,7 +14,7 @@ public class AlertHelper {
     public typealias ActionHandler = () -> Void
 
     /**
-     Creates and immediately presents a `CustomAlertViewController`.
+     Presents the custom SwiftUI alert via `UIHostingController`.
 
      if `actions` is omitted, it will have one action of type `.default` labeled "OK".
 
@@ -34,7 +34,7 @@ public class AlertHelper {
         let primaryAction = actionConfigs.first(where: { $0.isPrimary }) ?? actionConfigs.first!
         let secondaryAction = actionConfigs.first(where: { !$0.isPrimary })
 
-        let alertVC = CustomAlertViewController(
+        let model = CustomAlertPresentationModel(
             title: title ?? "",
             message: message ?? "",
             primaryButtonTitle: primaryAction.title,
@@ -45,13 +45,13 @@ public class AlertHelper {
             secondaryButtonAction: secondaryAction != nil ? {
                 secondaryAction?.handler?()
             } : nil,
-            showCheckbox: false,
             secondaryButtonIsOutlined: secondaryAction?.isDestructive == false,
+            showCheckbox: false,
             iconImage: Image(systemName: "exclamationmark.triangle.fill"),
             iconTint: .yellow
         )
 
-        controller.present(alertVC, animated: true)
+        HostedCustomAlertPresenter.present(from: controller, model: model)
     }
 
     /**

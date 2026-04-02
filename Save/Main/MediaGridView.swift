@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct MediaGridView: View {
     @ObservedObject var viewModel: MediaGridViewModel
@@ -32,6 +33,7 @@ struct MediaGridView: View {
 
     private static let columns = 3
     private static let spacing: CGFloat = 3
+    private static let impactFeedback = UIImpactFeedbackGenerator(style: .medium)
 
     var body: some View {
         GeometryReader { geometry in
@@ -56,12 +58,13 @@ struct MediaGridView: View {
                             spacing: Self.spacing
                         ) {
                             ForEach(section.assets, id: \.id) { asset in
+                                let upload = viewModel.upload(for: asset.id)
                                 MediaGridCellView(
                                     asset: asset,
-                                    upload: viewModel.upload(for: asset.id),
+                                    upload: upload,
                                     isSelected: viewModel.selectedAssetIds.contains(asset.id),
                                     cellSize: cellSize,
-                                    onTap: { handleTap(asset: asset, upload: viewModel.upload(for: asset.id)) },
+                                    onTap: { handleTap(asset: asset, upload: upload) },
                                     onLongPress: { handleLongPress(asset: asset) }
                                 )
                             }
@@ -70,6 +73,9 @@ struct MediaGridView: View {
                     }
                 }
                 .padding(.bottom, 8)
+            }
+            .onAppear {
+                Self.impactFeedback.prepare()
             }
         }
     }
@@ -150,9 +156,7 @@ struct MediaGridView: View {
     }
 
     private func handleLongPress(asset: Asset) {
-        // Provide haptic feedback
-        let generator = UIImpactFeedbackGenerator(style: .medium)
-        generator.impactOccurred()
+        Self.impactFeedback.impactOccurred()
         
         viewModel.enterEditMode(selecting: asset.id)
         onLongPress?()  // Caller shows select-media bar
@@ -238,6 +242,11 @@ private struct MediaGridCellView: View {
             thumbnail = nil
             currentAssetId = nil
             loadThumbnail()
+        }
+        .onDisappear {
+            // Drop decoded image when off-screen to cap memory during fast scroll.
+            thumbnail = nil
+            currentAssetId = nil
         }
     }
 

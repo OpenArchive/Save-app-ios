@@ -6,44 +6,33 @@
 //  Copyright © 2022 Open Archive. All rights reserved.
 //
 
-import UIKit
+import CoreLocation
 import LibProofMode
 import SwiftUI
+import UIKit
 
-class ProofModeSettingsViewController: UIViewController {
-    
+@available(iOS 14.0, *)
+final class ProofModeSettingsViewController: UIHostingController<ProofModeSettingsView> {
+
+    init() {
+        super.init(rootView: ProofModeSettingsView())
+    }
+
+    @objc required dynamic init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         navigationItem.title = NSLocalizedString("ProofMode", comment: "")
-
-        if #available(iOS 14.0, *) {
-            
-            let settingsView = ProofModeSettingsView()
-            
-            let hostingController = UIHostingController(rootView: settingsView)
-            
-            addChild(hostingController)
-            view.addSubview(hostingController.view)
-            
-            hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
-                hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-                hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-            ])
-            
-            hostingController.didMove(toParent: self)
-            hostingController.view.backgroundColor = UIColor.systemBackground
-            view.backgroundColor = UIColor.systemBackground
-        }
+        save_configureTealStackNavigationItem()
+        view.backgroundColor = .systemBackground
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         trackScreenViewSafely("ProofMode")
     }
-    
 }
 
 struct ProofModeSettingsView: View {
@@ -268,9 +257,6 @@ extension AttributedString {
         return attributedString
     }
 }
-
-import CoreLocation
-import LibProofMode
 
 class LocationManangerProofMode: NSObject, ObservableObject, CLLocationManagerDelegate {
     

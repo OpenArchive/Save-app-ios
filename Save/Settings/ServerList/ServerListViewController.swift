@@ -8,48 +8,39 @@
 import UIKit
 import SwiftUI
 
-class ServerListViewController: UIViewController {
-    
+final class ServerListViewController: UIHostingController<ServerListView> {
+
+    init() {
+        super.init(rootView: ServerListView(onAddServer: {}, onSelectSpace: { _ in }))
+    }
+
+    @MainActor required dynamic init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+
         view.backgroundColor = .systemBackground
         title = NSLocalizedString("Media Servers", comment: "")
-        
-        let serverListView = ServerListView(
-            onAddServer: { [weak self] in
-                self?.navigationController?.pushViewController(SpaceTypeViewController(), animated: true)
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+
+        rootView = ServerListView(
+            onAddServer: {
+                AppNavigationRouter.shared.pushSpaceType()
             },
             onSelectSpace: { [weak self] space in
                 self?.editServer(space)
             }
         )
-        
-        let hostingController = UIHostingController(rootView: serverListView)
-        addChild(hostingController)
-        view.addSubview(hostingController.view)
-        
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
-            hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-        hostingController.didMove(toParent: self)
-        
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem = backBarButtonItem
     }
-    
+
     private func editServer(_ space: Space) {
         switch space {
         case let iaSpace as IaSpace:
-            navigationController?.pushViewController(InternetArchiveDetailsController(space: iaSpace), animated: true)
+            AppNavigationRouter.shared.pushInternetArchiveDetails(space: iaSpace)
         case let webDavSpace as WebDavSpace:
-            let vc = PrivateServerSettingViewController()
-            vc.space = webDavSpace
-            navigationController?.pushViewController(vc, animated: true)
+            AppNavigationRouter.shared.pushPrivateServerSetting(space: webDavSpace)
         default:
             #if DEBUG
             print("no navigation")

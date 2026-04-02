@@ -10,8 +10,7 @@ import UIKit
 import YapDatabase
 
 /**
- Helper class which is used in `PreviewViewController` and `DarkroomViewController`
- to handle the common changes in assets of a user selected collection.
+ Helper for the current preview collection filter; used from preview / darkroom SwiftUI view models and `PreviewViewController`.
  */
 class SelectedCollection {
 

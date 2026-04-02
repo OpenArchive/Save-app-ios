@@ -6,15 +6,15 @@
 //  Copyright © 2019 Open Archive. All rights reserved.
 //
 
-import UIKit
 import SwiftUI
+import UIKit
 
 class RemoveAssetAlert {
-    
+
     class func present(_ vc: UIViewController, _ assets: [Asset], _ completionHandler: ((_ success: Bool) -> Void)? = nil) {
         let appName = Bundle.main.displayName.uppercased()
         let itemCount = assets.count
-        
+
         let message = [
             String.localizedStringWithFormat(
                 NSLocalizedString("This item/These items will be removed from the App only.", comment: "#bc-ignore!"),
@@ -23,8 +23,8 @@ class RemoveAssetAlert {
                 NSLocalizedString("It/They will remain on the server and in your Photos app.", comment: "#bc-ignore!"),
                 itemCount)
         ].joined(separator: "\n")
-        
-        let alertVC = CustomAlertViewController(
+
+        let model = CustomAlertPresentationModel(
             title: String(format: NSLocalizedString("Remove Media", comment: ""), appName),
             message: message,
             primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
@@ -43,13 +43,14 @@ class RemoveAssetAlert {
             secondaryButtonTitle: NSLocalizedString("Cancel", comment: ""),
             secondaryButtonAction: {
                 completionHandler?(false)
-               
-            }, showCheckbox: false, secondaryButtonIsOutlined: false,
+            },
+            secondaryButtonIsOutlined: false,
+            showCheckbox: false,
             iconImage: Image("trash_icon"),
             iconTint: Color.redButton,
             isRemoveAlert: false
         )
-        
-        vc.present(alertVC, animated: true)
+
+        HostedCustomAlertPresenter.present(from: vc, model: model)
     }
 }

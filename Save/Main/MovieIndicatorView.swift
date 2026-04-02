@@ -9,7 +9,7 @@
 import SwiftUI
 
 /// A view that displays a video/audio duration indicator, typically overlaid on media thumbnails.
-/// Matches the behavior of the UIKit `MovieIndicator` class.
+/// Duration label overlay for video thumbnails (same layout as the legacy UIKit indicator).
 struct MovieIndicatorView: View {
     let duration: TimeInterval?
     

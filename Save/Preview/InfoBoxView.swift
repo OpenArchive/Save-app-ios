@@ -112,20 +112,15 @@ struct FlagView: View {
     var size: CGFloat = 20
     var onTap: (() -> Void)?
     
-    private var flagColor: Color {
-        isSelected ? Color("Warning") : unselectedColor
-    }
-    
     var body: some View {
         Button(action: {
             onTap?()
         }) {
-            Image("ic_flag")
+            Image(systemName: isSelected ? "flag.fill" : "flag")
                 .resizable()
-                .renderingMode(.template)
                 .aspectRatio(contentMode: .fit)
                 .frame(width: size, height: size)
-                .foregroundColor(flagColor)
+                .foregroundColor(isSelected ? .yellow : unselectedColor)
         }
         .frame(width: 44, height: 44)
         .contentShape(Rectangle())

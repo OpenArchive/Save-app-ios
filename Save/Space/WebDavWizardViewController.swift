@@ -45,8 +45,7 @@ final class WebDavWizardViewController: UIHostingController<WebDavWizardView> {
     }
 
     private func onSuccess(_ space: WebDavSpace) {
-        let vc = CreateCCLWrapperViewController()
-        vc.space = space
+        let vc = CreateCCLHostingController(space: space)
         navigationController?.pushViewController(vc, animated: true)
     }
 

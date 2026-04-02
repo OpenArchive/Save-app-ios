@@ -25,7 +25,7 @@ class SpaceSuccessViewController: UIHostingController<SpaceSuccessView> {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        navigationItem.hidesBackButton = true
+        save_configureTealStackNavigationItem(hidesBackButton: true)
         title = NSLocalizedString("Setup Complete", comment: "")
 
         rootView = SpaceSuccessView(spaceName: spaceName) { [weak self] in
@@ -34,13 +34,6 @@ class SpaceSuccessViewController: UIHostingController<SpaceSuccessView> {
     }
 
     private func done() {
-        if let navigationController = navigationController {
-            if let existingVC = navigationController.viewControllers.first(where: { $0 is MainViewController }) {
-                navigationController.popToViewController(existingVC, animated: true)
-            } else {
-                let newVC = MainViewController()
-                navigationController.pushViewController(newVC, animated: true)
-            }
-        }
+        AppNavigationRouter.shared.popToMainViewController(animated: true)
     }
 }

@@ -133,7 +133,7 @@ struct BatchEditView: View {
 
                 FlagView(
                     isSelected: $isFlagged,
-                    unselectedColor: .white,
+                    unselectedColor: .primary,
                     size: 20
                 ) {
                     toggleFlagged()

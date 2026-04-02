@@ -35,7 +35,11 @@ final class BrowseViewModel: ObservableObject {
     @Published private(set) var isLoading = false
     @Published var selectedFolder: BrowseFolder?
 
-    init() {
+    /// When `true`, uses `UploadManager.improvedSessionConf()` so WebDAV browse can follow the same session (e.g. Tor) as uploads when that path is enabled.
+    private let useTorSession: Bool
+
+    init(useTorSession: Bool = false) {
+        self.useTorSession = useTorSession
     }
 
     func loadFolders() {
@@ -47,7 +51,7 @@ final class BrowseViewModel: ObservableObject {
             return
         }
 
-        let config = URLSessionConfiguration.improved()
+        let config = useTorSession ? UploadManager.improvedSessionConf() : URLSessionConfiguration.improved()
         let session = URLSession(configuration: config)
         
         session.info(url, credential: space.credential) { [weak self] info, error in
@@ -90,11 +94,11 @@ struct BrowseSection: Identifiable {
 enum BrowseItem: Identifiable {
     case folder(BrowseFolder)
     case error(Error)
-    
+
     var id: String {
         switch self {
         case .folder(let f): return f.id.uuidString
-        case .error(let e): return (e as NSError).description
+        case .error: return "browse-error"
         }
     }
 }

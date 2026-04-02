@@ -16,7 +16,8 @@ struct SideMenuView: View {
         let isMenuVisible = viewModel.isMenuVisible
         ZStack(alignment: .trailing) {
             if isMenuVisible {
-                Color.black.opacity(0.3)
+                Color.black.opacity(0.45)
+                    .contentShape(Rectangle())
                     .ignoresSafeArea()
                     .transition(.opacity)
                     .onTapGesture { coordinator.hideMenu() }
@@ -46,6 +47,5 @@ struct SideMenuView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
         .allowsHitTesting(isMenuVisible)
-        .animation(.easeInOut(duration: 0.25), value: isMenuVisible)
     }
 }

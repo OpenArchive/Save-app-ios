@@ -6,13 +6,13 @@
 //  Copyright © 2023 Open Archive. All rights reserved.
 //
 
-import UIKit
 import SwiftUI
+import UIKit
 
 class UploadErrorAlert {
-    
+
     class func present(_ vc: UIViewController, _ upload: Upload) {
-        let alertVC = CustomAlertViewController(
+        let model = CustomAlertPresentationModel(
             title: NSLocalizedString("Upload Unsuccessful", comment: ""),
             message: NSLocalizedString("Unable to upload due to session error, please try again or contact support", comment: ""),
             primaryButtonTitle: NSLocalizedString("Retry", comment: ""),
@@ -22,10 +22,12 @@ class UploadErrorAlert {
             secondaryButtonTitle: NSLocalizedString("Remove Media", comment: ""),
             secondaryButtonAction: {
                 upload.remove()
-            }, showCheckbox: false, secondaryButtonIsOutlined: true,
+            },
+            secondaryButtonIsOutlined: true,
+            showCheckbox: false,
             iconImage: Image(systemName: "exclamationmark.circle")
         )
-        
-        vc.present(alertVC, animated: true)
+
+        CustomAlertPresenter.present(model, from: vc)
     }
 }

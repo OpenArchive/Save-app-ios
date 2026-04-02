@@ -13,7 +13,7 @@ import YapDatabase
  A view which groups all collections by project ID.
 
  This is needed in order to get noticed on updates to a collection which are
- used for section headers in the `MainViewController`.
+ used for section headers in the main media grid.
  */
 @objc(CollectionsView)
 class CollectionsView: YapDatabaseAutoView {

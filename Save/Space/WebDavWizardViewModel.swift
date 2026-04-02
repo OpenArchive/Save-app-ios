@@ -14,16 +14,15 @@ final class WebDavWizardViewModel: ObservableObject {
 
     // MARK: - Published State
 
-    // TODO: Remove test credentials before release
-    @Published var urlString: String = "https://nx27277.your-storageshare.de/" {
+    @Published var urlString: String = "" {
         didSet { validate(); clearErrors() }
     }
 
-    @Published var username: String = "Upul" {
+    @Published var username: String = "" {
         didSet { validate(); clearErrors() }
     }
 
-    @Published var password: String = "J7wc(ka_4#9!13h&" {
+    @Published var password: String = "" {
         didSet { validate(); clearErrors() }
     }
 

@@ -43,8 +43,7 @@ class InternetArchiveLoginViewController: UIHostingController<InternetArchiveLog
     }
 
     private func onNext(_ space: IaSpace) {
-        let vc = CreateCCLWrapperViewController()
-        vc.space = space
+        let vc = CreateCCLHostingController(space: space)
         navigationController?.pushViewController(vc, animated: true)
     }
 

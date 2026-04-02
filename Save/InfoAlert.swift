@@ -6,14 +6,13 @@
 //  Copyright © 2019 Open Archive. All rights reserved.
 //
 
-import UIKit
 import SwiftUI
+import UIKit
 
 /**
  A special alert which gives the user a hint about a special feature.
 
- Note: This class is deprecated. New alerts should use CustomAlertViewController directly.
- See UploadInfoAlert.swift and AddInfoAlert.swift for examples.
+ New alerts should use `CustomAlertPresenter` / `CustomAlertPresentationModel` directly.
  */
 class InfoAlert {
 
@@ -91,7 +90,7 @@ class InfoAlert {
             return
         }
 
-        let alertVC = CustomAlertViewController(
+        let model = CustomAlertPresentationModel(
             title: title,
             message: message,
             primaryButtonTitle: buttonTitle,
@@ -106,13 +105,6 @@ class InfoAlert {
             iconTint: tintColor
         )
 
-        if let vc = viewController {
-            vc.present(alertVC, animated: true)
-        } else {
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
-                window.rootViewController?.present(alertVC, animated: true)
-            }
-        }
+        CustomAlertPresenter.present(model, from: viewController)
     }
 }

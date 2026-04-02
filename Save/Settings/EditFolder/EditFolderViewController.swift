@@ -10,53 +10,71 @@
 import SwiftUI
 import UIKit
 
-class EditFolderViewController: UIViewController {
-    var project: Project
+@available(iOS 14.0, *)
+final class EditFolderNavigationBridge: ObservableObject {
+    weak var viewController: EditFolderViewController?
+    let project: Project
+
+    init(project: Project) {
+        self.project = project
+    }
+
+    func setBackHidden(_ hidden: Bool) {
+        viewController?.navigationItem.hidesBackButton = hidden
+    }
+
+    func pop() {
+        viewController?.navigationController?.popViewController(animated: true)
+    }
+
+    func setTitle(_ name: String) {
+        viewController?.title = name
+        viewController?.navigationItem.title = name
+    }
+}
+
+@available(iOS 14.0, *)
+struct EditFolderHostRoot: View {
+    @ObservedObject var bridge: EditFolderNavigationBridge
+
+    var body: some View {
+        EditFolderView(
+            project: bridge.project,
+            disableBackAction: { bridge.setBackHidden($0) },
+            dismissAction: { bridge.pop() },
+            changeName: { bridge.setTitle($0) }
+        )
+    }
+}
+
+@available(iOS 14.0, *)
+final class EditFolderViewController: UIHostingController<EditFolderHostRoot> {
+
+    var project: Project { bridge.project }
+
+    private let bridge: EditFolderNavigationBridge
 
     init(_ project: Project) {
-        self.project = project
-        super.init(nibName: nil, bundle: nil)
+        let b = EditFolderNavigationBridge(project: project)
+        self.bridge = b
+        super.init(rootView: EditFolderHostRoot(bridge: b))
     }
-    
-    required init?(coder: NSCoder) {
+
+    @objc required dynamic init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem = backBarButtonItem
-        
-        if #available(iOS 14.0, *) {
-            navigationItem.title = project.name
-            
-            
-            let editFolderView = EditFolderView(project: project,disableBackAction: { [weak self] isDisabled in
-                self?.navigationItem.hidesBackButton = isDisabled
-            }, dismissAction: {
-                
-                self.navigationController?.popViewController(animated: true)
-            },changeName: { [weak self] name in
-                self?.title = name
-            })
-            
-            let hostingController = UIHostingController(rootView: editFolderView)
-            addChild(hostingController)
-            view.addSubview(hostingController.view)
-            
-            hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-            NSLayoutConstraint.activate([
-                hostingController.view.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-                hostingController.view.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-                hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-                hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-            ])
-            hostingController.didMove(toParent: self)
-            self.view.backgroundColor = .systemBackground
-        }
+        bridge.viewController = self
+
+        save_configureTealStackNavigationItem()
+        navigationItem.title = project.name
+        view.backgroundColor = .systemBackground
     }
-    
+
     override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         trackScreenViewSafely("FolderDetails")
     }
 }

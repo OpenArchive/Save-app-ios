@@ -10,12 +10,13 @@ import SwiftUI
 struct BrowseView: View {
     @StateObject private var viewModel: BrowseViewModel
     @Environment(\.colorScheme) private var colorScheme
-    var onAddFolder: (BrowseFolder) -> Void
     var onSelectionChange: (BrowseFolder?) -> Void
 
-    init(onAddFolder: @escaping (BrowseFolder) -> Void, onSelectionChange: @escaping (BrowseFolder?) -> Void) {
-        _viewModel = StateObject(wrappedValue: BrowseViewModel())
-        self.onAddFolder = onAddFolder
+    init(
+        useTorSession: Bool = false,
+        onSelectionChange: @escaping (BrowseFolder?) -> Void
+    ) {
+        _viewModel = StateObject(wrappedValue: BrowseViewModel(useTorSession: useTorSession))
         self.onSelectionChange = onSelectionChange
     }
 
@@ -24,6 +25,8 @@ struct BrowseView: View {
             contentView
         }
         .background(Color(UIColor.systemBackground))
+        .navigationTitle(NSLocalizedString("Browse Existing", comment: ""))
+        .navigationBarTitleDisplayMode(.inline)
         .onChange(of: viewModel.selectedFolder) { newValue in
             onSelectionChange(newValue)
         }
@@ -46,9 +49,10 @@ struct BrowseView: View {
     }
     
     private var listView: some View {
-        List {
+        let firstSectionId = viewModel.sections.first?.id
+        return List {
             ForEach(viewModel.sections) { section in
-                sectionView(for: section, isFirstInList: section.id == viewModel.sections.first?.id)
+                sectionView(for: section, isFirstInList: section.id == firstSectionId)
             }
         }
         .listStyle(.plain)

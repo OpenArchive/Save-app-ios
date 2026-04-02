@@ -6,6 +6,7 @@
 //  Copyright © 2018 Open Archive. All rights reserved.
 //
 
+// UI migration: Share extension remains UIKit + UITableView + XIB cells; a SwiftUI rewrite is a separate, deferred effort.
 import UIKit
 import UserNotifications
 import YapDatabase

@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol SideMenuDelegate: AnyObject {
+@MainActor protocol SideMenuDelegate: AnyObject {
     func hideMenu()
     func selected(project: Project?)
     func addSpace()
@@ -17,7 +17,7 @@ protocol SideMenuDelegate: AnyObject {
     func pushPrivateServerSetting(space: Space)
 }
 
-class NavigationCoordinator: ObservableObject {
+@MainActor class NavigationCoordinator: ObservableObject {
     weak var delegate: SideMenuDelegate?
 
     init(delegate: SideMenuDelegate? = nil) {

@@ -21,20 +21,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             .first
     }
 
-    private var mainVc: MainViewController? {
-        var vc = window?.rootViewController
-
-        while vc != nil {
-            if let mainVc = vc as? MainViewController {
-                return mainVc
-            }
-
-            vc = vc?.subViewController
-        }
-
-        return nil
-    }
-
     func scene(
         _ scene: UIScene,
         willConnectTo session: UISceneSession,
@@ -42,9 +28,12 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     ) {
         guard let windowScene = scene as? UIWindowScene else { return }
 
-        // With UISceneStoryboardFile, the system creates the window
-        window = windowScene.windows.first
-        window?.tintColor = .accent
+        let nav = MainNavigationController()
+        let newWindow = UIWindow(windowScene: windowScene)
+        newWindow.rootViewController = nav
+        newWindow.tintColor = .accent
+        window = newWindow
+        newWindow.makeKeyAndVisible()
 
         // Apply saved theme (window exists now; didFinishLaunching runs before scene exists)
         (UIApplication.shared.delegate as? AppDelegateBase)?.applyTheme(AppSettings.theme)
@@ -72,7 +61,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     func sceneDidBecomeActive(_ scene: UIScene) {
         trackEvent(.appForegrounded)
-        mainVc?.updateFilter()
+        MainScreenRefreshService.shared.refreshMainMediaState()
         if AppSettings.passcodeEnabled {
             BlurredSnapshot.remove()
         }

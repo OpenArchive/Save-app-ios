@@ -6,95 +6,48 @@
 //  Copyright © 2019 Open Archive. All rights reserved.
 //
 
-import UIKit
 import SwiftUI
+import UIKit
 import YapDatabase
 
-class PreviewViewController: UIViewController, AssetPickerDelegate, DoneDelegate {
-    
-    // MARK: Storyboard outlet placeholders (hidden, SwiftUI handles UI)
-    @IBOutlet weak var collectionView: UICollectionView! {
-        didSet {
-            collectionView?.dataSource = nil
-            collectionView?.delegate = nil
-            collectionView?.removeFromSuperview()
-        }
-    }
-    @IBOutlet var editBt: UIButton! {
-        didSet { editBt?.removeFromSuperview() }
-    }
-    @IBOutlet weak var selectAllBt: UIButton! {
-        didSet { selectAllBt?.removeFromSuperview() }
-    }
-    @IBOutlet var addBt: UIButton! {
-        didSet { addBt?.removeFromSuperview() }
-    }
-    @IBOutlet var deleteBt: UIButton! {
-        didSet { deleteBt?.removeFromSuperview() }
-    }
-    
+/// Hosts the full preview flow (grid, darkroom, batch edit) in one `UIHostingController` shell.
+final class PreviewViewController: UIHostingController<PreviewFlowContainerView>, AssetPickerDelegate, DoneDelegate {
+
     private let sc = SelectedCollection()
     private lazy var assetPicker = AssetPicker(self)
-    
+    private let session: PreviewSessionModel
+
+    private weak var centeredTitleView: PreviewNavScreenWidthTitleView?
+
+    init() {
+        let session = PreviewSessionModel()
+        self.session = session
+        super.init(rootView: PreviewFlowContainerView(session: session))
+        session.viewController = self
+    }
+
+    @objc required dynamic init?(coder: NSCoder) {
+        nil
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         view.backgroundColor = .systemBackground
-        
-        let title = NSLocalizedString("Preview Upload", comment: "")
-        navigationItem.title = title
-        
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem = backBarButtonItem
-        
-        let uploadItem = UIBarButtonItem(
-            title: NSLocalizedString("UPLOAD", comment: ""),
-            style: .plain,
-            target: self,
-            action: #selector(upload)
-        )
-        uploadItem.accessibilityIdentifier = "btUpload"
-        uploadItem.tintColor = .white
-        navigationItem.rightBarButtonItem = uploadItem
-        
-        setupSwiftUIView()
+
+        save_configureTealStackNavigationItem()
+        syncNavigationChrome()
     }
-    
-    private func setupSwiftUIView() {
-        let previewView = PreviewView(
-            onNavigateToDarkroom: { [weak self] index in
-                self?.navigateToDarkroom(index: index)
-            },
-            onNavigateToBatchEdit: { [weak self] assets in
-                self?.navigateToBatchEdit(assets: assets)
-            },
-            onAddAssets: { [weak self] in
-                self?.showMediaPickerSheet()
-            },
-            onUploadComplete: { [weak self] in
-                self?.navigationController?.popViewController(animated: true)
-            }
-        )
-        
-        let hostingController = UIHostingController(rootView: previewView)
-        addChild(hostingController)
-        view.addSubview(hostingController.view)
-        
-        hostingController.view.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            hostingController.view.topAnchor.constraint(equalTo: view.topAnchor),
-            hostingController.view.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            hostingController.view.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            hostingController.view.trailingAnchor.constraint(equalTo: view.trailingAnchor)
-        ])
-        hostingController.didMove(toParent: self)
-    }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         navigationController?.setNavigationBarHidden(false, animated: animated)
     }
-    
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        centeredTitleView?.invalidateWidth()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         trackScreenViewSafely("MediaPreview")
@@ -102,39 +55,95 @@ class PreviewViewController: UIViewController, AssetPickerDelegate, DoneDelegate
             BatchInfoAlert.presentIfNeeded(viewController: self, additionalCondition: self.sc.count >= 1)
         }
     }
-    
+
+    func syncNavigationChrome() {
+        let titleText: String
+        let rightItem: UIBarButtonItem
+        switch session.route {
+        case .preview:
+            titleText = NSLocalizedString("Preview Upload", comment: "")
+            rightItem = SaveNavigationBarButtons.makeChromelessPrimaryActionBarButtonItem(
+                title: NSLocalizedString("UPLOAD", comment: ""),
+                target: self,
+                action: #selector(upload),
+                accessibilityIdentifier: "btUpload"
+            )
+        case .darkroom:
+            titleText = NSLocalizedString("Edit Media Info", comment: "")
+            rightItem = SaveNavigationBarButtons.makeChromelessPrimaryActionBarButtonItem(
+                title: "DONE",
+                target: self,
+                action: #selector(doneTapped),
+                accessibilityIdentifier: nil
+            )
+        case .batchEdit:
+            titleText = NSLocalizedString("Bulk Edit Media Info", comment: "")
+            rightItem = SaveNavigationBarButtons.makeChromelessPrimaryActionBarButtonItem(
+                title: "DONE",
+                target: self,
+                action: #selector(doneTapped),
+                accessibilityIdentifier: nil
+            )
+        }
+
+        navigationItem.title = nil
+        let titleView = PreviewNavScreenWidthTitleView(host: self, text: titleText)
+        centeredTitleView = titleView
+        navigationItem.titleView = titleView
+        navigationItem.rightBarButtonItem = rightItem
+
+        // Inner routes (darkroom / batch) live inside this VC; the system back would pop to main.
+        switch session.route {
+        case .preview:
+            navigationItem.leftBarButtonItem = nil
+            navigationItem.hidesBackButton = false
+            let canPopShell = (navigationController?.viewControllers.count ?? 0) > 1
+            navigationController?.interactivePopGestureRecognizer?.isEnabled = canPopShell
+        case .darkroom, .batchEdit:
+            navigationItem.hidesBackButton = true
+            let back = UIBarButtonItem(
+                image: UIImage(systemName: "chevron.left"),
+                style: .plain,
+                target: self,
+                action: #selector(previewInnerBackTapped)
+            )
+            back.tintColor = .white
+            back.accessibilityLabel = NSLocalizedString("Back", comment: "")
+            navigationItem.leftBarButtonItem = back
+            navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        }
+    }
+
+    @objc private func previewInnerBackTapped() {
+        session.returnToPreview()
+    }
+
+    @objc private func doneTapped() {
+        session.returnToPreview()
+    }
+
+    func popFromMainNavigation() {
+        navigationController?.popViewController(animated: true)
+    }
+
     // MARK: AssetPickerDelegate
-    
+
     var currentCollection: Collection? {
         sc.collection
     }
-    
+
     func picked() {
-        // Should be automatically updated via database.
+        // Database-driven refresh.
     }
-    
+
     // MARK: DoneDelegate
-    
+
     func done() {
         navigationController?.popViewController(animated: true)
     }
-    
-    // MARK: Navigation
-    
-    private func navigateToDarkroom(index: Int) {
-        let vc = DarkroomViewController()
-        vc.selected = index
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    private func navigateToBatchEdit(assets: [Asset]) {
-        let vc = BatchEditViewController()
-        vc.assets = assets
-        navigationController?.pushViewController(vc, animated: true)
-    }
-    
-    // MARK: Actions
-    
+
+    // MARK: Upload
+
     @objc private func upload() {
         UploadInfoAlert.presentIfNeeded(viewController: self) {
             var uploadCount: Int = 0
@@ -146,7 +155,7 @@ class PreviewViewController: UIViewController, AssetPickerDelegate, DoneDelegate
 
                 var order = 0
 
-                tx.iterate { (key, upload: Upload, stop) in
+                tx.iterate { (_, upload: Upload, _) in
                     if upload.order >= order {
                         order = upload.order + 1
                     }
@@ -157,7 +166,7 @@ class PreviewViewController: UIViewController, AssetPickerDelegate, DoneDelegate
                     tx.setObject(collection)
                 }
 
-                tx.iterate(group: group, in: AbcFilteredByCollectionView.name) { (collection, key, asset: Asset, index, stop) in
+                tx.iterate(group: group, in: AbcFilteredByCollectionView.name) { (_, _, asset: Asset, _, _) in
                     let upload = Upload(order: order, asset: asset)
                     tx.setObject(upload)
                     order += 1
@@ -173,12 +182,12 @@ class PreviewViewController: UIViewController, AssetPickerDelegate, DoneDelegate
             })
         }
     }
-    
+
     func showMediaPickerSheet() {
         guard presentedViewController == nil else { return }
 
         let popup = MediaPopupViewController()
-        
+
         popup.onCameraTap = { [weak self] in
             self?.assetPicker.openCamera()
         }
@@ -188,10 +197,10 @@ class PreviewViewController: UIViewController, AssetPickerDelegate, DoneDelegate
         popup.onFilesTap = { [weak self] in
             self?.assetPicker.pickDocuments()
         }
-        
+
         present(popup, animated: true)
     }
-    
+
     func alertCannotUploadNoWifi(count: Int? = nil, _ completed: (() -> Void)? = nil) {
         guard Settings.wifiOnly && UploadManager.shared.reachability?.connection == .unavailable,
               let topVc = UIApplication.shared.delegate?.window??.rootViewController?.top
@@ -199,37 +208,85 @@ class PreviewViewController: UIViewController, AssetPickerDelegate, DoneDelegate
             completed?()
             return
         }
-        
+
         var ownCount = count ?? 0
-        
+
         if count == nil {
             Db.bgRwConn?.read { tx in
                 ownCount = UploadsView.countUploading(tx)
             }
         }
-        
+
         guard ownCount > 0 else {
             completed?()
             return
         }
-        
+
         let message = NSLocalizedString(
             "Uploads are blocked until you connect to a Wi-Fi network or allow uploads over a mobile connection again.",
-            comment: "") + "\n"
-        
+            comment: ""
+        ) + "\n"
+
         let title = NSLocalizedString("Wi-Fi not connected", comment: "")
-        
+
         let actions = [
-            AlertHelper.cancelAction(NSLocalizedString("Ignore", comment: ""), handler: { 
+            AlertHelper.cancelAction(NSLocalizedString("Ignore", comment: ""), handler: {
                 completed?()
             }),
-            AlertHelper.destructiveAction(NSLocalizedString("Allow any connection", comment: ""), handler: { 
+            AlertHelper.destructiveAction(NSLocalizedString("Allow any connection", comment: ""), handler: {
                 Settings.wifiOnly = false
                 NotificationCenter.default.post(name: .uploadManagerDataUsageChange, object: Settings.wifiOnly)
                 completed?()
-            })
+            }),
         ]
-        
+
         AlertHelper.present(topVc, message: message, title: title, actions: actions)
+    }
+}
+
+// MARK: - Centered nav title (screen width)
+
+/// `navigationItem.title` is laid out between the bar buttons (reads left-heavy). A full-window-width
+/// `titleView` keeps the label’s centered text aligned with the screen center.
+private final class PreviewNavScreenWidthTitleView: UIView {
+
+    weak var host: UIViewController?
+    private let label = UILabel()
+
+    init(host: UIViewController, text: String) {
+        self.host = host
+        super.init(frame: .zero)
+        backgroundColor = .clear
+        label.text = text
+        label.textColor = .white
+        label.font = UIFont(name: "Montserrat-SemiBold", size: 18)
+            ?? UIFont.systemFont(ofSize: 18, weight: .semibold)
+        label.textAlignment = .center
+        label.numberOfLines = 2
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.75
+        label.lineBreakMode = .byTruncatingTail
+        label.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(label)
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(equalTo: leadingAnchor),
+            label.trailingAnchor.constraint(equalTo: trailingAnchor),
+            label.centerYAnchor.constraint(equalTo: centerYAnchor),
+        ])
+    }
+
+    required init?(coder: NSCoder) {
+        nil
+    }
+
+    func invalidateWidth() {
+        invalidateIntrinsicContentSize()
+    }
+
+    override var intrinsicContentSize: CGSize {
+        let w = host?.view.window?.bounds.width
+            ?? host?.view.bounds.width
+            ?? UIScreen.main.bounds.width
+        return CGSize(width: w, height: 44)
     }
 }

@@ -117,7 +117,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
      Handle tap on the notification from Share Extension:
 
      - Select the project, where the user added something in the Share Extension.
-     - Update MainViewController display.
+     - Update main media screen (`MainHostingController`).
      - Jump to preview scene showing all assets of the currently open collection.
      */
     func userNotificationCenter(_ center: UNUserNotificationCenter, didReceive
@@ -132,37 +132,9 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
 
         SelectedSpace.space = project.space
 
-        let window = UIApplication.shared.connectedScenes
-            .compactMap { $0 as? UIWindowScene }
-            .flatMap { $0.windows }
-            .first { $0.isKeyWindow }
-
-        guard let navVc = window?.rootViewController as? UINavigationController else {
+        MainScreenRefreshService.shared.applyShareExtensionProject(project) {
             completionHandler()
-            return
         }
-
-        var mainVc: MainViewController?
-        var vc: UIViewController? = navVc
-        while vc != nil {
-            if let found = vc as? MainViewController {
-                mainVc = found
-                break
-            }
-            vc = vc?.subViewController
-        }
-
-        if let mainVc {
-            navVc.popToViewController(mainVc, animated: false)
-
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.5) {
-                mainVc.selectedProject = project
-                mainVc.updateFilter()
-                mainVc.picked()
-            }
-        }
-
-        completionHandler()
     }
   
     func cleanCache()
@@ -172,7 +144,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         // and database integrity errors.
         URLCache.shared.removeAllCachedResponses()
         
-        let fm = FileManager.default
+        _ = FileManager.default
         
 
     }

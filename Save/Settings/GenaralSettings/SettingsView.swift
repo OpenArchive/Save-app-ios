@@ -120,24 +120,21 @@ struct SettingsView: View {
         _passcodeToggleState = State(initialValue: AppSettings.isPasscodeEnabled)
     }
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color(UIColor.systemBackground).edgesIgnoringSafeArea(.all)
-                
-                List {
-                    settingsShareSection
-                    settingsArchiveSection
-                    settingsVerifySection
-                    settingsEncryptSection
-                    settingsGeneralSection
-                } .background(Color(UIColor.systemBackground))
-                    .listStyle(.plain)
-                    .modifier(ListSpacingModifier())
-                
-                
-                
+        ZStack {
+            Color(UIColor.systemBackground).edgesIgnoringSafeArea(.all)
+
+            List {
+                settingsShareSection
+                settingsArchiveSection
+                settingsVerifySection
+                settingsEncryptSection
+                settingsGeneralSection
             }
-        }.onAppear {
+            .background(Color(UIColor.systemBackground))
+            .listStyle(.plain)
+            .modifier(ListSpacingModifier())
+        }
+        .onAppear {
             viewModel.isPasscodeOn = AppSettings.isPasscodeEnabled
             passcodeToggleState = AppSettings.isPasscodeEnabled
         }.overlay(

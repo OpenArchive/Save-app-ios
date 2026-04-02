@@ -13,7 +13,7 @@ import Foundation
 import SwiftUI
 import YapDatabase
 
-final class HomeViewModel: ObservableObject {
+@MainActor final class HomeViewModel: ObservableObject {
     let coordinator: NavigationCoordinator
     private var databaseObserver: HomeDatabaseObserver?
 

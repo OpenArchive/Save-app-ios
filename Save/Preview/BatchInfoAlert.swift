@@ -6,28 +6,26 @@
 //  Copyright © 2019 Open Archive. All rights reserved.
 //
 
+import SwiftUI
 import UIKit
 
 /**
  A special alert which informs the user about the batch edit feature.
  */
-import UIKit
-import SwiftUI
-
 class BatchInfoAlert {
-    
+
     static var image: Image? {
-        Image("add_media") // Custom icon image
+        Image("add_media")
     }
-    
+
     static var title: String {
         NSLocalizedString("Edit Multiple", comment: "")
     }
-    
+
     static var message: String {
         NSLocalizedString("Press and hold to select and edit multiple media items.", comment: "")
     }
-    
+
     static var wasAlreadyShown: Bool {
         get {
             Settings.firstBatchEditDone
@@ -36,15 +34,14 @@ class BatchInfoAlert {
             Settings.firstBatchEditDone = newValue
         }
     }
-    
+
     static func presentIfNeeded(viewController: UIViewController? = nil, additionalCondition: Bool = true, success: (() -> Void)? = nil) {
         guard additionalCondition, !wasAlreadyShown else {
             success?()
             return
         }
 
-        
-        let alertVC = CustomAlertViewController(
+        let model = CustomAlertPresentationModel(
             title: title,
             message: message,
             primaryButtonTitle: NSLocalizedString("Got it", comment: ""),
@@ -52,18 +49,12 @@ class BatchInfoAlert {
                 wasAlreadyShown = true
                 success?()
             },
+            secondaryButtonTitle: nil,
             secondaryButtonAction: nil,
             showCheckbox: false,
             iconImage: image ?? Image(systemName: "exclamationmark.triangle.fill")
         )
 
-        if let vc = viewController {
-            vc.present(alertVC, animated: true)
-        } else if let windowScene = UIApplication.shared.connectedScenes
-            .compactMap({ $0 as? UIWindowScene }).first,
-            let rootVC = windowScene.windows.first(where: { $0.isKeyWindow })?.rootViewController
-            ?? windowScene.windows.first?.rootViewController {
-            rootVC.present(alertVC, animated: true)
-        }
+        CustomAlertPresenter.present(model, from: viewController)
     }
 }
