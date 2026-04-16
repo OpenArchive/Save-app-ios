@@ -1,6 +1,177 @@
 {
-  "originHash" : "871030ad8b4de34d82fd3db08ab4faab24d9958f8e98a234957f2df214ae1156",
+  "originHash" : "3608f3a897b40517fbd200acf1b3a4f8edf4234543e84aa44557e521ea418239",
   "pins" : [
+    {
+      "identity" : "abseil-cpp-binary",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google/abseil-cpp-binary.git",
+      "state" : {
+        "revision" : "bbe8b69694d7873315fd3a4ad41efe043e1c07c5",
+        "version" : "1.2024072200.0"
+      }
+    },
+    {
+      "identity" : "app-check",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google/app-check.git",
+      "state" : {
+        "revision" : "61b85103a1aeed8218f17c794687781505fbbef5",
+        "version" : "11.2.0"
+      }
+    },
+    {
+      "identity" : "factory",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/hmlongco/Factory",
+      "state" : {
+        "revision" : "ccc898f21992ebc130bc04cc197460a5ae230bcf",
+        "version" : "2.5.3"
+      }
+    },
+    {
+      "identity" : "firebase-ios-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/firebase/firebase-ios-sdk.git",
+      "state" : {
+        "revision" : "85560b48b0ff099ad83fe53d67df3c67fbc2b7a6",
+        "version" : "12.10.0"
+      }
+    },
+    {
+      "identity" : "fontblaster",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ArtSabintsev/FontBlaster.git",
+      "state" : {
+        "revision" : "09fffe9cf20293fce81ce7154b46f8e60291baa8",
+        "version" : "5.3.0"
+      }
+    },
+    {
+      "identity" : "google-ads-on-device-conversion-ios-sdk",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/googleads/google-ads-on-device-conversion-ios-sdk",
+      "state" : {
+        "revision" : "a5cd95c80e8efdd02155c6cea1cecf743bb683a5",
+        "version" : "3.3.0"
+      }
+    },
+    {
+      "identity" : "googleappmeasurement",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google/GoogleAppMeasurement.git",
+      "state" : {
+        "revision" : "68ba955e540dcff5e0805970ef4b1fd0150be100",
+        "version" : "12.10.0"
+      }
+    },
+    {
+      "identity" : "googledatatransport",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google/GoogleDataTransport.git",
+      "state" : {
+        "revision" : "617af071af9aa1d6a091d59a202910ac482128f9",
+        "version" : "10.1.0"
+      }
+    },
+    {
+      "identity" : "googleutilities",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google/GoogleUtilities.git",
+      "state" : {
+        "revision" : "60da361632d0de02786f709bdc0c4df340f7613e",
+        "version" : "8.1.0"
+      }
+    },
+    {
+      "identity" : "grpc-binary",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google/grpc-binary.git",
+      "state" : {
+        "revision" : "75b31c842f664a0f46a2e590a570e370249fd8f6",
+        "version" : "1.69.1"
+      }
+    },
+    {
+      "identity" : "gtm-session-fetcher",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google/gtm-session-fetcher.git",
+      "state" : {
+        "revision" : "a883ddb9fd464216133a5ab441f1ae8995978573",
+        "version" : "5.1.0"
+      }
+    },
+    {
+      "identity" : "interop-ios-for-google-sdks",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google/interop-ios-for-google-sdks.git",
+      "state" : {
+        "revision" : "040d087ac2267d2ddd4cca36c757d1c6a05fdbfe",
+        "version" : "101.0.0"
+      }
+    },
+    {
+      "identity" : "leveldb",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/firebase/leveldb.git",
+      "state" : {
+        "revision" : "a0bc79961d7be727d258d33d5a6b2f1023270ba1",
+        "version" : "1.22.5"
+      }
+    },
+    {
+      "identity" : "mbprogresshud",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/jdg/MBProgressHUD.git",
+      "state" : {
+        "revision" : "bca42b801100b2b3a4eda0ba8dd33d858c780b0d",
+        "version" : "1.2.0"
+      }
+    },
+    {
+      "identity" : "mixpanel-swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/mixpanel/mixpanel-swift",
+      "state" : {
+        "revision" : "cf569f790c0ec9e9f94f25e56b7ba5762198d34a",
+        "version" : "2.10.4"
+      }
+    },
+    {
+      "identity" : "nanopb",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/firebase/nanopb.git",
+      "state" : {
+        "revision" : "b7e1104502eca3a213b46303391ca4d3bc8ddec1",
+        "version" : "2.30910.0"
+      }
+    },
+    {
+      "identity" : "promises",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/google/promises.git",
+      "state" : {
+        "revision" : "540318ecedd63d883069ae7f1ed811a2df00b6ac",
+        "version" : "2.4.0"
+      }
+    },
+    {
+      "identity" : "reachability.swift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ashleymills/Reachability.swift",
+      "state" : {
+        "revision" : "21d1dc412cfecbe6e34f1f4c4eb88d3f912654a6",
+        "version" : "5.2.4"
+      }
+    },
+    {
+      "identity" : "regex",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/crossroadlabs/Regex.git",
+      "state" : {
+        "revision" : "166728756082a9cac6e4aed3ebbce8e41cb3a945",
+        "version" : "1.2.0"
+      }
+    },
     {
       "identity" : "swiftui-introspect",
       "kind" : "remoteSourceControl",
@@ -8,6 +179,24 @@
       "state" : {
         "revision" : "807f73ce09a9b9723f12385e592b4e0aaebd3336",
         "version" : "1.3.0"
+      }
+    },
+    {
+      "identity" : "tlphotopicker",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/tilltue/TLPhotoPicker.git",
+      "state" : {
+        "revision" : "bf4a14650ba3adf0890644b91dfb9601da6ba38c",
+        "version" : "2.1.18"
+      }
+    },
+    {
+      "identity" : "uiimageviewalignedswift",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/sochalewski/UIImageViewAlignedSwift",
+      "state" : {
+        "revision" : "c51914ca25aa3721da1812fa0d4d69064e778391",
+        "version" : "0.8.3"
       }
     }
   ],

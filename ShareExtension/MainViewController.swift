@@ -220,7 +220,9 @@ class MainViewController: TableWithSpacesViewController {
             }
 
             for provider in attachments {
-                if !provider.hasItemConformingToTypeIdentifier(LegacyUTType.data.identifier) {
+                // Only accept images, movies, and audio — reject arbitrary file types.
+                let allowedTypes = ["public.image", "public.movie", "public.audio"]
+                guard allowedTypes.contains(where: { provider.hasItemConformingToTypeIdentifier($0) }) else {
                     continue
                 }
 

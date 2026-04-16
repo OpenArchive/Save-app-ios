@@ -26,6 +26,14 @@ end
 
 # Fix Xcode 15 compile issues.
 post_install do |installer|
+  # Remove private header import that causes build errors in newer Xcode/SDK versions
+  reachability_file = 'Pods/YapDatabase/YapDatabase/Extensions/ActionManager/Utilities/YapReachability.m'
+  if File.exist?(reachability_file)
+    content = File.read(reachability_file)
+    patched = content.gsub("#import <netinet6/in6.h>\n", '')
+    File.write(reachability_file, patched) if content != patched
+  end
+
   installer.pods_project.targets.each do |target|
     target.build_configurations.each do |config|
       config.build_settings['OA_APP_GROUP'] = '$(inherited)'

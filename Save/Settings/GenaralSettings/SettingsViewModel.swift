@@ -34,4 +34,9 @@ class SettingsViewModel: ObservableObject {
             delegate?.pushViewController(passcodeSetupController)
         }
     }
+
+    func disablePasscode() {
+        PasscodeRepository().clearPasscode()
+        isPasscodeOn = false
+    }
 }

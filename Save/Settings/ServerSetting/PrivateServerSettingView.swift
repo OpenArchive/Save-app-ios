@@ -34,7 +34,7 @@ struct PrivateServerSettingsView: View {
             serverName: space.name ?? "",
             serverURL: space.url?.absoluteString ?? "",
             username: space.username ?? "",
-            password: space.password != nil ? String(repeating: "•", count: space.password?.count ?? 0) : "",
+            password: space.password != nil ? "••••••••" : "",
             isCcEnabled: space.license != nil,
             isCc0Enabled: isCC0,
             allowRemix: isCC0 ? false : space.license?.contains("-nd") == false,

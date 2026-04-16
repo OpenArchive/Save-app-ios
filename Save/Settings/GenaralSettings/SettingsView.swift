@@ -103,6 +103,7 @@ struct SettingsView: View {
     @State private var selectedTheme: String
     @State private var showActionSheet = false
     @State private var showPasscodeAlert = false
+    @State private var showPasscodeVerification = false
     @State private var showTorAlert = false
     @State private var passcodeToggleState: Bool
     @State private var isProgrammaticallyChangingPasscodeToggle = false
@@ -134,9 +135,31 @@ struct SettingsView: View {
             .listStyle(.plain)
             .modifier(ListSpacingModifier())
         }
+        .sheet(isPresented: $showPasscodeVerification) {
+            PasscodeEntryView(
+                onPasscodeSuccess: {
+                    showPasscodeVerification = false
+                    showPasscodeAlert = true
+                },
+                onExit: {
+                    showPasscodeVerification = false
+                    isProgrammaticallyChangingPasscodeToggle = true
+                    passcodeToggleState = true
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        isProgrammaticallyChangingPasscodeToggle = false
+                    }
+                }
+            )
+        }
         .onAppear {
             viewModel.isPasscodeOn = AppSettings.isPasscodeEnabled
+            // Guard with the programmatic flag so syncing the toggle state on appear
+            // does not trigger the toggle action and push another PasscodeSetupController.
+            isProgrammaticallyChangingPasscodeToggle = true
             passcodeToggleState = AppSettings.isPasscodeEnabled
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                isProgrammaticallyChangingPasscodeToggle = false
+            }
         }.overlay(
             Group {
                 if showPasscodeAlert {
@@ -150,8 +173,7 @@ struct SettingsView: View {
                                     primaryButtonTitle: NSLocalizedString("Yes", comment: ""),
                                     iconImage: Image(systemName: "exclamationmark.triangle.fill"),
                                     primaryButtonAction: {
-                                        AppSettings.passcodeEnabled = false
-                                        viewModel.isPasscodeOn = false
+                                        viewModel.disablePasscode()
                                         passcodeToggleState = false
                                         showPasscodeAlert = false
                                         trackFeatureToggled(featureName: "passcode_protection", enabled: false)
@@ -277,7 +299,8 @@ struct SettingsView: View {
                 if value {
                     viewModel.togglePasscode(value)
                 } else if AppSettings.isPasscodeEnabled {
-                    showPasscodeAlert = true
+                    // Require the user to verify their current passcode before disabling it.
+                    showPasscodeVerification = true
                 }
             }
             .modifier(HideItemSeparator())

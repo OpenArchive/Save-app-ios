@@ -8,6 +8,7 @@
 
 import UIKit
 import YapDatabase
+import LibProofMode
 
 /**
  Encapsulates YapDatabase setup and connection creation.
@@ -17,10 +18,14 @@ class Db {
     private static let DB_NAME = "open-archive.sqlite"
 
     private static var shared: YapDatabase? = {
-        if let path = URL.groupDir?.appendingPathComponent(DB_NAME) {
+        if var path = URL.groupDir?.appendingPathComponent(DB_NAME) {
             #if DEBUG
             print("[\(String(describing: Db.self))] path=\(path)")
             #endif
+
+            // Exclude the database file from iCloud and device backups so that
+            // credentials stored in the DB are not written to unencrypted backups.
+            try? (path as NSURL).setResourceValue(true, forKey: .isExcludedFromBackupKey)
 
             let options = YapDatabaseOptions()
             options.enableMultiProcessSupport = true
@@ -33,6 +38,14 @@ class Db {
 
     public class func setup() {
 //        DDLog.add(DDTTYLogger.sharedInstance)
+
+        // Exclude the assets directory and ProofMode document folder from backups.
+        // We exclude the folder (not individual files) so new files created inside
+        // inherit the exclusion — this covers pkr.asc even before it is generated.
+        if let assetsDir = URL.groupDir?.appendingPathComponent(Asset.collection) {
+            assetsDir.excludeFromBackup()
+        }
+        Proof.shared.defaultDocumentFolder?.excludeFromBackup()
 
         Space.fixArchiverName() // Needed for screenshot testing.
         WebDavSpace.fixArchiverName()

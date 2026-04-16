@@ -59,7 +59,22 @@ class Space: NSObject {
     var url: URL?
     var favIcon: UIImage?
     var username: String?
-    var password: String?
+
+    /// Password is persisted in the iOS Keychain, not in the database.
+    var password: String? {
+        get { KeychainHelper.retrieveString(key: keychainPasswordKey) }
+        set {
+            if let value = newValue {
+                KeychainHelper.save(key: keychainPasswordKey, string: value)
+            } else {
+                KeychainHelper.delete(key: keychainPasswordKey)
+            }
+        }
+    }
+
+    /// Stable Keychain key scoped to this space.
+    var keychainPasswordKey: String { "space.\(id).password" }
+
     var isNextcloud = false
     var authorName: String?
     var authorRole: String?
@@ -103,11 +118,13 @@ class Space: NSObject {
         self.url = url
         self.favIcon = favIcon
         self.username = username
-        self.password = password
         self.authorName = authorName
         self.authorRole = authorRole
         self.authorOther = authorOther
         self.license = license
+        super.init()
+        // password is a computed property backed by Keychain; must be set after super.init()
+        self.password = password
     }
 
 
@@ -120,8 +137,14 @@ class Space: NSObject {
         url = decoder.decodeObject(of: NSURL.self, forKey: "url") as? URL
         favIcon = decoder.decodeObject(of: UIImage.self, forKey: "favIcon")
         username = decoder.decodeObject(of: NSString.self, forKey: "username") as? String
-        password = decoder.decodeObject(of: NSString.self, forKey: "password") as? String
         isNextcloud = decoder.decodeBool(forKey: "nextcloud")
+
+        // Migration: if password was previously stored in DB, move it to Keychain and clear it.
+        if let legacyPassword = decoder.decodeObject(of: NSString.self, forKey: "password") as? String,
+           !legacyPassword.isEmpty,
+           KeychainHelper.retrieveString(key: "space.\(id).password") == nil {
+            KeychainHelper.save(key: "space.\(id).password", string: legacyPassword)
+        }
         authorName = decoder.decodeObject(of: NSString.self, forKey: "authorName") as? String
         authorRole = decoder.decodeObject(of: NSString.self, forKey: "authorRole") as? String
         authorOther = decoder.decodeObject(of: NSString.self, forKey: "authorOther") as? String
@@ -136,7 +159,7 @@ class Space: NSObject {
         coder.encode(url, forKey: "url")
         coder.encode(favIcon, forKey: "favIcon")
         coder.encode(username, forKey: "username")
-        coder.encode(password, forKey: "password")
+        // password is stored in Keychain, not the database
         coder.encode(isNextcloud, forKey: "nextcloud")
         coder.encode(authorName, forKey: "authorName")
         coder.encode(authorRole, forKey: "authorRole")
@@ -153,7 +176,7 @@ class Space: NSObject {
         return "\(String(describing: type(of: self))): [id=\(id), "
             + "name=\(name ?? "nil"), url=\(url?.description ?? "nil"), "
             + "favIcon=\(favIcon?.description ?? "nil"), "
-            + "username=\(username ?? "nil"), password=\(password ?? "nil"), "
+            + "username=\(username ?? "nil"), password=\(password != nil ? "[redacted]" : "nil"), "
             + "isNextcloud=\(isNextcloud), "
             + "authorName=\(authorName ?? "nil"), authorRole=\(authorRole ?? "nil"), "
             + "authorOther=\(authorOther ?? "nil"), license=\(license ?? "nil"), "
