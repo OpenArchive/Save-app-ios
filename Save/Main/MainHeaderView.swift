@@ -31,7 +31,7 @@ struct MainHeaderView: View {
             }
         }
         .frame(minHeight: 44)
-        .padding(.horizontal, 16)
+        .padding(.horizontal, 8)
         .background(Color(.systemBackground))
     }
 
@@ -68,7 +68,7 @@ struct MainHeaderView: View {
                 Button(action: { uiState.isFolderMenuVisible = true }) {
                     Image("edit_menu")
                         .renderingMode(.template)
-                        .foregroundColor(Color(.label))
+                        .foregroundColor(Color(.accent))
                         .frame(width: 24, height: 24)
                 }
                 .confirmationDialog(
