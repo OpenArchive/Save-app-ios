@@ -109,7 +109,15 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
     func userNotificationCenter(_ center: UNUserNotificationCenter, willPresent
                                 notification: UNNotification, withCompletionHandler completionHandler:
                                 @escaping (UNNotificationPresentationOptions) -> Void) {
-        
+
+        // If the app is foregrounded while a share-extension notification arrives,
+        // select the project just as the didReceive handler would.
+        if let projectId = notification.request.content.userInfo[Project.collection] as? String,
+           let project: Project = Db.bgRwConn?.object(for: projectId) {
+            SelectedSpace.space = project.space
+            MainScreenRefreshService.shared.applyShareExtensionProject(project) { }
+        }
+
         completionHandler([.banner, .badge, .sound])
     }
     

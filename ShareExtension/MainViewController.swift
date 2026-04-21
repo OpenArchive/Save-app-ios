@@ -8,6 +8,7 @@
 
 // UI migration: Share extension remains UIKit + UITableView + XIB cells; a SwiftUI rewrite is a separate, deferred effort.
 import UIKit
+import SwiftUI
 import UserNotifications
 import YapDatabase
 import LegacyUTType
@@ -17,6 +18,17 @@ import MBProgressHUD
 class MainViewController: TableWithSpacesViewController {
 
     private static let projectSection = 3
+
+    /// Explicit UTI allowlist — mirrors the Info.plist activation rule.
+    private static let allowedUTIs: Set<String> = [
+        "public.jpeg", "public.png", "public.gif", "com.compuserve.gif",
+        "public.heic", "public.heif", "public.tiff", "public.bmp",
+        "public.mpeg-4", "com.apple.quicktime-movie", "public.avi",
+        "public.mpeg", "public.webm", "public.3gpp",
+        "public.mp3", "public.aac-audio", "public.flac",
+        "org.xiph.ogg", "com.microsoft.waveform-audio", "public.opus",
+        "com.adobe.pdf"
+    ]
 
     private lazy var projectsReadConn = Db.newLongLivedReadConn()
 
@@ -49,6 +61,7 @@ class MainViewController: TableWithSpacesViewController {
     private var project: Project?
 
     private var notificationsAllowed = false
+    private var passcodeGatePresented = false
 
 
     override func viewDidLoad() {
@@ -84,6 +97,43 @@ class MainViewController: TableWithSpacesViewController {
         UNUserNotificationCenter.current().requestAuthorization(options: .alert) { granted, error in
             self.notificationsAllowed = granted
         }
+
+        // Hide sensitive content until the passcode gate is cleared.
+        if shareExtensionPasscodeIsSet() {
+            tableView.isHidden = true
+        }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        showPasscodeGateIfNeeded()
+    }
+
+    private func showPasscodeGateIfNeeded() {
+        guard !passcodeGatePresented, shareExtensionPasscodeIsSet() else { return }
+        passcodeGatePresented = true
+
+        let passcodeView = ShareExtensionPasscodeView(
+            onSuccess: { [weak self] in
+                self?.dismiss(animated: true) {
+                    self?.tableView.isHidden = false
+                }
+            },
+            onCancel: { [weak self] in
+                self?.extensionContext?.cancelRequest(
+                    withError: NSError(
+                        domain: NSCocoaErrorDomain,
+                        code: NSUserCancelledError,
+                        userInfo: nil
+                    )
+                )
+            }
+        )
+
+        let host = UIHostingController(rootView: passcodeView)
+        host.view.tintColor = .accent  // propagate app teal → Color.accentColor in SwiftUI
+        host.modalPresentationStyle = .overFullScreen
+        present(host, animated: false)
     }
 
 
@@ -94,7 +144,7 @@ class MainViewController: TableWithSpacesViewController {
     }
 
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return section == MainViewController.projectSection ? projectsCount + 1 : 1
+        return section == MainViewController.projectSection ? max(projectsCount, 1) : 1
     }
 
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -141,13 +191,12 @@ class MainViewController: TableWithSpacesViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: MenuItemCell.reuseId, for: indexPath) as! MenuItemCell
 
         if indexPath.section == MainViewController.projectSection {
-            if indexPath.row < projectsCount {
-                return cell.set(Project.getName(getProject(indexPath)),
-                                accessoryType: selectedRow == indexPath.row ? .checkmark : .none)
+            if projectsCount == 0 {
+                return cell.set(NSLocalizedString("No projects. Add one in the app.", comment: ""),
+                                textColor: .lightGray)
             }
-            else {
-                return cell.set(NSLocalizedString("New Project", comment: ""), isPlaceholder: true)
-            }
+            return cell.set(Project.getName(getProject(indexPath)),
+                            accessoryType: selectedRow == indexPath.row ? .checkmark : .none)
         }
 
         return cell.set("")
@@ -170,27 +219,14 @@ class MainViewController: TableWithSpacesViewController {
 
 
     override func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        if indexPath.section == MainViewController.projectSection && projectsCount == 0 {
+            return nil
+        }
         return indexPath.section > 2 ? indexPath : nil
     }
 
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if indexPath.section == MainViewController.projectSection {
-            if indexPath.row >= projectsCount {
-//                let vc = UINavigationController(rootViewController:
-//                    AddFolderViewController())
-//                vc.view.tintColor = .accent
-//                vc.modalPresentationStyle = .popover
-//                vc.popoverPresentationController?.sourceView = tableView.cellForRow(at: indexPath)
-//                vc.popoverPresentationController?.sourceRect = tableView.rectForRow(at: indexPath)
-//
-//                present(vc, animated: true)
-//
-//                tableView.deselectRow(at: indexPath, animated: false)
-//
-//                return
-            }
-
-
             selectedRow = indexPath.row
 
             var allProjects = [IndexPath]()
@@ -201,6 +237,16 @@ class MainViewController: TableWithSpacesViewController {
 
             tableView.reloadRows(at: allProjects, with: .automatic)
 
+            return
+        }
+
+        guard SelectedSpace.space != nil else {
+            showAlert(NSLocalizedString("Please select a server first.", comment: ""))
+            return
+        }
+
+        guard selectedRow >= 0 else {
+            showAlert(NSLocalizedString("Please select a project first.", comment: ""))
             return
         }
 
@@ -220,16 +266,15 @@ class MainViewController: TableWithSpacesViewController {
             }
 
             for provider in attachments {
-                // Only accept images, movies, and audio — reject arbitrary file types.
-                let allowedTypes = ["public.image", "public.movie", "public.audio"]
-                guard allowedTypes.contains(where: { provider.hasItemConformingToTypeIdentifier($0) }) else {
+                // Only accept explicitly allowed UTIs — reject arbitrary file types.
+                guard let typeIdentifier = Self.allowedUTIs.first(where: { provider.hasItemConformingToTypeIdentifier($0) }) else {
                     continue
                 }
 
                 progress.totalUnitCount += 1
 
                 provider.loadPreviewImage(options: providerOptions) { thumbnail, error in
-                    provider.loadItem(forTypeIdentifier: LegacyUTType.data.identifier, options: nil) { item, error in
+                    provider.loadItem(forTypeIdentifier: typeIdentifier, options: nil) { item, error in
 
                         if let error = error {
                             return self.onCompletion(error)
@@ -285,6 +330,14 @@ class MainViewController: TableWithSpacesViewController {
     }
 
 
+    // MARK: UICollectionViewDelegate override
+
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        selectedRow = -1  // Reset project selection before super reloads the table
+        super.collectionView(collectionView, didSelectItemAt: indexPath)
+    }
+
+
     // MARK: Observers
 
     /**
@@ -312,6 +365,12 @@ class MainViewController: TableWithSpacesViewController {
 
 
     // MARK: Private Methods
+
+    private func showAlert(_ message: String) {
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: NSLocalizedString("OK", comment: ""), style: .default))
+        present(alert, animated: true)
+    }
 
     private func getProject(_ row: Int) -> Project? {
         projectsReadConn?.object(at: IndexPath(row: row, section: 0), in: projectsMappings)

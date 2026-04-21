@@ -305,6 +305,7 @@
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				MainViewController.swift,
+				ShareExtensionPasscodeView.swift,
 			);
 			target = A07128FA2111CC90007A432A /* ShareExtension */;
 		};
