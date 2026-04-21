@@ -7,6 +7,21 @@ import SwiftUI
 import UIKit
 
 struct MainBottomMenuView: View {
+
+ 
+    private enum Metrics {
+        static let horizontalInset: CGFloat = 24
+        static let addWidth: CGFloat = 72
+        static let addHeight: CGFloat = 34
+        static let addCornerRadius: CGFloat = 16
+        static let labelIconSpacing: CGFloat = 6
+        static let barTopPadding: CGFloat = 20
+        static let barBottomPadding: CGFloat = 20
+        static let sideIconLength: CGFloat = 24
+        static let settingsSymbolSize: CGFloat = 17
+        static let labelPointSize: CGFloat = 11
+    }
+
     let isSettingsVisible: Bool
     let onTapMedia: () -> Void
     let onTapAdd: () -> Void
@@ -17,20 +32,26 @@ struct MainBottomMenuView: View {
         VStack(spacing: 0) {
             HStack {
                 Button(action: onTapMedia) {
-                    VStack(spacing: 6) {
+                    VStack(spacing: Metrics.labelIconSpacing) {
                         Image(isSettingsVisible ? "media_unselected" : "media_image")
+                            .resizable()
+                            .renderingMode(.template)
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: Metrics.sideIconLength, height: Metrics.sideIconLength)
                         Text(NSLocalizedString("My Media", comment: ""))
-                            .font(.montserrat(.regular, for: .caption))
+                            .font(.custom(MontserratWeight.medium.rawValue, size: Metrics.labelPointSize))
                     }
                     .foregroundColor(.white)
+                    .fixedSize(horizontal: true, vertical: true)
                 }
+                .buttonStyle(.plain)
 
                 Spacer()
 
                 Button(action: onTapAdd) {
-                    Capsule()
+                    RoundedRectangle(cornerRadius: Metrics.addCornerRadius, style: .continuous)
                         .fill(Color.white)
-                        .frame(width: 72, height: 34)
+                        .frame(width: Metrics.addWidth, height: Metrics.addHeight)
                         .overlay(
                             Image("ic_plus")
                                 .foregroundColor(.black)
@@ -43,17 +64,20 @@ struct MainBottomMenuView: View {
                 Spacer()
 
                 Button(action: onTapSettings) {
-                    VStack(spacing: 6) {
+                    VStack(spacing: Metrics.labelIconSpacing) {
                         Image(systemName: isSettingsVisible ? "gearshape.fill" : "gearshape")
+                            .font(.system(size: Metrics.settingsSymbolSize, weight: .regular))
+                            .frame(width: Metrics.sideIconLength, height: Metrics.sideIconLength)
                         Text(NSLocalizedString("Settings", comment: ""))
-                            .font(.montserrat(.regular, for: .caption))
+                            .font(.custom(MontserratWeight.medium.rawValue, size: Metrics.labelPointSize))
                     }
                     .foregroundColor(.white)
+                    .fixedSize(horizontal: true, vertical: true)
                 }
+                .buttonStyle(.plain)
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 10)
-            .padding(.bottom, 8)
+            .padding(.horizontal, 40)
+            .padding(.top, Metrics.barTopPadding)
         }
         .background(
             Color("menu-background")
