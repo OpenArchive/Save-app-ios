@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct InfoBoxView: View {
     let iconName: String
@@ -14,15 +15,49 @@ struct InfoBoxView: View {
     var hideIcon: Bool = true
     var isMultiline: Bool = false
     var onTextChanged: ((String) -> Void)?
-    
-    @FocusState private var isFocused: Bool
-    
+    /// When set with `mediaField`, coordinates focus with `MediaInfoSectionView` / parent `@FocusState`.
+    var mediaFocusBinding: FocusState<MediaInfoField?>.Binding?
+    var mediaField: MediaInfoField?
+    /// Return key: e.g. move to next field or dismiss keyboard (used with `customSubmit` to avoid keyboard flicker).
+    var onSubmitFromKeyboard: (() -> Void)?
+
+    @FocusState private var localFocused: Bool
+
+    init(
+        iconName: String,
+        placeholder: String,
+        text: Binding<String>,
+        hideIcon: Bool = true,
+        isMultiline: Bool = false,
+        onTextChanged: ((String) -> Void)? = nil,
+        mediaFocusBinding: FocusState<MediaInfoField?>.Binding? = nil,
+        mediaField: MediaInfoField? = nil,
+        onSubmitFromKeyboard: (() -> Void)? = nil
+    ) {
+        self.iconName = iconName
+        self.placeholder = placeholder
+        self._text = text
+        self.hideIcon = hideIcon
+        self.isMultiline = isMultiline
+        self.onTextChanged = onTextChanged
+        self.mediaFocusBinding = mediaFocusBinding
+        self.mediaField = mediaField
+        self.onSubmitFromKeyboard = onSubmitFromKeyboard
+    }
+
     private var placeholderFont: Font {
         .montserrat(.mediumItalic, for: .footnote)
     }
-    
+
+    private var isFieldFocused: Bool {
+        if let binding = mediaFocusBinding, let field = mediaField {
+            return binding.wrappedValue == field
+        }
+        return localFocused
+    }
+
     private var borderColor: Color {
-        isFocused ? Color.accentColor : .gray70
+        isFieldFocused ? Color.accentColor : .gray70
     }
     
     var body: some View {
@@ -53,19 +88,31 @@ struct InfoBoxView: View {
     @ViewBuilder
     private var singleLineTextField: some View {
         ZStack(alignment: .leading) {
-            if text.isEmpty && !isFocused {
+            if text.isEmpty && !isFieldFocused {
                 Text(placeholder)
                     .font(placeholderFont)
                     .foregroundColor(.gray70)
                     .allowsHitTesting(false)
             }
-            TextField("", text: $text)
-                .font(.montserrat(.medium, for: .footnote))
-                .foregroundColor(Color(.label))
-                .focused($isFocused)
-                .onChange(of: text) { newValue in
-                    onTextChanged?(newValue)
-                }
+            if let binding = mediaFocusBinding, let field = mediaField {
+                TextField("", text: $text)
+                    .customSubmit { onSubmitFromKeyboard?() }
+                    .font(.montserrat(.medium, for: .footnote))
+                    .foregroundColor(Color(.label))
+                    .focused(binding, equals: field)
+                    .submitLabel(.next)
+                    .onChange(of: text) { newValue in
+                        onTextChanged?(newValue)
+                    }
+            } else {
+                TextField("", text: $text)
+                    .font(.montserrat(.medium, for: .footnote))
+                    .foregroundColor(Color(.label))
+                    .focused($localFocused)
+                    .onChange(of: text) { newValue in
+                        onTextChanged?(newValue)
+                    }
+            }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
@@ -73,33 +120,58 @@ struct InfoBoxView: View {
     @ViewBuilder
     private var multilineTextField: some View {
         ZStack(alignment: .topLeading) {
-            if text.isEmpty && !isFocused {
+            if text.isEmpty && !isFieldFocused {
                 Text(placeholder)
                     .font(placeholderFont)
                     .foregroundColor(.gray70)
                     .padding(.top, 8)
                     .allowsHitTesting(false)
             }
-            
+
             if #available(iOS 16.0, *) {
-                TextField("", text: $text, axis: .vertical)
-                    .font(.montserrat(.medium, for: .footnote))
-                    .foregroundColor(Color(.label))
-                    .focused($isFocused)
-                    .onChange(of: text) { newValue in
-                        onTextChanged?(newValue)
-                    }
-                    .lineLimit(4...8)
-                    .frame(minHeight: 80, alignment: .topLeading)
+                if let binding = mediaFocusBinding, let field = mediaField {
+                    TextField("", text: $text, axis: .vertical)
+                        .customSubmit { onSubmitFromKeyboard?() }
+                        .font(.montserrat(.medium, for: .footnote))
+                        .foregroundColor(Color(.label))
+                        .focused(binding, equals: field)
+                        .submitLabel(.done)
+                        .onChange(of: text) { newValue in
+                            onTextChanged?(newValue)
+                        }
+                        .lineLimit(4...8)
+                        .frame(minHeight: 80, alignment: .topLeading)
+                } else {
+                    TextField("", text: $text, axis: .vertical)
+                        .font(.montserrat(.medium, for: .footnote))
+                        .foregroundColor(Color(.label))
+                        .focused($localFocused)
+                        .onChange(of: text) { newValue in
+                            onTextChanged?(newValue)
+                        }
+                        .lineLimit(4...8)
+                        .frame(minHeight: 80, alignment: .topLeading)
+                }
             } else {
-                TextEditor(text: $text)
-                    .font(.montserrat(.medium, for: .footnote))
-                    .foregroundColor(Color(.label))
-                    .focused($isFocused)
-                    .onChange(of: text) { newValue in
-                        onTextChanged?(newValue)
-                    }
-                    .frame(minHeight: 80)
+                if let binding = mediaFocusBinding, let field = mediaField {
+                    TextEditor(text: $text)
+                        .font(.montserrat(.medium, for: .footnote))
+                        .foregroundColor(Color(.label))
+                        .focused(binding, equals: field)
+                        .onChange(of: text) { newValue in
+                            onTextChanged?(newValue)
+                        }
+                        .frame(minHeight: 80)
+                } else {
+                    TextEditor(text: $text)
+                        .font(.montserrat(.medium, for: .footnote))
+                        .foregroundColor(Color(.label))
+                        .focused($localFocused)
+                        .onChange(of: text) { newValue in
+                            onTextChanged?(newValue)
+                        }
+                        .frame(minHeight: 80)
+                }
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)

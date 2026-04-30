@@ -198,7 +198,6 @@ private struct MediaGridCellView: View {
                         }
                     }
             
-            // Movie indicator bar at bottom
             if asset.isAv {
                 VStack {
                     Spacer()
@@ -206,20 +205,10 @@ private struct MediaGridCellView: View {
                 }
             }
             
-            // Progress overlay (centered)
-            if showUploadOverlay {
-                uploadProgressOverlay
-            }
-            
-            // Error icon in top-right corner
             if showErrorIcon {
-                VStack {
-                    HStack {
-                        Spacer()
-                        errorIconOverlay
-                    }
-                    Spacer()
-                }
+                errorIconOverlay
+            } else if showUploadOverlay {
+                uploadProgressOverlay
             }
         }
         .frame(width: cellSize, height: cellSize)
@@ -325,12 +314,15 @@ private struct MediaGridCellView: View {
     }
 
     private var errorIconOverlay: some View {
-        Image("ic_error")
-            .resizable()
-            .aspectRatio(contentMode: .fit)
-            .frame(width: 24, height: 24)
-            .foregroundColor(.redButton)
-            .padding(8)
+        ZStack {
+            Color.black.opacity(0.5)
+            Image("ic_error")
+                .resizable()
+                .aspectRatio(contentMode: .fit)
+                .frame(width: 28, height: 28)
+                .foregroundColor(.redButton)
+        }
+        .frame(width: cellSize, height: cellSize)
     }
 
     private func loadThumbnail() {

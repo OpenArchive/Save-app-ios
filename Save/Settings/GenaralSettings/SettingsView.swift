@@ -135,19 +135,26 @@ struct SettingsView: View {
             .listStyle(.plain)
             .modifier(ListSpacingModifier())
         }
-        .sheet(isPresented: $showPasscodeVerification) {
+        .sheet(isPresented: $showPasscodeVerification, onDismiss: {
+            // If the passcode is still enabled, the user dismissed without verifying —
+            // reset the toggle back to on.
+            if AppSettings.isPasscodeEnabled {
+                isProgrammaticallyChangingPasscodeToggle = true
+                passcodeToggleState = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    isProgrammaticallyChangingPasscodeToggle = false
+                }
+            }
+        }) {
             PasscodeEntryView(
                 onPasscodeSuccess: {
                     showPasscodeVerification = false
-                    showPasscodeAlert = true
+                    viewModel.disablePasscode()
+                    passcodeToggleState = false
+                    trackFeatureToggled(featureName: "passcode_protection", enabled: false)
                 },
                 onExit: {
                     showPasscodeVerification = false
-                    isProgrammaticallyChangingPasscodeToggle = true
-                    passcodeToggleState = true
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        isProgrammaticallyChangingPasscodeToggle = false
-                    }
                 }
             )
         }
@@ -173,10 +180,8 @@ struct SettingsView: View {
                                     primaryButtonTitle: NSLocalizedString("Yes", comment: ""),
                                     iconImage: Image(systemName: "exclamationmark.triangle.fill"),
                                     primaryButtonAction: {
-                                        viewModel.disablePasscode()
-                                        passcodeToggleState = false
                                         showPasscodeAlert = false
-                                        trackFeatureToggled(featureName: "passcode_protection", enabled: false)
+                                        showPasscodeVerification = true
                                     },
                                     secondaryButtonTitle: NSLocalizedString("Cancel", comment: ""),
                                     secondaryButtonIsOutlined: false,
@@ -299,8 +304,8 @@ struct SettingsView: View {
                 if value {
                     viewModel.togglePasscode(value)
                 } else if AppSettings.isPasscodeEnabled {
-                    // Require the user to verify their current passcode before disabling it.
-                    showPasscodeVerification = true
+                    // Show confirmation alert first before requiring passcode verification.
+                    showPasscodeAlert = true
                 }
             }
             .modifier(HideItemSeparator())

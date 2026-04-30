@@ -85,6 +85,12 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
      Polls tracked Progress objects and updates `Update` objects every second.
      */
     var progressTimer: DispatchSourceTimer?
+
+    /// Tracks when the current upload last made progress, for timeout detection.
+    private var lastProgressDate: Date?
+
+    /// How long an upload can be stuck without progress before timing out.
+    private static let uploadTimeoutInterval: TimeInterval = 120
     
     private var scheduler: Timer?
     
@@ -198,14 +204,29 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         progressTimer?.setEventHandler {
             if let upload = self.current,
                upload.hasProgressChanged() {
-                
+
                 self.debug("#progress tracker changed for \(upload))")
-                
+
                 // Update internal _progress to latest progress, so #hasProgressChanged
                 // doesn't trigger anymore.
                 self.current?.progress = upload.progress
-                
+                self.lastProgressDate = Date()
+
                 self.storeCurrent()
+            }
+
+            // Timeout detection: if current upload has no progress for too long, mark as error.
+            if let upload = self.current,
+               let lastProgress = self.lastProgressDate,
+               Date().timeIntervalSince(lastProgress) > Self.uploadTimeoutInterval {
+                self.debug("#timeout detected for \(upload)")
+                upload.cancel()
+                upload.error = NSLocalizedString("Upload timed out. Tap to retry.", comment: "")
+                upload.tries += 1
+                self.storeCurrent()
+                self.current = nil
+                self.lastProgressDate = nil
+                self.uploadNext()
             }
         }
         
@@ -324,6 +345,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             current.cancel()
             current.trackCancellation(reason: "user_deleted")
             self.current = nil
+            self.lastProgressDate = nil
         }
     }
     
@@ -509,7 +531,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             }
             
             self.current = nil
-            
+            self.lastProgressDate = nil
+
             self.endBackgroundTask(asset.isUploaded ? .newData : .failed)
             
             self.uploadNext()
@@ -656,7 +679,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 .upload(uploadId: upload.id)
 
             upload.error = nil
-            
+            self.lastProgressDate = Date()
+
             Db.writeConn?.readWrite { tx in
                 if let collection = asset.collection,
                    collection.closed == nil

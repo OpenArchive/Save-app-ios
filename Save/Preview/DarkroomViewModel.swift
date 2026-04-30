@@ -69,34 +69,47 @@ class DarkroomViewModel: ObservableObject {
     
     private func handleDatabaseModified() {
         let (forceFull, sectionChanges, rowChanges) = sc.yapDatabaseModified()
-        
+
         if forceFull {
             loadAssets()
             return
         }
-        
+
         if sectionChanges.isEmpty && rowChanges.isEmpty {
             return
         }
-        
-        for change in sectionChanges {
-            if change.type == .delete {
-                assets = []
-                return
-            }
-        }
-        
-        for change in rowChanges {
-            if change.type == .delete && change.indexPath?.row == selectedIndex {
-                if selectedIndex >= sc.count {
-                    selectedIndex = max(0, sc.count - 1)
+
+        let hasStructuralChange = sectionChanges.contains { $0.type == .delete || $0.type == .insert }
+            || rowChanges.contains { $0.type == .delete || $0.type == .insert }
+
+        if hasStructuralChange {
+            for change in rowChanges {
+                if change.type == .delete && change.indexPath?.row == selectedIndex {
+                    if selectedIndex >= sc.count {
+                        selectedIndex = max(0, sc.count - 1)
+                    }
+                    break
                 }
-                loadAssets()
-                return
+            }
+            loadAssets()
+        } else {
+            // Row updates only (e.g. from our own save) — refresh asset objects
+            // but don't overwrite the text fields the user is editing
+            reloadAssetsOnly()
+        }
+    }
+
+    private func reloadAssetsOnly() {
+        var loadedAssets: [Asset] = []
+        for i in 0..<sc.count {
+            if let asset = sc.getAsset(IndexPath(row: i, section: 0)) {
+                loadedAssets.append(asset)
             }
         }
-        
-        loadAssets()
+        assets = loadedAssets
+        if selectedIndex >= assets.count {
+            selectedIndex = max(0, assets.count - 1)
+        }
     }
     
     func loadAssets() {
@@ -132,47 +145,51 @@ class DarkroomViewModel: ObservableObject {
     
     func saveCurrentAssetInfo() {
         guard let asset = currentAsset else { return }
-        
+
+        let loc = location
+        let nts = notes
+        let flg = isFlagged
+
         asset.update { proxy in
-            proxy.location = self.location.isEmpty ? nil : self.location
-            proxy.notes = self.notes.isEmpty ? nil : self.notes
-            proxy.flagged = self.isFlagged
+            proxy.location = loc.isEmpty ? nil : loc
+            proxy.notes = nts.isEmpty ? nil : nts
+            proxy.flagged = flg
         }
     }
-    
+
     func goBackward() {
         guard canGoBackward else { return }
         saveCurrentAssetInfo()
         selectedIndex -= 1
         updateInfoFields()
     }
-    
+
     func goForward() {
         guard canGoForward else { return }
         saveCurrentAssetInfo()
         selectedIndex += 1
         updateInfoFields()
     }
-    
+
     func onPageChange(to newIndex: Int) {
         guard newIndex != selectedIndex else { return }
         saveCurrentAssetInfo()
         selectedIndex = newIndex
         updateInfoFields()
     }
-    
+
     func toggleFlagged() {
         isFlagged.toggle()
         saveCurrentAssetInfo()
         FlagInfoAlert.presentIfNeeded()
     }
-    
+
     func removeCurrentAsset(completion: @escaping (Bool) -> Void) {
         guard let asset = currentAsset else {
             completion(false)
             return
         }
-        
+
         asset.remove { [weak self] in
             DispatchQueue.main.async {
                 self?.loadAssets()
@@ -180,11 +197,11 @@ class DarkroomViewModel: ObservableObject {
             }
         }
     }
-    
+
     func updateLocation(_ newLocation: String) {
         location = newLocation
     }
-    
+
     func updateNotes(_ newNotes: String) {
         notes = newNotes
     }

@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct WebDavWizardView: View {
     @ObservedObject var viewModel: WebDavWizardViewModel
@@ -30,13 +31,16 @@ struct WebDavWizardView: View {
 
     var body: some View {
         ZStack {
+            Color(UIColor.systemBackground)
+                .ignoresSafeArea()
+                .ignoresSafeArea(.keyboard, edges: .bottom)
+
             GeometryReader { geometry in
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
                         headerSection
                         serverSection
                         accountSection
-                        errorSection
                         Spacer(minLength: Layout.sectionSpacing)
                         buttonsSection
                     }
@@ -45,9 +49,11 @@ struct WebDavWizardView: View {
                     .contentShape(Rectangle())
                     .onTapGesture {
                         focusedField = nil
+                        UIApplication.shared.endEditing()
                     }
                 }
             }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
 
             if viewModel.isBusy {
                 loadingOverlay
@@ -82,14 +88,18 @@ struct WebDavWizardView: View {
         VStack(alignment: .leading, spacing: Layout.sectionSpacing) {
             sectionHeader(NSLocalizedString("Server info", comment: ""))
 
-            CustomTextField(
+            CustomTextField<Field>(
                 placeholder: NSLocalizedString("Enter URL", comment: ""),
                 text: $viewModel.urlString,
                 isError: viewModel.urlHasError,
                 onCommit: {
-                    viewModel.fixUrlOnCommit()
                     focusedField = .username
-                }
+                    viewModel.fixUrlOnCommit()
+                },
+                focusBinding: $focusedField,
+                focusEquals: .url,
+                currentFocus: focusedField,
+                submitLabel: .next
             )
         }
         .padding(.horizontal, Layout.horizontalPadding)
@@ -100,26 +110,38 @@ struct WebDavWizardView: View {
             sectionHeader(NSLocalizedString("Account", comment: ""))
                 .padding(.top, Layout.accountTopPadding)
 
-            CustomTextField(
+            CustomTextField<Field>(
                 placeholder: NSLocalizedString("Username", comment: ""),
                 text: $viewModel.username,
                 isError: viewModel.usernameHasError,
-                onCommit: { focusedField = .password }
+                onCommit: {
+                    focusedField = .password
+                },
+                focusBinding: $focusedField,
+                focusEquals: .username,
+                currentFocus: focusedField,
+                submitLabel: .next
             )
 
-            PasswordFieldWithReveal(
-                text: $viewModel.password,
-                placeholder: NSLocalizedString("Password", comment: ""),
-                focusedField: $focusedField,
-                field: .password,
-                isFocused: focusedField == .password,
-                isError: viewModel.passwordHasError,
-                onSubmit: {
-                    focusedField = nil
-                    viewModel.connect()
+            VStack(alignment: .leading, spacing: 4) {
+                PasswordFieldWithReveal(
+                    text: $viewModel.password,
+                    placeholder: NSLocalizedString("Password", comment: ""),
+                    focusedField: $focusedField,
+                    field: .password,
+                    isError: viewModel.passwordHasError,
+                    onSubmit: {
+                        focusedField = nil
+                        viewModel.connect()
+                    }
+                )
+
+                if !viewModel.errorMessage.isEmpty {
+                    Text(viewModel.errorMessage)
+                        .font(.montserrat(.medium, for: .caption2))
+                        .foregroundColor(.redButton)
                 }
-            )
-            .padding(.bottom, 40)
+            }
         }
         .padding(.horizontal, Layout.horizontalPadding)
     }
@@ -128,17 +150,6 @@ struct WebDavWizardView: View {
         Text(title)
             .font(.montserrat(.semibold, for: .headline))
             .foregroundColor(.gray70)
-    }
-
-    @ViewBuilder
-    private var errorSection: some View {
-        if !viewModel.errorMessage.isEmpty {
-            Text(viewModel.errorMessage)
-                .font(.montserrat(.medium, for: .caption2))
-                .foregroundColor(.redButton)
-                .padding(.top, 8)
-                .padding(.horizontal, Layout.horizontalPadding)
-        }
     }
 
     private var buttonsSection: some View {
@@ -152,7 +163,11 @@ struct WebDavWizardView: View {
             .font(.montserrat(.semibold, for: .headline))
             .disabled(viewModel.isBusy)
 
-            Button { viewModel.connect() } label: {
+            Button {
+                focusedField = nil
+                UIApplication.shared.endEditing()
+                viewModel.connect()
+            } label: {
                 Text(NSLocalizedString("Next", comment: ""))
                     .frame(maxWidth: .infinity)
             }
@@ -220,11 +235,14 @@ private struct PasswordFieldWithReveal: View {
     var placeholder: String
     var focusedField: FocusState<WebDavWizardView.Field?>.Binding
     var field: WebDavWizardView.Field
-    var isFocused: Bool
     var isError: Bool
     var onSubmit: () -> Void
 
     @State private var isRevealed = false
+
+    private var isFocused: Bool {
+        focusedField.wrappedValue == field
+    }
 
     private var borderColor: Color {
         if isError { return .redButton }
@@ -243,17 +261,25 @@ private struct PasswordFieldWithReveal: View {
             }
 
             HStack {
-                Group {
-                    if isRevealed {
-                        TextField("", text: $text, onCommit: onSubmit)
-                    } else {
-                        SecureField("", text: $text)
-                            .onSubmit(onSubmit)
-                    }
+                ZStack {
+                    TextField("", text: $text)
+                        .customSubmit { onSubmit() }
+                        .font(.montserrat(.medium, for: .footnote))
+                        .foregroundColor(.gray70)
+                        .submitLabel(.go)
+                        .focused(focusedField, equals: field)
+                        .opacity(isRevealed ? 1 : 0)
+                        .allowsHitTesting(isRevealed)
+
+                    SecureField("", text: $text)
+                        .customSubmit { onSubmit() }
+                        .font(.montserrat(.medium, for: .footnote))
+                        .foregroundColor(.gray70)
+                        .submitLabel(.go)
+                        .focused(focusedField, equals: field)
+                        .opacity(isRevealed ? 0 : 1)
+                        .allowsHitTesting(!isRevealed)
                 }
-                .font(.montserrat(.medium, for: .footnote))
-                .foregroundColor(.gray70)
-                .focused(focusedField, equals: field)
 
                 Button { isRevealed.toggle() } label: {
                     Image(isRevealed ? "eye_open" : "eye_close")
@@ -269,3 +295,4 @@ private struct PasswordFieldWithReveal: View {
         .padding(.bottom, 8)
     }
 }
+

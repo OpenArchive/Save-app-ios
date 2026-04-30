@@ -39,16 +39,8 @@ class PasscodeEntryViewModel: ObservableObject {
     
     
     func onNumberClick(_ number: String) {
-        
         guard !isProcessing, passcode.count < appConfig.passcodeLength else { return }
-        
         passcode += number
-        if passcode.count == appConfig.passcodeLength {
-            
-            isProcessing = true
-            checkPasscode()
-        }
-        
     }
     func onEnterClick() {
         guard !isProcessing, !passcode.isEmpty else { return }

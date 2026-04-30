@@ -9,6 +9,8 @@
 
 import SwiftUI
 import Combine
+import UIKit
+
 extension Notification.Name {
     static let privateServerSettingsConfirm = Notification.Name("privateServerSettingsConfirm")
 }
@@ -49,10 +51,14 @@ struct PrivateServerSettingsView: View {
     @State private var showDeleteAlert = false
     @State private var showSuccessAlert = false
     var body: some View {
-        NavigationView {
+        ZStack {
+            Color(UIColor.systemBackground)
+                .ignoresSafeArea()
+                .ignoresSafeArea(.keyboard, edges: .bottom)
+
             ScrollView {
                 VStack(alignment: .leading, spacing: 10) {
-                    
+
                     SectionHeader(title: NSLocalizedString("Server info",comment: ""))
                     
                     CustomTextField(
@@ -73,6 +79,7 @@ struct PrivateServerSettingsView: View {
                         onEditingChanged: { began in
                             onEditingChanged?(began)
                         }, onCommit:  {
+                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
                             store.saveToDatabase()
                             showSuccessAlert = true
                         })
@@ -108,7 +115,7 @@ struct PrivateServerSettingsView: View {
                     
                     if  let url = URL(string: "https://creativecommons.org/") {
                         
-                        Text(AttributedString(NSLocalizedString(NSLocalizedString("Learn more about Creative Commons.", comment: "More Info Link"), comment: "License Link"), attributes: AttributeContainer([.underlineStyle: NSUnderlineStyle.single.rawValue])))
+                        Text(AttributedString(NSLocalizedString("Learn more about Creative Commons.", comment: "License Link"), attributes: AttributeContainer([.underlineStyle: NSUnderlineStyle.single.rawValue])))
                             .foregroundColor(.accentColor)
                             .font(.montserrat(.medium, for: .subheadline))
                             .padding(.top, 10)
@@ -132,13 +139,20 @@ struct PrivateServerSettingsView: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.top, 10)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    UIApplication.shared.endEditing()
+                }
             }
-        }.onAppear {
+        }
+        .onAppear {
             setupNotificationListener()
-        }.onDisappear {
+        }
+        .onDisappear {
             notificationCancellable?.cancel()
             notificationCancellable = nil
-        }.overlay(
+        }
+        .overlay(
             Group {
                 if showDeleteAlert {
                     Color.black.opacity(0.7)
@@ -200,7 +214,6 @@ struct PrivateServerSettingsView: View {
                 
                 
             })
-        
     }
     
     private func setupNotificationListener() {
@@ -277,7 +290,7 @@ struct SectionHeader: View {
     var title: String
     
     var body: some View {
-        Text(NSLocalizedString(title, comment: "\(title) Section"))
+        Text(title)
             .font(.montserrat(.semibold, for: .headline))
             .foregroundColor(.gray70)
             .padding(.top,20)

@@ -50,9 +50,9 @@ final class WebDavWizardViewModel: ObservableObject {
     // MARK: - Public Methods
 
     func fixUrlOnCommit() {
-        if let fixed = Formatters.URLFormatter.fix(url: urlString)?.absoluteString {
-            urlString = fixed
-        }
+        guard let fixed = Formatters.URLFormatter.fix(url: urlString)?.absoluteString,
+              fixed != urlString else { return }
+        urlString = fixed
     }
 
     func connect() {

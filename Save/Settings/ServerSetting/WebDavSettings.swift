@@ -45,9 +45,8 @@ final class ServerSettingsStore: ObservableObject {
             state.allowRemix = false
             state.requireShareAlike = false
             state.allowCommercialUse = false
-        } else {
-            updateLicense()
         }
+        updateLicense()
     }
 
     func toggleCc0Enabled(_ isEnabled: Bool) {

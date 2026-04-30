@@ -17,9 +17,7 @@ struct MainBottomMenuView: View {
         static let labelIconSpacing: CGFloat = 6
         static let barTopPadding: CGFloat = 20
         static let barBottomPadding: CGFloat = 20
-        static let sideIconLength: CGFloat = 24
-        static let settingsSymbolSize: CGFloat = 17
-        static let labelPointSize: CGFloat = 11
+        static let sideIconLength: CGFloat = 26
     }
 
     let isSettingsVisible: Bool
@@ -39,7 +37,7 @@ struct MainBottomMenuView: View {
                             .aspectRatio(contentMode: .fit)
                             .frame(width: Metrics.sideIconLength, height: Metrics.sideIconLength)
                         Text(NSLocalizedString("My Media", comment: ""))
-                            .font(.custom(MontserratWeight.medium.rawValue, size: Metrics.labelPointSize))
+                            .font(.montserrat(.regular, for: .caption))
                     }
                     .foregroundColor(.white)
                     .fixedSize(horizontal: true, vertical: true)
@@ -66,10 +64,11 @@ struct MainBottomMenuView: View {
                 Button(action: onTapSettings) {
                     VStack(spacing: Metrics.labelIconSpacing) {
                         Image(systemName: isSettingsVisible ? "gearshape.fill" : "gearshape")
-                            .font(.system(size: Metrics.settingsSymbolSize, weight: .regular))
-                            .frame(width: Metrics.sideIconLength, height: Metrics.sideIconLength)
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 20, height: 20)
                         Text(NSLocalizedString("Settings", comment: ""))
-                            .font(.custom(MontserratWeight.medium.rawValue, size: Metrics.labelPointSize))
+                            .font(.montserrat(.regular, for: .caption))
                     }
                     .foregroundColor(.white)
                     .fixedSize(horizontal: true, vertical: true)

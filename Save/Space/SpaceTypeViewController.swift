@@ -31,6 +31,16 @@ class SpaceTypeViewController: UIHostingController<SpaceTypeView> {
         let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
         navigationItem.backBarButtonItem = backBarButtonItem
 
+        // 🔧 DEBUG: Add a test button in nav bar (REMOVE BEFORE RELEASE)
+//        #if DEBUG
+//        navigationItem.rightBarButtonItem = UIBarButtonItem(
+//            title: "🔧 Test",
+//            style: .plain,
+//            target: self,
+//            action: #selector(openKeyboardTests)
+//        )
+//        #endif
+
         var showIA = false
         Db.bgRwConn?.read { tx in
             if tx.find(where: { (_: IaSpace) in true }) == nil {
@@ -56,4 +66,13 @@ class SpaceTypeViewController: UIHostingController<SpaceTypeView> {
             InternetArchiveLoginViewController(),
             animated: true)
     }
+
+    // 🔧 DEBUG: Push the keyboard test menu (REMOVE BEFORE RELEASE)
+//    #if DEBUG
+//    @objc private func openKeyboardTests() {
+//        let testVC = UIHostingController(rootView: KeyboardTestMenu())
+//           testVC.title = "Keyboard Tests"
+//           navigationController?.pushViewController(testVC, animated: true)
+//    }
+//    #endif
 }

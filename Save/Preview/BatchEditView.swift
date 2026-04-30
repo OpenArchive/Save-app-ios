@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct BatchEditView: View {
     @State var assets: [Asset]
@@ -38,17 +39,24 @@ struct BatchEditView: View {
     }
 
     var body: some View {
-        GeometryReader { geometry in
-            VStack(spacing: 0) {
-                imageSection(geometry: geometry)
+        ZStack {
+            Color(UIColor.systemBackground)
+                .ignoresSafeArea()
+                .ignoresSafeArea(.keyboard, edges: .bottom)
 
-                infoSection
-                    .frame(height: geometry.size.height * Layout.infoSectionHeightFraction)
+            GeometryReader { geometry in
+                VStack(spacing: 0) {
+                    imageSection(geometry: geometry)
+
+                    infoSection
+                        .frame(height: geometry.size.height * Layout.infoSectionHeightFraction)
+                }
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    focusedField = nil
+                    UIApplication.shared.endEditing()
+                }
             }
-        }
-        .background(Color(UIColor.systemBackground))
-        .onTapGesture {
-            focusedField = nil
         }
     }
 
@@ -152,7 +160,7 @@ struct BatchEditView: View {
     private func batchCardContent(for asset: Asset) -> some View {
         ZStack {
             if asset.hasThumbnail() {
-                AsyncThumbnailView(asset: asset)
+                AsyncThumbnailView(asset: asset, fullQuality: true)
                     .aspectRatio(contentMode: .fill)
             } else {
                 placeholderView(for: asset)

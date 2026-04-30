@@ -6,6 +6,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct DarkroomView: View {
     @StateObject private var viewModel: DarkroomViewModel
@@ -22,17 +23,27 @@ struct DarkroomView: View {
     }
 
     var body: some View {
-        GeometryReader { geometry in
-            VStack(spacing: 0) {
-                imageSection(geometry: geometry)
+        ZStack {
+            Color.black
+                .ignoresSafeArea()
+                .ignoresSafeArea(.keyboard, edges: .bottom)
 
-                infoSection
-                    .frame(height: geometry.size.height * 0.5)
+            GeometryReader { geometry in
+                VStack(spacing: 0) {
+                    imageSection(geometry: geometry)
+
+                    infoSection
+                        .frame(height: geometry.size.height * 0.5)
+                }
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    focusedField = nil
+                    UIApplication.shared.endEditing()
+                    viewModel.saveCurrentAssetInfo()
+                }
             }
         }
-        .background(Color.black)
-        .onTapGesture {
-            focusedField = nil
+        .onDisappear {
             viewModel.saveCurrentAssetInfo()
         }
         .onChange(of: viewModel.assets) { newAssets in
@@ -123,7 +134,7 @@ struct DarkroomView: View {
     private func assetImageView(asset: Asset) -> some View {
         ZStack {
             if asset.hasThumbnail() {
-                AsyncThumbnailView(asset: asset)
+                AsyncThumbnailView(asset: asset, fullQuality: true)
             } else {
                 placeholderView(for: asset)
             }
@@ -165,6 +176,7 @@ struct DarkroomView: View {
 
 struct AsyncThumbnailView: View {
     let asset: Asset
+    var fullQuality: Bool = false
     @State private var thumbnail: UIImage?
 
     var body: some View {
@@ -175,8 +187,8 @@ struct AsyncThumbnailView: View {
                     .aspectRatio(contentMode: .fill)
                     .clipped()
             } else {
-                Color.black
-                    .overlay(ProgressView().tint(.white))
+                Color(UIColor.systemBackground)
+                    .overlay(ProgressView().tint(.gray))
             }
         }
         .onAppear {
@@ -185,9 +197,33 @@ struct AsyncThumbnailView: View {
     }
 
     private func loadThumbnail() {
-        asset.getThumbnailAsync { loadedThumbnail in
-            DispatchQueue.main.async {
-                self.thumbnail = loadedThumbnail
+        if fullQuality {
+            loadFullImage()
+        } else {
+            asset.getThumbnailAsync { loadedThumbnail in
+                DispatchQueue.main.async {
+                    self.thumbnail = loadedThumbnail
+                }
+            }
+        }
+    }
+
+    private func loadFullImage() {
+        DispatchQueue.global(qos: .userInitiated).async {
+            // Try loading the original file first
+            if let fileURL = asset.file,
+               let data = try? Data(contentsOf: fileURL),
+               let image = UIImage(data: data) {
+                DispatchQueue.main.async {
+                    self.thumbnail = image
+                }
+                return
+            }
+            // Fall back to thumbnail if full file unavailable
+            asset.getThumbnailAsync { loadedThumbnail in
+                DispatchQueue.main.async {
+                    self.thumbnail = loadedThumbnail
+                }
             }
         }
     }

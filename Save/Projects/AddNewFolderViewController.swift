@@ -84,6 +84,9 @@ struct CreateFolderView: View {
                         isDisabled: false,
                         onTextChanged:  { text  in
                             store.updateFolderName(text)
+                        },
+                        onCommit: {
+                            hideKeyboard()
                         }
                     )
                 }

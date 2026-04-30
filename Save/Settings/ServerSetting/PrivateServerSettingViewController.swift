@@ -75,7 +75,7 @@ final class PrivateServerSettingViewController: UIHostingController<PrivateServe
 
         save_configureTealStackNavigationItem()
         navigationItem.title = space.prettyName
-        view.backgroundColor = .clear
+        view.backgroundColor = .systemBackground
     }
 
     override func viewDidAppear(_ animated: Bool) {

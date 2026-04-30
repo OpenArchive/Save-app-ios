@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import UIKit
 import FactoryKit
 
 struct InternetArchiveLoginView: View {
@@ -21,22 +22,26 @@ struct InternetArchiveLoginView: View {
         }
     }
 }
-enum Field: Hashable {
-    case username
-    case password
-}
 
 struct InternetArchiveLoginContent: View {
 
+    private enum Field: Hashable {
+        case username
+        case password
+    }
+
     @ObservedObject var viewModel: InternetArchiveLoginViewModel
-    @State private var keyboardOffset: CGFloat = 0
     @State private var isShowPassword = false
     @Environment(\.colorScheme) var colorScheme
     @FocusState private var focusedField: Field?
-    
+
     var body: some View {
         GeometryReader { reader in
             ZStack {
+                Color(UIColor.systemBackground)
+                    .ignoresSafeArea()
+                    .ignoresSafeArea(.keyboard, edges: .bottom)
+
                 ScrollView {
                     VStack(alignment: .leading, spacing: 0) {
                         headerSection
@@ -48,10 +53,12 @@ struct InternetArchiveLoginContent: View {
                         Spacer(minLength: 20)
                         buttonsRow
                     }
+                    .padding(.bottom, 8)
                     .frame(minHeight: reader.size.height)
                     .contentShape(Rectangle())
                     .onTapGesture {
                         focusedField = nil
+                        UIApplication.shared.endEditing()
                     }
                 }
 
@@ -65,6 +72,7 @@ struct InternetArchiveLoginContent: View {
                         )
                 }
             }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
         }
         .onChange(of: viewModel.userName) { _ in
             if viewModel.isLoginError { viewModel.clearError() }
@@ -112,13 +120,13 @@ struct InternetArchiveLoginContent: View {
                     .padding(.leading, 5)
             }
             TextField("", text: $viewModel.userName)
+                .customSubmit { focusedField = .password }
                 .autocapitalization(.none)
                 .font(.montserrat(.medium, for: .footnote))
                 .foregroundColor(.gray70)
                 .submitLabel(.next)
                 .keyboardType(.emailAddress)
                 .focused($focusedField, equals: .username)
-                .onSubmit { focusedField = .password }
         }
         .padding()
         .overlay(RoundedRectangle(cornerRadius: 8).stroke(borderColor(forField: .username), lineWidth: 1))
@@ -139,14 +147,24 @@ struct InternetArchiveLoginContent: View {
                     }
                     if isShowPassword {
                         TextField("", text: $viewModel.password)
+                            .customSubmit {
+                                focusedField = nil
+                                viewModel.login()
+                            }
                             .font(.montserrat(.medium, for: .footnote))
-                            .focused($focusedField, equals: .password)
                             .foregroundColor(.gray70)
+                            .submitLabel(.go)
+                            .focused($focusedField, equals: .password)
                     } else {
                         SecureField("", text: $viewModel.password)
+                            .customSubmit {
+                                focusedField = nil
+                                viewModel.login()
+                            }
                             .font(.montserrat(.medium, for: .footnote))
-                            .focused($focusedField, equals: .password)
                             .foregroundColor(.gray70)
+                            .submitLabel(.go)
+                            .focused($focusedField, equals: .password)
                     }
                 }
                 Button { isShowPassword.toggle() } label: {
@@ -199,11 +217,15 @@ struct InternetArchiveLoginContent: View {
             .font(.montserrat(.semibold, for: .headline))
             .disabled(viewModel.isBusy)
 
-            Button(action: { viewModel.login() }) {
+            Button {
+                focusedField = nil
+                UIApplication.shared.endEditing()
+                viewModel.login()
+            } label: {
                 Text(NSLocalizedString("Next", comment: ""))
                     .frame(maxWidth: .infinity)
             }
-            .disabled(!viewModel.isValid)
+            .disabled(!viewModel.isValid || viewModel.isBusy)
             .padding()
             .background(!viewModel.isValid ? .gray50 : Color.accent)
             .foregroundColor(.black)

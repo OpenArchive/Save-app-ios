@@ -26,6 +26,7 @@
 		6EA9FED72F0A7D9000767B63 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 6EA9FED62F0A7D9000767B63 /* SwiftUIIntrospect */; };
 		6EB3D6DA2EEBBB81007317EB /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = 6EB3D6D92EEBBB81007317EB /* Mixpanel */; };
 		6EB3D6DC2EEBBB8E007317EB /* Mixpanel in Frameworks */ = {isa = PBXBuildFile; productRef = 6EB3D6DB2EEBBB8E007317EB /* Mixpanel */; };
+		6EDADFE32FA2C74700B6F304 /* SwiftUIIntrospect in Frameworks */ = {isa = PBXBuildFile; productRef = 6EDADFE22FA2C74700B6F304 /* SwiftUIIntrospect */; };
 		7D294CA198526B76E9A90039 /* Pods_Save_Screenshots.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 27981A63E67D5F420A0C87BA /* Pods_Save_Screenshots.framework */; };
 		A0102D772B18EAC80054D3D4 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A0E739DE20E4C85E00DB31E1 /* Assets.xcassets */; };
 		A0102DA82B18F1180054D3D4 /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A0102D5A2B18E1430054D3D4 /* XCTest.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
@@ -175,7 +176,6 @@
 			membershipExceptions = (
 				CustomComponents/CustomAlert.swift,
 				CustomComponents/CustomButton.swift,
-				CustomComponents/CustomTextField.swift,
 				Extensions/MontserratExtension.swift,
 				"Extensions/View+Analytics.swift",
 			);
@@ -427,6 +427,7 @@
 				6EA9FEC32F0A76D900767B63 /* Mixpanel in Frameworks */,
 				6EA9FEC52F0A76E100767B63 /* TLPhotoPicker in Frameworks */,
 				6EA9FECB2F0A778E00767B63 /* MBProgressHUD in Frameworks */,
+				6EDADFE32FA2C74700B6F304 /* SwiftUIIntrospect in Frameworks */,
 				6EA9FECD2F0A7A9E00767B63 /* FontBlaster in Frameworks */,
 				A32C41EF78EBFC4F4BD4FFB8 /* Pods_ShareExtension.framework in Frameworks */,
 			);
@@ -1083,7 +1084,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "$(OA_SCS_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 5.10;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = "Save Screenshots";
 			};
@@ -1107,7 +1108,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "$(OA_SCS_BUNDLE_ID)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 5.10;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_TARGET_NAME = "Save Screenshots";
 			};
@@ -1140,7 +1141,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Save-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 5.10;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1172,7 +1173,7 @@
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Save-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 5.10;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1200,7 +1201,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Save-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 5.10;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1228,7 +1229,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Save-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 5.10;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1393,7 +1394,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Save-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 5.10;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -1429,7 +1430,7 @@
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OBJC_BRIDGING_HEADER = "Shared/Save-Bridging-Header.h";
-				SWIFT_VERSION = 5.0;
+				SWIFT_VERSION = 5.10;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;
@@ -1521,8 +1522,8 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ashleymills/Reachability.swift";
 			requirement = {
-				kind = exactVersion;
-				version = 5.2.4;
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.2.4;
 			};
 		};
 		6EA9EBBB2F0A686200767B63 /* XCRemoteSwiftPackageReference "Regex" */ = {
@@ -1562,7 +1563,7 @@
 			repositoryURL = "https://github.com/siteline/SwiftUI-Introspect.git";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 1.3.0;
+				minimumVersion = 26.0.1;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
@@ -1662,6 +1663,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 6EB3CAE12EEBA9D9007317EB /* XCRemoteSwiftPackageReference "mixpanel-swift" */;
 			productName = Mixpanel;
+		};
+		6EDADFE22FA2C74700B6F304 /* SwiftUIIntrospect */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 6ED29CFB2D68B608002E0189 /* XCRemoteSwiftPackageReference "SwiftUI-Introspect" */;
+			productName = SwiftUIIntrospect;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

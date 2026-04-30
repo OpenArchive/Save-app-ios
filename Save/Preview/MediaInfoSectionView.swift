@@ -7,6 +7,7 @@
 //
 
 import SwiftUI
+import UIKit
 
 struct MediaInfoSectionView: View {
     @Binding var location: String
@@ -16,32 +17,51 @@ struct MediaInfoSectionView: View {
     var onNotesChanged: (String) -> Void
 
     var body: some View {
-        VStack(spacing: 0) {
-            ScrollView {
-                VStack(spacing: 16) {
-                    InfoBoxView(
-                        iconName: "ic_location",
-                        placeholder: NSLocalizedString("Add a location (optional)", comment: ""),
-                        text: $location,
-                        isMultiline: false,
-                        onTextChanged: onLocationChanged
-                    )
-                    .focused(focusedField, equals: .location)
+        ZStack {
+            Color(UIColor.systemBackground)
+                .ignoresSafeArea()
+                .ignoresSafeArea(.keyboard, edges: .bottom)
 
-                    InfoBoxView(
-                        iconName: "ic_edit",
-                        placeholder: NSLocalizedString("Add notes (optional)", comment: ""),
-                        text: $notes,
-                        isMultiline: true,
-                        onTextChanged: onNotesChanged
-                    )
-                    .focused(focusedField, equals: .notes)
+            VStack(spacing: 0) {
+                ScrollView {
+                    VStack(spacing: 16) {
+                        InfoBoxView(
+                            iconName: "ic_location",
+                            placeholder: NSLocalizedString("Add a location (optional)", comment: ""),
+                            text: $location,
+                            isMultiline: false,
+                            onTextChanged: onLocationChanged,
+                            mediaFocusBinding: focusedField,
+                            mediaField: .location,
+                            onSubmitFromKeyboard: {
+                                focusedField.wrappedValue = .notes
+                            }
+                        )
+
+                        InfoBoxView(
+                            iconName: "ic_edit",
+                            placeholder: NSLocalizedString("Add notes (optional)", comment: ""),
+                            text: $notes,
+                            isMultiline: true,
+                            onTextChanged: onNotesChanged,
+                            mediaFocusBinding: focusedField,
+                            mediaField: .notes,
+                            onSubmitFromKeyboard: {
+                                focusedField.wrappedValue = nil
+                                UIApplication.shared.endEditing()
+                            }
+                        )
+                    }
+                    .padding(.horizontal, 20)
+                    .padding(.vertical, 20)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        focusedField.wrappedValue = nil
+                        UIApplication.shared.endEditing()
+                    }
                 }
-                .padding(.horizontal, 20)
-                .padding(.vertical, 20)
+                .modifier(ScrollDismissesKeyboardModifier())
             }
-            .modifier(ScrollDismissesKeyboardModifier())
         }
-        .background(Color(UIColor.systemBackground))
     }
 }

@@ -146,41 +146,43 @@ final class PreviewViewController: UIHostingController<PreviewFlowContainerView>
 
     @objc private func upload() {
         UploadInfoAlert.presentIfNeeded(viewController: self) {
-            var uploadCount: Int = 0
-
-            Db.writeConn?.asyncReadWrite({ tx in
-                guard let group = self.sc.group else {
-                    return
-                }
-
-                var order = 0
-
-                tx.iterate { (_, upload: Upload, _) in
-                    if upload.order >= order {
-                        order = upload.order + 1
-                    }
-                }
-
-                if let collection: Collection = tx.object(for: self.sc.id) {
-                    collection.close()
-                    tx.setObject(collection)
-                }
-
-                tx.iterate(group: group, in: AbcFilteredByCollectionView.name) { (_, _, asset: Asset, _, _) in
-                    let upload = Upload(order: order, asset: asset)
-                    tx.setObject(upload)
-                    order += 1
-                }
-
-                uploadCount = UploadsView.countUploading(tx)
-            }, completionBlock: {
-                DispatchQueue.main.async {
-                    self.alertCannotUploadNoWifi(count: uploadCount) { [weak self] in
-                        self?.navigationController?.popViewController(animated: true)
-                    }
-                }
-            })
+            if Settings.wifiOnly && UploadManager.shared.reachability?.connection == .unavailable {
+                self.showWifiAlert()
+            } else {
+                self.performUpload()
+            }
         }
+    }
+
+    private func performUpload() {
+        Db.writeConn?.asyncReadWrite({ tx in
+            guard let group = self.sc.group else {
+                return
+            }
+
+            var order = 0
+
+            tx.iterate { (_, upload: Upload, _) in
+                if upload.order >= order {
+                    order = upload.order + 1
+                }
+            }
+
+            if let collection: Collection = tx.object(for: self.sc.id) {
+                collection.close()
+                tx.setObject(collection)
+            }
+
+            tx.iterate(group: group, in: AbcFilteredByCollectionView.name) { (_, _, asset: Asset, _, _) in
+                let upload = Upload(order: order, asset: asset)
+                tx.setObject(upload)
+                order += 1
+            }
+        }, completionBlock: {
+            DispatchQueue.main.async {
+                self.navigationController?.popViewController(animated: true)
+            }
+        })
     }
 
     func showMediaPickerSheet() {
@@ -201,46 +203,26 @@ final class PreviewViewController: UIHostingController<PreviewFlowContainerView>
         present(popup, animated: true)
     }
 
-    func alertCannotUploadNoWifi(count: Int? = nil, _ completed: (() -> Void)? = nil) {
-        guard Settings.wifiOnly && UploadManager.shared.reachability?.connection == .unavailable,
-              let topVc = UIApplication.shared.delegate?.window??.rootViewController?.top
-        else {
-            completed?()
-            return
-        }
-
-        var ownCount = count ?? 0
-
-        if count == nil {
-            Db.bgRwConn?.read { tx in
-                ownCount = UploadsView.countUploading(tx)
-            }
-        }
-
-        guard ownCount > 0 else {
-            completed?()
-            return
-        }
-
+    private func showWifiAlert() {
         let message = NSLocalizedString(
             "Uploads are blocked until you connect to a Wi-Fi network or allow uploads over a mobile connection again.",
             comment: ""
-        ) + "\n"
+        )
 
         let title = NSLocalizedString("Wi-Fi not connected", comment: "")
 
         let actions = [
             AlertHelper.cancelAction(NSLocalizedString("Ignore", comment: ""), handler: {
-                completed?()
+                self.performUpload()
             }),
-            AlertHelper.destructiveAction(NSLocalizedString("Allow any connection", comment: ""), handler: {
+            AlertHelper.defaultAction(NSLocalizedString("Allow any connection", comment: ""), handler: {
                 Settings.wifiOnly = false
                 NotificationCenter.default.post(name: .uploadManagerDataUsageChange, object: Settings.wifiOnly)
-                completed?()
+                self.performUpload()
             }),
         ]
 
-        AlertHelper.present(topVc, message: message, title: title, actions: actions)
+        AlertHelper.present(self, message: message, title: title, actions: actions)
     }
 }
 

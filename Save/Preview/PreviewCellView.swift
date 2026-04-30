@@ -16,6 +16,7 @@ struct PreviewCellView: View {
     
     @State private var thumbnail: UIImage?
     @State private var currentAssetId: String?
+    @State private var loadFailed = false
     
     var body: some View {
         GeometryReader { geometry in
@@ -47,6 +48,7 @@ struct PreviewCellView: View {
         .onChange(of: asset.id) { newId in
             thumbnail = nil
             currentAssetId = nil
+            loadFailed = false
             loadThumbnail()
         }
         .onChange(of: refreshId) { _ in
@@ -65,12 +67,19 @@ struct PreviewCellView: View {
                     .aspectRatio(contentMode: .fill)
                     .frame(width: size.width, height: size.width)
                     .clipped()
-            } else {
+            } else if loadFailed {
                 Image("NoImage")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .frame(width: size.width, height: size.width)
                     .clipped()
+            } else {
+                Color(.systemGray6)
+                    .frame(width: size.width, height: size.width)
+                    .overlay(
+                        ProgressView()
+                            .tint(.gray)
+                    )
             }
         } else {
             defaultFileTypeView
@@ -103,14 +112,18 @@ struct PreviewCellView: View {
     
     private func loadThumbnail() {
         guard asset.hasThumbnail() else { return }
-        
+
         let assetId = asset.id
         currentAssetId = assetId
-        
+
         asset.getThumbnailAsync { loadedThumbnail in
             DispatchQueue.main.async {
                 guard self.currentAssetId == assetId else { return }
-                self.thumbnail = loadedThumbnail
+                if let image = loadedThumbnail {
+                    self.thumbnail = image
+                } else {
+                    self.loadFailed = true
+                }
             }
         }
     }

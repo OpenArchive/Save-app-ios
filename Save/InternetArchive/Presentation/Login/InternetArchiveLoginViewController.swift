@@ -26,6 +26,7 @@ class InternetArchiveLoginViewController: UIHostingController<InternetArchiveLog
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        view.backgroundColor = .systemBackground
         viewModel.onNext = { [weak self] space in
             self?.onNext(space)
         }
