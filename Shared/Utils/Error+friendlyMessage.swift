@@ -10,6 +10,24 @@ import Foundation
 
 extension Error {
 
+    /// Offline / path-loss style `URLError`s — retried automatically when reachability returns (upload stays unpaused unless max retries / SaveError). Includes `cannotConnectToHost` for common “no route” cases.
+    var isLikelyConnectivityFailure: Bool {
+        let ns = self as NSError
+        guard ns.domain == NSURLErrorDomain else { return false }
+        switch ns.code {
+        case URLError.notConnectedToInternet.rawValue,
+             URLError.networkConnectionLost.rawValue,
+             URLError.cannotConnectToHost.rawValue,
+             URLError.dataNotAllowed.rawValue,
+             URLError.internationalRoamingOff.rawValue,
+             URLError.callIsActive.rawValue,
+             URLError.dnsLookupFailed.rawValue:
+            return true
+        default:
+            return false
+        }
+    }
+
     var friendlyMessage: String {
         if let error = self as? SaveError {
             switch error {

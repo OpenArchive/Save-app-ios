@@ -229,16 +229,6 @@ struct AsyncThumbnailView: View {
     }
 }
 
-struct ScrollDismissesKeyboardModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(iOS 16.0, *) {
-            content.scrollDismissesKeyboard(.interactively)
-        } else {
-            content
-        }
-    }
-}
-
 struct RoundedCorner: Shape {
     var radius: CGFloat
     var corners: UIRectCorner

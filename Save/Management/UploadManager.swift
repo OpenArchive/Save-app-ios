@@ -201,7 +201,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         
         progressTimer = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
         progressTimer?.schedule(deadline: .now(), repeating: .seconds(1))
-        progressTimer?.setEventHandler {
+        progressTimer?.setEventHandler { [weak self] in
+            guard let self else { return }
             if let upload = self.current,
                upload.hasProgressChanged() {
 
@@ -441,47 +442,48 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 upload.liveProgress = nil
                 upload.progress = 0
 
+                let failureMessage = error?.friendlyMessage ?? (
+                    url == nil ? NSLocalizedString("No URL provided.", comment: "")
+                    : NSLocalizedString("Unknown error.", comment: ""))
+
+                // When false, we only refresh `upload.error` (e.g. already-paused job or global pause) — no retry counter bump.
+                var didProcessActiveFailure = false
+
                 if !upload.paused && !self.globalPause {
+                    didProcessActiveFailure = true
                     // Circuit breaker pattern: Increase circuit breaker counter on error.
                     space?.tries += 1
                     space?.lastTry = Date()
 
                     upload.tries += 1
-                    // We stop retrying, if the server denies us, or as soon as we hit the maximum number of retries.
-                    upload.paused = error is SaveError || UploadManager.maxRetries <= upload.tries
-                    upload.lastTry = Date()
-
-                    upload.error = error?.friendlyMessage ?? (
-                        url == nil ? NSLocalizedString("No URL provided.", comment: "")
-                        : NSLocalizedString("Unknown error.", comment: ""))
-
-                    if upload.paused {
-                       // let filesize = upload.asset?.filesize
-
-//                        let data: [String: String?] = [
-//                            "error": upload.error,
-//                            "filesize": filesize != nil ? String(filesize!) : nil,
-//                            "type": upload.asset?.uti.identifier,
-//                            "retries": String(upload.tries),
-//                            "network": self.reachability?.connection.description]
-
-                        // Track upload failed
-                        let backendType = space is WebDavSpace ? "WebDAV" : (space is IaSpace ? "Internet Archive" : nil)
-                        if let backendType = backendType {
-                            let fileType = AnalyticsEvent.mediaType(from: asset.file)
-                            let fileSizeKB = Int((asset.filesize ?? 0) / 1024)
-                            let errorCategory = error != nil ? "upload_error" : "no_url"
-
-                            trackEvent(.uploadFailed(
-                                backendType: backendType,
-                                fileType: fileType,
-                                errorCategory: errorCategory,
-                                fileSizeKB: fileSizeKB
-                            ))
-
-                            SessionManager.shared.incrementUploadsFailed()
-                        }
+                    // Reachability-style errors: keep unpaused (unless SaveError / max retries) so reachability + scheduler can retry when online.
+                    // Any other upload error: pause so the user must tap Retry — avoids endless automatic retries that never fix bad state.
+                    let connectivityFailure = error?.isLikelyConnectivityFailure ?? false
+                    if connectivityFailure {
+                        upload.paused = error is SaveError || UploadManager.maxRetries <= upload.tries
+                    } else {
+                        upload.paused = true
                     }
+                    upload.lastTry = Date()
+                    upload.error = failureMessage
+                } else {
+                    // Upload was already paused or manager is globally paused — still refresh error for UI / debugging.
+                    upload.error = failureMessage
+                }
+
+                // Count every failed attempt where we advanced retry state (includes connectivity auto-retry path when still unpaused).
+                if didProcessActiveFailure,
+                   let backendType = space is WebDavSpace ? "WebDAV" : (space is IaSpace ? "Internet Archive" : nil) {
+                    let fileType = AnalyticsEvent.mediaType(from: asset.file)
+                    let fileSizeKB = Int((asset.filesize ?? 0) / 1024)
+                    let errorCategory = error != nil ? "upload_error" : "no_url"
+                    trackEvent(.uploadFailed(
+                        backendType: backendType,
+                        fileType: fileType,
+                        errorCategory: errorCategory,
+                        fileSizeKB: fileSizeKB
+                    ))
+                    SessionManager.shared.incrementUploadsFailed()
                 }
 
                 collection = nil
@@ -818,6 +820,23 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 
                 storeCurrent()
                 
+                current = nil
+            } else {
+                // Retry (e.g. from media grid) while this job is still `current` — previously did nothing.
+                current?.cancel()
+                current?.paused = false
+                current?.error = nil
+                current?.tries = 0
+                current?.lastTry = nil
+                current?.progress = 0
+                if let space = current?.asset?.space {
+                    space.tries = 0
+                    space.lastTry = nil
+                    Db.bgRwConn?.readWrite { tx in
+                        tx.replace(space, forKey: space.id, inCollection: Space.collection)
+                    }
+                }
+                storeCurrent()
                 current = nil
             }
         }
