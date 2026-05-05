@@ -8,8 +8,8 @@ Designed with and for newsrooms, human rights defenders, and archivists, Save ke
 
 ## Author
 
-Benjamin Erhart, Die Netzarchitekten e.U.
-https://die.netzarchitekten.com/
+OpenArchive
+https://www.open-archive.org/
 
 ## Translators
 
@@ -29,7 +29,7 @@ Thank you very much, folks!
 
 ## Copyright
 
-2019 - 2024 OpenArchive
+2019 - 2026 OpenArchive
 https://open-archive.org/
 
 ## Contributing
