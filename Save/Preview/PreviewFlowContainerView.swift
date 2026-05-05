@@ -45,7 +45,8 @@ struct PreviewFlowContainerView: View {
                 PreviewView(
                     onNavigateToDarkroom: { session.goDarkroom($0) },
                     onNavigateToBatchEdit: { session.goBatchEdit(assetIds: $0.map(\.id)) },
-                    onAddAssets: { session.viewController?.showMediaPickerSheet() },
+                    onAddAssets: { session.viewController?.openGallery() },
+                    onLongPressAddAssets: { session.viewController?.showMediaPickerSheet() },
                     onUploadComplete: { session.viewController?.popFromMainNavigation() }
                 )
             case .darkroom(let index):

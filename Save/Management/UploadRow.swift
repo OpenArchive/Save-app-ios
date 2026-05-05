@@ -70,14 +70,26 @@ struct UploadRow: View {
             }
             
             VStack(alignment: .leading, spacing: 4) {
-                Text(upload.filename)
-                    .font(.montserrat(.medium, for: .subheadline))
-                    .lineLimit(2)
-                    .foregroundColor(Color(UIColor.label))
+                if showError {
+                    Text("Error : \(upload.filename)")
+                        .font(.montserrat(.medium, for: .subheadline))
+                        .lineLimit(2)
+                        .foregroundColor(Color(UIColor.label))
 
-                Text(sizeText)
-                    .font(.montserrat(.regular, for: .caption))
-                    .foregroundColor(Color(.gray70))
+                    Text(upload.error ?? "")
+                        .font(.montserrat(.regular, for: .caption))
+                        .foregroundColor(.redButton)
+                        .lineLimit(2)
+                } else {
+                    Text(upload.filename)
+                        .font(.montserrat(.medium, for: .subheadline))
+                        .lineLimit(2)
+                        .foregroundColor(Color(UIColor.label))
+
+                    Text(sizeText)
+                        .font(.montserrat(.regular, for: .caption))
+                        .foregroundColor(Color(.gray70))
+                }
             }
             .padding(.trailing, 8)
 

@@ -72,7 +72,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
     var reachability: Reachability? = {
         var reachability = try? Reachability()
-        reachability?.allowsCellularConnection = !Settings.wifiOnly
+        reachability?.allowsCellularConnection = !Settings.wifiOnly || Settings.cellularOverride
 
         return reachability
     }()
@@ -90,7 +90,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     private var lastProgressDate: Date?
 
     /// How long an upload can be stuck without progress before timing out.
-    private static let uploadTimeoutInterval: TimeInterval = 120
+    private static let uploadTimeoutInterval: TimeInterval = 30
     
     private var scheduler: Timer?
     
@@ -222,7 +222,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                Date().timeIntervalSince(lastProgress) > Self.uploadTimeoutInterval {
                 self.debug("#timeout detected for \(upload)")
                 upload.cancel()
-                upload.error = NSLocalizedString("Upload timed out. Tap to retry.", comment: "")
+                upload.error = NSLocalizedString("Upload timed out.", comment: "")
                 upload.tries += 1
                 self.storeCurrent()
                 self.current = nil
@@ -436,7 +436,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             let collection: Collection?
             let space = asset.space
 
-            if error != nil || url == nil {
+            if (error != nil || url == nil) && !asset.isUploaded {
                 asset.setUploaded(nil)
 
                 upload.liveProgress = nil
@@ -489,7 +489,12 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 collection = nil
             }
             else {
-                asset.setUploaded(url)
+                // Only call setUploaded if we have a valid URL; if the asset
+                // is already marked uploaded (race condition / background task),
+                // skip to avoid overwriting with nil and deleting the file again.
+                if let url = url {
+                    asset.setUploaded(url)
+                }
 
                 // Circuit breaker pattern: Reset circuit breaker counter on success.
                 space?.tries = 0
@@ -558,7 +563,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         
         debug("#dataUsageChanged wifiOnly=\(wifiOnly)")
         
-        reachability?.allowsCellularConnection = !wifiOnly
+        reachability?.allowsCellularConnection = !wifiOnly || Settings.cellularOverride
         
         reachabilityChanged(notification: Notification(name: .reachabilityChanged))
     }
@@ -822,6 +827,16 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 
                 current = nil
             } else {
+                // If asset is already uploaded, just clear the error state — don't re-upload.
+                if let asset = current?.asset, asset.isUploaded {
+                    current?.cancel()
+                    current?.paused = false
+                    current?.error = nil
+                    current?.progress = 1.0
+                    storeCurrent()
+                    current = nil
+                    return
+                }
                 // Retry (e.g. from media grid) while this job is still `current` — previously did nothing.
                 current?.cancel()
                 current?.paused = false
@@ -849,12 +864,21 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                         upload.paused = true
                     }
                     else {
+                        // If asset is already uploaded, just clear error — don't re-upload.
+                        if let asset = upload.asset, asset.isUploaded {
+                            upload.paused = false
+                            upload.error = nil
+                            upload.progress = 1.0
+                            tx.replace(upload)
+                            return
+                        }
+
                         upload.paused = false
                         upload.error = nil
                         upload.tries = 0
                         upload.lastTry = nil
                         upload.progress = 0
-                        
+
                         // Also reset circuit-breaker. Otherwise users will get confused.
                         if let space = upload.asset?.space {
                             space.tries = 0

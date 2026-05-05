@@ -156,7 +156,8 @@ final class MainScreenCoordinator: SideMenuDelegate {
     }
 
     func toggleSettings() {
-        uiState.isSettingsVisible ? hideSettings() : showSettings()
+        guard !uiState.isSettingsVisible else { return }
+        showSettings()
     }
 
     private func showSettings() {

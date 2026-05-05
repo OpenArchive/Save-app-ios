@@ -12,6 +12,7 @@ class Settings {
 
     private static let kWifiOnly = "wifi_only"
     private static let kHighCompression = "high_compression"
+    private static let kCellularOverride = "cellular_override"
 
     private static let kProofMode = "proof_mode"
     private static let kProofModeEncryptedPassphrase = "proof_mode_encrypted_passphrase"
@@ -50,6 +51,16 @@ class Settings {
         }
         set {
             defaults?.set(newValue, forKey: kWifiOnly)
+        }
+    }
+
+    /// User tapped "Ignore" on the WiFi alert — allow cellular uploads even with wifiOnly on.
+    class var cellularOverride: Bool {
+        get {
+            defaults?.bool(forKey: kCellularOverride) ?? false
+        }
+        set {
+            defaults?.set(newValue, forKey: kCellularOverride)
         }
     }
 

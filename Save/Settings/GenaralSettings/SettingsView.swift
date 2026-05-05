@@ -316,6 +316,9 @@ struct SettingsView: View {
         sectionModifier(NSLocalizedString("Archive", comment: "")) {
             ToggleSwitch(title: NSLocalizedString("Only upload media when you are connected to Wi-Fi", comment: ""), isOn: $viewModel.isWifiOnlyOn) { value in
                 Settings.wifiOnly = value
+                if value {
+                    Settings.cellularOverride = false
+                }
                 trackFeatureToggled(featureName: "wifi_only_upload", enabled: value)
                 NotificationCenter.default.post(name: .uploadManagerDataUsageChange, object: value)
             }

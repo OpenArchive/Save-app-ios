@@ -146,10 +146,12 @@ final class PreviewViewController: UIHostingController<PreviewFlowContainerView>
 
     @objc private func upload() {
         UploadInfoAlert.presentIfNeeded(viewController: self) {
-            if Settings.wifiOnly && UploadManager.shared.reachability?.connection == .unavailable {
-                self.showWifiAlert()
-            } else {
-                self.performUpload()
+            DispatchQueue.main.async {
+                if Settings.wifiOnly && UploadManager.shared.reachability?.connection == .unavailable {
+                    self.showWifiAlert()
+                } else {
+                    self.performUpload()
+                }
             }
         }
     }
@@ -183,6 +185,10 @@ final class PreviewViewController: UIHostingController<PreviewFlowContainerView>
                 self.navigationController?.popViewController(animated: true)
             }
         })
+    }
+
+    func openGallery() {
+        assetPicker.pickMedia()
     }
 
     func showMediaPickerSheet() {

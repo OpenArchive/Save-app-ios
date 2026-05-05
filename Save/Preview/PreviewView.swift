@@ -13,6 +13,7 @@ struct PreviewView: View {
     var onNavigateToDarkroom: ((Int) -> Void)?
     var onNavigateToBatchEdit: (([Asset]) -> Void)?
     var onAddAssets: (() -> Void)?
+    var onLongPressAddAssets: (() -> Void)?
     var onUploadComplete: (() -> Void)?
     
     private let spacing: CGFloat = 4
@@ -133,6 +134,9 @@ struct PreviewView: View {
             .cornerRadius(8)
         }
         .buttonStyle(PlainButtonStyle())
+        .simultaneousGesture(LongPressGesture(minimumDuration: 0.5).onEnded { _ in
+            onLongPressAddAssets?()
+        })
         .padding(.horizontal, 75)
     }
     

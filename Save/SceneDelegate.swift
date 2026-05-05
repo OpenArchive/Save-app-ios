@@ -14,6 +14,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     private var hadResigned = false
+    private var captureChangeToken: NSObjectProtocol?
 
     static var current: SceneDelegate? {
         UIApplication.shared.connectedScenes
@@ -37,6 +38,23 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
         // Apply saved theme (window exists now; didFinishLaunching runs before scene exists)
         (UIApplication.shared.delegate as? AppDelegateBase)?.applyTheme(AppSettings.theme)
+
+        captureChangeToken = NotificationCenter.default.addObserver(
+            forName: UIScreen.capturedDidChangeNotification,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            self?.syncCapturePrivacyOverlay()
+        }
+        syncCapturePrivacyOverlay()
+    }
+
+    func sceneDidDisconnect(_ scene: UIScene) {
+        if let captureChangeToken {
+            NotificationCenter.default.removeObserver(captureChangeToken)
+            self.captureChangeToken = nil
+        }
+        BlurredSnapshot.setCapturePrivacyEnabled(false, window: nil)
     }
 
     func sceneWillResignActive(_ scene: UIScene) {
@@ -65,7 +83,17 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         if AppSettings.passcodeEnabled {
             BlurredSnapshot.remove()
         }
+        syncCapturePrivacyOverlay()
         maybePromptForReview()
+    }
+
+    private func syncCapturePrivacyOverlay() {
+        guard AppSettings.passcodeEnabled else {
+            BlurredSnapshot.setCapturePrivacyEnabled(false, window: nil)
+            return
+        }
+        let captured = window?.windowScene?.screen.isCaptured ?? false
+        BlurredSnapshot.setCapturePrivacyEnabled(captured, window: window)
     }
 
     // MARK: - Passcode
