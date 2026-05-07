@@ -87,7 +87,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         maybePromptForReview()
     }
 
-    private func syncCapturePrivacyOverlay() {
+    func syncCapturePrivacyOverlay() {
         guard AppSettings.passcodeEnabled else {
             BlurredSnapshot.setCapturePrivacyEnabled(false, window: nil)
             return

@@ -56,6 +56,11 @@ class PasscodeRepository {
         }
         
         AppSettings.passcodeEnabled = true
+
+        // If screen recording is already active, apply privacy overlay immediately
+        if let sceneDelegate = SceneDelegate.current {
+            sceneDelegate.syncCapturePrivacyOverlay()
+        }
     }
 
     func getPasscodeHashAndSalt() -> (hash: Data?, salt: Data?) {
@@ -97,6 +102,11 @@ class PasscodeRepository {
         KeychainHelper.delete(key: passcodeSaltKey)
         
         AppSettings.passcodeEnabled = false
+
+        // Remove screen recording privacy overlay since passcode is now off
+        if let sceneDelegate = SceneDelegate.current {
+            sceneDelegate.syncCapturePrivacyOverlay()
+        }
 
         resetFailedAttempts()
     }
