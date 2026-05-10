@@ -90,7 +90,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     private var lastProgressDate: Date?
 
     /// How long an upload can be stuck without progress before timing out.
-    private static let uploadTimeoutInterval: TimeInterval = 30
+    private static let uploadTimeoutInterval: TimeInterval = 60
     
     private var scheduler: Timer?
     
