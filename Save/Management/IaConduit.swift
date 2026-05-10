@@ -31,17 +31,6 @@ class IaConduit: Conduit {
             return progress
         }
         
-        let error = copyMetadataWithoutProofmode(to: url.deletingLastPathComponent(), progress,
-                                                 headers: generateHeaders(accessKey, secretKey, forMetadata: true))
-        
-        if  progress.isCancelled {
-            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
-                self.done(uploadId, error: error)
-            }
-            
-            return progress
-        }
-        
         //Fix to 10% from here, so uploaded bytes can be calculated properly
         // in `UploadCell.upload#didSet`!
         progress.completedUnitCount = 10
@@ -52,6 +41,13 @@ class IaConduit: Conduit {
                               userInfo: [NSLocalizedDescriptionKey: "File not found: \(file.path)"])
             DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
                 self.done(uploadId, error: error)
+            }
+            return progress
+        }
+
+        if isAlreadyUploaded(fileName: file.lastPathComponent, accessKey: accessKey, secretKey: secretKey, uploadUrl: url) {
+            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.2) {
+                self.done(uploadId, url: url)
             }
             return progress
         }
@@ -121,17 +117,19 @@ class IaConduit: Conduit {
     // MARK: Private Methods
     
     private func generateHeaders(_ accessKey: String, _ secretKey: String, forMetadata: Bool = false) -> [String: String] {
+        let mediaType = mediatype(for: asset)
         var headers: [String: String] = [
             "Accept": "*/*",
             "authorization": "LOW \(accessKey):\(secretKey)",
             "x-amz-auto-make-bucket": "1",
             "x-archive-auto-make-bucket": "1",
+            "x-archive-meta-mediatype": mediaType,
         ]
         
 #if DEBUG
         headers["x-archive-meta-collection"] = "test_collection"
 #else
-        headers["x-archive-meta-collection"] = "opensource_media"
+        headers["x-archive-meta-collection"] = iaCollection(for: mediaType)
 #endif
         
         if forMetadata {
@@ -139,40 +137,39 @@ class IaConduit: Conduit {
         }
         else {
             headers["x-archive-interactive-priority"] = "1"
-            headers["x-archive-meta-mediatype"] = mediatype(for: asset)
             
             if let title = asset.title, !title.isEmpty {
-                headers["x-archive-meta-title"] = title
+                headers["x-archive-meta-title"] = Self.sanitizeHeaderValue(title)
             }
-            
+
             if let desc = asset.desc, !desc.isEmpty {
-                headers["x-archive-meta-description"] = desc
+                headers["x-archive-meta-description"] = Self.sanitizeHeaderValue(desc)
             }
-            
+
             if let author = asset.author, !author.isEmpty {
-                headers["x-archive-meta-author"] = author
+                headers["x-archive-meta-author"] = Self.sanitizeHeaderValue(author)
             }
-            
+
             if let location = asset.location, !location.isEmpty {
-                headers["x-archive-meta-location"] = location
+                headers["x-archive-meta-location"] = Self.sanitizeHeaderValue(location)
             }
-            
+
             if let notes = asset.notes, !notes.isEmpty {
-                headers["x-archive-meta-notes"] = notes
+                headers["x-archive-meta-notes"] = Self.sanitizeHeaderValue(notes)
             }
-            
+
             var subject = [String]()
-            
+
             if let projectName = asset.project?.name, !projectName.isEmpty {
                 subject.append(projectName)
             }
-            
+
             if let tags = asset.tags, tags.count > 0 {
                 subject.append(contentsOf: tags)
             }
-            
+
             if subject.count > 0 {
-                headers["x-archive-meta-subject"] = subject.joined(separator: ";")
+                headers["x-archive-meta-subject"] = Self.sanitizeHeaderValue(subject.joined(separator: ";"))
             }
             
             if let license = asset.license, !license.isEmpty {
@@ -274,20 +271,29 @@ class IaConduit: Conduit {
             return e
         }
     }
+
+    func uploadMetadataAfterContent() -> Error? {
+        guard let accessKey = asset.space?.username,
+              let secretKey = asset.space?.password,
+              let folderUrl = url(for: asset)?.deletingLastPathComponent()
+        else {
+            return nil
+        }
+
+        let progress = Progress(totalUnitCount: 1)
+        return copyMetadataWithoutProofmode(
+            to: folderUrl,
+            progress,
+            headers: generateHeaders(accessKey, secretKey, forMetadata: true)
+        )
+    }
+
     private func url(for asset: Asset) -> URL? {
         if let url = asset.publicUrl {
             return url
         }
-        
-        var slug = StringUtils.slug(asset.title != nil
-                                    ? asset.title!
-                                    : StringUtils.stripSuffix(from: asset.filename))
-        
-        slug = slug + "-" + StringUtils.random(4)
-        
-        //        slug = "IMG-0003-u4z6"
-        
-        return construct(url: IaSpace.baseUrl, slug, asset.filename)
+
+        return construct(url: IaSpace.baseUrl, stableIdentifier(for: asset), asset.filename)
     }
     
     private func mediatype(for asset: Asset) -> String {
@@ -304,5 +310,70 @@ class IaConduit: Conduit {
         }
         
         return "data"
+    }
+
+    private func iaCollection(for mediatype: String) -> String {
+        switch mediatype {
+        case "movies":
+            return "opensource_movies"
+        case "audio":
+            return "opensource_audio"
+        default:
+            return "opensource_media"
+        }
+    }
+
+    private func stableIdentifier(for asset: Asset) -> String {
+        if let identifier = asset.internetArchiveItemId, !identifier.isEmpty {
+            return identifier
+        }
+
+        let baseName = asset.title != nil
+            ? asset.title!
+            : StringUtils.stripSuffix(from: asset.filename)
+        let slug = StringUtils.slug(baseName) + "-" + StringUtils.random(4)
+        _ = asset.updateSync { proxy in
+            proxy.setInternetArchiveItemId(slug)
+        }
+        return slug
+    }
+
+    private func isAlreadyUploaded(fileName: String, accessKey: String, secretKey: String, uploadUrl: URL) -> Bool {
+        let identifier = uploadUrl.deletingLastPathComponent().lastPathComponent
+        guard !identifier.isEmpty,
+              let metadataUrl = URL(string: "https://archive.org/metadata/\(identifier)")
+        else {
+            return false
+        }
+
+        var request = URLRequest(url: metadataUrl)
+        request.httpMethod = "GET"
+        request.addValue("LOW \(accessKey):\(secretKey)", forHTTPHeaderField: "Authorization")
+
+        let semaphore = DispatchSemaphore(value: 0)
+        var isPresent = false
+
+        let task = foregroundSession.dataTask(with: request) { data, response, _ in
+            defer { semaphore.signal() }
+
+            guard let response = response as? HTTPURLResponse,
+                  (200...299).contains(response.statusCode),
+                  let data,
+                  let json = try? JSONSerialization.jsonObject(with: data) as? [String: Any],
+                  let files = json["files"] as? [[String: Any]]
+            else {
+                return
+            }
+
+            isPresent = files.contains { ($0["name"] as? String) == fileName }
+        }
+
+        task.resume()
+        _ = semaphore.wait(timeout: .now() + .seconds(15))
+        return isPresent
+    }
+
+    private static func sanitizeHeaderValue(_ value: String) -> String {
+        value.replacingOccurrences(of: "[\r\n\0]+", with: " ", options: .regularExpression).trimmingCharacters(in: .whitespaces)
     }
 }

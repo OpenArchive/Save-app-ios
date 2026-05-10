@@ -9,7 +9,6 @@
 import UIKit
 import YapDatabase
 import Reachability
-import Regex
 import BackgroundTasks
 import Photos
 import StoreKit
@@ -89,9 +88,29 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     /// Tracks when the current upload last made progress, for timeout detection.
     private var lastProgressDate: Date?
 
-    /// How long an upload can be stuck without progress before timing out.
-    private static let uploadTimeoutInterval: TimeInterval = 30
-    
+    /// Tracks when we last persisted progress to DB, for throttling writes.
+    private var lastStoreDate: Date?
+
+    private var progressTimerActive = false
+
+    /// How long a non-IA upload can be stuck without progress before timing out.
+    private static let uploadTimeoutInterval: TimeInterval = 60
+    private static let iaUploadTimeoutInterval: TimeInterval = 5 * 60
+
+    private static let schedulerInterval: TimeInterval = 10
+    private static let schedulerInitialDelay: TimeInterval = 5
+    private static let progressTrackingInterval: TimeInterval = 1
+    private static let progressStoreThrottleInterval: TimeInterval = 5
+
+    /// Chunk filenames use the format "%015d-%015d" (31 chars, all digits and one dash).
+    private static func isChunkFilename(_ name: String) -> Bool {
+        guard name.count == 31 else { return false }
+        let dashIndex = name.index(name.startIndex, offsetBy: 15)
+        return name[dashIndex] == "-"
+            && name[name.startIndex..<dashIndex].allSatisfy(\.isNumber)
+            && name[name.index(after: dashIndex)...].allSatisfy(\.isNumber)
+    }
+
     private var scheduler: Timer?
     
     private var backgroundTask = UIBackgroundTaskIdentifier.invalid
@@ -199,8 +218,14 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         
         try? reachability?.startNotifier()
         
+        if let oldTimer = progressTimer, !progressTimerActive {
+            oldTimer.resume()
+        }
+        progressTimer?.cancel()
+        progressTimerActive = false
+
         progressTimer = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
-        progressTimer?.schedule(deadline: .now(), repeating: .seconds(1))
+        progressTimer?.schedule(deadline: .now(), repeating: .seconds(Int(Self.progressTrackingInterval)))
         progressTimer?.setEventHandler { [weak self] in
             guard let self else { return }
             if let upload = self.current,
@@ -208,41 +233,53 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
                 self.debug("#progress tracker changed for \(upload))")
 
-                // Update internal _progress to latest progress, so #hasProgressChanged
-                // doesn't trigger anymore.
                 self.current?.progress = upload.progress
                 self.lastProgressDate = Date()
 
-                self.storeCurrent()
+                if self.lastStoreDate == nil ||
+                    Date().timeIntervalSince(self.lastStoreDate!) >= Self.progressStoreThrottleInterval {
+                    self.storeCurrent()
+                    self.lastStoreDate = Date()
+                }
             }
 
             // Timeout detection: if current upload has no progress for too long, mark as error.
             if let upload = self.current,
                let lastProgress = self.lastProgressDate,
-               Date().timeIntervalSince(lastProgress) > Self.uploadTimeoutInterval {
+               Date().timeIntervalSince(lastProgress) > self.uploadTimeoutInterval(for: upload) {
                 self.debug("#timeout detected for \(upload)")
                 upload.cancel()
                 upload.error = NSLocalizedString("Upload timed out.", comment: "")
                 upload.tries += 1
+                upload.retryAfterUntil = nil
                 self.storeCurrent()
                 self.current = nil
                 self.lastProgressDate = nil
+                self.stopProgressTracking()
                 self.uploadNext()
             }
         }
         
-        progressTimer?.resume()
-        
-        scheduler = Timer(fireAt: Date().addingTimeInterval(5), interval: 10,
+        scheduler = Timer(fireAt: Date().addingTimeInterval(Self.schedulerInitialDelay),
+                          interval: Self.schedulerInterval,
                           target: self, selector: #selector(uploadNext),
                           userInfo: nil, repeats: true)
-        
-        // Schedule a timer, which calls #uploadNext every 10 seconds beginning
-        // in 5 seconds.
+
         RunLoop.main.add(scheduler!, forMode: .common)
     }
-    
-    
+
+    private func startProgressTracking() {
+        guard !progressTimerActive else { return }
+        progressTimerActive = true
+        progressTimer?.resume()
+    }
+
+    private func stopProgressTracking() {
+        guard progressTimerActive else { return }
+        progressTimerActive = false
+        progressTimer?.suspend()
+    }
+
     // MARK: URLSessionTaskDelegate
     
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
@@ -261,11 +298,21 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             try? FileManager.default.removeItem(at: tempFileURL)
         }
 
-        // Ignore incomplete tasks. Ignore canceled tasks.
+        // Ignore incomplete tasks.
         guard task.state == .completed,
-              let url = task.originalRequest?.url,
-              (error as? NSError)?.code != -999 /* cancelled */
+              let url = task.originalRequest?.url
         else {
+            return
+        }
+
+        // Cancelled tasks: mark as error and move to next upload.
+        if (error as? NSError)?.code == -999 {
+            debug("#task:cancelled — marking error and moving to next")
+            queue.async {
+                if let upload = self.current, upload.filename == url.lastPathComponent {
+                    self.done(upload.id, error, url)
+                }
+            }
             return
         }
 
@@ -273,41 +320,41 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
         // Ignore Metadata files.
         for file in Asset.Files.allCases {
-            if !file.isInternal && filename =~ "\(file.rawValue)$" {
+            if !file.isInternal && filename.hasSuffix(file.rawValue) {
                 return
             }
         }
 
-        guard task is URLSessionUploadTask && filename !~ "\\d{15}-\\d{15}" /* ignore chunks */ else {
+        guard task is URLSessionUploadTask && !Self.isChunkFilename(filename) else {
             return
         }
 
-        if current?.filename == filename {
-            done(current?.id, error, url, synchronous: true)
+        var effectiveError = error
+        if let httpResponse = task.response as? HTTPURLResponse {
+            debug("#task:httpStatus=\(httpResponse.statusCode) url=\(url.absoluteString)")
+            if effectiveError == nil && !(200...299).contains(httpResponse.statusCode) {
+                let retryAfter = retryAfterSeconds(from: httpResponse)
+                effectiveError = SaveError.http(status: httpResponse.statusCode, retryAfter: retryAfter)
+            }
         }
-        else {
-            if let found = Db.bgRwConn?.find(group: UploadsView.groups.first, in: UploadsView.name, where: { (tx, upload: inout Upload) in
 
-                // Look at next, if it's paused or delayed.
-                guard !upload.paused else {
-                    return false
+        queue.async {
+            if self.current?.filename == filename {
+                self.done(self.current?.id, effectiveError, url)
+            } else {
+                if let found = Db.bgRwConn?.find(group: UploadsView.groups.first, in: UploadsView.name, where: { (tx, upload: inout Upload) in
+                    guard !upload.paused else {
+                        return false
+                    }
+                    upload.preheat(tx)
+                    guard upload.filename == filename && upload.isReady else {
+                        return false
+                    }
+                    return true
+                }) {
+                    self.current = found
+                    self.done(found.id, effectiveError, url)
                 }
-
-                // First attach object chain to upload before next call,
-                // otherwise, that will trigger more DB reads and with that
-                // a deadlock.
-                upload.preheat(tx)
-
-                // Look at next, if it's not ready, yet.
-                guard  upload.filename == filename && upload.isReady else {
-                    return false
-                }
-
-                return true
-            })
-            {
-                current = found // Otherwise next call will do nothing.
-                done(found.id, error, url, synchronous: true)
             }
         }
     }
@@ -416,15 +463,15 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
      - parameter error: An eventual error that happened.
      - parameter url: The URL the file was saved to.
      */
-    private func done(_ id: String?, _ error: Error?, _ url: URL? = nil, synchronous: Bool = false) {
+    private func done(_ id: String?, _ error: Error?, _ url: URL? = nil) {
         debug("#done")
-        
+
         guard let id = id else {
             return endBackgroundTask(.failed)
         }
-        
+
         debug("#done id=\(id), error=\(String(describing: error)), url=\(url?.absoluteString ?? "nil")")
-        
+
         let work: () -> Void = {
             guard id == self.current?.id,
                   let upload = self.current,
@@ -432,124 +479,141 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             else {
                 return self.endBackgroundTask(.failed)
             }
-            
-            let collection: Collection?
+
             let space = asset.space
+            let collection: Collection?
 
             if (error != nil || url == nil) && !asset.isUploaded {
-                asset.setUploaded(nil)
-
-                upload.liveProgress = nil
-                upload.progress = 0
-
-                let failureMessage = error?.friendlyMessage ?? (
-                    url == nil ? NSLocalizedString("No URL provided.", comment: "")
-                    : NSLocalizedString("Unknown error.", comment: ""))
-
-                // When false, we only refresh `upload.error` (e.g. already-paused job or global pause) — no retry counter bump.
-                var didProcessActiveFailure = false
-
-                if !upload.paused && !self.globalPause {
-                    didProcessActiveFailure = true
-                    // Circuit breaker pattern: Increase circuit breaker counter on error.
-                    space?.tries += 1
-                    space?.lastTry = Date()
-
-                    upload.tries += 1
-                    // Reachability-style errors: keep unpaused (unless SaveError / max retries) so reachability + scheduler can retry when online.
-                    // Any other upload error: pause so the user must tap Retry — avoids endless automatic retries that never fix bad state.
-                    let connectivityFailure = error?.isLikelyConnectivityFailure ?? false
-                    if connectivityFailure {
-                        upload.paused = error is SaveError || UploadManager.maxRetries <= upload.tries
-                    } else {
-                        upload.paused = true
-                    }
-                    upload.lastTry = Date()
-                    upload.error = failureMessage
-                } else {
-                    // Upload was already paused or manager is globally paused — still refresh error for UI / debugging.
-                    upload.error = failureMessage
-                }
-
-                // Count every failed attempt where we advanced retry state (includes connectivity auto-retry path when still unpaused).
-                if didProcessActiveFailure,
-                   let backendType = space is WebDavSpace ? "WebDAV" : (space is IaSpace ? "Internet Archive" : nil) {
-                    let fileType = AnalyticsEvent.mediaType(from: asset.file)
-                    let fileSizeKB = Int((asset.filesize ?? 0) / 1024)
-                    let errorCategory = error != nil ? "upload_error" : "no_url"
-                    trackEvent(.uploadFailed(
-                        backendType: backendType,
-                        fileType: fileType,
-                        errorCategory: errorCategory,
-                        fileSizeKB: fileSizeKB
-                    ))
-                    SessionManager.shared.incrementUploadsFailed()
-                }
-
-                collection = nil
+                collection = self.handleUploadFailure(upload: upload, asset: asset, space: space, error: error, url: url)
+            } else {
+                collection = self.handleUploadSuccess(upload: upload, asset: asset, space: space, url: url)
             }
-            else {
-                // Only call setUploaded if we have a valid URL; if the asset
-                // is already marked uploaded (race condition / background task),
-                // skip to avoid overwriting with nil and deleting the file again.
-                if let url = url {
-                    asset.setUploaded(url)
-                }
 
-                // Circuit breaker pattern: Reset circuit breaker counter on success.
-                space?.tries = 0
-                space?.lastTry = nil
+            self.persistDoneState(upload: upload, asset: asset, collection: collection, space: space)
 
-                collection = asset.collection
-                collection?.setUploadedNow()
-
-                // Track upload completed
-                let backendType = space is WebDavSpace ? "WebDAV" : (space is IaSpace ? "Internet Archive" : nil)
-                if let backendType = backendType, let startTime = upload.startTime {
-                    let duration = Date().timeIntervalSince(startTime)
-                    let fileType = AnalyticsEvent.mediaType(from: asset.file)
-                    let fileSizeKB = Int((asset.filesize ?? 0) / 1024)
-                    let uploadSpeedKbps = duration > 0 ? Double(fileSizeKB) / duration : 0
-
-                    trackEvent(.uploadCompleted(
-                        backendType: backendType,
-                        fileType: fileType,
-                        fileSizeKB: fileSizeKB,
-                        durationSeconds: duration,
-                        uploadSpeedKbps: uploadSpeedKbps
-                    ))
-
-                    SessionManager.shared.incrementUploadsCompleted()
-                }
-            }
-            
-            Db.writeConn?.readWrite { tx in
-                tx.replace(upload)
-                
-                if let collection = collection {
-                    tx.replace(collection)
-                }
-                
-                if let space = space {
-                    tx.replace(space, forKey: space.id, inCollection: Space.collection)
-                }
-                
-                tx.replace(asset)
-            }
-            
             self.current = nil
             self.lastProgressDate = nil
+            self.lastStoreDate = nil
+            self.stopProgressTracking()
 
             self.endBackgroundTask(asset.isUploaded ? .newData : .failed)
-            
+
             self.uploadNext()
         }
-        
-        if synchronous {
-            work()
+
+        queue.async(execute: work)
+    }
+
+    private func handleUploadFailure(upload: Upload, asset: Asset, space: Space?, error: Error?, url: URL?) -> Collection? {
+        asset.setUploaded(nil)
+
+        upload.liveProgress = nil
+        upload.progress = 0
+
+        let failureMessage = error?.friendlyMessage ?? (
+            url == nil ? NSLocalizedString("No URL provided.", comment: "")
+            : NSLocalizedString("Unknown error.", comment: ""))
+
+        var didProcessActiveFailure = false
+        let isInvalidIaCredentials: Bool = {
+            guard space is IaSpace,
+                  let saveError = error as? SaveError,
+                  case .http(let status, _) = saveError else {
+                return false
+            }
+            return status == 401
+        }()
+
+        if !upload.paused && !globalPause {
+            didProcessActiveFailure = true
+            if !isInvalidIaCredentials {
+                space?.tries += 1
+                space?.lastTry = Date()
+            }
+
+            upload.tries += 1
+            if error?.isRetryable ?? false {
+                upload.paused = UploadManager.maxRetries <= upload.tries
+            } else {
+                upload.paused = true
+            }
+            upload.lastTry = Date()
+            upload.retryAfterUntil = retryAfterUntil(for: error)
+            upload.error = isInvalidIaCredentials
+                ? NSLocalizedString("Internet Archive credentials expired. Please remove and re-add your account.", comment: "")
+                : failureMessage
+        } else {
+            upload.error = failureMessage
         }
-        else {
-            queue.async(execute: work)
+
+        if didProcessActiveFailure, let backendType = space?.backendType {
+            let fileType = AnalyticsEvent.mediaType(from: asset.file)
+            let fileSizeKB = Int((asset.filesize ?? 0) / 1024)
+            let errorCategory = error != nil ? "upload_error" : "no_url"
+            trackEvent(.uploadFailed(
+                backendType: backendType,
+                fileType: fileType,
+                errorCategory: errorCategory,
+                fileSizeKB: fileSizeKB
+            ))
+            SessionManager.shared.incrementUploadsFailed()
+        }
+
+        return nil
+    }
+
+    private func handleUploadSuccess(upload: Upload, asset: Asset, space: Space?, url: URL?) -> Collection? {
+        if space is IaSpace {
+            let iaConduit = IaConduit(asset, backgroundSession, foregroundSession)
+            if let metadataError = iaConduit.uploadMetadataAfterContent() {
+                debug("#IA metadata upload failed after content success: \(metadataError.localizedDescription)")
+            }
+        }
+
+        if let url = url {
+            asset.setUploaded(url)
+        }
+        upload.retryAfterUntil = nil
+
+        space?.tries = 0
+        space?.lastTry = nil
+
+        let collection = asset.collection
+        collection?.setUploadedNow()
+
+        if let backendType = space?.backendType, let startTime = upload.startTime {
+            let duration = Date().timeIntervalSince(startTime)
+            let fileType = AnalyticsEvent.mediaType(from: asset.file)
+            let fileSizeKB = Int((asset.filesize ?? 0) / 1024)
+            let uploadSpeedKbps = duration > 0 ? Double(fileSizeKB) / duration : 0
+
+            trackEvent(.uploadCompleted(
+                backendType: backendType,
+                fileType: fileType,
+                fileSizeKB: fileSizeKB,
+                durationSeconds: duration,
+                uploadSpeedKbps: uploadSpeedKbps
+            ))
+
+            SessionManager.shared.incrementUploadsCompleted()
+        }
+
+        return collection
+    }
+
+    private func persistDoneState(upload: Upload, asset: Asset, collection: Collection?, space: Space?) {
+        Db.writeConn?.readWrite { tx in
+            tx.replace(upload)
+
+            if let collection = collection {
+                tx.replace(collection)
+            }
+
+            if let space = space {
+                tx.replace(space, forKey: space.id, inCollection: Space.collection)
+            }
+
+            tx.replace(asset)
         }
     }
     
@@ -580,28 +644,31 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     }
     
     @objc func uploadNext() {
+        if globalPause || (reachability?.connection ?? .unavailable) == .unavailable {
+            return
+        }
+
         if backgroundTask == .invalid {
             backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
                 self?.current?.cancel()
                 self?.endBackgroundTask(.failed)
             }
         }
-        
+
         queue.async {
             self.debug("#uploadNext")
-            
+
             self.cleanup()
-            
+
             if self.globalPause {
                 self.debug("#uploadNext globally paused")
-                
+
                 return self.endBackgroundTask(.noData)
             }
-            
+
             if self.reachability?.connection ?? Reachability.Connection.unavailable == .unavailable {
                 self.debug("#uploadNext no connection")
 
-                // Track network error
                 let reason: String
                 if Settings.wifiOnly && self.reachability?.connection == .cellular {
                     reason = "wifi_required"
@@ -668,8 +735,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
             // Track upload started
             upload.startTime = Date()
-            let backendType = space is WebDavSpace ? "WebDAV" : (space is IaSpace ? "Internet Archive" : nil)
-            if let backendType = backendType {
+            if let backendType = space?.backendType {
                 let fileType = AnalyticsEvent.mediaType(from: asset.file)
                 let fileSizeKB = Int((asset.filesize ?? 0) / 1024)
                 let fileSizeCategory = AnalyticsEvent.fileSizeCategory(bytes: asset.filesize ?? 0)
@@ -687,6 +753,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
             upload.error = nil
             self.lastProgressDate = Date()
+            self.lastStoreDate = nil
+            self.startProgressTracking()
 
             Db.writeConn?.readWrite { tx in
                 if let collection = asset.collection,
@@ -725,6 +793,31 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             return String(state.rawValue)
         }
     }
+
+    private func retryAfterSeconds(from response: HTTPURLResponse) -> TimeInterval? {
+        guard let value = response.value(forHTTPHeaderField: "Retry-After"),
+              let seconds = TimeInterval(value),
+              seconds > 0 else {
+            return nil
+        }
+        return seconds
+    }
+
+    private func retryAfterUntil(for error: Error?) -> Date? {
+        guard let error = error as? SaveError,
+              case .http(_, let retryAfter?) = error else {
+            return nil
+        }
+        let jitterSeconds = Double.random(in: 0...0.5)
+        return Date().addingTimeInterval(retryAfter + jitterSeconds)
+    }
+
+    private func uploadTimeoutInterval(for upload: Upload) -> TimeInterval {
+        if upload.asset?.space is IaSpace {
+            return Self.iaUploadTimeoutInterval
+        }
+        return Self.uploadTimeoutInterval
+    }
     
     /**
      Fetches the next upload job from the database.
@@ -734,73 +827,64 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
      - returns: `current` for convenience or `nil` if none found.
      */
     private func getNext() -> Upload? {
-        Db.bgRwConn?.readWrite { tx in
-            var next: Upload? = nil
-            
-            next = tx.find(group: UploadsView.groups.first, in: UploadsView.name) { upload in
-                // Look at next, if it's paused or delayed.
+        var failedUploads: [Upload] = []
+
+        Db.bgRwConn?.read { tx in
+            current = tx.find(group: UploadsView.groups.first, in: UploadsView.name) { (upload: inout Upload) in
                 guard !upload.paused
                         && upload.state != .uploaded
                         && upload.nextTry.compare(Date()) == .orderedAscending
                 else {
                     return false
                 }
-                
-                // First attach object chain to upload before next calls,
-                // otherwise, that will trigger more DB reads and with that
-                // a deadlock.
+
                 upload.preheat(tx)
-                
-                // Do not try uploading to Google Drive before the user is properly logged into Google.
-//                if upload.asset?.space is GdriveSpace && GdriveConduit.user == nil {
-//                    return false
-//                }
-                
-                
+
+                if let space = upload.asset?.space, !space.uploadAllowed {
+                    debug("#getNext circuit breaker open for space \(space.id) (tries=\(space.tries))")
+                    return false
+                }
+
                 guard upload.isReady else {
-                    
                     if let asset = upload.asset, !asset.isImporting {
                         if let phAsset = asset.phAsset {
-                            
                             queue.async {
                                 let id = UIApplication.shared.beginBackgroundTask()
                                 AssetFactory.load(from: phAsset, into: asset) { asset in
                                     UIApplication.shared.endBackgroundTask(id)
                                 }
                             }
-                        }
-                        else if asset.file?.exists == true {
-                            
+                        } else if asset.file?.exists == true {
                             queue.async {
                                 let id = UIApplication.shared.beginBackgroundTask()
-                                
-                                //                                      asset.generateProof {
                                 asset.update({ asset in
                                     asset.isReady = true
                                 }) { updatedAsset in
                                     UIApplication.shared.endBackgroundTask(id)
                                 }
-                                //       }
                             }
-                        }
-                        else {
-                            // Couldn’t load anything; cancel
-                            upload.error = NSLocalizedString("Couldn't import item!", comment: "")
+                        } else {
+                            upload.error = NSLocalizedString("Couldn’t import item!", comment: "")
                             upload.cancel()
                             upload.paused = true
-                            tx.replace(upload)
+                            failedUploads.append(upload)
                         }
                     }
-                    
                     return false
                 }
-                
+
                 return true
             }
-            
-            current = next
         }
-        
+
+        if !failedUploads.isEmpty {
+            Db.bgRwConn?.readWrite { tx in
+                for upload in failedUploads {
+                    tx.replace(upload)
+                }
+            }
+        }
+
         return current
     }
     
@@ -815,17 +899,18 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
      - parameter pause: `true` to pause, `false` to unpause. Defaults to `true`.
      */
     private func pause(_ id: String, pause: Bool = true) {
-        
+
         // The current upload can only ever get paused, because there should
         // be no paused current upload. It gets cancelled and removed when paused.
         if let upload = current, upload.id == id {
             if pause {
                 current?.cancel()
                 current?.paused = true
-                
+
                 storeCurrent()
-                
+
                 current = nil
+                stopProgressTracking()
             } else {
                 // If asset is already uploaded, just clear the error state — don't re-upload.
                 if let asset = current?.asset, asset.isUploaded {
@@ -835,6 +920,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                     current?.progress = 1.0
                     storeCurrent()
                     current = nil
+                    stopProgressTracking()
                     return
                 }
                 // Retry (e.g. from media grid) while this job is still `current` — previously did nothing.
@@ -843,6 +929,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 current?.error = nil
                 current?.tries = 0
                 current?.lastTry = nil
+                current?.retryAfterUntil = nil
                 current?.progress = 0
                 if let space = current?.asset?.space {
                     space.tries = 0
@@ -853,6 +940,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 }
                 storeCurrent()
                 current = nil
+                stopProgressTracking()
             }
         }
         else {
@@ -877,6 +965,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                         upload.error = nil
                         upload.tries = 0
                         upload.lastTry = nil
+                        upload.retryAfterUntil = nil
                         upload.progress = 0
 
                         // Also reset circuit-breaker. Otherwise users will get confused.

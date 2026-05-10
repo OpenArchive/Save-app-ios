@@ -12,14 +12,14 @@ enum SaveError: Error, LocalizedError {
 
     case strangeResponse
 
-    case http(status: Int)
+    case http(status: Int, retryAfter: TimeInterval? = nil)
 
     var errorDescription: String? {
         switch self {
         case .strangeResponse:
             return "Strange response from server."
 
-        case .http(let status):
+        case .http(let status, _):
             return "HTTP error: \(status) \(HTTPURLResponse.localizedString(forStatusCode: status))"
         }
     }

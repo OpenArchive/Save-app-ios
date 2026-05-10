@@ -148,7 +148,7 @@ class WebDavConduit: Conduit {
         let group = DispatchGroup.enter()
         
         let task = foregroundSession.mkDir(folder, credential: credential) { e in
-            if case SaveError.http(let status)? = e, status == 405 {
+            if case SaveError.http(let status, _)? = e, status == 405 {
                 // That's ok, that just means that the folder already exists.
             }
             else {

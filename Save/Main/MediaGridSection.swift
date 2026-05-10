@@ -84,12 +84,10 @@ final class MediaGridViewModel: NSObject, ObservableObject {
 
     private func rebuildUploadsByAssetId() {
         var map: [String: Upload] = [:]
-        uploadsReadConn?.read { tx in
-            tx.iterateKeysAndObjects(inCollection: Upload.collection) { (_: String, upload: Upload, _: inout Bool) in
-                guard upload.state != .uploaded, let aid = upload.assetId else { return }
-                if map[aid] == nil {
-                    map[aid] = upload
-                }
+        uploadsReadConn?.iterate(group: Upload.collection, in: UploadsView.name) { (_: YapDatabaseReadTransaction, _: String, _: String, upload: Upload, _: Int, _: inout Bool) in
+            guard upload.state != .uploaded, let aid = upload.assetId else { return }
+            if map[aid] == nil {
+                map[aid] = upload
             }
         }
         uploadsByAssetId = map

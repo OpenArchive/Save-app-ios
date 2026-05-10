@@ -28,10 +28,17 @@ extension Error {
         }
     }
 
+    var isRetryable: Bool {
+        if isLikelyConnectivityFailure { return true }
+        if let error = self as? SaveError, case .http(let status, _) = error,
+           [429, 502, 503, 504].contains(status) { return true }
+        return false
+    }
+
     var friendlyMessage: String {
         if let error = self as? SaveError {
             switch error {
-            case .http(let status) where status == 401:
+            case .http(let status, _) where status == 401:
                 return NSLocalizedString("Incorrect username or password", comment: "")
 
             default:

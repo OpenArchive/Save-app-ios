@@ -91,6 +91,12 @@ class Space: NSObject {
         tries < Space.maxFails || nextTry.compare(Date()) == .orderedAscending
     }
 
+    var backendType: String? {
+        if self is WebDavSpace { return "WebDAV" }
+        if self is IaSpace { return "Internet Archive" }
+        return nil
+    }
+
     var prettyName: String {
         if let name = name?.trimmingCharacters(in: .whitespacesAndNewlines), !name.isEmpty {
             return name

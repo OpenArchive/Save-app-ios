@@ -8,11 +8,17 @@
 
 import Foundation
 
+protocol ConduitProtocol: AnyObject {
+    var asset: Asset { get set }
+    func upload(uploadId: String) -> Progress
+    func remove(done: @escaping Conduit.DoneHandler)
+}
+
 /**
  A conduit implements #upload and #remove methods to interact with a certain
  type of `Space`.
  */
-class Conduit {
+class Conduit: ConduitProtocol {
 
     static let chunkSize: Int64 = 2 * 1024 * 1024 // 2 MByte
     static let chunkFileSizeThreshold: Int64 = 10 * 1024 * 1024 // 10 MByte
@@ -34,16 +40,13 @@ class Conduit {
 
      - parameter asset: The `Asset` the `Conduit` is for.
     */
-    class func get(for asset: Asset, _ backgroundSession: URLSession, _ foregroundSession: URLSession) -> Conduit? {
+    class func get(for asset: Asset, _ backgroundSession: URLSession, _ foregroundSession: URLSession) -> (any ConduitProtocol)? {
         switch asset.space {
         case is WebDavSpace:
             return WebDavConduit(asset, backgroundSession, foregroundSession)
 
         case is IaSpace:
             return IaConduit(asset, backgroundSession, foregroundSession)
-
-//        case is GdriveSpace:
-//            return GdriveConduit(asset, backgroundSession, foregroundSession)
 
         default:
             return nil

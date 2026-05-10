@@ -73,6 +73,7 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
     var error: String?
     var tries = 0
     var lastTry: Date?
+    var retryAfterUntil: Date?
     var startTime: Date?
 
     /**
@@ -84,8 +85,12 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
      If `lastTry` is `nil` returns the epoch.
     */
     var nextTry: Date {
-        return lastTry?.addingTimeInterval(pow(Double(tries), 1.5) * 60)
+        let exponentialTry = lastTry?.addingTimeInterval(pow(Double(tries), 1.5) * 60)
             ?? Date(timeIntervalSince1970: 0)
+        if let retryAfterUntil {
+            return max(exponentialTry, retryAfterUntil)
+        }
+        return exponentialTry
     }
 
     var liveProgress: Progress?
@@ -166,6 +171,7 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
         paused = decoder.decodeBool(forKey: "paused")
         tries = decoder.decodeInteger(forKey: "tries")
         lastTry = decoder.decodeObject(of: NSDate.self, forKey: "lastTry") as? Date
+        retryAfterUntil = decoder.decodeObject(of: NSDate.self, forKey: "retryAfterUntil") as? Date
         startTime = decoder.decodeObject(of: NSDate.self, forKey: "startTime") as? Date
         error = decoder.decodeObject(of: NSString.self, forKey: "error") as? String
         assetId = decoder.decodeObject(of: NSString.self, forKey: "assetId") as? String
@@ -178,6 +184,7 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
         coder.encode(paused, forKey: "paused")
         coder.encode(tries, forKey: "tries")
         coder.encode(lastTry, forKey: "lastTry")
+        coder.encode(retryAfterUntil, forKey: "retryAfterUntil")
         coder.encode(startTime, forKey: "startTime")
         coder.encode(error, forKey: "error")
         coder.encode(assetId, forKey: "assetId")
@@ -198,7 +205,9 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
     override var description: String {
         return "\(String(describing: type(of: self))): [id=\(id), order=\(order), "
             + "progress=\(progress), paused=\(paused), tries=\(tries), "
-            + "lastTry=\(lastTry?.debugDescription ?? "nil"), error=\(error ?? "nil"), "
+            + "lastTry=\(lastTry?.debugDescription ?? "nil"), "
+            + "retryAfterUntil=\(retryAfterUntil?.debugDescription ?? "nil"), "
+            + "error=\(error ?? "nil"), "
             + "assetId=\(assetId ?? "nil"), asset=\(asset?.description ?? "nil")]"
     }
 
@@ -230,7 +239,7 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
         guard let asset = self.asset,
               let space = asset.space else { return }
 
-        let backendType = space is WebDavSpace ? "WebDAV" : (space is IaSpace ? "Internet Archive" : "Unknown")
+        let backendType = space.backendType ?? "Unknown"
         let fileType = AnalyticsEvent.mediaType(from: asset.file)
 
         trackEvent(.uploadCancelled(

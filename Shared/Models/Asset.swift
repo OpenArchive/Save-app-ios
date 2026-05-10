@@ -126,6 +126,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     fileprivate(set) var phassetId: String?
     fileprivate(set) var phImageRequestId: PHImageRequestID
     private(set) var publicUrl: URL?
+    private(set) var internetArchiveItemId: String?
     fileprivate(set) var isReady = false {
         didSet {
             if isReady {
@@ -398,6 +399,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         phassetId = decoder.decodeObject(of: NSString.self, forKey: "phassetId") as? String
         phImageRequestId = decoder.decodeInt32(forKey: "phImageRequestId")
         publicUrl = decoder.decodeObject(of: NSURL.self, forKey: "publicUrl") as? URL
+        internetArchiveItemId = decoder.decodeObject(of: NSString.self, forKey: "internetArchiveItemId") as? String
         isReady = decoder.decodeBool(forKey: "isReady")
         isUploaded = decoder.decodeBool(forKey: "isUploaded")
         collectionId = decoder.decodeObject(of: NSString.self, forKey: "collectionId") as? String
@@ -419,6 +421,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         coder.encode(phassetId, forKey: "phassetId")
         coder.encode(phImageRequestId, forKey: "phImageRequestId")
         coder.encode(publicUrl, forKey: "publicUrl")
+        coder.encode(internetArchiveItemId, forKey: "internetArchiveItemId")
         coder.encode(isReady, forKey: "isReady")
         coder.encode(isUploaded, forKey: "isUploaded")
         coder.encode(collectionId, forKey: "collectionId")
@@ -517,6 +520,7 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
             + "file=\(file?.description ?? "nil"), thumb=\(thumb?.description ?? "nil"), "
             + "phassetId=\(phassetId ?? "nil"), "
             + "publicUrl=\(publicUrl?.absoluteString ?? "nil"), "
+            + "internetArchiveItemId=\(internetArchiveItemId ?? "nil"), "
             + "isReady=\(isReady), isUploaded=\(isUploaded)]"
     }
 
@@ -733,6 +737,9 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     func setUploaded(_ url: URL?) -> Asset {
         publicUrl = url
         isUploaded = url != nil
+        if isUploaded {
+            internetArchiveItemId = nil
+        }
 
         if isUploaded, let file = file {
             if (try? FileManager.default.removeItem(at: file)) != nil {
@@ -743,6 +750,12 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
             }
         }
 
+        return self
+    }
+
+    @discardableResult
+    func setInternetArchiveItemId(_ identifier: String?) -> Asset {
+        internetArchiveItemId = identifier
         return self
     }
 
@@ -1003,6 +1016,10 @@ class AssetProxy {
         set {
             asset.uti = newValue
         }
+    }
+
+    func setInternetArchiveItemId(_ identifier: String?) {
+        asset.setInternetArchiveItemId(identifier)
     }
 
 
