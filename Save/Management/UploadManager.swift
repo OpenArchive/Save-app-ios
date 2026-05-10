@@ -12,7 +12,6 @@ import Reachability
 import Regex
 import BackgroundTasks
 import Photos
-import TorManager
 import StoreKit
 
 extension Notification.Name {
@@ -61,9 +60,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     
     var waiting: Bool {
         globalPause || 
-        (reachability?.connection ?? Reachability.Connection.unavailable == .unavailable) ||
-        (Settings.useOrbot && OrbotManager.shared.status == .stopped) ||
-        (Settings.useTor && !TorManager.shared.connected)
+        (reachability?.connection ?? Reachability.Connection.unavailable == .unavailable)
     }
     
     private var current: Upload?
@@ -75,7 +72,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
     var reachability: Reachability? = {
         var reachability = try? Reachability()
-        reachability?.allowsCellularConnection = !Settings.wifiOnly
+        reachability?.allowsCellularConnection = !Settings.wifiOnly || Settings.cellularOverride
 
         return reachability
     }()
@@ -88,6 +85,12 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
      Polls tracked Progress objects and updates `Update` objects every second.
      */
     var progressTimer: DispatchSourceTimer?
+
+    /// Tracks when the current upload last made progress, for timeout detection.
+    private var lastProgressDate: Date?
+
+    /// How long an upload can be stuck without progress before timing out.
+    private static let uploadTimeoutInterval: TimeInterval = 60
     
     private var scheduler: Timer?
     
@@ -135,14 +138,9 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     }
     
     
+    /// Session config used for uploads and WebDAV operations (e.g. browse folders).
     public class func improvedSessionConf(_ conf: URLSessionConfiguration? = nil) -> URLSessionConfiguration {
-        let conf = URLSessionConfiguration.improved(conf)
-        
-        if Settings.useTor {
-            conf.connectionProxyDictionary = TorManager.shared.torSocks5ProxyConf
-        }
-        
-        return conf
+        return URLSessionConfiguration.improved(conf)
     }
     
     
@@ -199,24 +197,37 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         nc.addObserver(self, selector: #selector(dataUsageChanged),
                        name: .uploadManagerDataUsageChange, object: nil)
         
-        nc.addObserver(self, selector: #selector(orbotStopped),
-                       name: .orbotStopped, object: nil)
-        
         try? reachability?.startNotifier()
         
         progressTimer = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
         progressTimer?.schedule(deadline: .now(), repeating: .seconds(1))
-        progressTimer?.setEventHandler {
+        progressTimer?.setEventHandler { [weak self] in
+            guard let self else { return }
             if let upload = self.current,
                upload.hasProgressChanged() {
-                
+
                 self.debug("#progress tracker changed for \(upload))")
-                
+
                 // Update internal _progress to latest progress, so #hasProgressChanged
                 // doesn't trigger anymore.
                 self.current?.progress = upload.progress
-                
+                self.lastProgressDate = Date()
+
                 self.storeCurrent()
+            }
+
+            // Timeout detection: if current upload has no progress for too long, mark as error.
+            if let upload = self.current,
+               let lastProgress = self.lastProgressDate,
+               Date().timeIntervalSince(lastProgress) > Self.uploadTimeoutInterval {
+                self.debug("#timeout detected for \(upload)")
+                upload.cancel()
+                upload.error = NSLocalizedString("Upload timed out.", comment: "")
+                upload.tries += 1
+                self.storeCurrent()
+                self.current = nil
+                self.lastProgressDate = nil
+                self.uploadNext()
             }
         }
         
@@ -335,6 +346,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             current.cancel()
             current.trackCancellation(reason: "user_deleted")
             self.current = nil
+            self.lastProgressDate = nil
         }
     }
     
@@ -424,59 +436,65 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             let collection: Collection?
             let space = asset.space
 
-            if error != nil || url == nil {
+            if (error != nil || url == nil) && !asset.isUploaded {
                 asset.setUploaded(nil)
 
                 upload.liveProgress = nil
                 upload.progress = 0
 
+                let failureMessage = error?.friendlyMessage ?? (
+                    url == nil ? NSLocalizedString("No URL provided.", comment: "")
+                    : NSLocalizedString("Unknown error.", comment: ""))
+
+                // When false, we only refresh `upload.error` (e.g. already-paused job or global pause) — no retry counter bump.
+                var didProcessActiveFailure = false
+
                 if !upload.paused && !self.globalPause {
+                    didProcessActiveFailure = true
                     // Circuit breaker pattern: Increase circuit breaker counter on error.
                     space?.tries += 1
                     space?.lastTry = Date()
 
                     upload.tries += 1
-                    // We stop retrying, if the server denies us, or as soon as we hit the maximum number of retries.
-                    upload.paused = error is SaveError || UploadManager.maxRetries <= upload.tries
-                    upload.lastTry = Date()
-
-                    upload.error = error?.friendlyMessage ?? (
-                        url == nil ? NSLocalizedString("No URL provided.", comment: "")
-                        : NSLocalizedString("Unknown error.", comment: ""))
-
-                    if upload.paused {
-                        let filesize = upload.asset?.filesize
-
-                        let data: [String: String?] = [
-                            "error": upload.error,
-                            "filesize": filesize != nil ? String(filesize!) : nil,
-                            "type": upload.asset?.uti.identifier,
-                            "retries": String(upload.tries),
-                            "network": self.reachability?.connection.description]
-
-                        // Track upload failed
-                        let backendType = space is WebDavSpace ? "WebDAV" : (space is IaSpace ? "Internet Archive" : nil)
-                        if let backendType = backendType {
-                            let fileType = AnalyticsEvent.mediaType(from: asset.file)
-                            let fileSizeKB = Int((asset.filesize ?? 0) / 1024)
-                            let errorCategory = error != nil ? "upload_error" : "no_url"
-
-                            trackEvent(.uploadFailed(
-                                backendType: backendType,
-                                fileType: fileType,
-                                errorCategory: errorCategory,
-                                fileSizeKB: fileSizeKB
-                            ))
-
-                            SessionManager.shared.incrementUploadsFailed()
-                        }
+                    // Reachability-style errors: keep unpaused (unless SaveError / max retries) so reachability + scheduler can retry when online.
+                    // Any other upload error: pause so the user must tap Retry — avoids endless automatic retries that never fix bad state.
+                    let connectivityFailure = error?.isLikelyConnectivityFailure ?? false
+                    if connectivityFailure {
+                        upload.paused = error is SaveError || UploadManager.maxRetries <= upload.tries
+                    } else {
+                        upload.paused = true
                     }
+                    upload.lastTry = Date()
+                    upload.error = failureMessage
+                } else {
+                    // Upload was already paused or manager is globally paused — still refresh error for UI / debugging.
+                    upload.error = failureMessage
+                }
+
+                // Count every failed attempt where we advanced retry state (includes connectivity auto-retry path when still unpaused).
+                if didProcessActiveFailure,
+                   let backendType = space is WebDavSpace ? "WebDAV" : (space is IaSpace ? "Internet Archive" : nil) {
+                    let fileType = AnalyticsEvent.mediaType(from: asset.file)
+                    let fileSizeKB = Int((asset.filesize ?? 0) / 1024)
+                    let errorCategory = error != nil ? "upload_error" : "no_url"
+                    trackEvent(.uploadFailed(
+                        backendType: backendType,
+                        fileType: fileType,
+                        errorCategory: errorCategory,
+                        fileSizeKB: fileSizeKB
+                    ))
+                    SessionManager.shared.incrementUploadsFailed()
                 }
 
                 collection = nil
             }
             else {
-                asset.setUploaded(url)
+                // Only call setUploaded if we have a valid URL; if the asset
+                // is already marked uploaded (race condition / background task),
+                // skip to avoid overwriting with nil and deleting the file again.
+                if let url = url {
+                    asset.setUploaded(url)
+                }
 
                 // Circuit breaker pattern: Reset circuit breaker counter on success.
                 space?.tries = 0
@@ -520,7 +538,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             }
             
             self.current = nil
-            
+            self.lastProgressDate = nil
+
             self.endBackgroundTask(asset.isUploaded ? .newData : .failed)
             
             self.uploadNext()
@@ -544,7 +563,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         
         debug("#dataUsageChanged wifiOnly=\(wifiOnly)")
         
-        reachability?.allowsCellularConnection = !wifiOnly
+        reachability?.allowsCellularConnection = !wifiOnly || Settings.cellularOverride
         
         reachabilityChanged(notification: Notification(name: .reachabilityChanged))
     }
@@ -558,17 +577,6 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         if reachability?.connection ?? .unavailable != .unavailable {
             uploadNext()
         }
-    }
-    
-    @objc func orbotStopped(notification: Notification) {
-        debug("#orbotStopped")
-
-        current?.cancel()
-        current?.trackCancellation(reason: "orbot_stopped")
-
-        storeCurrent()
-
-        current = nil
     }
     
     @objc func uploadNext() {
@@ -608,18 +616,6 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             // Check if there's currently an item uploading which is not paused and not already uploaded.
             if !(self.current?.paused ?? true) && self.current?.state != .uploaded {
                 self.debug("#uploadNext already one uploading")
-                
-                return self.endBackgroundTask(.noData)
-            }
-            
-            if Settings.useOrbot && OrbotManager.shared.status == .stopped {
-                self.debug("#uploadNext should use Orbot, but Orbot not started")
-                
-                return self.endBackgroundTask(.noData)
-            }
-            
-            if Settings.useTor && !TorManager.shared.connected {
-                self.debug("#uploadNext should use built-in Tor, but Tor not started")
                 
                 return self.endBackgroundTask(.noData)
             }
@@ -690,7 +686,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 .upload(uploadId: upload.id)
 
             upload.error = nil
-            
+            self.lastProgressDate = Date()
+
             Db.writeConn?.readWrite { tx in
                 if let collection = asset.collection,
                    collection.closed == nil
@@ -755,9 +752,9 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 upload.preheat(tx)
                 
                 // Do not try uploading to Google Drive before the user is properly logged into Google.
-                if upload.asset?.space is GdriveSpace && GdriveConduit.user == nil {
-                    return false
-                }
+//                if upload.asset?.space is GdriveSpace && GdriveConduit.user == nil {
+//                    return false
+//                }
                 
                 
                 guard upload.isReady else {
@@ -829,6 +826,33 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 storeCurrent()
                 
                 current = nil
+            } else {
+                // If asset is already uploaded, just clear the error state — don't re-upload.
+                if let asset = current?.asset, asset.isUploaded {
+                    current?.cancel()
+                    current?.paused = false
+                    current?.error = nil
+                    current?.progress = 1.0
+                    storeCurrent()
+                    current = nil
+                    return
+                }
+                // Retry (e.g. from media grid) while this job is still `current` — previously did nothing.
+                current?.cancel()
+                current?.paused = false
+                current?.error = nil
+                current?.tries = 0
+                current?.lastTry = nil
+                current?.progress = 0
+                if let space = current?.asset?.space {
+                    space.tries = 0
+                    space.lastTry = nil
+                    Db.bgRwConn?.readWrite { tx in
+                        tx.replace(space, forKey: space.id, inCollection: Space.collection)
+                    }
+                }
+                storeCurrent()
+                current = nil
             }
         }
         else {
@@ -840,12 +864,21 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                         upload.paused = true
                     }
                     else {
+                        // If asset is already uploaded, just clear error — don't re-upload.
+                        if let asset = upload.asset, asset.isUploaded {
+                            upload.paused = false
+                            upload.error = nil
+                            upload.progress = 1.0
+                            tx.replace(upload)
+                            return
+                        }
+
                         upload.paused = false
                         upload.error = nil
                         upload.tries = 0
                         upload.lastTry = nil
                         upload.progress = 0
-                        
+
                         // Also reset circuit-breaker. Otherwise users will get confused.
                         if let space = upload.asset?.space {
                             space.tries = 0

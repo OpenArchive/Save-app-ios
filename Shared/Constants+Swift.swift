@@ -26,10 +26,6 @@ extension Constants {
         return  "\(teamId).\(appGroup)"
     }
 
-    class var dropboxKey: String {
-        return __dropboxKey as String
-    }
-
     class var testBackgroundUpload: Bool {
         #if DEBUG
             return false

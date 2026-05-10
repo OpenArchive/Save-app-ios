@@ -21,8 +21,4 @@
     return MACRO_STRING(DEVELOPMENT_TEAM);
 }
 
-+ (NSString *) dropboxKey {
-    return MACRO_STRING(DROPBOX_KEY);
-}
-
 @end

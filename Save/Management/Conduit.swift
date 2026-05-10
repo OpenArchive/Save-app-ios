@@ -42,8 +42,8 @@ class Conduit {
         case is IaSpace:
             return IaConduit(asset, backgroundSession, foregroundSession)
 
-        case is GdriveSpace:
-            return GdriveConduit(asset, backgroundSession, foregroundSession)
+//        case is GdriveSpace:
+//            return GdriveConduit(asset, backgroundSession, foregroundSession)
 
         default:
             return nil

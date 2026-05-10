@@ -1,127 +1,44 @@
+//
+//  FolderListViewController.swift
+//  Save
+//
+//  Copyright © 2019 Open Archive. All rights reserved.
+//
+
 import UIKit
-import YapDatabase
+import SwiftUI
 
-class FolderListNewViewController: UIViewController, UITableViewDelegate, UITableViewDataSource {
-    
-    let tableView = UITableView()
-    let archiveButton = UIButton()
+final class FolderListNewViewController: UIHostingController<FolderListView> {
+
     private let archived: Bool
-    private lazy var projectsReadConn = Db.newLongLivedReadConn()
-    var projectList: [Project] = []
-    private lazy var projectsMappings = YapDatabaseViewMappings(
-        groups: ProjectsView.groups, view: ProjectsView.name)
 
-    private var hasArchived = false
-    
-    private let noDataLabel: UILabel = {
-        let label = UILabel()
-        label.text = NSLocalizedString("No archived folders found.", comment: "")
-        label.textAlignment = .center
-        label.font = .montserrat(forTextStyle: .headline , with:.traitUIOptimized)
-        label.textColor = .gray70
-        label.numberOfLines = 0
-        label.translatesAutoresizingMaskIntoConstraints = false
-        return label
-    }()
     init(archived: Bool) {
         self.archived = archived
-        super.init(nibName: nil, bundle: nil)
+        super.init(rootView: FolderListView(archived: archived) { _ in })
     }
 
-    required init?(coder aDecoder: NSCoder) {
-        archived = aDecoder.decodeBool(forKey: "archived")
-        super.init(coder: aDecoder)
+    @MainActor required dynamic init?(coder aDecoder: NSCoder) {
+        let archived = aDecoder.decodeBool(forKey: "archived")
+        self.archived = archived
+        super.init(rootView: FolderListView(archived: archived) { _ in })
+    }
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        navigationItem.backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
+        navigationItem.title = NSLocalizedString("Archived Folders", comment: "")
+
+        rootView = FolderListView(archived: archived) { [weak self] project in
+            guard self != nil else { return }
+            if #available(iOS 14.0, *) {
+                AppNavigationRouter.shared.push(EditFolderViewController(project), animated: true)
+            }
+        }
     }
 
     override func encode(with coder: NSCoder) {
         coder.encode(archived, forKey: "archived")
         super.encode(with: coder)
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        view.backgroundColor = UIColor.systemBackground
-    
-        tableView.delegate = self
-        tableView.dataSource = self
-        tableView.register(ListFolderCell.self, forCellReuseIdentifier: "ListFolderCell")
-        tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.separatorStyle = .none
-        view.addSubview(tableView)
-        
-        view.addSubview(noDataLabel)
-
-        NSLayoutConstraint.activate([
-            noDataLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            noDataLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            noDataLabel.leadingAnchor.constraint(greaterThanOrEqualTo: view.leadingAnchor, constant: 20),
-            noDataLabel.trailingAnchor.constraint(lessThanOrEqualTo: view.trailingAnchor, constant: -20)
-        ])
-       
-        NSLayoutConstraint.activate([
-            tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 16),
-            tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -16)
-        ])
-        
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem = backBarButtonItem
-        Db.add(observer: self, #selector(yapDatabaseModified))
-
-        projectsReadConn?.update(mappings: projectsMappings)
-
-        reload()
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        trackScreenViewSafely("ArchivedFolders")
-    }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return projectList.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "ListFolderCell", for: indexPath) as? ListFolderCell else {
-            return UITableViewCell()
-        }
-        let project = projectList[indexPath.row]
-        cell.configure(with: project.name ?? "")
-        
-        return cell
-    }
-
-    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let project = projectList[indexPath.row]
-        self.navigationController?.pushViewController(EditFolderViewController(project), animated: true)
-    }
-    
-    // Show Archived Folders
-    @objc func showArchivedFolders() {
-        let archivedViewController = FolderListNewViewController(archived: true)
-        self.navigationController?.pushViewController(archivedViewController, animated: true)
-    }
-
-    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return 60
-    }
-
-    @objc private func yapDatabaseModified(_ notification: Notification) {
-        if projectsReadConn?.hasChanges(projectsMappings) ?? false {
-            reload()
-        }
-    }
-
-    private func reload() {
-        let projects: [Project] = projectsReadConn?.objects(in: 0, with: projectsMappings) ?? []
-       
-
-        projectList = projects.filter { archived != $0.active }
-        noDataLabel.isHidden = !projectList.isEmpty ? true : false
-      
-        navigationItem.title = NSLocalizedString("Archived Folders", comment: "")
-        tableView.reloadData()
     }
 }

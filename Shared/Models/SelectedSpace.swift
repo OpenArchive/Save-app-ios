@@ -60,25 +60,19 @@ class SelectedSpace {
 
     static func store(_ transaction: YapDatabaseReadWriteTransaction? = nil) {
         guard let transaction = transaction else {
-            Db.writeConn?.asyncReadWrite { transaction in
-                self.store(transaction)
+            Db.writeConn?.asyncReadWrite { tx in
+                self.store(tx)
+                ProjectsView.updateGrouping(transaction: tx)
             }
-
             return
         }
 
         transaction.removeAllObjects(inCollection: collection)
 
         if let space = _space {
-            // We just need any serializable object to store here, otherwise
-            // when sending nil, nothing is stored.
-            // That object is never read. The original space is always read instead!
             transaction.setObject(space, forKey: space.id, inCollection: collection)
         }
 
-        // Update projects grouping to show projects of currently selected space.
-        DispatchQueue.main.async {
-            ProjectsView.updateGrouping()
-        }
+        ProjectsView.updateGrouping(transaction: transaction)
     }
 }

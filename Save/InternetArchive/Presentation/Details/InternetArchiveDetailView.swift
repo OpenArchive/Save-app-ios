@@ -7,34 +7,29 @@
 //
 import SwiftUI
 
-struct InternetArchiveDetailView : View {
-    
+struct InternetArchiveDetailView: View {
+
     @ObservedObject var viewModel: InternetArchiveDetailViewModel
-    
+
     var body: some View {
-        InternetArchiveDetailContent(
-            state: viewModel.store.dispatcher.state,
-            dispatch: viewModel.store.dispatch
-        )
+        InternetArchiveDetailContent(viewModel: viewModel)
     }
 }
 
 struct InternetArchiveDetailContent: View {
-    
-    let state: InternetArchiveDetailState
-    let dispatch: Dispatch<InternetArchiveDetailAction>
-    
+
+    @ObservedObject var viewModel: InternetArchiveDetailViewModel
     @State private var showAlert = false
-    
+
     var body: some View {
         ScrollView {
             VStack(alignment: .leading, spacing: 20) {
-                
-                Text(NSLocalizedString("Account", comment:""))
+
+                Text(NSLocalizedString("Account", comment: ""))
                     .font(.montserrat(.semibold, for: .headline))
                     .padding(.horizontal)
-                
-                Text(state.userName)
+
+                Text(viewModel.userName)
                     .font(.montserrat(.medium, for: .footnote))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding()
@@ -45,8 +40,8 @@ struct InternetArchiveDetailContent: View {
                             .stroke(Color.gray70, lineWidth: 1)
                     )
                     .padding(.horizontal)
-                
-                Text(state.screenName)
+
+                Text(viewModel.screenName)
                     .font(.montserrat(.medium, for: .footnote))
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .foregroundColor(.gray70)
@@ -57,8 +52,8 @@ struct InternetArchiveDetailContent: View {
                             .stroke(Color.gray70, lineWidth: 1)
                     )
                     .padding(.horizontal)
-                
-                Text(state.email)
+
+                Text(viewModel.email)
                     .font(.montserrat(.medium, for: .footnote))
                     .foregroundColor(.gray70)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -69,71 +64,54 @@ struct InternetArchiveDetailContent: View {
                             .stroke(Color.gray70, lineWidth: 1)
                     )
                     .padding(.horizontal)
-                
-                // MARK: License Section
-                Text(NSLocalizedString("License", comment:""))
+
+                Text(NSLocalizedString("License", comment: ""))
                     .font(.montserrat(.semibold, for: .headline))
                     .padding(.horizontal)
-                    .padding(.top ,10)
-                
+                    .padding(.top, 10)
+
                 Toggle(
                     NSLocalizedString("Set creative commons licenses for folders on this server.", comment: ""),
                     isOn: Binding(
-                        get: { state.isCcEnabled },
-                        set: { newValue in
-                            dispatch(.toggleCcEnabled(newValue))
-                            dispatch(.updateLicense)
-                        }
+                        get: { viewModel.isCcEnabled },
+                        set: { viewModel.toggleCcEnabled($0) }
                     )
                 )
                 .toggleTint(.accent)
                 .font(.montserrat(.medium, for: .subheadline))
                 .padding(.horizontal)
-                
-                if state.isCcEnabled {
+
+                if viewModel.isCcEnabled {
                     VStack(alignment: .leading, spacing: 10) {
                         Toggle(NSLocalizedString("Waive all restrictions, requirements, and attribution (CC0).", comment: "CC0 Toggle"), isOn: Binding(
-                            get: { state.isCc0Enabled },
-                            set: { newValue in
-                                dispatch(.toggleCc0Enabled(newValue))
-                                dispatch(.updateLicense)
-                            }
+                            get: { viewModel.isCc0Enabled },
+                            set: { viewModel.toggleCc0Enabled($0) }
                         ))
                         .toggleTint(.accent)
                         .font(.montserrat(.medium, for: .subheadline))
                         Toggle(NSLocalizedString("Allow anyone to remix and share?", comment: ""), isOn: Binding(
-                            get: { state.allowRemix },
-                            set: { newValue in
-                                dispatch(.toggleAllowRemix(newValue))
-                                dispatch(.updateLicense)
-                            }
+                            get: { viewModel.allowRemix },
+                            set: { viewModel.toggleAllowRemix($0) }
                         ))
                         .toggleTint(.accent)
                         .font(.montserrat(.medium, for: .subheadline))
-                        
+
                         Toggle(NSLocalizedString("Require them to share like you have?", comment: ""), isOn: Binding(
-                            get: { state.requireShareAlike },
-                            set: { newValue in
-                                dispatch(.toggleRequireShareAlike(newValue))
-                                dispatch(.updateLicense)
-                            }
+                            get: { viewModel.requireShareAlike },
+                            set: { viewModel.toggleRequireShareAlike($0) }
                         ))
                         .toggleTint(.accent)
-                        .disabled(!state.allowRemix)
+                        .disabled(!viewModel.allowRemix)
                         .font(.montserrat(.medium, for: .subheadline))
-                        
+
                         Toggle(NSLocalizedString("Allow commercial use?", comment: ""), isOn: Binding(
-                            get: { state.allowCommercialUse },
-                            set: { newValue in
-                                dispatch(.toggleAllowCommercialUse(newValue))
-                                dispatch(.updateLicense)
-                            }
+                            get: { viewModel.allowCommercialUse },
+                            set: { viewModel.toggleAllowCommercialUse($0) }
                         ))
                         .toggleTint(.accent)
                         .font(.montserrat(.medium, for: .subheadline))
-                        
-                        if let licenseURL = state.licenseURL, let url = URL(string: licenseURL) {
-                            
+
+                        if let licenseURL = viewModel.licenseURL, let url = URL(string: licenseURL) {
                             Text(AttributedString(licenseURL, attributes: AttributeContainer([.underlineStyle: NSUnderlineStyle.single.rawValue])))
                                 .foregroundColor(.accentColor)
                                 .font(.montserrat(.medium, for: .subheadline))
@@ -145,25 +123,23 @@ struct InternetArchiveDetailContent: View {
                     }
                     .padding(.horizontal)
                 }
-                
-                if  let url = URL(string: "https://creativecommons.org/") {
-                    
-                    Text(AttributedString(NSLocalizedString(NSLocalizedString("Learn more about Creative Commons.", comment: "More Info Link"), comment: "License Link"), attributes: AttributeContainer([.underlineStyle: NSUnderlineStyle.single.rawValue])))
+
+                if let url = URL(string: "https://creativecommons.org/") {
+                    Text(AttributedString(NSLocalizedString("Learn more about Creative Commons.", comment: "More Info Link"), attributes: AttributeContainer([.underlineStyle: NSUnderlineStyle.single.rawValue])))
                         .foregroundColor(.accentColor)
                         .font(.montserrat(.medium, for: .subheadline))
                         .padding(.top, 10)
                         .onTapGesture {
                             UIApplication.shared.open(url)
-                        }.padding(.horizontal)
-                    
+                        }
+                        .padding(.horizontal)
                 }
-                
-                // MARK: Remove Button
+
                 HStack {
                     Spacer()
                     Button(action: {
                         showAlert = true
-                        dispatch(.HandleBackButton(status: true))
+                        viewModel.setBackButtonVisibility(true)
                     }) {
                         Text(LocalizedStringKey("Remove from App"))
                             .font(.montserrat(.semibold, for: .headline))
@@ -173,7 +149,7 @@ struct InternetArchiveDetailContent: View {
                     Spacer()
                 }
                 .padding(.top, 20)
-                
+
                 Spacer()
             }
             .padding(.top, 30)
@@ -191,22 +167,21 @@ struct InternetArchiveDetailContent: View {
                                     primaryButtonTitle: NSLocalizedString("Remove", comment: ""),
                                     iconImage: Image("trash_icon"),
                                     primaryButtonAction: {
-                                        dispatch(.Remove)
+                                        viewModel.removeSpace()
                                         showAlert = false
                                     },
                                     secondaryButtonTitle: NSLocalizedString("Cancel", comment: ""),
                                     secondaryButtonIsOutlined: false,
                                     secondaryButtonAction: {
                                         showAlert = false
-                                        dispatch(.HandleBackButton(status: false))
+                                        viewModel.setBackButtonVisibility(false)
                                     },
                                     showCheckbox: false,
                                     isRemoveAlert: true
                                 )
                                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                             }
-                                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                            
+                            .frame(maxWidth: .infinity, maxHeight: .infinity)
                         )
                 }
             }
@@ -214,15 +189,17 @@ struct InternetArchiveDetailContent: View {
     }
 }
 
-
+// MARK: - Preview (uses state struct for static preview data)
 struct InternetArchiveDetailView_Previews: PreviewProvider {
-    static let state = InternetArchiveDetailState(
-        screenName: "ABC User",
-        userName: "@abc_user1",
-        email: "abc@example.com"
-    )
-    
     static var previews: some View {
-        InternetArchiveDetailContent(state: state) { _ in }
+        let space = IaSpace()
+        let viewModel = InternetArchiveDetailViewModel(space: space)
+        // Set preview data
+        viewModel.userName = "@abc_user1"
+        viewModel.screenName = "ABC User"
+        viewModel.email = "abc@example.com"
+        
+        return InternetArchiveDetailContent(viewModel: viewModel)
     }
 }
+

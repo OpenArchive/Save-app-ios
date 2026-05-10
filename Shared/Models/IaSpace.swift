@@ -77,7 +77,7 @@ class IaSpace: Space, Item {
         coder.encode(url, forKey: "url")
         coder.encode(nil, forKey: "favIcon")
         coder.encode(username, forKey: "username")
-        coder.encode(password, forKey: "password")
+        // password (secretKey) is stored in Keychain via Space base class
         coder.encode(authorName, forKey: "authorName")
         coder.encode(authorRole, forKey: "authorRole")
         coder.encode(authorOther, forKey: "authorOther")

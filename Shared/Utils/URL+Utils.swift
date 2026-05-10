@@ -41,4 +41,9 @@ extension URL {
     var size: Int? {
         (try? resourceValues(forKeys: [.fileSizeKey]))?.fileSize
     }
+
+    /// Marks this URL as excluded from iCloud and device backups.
+    func excludeFromBackup() {
+        try? (self as NSURL).setResourceValue(true, forKey: .isExcludedFromBackupKey)
+    }
 }

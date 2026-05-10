@@ -8,6 +8,7 @@
 
 import Foundation
 import Combine
+import Security
 
 class PasscodeRepository {
     
@@ -43,17 +44,56 @@ class PasscodeRepository {
         }.eraseToAnyPublisher()
     }
 
-    func storePasscodeHashAndSalt(hash: Data, salt: Data) {
-        KeychainHelper.save(key: passcodeHashKey, data: hash)
-        KeychainHelper.save(key: passcodeSaltKey, data: salt)
+    func storePasscodeHashAndSalt(hash: Data, salt: Data) throws {
+        guard KeychainHelper.save(key: passcodeHashKey, data: hash) else {
+            throw NSError(domain: "PasscodeRepository", code: -1, 
+                         userInfo: [NSLocalizedDescriptionKey: "Failed to save passcode hash to keychain"])
+        }
         
-        AppSettings.passcodeEnabled.toggle()
+        guard KeychainHelper.save(key: passcodeSaltKey, data: salt) else {
+            throw NSError(domain: "PasscodeRepository", code: -2, 
+                         userInfo: [NSLocalizedDescriptionKey: "Failed to save passcode salt to keychain"])
+        }
+        
+        AppSettings.passcodeEnabled = true
+
+        // If screen recording is already active, apply privacy overlay immediately
+        if let sceneDelegate = SceneDelegate.current {
+            sceneDelegate.syncCapturePrivacyOverlay()
+        }
     }
 
     func getPasscodeHashAndSalt() -> (hash: Data?, salt: Data?) {
+        migrateLegacyKeychainItemIfNeeded(key: passcodeHashKey)
+        migrateLegacyKeychainItemIfNeeded(key: passcodeSaltKey)
         let hash = KeychainHelper.retrieve(key: passcodeHashKey)
         let salt = KeychainHelper.retrieve(key: passcodeSaltKey)
         return (hash, salt)
+    }
+
+    /// Migrates a Keychain item stored without an access group (pre-security-fix format)
+    /// to the new format that includes the shared access group.
+    /// This ensures existing users don't lose their passcode after the update.
+    private func migrateLegacyKeychainItemIfNeeded(key: String) {
+        // If the item already exists under the new access group, nothing to do.
+        guard KeychainHelper.retrieve(key: key) == nil else { return }
+
+        // Try to find the item stored without an access group (legacy format).
+        let legacyQuery: [CFString: Any] = [
+            kSecClass: kSecClassGenericPassword,
+            kSecAttrAccount: key,
+            kSecReturnData: true,
+            kSecMatchLimit: kSecMatchLimitOne
+        ]
+        var result: AnyObject?
+        guard SecItemCopyMatching(legacyQuery as CFDictionary, &result) == errSecSuccess,
+              let data = result as? Data else { return }
+
+        // Re-save with the shared access group.
+        KeychainHelper.save(key: key, data: data)
+
+        // Remove the legacy item.
+        SecItemDelete(legacyQuery as CFDictionary)
     }
 
     func clearPasscode() {
@@ -61,8 +101,13 @@ class PasscodeRepository {
         KeychainHelper.delete(key: passcodeHashKey)
         KeychainHelper.delete(key: passcodeSaltKey)
         
-        AppSettings.passcodeEnabled.toggle()
-        
+        AppSettings.passcodeEnabled = false
+
+        // Remove screen recording privacy overlay since passcode is now off
+        if let sceneDelegate = SceneDelegate.current {
+            sceneDelegate.syncCapturePrivacyOverlay()
+        }
+
         resetFailedAttempts()
     }
     

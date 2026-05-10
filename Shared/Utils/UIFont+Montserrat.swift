@@ -32,10 +32,16 @@ extension UIFont {
         .title3: 20,
     ]
 
+    private static var fontsLoaded = false
+
     class func setUpMontserrat() {
-        FontBlaster.blast() /* { fonts in
-            print(fonts)
-        } */
+        guard !fontsLoaded else { return }
+        if UIFont(name: defaultFontName, size: 1) != nil {
+            fontsLoaded = true
+            return
+        }
+        FontBlaster.blast()
+        fontsLoaded = true
 
        // UILabel.appearance().fontName = defaultFontName
       //  UIButton.appearance().fontName = defaultFontName

@@ -2,13 +2,13 @@ import SwiftUI
 
 struct PasscodeEntryView: View {
     
-    @ObservedObject private var viewModel: PasscodeEntryViewModel
+    @StateObject private var viewModel: PasscodeEntryViewModel
     
     init(
         onPasscodeSuccess: @escaping () -> Void,
         onExit: @escaping () -> Void
     ) {
-        self.viewModel = PasscodeEntryViewModel(onComplete: onPasscodeSuccess)
+        _viewModel = StateObject(wrappedValue: PasscodeEntryViewModel(onComplete: onPasscodeSuccess))
         self.onExit = onExit
     }
     

@@ -241,10 +241,14 @@ class IaConduit: Conduit {
                 try? FileManager.default.removeItem(at: tempMetaFile)
 
                 if let error = metaTask.error {
+                    #if DEBUG
                     print("meta.json upload failed: \(error.localizedDescription)")
+                    #endif
                     uploadError = error
                 } else {
+                    #if DEBUG
                     print("meta.json uploaded successfully to Internet Archive.")
+                    #endif
                 }
 
                 semaphore.signal()
@@ -254,7 +258,9 @@ class IaConduit: Conduit {
 
             let timeout = DispatchTime.now() + .seconds(60)
             if semaphore.wait(timeout: timeout) == .timedOut {
+                #if DEBUG
                 print("meta.json upload timed out after 60 seconds")
+                #endif
                 return NSError(domain: "org.open-archive.save", code: -1,
                               userInfo: [NSLocalizedDescriptionKey: "meta.json upload timed out"])
             }
@@ -262,7 +268,9 @@ class IaConduit: Conduit {
             return uploadError
 
         } catch let e {
+            #if DEBUG
             print("Failed to encode meta.json: \(e.localizedDescription)")
+            #endif
             return e
         }
     }

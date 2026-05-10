@@ -6,7 +6,7 @@
 //  Copyright © 2024 Open Archive. All rights reserved.
 //
 
-import Factory
+import FactoryKit
 
 
 extension Container {

@@ -6,77 +6,48 @@
 //  Copyright © 2019 Open Archive. All rights reserved.
 //
 
+import SwiftUI
 import UIKit
 import YapDatabase
 
-class PreviewViewController: UIViewController,
-                             UICollectionViewDelegateFlowLayout, UICollectionViewDataSource,
-                             AssetPickerDelegate, DoneDelegate
-{
-    
-    private static let segueShowDarkroom = "showDarkroomSegue"
-    private static let segueShowBatchEdit = "showBatchEditSegue"
-    
-    
-    @IBOutlet weak var uploadBt: UIBarButtonItem! {
-        didSet {
-            uploadBt.title = NSLocalizedString("UPLOAD", comment: "")
-            uploadBt.accessibilityIdentifier = "btUpload"
-        }
-    }
-    @IBOutlet weak var collectionView: UICollectionView!
-    
-    @IBOutlet var editBt: UIButton!{
-        didSet {
-            editBt.isHidden = true
-        }
-    }
-    
-    @IBOutlet weak var selectAllBt: UIButton!{
-        didSet{
-            selectAllBt.isHidden = true
-            selectAllBt.titleLabel?.font =  .montserrat(forTextStyle: .headline, with: .traitUIOptimized)
-        }
-    }
-    @IBOutlet var addBt: UIButton!
-    @IBOutlet var deleteBt: UIButton!{
-        didSet {
-            deleteBt.isHidden = true
-        }
-    }
-    
+/// Hosts the full preview flow (grid, darkroom, batch edit) in one `UIHostingController` shell.
+final class PreviewViewController: UIHostingController<PreviewFlowContainerView>, AssetPickerDelegate, DoneDelegate {
+
     private let sc = SelectedCollection()
-    
     private lazy var assetPicker = AssetPicker(self)
-    
+    private let session: PreviewSessionModel
+
+    private weak var centeredTitleView: PreviewNavScreenWidthTitleView?
+
+    init() {
+        let session = PreviewSessionModel()
+        self.session = session
+        super.init(rootView: PreviewFlowContainerView(session: session))
+        session.viewController = self
+    }
+
+    @objc required dynamic init?(coder: NSCoder) {
+        nil
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        let  title = NSLocalizedString("Preview Upload", comment: "")
-        navigationItem.title = title
-        
-        let backBarButtonItem = UIBarButtonItem(title: "", style: .plain, target: nil, action: nil)
-        navigationItem.backBarButtonItem = backBarButtonItem
-        
-        navigationItem.rightBarButtonItem?.accessibilityIdentifier = "btUpload"
-        
-        collectionView.register(PreviewCell.nib, forCellWithReuseIdentifier: PreviewCell.reuseId)
-        collectionView.allowsMultipleSelection = true
-        
-        if #available(iOS 14.0, *) {
-            collectionView.allowsMultipleSelectionDuringEditing = true
-        }
-        
-        Db.add(observer: self, #selector(yapDatabaseModified))
+        view.backgroundColor = .systemBackground
+
+        save_configureTealStackNavigationItem()
+        syncNavigationChrome()
     }
-    
+
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        
         navigationController?.setNavigationBarHidden(false, animated: animated)
-        toggleToolbar(collectionView.numberOfSelectedItems != 0, animated: animated)
     }
-    
+
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        centeredTitleView?.invalidateWidth()
+    }
+
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         trackScreenViewSafely("MediaPreview")
@@ -84,165 +55,147 @@ class PreviewViewController: UIViewController,
             BatchInfoAlert.presentIfNeeded(viewController: self, additionalCondition: self.sc.count >= 1)
         }
     }
-    
-    
-    // MARK: UICollectionViewDataSource
-    
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return sc.sections
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return sc.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PreviewCell.reuseId, for: indexPath) as! PreviewCell
-        cell.asset = sc.getAsset(indexPath)
-        
-        return cell
-    }
-    
-    
-    // MARK: UICollectionViewDelegateFlowLayout
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let layout = collectionViewLayout as? UICollectionViewFlowLayout
-        let space = (layout?.minimumInteritemSpacing ?? 0) + (layout?.sectionInset.left ?? 0) + (layout?.sectionInset.right ?? 0)
-        let size = (collectionView.frame.size.width - space) / 2
-        
-        return CGSize(width: size, height: size)
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // If the currently selected number of items is exactly one, that means,
-        // that there was no selection before, and this item was just selected.
-        // In that case, ignore the selection and instead move to DarkroomViewController.
-        // Because in this scenario, the first selection is done by a long press,
-        // which basically enters an "edit" mode. (See #longPressItem.)
-        if collectionView.numberOfSelectedItems != 1 {
-            
-            // For an unkown reason, this isn't done automatically.
-            collectionView.cellForItem(at: indexPath)?.isSelected = true
-            let totalItems = collectionView.numberOfItems(inSection: 0)
-                    if collectionView.numberOfSelectedItems == totalItems {
-                        selectAllBt.setTitle(NSLocalizedString("Deselect All", comment: ""), for: .normal)
-                    }
-            return
+
+    func syncNavigationChrome() {
+        let titleText: String
+        let rightItem: UIBarButtonItem
+        switch session.route {
+        case .preview:
+            titleText = NSLocalizedString("Preview Upload", comment: "")
+            rightItem = SaveNavigationBarButtons.makeChromelessPrimaryActionBarButtonItem(
+                title: NSLocalizedString("UPLOAD", comment: ""),
+                target: self,
+                action: #selector(upload),
+                accessibilityIdentifier: "btUpload"
+            )
+        case .darkroom:
+            titleText = NSLocalizedString("Edit Media Info", comment: "")
+            rightItem = SaveNavigationBarButtons.makeChromelessPrimaryActionBarButtonItem(
+                title: "DONE",
+                target: self,
+                action: #selector(doneTapped),
+                accessibilityIdentifier: nil
+            )
+        case .batchEdit:
+            titleText = NSLocalizedString("Bulk Edit Media Info", comment: "")
+            rightItem = SaveNavigationBarButtons.makeChromelessPrimaryActionBarButtonItem(
+                title: "DONE",
+                target: self,
+                action: #selector(doneTapped),
+                accessibilityIdentifier: nil
+            )
         }
-        
-        collectionView.deselectItem(at: indexPath, animated: false)
-        
-        performSegue(withIdentifier: Self.segueShowDarkroom, sender: indexPath.row)
+
+        navigationItem.title = nil
+        let titleView = PreviewNavScreenWidthTitleView(host: self, text: titleText)
+        centeredTitleView = titleView
+        navigationItem.titleView = titleView
+        navigationItem.rightBarButtonItem = rightItem
+
+        // Inner routes (darkroom / batch) live inside this VC; the system back would pop to main.
+        switch session.route {
+        case .preview:
+            navigationItem.leftBarButtonItem = nil
+            navigationItem.hidesBackButton = false
+            let canPopShell = (navigationController?.viewControllers.count ?? 0) > 1
+            navigationController?.interactivePopGestureRecognizer?.isEnabled = canPopShell
+        case .darkroom, .batchEdit:
+            navigationItem.hidesBackButton = true
+            let back = UIBarButtonItem(
+                image: UIImage(systemName: "chevron.left"),
+                style: .plain,
+                target: self,
+                action: #selector(previewInnerBackTapped)
+            )
+            back.tintColor = .white
+            back.accessibilityLabel = NSLocalizedString("Back", comment: "")
+            navigationItem.leftBarButtonItem = back
+            navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+        }
     }
-    
-    func collectionView(_ collectionView: UICollectionView, didDeselectItemAt indexPath: IndexPath) {
-        // For an unkown reason, this isn't done automatically.
-        collectionView.cellForItem(at: indexPath)?.isSelected = false
-        
-        if collectionView.numberOfSelectedItems == 0 {
-                toggleToolbar(false)
-            } else {
-                selectAllBt.setTitle(NSLocalizedString("Select All", comment: ""), for: .normal)
-            }
+
+    @objc private func previewInnerBackTapped() {
+        session.returnToPreview()
     }
-    
-    
+
+    @objc private func doneTapped() {
+        session.returnToPreview()
+    }
+
+    func popFromMainNavigation() {
+        navigationController?.popViewController(animated: true)
+    }
+
     // MARK: AssetPickerDelegate
-    
+
     var currentCollection: Collection? {
         sc.collection
     }
-    
+
     func picked() {
-        // Should be automatically updated via database.
+        // Database-driven refresh.
     }
-    
-    
+
     // MARK: DoneDelegate
-    
+
     func done() {
         navigationController?.popViewController(animated: true)
     }
-    
-    
-    // MARK: Navigation
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let vc = segue.destination as? DarkroomViewController {
-            if let index = sender as? Int {
-                vc.selected = index
-            }
-        }
-        else if let vc = segue.destination as? BatchEditViewController {
-            vc.assets = sender as? [Asset]
-        }
-        else if let vc = segue.destination as? ManagementViewController {
-            vc.delegate = self
-        }
-    }
-    
-    
-    // MARK: Actions
-    
-    @IBAction func upload() {
+
+    // MARK: Upload
+
+    @objc private func upload() {
         UploadInfoAlert.presentIfNeeded(viewController: self) {
-            Db.writeConn?.asyncReadWrite { tx in
-                guard let group = self.sc.group else {
-                    return
-                }
-                
-                var order = 0
-                
-                tx.iterate { (key, upload: Upload, stop) in
-                    if upload.order >= order {
-                        order = upload.order + 1
-                    }
-                }
-                
-                if let collection: Collection = tx.object(for: self.sc.id) {
-                    collection.close()
-                    
-                    tx.setObject(collection)
-                }
-                
-                tx.iterate(group: group, in: AbcFilteredByCollectionView.name) { (collection, key, asset: Asset, index, stop) in
-                    // ProofMode might have been switched on in between import and now,
-                    // or something inhibited proof generation, so make sure,
-                    // proof is generated before upload.
-                    // Proofing will set asset to un-ready, so upload will not start
-                    // before proof is done as asset is set to ready again.
-                    //commented by navoda : no need to generate proof mode when uploading.
-                    //                    if asset.isReady && !asset.hasProof && Settings.proofMode {
-                    //                        asset.generateProof {
-                    //                            asset.update { asset in
-                    //                                asset.isReady = true
-                    //                            }
-                    //                        }
-                    //                    }
-                    
-                    let upload = Upload(order: order, asset: asset)
-                    tx.setObject(upload)
-                    order += 1
-                }
-                
-                let count = UploadsView.countUploading(tx)
-                
-                DispatchQueue.main.async {
-                    OrbotManager.shared.alertCannotUpload(count: count) { [weak self] in
-                        self?.navigationController?.popViewController(animated: true)
-                    }
+            DispatchQueue.main.async {
+                if Settings.wifiOnly && UploadManager.shared.reachability?.connection == .unavailable {
+                    self.showWifiAlert()
+                } else {
+                    self.performUpload()
                 }
             }
         }
     }
+
+    private func performUpload() {
+        Db.writeConn?.asyncReadWrite({ tx in
+            guard let group = self.sc.group else {
+                return
+            }
+
+            var order = 0
+
+            tx.iterate { (_, upload: Upload, _) in
+                if upload.order >= order {
+                    order = upload.order + 1
+                }
+            }
+
+            if let collection: Collection = tx.object(for: self.sc.id) {
+                collection.close()
+                tx.setObject(collection)
+            }
+
+            tx.iterate(group: group, in: AbcFilteredByCollectionView.name) { (_, _, asset: Asset, _, _) in
+                let upload = Upload(order: order, asset: asset)
+                tx.setObject(upload)
+                order += 1
+            }
+        }, completionBlock: {
+            DispatchQueue.main.async {
+                self.navigationController?.popViewController(animated: true)
+            }
+        })
+    }
+
+    func openGallery() {
+        assetPicker.pickMedia()
+    }
+
     func showMediaPickerSheet() {
-        
-        
+        guard presentedViewController == nil else { return }
+
         let popup = MediaPopupViewController()
-        popup.modalPresentationStyle = .overCurrentContext
-        popup.modalTransitionStyle = .crossDissolve
-        
+
         popup.onCameraTap = { [weak self] in
             self?.assetPicker.openCamera()
         }
@@ -250,145 +203,78 @@ class PreviewViewController: UIViewController,
             self?.assetPicker.pickMedia()
         }
         popup.onFilesTap = { [weak self] in
-            
             self?.assetPicker.pickDocuments()
         }
-        
+
         present(popup, animated: true)
     }
-    
-    @IBAction func showAddMenu() {
-        showMediaPickerSheet()
-        
+
+    private func showWifiAlert() {
+        let message = NSLocalizedString(
+            "Uploads are blocked until you connect to a Wi-Fi network or allow uploads over a mobile connection again.",
+            comment: ""
+        )
+
+        let title = NSLocalizedString("Wi-Fi not connected", comment: "")
+
+        let actions = [
+            AlertHelper.cancelAction(NSLocalizedString("Ignore", comment: ""), handler: {
+                self.performUpload()
+            }),
+            AlertHelper.defaultAction(NSLocalizedString("Allow any connection", comment: ""), handler: {
+                Settings.wifiOnly = false
+                NotificationCenter.default.post(name: .uploadManagerDataUsageChange, object: Settings.wifiOnly)
+                self.performUpload()
+            }),
+        ]
+
+        AlertHelper.present(self, message: message, title: title, actions: actions)
     }
-    @IBAction func longPressCell(_ sender: UILongPressGestureRecognizer) {
-        
-        if sender.state != .began {
-            return
-        }
-        
-        if let indexPath = collectionView.indexPathForItem(at: sender.location(in: collectionView)) {
-            collectionView.cellForItem(at: indexPath)?.isSelected = true
-            collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredVertically)
-            
-            toggleToolbar(true)
-        }
+}
+
+// MARK: - Centered nav title (screen width)
+
+/// `navigationItem.title` is laid out between the bar buttons (reads left-heavy). A full-window-width
+/// `titleView` keeps the label’s centered text aligned with the screen center.
+private final class PreviewNavScreenWidthTitleView: UIView {
+
+    weak var host: UIViewController?
+    private let label = UILabel()
+
+    init(host: UIViewController, text: String) {
+        self.host = host
+        super.init(frame: .zero)
+        backgroundColor = .clear
+        label.text = text
+        label.textColor = .white
+        label.font = UIFont(name: "Montserrat-SemiBold", size: 18)
+            ?? UIFont.systemFont(ofSize: 18, weight: .semibold)
+        label.textAlignment = .center
+        label.numberOfLines = 2
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.75
+        label.lineBreakMode = .byTruncatingTail
+        label.translatesAutoresizingMaskIntoConstraints = false
+        addSubview(label)
+        NSLayoutConstraint.activate([
+            label.leadingAnchor.constraint(equalTo: leadingAnchor),
+            label.trailingAnchor.constraint(equalTo: trailingAnchor),
+            label.centerYAnchor.constraint(equalTo: centerYAnchor),
+        ])
     }
-    
-    @IBAction func editAssets() {
-        let count = collectionView.numberOfSelectedItems
-        
-        if count < 2 {
-            let indexPath = collectionView.indexPathsForSelectedItems?.first ?? IndexPath(row: 0, section: 0)
-            
-            // Trigger selection, so DarkroomViewController gets pushed.
-            collectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredVertically)
-            collectionView(collectionView, didSelectItemAt: indexPath)
-        }
-        else {
-            performSegue(withIdentifier: Self.segueShowBatchEdit, sender: getSelectedAssets())
-        }
+
+    required init?(coder: NSCoder) {
+        nil
     }
-    
-    @IBAction func selectAllAssets(_ sender: Any) {
-        let totalItems = collectionView.numberOfItems(inSection: 0)
-           
-           let allSelected = collectionView.indexPathsForSelectedItems?.count == totalItems
-           
-           if allSelected {
-             
-               for indexPath in collectionView.indexPathsForSelectedItems ?? [] {
-                   collectionView.deselectItem(at: indexPath, animated: false)
-                   collectionView.cellForItem(at: indexPath)?.isSelected = false
-               }
-               toggleToolbar(false)
-               selectAllBt.setTitle(NSLocalizedString("Select All", comment: ""), for: .normal)
-           } else {
-               for item in 0..<totalItems {
-                   let indexPath = IndexPath(item: item, section: 0)
-                   collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
-                   collectionView.cellForItem(at: indexPath)?.isSelected = true
-               }
-               toggleToolbar(true)
-               selectAllBt.setTitle(NSLocalizedString("Deselect All", comment: ""), for: .normal)
-           }
+
+    func invalidateWidth() {
+        invalidateIntrinsicContentSize()
     }
-    @IBAction func addAssets() {
-        assetPicker.pickMedia()
-    }
-    
-    @IBAction func removeAssets() {
-        
-        for asset in getSelectedAssets() {
-            if asset == getSelectedAssets().last {
-                asset.remove() {
-                    self.toggleToolbar(false)
-                }
-            } else {
-                asset.remove()
-            }
-        }
-    }
-    
-    
-    // MARK: Observers
-    
-    /**
-     Callback for `YapDatabaseModified` and `YapDatabaseModifiedExternally` notifications.
-     
-     Will be called, when something changed the database.
-     */
-    @objc func yapDatabaseModified(notification: Notification) {
-        let changes = sc.yapDatabaseModified()
-        
-        updateTitle()
-        
-        // If multiple deletions or force full, just reload
-        let deleteCount = changes.rowChanges.filter { $0.type == .delete }.count
-        
-        if changes.forceFull || deleteCount > 1 {
-            UIView.performWithoutAnimation {
-                collectionView.reloadData()
-            }
-            
-            if sc.count < 1 {
-                navigationController?.popViewController(animated: true)
-            }
-            return
-        }
-        
-        collectionView.apply(changes) { [weak self] _ in
-            if self?.sc.count ?? 0 < 1 {
-                self?.navigationController?.popViewController(animated: true)
-            }
-        }
-    }
-    
-    
-    // MARK: Private Methods
-    
-    private func updateTitle() {
-        let projectName = sc.collection?.project.name
-        (navigationItem.titleView as? MultilineTitle)?.subtitle.text = projectName == nil
-        ? nil
-        : String(format: NSLocalizedString("Upload to %@", comment: ""), projectName!)
-    }
-    
-    /**
-     Shows different buttons on the toolbar, depending on the `selected` parameter.
-     
-     - parameter selected: true, to show icons for editing, false to show icon for adding.
-     */
-    private func toggleToolbar(_ selected: Bool, animated: Bool = true) {
-        
-        deleteBt.isHidden = !selected
-        editBt.isHidden = !selected
-        selectAllBt.isHidden = !selected
-        addBt.isHidden = selected
-        
-    }
-    
-    private func getSelectedAssets() -> [Asset] {
-        sc.getAssets(collectionView.indexPathsForSelectedItems)
+
+    override var intrinsicContentSize: CGSize {
+        let w = host?.view.window?.bounds.width
+            ?? host?.view.bounds.width
+            ?? UIScreen.main.bounds.width
+        return CGSize(width: w, height: 44)
     }
 }

@@ -6,28 +6,26 @@
 //  Copyright © 2023 Open Archive. All rights reserved.
 //
 
+import SwiftUI
 import UIKit
 
 /**
  A special alert which informs the user about the finality of an upload.
  */
-import UIKit
-import SwiftUI
-
 class UploadInfoAlert {
-    
+
     static var image: Image? {
         Image(systemName: "exclamationmark.triangle.fill")
     }
-    
+
     static var title: String {
         NSLocalizedString("Warning!", comment: "")
     }
-    
+
     static var message: String {
         NSLocalizedString("Once uploaded, you will not be able to edit media.", comment: "")
     }
-    
+
     static var wasAlreadyShown: Bool {
         get {
             Settings.firstUploadDone
@@ -36,14 +34,14 @@ class UploadInfoAlert {
             Settings.firstUploadDone = newValue
         }
     }
-    
+
     static func presentIfNeeded(viewController: UIViewController? = nil, additionalCondition: Bool = true, success: (() -> Void)? = nil) {
         guard additionalCondition, !wasAlreadyShown else {
             success?()
             return
         }
-        
-        let alertVC = CustomAlertViewController(
+
+        let model = CustomAlertPresentationModel(
             title: title,
             message: message,
             primaryButtonTitle: NSLocalizedString("Proceed to upload", comment: ""),
@@ -52,17 +50,15 @@ class UploadInfoAlert {
                 success?()
             },
             secondaryButtonTitle: NSLocalizedString("Actually, let me edit", comment: ""),
-            secondaryButtonAction: nil,
+            secondaryButtonAction: {
+                // Dismiss only; do not mark as shown or invoke success upload path.
+            },
+            secondaryButtonIsOutlined: false,
             showCheckbox: true,
             iconImage: image ?? Image(systemName: "exclamationmark.triangle.fill"),
             iconTint: .accent
         )
-        
-        if let vc = viewController {
-            vc.present(alertVC, animated: true)
-        } else {
-            UIApplication.shared.windows.first?.rootViewController?.present(alertVC, animated: true)
-        }
+
+        CustomAlertPresenter.present(model, from: viewController)
     }
 }
-

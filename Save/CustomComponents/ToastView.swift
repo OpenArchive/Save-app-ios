@@ -61,6 +61,7 @@ extension View {
     }
 }
 extension UIViewController {
+    /// Prefer `AppOverlayState.shared.showToast` when on the main `MainView` shell; use this for other UIKit-only screens.
     func showToast(message: String, duration: TimeInterval = 2.0) {
         
         let toastView = ToastContainerView(message: message, duration: duration)

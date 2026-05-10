@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol DoneDelegate {
+protocol DoneDelegate: AnyObject {
 
     func done()
 }

@@ -6,30 +6,28 @@
 //  Copyright © 2023 Open Archive. All rights reserved.
 //
 
+import SwiftUI
 import UIKit
 
 /**
  A special alert which informs the user about the add feature.
  */
-import UIKit
-import SwiftUI
-
 class AddInfoAlert {
-    
+
     static var image: Image? {
-        Image("add_media") 
+        Image("add_media")
     }
-    
+
     static var title: String {
         NSLocalizedString("Add Media", comment: "")
     }
-    
+
     static var message: String {
         String(format: NSLocalizedString(
             "Tap %@ to pick from image gallery or press and hold to add media from other apps.",
             comment: "placeholder is '+'"), "+")
     }
-    
+
     static var wasAlreadyShown: Bool {
         get {
             Settings.firstAddDone
@@ -38,14 +36,14 @@ class AddInfoAlert {
             Settings.firstAddDone = newValue
         }
     }
-    
+
     static func presentIfNeeded(viewController: UIViewController? = nil, additionalCondition: Bool = true, success: (() -> Void)? = nil) {
         guard additionalCondition, !wasAlreadyShown else {
             success?()
             return
         }
 
-        let alertVC = CustomAlertViewController(
+        let model = CustomAlertPresentationModel(
             title: title,
             message: message,
             primaryButtonTitle: NSLocalizedString("Ok", comment: ""),
@@ -53,19 +51,12 @@ class AddInfoAlert {
                 wasAlreadyShown = true
                 success?()
             },
-            secondaryButtonTitle:nil,
+            secondaryButtonTitle: nil,
             secondaryButtonAction: nil,
             showCheckbox: false,
-            iconImage: image ?? Image(systemName: "plus.circle.fill") // Use fallback system icon
+            iconImage: image ?? Image(systemName: "plus.circle.fill")
         )
 
-        if let vc = viewController {
-            vc.present(alertVC, animated: true)
-        } else {
-            if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-               let window = windowScene.windows.first(where: { $0.isKeyWindow }) {
-                window.rootViewController?.present(alertVC, animated: true)
-            }
-        }
+        CustomAlertPresenter.present(model, from: viewController)
     }
 }

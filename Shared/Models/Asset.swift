@@ -698,6 +698,12 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
         }
 
         let block = { (tx: YapDatabaseReadWriteTransaction) in
+            // Explicitly remove the thumbnail file as a safety net, since
+            // YapDatabase relationship edges may not cover all cases (e.g. after upload).
+            if let thumbUrl = self.thumb, thumbUrl.exists {
+                try? FileManager.default.removeItem(at: thumbUrl)
+            }
+
             tx.remove(self)
 
             if let callback = callback {

@@ -9,6 +9,8 @@
 
 import SwiftUI
 import Combine
+import UIKit
+
 extension Notification.Name {
     static let privateServerSettingsConfirm = Notification.Name("privateServerSettingsConfirm")
 }
@@ -34,7 +36,7 @@ struct PrivateServerSettingsView: View {
             serverName: space.name ?? "",
             serverURL: space.url?.absoluteString ?? "",
             username: space.username ?? "",
-            password: space.password != nil ? String(repeating: "•", count: space.password?.count ?? 0) : "",
+            password: space.password != nil ? "••••••••" : "",
             isCcEnabled: space.license != nil,
             isCc0Enabled: isCC0,
             allowRemix: isCC0 ? false : space.license?.contains("-nd") == false,
@@ -49,10 +51,14 @@ struct PrivateServerSettingsView: View {
     @State private var showDeleteAlert = false
     @State private var showSuccessAlert = false
     var body: some View {
-        NavigationView {
+        ZStack {
+            Color(UIColor.systemBackground)
+                .ignoresSafeArea()
+                .ignoresSafeArea(.keyboard, edges: .bottom)
+
             ScrollView {
                 VStack(alignment: .leading, spacing: 10) {
-                    
+
                     SectionHeader(title: NSLocalizedString("Server info",comment: ""))
                     
                     CustomTextField(
@@ -66,14 +72,15 @@ struct PrivateServerSettingsView: View {
                             get: { store.state.serverName },
                             set: { newValue in
                                 serverName = newValue
-                                store.dispatch(action: .updateServerName(newValue))
+                                store.updateServerName(newValue)
                             }
                         ),
                         isDisabled: false,
                         onEditingChanged: { began in
                             onEditingChanged?(began)
                         }, onCommit:  {
-                            store.dispatch(action: .saveToDatabase)
+                            UIApplication.shared.sendAction(#selector(UIResponder.resignFirstResponder), to: nil, from: nil, for: nil)
+                            store.saveToDatabase()
                             showSuccessAlert = true
                         })
                     
@@ -98,8 +105,7 @@ struct PrivateServerSettingsView: View {
                     Toggle(NSLocalizedString("Set creative commons licenses for folders on this server.", comment: "Creative Commons Toggle"), isOn: Binding(
                         get: { store.state.isCcEnabled },
                         set: { newValue in
-                            store.dispatch(action: .toggleCcEnabled(newValue))
-                            store.dispatch(action: .updateLicense)
+                            store.toggleCcEnabled(newValue)
                         }
                     )) .toggleTint(.accent).font(.montserrat(.medium, for: .subheadline))
                     
@@ -109,7 +115,7 @@ struct PrivateServerSettingsView: View {
                     
                     if  let url = URL(string: "https://creativecommons.org/") {
                         
-                        Text(AttributedString(NSLocalizedString(NSLocalizedString("Learn more about Creative Commons.", comment: "More Info Link"), comment: "License Link"), attributes: AttributeContainer([.underlineStyle: NSUnderlineStyle.single.rawValue])))
+                        Text(AttributedString(NSLocalizedString("Learn more about Creative Commons.", comment: "License Link"), attributes: AttributeContainer([.underlineStyle: NSUnderlineStyle.single.rawValue])))
                             .foregroundColor(.accentColor)
                             .font(.montserrat(.medium, for: .subheadline))
                             .padding(.top, 10)
@@ -133,13 +139,20 @@ struct PrivateServerSettingsView: View {
                 }
                 .padding(.horizontal, 16)
                 .padding(.top, 10)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    UIApplication.shared.endEditing()
+                }
             }
-        }.onAppear {
+        }
+        .onAppear {
             setupNotificationListener()
-        }.onDisappear {
+        }
+        .onDisappear {
             notificationCancellable?.cancel()
             notificationCancellable = nil
-        }.overlay(
+        }
+        .overlay(
             Group {
                 if showDeleteAlert {
                     Color.black.opacity(0.7)
@@ -152,7 +165,7 @@ struct PrivateServerSettingsView: View {
                                     primaryButtonTitle: NSLocalizedString("Remove", comment: ""),
                                     iconImage: Image("trash_icon"),
                                     primaryButtonAction: {
-                                        store.dispatch(action: .removeSpace(store.state.space!))
+                                        store.removeSpaceFromDatabase(store.state.space!)
                                         showDeleteAlert = false
                                         disableBackAction?(false)
                                         DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
@@ -201,7 +214,6 @@ struct PrivateServerSettingsView: View {
                 
                 
             })
-        
     }
     
     private func setupNotificationListener() {
@@ -216,7 +228,7 @@ struct PrivateServerSettingsView: View {
                 notificationCancellable?.cancel()
                 notificationCancellable = nil
                 
-                store.dispatch(action: .saveToDatabase)
+                store.saveToDatabase()
                 showSuccessAlert = true
             }
     }
@@ -231,8 +243,7 @@ struct LicenseToggles: View {
             Toggle(NSLocalizedString("Waive all restrictions, requirements, and attribution (CC0).", comment: "CC0 Toggle"), isOn: Binding(
                 get: { store.state.isCc0Enabled },
                 set: { newValue in
-                    store.dispatch(action: .toggleCc0Enabled(newValue))
-                    store.dispatch(action: .updateLicense)
+                    store.toggleCc0Enabled(newValue)
                 }
             ))
             .toggleTint(.accent)
@@ -241,8 +252,7 @@ struct LicenseToggles: View {
             Toggle(NSLocalizedString("Allow anyone to remix and share?", comment: "Remix Toggle"), isOn: Binding(
                 get: { store.state.allowRemix },
                 set: { newValue in
-                    store.dispatch(action: .toggleAllowRemix(newValue))
-                    store.dispatch(action: .updateLicense)
+                    store.toggleAllowRemix(newValue)
                 }
             )) .toggleTint(.accent).font(.montserrat(.medium, for: .subheadline))
             
@@ -250,8 +260,7 @@ struct LicenseToggles: View {
             Toggle(NSLocalizedString("Require them to share like you have?", comment: "ShareAlike Toggle"), isOn: Binding(
                 get: { store.state.requireShareAlike },
                 set: { newValue in
-                    store.dispatch(action: .toggleRequireShareAlike(newValue))
-                    store.dispatch(action: .updateLicense)
+                    store.toggleRequireShareAlike(newValue)
                 }
             )) .toggleTint(.accent)
                 .disabled(!store.state.allowRemix).font(.montserrat(.medium, for: .subheadline))
@@ -259,8 +268,7 @@ struct LicenseToggles: View {
             Toggle(NSLocalizedString("Allow commercial use?", comment: "Commercial Use Toggle"), isOn: Binding(
                 get: { store.state.allowCommercialUse },
                 set: { newValue in
-                    store.dispatch(action: .toggleAllowCommercialUse(newValue))
-                    store.dispatch(action: .updateLicense)
+                    store.toggleAllowCommercialUse(newValue)
                 }
             )) .toggleTint(.accent).font(.montserrat(.medium, for: .subheadline))
             
@@ -282,7 +290,7 @@ struct SectionHeader: View {
     var title: String
     
     var body: some View {
-        Text(NSLocalizedString(title, comment: "\(title) Section"))
+        Text(title)
             .font(.montserrat(.semibold, for: .headline))
             .foregroundColor(.gray70)
             .padding(.top,20)

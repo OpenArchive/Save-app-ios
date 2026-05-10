@@ -7,7 +7,7 @@
 //
 
 import UIKit
-
+import SwiftUI
 /**
  A special alert which informs the user about the flag feature.
  */
@@ -17,7 +17,7 @@ class FlagInfoAlert: InfoAlert {
         UIImage(named: "ic_flag")
     }
 
-    override class var tintColor: UIColor {
+    override class var tintColor: Color {
         .warning
     }
 

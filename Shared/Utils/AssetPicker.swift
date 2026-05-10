@@ -10,6 +10,8 @@ import Foundation
 import TLPhotoPicker
 import Photos
 import LegacyUTType
+import UniformTypeIdentifiers
+import AVFoundation
 
 protocol AssetPickerDelegate: AnyObject {
 
@@ -52,7 +54,7 @@ class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPic
 
         case .notDetermined:
             PHPhotoLibrary.requestAuthorization() { newStatus in
-                if newStatus == .authorized {
+                if newStatus == .authorized || newStatus == .limited {
                     DispatchQueue.main.async {
                         self.delegate?.present(tlpp, animated: true)
                     }
@@ -82,7 +84,7 @@ class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPic
     }
 
     func pickDocuments() {
-        let vc = UIDocumentPickerViewController(documentTypes: [LegacyUTType.item.identifier], in: .import)
+        let vc = UIDocumentPickerViewController(forOpeningContentTypes: [.item], asCopy: true)
         vc.delegate = self
         
         delegate?.present(vc, animated: true)
@@ -174,7 +176,7 @@ class AssetPicker: NSObject, TLPhotosPickerViewControllerDelegate, UIDocumentPic
         var actions = [AlertHelper.cancelAction()]
 
         if let url = URL(string: UIApplication.openSettingsURLString) {
-            actions.append(AlertHelper.defaultAction(NSLocalizedString("Settings", comment: ""), handler: { _ in
+            actions.append(AlertHelper.defaultAction(NSLocalizedString("Settings", comment: ""), handler: { 
                 UIApplication.shared.open(url)
             }))
         }

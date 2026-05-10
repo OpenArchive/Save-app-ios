@@ -14,6 +14,7 @@ enum MontserratWeight: String {
     case medium = "Montserrat-Medium"
     case semibold = "Montserrat-SemiBold"
     case bold = "Montserrat-Bold"
+    case extraBold = "Montserrat-ExtraBold"
     case mediumItalic  = "Montserrat-MediumItalic"
     case boldItalic = "Montserrat-BoldItalic"
 }

@@ -401,6 +401,82 @@ extension UICollectionView {
             return
         }
 
+        // For safety, if we have many changes or complex operations, use full reload
+        let complexChanges = changes.sectionChanges.count > 1 || 
+                           changes.rowChanges.count > 10 ||
+                           changes.rowChanges.contains { $0.type == .move }
+        
+        if complexChanges {
+            UIView.performWithoutAnimation {
+                reloadData()
+            }
+            
+            DispatchQueue.main.async {
+                completion?(true)
+            }
+            
+            return
+        }
+
+        // Check for potential inconsistencies that would cause crashes
+        let currentSectionCount = numberOfSections
+        let hasInvalidSectionDeletions = changes.sectionChanges.contains { change in
+            change.type == .delete && Int(change.index) >= currentSectionCount
+        }
+        
+        let hasInvalidRowDeletions = changes.rowChanges.contains { change in
+            guard change.type == .delete, let indexPath = change.indexPath else { return false }
+            return indexPath.section >= currentSectionCount || 
+                   indexPath.item >= numberOfItems(inSection: indexPath.section)
+        }
+        
+        // Additional validation: Check if the batch updates would create inconsistent item counts
+        var sectionItemCountChanges: [Int: Int] = [:]
+        
+        // Calculate expected item count changes per section from the batch updates
+        for change in changes.rowChanges {
+            switch change.type {
+            case .insert:
+                if let indexPath = change.newIndexPath {
+                    sectionItemCountChanges[indexPath.section, default: 0] += 1
+                }
+            case .delete:
+                if let indexPath = change.indexPath {
+                    sectionItemCountChanges[indexPath.section, default: 0] -= 1
+                }
+            case .move:
+                if let fromIndexPath = change.indexPath, let toIndexPath = change.newIndexPath {
+                    if fromIndexPath.section != toIndexPath.section {
+                        sectionItemCountChanges[fromIndexPath.section, default: 0] -= 1
+                        sectionItemCountChanges[toIndexPath.section, default: 0] += 1
+                    }
+                }
+            default:
+                break
+            }
+        }
+        
+        // Check if any section would have an inconsistent item count after the updates
+        let hasInconsistentItemCounts = sectionItemCountChanges.contains { section, expectedChange in
+            guard section < currentSectionCount else { return false }
+            let currentCount = numberOfItems(inSection: section)
+            let expectedNewCount = currentCount + expectedChange
+            return expectedNewCount < 0 // This would be invalid
+        }
+        
+        // If we detect inconsistencies, force a full reload
+        if hasInvalidSectionDeletions || hasInvalidRowDeletions || hasInconsistentItemCounts {
+            UIView.performWithoutAnimation {
+                reloadData()
+            }
+            
+            DispatchQueue.main.async {
+                completion?(true)
+            }
+            
+            return
+        }
+
         var countChanged = false
 
         performBatchUpdates {
@@ -411,8 +487,12 @@ extension UICollectionView {
                     countChanged = true
 
                 case .delete:
-                    deleteSections([Int(change.index)])
-                    countChanged = true
+                    // Double-check section exists before deleting
+                    let sectionIndex = Int(change.index)
+                    if sectionIndex < numberOfSections {
+                        deleteSections([sectionIndex])
+                        countChanged = true
+                    }
 
                 default:
                     break
@@ -428,7 +508,9 @@ extension UICollectionView {
                     }
 
                 case .delete:
-                    if let indexPath = change.indexPath {
+                    if let indexPath = change.indexPath,
+                       indexPath.section < numberOfSections,
+                       indexPath.item < numberOfItems(inSection: indexPath.section) {
                         deleteItems(at: [indexPath])
                         countChanged = true
                     }
@@ -439,7 +521,9 @@ extension UICollectionView {
                     }
 
                 case .update:
-                    if let indexPath = change.indexPath {
+                    if let indexPath = change.indexPath,
+                       indexPath.section < numberOfSections,
+                       indexPath.item < numberOfItems(inSection: indexPath.section) {
                         reloadItems(at: [indexPath])
                     }
 
@@ -447,8 +531,16 @@ extension UICollectionView {
                     break
                 }
             }
-        } completion: { _ in
-            completion?(countChanged)
+        } completion: { [weak self] finished in
+            // If the batch update failed, force a reload on the next run loop
+            if !finished {
+                DispatchQueue.main.async {
+                    self?.reloadData()
+                    completion?(true)
+                }
+            } else {
+                completion?(countChanged)
+            }
         }
     }
 }

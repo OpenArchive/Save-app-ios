@@ -7,55 +7,33 @@
 //
 
 import UIKit
+import SwiftUI
 
-class SpaceSuccessViewController: BaseViewController, WizardDelegatable {
-    
-    weak var delegate: WizardDelegate?
-    
+class SpaceSuccessViewController: UIHostingController<SpaceSuccessView> {
+
     var spaceName = ""
-    
-    
-    @IBOutlet weak var titleLb: UILabel!
-    
-    @IBOutlet weak var doneBt: UIButton! {
-        didSet {
-            doneBt.setTitle(NSLocalizedString("Done", comment: ""))
-            doneBt.titleLabel?.font = .montserrat(forTextStyle: .headline ,with: .traitUIOptimized)
-            doneBt.cornerRadius = 10
-            self.navigationItem.hidesBackButton = true
-            self.title =  NSLocalizedString("Setup Complete", comment: "")
-        }
+
+    required init(spaceName: String = "") {
+        self.spaceName = spaceName
+        let placeholder = SpaceSuccessView(spaceName: spaceName, onDone: {})
+        super.init(rootView: placeholder)
     }
-    
-    
+
+    @MainActor @preconcurrency required dynamic init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        titleLb.text = String(
-            format: NSLocalizedString("You have successfully connected to %@!",
-                                      comment: "Placeholder is a server type or name"),
-            
-            spaceName)
-        
-        titleLb.font = .montserrat(forTextStyle: .headline ,with: .traitUIOptimized)
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        trackScreenViewSafely("SpaceSetupSuccess")
-    }
-    
-    @IBAction func done() {
-    
-        if let navigationController = self.navigationController {
-            
-            if let existingVC = navigationController.viewControllers.first(where: { $0 is MainViewController }) {
-                
-                navigationController.popToViewController(existingVC, animated: true)
-            } else {
-                
-                let newVC = MainViewController()
-                navigationController.pushViewController(newVC, animated: true)
-            }
+        save_configureTealStackNavigationItem(hidesBackButton: true)
+        title = NSLocalizedString("Setup Complete", comment: "")
+
+        rootView = SpaceSuccessView(spaceName: spaceName) { [weak self] in
+            self?.done()
         }
+    }
+
+    private func done() {
+        AppNavigationRouter.shared.popToMainViewController(animated: true)
     }
 }

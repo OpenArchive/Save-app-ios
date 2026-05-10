@@ -7,200 +7,237 @@
 //
 
 import SwiftUI
-import Factory
+import UIKit
+import FactoryKit
 
-struct InternetArchiveLoginView: View  {
-    
+struct InternetArchiveLoginView: View {
+
     @ObservedObject var viewModel: InternetArchiveLoginViewModel
-    
+
     var body: some View {
         if #available(iOS 15.0, *) {
-            InternetArchiveLoginContent(
-                state: viewModel.state(),
-                dispatch: viewModel.store.dispatch
-            )
+            InternetArchiveLoginContent(viewModel: viewModel)
         } else {
-            // Fallback on earlier versions
+            EmptyView()
         }
     }
-}
-enum Field: Hashable {
-    case username
-    case password
 }
 
 struct InternetArchiveLoginContent: View {
-    
-    let state: InternetArchiveLoginState.Bindings
-    let dispatch: Dispatch<InternetArchiveLoginAction>
-    @State private var keyboardOffset: CGFloat = 0
+
+    private enum Field: Hashable {
+        case username
+        case password
+    }
+
+    @ObservedObject var viewModel: InternetArchiveLoginViewModel
     @State private var isShowPassword = false
     @Environment(\.colorScheme) var colorScheme
     @FocusState private var focusedField: Field?
-    
+
     var body: some View {
         GeometryReader { reader in
-                ZStack {
-                    VStack {
-                        HStack {
-                            Circle().fill(.gray10)
-                                .frame(width: 53, height: 53)
-                                .overlay(
-                                    Image("internet_archive_teal")
-                                        .resizable()
-                                        .aspectRatio(contentMode: .fit)
-                                        .frame(width: 30, height: 30)
-                                ).padding(.trailing, 6)
-                            VStack(alignment: .leading) {
-                                Text(NSLocalizedString("Upload your media to a free public account on the Internet Archive.",comment: "")) .font(.montserrat(.medium, for: .subheadline))
-                            }
-                        }
-                        .padding(.top,50).padding(.leading,20).padding(.trailing,40)
-                        
-                        Text(NSLocalizedString("Account",comment: "")).font(.montserrat(.semibold, for: .headline)).foregroundColor(.gray70).padding(.top,50).frame(maxWidth: .infinity, alignment: .leading).padding(.leading,20)
-                        
-                        ZStack(alignment: .leading) {
-                            if state.userName.wrappedValue.isEmpty {
-                                Text(NSLocalizedString("Email", comment: ""))
-                                    .italic()
-                                    .font(.montserrat(.medium, for: .footnote))
-                                    .foregroundColor(.textEmpty)
-                                    .padding(.leading, 5)
-                            }
-                            
-                            TextField("", text: state.userName)
-                                .autocapitalization(.none)
-                                .font(.montserrat(.medium, for: .footnote))
-                                .foregroundColor(.gray70)
-                                .submitLabel(.next)
-                                .keyboardType(.emailAddress)
-                                .focused($focusedField, equals: .username)
-                                .onSubmit {
-                                    focusedField = .password
-                                }
-                        }
-                        .padding()
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(borderColor(for: .username), lineWidth: 1)
-                        )
-                        .padding(.horizontal, 20)
-                        .padding(.top, 15)
-                        
-                        ZStack(alignment: .leading) {
-                            HStack {
-                                ZStack(alignment: .leading) {
-                                    if state.password.wrappedValue.isEmpty {
-                                        Text(NSLocalizedString("Password",comment: ""))
-                                            .italic()
-                                            .font(.montserrat(.medium, for: .footnote))
-                                            .foregroundColor(.textEmpty)
-                                            .padding(.leading, 5)
-                                    }
-                                    
-                                    if isShowPassword {
-                                        TextField("", text: state.password)
-                                            .font(.montserrat(.medium, for: .footnote))
-                                            .focused($focusedField, equals: .password)
-                                            .foregroundColor(.gray70)
-                                    } else {
-                                        SecureField("", text: state.password)
-                                            .font(.montserrat(.medium, for: .footnote))
-                                            .focused($focusedField, equals: .password)
-                                            .foregroundColor(.gray70)
-                                    }
-                                }
-                                
-                                Button(action: {
-                                    isShowPassword.toggle()
-                                }) {
-                                    Image(isShowPassword ? "eye_open" : "eye_close")
-                                        .foregroundColor(.gray70)
-                                }
-                            }
-                        }
-                        .padding()
-                        .overlay(
-                            RoundedRectangle(cornerRadius: 8)
-                                .stroke(borderColor(for: .password), lineWidth: 1)
-                        )
-                        .padding(.horizontal, 20)
-                        .padding(.top, 15)
-                        
-                        if (state.isLoginError) {
-                            Text(NSLocalizedString("Incorrect email or password",comment: "")).foregroundColor(.red).padding(.top,1) .padding(.leading,20).font(.montserrat(.medium, for: .caption2))
-                                .padding(.trailing,20) .frame(maxWidth: .infinity, alignment: .leading)
-                        }
-                        
-                        HStack(alignment: .center) {
-                            Text(NSLocalizedString("No Account?",comment: "")).foregroundColor(.gray70).font(.montserrat(.semibold, for: .callout))
-                            Button(action: {
-                                dispatch(.CreateAccount)
-                            }) {
-                                Text(NSLocalizedString("Create one",comment: ""))
-                            }.foregroundColor(.accent).font(.montserrat(.semibold, for: .callout))
-                        }.padding(.top,40)
-                        
-                        Spacer()
-                        
-                        HStack(alignment: .bottom) {
-                            Button(action: {
-                                dispatch(.Cancel)
-                            }, label: {
-                                Text(NSLocalizedString("Back",comment: "")).frame(maxWidth: .infinity)
-                            })
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .foregroundColor(state.isBusy ? .gray50 : (colorScheme == .dark ? Color.white : Color.black))
-                            .font(.montserrat(.semibold, for: .headline))
-                            .disabled(state.isBusy)
-                            
-                            Button(action: {
-                                if (!state.isBusy) {
-                                    dispatch(.Login)
-                                }
-                            }, label: {
-                                Text(NSLocalizedString("Next",comment: "")).frame(maxWidth: .infinity)
-                            })
-                            .disabled(!state.isValid)
-                            .padding()
-                            .frame(maxWidth: .infinity)
-                            .background(!state.isValid ? .gray50 :  Color.accent)
-                            .foregroundColor(.black)
-                            .cornerRadius(10)
-                            .font(.montserrat(.semibold, for: .headline))
-                        }
-                        .padding(.bottom,20).padding(.leading,20).padding(.trailing,20)
-                    }
-                    .frame(minHeight: reader.size.height)
+            ZStack {
+                Color(UIColor.systemBackground)
+                    .ignoresSafeArea()
                     .ignoresSafeArea(.keyboard, edges: .bottom)
-                    
-                    if state.isBusy {
-                                          Color.black.opacity(0.7)
-                                              .edgesIgnoringSafeArea(.all)
-                                              .overlay(
-                                                  ProgressView()
-                                                      .progressViewStyle(CircularProgressViewStyle(tint: .white))
-                                                      .scaleEffect(1.5)
-                                              )
-                                      }
+
+                ScrollView {
+                    VStack(alignment: .leading, spacing: 0) {
+                        headerSection
+                        accountHeader
+                        emailField
+                        passwordField
+                        errorMessage
+                        createAccountRow
+                        Spacer(minLength: 20)
+                        buttonsRow
+                    }
+                    .padding(.bottom, 8)
+                    .frame(minHeight: reader.size.height)
+                    .contentShape(Rectangle())
+                    .onTapGesture {
+                        focusedField = nil
+                        UIApplication.shared.endEditing()
+                    }
                 }
-            
-        }
-        .onChange(of: state.userName.wrappedValue) { _ in
-            if state.isLoginError {
-                dispatch(.ClearError)
+
+                if viewModel.isBusy {
+                    Color.black.opacity(0.7)
+                        .ignoresSafeArea()
+                        .overlay(
+                            ProgressView()
+                                .progressViewStyle(CircularProgressViewStyle(tint: .white))
+                                .scaleEffect(1.5)
+                        )
+                }
             }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
         }
-        .onChange(of: state.password.wrappedValue) { _ in
-            if state.isLoginError {
-                dispatch(.ClearError)
-            }
+        .onChange(of: viewModel.userName) { _ in
+            if viewModel.isLoginError { viewModel.clearError() }
+        }
+        .onChange(of: viewModel.password) { _ in
+            if viewModel.isLoginError { viewModel.clearError() }
         }
     }
     
-    private func borderColor(for field: Field) -> Color {
-        if state.isLoginError {
+    // MARK: - Sections
+
+    private var headerSection: some View {
+        HStack(alignment: .center, spacing: 8) {
+            Circle().fill(.gray10)
+                .frame(width: 48, height: 48)
+                .overlay(
+                    Image("internet_archive_teal")
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .frame(width: 28, height: 28)
+                )
+            Text(NSLocalizedString("Upload your media to a free public account on the Internet Archive.", comment: ""))
+                .font(.montserrat(.medium, for: .subheadline))
+                .fixedSize(horizontal: false, vertical: true)
+        }
+        .padding(.top, 46)
+        .padding(.horizontal, 20)
+    }
+
+    private var accountHeader: some View {
+        Text(NSLocalizedString("Account", comment: ""))
+            .font(.montserrat(.semibold, for: .headline))
+            .foregroundColor(.gray70)
+            .padding(.top, 35)
+            .padding(.leading, 20)
+    }
+
+    private var emailField: some View {
+        ZStack(alignment: .leading) {
+            if viewModel.userName.isEmpty {
+                Text(NSLocalizedString("Email", comment: ""))
+                    .italic()
+                    .font(.montserrat(.medium, for: .footnote))
+                    .foregroundColor(.textEmpty)
+                    .padding(.leading, 5)
+            }
+            TextField("", text: $viewModel.userName)
+                .customSubmit { focusedField = .password }
+                .autocapitalization(.none)
+                .font(.montserrat(.medium, for: .footnote))
+                .foregroundColor(.gray70)
+                .submitLabel(.next)
+                .keyboardType(.emailAddress)
+                .focused($focusedField, equals: .username)
+        }
+        .padding()
+        .overlay(RoundedRectangle(cornerRadius: 8).stroke(borderColor(forField: .username), lineWidth: 1))
+        .padding(.horizontal, 20)
+        .padding(.top, 15)
+    }
+
+    private var passwordField: some View {
+        ZStack(alignment: .leading) {
+            HStack {
+                ZStack(alignment: .leading) {
+                    if viewModel.password.isEmpty {
+                        Text(NSLocalizedString("Password", comment: ""))
+                            .italic()
+                            .font(.montserrat(.medium, for: .footnote))
+                            .foregroundColor(.textEmpty)
+                            .padding(.leading, 5)
+                    }
+                    if isShowPassword {
+                        TextField("", text: $viewModel.password)
+                            .customSubmit {
+                                focusedField = nil
+                                viewModel.login()
+                            }
+                            .font(.montserrat(.medium, for: .footnote))
+                            .foregroundColor(.gray70)
+                            .submitLabel(.go)
+                            .focused($focusedField, equals: .password)
+                    } else {
+                        SecureField("", text: $viewModel.password)
+                            .customSubmit {
+                                focusedField = nil
+                                viewModel.login()
+                            }
+                            .font(.montserrat(.medium, for: .footnote))
+                            .foregroundColor(.gray70)
+                            .submitLabel(.go)
+                            .focused($focusedField, equals: .password)
+                    }
+                }
+                Button { isShowPassword.toggle() } label: {
+                    Image(isShowPassword ? "eye_open" : "eye_close")
+                        .foregroundColor(.gray70)
+                }
+            }
+        }
+        .padding()
+        .overlay(RoundedRectangle(cornerRadius: 8).stroke(borderColor(forField: .password), lineWidth: 1))
+        .padding(.horizontal, 20)
+        .padding(.top, 15)
+    }
+
+    @ViewBuilder
+    private var errorMessage: some View {
+        if viewModel.isLoginError {
+            Text(NSLocalizedString("Incorrect email or password", comment: ""))
+                .foregroundColor(.red)
+                .font(.montserrat(.medium, for: .caption2))
+                .padding(.top, 4)
+                .padding(.horizontal, 20)
+                .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    private var createAccountRow: some View {
+        HStack {
+            Text(NSLocalizedString("No Account?", comment: ""))
+                .foregroundColor(.gray70)
+                .font(.montserrat(.semibold, for: .callout))
+            Button(action: { viewModel.createAccount() }) {
+                Text(NSLocalizedString("Create one", comment: ""))
+            }
+            .foregroundColor(.accent)
+            .font(.montserrat(.semibold, for: .callout))
+        }
+        .padding(.top, 24)
+        .frame(maxWidth: .infinity)
+    }
+
+    private var buttonsRow: some View {
+        HStack(spacing: 10) {
+            Button(action: { viewModel.cancel() }) {
+                Text(NSLocalizedString("Back", comment: ""))
+                    .frame(maxWidth: .infinity)
+            }
+            .padding()
+            .foregroundColor(viewModel.isBusy ? .gray50 : (colorScheme == .dark ? .white : .black))
+            .font(.montserrat(.semibold, for: .headline))
+            .disabled(viewModel.isBusy)
+
+            Button {
+                focusedField = nil
+                UIApplication.shared.endEditing()
+                viewModel.login()
+            } label: {
+                Text(NSLocalizedString("Next", comment: ""))
+                    .frame(maxWidth: .infinity)
+            }
+            .disabled(!viewModel.isValid || viewModel.isBusy)
+            .padding()
+            .background(!viewModel.isValid ? .gray50 : Color.accent)
+            .foregroundColor(.black)
+            .cornerRadius(10)
+            .font(.montserrat(.semibold, for: .headline))
+        }
+        .padding(.horizontal, 20)
+        .padding(.bottom, 20)
+    }
+
+    private func borderColor(forField field: Field) -> Color {
+        if viewModel.isLoginError {
             return .red
         } else if focusedField == field {
             return .accent // teal
@@ -211,84 +248,15 @@ struct InternetArchiveLoginContent: View {
 }
 
 struct InternetArchiveLoginView_Previews: PreviewProvider {
-    static let state = InternetArchiveLoginState(
-        userName: "abcuser",
-        password: "abc",
-        isLoginError: true,
-        isValid: true,
-        isBusy: false
-    )
-    
     static var previews: some View {
         if #available(iOS 15.0, *) {
-            InternetArchiveLoginContent(
-                state: InternetArchiveLoginState.Bindings(
-                    userName: Binding.constant(state.userName),
-                    password: Binding.constant(state.password),
-                    isLoginError: state.isLoginError,
-                    isBusy: state.isBusy,
-                    isValid: state.isValid
-                )
-            ) { _ in }
+            InternetArchiveLoginContent(viewModel: InternetArchiveLoginViewModel(useCase: Container.shared.internetArchiveLoginUseCase()))
         } else {
-            // Fallback on earlier versions
-        }
-    }
-}
-struct GeometryGetter: View {
-    @Binding var rect: CGRect
-    
-    var body: some View {
-        GeometryReader { geometry in
-            Group { () -> AnyView in
-                DispatchQueue.main.async {
-                    self.rect = geometry.frame(in: .global)
-                }
-                
-                return AnyView(Color.clear)
-            }
+            EmptyView()
         }
     }
 }
 
-public class KeyboardInfo: ObservableObject {
-    
-    public static var shared = KeyboardInfo()
-    
-    @Published public var height: CGFloat = 0
-    
-    private init() {
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardChanged), name: UIApplication.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardChanged), name: UIResponder.keyboardWillHideNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardChanged), name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-    }
-    
-    @objc func keyboardChanged(notification: Notification) {
-        if notification.name == UIApplication.keyboardWillHideNotification {
-            self.height = 0
-        } else {
-            self.height = (((notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? CGRect)?.height ?? 0.0))
-        }
-    }
-    
-}
-
-struct KeyboardAware: ViewModifier {
-    @ObservedObject private var keyboard = KeyboardInfo.shared
-    
-    func body(content: Content) -> some View {
-        content
-            .padding(.bottom, self.keyboard.height)
-            .edgesIgnoringSafeArea(self.keyboard.height > 0 ? .bottom : [])
-            .animation(.easeOut, value: keyboard.height)
-    }
-}
-
-extension View {
-    public func keyboardAware() -> some View {
-        ModifiedContent(content: self, modifier: KeyboardAware())
-    }
-}
 struct WorkingOverlayRepresentable: UIViewRepresentable {
     @Binding var isShowing: Bool
     

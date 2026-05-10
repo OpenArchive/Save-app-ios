@@ -31,24 +31,12 @@ struct ToggleSwitch: View {
                 }
             }.padding(.vertical, 6)
             Spacer()
-            if #available(iOS 15.0, *) {
-                Toggle("", isOn: $isOn)
+            Toggle("", isOn: $isOn)
                     .labelsHidden()
                     .disabled(isDisabled)
                     .tint(.accent)
                     .onChange(of: isOn) { value in
                         action?(value)
-                    }
-            } else if #available(iOS 14.0, *) {
-                Toggle("", isOn: $isOn)
-                    .labelsHidden()
-                    .disabled(isDisabled)
-                    .accentColor(isOn ? .accentColor : .gray30)
-                    .onChange(of: isOn) { value in
-                        action?(value)
-                    }
-            } else {
-                
             }
         }
     }
@@ -85,16 +73,18 @@ struct SubItem: View {
 struct HideItemSeparator: ViewModifier {
     func body(content: Content) -> some View {
         if #available(iOS 15.0, *) {
-            content.listRowSeparator(.hidden) // Works in iOS 15+
+            content.listRowSeparator(.hidden)
         } else {
-            content.listRowBackground(Color.clear) // Hides background in iOS 14
+            content.listRowBackground(Color.clear)
         }
     }
 }
 struct ListSpacingModifier: ViewModifier {
     func body(content: Content) -> some View {
         if #available(iOS 17, *) {
-            content.listSectionSpacing(1) 
+            content
+                .listSectionSpacing(1)
+                .listRowSpacing(0)
         } else {
             content
                 .environment(\.defaultMinListHeaderHeight, 0)
@@ -113,6 +103,7 @@ struct SettingsView: View {
     @State private var selectedTheme: String
     @State private var showActionSheet = false
     @State private var showPasscodeAlert = false
+    @State private var showPasscodeVerification = false
     @State private var showTorAlert = false
     @State private var passcodeToggleState: Bool
     @State private var isProgrammaticallyChangingPasscodeToggle = false
@@ -130,139 +121,52 @@ struct SettingsView: View {
         _passcodeToggleState = State(initialValue: AppSettings.isPasscodeEnabled)
     }
     var body: some View {
-        NavigationView {
-            ZStack {
-                Color(UIColor.systemBackground).edgesIgnoringSafeArea(.all)
-                
-                List {
-                    let sections: [(String, [AnyView])] = [
-                        (NSLocalizedString("Share", comment: ""),
-                         [
-                            AnyView(ToggleSwitch(title: NSLocalizedString("Lock app with passcode", comment: ""), isOn: $passcodeToggleState) { value in
-                                
-                                guard !isProgrammaticallyChangingPasscodeToggle else {
-                                    return
-                                }
-                                if value {
-                                    viewModel.togglePasscode(value)
-                                } else {
-                                    if AppSettings.isPasscodeEnabled {
-                                        showPasscodeAlert = true
-                                    }
-                                }
-                            })
-                         ]),
-                        
-                        (NSLocalizedString("Archive", comment: ""),
-                         [
-                            AnyView(ToggleSwitch(title: NSLocalizedString("Only upload media when you are connected to Wi-Fi", comment: ""), isOn: $viewModel.isWifiOnlyOn) { value in
-                                Settings.wifiOnly = value
-                                trackFeatureToggled(featureName: "wifi_only_upload", enabled: value)
-                                NotificationCenter.default.post(name: .uploadManagerDataUsageChange, object: value)
-                            }),
-                            AnyView(SubItem(title: NSLocalizedString("Media Servers", comment: ""), subtitle: NSLocalizedString("Manage your servers", comment: "")) {
-                                viewModel.navigateToServerList()
-                            }),
-                            AnyView(SubItem(title: NSLocalizedString("Archived Folders", comment: ""), subtitle: NSLocalizedString("Manage your archived folders", comment: "")) {
-                                viewModel.navigateToFolderList()
-                            })
-                         ]),
-                        
-                        (NSLocalizedString("Verify", comment: ""),
-                         [
-                            AnyView(SubItem(title: NSLocalizedString("ProofMode", comment: ""), subtitle: nil) {
-                                viewModel.navigateToProofMode()
-                            })
-                         ]),
-                        
-                        (NSLocalizedString("Encrypt", comment: ""),
-                         [
-                            AnyView(ToggleSwitch(title: NSLocalizedString("Turn on Onion Routing", comment: ""),subtitle: NSLocalizedString("Transfer via the Tor Network only", comment: ""), isDisabled:false, isOn: $viewModel.isOnionRoutingOn).overlay(
-                             
-                                Group {
-                                    if true {
-                                        Color.black.opacity(0.001)
-                                            .onTapGesture {
-                                                showTorAlert = true
-                                            }
-                                    }
-                                }
-                            )
-                                   ),
-                            
-                         ]),
-                        
-                        (NSLocalizedString("General", comment: ""),
-                         [
-                            AnyView(
-                                SubItem(title: NSLocalizedString("Media Compression", comment: ""),
-                                        subtitle: selectedCompressionOption) {
-                                    showCompressionSheet = true
-                                }
-                                .actionSheet(isPresented: $showCompressionSheet) {
-                                    ActionSheet(
-                                        title: Text(NSLocalizedString("Media Compression", comment: "")),
-                                        buttons: compressionSheetButtons()
-                                    )
-                                }
-                            ),
-                            AnyView(
-                                SubItem(title: NSLocalizedString("Theme", comment: ""),
-                                        subtitle: selectedTheme) {
-                                            showActionSheet = true
-                                        }
-                                    .actionSheet(isPresented: $showActionSheet) {
-                                        ActionSheet(title: Text(NSLocalizedString("Theme", comment: "")),
-                                                    buttons: actionSheetButtons())
-                                    }
-                            ),
-                            AnyView(SubItem(title: NSLocalizedString("Save by OpenArchive", comment: ""), subtitle: NSLocalizedString("Learn More", comment: "")) {
-                                if let url = URL(string: "https://www.open-archive.org/save") {
-                                    UIApplication.shared.open(url)
-                                }
-                            }),
-                            AnyView(SubItem(title: NSLocalizedString("Terms and Privacy", comment: ""), subtitle: NSLocalizedString("Read our Terms and Privacy Policy", comment: "")) {
-                                if let url = URL(string: "https://www.open-archive.org/privacy") {
-                                    UIApplication.shared.open(url)
-                                }
-                            }),
-                            AnyView(SubItem(title: NSLocalizedString("Version", comment: ""), subtitle: Bundle.main.version) {
-                                print("version tapped")
-                            }),
-                         ])
-                    ]
-                    
-                    ForEach(sections, id: \.0) { section in
-                        Section(
-                            header: Text(section.0)
-                                .font(Font(UIFont.montserrat(forTextStyle: .headline,with:.traitUIOptimized)))
-                                .kerning(0.01)
-                                .foregroundColor(.accentColor)
-                            
-                            ,
-                            footer: Divider()
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .padding(.horizontal, -16)
-                                .background(Color.menuDivider)
-                            
-                        ) {
-                            ForEach(section.1.indices, id: \.self) { index in
-                                section.1[index]
-                                    .modifier(HideItemSeparator())
-                            }
-                        }.background(Color(UIColor.clear))
-                            .modifier(HideItemSeparator())
-                    }
-                } .background(Color(UIColor.systemBackground))
-                    .listStyle(.plain)
-                    .modifier(ListSpacingModifier())
-                
-                
-                
+        ZStack {
+            Color(UIColor.systemBackground).edgesIgnoringSafeArea(.all)
+
+            List {
+                settingsShareSection
+                settingsArchiveSection
+                settingsVerifySection
+                settingsEncryptSection
+                settingsGeneralSection
             }
-        }.onAppear {
+            .background(Color(UIColor.systemBackground))
+            .listStyle(.plain)
+            .modifier(ListSpacingModifier())
+        }
+        .sheet(isPresented: $showPasscodeVerification, onDismiss: {
+            // If the passcode is still enabled, the user dismissed without verifying —
+            // reset the toggle back to on.
+            if AppSettings.isPasscodeEnabled {
+                isProgrammaticallyChangingPasscodeToggle = true
+                passcodeToggleState = true
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                    isProgrammaticallyChangingPasscodeToggle = false
+                }
+            }
+        }) {
+            PasscodeEntryView(
+                onPasscodeSuccess: {
+                    showPasscodeVerification = false
+                    viewModel.disablePasscode()
+                    passcodeToggleState = false
+                    trackFeatureToggled(featureName: "passcode_protection", enabled: false)
+                },
+                onExit: {
+                    showPasscodeVerification = false
+                }
+            )
+        }
+        .onAppear {
             viewModel.isPasscodeOn = AppSettings.isPasscodeEnabled
+            // Guard with the programmatic flag so syncing the toggle state on appear
+            // does not trigger the toggle action and push another PasscodeSetupController.
+            isProgrammaticallyChangingPasscodeToggle = true
             passcodeToggleState = AppSettings.isPasscodeEnabled
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                isProgrammaticallyChangingPasscodeToggle = false
+            }
         }.overlay(
             Group {
                 if showPasscodeAlert {
@@ -276,11 +180,8 @@ struct SettingsView: View {
                                     primaryButtonTitle: NSLocalizedString("Yes", comment: ""),
                                     iconImage: Image(systemName: "exclamationmark.triangle.fill"),
                                     primaryButtonAction: {
-                                        AppSettings.passcodeEnabled = false
-                                        viewModel.isPasscodeOn = false
-                                        passcodeToggleState = false
                                         showPasscodeAlert = false
-                                        trackFeatureToggled(featureName: "passcode_protection", enabled: false)
+                                        showPasscodeVerification = true
                                     },
                                     secondaryButtonTitle: NSLocalizedString("Cancel", comment: ""),
                                     secondaryButtonIsOutlined: false,
@@ -375,6 +276,118 @@ struct SettingsView: View {
             trackFeatureToggled(featureName: "dark_mode", enabled: true)
         } else {
             Utils.setUnspecifiedMode()
+        }
+    }
+
+    private func sectionModifier<Content: View>(_ title: String, @ViewBuilder content: () -> Content) -> some View {
+        Section(
+            header: Text(title)
+                .font(Font(UIFont.montserrat(forTextStyle: .headline, with: .traitUIOptimized)))
+                .kerning(0.01)
+                .foregroundColor(.accentColor),
+            footer: Rectangle()
+                .fill(Color.menuDivider)
+                .frame(height: 1)
+                .frame(maxWidth: .infinity)
+                .padding(.horizontal, -16)
+        ) {
+            content()
+        }
+        .background(Color(UIColor.clear))
+        .modifier(HideItemSeparator())
+    }
+
+    @ViewBuilder private var settingsShareSection: some View {
+        sectionModifier(NSLocalizedString("Share", comment: "")) {
+            ToggleSwitch(title: NSLocalizedString("Lock app with passcode", comment: ""), isOn: $passcodeToggleState) { value in
+                guard !isProgrammaticallyChangingPasscodeToggle else { return }
+                if value {
+                    viewModel.togglePasscode(value)
+                } else if AppSettings.isPasscodeEnabled {
+                    // Show confirmation alert first before requiring passcode verification.
+                    showPasscodeAlert = true
+                }
+            }
+            .modifier(HideItemSeparator())
+        }
+    }
+
+    @ViewBuilder private var settingsArchiveSection: some View {
+        sectionModifier(NSLocalizedString("Archive", comment: "")) {
+            ToggleSwitch(title: NSLocalizedString("Only upload media when you are connected to Wi-Fi", comment: ""), isOn: $viewModel.isWifiOnlyOn) { value in
+                Settings.wifiOnly = value
+                if value {
+                    Settings.cellularOverride = false
+                }
+                trackFeatureToggled(featureName: "wifi_only_upload", enabled: value)
+                NotificationCenter.default.post(name: .uploadManagerDataUsageChange, object: value)
+            }
+            .modifier(HideItemSeparator())
+            SubItem(title: NSLocalizedString("Media Servers", comment: ""), subtitle: NSLocalizedString("Manage your servers", comment: "")) {
+                viewModel.navigateToServerList()
+            }
+            .modifier(HideItemSeparator())
+            SubItem(title: NSLocalizedString("Archived Folders", comment: ""), subtitle: NSLocalizedString("Manage your archived folders", comment: "")) {
+                viewModel.navigateToFolderList()
+            }
+            .modifier(HideItemSeparator())
+        }
+    }
+
+    @ViewBuilder private var settingsVerifySection: some View {
+        sectionModifier(NSLocalizedString("Verify", comment: "")) {
+            SubItem(title: NSLocalizedString("ProofMode", comment: ""), subtitle: nil) {
+                viewModel.navigateToProofMode()
+            }
+            .modifier(HideItemSeparator())
+        }
+    }
+
+    @ViewBuilder private var settingsEncryptSection: some View {
+        sectionModifier(NSLocalizedString("Encrypt", comment: "")) {
+            ToggleSwitch(title: NSLocalizedString("Turn on Onion Routing", comment: ""), subtitle: NSLocalizedString("Transfer via the Tor Network only", comment: ""), isDisabled: false, isOn: $viewModel.isOnionRoutingOn)
+                .overlay(
+                    Color.black.opacity(0.001)
+                        .onTapGesture { showTorAlert = true }
+                )
+                .modifier(HideItemSeparator())
+        }
+    }
+
+    @ViewBuilder private var settingsGeneralSection: some View {
+        sectionModifier(NSLocalizedString("General", comment: "")) {
+            SubItem(title: NSLocalizedString("Media Compression", comment: ""), subtitle: selectedCompressionOption) {
+                showCompressionSheet = true
+            }
+            .actionSheet(isPresented: $showCompressionSheet) {
+                ActionSheet(title: Text(NSLocalizedString("Media Compression", comment: "")), buttons: compressionSheetButtons())
+            }
+            .modifier(HideItemSeparator())
+            SubItem(title: NSLocalizedString("Theme", comment: ""), subtitle: selectedTheme) {
+                showActionSheet = true
+            }
+            .actionSheet(isPresented: $showActionSheet) {
+                ActionSheet(title: Text(NSLocalizedString("Theme", comment: "")), buttons: actionSheetButtons())
+            }
+            .modifier(HideItemSeparator())
+            SubItem(title: NSLocalizedString("Save by OpenArchive", comment: ""), subtitle: NSLocalizedString("Learn More", comment: "")) {
+                if let url = URL(string: "https://www.open-archive.org/save") {
+                    UIApplication.shared.open(url)
+                }
+            }
+            .modifier(HideItemSeparator())
+            SubItem(title: NSLocalizedString("Terms and Privacy", comment: ""), subtitle: NSLocalizedString("Read our Terms and Privacy Policy", comment: "")) {
+                if let url = URL(string: "https://www.open-archive.org/privacy") {
+                    UIApplication.shared.open(url)
+                }
+            }
+            .modifier(HideItemSeparator())
+            SubItem(title: NSLocalizedString("Version", comment: ""), subtitle: Bundle.main.version) {
+                #if DEBUG
+                print("version tapped")
+                #endif
+            }
+            .modifier(HideItemSeparator())
         }
     }
 }

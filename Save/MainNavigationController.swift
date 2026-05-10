@@ -7,42 +7,62 @@
 //
 
 import UIKit
-import TorManager
 
-class MainNavigationController: UINavigationController {
+/// Root navigation uses `UINavigationController`. `MainHostingController` hides the system bar (SwiftUI chrome);
+/// deeper flows remain UIKit-navigated until a `NavigationStack` window root lands.
+class MainNavigationController: UINavigationController, UINavigationControllerDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        AppNavigationRouter.shared.navigationController = self
+        delegate = self
         setRoot()
+    }
+
+    func navigationController(_ navigationController: UINavigationController, willShow viewController: UIViewController, animated: Bool) {
+        let hideChrome = viewController is MainHostingController
+            || viewController is ClaimViewController
+            || viewController is OnboardingViewController
+        navigationController.setNavigationBarHidden(hideChrome, animated: animated)
+        if !hideChrome {
+            UINavigationBar.save_applyTealChrome(to: navigationController.navigationBar)
+        }
+
+        if #available(iOS 26.0, *) {
+            hideGlassBackground(on: viewController)
+        }
+    }
+
+    @available(iOS 26.0, *)
+    private func hideGlassBackground(on viewController: UIViewController) {
+        let hidesSystemChrome = viewController is MainHostingController
+            || viewController is ClaimViewController
+            || viewController is OnboardingViewController
+        guard !hidesSystemChrome else { return }
+        viewController.save_hidesSharedBackgroundOnNavigationBarButtons()
     }
 
     func setRoot() {
         if Settings.firstRunDone {
-            if Settings.useTor && !TorManager.shared.connected {
-                setViewControllers([UIStoryboard.main.instantiate(TorStartViewController.self)],
-                                   animated: true)
-            }
-            else if !(topViewController is MainViewController) {
-                setViewControllers([UIStoryboard.main.instantiate(MainViewController.self)],
+             if !(topViewController is MainHostingController) {
+                setViewControllers([MainHostingController()],
                                    animated: true)
             }
         }
         else {
             setViewControllers(
-                [UIStoryboard.main.instantiate(ClaimViewController.self)],
+                [ClaimViewController()],
                 animated: true)
         }
         
         DispatchQueue.main.async {
-                if let appDelegate = UIApplication.shared.delegate as? AppDelegateBase {
-                    if(appDelegate.shouldShowAppPasscodeEntryScreen()){
-                        appDelegate.showAppPasscodeEntryScreen()
-                    }else{
-                        AppUpdateManager.shared.checkForUpdateIfNeeded()
-                        
-                    }
+            if let sceneDelegate = SceneDelegate.current {
+                if sceneDelegate.shouldShowAppPasscodeEntryScreen() {
+                    sceneDelegate.showAppPasscodeEntryScreen()
+                } else {
+                    AppUpdateManager.shared.checkForUpdateIfNeeded()
                 }
             }
+        }
     }
 }

@@ -139,9 +139,12 @@ class Utils {
     }
     
     class func setInterfaceStyle(_ style: UIUserInterfaceStyle) {
-        UIApplication.shared.windows.forEach { window in
-            Settings.interfaceStyle = style
-            window.overrideUserInterfaceStyle = style
+        Settings.interfaceStyle = style
+        for scene in UIApplication.shared.connectedScenes {
+            guard let windowScene = scene as? UIWindowScene else { continue }
+            for window in windowScene.windows {
+                window.overrideUserInterfaceStyle = style
+            }
         }
     }
 }

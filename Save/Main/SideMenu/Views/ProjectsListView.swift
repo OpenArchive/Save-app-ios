@@ -1,0 +1,35 @@
+//
+//  ProjectsListView.swift
+//  Save
+//
+//  Created by Navoda on 2026-02-04.
+//  Copyright © 2026 Open Archive. All rights reserved.
+//
+
+import SwiftUI
+
+struct ProjectsListView: View {
+    @EnvironmentObject var viewModel: HomeViewModel
+    @EnvironmentObject var coordinator: NavigationCoordinator
+
+    var body: some View {
+        ScrollView {
+            LazyVStack(spacing: 0) {
+                ForEach(viewModel.projects, id: \.id) { project in
+                    ProjectItemView(
+                        project: project,
+                        isSelected: project.id == viewModel.selectedProjectId,
+                        isIndented: viewModel.showSpaceHeader
+                    )
+                    .onTapGesture {
+                        handleProjectTap(project)
+                    }
+                }
+            }
+        }
+    }
+
+    private func handleProjectTap(_ project: Project) {
+        viewModel.selectProject(project)
+    }
+}
