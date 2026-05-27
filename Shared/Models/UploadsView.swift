@@ -59,7 +59,7 @@ class UploadsView: YapDatabaseAutoView {
             return upload1!.compare(upload2!)
         }
 
-        super.init(grouping: grouping, sorting: sorting, versionTag: nil, options: nil)
+        super.init(grouping: grouping, sorting: sorting, versionTag: "3", options: nil)
     }
 
     /**
@@ -67,7 +67,7 @@ class UploadsView: YapDatabaseAutoView {
      */
     class func countUploading(_ tx: YapDatabaseReadTransaction) -> Int {
         tx.findAll(group: groups.first, in: name, where: { (upload: inout Upload) in
-            upload.state != .uploaded
+            upload.status == .queued || upload.status == .uploading
         }).count
     }
 }

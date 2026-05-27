@@ -83,17 +83,26 @@ class ManagementViewModel: ObservableObject {
     }
     
     func moveUpload(from source: IndexSet, to destination: Int) {
+        for index in source {
+            let upload = uploads[index]
+            if upload.status == .error {
+                upload.status = .queued
+                upload.statusMessage = nil
+                upload.paused = false
+            }
+        }
+
         uploads.move(fromOffsets: source, toOffset: destination)
-        
+
         Db.writeConn?.asyncReadWrite { tx in
             var uploads: [Upload] = tx.findAll(group: UploadsView.groups.first, in: UploadsView.name)
-            
+
             uploads.move(fromOffsets: source, toOffset: destination)
-            
+
             for (index, upload) in uploads.enumerated() {
                 if upload.order != index {
                     upload.order = index
-                    tx.replace(upload)
+                    tx.setObject(upload)
                 }
             }
         }
@@ -127,7 +136,7 @@ class ManagementViewModel: ObservableObject {
         let block: @Sendable (YapDatabaseReadWriteTransaction) -> Void = { tx in
             let uploads: [Upload] = tx.findAll { upload in
                 upload.preheat(tx, deep: false)
-                return upload.state == .uploaded || upload.asset?.isUploaded ?? true
+                return upload.status == .uploaded || upload.asset?.isUploaded ?? true
             }
             tx.removeObjects(forKeys: uploads.map({ $0.id }), inCollection: collectionName)
         }
@@ -140,11 +149,6 @@ class ManagementViewModel: ObservableObject {
     }
     
     func canMoveUpload(_ upload: Upload) -> Bool {
-        switch upload.state {
-        case .pending, .paused, .uploading:
-            return true
-        default:
-            return false
-        }
+        upload.status != .uploaded
     }
 }

@@ -13,19 +13,19 @@ struct UploadRow: View {
     let onShowError: () -> Void
     
     private var showProgress: Bool {
-        upload.error == nil && upload.state != .uploaded
+        upload.status != .error && upload.status != .uploaded
     }
-    
+
     private var showError: Bool {
-        upload.error != nil
+        upload.status == .error
     }
-    
+
     private var showDone: Bool {
-        upload.state == .uploaded
+        upload.status == .uploaded
     }
     
     private var sizeText: String {
-        if !(upload.isReady) && upload.state != .uploaded {
+        if !(upload.isReady) && upload.status != .uploaded {
             return NSLocalizedString("Encoding file…", comment: "")
         }
         
@@ -76,7 +76,7 @@ struct UploadRow: View {
                         .lineLimit(2)
                         .foregroundColor(Color(UIColor.label))
 
-                    Text(upload.error ?? "")
+                    Text(upload.statusMessage ?? "")
                         .font(.montserrat(.regular, for: .caption))
                         .foregroundColor(.redButton)
                         .lineLimit(2)

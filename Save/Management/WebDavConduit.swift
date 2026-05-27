@@ -412,9 +412,11 @@ class WebDavConduit: Conduit {
         } while !allThere
         
         if progress.isCancelled || error != nil {
+            let cleanupUrl = construct(url: baseUrl, folder)
+            foregroundSession.delete(cleanupUrl, credential: credential) { _ in }
             return done(uploadId, error: error)
         }
-        
+
         var source = folder
         source.append(".file")
         

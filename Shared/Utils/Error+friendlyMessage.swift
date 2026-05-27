@@ -30,12 +30,33 @@ extension Error {
 
     var isRetryable: Bool {
         if isLikelyConnectivityFailure { return true }
+        let ns = self as NSError
+        if ns.domain == NSURLErrorDomain,
+           [URLError.cancelled.rawValue, URLError.timedOut.rawValue].contains(ns.code) {
+            return true
+        }
         if let error = self as? SaveError, case .http(let status, _) = error,
-           [429, 502, 503, 504].contains(status) { return true }
+           [429, 500, 502, 503, 504].contains(status) { return true }
         return false
     }
 
     var friendlyMessage: String {
+        let ns = self as NSError
+        if ns.domain == NSURLErrorDomain {
+            switch ns.code {
+            case URLError.cancelled.rawValue:
+                return NSLocalizedString("Upload was interrupted.", comment: "")
+            case URLError.timedOut.rawValue:
+                return NSLocalizedString("Connection timed out.", comment: "")
+            case URLError.notConnectedToInternet.rawValue:
+                return NSLocalizedString("No internet connection.", comment: "")
+            case URLError.networkConnectionLost.rawValue:
+                return NSLocalizedString("Network connection lost.", comment: "")
+            default:
+                break
+            }
+        }
+
         if let error = self as? SaveError {
             switch error {
             case .http(let status, _) where status == 401:

@@ -130,6 +130,7 @@ final class InternetArchiveDetailViewModel: ObservableObject {
 
     private func remove() {
         KeychainHelper.delete(key: "space.\(space.id).password")
+        Settings.lastIa503Timestamp = nil
         guard let writeConn = Db.writeConn else { return }
         writeConn.readWrite { tx in
             tx.removeObject(forKey: space.id, inCollection: Space.collection)

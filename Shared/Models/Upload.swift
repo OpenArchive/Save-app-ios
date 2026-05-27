@@ -11,6 +11,28 @@ import YapDatabase
 
 class Upload: NSObject, Item, YapDatabaseRelationshipNode {
 
+    enum Status: Int, CustomStringConvertible {
+        case local = 0
+        case new = 1
+        case queued = 2
+        case uploading = 4
+        case uploaded = 5
+        case error = 9
+
+        var description: String {
+            switch self {
+            case .local: return "local"
+            case .new: return "new"
+            case .queued: return "queued"
+            case .uploading: return "uploading"
+            case .uploaded: return "uploaded"
+            case .error: return "error"
+            }
+        }
+
+    }
+
+    // Legacy enum kept for backward-compatible UI code during transition.
     enum State: CustomStringConvertible {
         case paused
         case pending
@@ -41,14 +63,18 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
     }
 
     func compare(_ rhs: Upload) -> ComparisonResult {
+        // Error uploads always sort after non-error uploads.
+        let lhsError = status == .error
+        let rhsError = rhs.status == .error
+        if lhsError != rhsError {
+            return lhsError ? .orderedDescending : .orderedAscending
+        }
         if order < rhs.order {
             return .orderedAscending
         }
-
         if order > rhs.order {
             return .orderedDescending
         }
-
         return .orderedSame
     }
 
@@ -69,8 +95,10 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
 
     var order: Int
 
+    var status: Status = .queued
+    var statusMessage: String?
+
     var paused = false
-    var error: String?
     var tries = 0
     var lastTry: Date?
     var retryAfterUntil: Date?
@@ -124,25 +152,26 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
     }
 
     var isReady: Bool {
-        return (asset?.isReady ?? false)
+        return status != .uploaded
+            && (asset?.isReady ?? false)
             && !(asset?.isUploaded ?? false)
             && (asset?.space?.uploadAllowed ?? false)
     }
 
     var state: State {
-        if paused {
-            return .paused
-        }
-
-        if progress >= 1 {
+        switch status {
+        case .uploaded:
             return .uploaded
-        }
-
-        if progress > 0 {
+        case .uploading:
             return .uploading
+        case .error:
+            return .paused
+        case .local, .new, .queued:
+            if paused {
+                return .paused
+            }
+            return .pending
         }
-
-        return .pending
     }
 
     var thumbnail: UIImage? {
@@ -156,6 +185,7 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
     init(order: Int, asset: Asset) {
         id = UUID().uuidString
         self.order = order
+        self.status = .queued
         assetId = asset.id
     }
 
@@ -173,8 +203,24 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
         lastTry = decoder.decodeObject(of: NSDate.self, forKey: "lastTry") as? Date
         retryAfterUntil = decoder.decodeObject(of: NSDate.self, forKey: "retryAfterUntil") as? Date
         startTime = decoder.decodeObject(of: NSDate.self, forKey: "startTime") as? Date
-        error = decoder.decodeObject(of: NSString.self, forKey: "error") as? String
+        let legacyError = decoder.decodeObject(of: NSString.self, forKey: "error") as? String
         assetId = decoder.decodeObject(of: NSString.self, forKey: "assetId") as? String
+        statusMessage = (decoder.decodeObject(of: NSString.self, forKey: "statusMessage") as? String) ?? legacyError
+
+        if decoder.containsValue(forKey: "statusRaw"),
+           let decoded = Status(rawValue: decoder.decodeInteger(forKey: "statusRaw")) {
+            status = decoded
+        } else {
+            if paused && legacyError != nil {
+                status = .error
+            } else if _progress >= 1 {
+                status = .uploaded
+            } else if _progress > 0 {
+                status = .uploading
+            } else {
+                status = .queued
+            }
+        }
     }
 
     func encode(with coder: NSCoder) {
@@ -186,8 +232,10 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
         coder.encode(lastTry, forKey: "lastTry")
         coder.encode(retryAfterUntil, forKey: "retryAfterUntil")
         coder.encode(startTime, forKey: "startTime")
-        coder.encode(error, forKey: "error")
+        coder.encode(statusMessage, forKey: "error")
         coder.encode(assetId, forKey: "assetId")
+        coder.encode(status.rawValue, forKey: "statusRaw")
+        coder.encode(statusMessage, forKey: "statusMessage")
     }
 
 
@@ -204,10 +252,10 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
 
     override var description: String {
         return "\(String(describing: type(of: self))): [id=\(id), order=\(order), "
+            + "status=\(status), statusMessage=\(statusMessage ?? "nil"), "
             + "progress=\(progress), paused=\(paused), tries=\(tries), "
             + "lastTry=\(lastTry?.debugDescription ?? "nil"), "
             + "retryAfterUntil=\(retryAfterUntil?.debugDescription ?? "nil"), "
-            + "error=\(error ?? "nil"), "
             + "assetId=\(assetId ?? "nil"), asset=\(asset?.description ?? "nil")]"
     }
 

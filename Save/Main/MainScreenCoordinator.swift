@@ -187,7 +187,7 @@ final class MainScreenCoordinator: SideMenuDelegate {
 
     func handleTapAssetWithUpload(asset: Asset, upload: Upload?) {
         guard let host else { return }
-        if let upload, upload.error != nil {
+        if let upload, upload.status == .error {
             UploadErrorAlert.present(host, upload)
             return
         }

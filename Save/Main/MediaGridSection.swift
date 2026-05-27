@@ -29,6 +29,7 @@ final class MediaGridViewModel: NSObject, ObservableObject {
     @Published private(set) var isRefreshing = false
     @Published var isInEditMode = false
     @Published private(set) var selectedAssetIds: Set<String> = []
+    @Published var shouldScrollToTop = false
 
     var hasSelection: Bool { !selectedAssetIds.isEmpty }
 
@@ -40,6 +41,8 @@ final class MediaGridViewModel: NSObject, ObservableObject {
     private let uploadsMappings: YapDatabaseViewMappings
 
     private var selectedProjectId: String?
+    private var uploadDoneObserver: NSObjectProtocol?
+    private var dbModifiedObserver: NSObjectProtocol?
 
     init(
         assetsReadConn: YapDatabaseConnection?,
@@ -61,6 +64,37 @@ final class MediaGridViewModel: NSObject, ObservableObject {
         debugLogMissingConnections(context: "init")
         updateAllMappings()
         rebuildSections()
+
+        uploadDoneObserver = NotificationCenter.default.addObserver(
+            forName: .uploadManagerDone, object: nil, queue: .main
+        ) { [weak self] notification in
+            guard let self, let uploadId = notification.object as? String else { return }
+            let url = notification.userInfo?[AnyHashable.url] as? URL
+            guard url != nil else { return }
+            if self.uploadsByAssetId.values.contains(where: { $0.id == uploadId }) {
+                self.shouldScrollToTop = true
+            }
+        }
+
+        dbModifiedObserver = NotificationCenter.default.addObserver(
+            forName: .YapDatabaseModified, object: nil, queue: .main
+        ) { [weak self] _ in
+            Task { @MainActor in
+                guard let self else { return }
+                _ = self.uploadsReadConn?.beginLongLivedReadTransaction()
+                self.uploadsReadConn?.update(mappings: self.uploadsMappings)
+                self.rebuildUploadsByAssetId()
+            }
+        }
+    }
+
+    deinit {
+        if let observer = uploadDoneObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
+        if let observer = dbModifiedObserver {
+            NotificationCenter.default.removeObserver(observer)
+        }
     }
 
     /// Call when the selected project changes. Updates the filter and rebuilds sections.
@@ -85,7 +119,7 @@ final class MediaGridViewModel: NSObject, ObservableObject {
     private func rebuildUploadsByAssetId() {
         var map: [String: Upload] = [:]
         uploadsReadConn?.iterate(group: Upload.collection, in: UploadsView.name) { (_: YapDatabaseReadTransaction, _: String, _: String, upload: Upload, _: Int, _: inout Bool) in
-            guard upload.state != .uploaded, let aid = upload.assetId else { return }
+            guard upload.status != .uploaded, let aid = upload.assetId else { return }
             if map[aid] == nil {
                 map[aid] = upload
             }

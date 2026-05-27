@@ -41,38 +41,49 @@ struct MediaGridView: View {
             let horizontalInset: CGFloat = 3 // Add inset to prevent border clipping
             let cellSize = (geometry.size.width - horizontalInset * 2 - CGFloat(Self.columns - 1) * Self.spacing) / CGFloat(Self.columns)
 
-            ScrollView {
-                LazyVStack(alignment: .leading, spacing: 0) {
-                    ForEach(viewModel.sections) { section in
-                        sectionHeader(section: section)
-                            .padding(.leading, 4)
-                            .padding(.trailing, 4)
-                            .padding(.top, 12)
-                            .padding(.bottom, 6)
+            ScrollViewReader { proxy in
+                ScrollView {
+                    LazyVStack(alignment: .leading, spacing: 0) {
+                        ForEach(viewModel.sections) { section in
+                            sectionHeader(section: section)
+                                .id(section.id)
+                                .padding(.leading, 4)
+                                .padding(.trailing, 4)
+                                .padding(.top, 12)
+                                .padding(.bottom, 6)
 
-                        LazyVGrid(
-                            columns: Array(
-                                repeating: GridItem(.fixed(cellSize), spacing: Self.spacing),
-                                count: Self.columns
-                            ),
-                            spacing: Self.spacing
-                        ) {
-                            ForEach(section.assets, id: \.id) { asset in
-                                let upload = viewModel.upload(for: asset.id)
-                                MediaGridCellView(
-                                    asset: asset,
-                                    upload: upload,
-                                    isSelected: viewModel.selectedAssetIds.contains(asset.id),
-                                    cellSize: cellSize,
-                                    onTap: { handleTap(asset: asset, upload: upload) },
-                                    onLongPress: { handleLongPress(asset: asset) }
-                                )
+                            LazyVGrid(
+                                columns: Array(
+                                    repeating: GridItem(.fixed(cellSize), spacing: Self.spacing),
+                                    count: Self.columns
+                                ),
+                                spacing: Self.spacing
+                            ) {
+                                ForEach(section.assets, id: \.id) { asset in
+                                    let upload = viewModel.upload(for: asset.id)
+                                    MediaGridCellView(
+                                        asset: asset,
+                                        upload: upload,
+                                        isSelected: viewModel.selectedAssetIds.contains(asset.id),
+                                        cellSize: cellSize,
+                                        onTap: { handleTap(asset: asset, upload: upload) },
+                                        onLongPress: { handleLongPress(asset: asset) }
+                                    )
+                                }
                             }
+                            .padding(.horizontal, horizontalInset)
                         }
-                        .padding(.horizontal, horizontalInset)
+                    }
+                    .padding(.bottom, 8)
+                }
+                .onChange(of: viewModel.shouldScrollToTop) { shouldScroll in
+                    if shouldScroll, let firstId = viewModel.sections.first?.id {
+                        withAnimation {
+                            proxy.scrollTo(firstId, anchor: .top)
+                        }
+                        viewModel.shouldScrollToTop = false
                     }
                 }
-                .padding(.bottom, 8)
             }
             .onAppear {
                 Self.impactFeedback.prepare()
@@ -111,7 +122,7 @@ struct MediaGridView: View {
         }
         if collection.closed != nil {
             let hasActiveUpload = section.assets.contains { asset in
-                viewModel.upload(for: asset.id)?.state == .uploading
+                viewModel.upload(for: asset.id)?.status == .uploading
             }
             let hasStartedUploading = hasActiveUpload || collection.uploadedAssetsCount > 0
             return hasStartedUploading
@@ -178,18 +189,18 @@ private struct MediaGridCellView: View {
     private var showUploadOverlay: Bool {
         guard !(asset.isUploaded) else { return false }
         guard let upload = upload else { return false }
-        return upload.state == .uploading || upload.state == .pending
+        return upload.status == .uploading || upload.status == .queued || upload.status == .new
     }
 
     private var showErrorIcon: Bool {
-        upload?.error != nil
+        upload?.status == .error
     }
 
     var body: some View {
         ZStack {
             contentView
             if !asset.isUploaded && !reduceTransparency {
-                        if upload?.state == .uploading || upload?.state == .pending, upload?.error == nil {
+                        if upload?.status == .uploading || upload?.status == .queued || upload?.status == .new, upload?.status != .error {
                             // Dark blur for active upload
                             BlurOverlayView(style: .dark, alpha: 0.65)
                         } else if upload == nil {
@@ -302,12 +313,12 @@ private struct MediaGridCellView: View {
 
     private var uploadProgressOverlay: some View {
         ZStack {
-            let isUploading = upload?.state == .uploading
+            let isUploading = upload?.status == .uploading
             Color.black.opacity(isUploading ? 0.5 : 0.2)
             MediaGridProgressView(
                 state: upload?.state ?? .pending,
-                progress: upload?.progress ?? 0
-            )
+                progress: upload?.progress ?? 0)
+
             .frame(width: 24, height: 24)
         }
         .frame(width: cellSize, height: cellSize)

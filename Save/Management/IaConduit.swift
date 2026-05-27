@@ -280,12 +280,19 @@ class IaConduit: Conduit {
             return nil
         }
 
-        let progress = Progress(totalUnitCount: 1)
-        return copyMetadataWithoutProofmode(
-            to: folderUrl,
-            progress,
-            headers: generateHeaders(accessKey, secretKey, forMetadata: true)
-        )
+        let headers = generateHeaders(accessKey, secretKey, forMetadata: true)
+        var lastError: Error? = nil
+
+        for attempt in 1...3 {
+            let progress = Progress(totalUnitCount: 1)
+            lastError = copyMetadataWithoutProofmode(to: folderUrl, progress, headers: headers)
+            if lastError == nil { return nil }
+            if attempt < 3 {
+                Thread.sleep(forTimeInterval: 2)
+            }
+        }
+
+        return lastError
     }
 
     private func url(for asset: Asset) -> URL? {

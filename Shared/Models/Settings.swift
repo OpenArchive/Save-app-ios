@@ -29,6 +29,7 @@ class Settings {
     private static let kAppLaunchCount = "app_launch_count"
     private static let kHasPromptedReview = "has_prompted_review"
     private static let KPromtReviewDate = "prompt_review_date"
+    private static let kLastIa503Timestamp = "last_ia_503_timestamp"
     private class var defaults: UserDefaults? {
         UserDefaults(suiteName: Constants.suiteName)
     }
@@ -194,6 +195,21 @@ class Settings {
         }
     }
     
+    class var lastIa503Timestamp: Date? {
+        get {
+            let timestamp = defaults?.double(forKey: kLastIa503Timestamp) ?? 0
+            guard timestamp > 0 else { return nil }
+            return Date(timeIntervalSince1970: timestamp)
+        }
+        set {
+            if let date = newValue {
+                defaults?.set(date.timeIntervalSince1970, forKey: kLastIa503Timestamp)
+            } else {
+                defaults?.removeObject(forKey: kLastIa503Timestamp)
+            }
+        }
+    }
+
     class var lastReviewPromptDate: Date? {
         get {
             let timestamp = defaults?.integer(forKey: KPromtReviewDate) ?? 0

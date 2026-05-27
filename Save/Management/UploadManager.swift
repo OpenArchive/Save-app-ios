@@ -56,7 +56,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
      Maximum number of upload retries per upload item before giving up.
      */
     static let maxRetries = 10
-    
+    static let ia503Message = NSLocalizedString("Internet Archive servers are busy.", comment: "")
+
     var waiting: Bool {
         globalPause || 
         (reachability?.connection ?? Reachability.Connection.unavailable == .unavailable)
@@ -217,7 +218,29 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                        name: .uploadManagerDataUsageChange, object: nil)
         
         try? reachability?.startNotifier()
-        
+
+        Db.writeConn?.readWrite { tx in
+            var stuckUploads: [Upload] = []
+            tx.iterate(group: UploadsView.groups.first, in: UploadsView.name) {
+                (_: String, _: String, upload: Upload, _: Int, _: inout Bool) in
+                if upload.status == .uploading {
+                    stuckUploads.append(upload)
+                }
+            }
+            for upload in stuckUploads {
+                upload.status = .queued
+                upload.liveProgress = nil
+                upload.progress = 0
+                tx.setObject(upload)
+            }
+        }
+
+        // If no 503 cooldown is active, reset any orphaned "Server Busy" uploads
+        // (e.g. from a previous crash that cleared the timestamp).
+        if Settings.lastIa503Timestamp == nil {
+            resetAllBusyIaUploads()
+        }
+
         if let oldTimer = progressTimer, !progressTimerActive {
             oldTimer.resume()
         }
@@ -249,10 +272,15 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                Date().timeIntervalSince(lastProgress) > self.uploadTimeoutInterval(for: upload) {
                 self.debug("#timeout detected for \(upload)")
                 upload.cancel()
-                upload.error = NSLocalizedString("Upload timed out.", comment: "")
+                let timeoutMsg = NSLocalizedString("Upload timed out.", comment: "")
+                upload.status = .error
+                upload.statusMessage = timeoutMsg
+                upload.paused = true
                 upload.tries += 1
                 upload.retryAfterUntil = nil
-                self.storeCurrent()
+                Db.writeConn?.readWrite { tx in
+                    tx.setObject(upload)
+                }
                 self.current = nil
                 self.lastProgressDate = nil
                 self.stopProgressTracking()
@@ -281,7 +309,21 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     }
 
     // MARK: URLSessionTaskDelegate
-    
+
+    func urlSession(_ session: URLSession, task: URLSessionTask,
+                    willPerformHTTPRedirection response: HTTPURLResponse,
+                    newRequest request: URLRequest,
+                    completionHandler: @escaping (URLRequest?) -> Void) {
+        if let host = task.originalRequest?.url?.host, host.hasSuffix("archive.org") {
+            guard let redirectHost = request.url?.host,
+                  redirectHost == "archive.org" || redirectHost.hasSuffix(".archive.org") else {
+                completionHandler(nil)
+                return
+            }
+        }
+        completionHandler(request)
+    }
+
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
         Self.backgroundCompletionHandler?()
     }
@@ -306,7 +348,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         }
 
         // Cancelled tasks: mark as error and move to next upload.
-        if (error as? NSError)?.code == -999 {
+        if (error as? NSError)?.code == URLError.cancelled.rawValue {
             debug("#task:cancelled — marking error and moving to next")
             queue.async {
                 if let upload = self.current, upload.filename == url.lastPathComponent {
@@ -343,7 +385,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 self.done(self.current?.id, effectiveError, url)
             } else {
                 if let found = Db.bgRwConn?.find(group: UploadsView.groups.first, in: UploadsView.name, where: { (tx, upload: inout Upload) in
-                    guard !upload.paused else {
+                    guard upload.status == .uploading else {
                         return false
                     }
                     upload.preheat(tx)
@@ -483,8 +525,16 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             let space = asset.space
             let collection: Collection?
 
-            if (error != nil || url == nil) && !asset.isUploaded {
-                collection = self.handleUploadFailure(upload: upload, asset: asset, space: space, error: error, url: url)
+            // IA 409 means the file already exists on the server — treat as success.
+            var effectiveError = error
+            if space is IaSpace,
+               let saveError = error as? SaveError,
+               case .http(409, _) = saveError {
+                effectiveError = nil
+            }
+
+            if (effectiveError != nil || url == nil) && !asset.isUploaded {
+                collection = self.handleUploadFailure(upload: upload, asset: asset, space: space, error: effectiveError, url: url)
             } else {
                 collection = self.handleUploadSuccess(upload: upload, asset: asset, space: space, url: url)
             }
@@ -509,51 +559,45 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
         upload.liveProgress = nil
         upload.progress = 0
+        upload.tries += 1
+        upload.lastTry = Date()
+        upload.retryAfterUntil = retryAfterUntil(for: error)
 
         let failureMessage = error?.friendlyMessage ?? (
             url == nil ? NSLocalizedString("No URL provided.", comment: "")
             : NSLocalizedString("Unknown error.", comment: ""))
 
-        var didProcessActiveFailure = false
-        let isInvalidIaCredentials: Bool = {
-            guard space is IaSpace,
-                  let saveError = error as? SaveError,
-                  case .http(let status, _) = saveError else {
-                return false
-            }
-            return status == 401
-        }()
+        space?.tries += 1
+        space?.lastTry = Date()
 
-        if !upload.paused && !globalPause {
-            didProcessActiveFailure = true
-            if !isInvalidIaCredentials {
-                space?.tries += 1
-                space?.lastTry = Date()
-            }
-
-            upload.tries += 1
-            if error?.isRetryable ?? false {
-                upload.paused = UploadManager.maxRetries <= upload.tries
-            } else {
-                upload.paused = true
-            }
-            upload.lastTry = Date()
-            upload.retryAfterUntil = retryAfterUntil(for: error)
-            upload.error = isInvalidIaCredentials
-                ? NSLocalizedString("Internet Archive credentials expired. Please remove and re-add your account.", comment: "")
-                : failureMessage
+        // IA 503: mark this upload + all other pending IA uploads as Server Busy.
+        if space is IaSpace, let saveError = error as? SaveError, case .http(503, _) = saveError {
+            let now = Date()
+            Settings.lastIa503Timestamp = now
+            debug("#handleUploadFailure IA 503 — cooldown started at \(now)")
+            markAllPendingIaUploadsAsBusy(excluding: upload.id)
+            upload.status = .error
+            upload.statusMessage = Self.ia503Message
+            upload.paused = true
+        } else if (error?.isRetryable ?? false) && upload.tries < UploadManager.maxRetries {
+            // Retryable error: stay in queue, exponential backoff via nextTry.
+            upload.status = .queued
+            upload.statusMessage = failureMessage
+            upload.paused = false
         } else {
-            upload.error = failureMessage
+            // Non-retryable or max retries exceeded: mark as error.
+            upload.status = .error
+            upload.statusMessage = failureMessage
+            upload.paused = true
         }
 
-        if didProcessActiveFailure, let backendType = space?.backendType {
+        if let backendType = space?.backendType {
             let fileType = AnalyticsEvent.mediaType(from: asset.file)
             let fileSizeKB = Int((asset.filesize ?? 0) / 1024)
-            let errorCategory = error != nil ? "upload_error" : "no_url"
             trackEvent(.uploadFailed(
                 backendType: backendType,
                 fileType: fileType,
-                errorCategory: errorCategory,
+                errorCategory: error != nil ? "upload_error" : "no_url",
                 fileSizeKB: fileSizeKB
             ))
             SessionManager.shared.incrementUploadsFailed()
@@ -564,6 +608,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
     private func handleUploadSuccess(upload: Upload, asset: Asset, space: Space?, url: URL?) -> Collection? {
         if space is IaSpace {
+            Settings.lastIa503Timestamp = nil
+            resetAllBusyIaUploads()
             let iaConduit = IaConduit(asset, backgroundSession, foregroundSession)
             if let metadataError = iaConduit.uploadMetadataAfterContent() {
                 debug("#IA metadata upload failed after content success: \(metadataError.localizedDescription)")
@@ -573,6 +619,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         if let url = url {
             asset.setUploaded(url)
         }
+        upload.status = .uploaded
+        upload.statusMessage = nil
         upload.retryAfterUntil = nil
 
         space?.tries = 0
@@ -603,7 +651,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
     private func persistDoneState(upload: Upload, asset: Asset, collection: Collection?, space: Space?) {
         Db.writeConn?.readWrite { tx in
-            tx.replace(upload)
+            tx.setObject(upload)
 
             if let collection = collection {
                 tx.replace(collection)
@@ -617,9 +665,50 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         }
     }
     
+    private func markAllPendingIaUploadsAsBusy(excluding uploadId: String) {
+        Db.bgRwConn?.readWrite { tx in
+            var iaUploads: [Upload] = []
+            tx.iterate(group: UploadsView.groups.first, in: UploadsView.name) {
+                (_: String, _: String, upload: Upload, _: Int, _: inout Bool) in
+                guard upload.id != uploadId, upload.status == .queued else { return }
+                upload.preheat(tx)
+                guard upload.asset?.space is IaSpace else { return }
+                iaUploads.append(upload)
+            }
+            for upload in iaUploads {
+                upload.status = .error
+                upload.statusMessage = Self.ia503Message
+                upload.paused = true
+                tx.setObject(upload)
+            }
+        }
+    }
+
+    private func resetAllBusyIaUploads() {
+        Db.bgRwConn?.readWrite { tx in
+            var busyUploads: [Upload] = []
+            tx.iterate(group: UploadsView.groups.first, in: UploadsView.name) {
+                (_: String, _: String, upload: Upload, _: Int, _: inout Bool) in
+                guard upload.status == .error, upload.statusMessage == Self.ia503Message else { return }
+                upload.preheat(tx)
+                guard upload.asset?.space is IaSpace else { return }
+                busyUploads.append(upload)
+            }
+            for upload in busyUploads {
+                upload.status = .queued
+                upload.statusMessage = nil
+                upload.paused = false
+                upload.tries = 0
+                upload.lastTry = nil
+                upload.retryAfterUntil = nil
+                tx.setObject(upload)
+            }
+        }
+    }
+
     /**
      User changed the WiFi-only flag.
-     
+
      - parameter notification: An `uploadManagerDataUsageChange` notification.
      */
     @objc func dataUsageChanged(notification: Notification) {
@@ -645,6 +734,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     
     @objc func uploadNext() {
         if globalPause || (reachability?.connection ?? .unavailable) == .unavailable {
+            debug("#uploadNext skipped — globalPause=\(globalPause), connection=\(reachability?.connection ?? .unavailable)")
             return
         }
 
@@ -680,13 +770,22 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 return self.endBackgroundTask(.noData)
             }
             
-            // Check if there's currently an item uploading which is not paused and not already uploaded.
-            if !(self.current?.paused ?? true) && self.current?.state != .uploaded {
+            if let cur = self.current, cur.status == .uploading {
                 self.debug("#uploadNext already one uploading")
-                
+
                 return self.endBackgroundTask(.noData)
             }
             
+            if let timestamp = Settings.lastIa503Timestamp {
+                let elapsed = Date().timeIntervalSince(timestamp)
+                self.debug("#uploadNext IA 503 cooldown: timestamp=\(timestamp), elapsed=\(Int(elapsed))s, remaining=\(max(0, 600 - Int(elapsed)))s")
+                if elapsed >= 600 {
+                    self.debug("#uploadNext IA 503 cooldown expired, resetting busy uploads")
+                    Settings.lastIa503Timestamp = nil
+                    self.resetAllBusyIaUploads()
+                }
+            }
+
             guard let upload = self.getNext(),
                   let asset = upload.asset
             else {
@@ -751,7 +850,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 .get(for: asset, self.backgroundSession, self.foregroundSession)?
                 .upload(uploadId: upload.id)
 
-            upload.error = nil
+            upload.statusMessage = nil
+            upload.paused = false
             self.lastProgressDate = Date()
             self.lastStoreDate = nil
             self.startProgressTracking()
@@ -831,48 +931,27 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
         Db.bgRwConn?.read { tx in
             current = tx.find(group: UploadsView.groups.first, in: UploadsView.name) { (upload: inout Upload) in
-                guard !upload.paused
-                        && upload.state != .uploaded
-                        && upload.nextTry.compare(Date()) == .orderedAscending
-                else {
+                guard upload.status == .queued else { return false }
+                guard upload.nextTry <= Date() else {
+                    self.debug("#getNext SKIP id=\(upload.id) — nextTry in future")
                     return false
                 }
 
                 upload.preheat(tx)
 
                 if let space = upload.asset?.space, !space.uploadAllowed {
-                    debug("#getNext circuit breaker open for space \(space.id) (tries=\(space.tries))")
+                    self.debug("#getNext SKIP id=\(upload.id) — circuit breaker")
                     return false
                 }
 
                 guard upload.isReady else {
-                    if let asset = upload.asset, !asset.isImporting {
-                        if let phAsset = asset.phAsset {
-                            queue.async {
-                                let id = UIApplication.shared.beginBackgroundTask()
-                                AssetFactory.load(from: phAsset, into: asset) { asset in
-                                    UIApplication.shared.endBackgroundTask(id)
-                                }
-                            }
-                        } else if asset.file?.exists == true {
-                            queue.async {
-                                let id = UIApplication.shared.beginBackgroundTask()
-                                asset.update({ asset in
-                                    asset.isReady = true
-                                }) { updatedAsset in
-                                    UIApplication.shared.endBackgroundTask(id)
-                                }
-                            }
-                        } else {
-                            upload.error = NSLocalizedString("Couldn’t import item!", comment: "")
-                            upload.cancel()
-                            upload.paused = true
-                            failedUploads.append(upload)
-                        }
-                    }
+                    self.debug("#getNext SKIP id=\(upload.id) — not ready")
+                    self.handleNotReady(upload: upload, failedUploads: &failedUploads)
                     return false
                 }
 
+                self.debug("#getNext FOUND id=\(upload.id)")
+                upload.status = .uploading
                 return true
             }
         }
@@ -880,12 +959,39 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         if !failedUploads.isEmpty {
             Db.bgRwConn?.readWrite { tx in
                 for upload in failedUploads {
-                    tx.replace(upload)
+                    tx.setObject(upload)
                 }
             }
         }
 
         return current
+    }
+
+    private func handleNotReady(upload: Upload, failedUploads: inout [Upload]) {
+        guard let asset = upload.asset, !asset.isImporting else { return }
+
+        if let phAsset = asset.phAsset {
+            queue.async {
+                let id = UIApplication.shared.beginBackgroundTask()
+                AssetFactory.load(from: phAsset, into: asset) { _ in
+                    UIApplication.shared.endBackgroundTask(id)
+                }
+            }
+        } else if asset.file?.exists == true {
+            queue.async {
+                let id = UIApplication.shared.beginBackgroundTask()
+                asset.update({ asset in
+                    asset.isReady = true
+                }) { _ in
+                    UIApplication.shared.endBackgroundTask(id)
+                }
+            }
+        } else {
+            upload.statusMessage = NSLocalizedString("Couldn’t import item!", comment: "")
+            upload.cancel()
+            upload.status = .error
+            failedUploads.append(upload)
+        }
     }
     
     /**
@@ -900,11 +1006,10 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
      */
     private func pause(_ id: String, pause: Bool = true) {
 
-        // The current upload can only ever get paused, because there should
-        // be no paused current upload. It gets cancelled and removed when paused.
         if let upload = current, upload.id == id {
             if pause {
                 current?.cancel()
+                current?.status = .queued
                 current?.paused = true
 
                 storeCurrent()
@@ -912,21 +1017,21 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 current = nil
                 stopProgressTracking()
             } else {
-                // If asset is already uploaded, just clear the error state — don't re-upload.
                 if let asset = current?.asset, asset.isUploaded {
                     current?.cancel()
+                    current?.status = .uploaded
                     current?.paused = false
-                    current?.error = nil
+                    current?.statusMessage = nil
                     current?.progress = 1.0
                     storeCurrent()
                     current = nil
                     stopProgressTracking()
                     return
                 }
-                // Retry (e.g. from media grid) while this job is still `current` — previously did nothing.
                 current?.cancel()
+                current?.status = .queued
                 current?.paused = false
-                current?.error = nil
+                current?.statusMessage = nil
                 current?.tries = 0
                 current?.lastTry = nil
                 current?.retryAfterUntil = nil
@@ -947,37 +1052,38 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             Db.bgRwConn?.readWrite { tx in
                 if let upload: Upload = tx.object(for: id) {
                     upload.preheat(tx)
-                    
+
                     if pause {
+                        upload.status = .queued
                         upload.paused = true
                     }
                     else {
-                        // If asset is already uploaded, just clear error — don't re-upload.
                         if let asset = upload.asset, asset.isUploaded {
+                            upload.status = .uploaded
                             upload.paused = false
-                            upload.error = nil
+                            upload.statusMessage = nil
                             upload.progress = 1.0
                             tx.replace(upload)
                             return
                         }
 
+                        upload.status = .queued
                         upload.paused = false
-                        upload.error = nil
+                        upload.statusMessage = nil
                         upload.tries = 0
                         upload.lastTry = nil
                         upload.retryAfterUntil = nil
                         upload.progress = 0
 
-                        // Also reset circuit-breaker. Otherwise users will get confused.
                         if let space = upload.asset?.space {
                             space.tries = 0
                             space.lastTry = nil
-                            
+
                             tx.replace(space, forKey: space.id, inCollection: Space.collection)
                         }
                     }
-                    
-                    tx.replace(upload)
+
+                    tx.setObject(upload)
                 }
             }
         }
@@ -1018,7 +1124,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         
         Db.writeConn?.readWrite { tx in
             // 1. Find all uploaded `Upload` objects. They need to be removed.
-            for upload in tx.findAll(where: { $0.state == .uploaded }) as [Upload] {
+            for upload in tx.findAll(where: { $0.status == .uploaded }) as [Upload] {
                 upload.preheat(tx, deep: false)
                 
                 // 2. Check, if corresponding `Asset` is properly marked as "uploaded".

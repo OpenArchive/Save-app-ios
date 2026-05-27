@@ -20,8 +20,8 @@ protocol ConduitProtocol: AnyObject {
  */
 class Conduit: ConduitProtocol {
 
-    static let chunkSize: Int64 = 2 * 1024 * 1024 // 2 MByte
-    static let chunkFileSizeThreshold: Int64 = 10 * 1024 * 1024 // 10 MByte
+    static let chunkSize: Int64 = 10 * 1024 * 1024 // 10 MByte
+    static let chunkFileSizeThreshold: Int64 = 20 * 1024 * 1024 // 20 MByte
 
     /**
      A pretty-printing JSON encoder using ISO8601 date formats.
@@ -282,6 +282,7 @@ class Conduit: ConduitProtocol {
     enum UploadError: LocalizedError {
         case invalidConf
         case tooManyRetries
+        case fileNotFound
 
         var errorDescription: String? {
             switch self {
@@ -290,6 +291,9 @@ class Conduit: ConduitProtocol {
 
             case .tooManyRetries:
                 return NSLocalizedString("Failed after too many retries.", comment: "")
+
+            case .fileNotFound:
+                return NSLocalizedString("File not found.", comment: "")
             }
         }
     }
