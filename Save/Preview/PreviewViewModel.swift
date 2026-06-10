@@ -201,6 +201,7 @@ class PreviewViewModel: ObservableObject {
             }
             
             DispatchQueue.main.async {
+                UploadManager.shared.uploadNext()
                 completion()
             }
         }

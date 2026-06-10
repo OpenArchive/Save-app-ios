@@ -65,6 +65,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
+        UploadManager.shared.uploadNext()
         trackEvent(.appBackgrounded)
     }
 

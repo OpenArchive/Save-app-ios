@@ -47,11 +47,11 @@ extension AnyHashable {
  User can pause and unpause a scheduled upload any time to reset counters and have a retry immediately.
  */
 class UploadManager: NSObject, URLSessionTaskDelegate {
-    
+
     static let shared = UploadManager()
-    
+
     static var backgroundCompletionHandler: (() -> Void)?
-    
+
     /**
      Maximum number of upload retries per upload item before giving up.
      */
@@ -166,11 +166,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     
     private override init() {
         super.init()
-        
-        // We were only initialized to handle the uploads which finished in the background.
+
         if Self.backgroundCompletionHandler != nil {
-            // Trigger recreation of the background session, so it can handle
-            // the finished uploads.
             _ = backgroundSession
         }
         else {
@@ -231,6 +228,10 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 upload.status = .queued
                 upload.liveProgress = nil
                 upload.progress = 0
+                upload.tries = 0
+                upload.lastTry = nil
+                upload.retryAfterUntil = nil
+                upload.statusMessage = nil
                 tx.setObject(upload)
             }
         }
@@ -273,11 +274,18 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 self.debug("#timeout detected for \(upload)")
                 upload.cancel()
                 let timeoutMsg = NSLocalizedString("Upload timed out.", comment: "")
-                upload.status = .error
-                upload.statusMessage = timeoutMsg
-                upload.paused = true
                 upload.tries += 1
                 upload.retryAfterUntil = nil
+                if upload.tries < UploadManager.maxRetries {
+                    upload.status = .queued
+                    upload.statusMessage = timeoutMsg
+                    upload.paused = false
+                } else {
+                    upload.status = .error
+                    upload.statusMessage = timeoutMsg
+                    upload.paused = true
+                }
+                upload.lastTry = Date()
                 Db.writeConn?.readWrite { tx in
                     tx.setObject(upload)
                 }
@@ -327,7 +335,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     func urlSessionDidFinishEvents(forBackgroundURLSession session: URLSession) {
         Self.backgroundCompletionHandler?()
     }
-    
+
     /**
      This handles a finished file upload task, but ignores metadata files and file chunks.
      */
@@ -571,10 +579,15 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         space?.lastTry = Date()
 
         // IA 503: mark this upload + all other pending IA uploads as Server Busy.
+        // Only start cooldown if not already active — don't reset on repeated failures.
         if space is IaSpace, let saveError = error as? SaveError, case .http(503, _) = saveError {
-            let now = Date()
-            Settings.lastIa503Timestamp = now
-            debug("#handleUploadFailure IA 503 — cooldown started at \(now)")
+            if Settings.lastIa503Timestamp == nil {
+                let now = Date()
+                Settings.lastIa503Timestamp = now
+                debug("#handleUploadFailure IA 503 — cooldown started at \(now)")
+            } else {
+                debug("#handleUploadFailure IA 503 — cooldown already active, not resetting")
+            }
             markAllPendingIaUploadsAsBusy(excluding: upload.id)
             upload.status = .error
             upload.statusMessage = Self.ia503Message
@@ -610,9 +623,11 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         if space is IaSpace {
             Settings.lastIa503Timestamp = nil
             resetAllBusyIaUploads()
-            let iaConduit = IaConduit(asset, backgroundSession, foregroundSession)
-            if let metadataError = iaConduit.uploadMetadataAfterContent() {
-                debug("#IA metadata upload failed after content success: \(metadataError.localizedDescription)")
+            let bgSession = backgroundSession
+            let fgSession = foregroundSession
+            DispatchQueue.global(qos: .utility).async {
+                let iaConduit = IaConduit(asset, bgSession, fgSession)
+                _ = iaConduit.uploadMetadataAfterContent()
             }
         }
 
@@ -687,12 +702,14 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     private func resetAllBusyIaUploads() {
         Db.bgRwConn?.readWrite { tx in
             var busyUploads: [Upload] = []
+            var resetSpaces: [String: Space] = [:]
             tx.iterate(group: UploadsView.groups.first, in: UploadsView.name) {
                 (_: String, _: String, upload: Upload, _: Int, _: inout Bool) in
                 guard upload.status == .error, upload.statusMessage == Self.ia503Message else { return }
                 upload.preheat(tx)
-                guard upload.asset?.space is IaSpace else { return }
+                guard let space = upload.asset?.space, space is IaSpace else { return }
                 busyUploads.append(upload)
+                resetSpaces[space.id] = space
             }
             for upload in busyUploads {
                 upload.status = .queued
@@ -702,6 +719,11 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 upload.lastTry = nil
                 upload.retryAfterUntil = nil
                 tx.setObject(upload)
+            }
+            for (_, space) in resetSpaces {
+                space.tries = 0
+                space.lastTry = nil
+                tx.replace(space, forKey: space.id, inCollection: Space.collection)
             }
         }
     }
@@ -740,8 +762,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
         if backgroundTask == .invalid {
             backgroundTask = UIApplication.shared.beginBackgroundTask { [weak self] in
-                self?.current?.cancel()
-                self?.endBackgroundTask(.failed)
+                self?.endBackgroundTask(.noData)
             }
         }
 
