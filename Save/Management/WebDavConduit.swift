@@ -21,7 +21,8 @@ class WebDavConduit: Conduit {
     override func upload(uploadId: String) -> Progress {
         
         let progress = Progress.discreteProgress(totalUnitCount: 100)
-        
+        UploadManager.shared.attachLiveProgress(progress, for: uploadId)
+
         guard let projectName = asset.collection?.project.name,
               let collectionName = asset.collection?.name,
               let url = asset.space?.url,
@@ -33,74 +34,76 @@ class WebDavConduit: Conduit {
             DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
                 self.done(uploadId, error: UploadError.invalidConf)
             }
-            
+
             return progress
         }
-        
-        DispatchQueue.global(qos: .background).async {
-            var path = [projectName]
-            
-            var error = self.create(folder: self.construct(url: url, path), progress)
-            
+
+        var path = [projectName]
+
+        var error = create(folder: construct(url: url, path), progress)
+
+        if error != nil || progress.isCancelled {
+            done(uploadId, error: error)
+            return progress
+        }
+
+        path.append(collectionName)
+
+        error = create(folder: construct(url: url, path), progress)
+
+        if error != nil || progress.isCancelled {
+            done(uploadId, error: error)
+            return progress
+        }
+
+        //only generate proof for system camera images
+        let hasPHAsset = asset.phAsset != nil
+        if asset.tags?.contains(Asset.flag) ?? false {
+            path.append(Asset.flag)
+
+            error = create(folder: construct(url: url, path), progress)
+
             if error != nil || progress.isCancelled {
-                return self.done(uploadId, error: error)
-            }
-            
-            path.append(collectionName)
-            
-            error = self.create(folder: self.construct(url: url, path), progress)
-            
-            if error != nil || progress.isCancelled {
-                return self.done(uploadId, error: error)
-            }
-            
-            //only generate proof for system camera images
-            let hasPHAsset = self.asset.phAsset != nil
-            if self.asset.tags?.contains(Asset.flag) ?? false {
-                path.append(Asset.flag)
-                
-                error = self.create(folder: self.construct(url: url, path), progress)
-                
-                if error != nil || progress.isCancelled {
-                    return self.done(uploadId, error: error)
-                }
-            }
-            
-            error = self.copyMetadata(to: self.construct(url: url, path), progress,hasPhAsset: hasPHAsset)
-            
-            if error != nil || progress.isCancelled {
-                return self.done(uploadId, error: error)
-            }
-            
-            path.append(self.asset.filename)
-            
-            let to = self.construct(url: url, path)
-            
-            if self.isUploaded(to, filesize) {
-                return self.done(uploadId, url: to)
-            }
-            
-            if progress.isCancelled {
-                return self.done(uploadId)
-            }
-            
-            //Fix to 10% from here, so uploaded bytes can be calculated properly
-            // in `UploadCell.upload#didSet`!
-            progress.completedUnitCount = 10
-            
-            // Use Nextcloud chunking if enabled and file bigger than 10 MByte.
-            if self.asset.space?.isNextcloud ?? false,
-               filesize > Conduit.chunkFileSizeThreshold
-            {
-                self.chunkedUpload(url, credential, uploadId, progress, file, of: filesize, path)
-            }
-            else {
-                DispatchQueue.global(qos: .background).async {
-                    self.upload(file, to: to, progress, credential: credential)
-                }
+                done(uploadId, error: error)
+                return progress
             }
         }
-        
+
+        error = copyMetadata(to: construct(url: url, path), progress, hasPhAsset: hasPHAsset)
+
+        if error != nil || progress.isCancelled {
+            done(uploadId, error: error)
+            return progress
+        }
+
+        path.append(asset.filename)
+
+        let to = construct(url: url, path)
+
+        if isUploaded(to, filesize) {
+            done(uploadId, url: to)
+            return progress
+        }
+
+        if progress.isCancelled {
+            done(uploadId)
+            return progress
+        }
+
+        //Fix to 10% from here, so uploaded bytes can be calculated properly
+        // in `UploadCell.upload#didSet`!
+        progress.completedUnitCount = 10
+
+        // Use Nextcloud chunking if enabled and file bigger than 10 MByte.
+        if asset.space?.isNextcloud ?? false,
+           filesize > Conduit.chunkFileSizeThreshold
+        {
+            chunkedUpload(url, credential, uploadId, progress, file, of: filesize, path)
+        }
+        else {
+            upload(file, to: to, progress, credential: credential)
+        }
+
         return progress
     }
     

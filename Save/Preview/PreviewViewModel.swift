@@ -180,14 +180,6 @@ class PreviewViewModel: ObservableObject {
                 return
             }
             
-            var order = 0
-            
-            tx.iterate { (key, upload: Upload, stop) in
-                if upload.order >= order {
-                    order = upload.order + 1
-                }
-            }
-            
             if let collectionId,
                let collection: Collection = tx.object(for: collectionId) {
                 collection.close()
@@ -195,12 +187,16 @@ class PreviewViewModel: ObservableObject {
             }
             
             tx.iterate(group: group, in: AbcFilteredByCollectionView.name) { (collection, key, asset: Asset, index, stop) in
-                let upload = Upload(order: order, asset: asset)
-                tx.setObject(upload)
-                order += 1
+                let upload = Upload(order: 0, asset: asset)
+                UploadQueueService.placeNewUpload(
+                    upload,
+                    tx: tx,
+                    iaCooldownActive: IaCooldownManager.shared.isActive
+                )
             }
             
             DispatchQueue.main.async {
+                UploadManager.shared.notifyUploadsEnqueued()
                 completion()
             }
         }

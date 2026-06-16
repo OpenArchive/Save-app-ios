@@ -11,6 +11,11 @@ import YapDatabase
 
 class Upload: NSObject, Item, YapDatabaseRelationshipNode {
 
+    enum QueueSection: Int, CaseIterable {
+        case normal = 0
+        case ia503Retry = 1
+    }
+
     enum State: CustomStringConvertible {
         case paused
         case pending
@@ -41,6 +46,14 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
     }
 
     func compare(_ rhs: Upload) -> ComparisonResult {
+        if queueSection.rawValue < rhs.queueSection.rawValue {
+            return .orderedAscending
+        }
+
+        if queueSection.rawValue > rhs.queueSection.rawValue {
+            return .orderedDescending
+        }
+
         if order < rhs.order {
             return .orderedAscending
         }
@@ -68,6 +81,10 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
     // MARK: Upload
 
     var order: Int
+
+    var queueSection: QueueSection = .normal
+    var autoRetryCount = 0
+    var deferredLargeThisBackground = false
 
     var paused = false
     var error: String?
@@ -162,6 +179,18 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
     required init?(coder decoder: NSCoder) {
         id = decoder.decodeObject(of: NSString.self, forKey: "id") as? String ?? UUID().uuidString
         order = decoder.decodeInteger(forKey: "order")
+        if decoder.containsValue(forKey: "queueSection") {
+            let raw = decoder.decodeInteger(forKey: "queueSection")
+            queueSection = raw == QueueSection.ia503Retry.rawValue ? .ia503Retry : .normal
+        }
+        if decoder.containsValue(forKey: "autoRetryCount") {
+            autoRetryCount = decoder.decodeInteger(forKey: "autoRetryCount")
+        } else if decoder.containsValue(forKey: "timeoutAutoRetryCount") {
+            autoRetryCount = decoder.decodeInteger(forKey: "timeoutAutoRetryCount")
+        }
+        if decoder.containsValue(forKey: "deferredLargeThisBackground") {
+            deferredLargeThisBackground = decoder.decodeBool(forKey: "deferredLargeThisBackground")
+        }
         _progress = decoder.decodeDouble(forKey: "progress")
         paused = decoder.decodeBool(forKey: "paused")
         tries = decoder.decodeInteger(forKey: "tries")
@@ -174,6 +203,9 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
     func encode(with coder: NSCoder) {
         coder.encode(id, forKey: "id")
         coder.encode(order, forKey: "order")
+        coder.encode(queueSection.rawValue, forKey: "queueSection")
+        coder.encode(autoRetryCount, forKey: "autoRetryCount")
+        coder.encode(deferredLargeThisBackground, forKey: "deferredLargeThisBackground")
         coder.encode(progress, forKey: "progress")
         coder.encode(paused, forKey: "paused")
         coder.encode(tries, forKey: "tries")
@@ -197,6 +229,8 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
 
     override var description: String {
         return "\(String(describing: type(of: self))): [id=\(id), order=\(order), "
+            + "queueSection=\(queueSection), autoRetryCount=\(autoRetryCount), "
+            + "deferredLargeThisBackground=\(deferredLargeThisBackground), "
             + "progress=\(progress), paused=\(paused), tries=\(tries), "
             + "lastTry=\(lastTry?.debugDescription ?? "nil"), error=\(error ?? "nil"), "
             + "assetId=\(assetId ?? "nil"), asset=\(asset?.description ?? "nil")]"
@@ -226,6 +260,11 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
         }
     }
 
+    /// Ensures the next DB write encodes stored progress, not a dying `Progress` object.
+    func freezeProgressForPersistence() {
+        liveProgress = nil
+    }
+
     func trackCancellation(reason: String = "user_cancelled") {
         guard let asset = self.asset,
               let space = asset.space else { return }
@@ -241,7 +280,7 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
     }
 
     func hasProgressChanged() -> Bool {
-        return _progress != liveProgress?.fractionCompleted ?? 0
+        return _progress != (liveProgress?.fractionCompleted ?? 0)
     }
 
     /**
@@ -260,13 +299,18 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
                 asset.remove(tx)
             }
 
-            // Reorder uploads.
-            tx.iterate(group: UploadsView.groups.first, in: UploadsView.name)
-            { (collection, key, upload: Upload, index, stop) in
-                if upload.order != index {
-                    upload.order = index
+            // Reorder uploads within each queue section.
+            for section in Upload.QueueSection.allCases {
+                var index = 0
+                tx.iterate(group: UploadsView.groups.first, in: UploadsView.name)
+                { (_, _, upload: Upload, _, _) in
+                    guard upload.queueSection == section else { return }
 
-                    tx.replace(upload)
+                    if upload.order != index {
+                        upload.order = index
+                        tx.replace(upload)
+                    }
+                    index += 1
                 }
             }
 

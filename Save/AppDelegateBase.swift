@@ -81,8 +81,8 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                      handleEventsForBackgroundURLSession identifier: String,
                      completionHandler: @escaping () -> Void)
     {
-        UploadManager.backgroundCompletionHandler = completionHandler
-        
+        UploadManager.prepareForBackgroundURLSession(completionHandler: completionHandler)
+
         if uploadManager == nil {
             uploadManager = UploadManager.shared
         }

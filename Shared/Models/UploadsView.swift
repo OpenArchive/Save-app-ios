@@ -59,7 +59,7 @@ class UploadsView: YapDatabaseAutoView {
             return upload1!.compare(upload2!)
         }
 
-        super.init(grouping: grouping, sorting: sorting, versionTag: nil, options: nil)
+        super.init(grouping: grouping, sorting: sorting, versionTag: "queueSection-v2", options: nil)
     }
 
     /**

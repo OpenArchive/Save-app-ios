@@ -83,15 +83,24 @@ class ManagementViewModel: ObservableObject {
     }
     
     func moveUpload(from source: IndexSet, to destination: Int) {
+        guard let sourceIndex = source.first else { return }
+        let section = uploads[sourceIndex].queueSection
+        let destIndex = destination > sourceIndex ? destination - 1 : destination
+
+        guard destIndex >= 0, destIndex <= uploads.count else { return }
+        if destIndex < uploads.count {
+            guard uploads[destIndex].queueSection == section else { return }
+        } else if uploads.last?.queueSection != section {
+            return
+        }
+
         uploads.move(fromOffsets: source, toOffset: destination)
-        
+
+        let orderedIds = uploads.filter { $0.queueSection == section }.map(\.id)
+
         Db.writeConn?.asyncReadWrite { tx in
-            var uploads: [Upload] = tx.findAll(group: UploadsView.groups.first, in: UploadsView.name)
-            
-            uploads.move(fromOffsets: source, toOffset: destination)
-            
-            for (index, upload) in uploads.enumerated() {
-                if upload.order != index {
+            for (index, id) in orderedIds.enumerated() {
+                if var upload: Upload = tx.object(for: id), upload.order != index {
                     upload.order = index
                     tx.replace(upload)
                 }

@@ -18,10 +18,12 @@ class IaConduit: Conduit {
      */
     override func upload(uploadId: String) -> Progress {
         let progress = Progress(totalUnitCount: 100)
-        
+        UploadManager.shared.attachLiveProgress(progress, for: uploadId)
+
         guard let accessKey = asset.space?.username,
               let secretKey = asset.space?.password,
               let file = asset.file,
+              let filesize = asset.filesize,
               let url = url(for: asset)
         else {
             DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
@@ -33,12 +35,14 @@ class IaConduit: Conduit {
         
         let error = copyMetadataWithoutProofmode(to: url.deletingLastPathComponent(), progress,
                                                  headers: generateHeaders(accessKey, secretKey, forMetadata: true))
-        
-        if  progress.isCancelled {
-            DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
-                self.done(uploadId, error: error)
-            }
-            
+
+        if let error = error {
+            done(uploadId, error: error)
+            return progress
+        }
+
+        if progress.isCancelled {
+            done(uploadId)
             return progress
         }
         
@@ -62,10 +66,20 @@ class IaConduit: Conduit {
         let tempFile = tempDir.appendingPathComponent(UUID().uuidString + "_" + file.lastPathComponent)
 
         do {
-            // Try hard link first (instant), fall back to copy if it fails
             do {
                 try FileManager.default.linkItem(at: file, to: tempFile)
             } catch {
+                // Avoid copying into tmp while backgrounded — doubles disk use and can OOM.
+                if UploadManager.shared.isInBackground
+                    || UploadManager.isBackgroundSessionRelaunch
+                    || filesize > UploadQueuePolicy.largeFileThreshold {
+                    throw NSError(
+                        domain: "org.open-archive.save",
+                        code: -1,
+                        userInfo: [NSLocalizedDescriptionKey: NSLocalizedString(
+                            "Large file upload requires the app to stay open.", comment: "")]
+                    )
+                }
                 try FileManager.default.copyItem(at: file, to: tempFile)
             }
 
@@ -80,6 +94,7 @@ class IaConduit: Conduit {
             task.taskDescription = tempFile.path
 
             progress.addChild(task.progress, withPendingUnitCount: progress.totalUnitCount - progress.completedUnitCount)
+            UploadManager.shared.notifyBackgroundTransferEnqueued()
         } catch {
             DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
                 self.done(uploadId, error: error)
@@ -212,66 +227,31 @@ class IaConduit: Conduit {
     }
     
     private func copyMetadataWithoutProofmode(to folder: URL, _ progress: Progress, headers: [String: String]) -> Error? {
-        // Upload meta.json file - write to temp file so background session can handle it
         do {
             let json = try Conduit.jsonEncoder.encode(asset)
+            let metaUrl = folder.appendingPathComponent(asset.filename + ".meta.json")
 
-            // Construct URL: {ARCHIVE_API_ENDPOINT}/{identifier}/{filename}.meta.json
-            let metaUrl = folder
-                .appendingPathComponent(asset.filename + ".meta.json")
-
-            // Write JSON to a temporary file for background session upload
-            let tempDir = FileManager.default.temporaryDirectory
-            let tempMetaFile = tempDir.appendingPathComponent(UUID().uuidString + ".meta.json")
-            try json.write(to: tempMetaFile, options: .atomic)
-
-            let semaphore = DispatchSemaphore(value: 0)
             var uploadError: Error? = nil
+            let group = DispatchGroup()
+            group.enter()
 
-            // Use background session for meta.json
-            let metaTask = backgroundSession.upload(tempMetaFile, to: metaUrl, headers: headers, credential: nil)
-
-            // Monitor task completion on a background thread to avoid blocking upload queue directly
-            DispatchQueue.global(qos: .userInitiated).async {
-              
-                while metaTask.state != .completed && metaTask.state != .canceling {
-                    Thread.sleep(forTimeInterval: 0.1)
-                }
-                // Clean up temp file
-                try? FileManager.default.removeItem(at: tempMetaFile)
-
-                if let error = metaTask.error {
-                    #if DEBUG
-                    print("meta.json upload failed: \(error.localizedDescription)")
-                    #endif
+            let task = foregroundSession.upload(json, to: metaUrl, headers: headers, credential: nil) { error in
+                if let error = error {
                     uploadError = error
-                } else {
-                    #if DEBUG
-                    print("meta.json uploaded successfully to Internet Archive.")
-                    #endif
                 }
-
-                semaphore.signal()
+                group.leave()
             }
 
-            progress.addChild(metaTask.progress, withPendingUnitCount: 1)
+            progress.addChild(task.progress, withPendingUnitCount: 1)
+            group.wait(signal: progress)
 
-            let timeout = DispatchTime.now() + .seconds(60)
-            if semaphore.wait(timeout: timeout) == .timedOut {
-                #if DEBUG
-                print("meta.json upload timed out after 60 seconds")
-                #endif
-                return NSError(domain: "org.open-archive.save", code: -1,
-                              userInfo: [NSLocalizedDescriptionKey: "meta.json upload timed out"])
+            if progress.isCancelled {
+                return URLError(.cancelled)
             }
 
             return uploadError
-
-        } catch let e {
-            #if DEBUG
-            print("Failed to encode meta.json: \(e.localizedDescription)")
-            #endif
-            return e
+        } catch {
+            return error
         }
     }
     private func url(for asset: Asset) -> URL? {

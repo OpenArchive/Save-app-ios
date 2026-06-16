@@ -36,7 +36,6 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         window = newWindow
         newWindow.makeKeyAndVisible()
 
-        // Apply saved theme (window exists now; didFinishLaunching runs before scene exists)
         (UIApplication.shared.delegate as? AppDelegateBase)?.applyTheme(AppSettings.theme)
 
         captureChangeToken = NotificationCenter.default.addObserver(
@@ -62,14 +61,16 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
             BlurredSnapshot.create(window)
             hadResigned = true
         }
+        // Request extra runtime before iOS suspends us (must be on main, not async).
+        UploadManager.shared.prepareForPossibleBackground()
     }
 
     func sceneDidEnterBackground(_ scene: UIScene) {
         trackEvent(.appBackgrounded)
+        UploadManager.shared.willEnterBackground()
     }
 
     func sceneWillEnterForeground(_ scene: UIScene) {
-        UploadManager.shared.restart()
         if shouldShowAppPasscodeEntryScreen() {
             showAppPasscodeEntryScreen()
         } else {
@@ -78,13 +79,21 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
+        UploadManager.noteUserForegrounded()
+        UploadManager.shared.setBackgroundState(false)
+        UploadManager.shared.becameActive()
+
         trackEvent(.appForegrounded)
-        MainScreenRefreshService.shared.refreshMainMediaState()
-        if AppSettings.passcodeEnabled {
-            BlurredSnapshot.remove()
+
+        // Defer UI refresh so main thread is free for upload queue callbacks (avoids deadlock).
+        DispatchQueue.main.async { [weak self] in
+            MainScreenRefreshService.shared.refreshMainMediaState()
+            if AppSettings.passcodeEnabled {
+                BlurredSnapshot.remove()
+            }
+            self?.syncCapturePrivacyOverlay()
+            maybePromptForReview()
         }
-        syncCapturePrivacyOverlay()
-        maybePromptForReview()
     }
 
     func syncCapturePrivacyOverlay() {

@@ -49,6 +49,7 @@ final class HomeDatabaseObserver {
     }
 
     @objc func yapDatabaseModified(notification: Notification) {
+        guard !UploadManager.shared.shouldDeferUIRefresh else { return }
         fetchQueue.async { [weak self] in
             self?.performFetch()
         }

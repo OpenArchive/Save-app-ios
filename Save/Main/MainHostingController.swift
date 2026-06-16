@@ -77,6 +77,7 @@ final class MainHostingController: UIHostingController<MainHostView>, AssetPicke
         coordinator.settingsViewModel.delegate = self
         Db.add(observer: self, #selector(yapDatabaseModified))
         NotificationCenter.default.addObserver(self, selector: #selector(spaceUpdated), name: .spaceUpdated, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(uploadGridRefresh), name: .uploadGridRefresh, object: nil)
         coordinator.scheduleProofModeLocationPromptIfNeeded()
         MainScreenRootRegistry.shared.register(self)
     }
@@ -142,6 +143,10 @@ final class MainHostingController: UIHostingController<MainHostView>, AssetPicke
         DispatchQueue.main.async { [weak self] in
             self?.coordinator.handleYapDatabaseModified()
         }
+    }
+
+    @objc private func uploadGridRefresh() {
+        coordinator.handleUploadGridRefresh()
     }
 
     @objc private func spaceUpdated(_ notification: Notification) {

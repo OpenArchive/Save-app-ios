@@ -88,7 +88,7 @@ struct MediaGridView: View {
 
             Spacer(minLength: 0)
 
-            Text(headerCountText(for: section.collection))
+            Text(headerCountText(for: section))
                 .font(.montserrat(.regular, for: .caption))
                 .foregroundColor(Color(.label))
                 .padding(.horizontal, 2)
@@ -103,7 +103,12 @@ struct MediaGridView: View {
     private func headerText(for section: MediaGridSection) -> String {
         let collection = section.collection
         guard let collection = collection else { return "" }
-        if let uploadedTs = collection.uploaded, collection.waitingAssetsCount == 0 {
+
+        let uploadedCount = section.assets.filter(\.isUploaded).count
+        let totalCount = section.assets.count
+        let allUploaded = totalCount > 0 && uploadedCount == totalCount
+
+        if allUploaded, let uploadedTs = collection.uploaded {
             let fiveMinAgo = Date(timeIntervalSinceNow: -5 * 60)
             return fiveMinAgo < uploadedTs
                 ? NSLocalizedString("Just now", comment: "")
@@ -113,7 +118,7 @@ struct MediaGridView: View {
             let hasActiveUpload = section.assets.contains { asset in
                 viewModel.upload(for: asset.id)?.state == .uploading
             }
-            let hasStartedUploading = hasActiveUpload || collection.uploadedAssetsCount > 0
+            let hasStartedUploading = hasActiveUpload || uploadedCount > 0
             return hasStartedUploading
                 ? NSLocalizedString("Uploading…", comment: "")
                 : NSLocalizedString("Waiting…", comment: "")
@@ -121,21 +126,25 @@ struct MediaGridView: View {
         return NSLocalizedString("Ready to upload", comment: "")
     }
 
-    private func headerCountText(for collection: Collection?) -> String {
-        guard let collection = collection else { return "" }
-        if let _ = collection.uploaded, collection.waitingAssetsCount == 0 {
-            return "  \(Formatters.format(collection.uploadedAssetsCount))  "
+    private func headerCountText(for section: MediaGridSection) -> String {
+        guard let collection = section.collection else { return "" }
+
+        let uploadedCount = section.assets.filter(\.isUploaded).count
+        let totalCount = section.assets.count
+        let allUploaded = totalCount > 0 && uploadedCount == totalCount
+
+        if allUploaded, collection.uploaded != nil {
+            return "  \(Formatters.format(uploadedCount))  "
         }
         if collection.closed != nil {
-            let total = collection.assets.count
-            let uploaded = collection.uploadedAssetsCount
             return String(
                 format: "  \(NSLocalizedString("%1$@/%2$@", comment: "both are integer numbers meaning 'x of n'"))  ",
-                Formatters.format(uploaded),
-                Formatters.format(total)
+                Formatters.format(uploadedCount),
+                Formatters.format(totalCount)
             )
         }
-        return "  \(Formatters.format(collection.waitingAssetsCount))  "
+        let waitingCount = section.assets.filter { !$0.isUploaded }.count
+        return "  \(Formatters.format(waitingCount))  "
     }
 
     private func handleTap(asset: Asset, upload: Upload?) {

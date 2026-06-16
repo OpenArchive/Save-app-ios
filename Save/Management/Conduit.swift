@@ -113,6 +113,7 @@ class Conduit {
         let task = backgroundSession.upload(file, to: to, headers: headers, credential: credential)
 
         progress.addChild(task.progress, withPendingUnitCount: pendingUnitCount ?? (progress.totalUnitCount - progress.completedUnitCount))
+        UploadManager.shared.notifyBackgroundTransferEnqueued()
     }
 
     func upload(_ data: Data, to: URL, _ progress: Progress, _ share: Int64, credential: URLCredential? = nil,

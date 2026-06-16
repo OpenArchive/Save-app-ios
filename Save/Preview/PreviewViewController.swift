@@ -162,25 +162,21 @@ final class PreviewViewController: UIHostingController<PreviewFlowContainerView>
                 return
             }
 
-            var order = 0
-
-            tx.iterate { (_, upload: Upload, _) in
-                if upload.order >= order {
-                    order = upload.order + 1
-                }
-            }
-
             if let collection: Collection = tx.object(for: self.sc.id) {
                 collection.close()
                 tx.setObject(collection)
             }
 
             tx.iterate(group: group, in: AbcFilteredByCollectionView.name) { (_, _, asset: Asset, _, _) in
-                let upload = Upload(order: order, asset: asset)
-                tx.setObject(upload)
-                order += 1
+                let upload = Upload(order: 0, asset: asset)
+                UploadQueueService.placeNewUpload(
+                    upload,
+                    tx: tx,
+                    iaCooldownActive: IaCooldownManager.shared.isActive
+                )
             }
         }, completionBlock: {
+            UploadManager.shared.notifyUploadsEnqueued()
             DispatchQueue.main.async {
                 self.navigationController?.popViewController(animated: true)
             }
