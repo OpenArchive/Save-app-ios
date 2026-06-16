@@ -10,6 +10,10 @@ import UIKit
 import UniformTypeIdentifiers
 
 class IaConduit: Conduit {
+
+    /// Share of overall progress reserved for parallel meta.json prep (bytes UI uses progress above this).
+    private static let metadataPrepProgressUnits: Int64 = 10
+    private static let mainFileProgressUnits: Int64 = 90
     
     // MARK: Conduit
     
@@ -33,22 +37,11 @@ class IaConduit: Conduit {
             return progress
         }
         
-        let error = copyMetadataWithoutProofmode(to: url.deletingLastPathComponent(), progress,
-                                                 headers: generateHeaders(accessKey, secretKey, forMetadata: true))
-
-        if let error = error {
-            done(uploadId, error: error)
-            return progress
-        }
-
+        // Prep: main file first so IA items are never created with only meta.json.
         if progress.isCancelled {
             done(uploadId)
             return progress
         }
-        
-        //Fix to 10% from here, so uploaded bytes can be calculated properly
-        // in `UploadCell.upload#didSet`!
-        progress.completedUnitCount = 10
 
         // Validate file exists before attempting upload
         guard FileManager.default.fileExists(atPath: file.path) else {
@@ -93,8 +86,15 @@ class IaConduit: Conduit {
             // Store temp file path for cleanup
             task.taskDescription = tempFile.path
 
-            progress.addChild(task.progress, withPendingUnitCount: progress.totalUnitCount - progress.completedUnitCount)
+            progress.addChild(task.progress, withPendingUnitCount: Self.mainFileProgressUnits)
             UploadManager.shared.notifyBackgroundTransferEnqueued()
+
+            // Sidecar meta.json after main file is queued — parallel with transfer, won't create orphan items.
+            uploadMetadataInParallel(
+                to: url.deletingLastPathComponent(),
+                progress: progress,
+                headers: generateHeaders(accessKey, secretKey, forMetadata: true)
+            )
         } catch {
             DispatchQueue.global(qos: .background).asyncAfter(deadline: .now() + 0.5) {
                 self.done(uploadId, error: error)
@@ -226,34 +226,29 @@ class IaConduit: Conduit {
         return error
     }
     
-    private func copyMetadataWithoutProofmode(to folder: URL, _ progress: Progress, headers: [String: String]) -> Error? {
+    /// Starts meta.json upload in parallel — linked to `progress` but does not block the main file.
+    private func uploadMetadataInParallel(to folder: URL, progress: Progress, headers: [String: String]) {
         do {
             let json = try Conduit.jsonEncoder.encode(asset)
             let metaUrl = folder.appendingPathComponent(asset.filename + ".meta.json")
 
-            var uploadError: Error? = nil
-            let group = DispatchGroup()
-            group.enter()
-
             let task = foregroundSession.upload(json, to: metaUrl, headers: headers, credential: nil) { error in
+                #if DEBUG
                 if let error = error {
-                    uploadError = error
+                    print("[IaConduit] meta.json upload failed: \(error.localizedDescription)")
+                } else {
+                    print("[IaConduit] meta.json uploaded successfully.")
                 }
-                group.leave()
+                #endif
             }
-
-            progress.addChild(task.progress, withPendingUnitCount: 1)
-            group.wait(signal: progress)
-
-            if progress.isCancelled {
-                return URLError(.cancelled)
-            }
-
-            return uploadError
+            progress.addChild(task.progress, withPendingUnitCount: Self.metadataPrepProgressUnits)
         } catch {
-            return error
+            #if DEBUG
+            print("[IaConduit] Failed to encode meta.json: \(error.localizedDescription)")
+            #endif
         }
     }
+
     private func url(for asset: Asset) -> URL? {
         if let url = asset.publicUrl {
             return url

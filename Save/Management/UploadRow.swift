@@ -171,26 +171,34 @@ struct UploadRow: View {
 struct ProgressButtonView: View {
     let state: Upload.State
     let progress: Double
-    
+
+    @State private var animationProgress: Double = 0
+
     var body: some View {
         ZStack {
             Circle()
                 .stroke(Color.accentColor.opacity(0.3), lineWidth: 2)
-            
+
             switch state {
             case .paused:
                 Circle()
                     .stroke(Color.accentColor, lineWidth: 2)
             case .pending:
                 Circle()
-                    .trim(from: 0, to: 0.3)
+                    .trim(from: animationProgress, to: animationProgress + 0.3)
                     .stroke(Color.accentColor, lineWidth: 2)
                     .rotationEffect(.degrees(-90))
+                    .onAppear {
+                        withAnimation(.linear(duration: 1).repeatForever(autoreverses: false)) {
+                            animationProgress = 1
+                        }
+                    }
             case .uploading:
                 Circle()
-                    .trim(from: 0, to: progress)
+                    .trim(from: 0, to: min(progress, 1))
                     .stroke(Color.accentColor, lineWidth: 2)
                     .rotationEffect(.degrees(-90))
+                    .animation(.linear(duration: 0.1), value: progress)
             case .uploaded:
                 Circle()
                     .stroke(Color.green, lineWidth: 2)

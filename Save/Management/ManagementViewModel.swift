@@ -43,6 +43,16 @@ class ManagementViewModel: ObservableObject {
                 self?.handleDatabaseModified()
             }
         }
+
+        NotificationCenter.default.addObserver(
+            forName: .uploadGridRefresh,
+            object: nil,
+            queue: .main
+        ) { [weak self] _ in
+            Task { @MainActor in
+                self?.loadUploads()
+            }
+        }
     }
     
     private func handleDatabaseModified() {
@@ -72,6 +82,11 @@ class ManagementViewModel: ObservableObject {
             }
             
             DispatchQueue.main.async {
+                for upload in loadedUploads {
+                    if let live = UploadManager.shared.displayProgress(for: upload.id) {
+                        upload.progress = live
+                    }
+                }
                 self.uploads = loadedUploads
             }
         }

@@ -23,7 +23,7 @@ extension Notification.Name {
     
     static let uploadManagerDataUsageChange = Notification.Name("uploadManagerDataUsageChange")
 
-    /// Posted when upload state/progress changes and the media grid should refresh.
+    /// Posted when upload state/progress changes and upload UI should refresh (grid + management queue).
     static let uploadGridRefresh = Notification.Name("uploadGridRefresh")
 }
 
@@ -415,7 +415,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             // Persist any in-memory progress skipped while backgrounded.
             storeCurrent(force: true)
             ensurePollingActive()
-            runUploadNextWork()
+            uploadNext()
         }
         Self.isBackgroundSessionRelaunch = false
         DispatchQueue.main.async {
@@ -718,9 +718,9 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
         notifyUploadGridRefresh()
         clearInFlight(upload.id)
-        endBackgroundTask(.newData)
         ensurePollingActive()
         uploadNext()
+        endBackgroundTaskIfQueueIdle(.newData)
     }
 
     private func handleUploadFailure(upload: Upload, asset: Asset, error: Error?) {
@@ -768,8 +768,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
         notifyUploadGridRefresh()
         clearInFlight(upload.id)
-        endBackgroundTask(.failed)
         uploadNext()
+        endBackgroundTaskIfQueueIdle(.failed)
     }
 
     private func message(for error: Error?, kind: UploadFailureKind) -> String {
@@ -959,12 +959,23 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             completion()
         }
 
-        // Never main.sync from the upload queue — main may be in sceneDidBecomeActive UI refresh.
+        // Never main.sync from the upload queue — except when backgrounded we must
+        // begin the task synchronously or iOS suspends us before uploadNext runs.
         if Thread.isMainThread {
             begin()
+        } else if isInBackground || Self.isBackgroundSessionRelaunch {
+            DispatchQueue.main.sync(execute: begin)
         } else {
             DispatchQueue.main.async(execute: begin)
         }
+    }
+
+    /// End the uploadNext background task only when no further work needs foreground prep.
+    private func endBackgroundTaskIfQueueIdle(_ result: UIBackgroundFetchResult) {
+        if (isInBackground || Self.isBackgroundSessionRelaunch), hasRunnableUploadWork() {
+            return
+        }
+        endBackgroundTask(result)
     }
 
     private func runUploadNextWork() {
@@ -1080,6 +1091,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         upload.error = nil
         upload.progress = 0
         markInFlight(upload.id)
+        notifyUploadGridRefresh()
         lastProgressDate = Date()
         lastStoredProgress = 0
         lastProgressStoreDate = nil
@@ -1095,8 +1107,6 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
             tx.replace(upload)
         }
-
-        notifyUploadGridRefresh()
 
         // Run Conduit on a worker thread so the upload queue stays free for the
         // progress timer (WebDAV blocks synchronously during folder setup and transfer).
@@ -1311,6 +1321,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 if !self.isInBackground && !Self.isBackgroundSessionRelaunch,
                    self.current?.id == upload.id {
                     self.persistUploadProgressToGrid()
+                    self.notifyUploadGridRefresh()
                 }
             }
 
@@ -1393,6 +1404,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             }
             logUploadMemory("polling_idle")
             suspendPolling()
+            endBackgroundTaskIfQueueIdle(.noData)
             return
         }
 
@@ -1644,12 +1656,27 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
      
      Fails silently, when `current` is `nil`!
      */
+    /// Smallest progress shown while an upload is in flight but bytes haven't registered yet.
+    private static let minVisibleProgress: Double = 0.03
+
+    /// Live fraction for an in-flight upload (includes `liveProgress` not yet written to the DB).
+    func displayProgress(for uploadId: String) -> Double? {
+        var value: Double?
+        queue.sync {
+            guard self.inFlightUploadIds.contains(uploadId) else { return }
+            let live = self.current?.id == uploadId ? (self.current?.progress ?? 0) : 0
+            value = live > 0.001 ? live : Self.minVisibleProgress
+        }
+        return value
+    }
+
     /// Called from Conduit as soon as a `Progress` object exists for an in-flight upload.
     func attachLiveProgress(_ progress: Progress, for uploadId: String) {
-        queue.async { [weak self] in
-            guard let self, self.current?.id == uploadId else { return }
+        queue.sync {
+            guard self.current?.id == uploadId else { return }
             self.current?.liveProgress = progress
         }
+        notifyUploadGridRefresh()
     }
 
     /// Writes live progress into the DB so the grid can switch from pending spinner to progress ring.

@@ -119,6 +119,9 @@ final class MediaGridViewModel: NSObject, ObservableObject {
         uploadsReadConn?.read { tx in
             tx.iterateKeysAndObjects(inCollection: Upload.collection) { (_: String, upload: Upload, _: inout Bool) in
                 guard upload.state != .uploaded, let aid = upload.assetId else { return }
+                if let live = UploadManager.shared.displayProgress(for: upload.id) {
+                    upload.progress = live
+                }
                 if map[aid] == nil {
                     map[aid] = upload
                 }
