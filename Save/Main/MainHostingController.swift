@@ -19,7 +19,6 @@ struct MainHostView: View {
             mediaGridViewModel: coordinator.mediaGridViewModel,
             uiState: coordinator.uiState,
             settingsViewModel: coordinator.settingsViewModel,
-            folderAssetCountText: coordinator.folderAssetCountText,
             onTapAdd: { coordinator.add() },
             onLongPressAdd: { coordinator.showAddMenu() },
             onTapSettings: { coordinator.toggleSettings() },

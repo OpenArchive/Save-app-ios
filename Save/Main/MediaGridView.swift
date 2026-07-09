@@ -61,10 +61,11 @@ struct MediaGridView: View {
                                 let upload = viewModel.upload(for: asset.id)
                                 MediaGridCellView(
                                     asset: asset,
+                                    collection: section.collection,
                                     upload: upload,
                                     isSelected: viewModel.selectedAssetIds.contains(asset.id),
                                     cellSize: cellSize,
-                                    onTap: { handleTap(asset: asset, upload: upload) },
+                                    onTap: { handleTap(asset: asset, upload: upload, collection: section.collection) },
                                     onLongPress: { handleLongPress(asset: asset) }
                                 )
                             }
@@ -147,12 +148,13 @@ struct MediaGridView: View {
         return "  \(Formatters.format(waitingCount))  "
     }
 
-    private func handleTap(asset: Asset, upload: Upload?) {
+    private func handleTap(asset: Asset, upload: Upload?, collection: Collection?) {
         if viewModel.isInEditMode {
             viewModel.toggleSelection(asset.id)
             return
         }
-        if upload != nil {
+        let isInUploadPipeline = !asset.isUploaded && (upload != nil || collection?.closed != nil)
+        if isInUploadPipeline {
             onTapAssetWithUpload?(asset, upload)
             return
         }
@@ -174,6 +176,7 @@ struct MediaGridView: View {
 
 private struct MediaGridCellView: View {
     let asset: Asset
+    let collection: Collection?
     let upload: Upload?
     let isSelected: Bool
     let cellSize: CGFloat
@@ -184,28 +187,49 @@ private struct MediaGridCellView: View {
     @State private var currentAssetId: String?
     @Environment(\.accessibilityReduceTransparency) private var reduceTransparency
 
-    private var showUploadOverlay: Bool {
-        guard !(asset.isUploaded) else { return false }
-        guard let upload = upload else { return false }
-        return upload.state == .uploading || upload.state == .pending
+    /// Folder not yet queued — light blur only in this state.
+    private var isReadyToUpload: Bool {
+        !asset.isUploaded && collection?.closed == nil && upload == nil
+    }
+
+    /// Queued or actively uploading — dark blur + progress ring until the asset is uploaded.
+    private var isInUploadPipeline: Bool {
+        !asset.isUploaded && (collection?.closed != nil || upload != nil)
+    }
+
+    private var showActiveUploadUI: Bool {
+        guard !asset.isUploaded else { return false }
+        if let upload = upload {
+            return upload.error == nil
+        }
+        // Closed batch with no upload row yet (e.g. right after tapping Upload).
+        return collection?.closed != nil
     }
 
     private var showErrorIcon: Bool {
         upload?.error != nil
     }
 
+    private var resolvedUploadState: Upload.State {
+        if upload?.paused == true { return .paused }
+        if (upload?.progress ?? 0) >= 1 { return .uploading }
+        return upload?.state ?? .pending
+    }
+
+    private var resolvedProgress: Double {
+        min(upload?.progress ?? 0, 1)
+    }
+
     var body: some View {
         ZStack {
             contentView
             if !asset.isUploaded && !reduceTransparency {
-                        if upload?.state == .uploading || upload?.state == .pending, upload?.error == nil {
-                            // Dark blur for active upload
-                            BlurOverlayView(style: .dark, alpha: 0.65)
-                        } else if upload == nil {
-                            // Light blur for ready to upload
-                            BlurOverlayView(style: .extraLight, alpha: 0.35)
-                        }
-                    }
+                if showActiveUploadUI {
+                    BlurOverlayView(style: .dark, alpha: 0.65)
+                } else if isReadyToUpload {
+                    BlurOverlayView(style: .extraLight, alpha: 0.35)
+                }
+            }
             
             if asset.isAv {
                 VStack {
@@ -216,7 +240,7 @@ private struct MediaGridCellView: View {
             
             if showErrorIcon {
                 errorIconOverlay
-            } else if showUploadOverlay {
+            } else if showActiveUploadUI {
                 uploadProgressOverlay
             }
         }
@@ -311,11 +335,11 @@ private struct MediaGridCellView: View {
 
     private var uploadProgressOverlay: some View {
         ZStack {
-            let isUploading = upload?.state == .uploading
+            let isUploading = resolvedUploadState == .uploading
             Color.black.opacity(isUploading ? 0.5 : 0.2)
             MediaGridProgressView(
-                state: upload?.state ?? .pending,
-                progress: upload?.progress ?? 0
+                state: resolvedUploadState,
+                progress: resolvedProgress
             )
             .frame(width: 24, height: 24)
         }

@@ -95,6 +95,7 @@ final class MediaGridViewModel: NSObject, ObservableObject {
             updateAllMappings()
             rebuildSections()
         } else if uploadsMapChanged {
+            refreshCollectionStatesInSections()
             objectWillChange.send()
         }
     }
@@ -103,10 +104,12 @@ final class MediaGridViewModel: NSObject, ObservableObject {
     func refreshUploadsFromDatabase() {
         guard selectedProjectId != nil else { return }
         _ = uploadsReadConn?.beginLongLivedReadTransaction()
+        _ = collectionsReadConn?.beginLongLivedReadTransaction()
         uploadsReadConn?.update(mappings: uploadsMappings)
-        if rebuildUploadsByAssetIdIfChanged() {
-            objectWillChange.send()
-        }
+        collectionsReadConn?.update(mappings: collectionsMappings)
+        _ = rebuildUploadsByAssetIdIfChanged()
+        refreshCollectionStatesInSections()
+        objectWillChange.send()
     }
 
     /// Lookup from `uploadsByAssetId` (refreshed on each `rebuildSections()`).
@@ -118,7 +121,11 @@ final class MediaGridViewModel: NSObject, ObservableObject {
         var map: [String: Upload] = [:]
         uploadsReadConn?.read { tx in
             tx.iterateKeysAndObjects(inCollection: Upload.collection) { (_: String, upload: Upload, _: inout Bool) in
-                guard upload.state != .uploaded, let aid = upload.assetId else { return }
+                guard let aid = upload.assetId else { return }
+                upload.preheat(tx, deep: false)
+                // Keep the row until the asset is marked uploaded — `upload.state` hits
+                // `.uploaded` at progress >= 1 while the asset may still be finishing.
+                guard !(upload.asset?.isUploaded ?? false) else { return }
                 if let live = UploadManager.shared.displayProgress(for: upload.id) {
                     upload.progress = live
                 }
@@ -130,6 +137,32 @@ final class MediaGridViewModel: NSObject, ObservableObject {
         guard !uploadMapsEquivalent(uploadsByAssetId, map) else { return false }
         uploadsByAssetId = map
         return true
+    }
+
+    /// Keeps `collection.closed` in section headers/cells in sync during upload progress ticks.
+    private func refreshCollectionStatesInSections() {
+        guard !sections.isEmpty else { return }
+        var updated = sections
+        var changed = false
+        for index in updated.indices {
+            guard let collectionId = AssetsByCollectionView.collectionId(from: updated[index].group) else {
+                continue
+            }
+            let collection: Collection? = collectionsReadConn?.object(for: collectionId, in: Collection.collection)
+            if updated[index].collection?.closed != collection?.closed
+                || updated[index].collection?.uploaded != collection?.uploaded {
+                updated[index] = MediaGridSection(
+                    id: updated[index].id,
+                    collection: collection,
+                    assets: updated[index].assets,
+                    group: updated[index].group
+                )
+                changed = true
+            }
+        }
+        if changed {
+            sections = updated
+        }
     }
 
     private func uploadMapsEquivalent(_ lhs: [String: Upload], _ rhs: [String: Upload]) -> Bool {

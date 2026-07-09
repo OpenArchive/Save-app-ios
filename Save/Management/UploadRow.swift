@@ -33,7 +33,7 @@ struct UploadRow: View {
         }
         
         let total = upload.asset?.filesize ?? 0
-        let done = Double(total) * (upload.progress - 0.1) / 0.9
+        let done = Double(total) * min(max(upload.progress, 0), 1)
         
         if done > 0 {
             return "\(Formatters.formatByteCount(total)) – ↑\(Formatters.formatByteCount(Int64(done)))"

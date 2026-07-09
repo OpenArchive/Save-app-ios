@@ -11,7 +11,6 @@ struct MainView: View {
     let uiState: MainViewUIState
     let settingsViewModel: SettingsViewModel
 
-    let folderAssetCountText: String
     let onTapAdd: () -> Void
     let onLongPressAdd: () -> Void
     let onTapSettings: () -> Void
@@ -44,7 +43,6 @@ struct MainView: View {
                     mediaGridViewModel: mediaGridViewModel,
                     uiState: uiState,
                     settingsViewModel: settingsViewModel,
-                    folderAssetCountText: folderAssetCountText,
                     onTapAdd: onTapAdd,
                     onLongPressAdd: onLongPressAdd,
                     onTapSettings: onTapSettings,
@@ -80,7 +78,6 @@ private struct MainCentralColumn: View {
     @ObservedObject var uiState: MainViewUIState
     @ObservedObject var settingsViewModel: SettingsViewModel
 
-    let folderAssetCountText: String
     let onTapAdd: () -> Void
     let onLongPressAdd: () -> Void
     let onTapSettings: () -> Void
@@ -122,7 +119,6 @@ private struct MainCentralColumn: View {
                     homeViewModel: homeViewModel,
                     mediaGridViewModel: mediaGridViewModel,
                     uiState: uiState,
-                    folderAssetCountText: folderAssetCountText,
                     onStartRename: onStartRename,
                     onSubmitRename: onSubmitRename,
                     onCloseRename: onCloseRename,

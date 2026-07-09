@@ -65,10 +65,6 @@ final class MainScreenCoordinator: SideMenuDelegate {
         self.host = host
     }
 
-    var folderAssetCountText: String {
-        "  \(Formatters.format(mediaGridViewModel.totalItemCount))  "
-    }
-
     private var selectedProjectId: String? {
         homeViewModel.selectedProjectId
     }

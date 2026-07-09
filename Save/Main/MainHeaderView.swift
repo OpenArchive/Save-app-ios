@@ -10,7 +10,6 @@ struct MainHeaderView: View {
     @ObservedObject var mediaGridViewModel: MediaGridViewModel
     @ObservedObject var uiState: MainViewUIState
 
-    let folderAssetCountText: String
     let onStartRename: () -> Void
     let onSubmitRename: () -> Void
     let onCloseRename: () -> Void
@@ -84,14 +83,16 @@ struct MainHeaderView: View {
                     Button(NSLocalizedString("Cancel", comment: ""), role: .cancel) {}
                 }
 
-                Text(folderAssetCountText)
-                    .font(.montserrat(.regular, for: .caption))
-                    .padding(.horizontal, 4)
-                    .padding(.vertical, 2)
-                    .background(
-                        Capsule().fill(Color("pill-background"))
-                    )
-                    .padding(.leading, 8)
+                if mediaGridViewModel.totalItemCount > 0 {
+                    Text("  \(Formatters.format(mediaGridViewModel.totalItemCount))  ")
+                        .font(.montserrat(.regular, for: .caption))
+                        .padding(.horizontal, 4)
+                        .padding(.vertical, 2)
+                        .background(
+                            Capsule().fill(Color("pill-background"))
+                        )
+                        .padding(.leading, 8)
+                }
             }
         }
     }
