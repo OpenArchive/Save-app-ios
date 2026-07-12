@@ -9,9 +9,75 @@
 import UIKit
 
 class WebDavConduit: Conduit {
-    
+
     // MARK: WebDavConduit
-    
+
+    private static var knownFolders = Set<URL>()
+
+    static func clearFolderCache() {
+        knownFolders.removeAll()
+    }
+
+    /// Creates project/collection (and flag) folders while still in the foreground so background
+    /// uploads can skip blocking `mkDir` calls on a suspended foreground URLSession.
+    @discardableResult
+    static func prepareCollectionFolders(
+        for asset: Asset,
+        session: URLSession,
+        credential: URLCredential?
+    ) -> Bool {
+        guard let projectName = asset.collection?.project.name,
+              let collectionName = asset.collection?.name,
+              let baseUrl = asset.space?.url,
+              let credential
+        else {
+            return false
+        }
+
+        var path = [projectName]
+        var folders = [Conduit.construct(url: baseUrl, path)]
+
+        path.append(collectionName)
+        folders.append(Conduit.construct(url: baseUrl, path))
+
+        if asset.tags?.contains(Asset.flag) ?? false {
+            path.append(Asset.flag)
+            folders.append(Conduit.construct(url: baseUrl, path))
+        }
+
+        for folder in folders {
+            if knownFolders.contains(folder) {
+                continue
+            }
+
+            var error: Error?
+            let group = DispatchGroup()
+            group.enter()
+
+            _ = session.mkDir(folder, credential: credential) { e in
+                if case SaveError.http(let status)? = e, status == 405 {
+                    // Folder already exists.
+                } else {
+                    error = e
+                }
+                group.leave()
+            }
+
+            group.wait()
+
+            if let error {
+                #if DEBUG
+                print("[WebDavConduit] prepareCollectionFolders failed for \(folder): \(error)")
+                #endif
+                return false
+            }
+
+            knownFolders.insert(folder)
+        }
+
+        return true
+    }
+
     private var credential: URLCredential? {
         return (asset.space as? WebDavSpace)?.credential
     }
@@ -40,7 +106,12 @@ class WebDavConduit: Conduit {
 
         var path = [projectName]
 
-        var error = create(folder: construct(url: url, path), progress)
+        #if DEBUG
+        let inBg = UploadManager.shared.isInBackground || UploadManager.isBackgroundSessionRelaunch
+        print("[WebDavConduit] upload begin id=\(uploadId) file=\(asset.filename) inBackground=\(inBg)")
+        #endif
+
+        var error = create(folder: construct(url: url, path), progress, label: "project")
 
         if error != nil || progress.isCancelled {
             done(uploadId, error: error)
@@ -49,7 +120,7 @@ class WebDavConduit: Conduit {
 
         path.append(collectionName)
 
-        error = create(folder: construct(url: url, path), progress)
+        error = create(folder: construct(url: url, path), progress, label: "collection")
 
         if error != nil || progress.isCancelled {
             done(uploadId, error: error)
@@ -61,7 +132,7 @@ class WebDavConduit: Conduit {
         if asset.tags?.contains(Asset.flag) ?? false {
             path.append(Asset.flag)
 
-            error = create(folder: construct(url: url, path), progress)
+            error = create(folder: construct(url: url, path), progress, label: "flag")
 
             if error != nil || progress.isCancelled {
                 done(uploadId, error: error)
@@ -80,9 +151,19 @@ class WebDavConduit: Conduit {
 
         let to = construct(url: url, path)
 
-        if isUploaded(to, filesize) {
+        let inBackground = UploadManager.shared.isInBackground || UploadManager.isBackgroundSessionRelaunch
+        if !inBackground && isUploaded(to, filesize) {
+            #if DEBUG
+            print("[WebDavConduit] skip file already on server file=\(asset.filename)")
+            #endif
             done(uploadId, url: to)
             return progress
+        }
+
+        if inBackground {
+            #if DEBUG
+            print("[WebDavConduit] skip isUploaded check (background) file=\(asset.filename)")
+            #endif
         }
 
         if progress.isCancelled {
@@ -95,9 +176,15 @@ class WebDavConduit: Conduit {
         progress.completedUnitCount = 10
 
         // Use Nextcloud chunking if enabled and file bigger than 10 MByte.
-        if asset.space?.isNextcloud ?? false,
-           filesize > Conduit.chunkFileSizeThreshold
-        {
+        let useChunking = (asset.space?.isNextcloud ?? false)
+            && filesize > Conduit.chunkFileSizeThreshold
+        #if DEBUG
+        print("[WebDavConduit] upload path file=\(asset.filename) sizeKB=\(filesize / 1024) isNextcloud=\(asset.space?.isNextcloud ?? false) chunked=\(useChunking)")
+        #endif
+        #if DEBUG
+        print("[WebDavConduit] prep done file=\(asset.filename) → background PUT url=\(to.absoluteString)")
+        #endif
+        if useChunking {
             chunkedUpload(url, credential, uploadId, progress, file, of: filesize, path)
         }
         else {
@@ -145,9 +232,29 @@ class WebDavConduit: Conduit {
      - parameter progress: The overall progress object.
      - returns: An error or `nil` on success.
      */
-    private func create(folder: URL, _ progress: Progress) -> Error? {
+    private func create(folder: URL, _ progress: Progress, label: String = "folder") -> Error? {
+        if Self.knownFolders.contains(folder) {
+            #if DEBUG
+            print("[WebDavConduit] mkdir skip cached label=\(label)")
+            #endif
+            return nil
+        }
+
+        let inBackground = UploadManager.shared.isInBackground || UploadManager.isBackgroundSessionRelaunch
+        if inBackground {
+            #if DEBUG
+            print("[WebDavConduit] mkdir skip background label=\(label) path=\(folder.lastPathComponent)")
+            #endif
+            Self.knownFolders.insert(folder)
+            return nil
+        }
+
+        #if DEBUG
+        print("[WebDavConduit] mkdir start label=\(label) path=\(folder.lastPathComponent)")
+        #endif
+
         var error: Error? = nil
-        
+
         let group = DispatchGroup.enter()
         
         let task = foregroundSession.mkDir(folder, credential: credential) { e in
@@ -164,10 +271,21 @@ class WebDavConduit: Conduit {
         progress.addChild(task.progress, withPendingUnitCount: 1)
         
         group.wait(signal: progress)
-        
+
+        if error == nil {
+            Self.knownFolders.insert(folder)
+            #if DEBUG
+            print("[WebDavConduit] mkdir ok label=\(label)")
+            #endif
+        } else {
+            #if DEBUG
+            print("[WebDavConduit] mkdir failed label=\(label) error=\(String(describing: error))")
+            #endif
+        }
+
         return error
     }
-    
+
     /**
      Checks, if file already exists and is probably the same by comparing the filesize.
      
@@ -347,18 +465,19 @@ class WebDavConduit: Conduit {
             
             while offset < filesize {
                 let expectedSize = min(Conduit.chunkSize, filesize - offset)
-                
+                let readOffset = offset
+
                 var dest = folder
-                dest.append(String(format: "%015d-%015d", offset, offset + expectedSize - 1))
-                
+                dest.append(String(format: "%015d-%015d", readOffset, readOffset + expectedSize - 1))
+
                 let exists = isUploaded(construct(url: baseUrl, dest), expectedSize)
-                
+
                 if progress.isCancelled {
                     return done(uploadId)
                 }
-                
+
                 offset += expectedSize
-                
+
                 if exists {
                     // Only increase the first time, otherwise we would exceed 100%.
                     // (First time could be after an app restart.)
@@ -378,7 +497,7 @@ class WebDavConduit: Conduit {
                     let chunk: Data
                     
                     do {
-                        chunk = try Conduit.readChunk(file, offset: UInt64(offset), length: expectedSize)
+                        chunk = try Conduit.readChunk(file, offset: UInt64(readOffset), length: expectedSize)
                     }
                     catch let e {
                         error = e

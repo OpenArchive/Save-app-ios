@@ -110,7 +110,7 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
     private var _progress: Double = 0
     var progress: Double {
         get {
-            return liveProgress?.fractionCompleted ?? _progress
+            liveProgress?.fractionCompleted ?? _progress
         }
         set {
             _progress = newValue
@@ -290,6 +290,7 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
      - parameter callback: Optional callback is called asynchronously on main queue after removal.
      */
     func remove(_ callback: (() -> Void)? = nil) {
+        NotificationCenter.default.post(name: .uploadItemRemoved, object: self)
         Db.writeConn?.asyncReadWrite { tx in
             tx.remove(self)
 
@@ -319,4 +320,9 @@ class Upload: NSObject, Item, YapDatabaseRelationshipNode {
             }
         }
     }
+}
+
+extension Notification.Name {
+    /// Posted when an `Upload` is removed from the queue (before DB delete completes).
+    static let uploadItemRemoved = Notification.Name("uploadItemRemoved")
 }

@@ -17,6 +17,7 @@ enum PreviewInnerRoute: Equatable {
 
 final class PreviewSessionModel: ObservableObject {
     @Published var route: PreviewInnerRoute = .preview
+    @Published var isLoading = false
     weak var viewController: PreviewViewController?
 
     func goDarkroom(_ index: Int) {
@@ -37,6 +38,7 @@ final class PreviewSessionModel: ObservableObject {
 
 struct PreviewFlowContainerView: View {
     @ObservedObject var session: PreviewSessionModel
+    @Environment(\.colorScheme) private var colorScheme
 
     var body: some View {
         Group {
@@ -69,6 +71,17 @@ struct PreviewFlowContainerView: View {
             }
         }
         .animation(.default, value: session.route)
+        .overlay(loadingOverlay)
+    }
+
+    private var loadingOverlay: some View {
+        Group {
+            if session.isLoading {
+                (colorScheme == .dark ? Color.black : Color.white)
+                    .overlay(ProgressView())
+            }
+        }
+        .allowsHitTesting(session.isLoading)
     }
 }
 

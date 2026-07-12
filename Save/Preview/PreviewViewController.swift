@@ -157,12 +157,22 @@ final class PreviewViewController: UIHostingController<PreviewFlowContainerView>
     }
 
     private func performUpload() {
-        Db.writeConn?.asyncReadWrite({ tx in
-            guard let group = self.sc.group else {
-                return
-            }
+        guard !session.isLoading else { return }
 
-            if let collection: Collection = tx.object(for: self.sc.id) {
+        let group = sc.group
+        let collectionId = sc.id
+        let iaCooldownActive = IaCooldownManager.shared.isActive
+
+        session.isLoading = true
+        navigationItem.rightBarButtonItem?.isEnabled = false
+
+        // Enqueue first, then pop — if we pop/background before the DB write finishes,
+        // folder prep is skipped and only the first background PUT may ever start.
+        Db.writeConn?.asyncReadWrite({ tx in
+            guard let group else { return }
+
+            if let collectionId,
+               let collection: Collection = tx.object(for: collectionId) {
                 collection.close()
                 tx.setObject(collection)
             }
@@ -172,12 +182,13 @@ final class PreviewViewController: UIHostingController<PreviewFlowContainerView>
                 UploadQueueService.placeNewUpload(
                     upload,
                     tx: tx,
-                    iaCooldownActive: IaCooldownManager.shared.isActive
+                    iaCooldownActive: iaCooldownActive
                 )
             }
         }, completionBlock: {
             UploadManager.shared.notifyUploadsEnqueued()
             DispatchQueue.main.async {
+                self.session.isLoading = false
                 self.navigationController?.popViewController(animated: true)
             }
         })
