@@ -86,6 +86,23 @@ final class IaCooldownManager {
     }
 
     func startCooldown(on queue: DispatchQueue, reason: String = "ia503") {
+        // Only one cooldown timer at a time — keep the existing deadline if still active.
+        if isActive {
+            IaCooldownLog.log(
+                "cooldown_already_active",
+                minutes: cooldownMinutes,
+                remainingSec: remainingSeconds,
+                reason: reason
+            )
+            return
+        }
+
+        // Fresh park must use the current policy duration — ignore stale UserDefaults
+        // leftovers from older 10‑minute cooldowns.
+        if reason != "retry_still_503" {
+            cooldownMinutes = UploadQueuePolicy.iaCooldownInitialMinutes
+        }
+
         expiryGeneration += 1
         hadSuccessSinceCooldown = false
         cooldownUntil = Date().addingTimeInterval(TimeInterval(cooldownMinutes * 60))
@@ -105,7 +122,10 @@ final class IaCooldownManager {
             return
         }
 
-        cooldownMinutes += UploadQueuePolicy.iaCooldownIncrementMinutes
+        cooldownMinutes = min(
+            cooldownMinutes + UploadQueuePolicy.iaCooldownIncrementMinutes,
+            UploadQueuePolicy.iaCooldownMaxMinutes
+        )
         IaCooldownLog.log(
             "cooldown_extended",
             minutes: cooldownMinutes,
@@ -115,17 +135,30 @@ final class IaCooldownManager {
     }
 
     func recordIaSuccess(on queue: DispatchQueue) {
-        reset(on: queue, reason: "ia_upload_success")
+        // Any IA success means the server accepted work — drop the single cooldown timer immediately.
+        _ = queue
+        let hadCooldown = cooldownUntil != nil || wakeTimer != nil
+        cancelWakeTimer()
+        cooldownUntil = nil
+        cooldownMinutes = UploadQueuePolicy.iaCooldownInitialMinutes
+        hadSuccessSinceCooldown = true
+        lastBlockingLogDate = nil
+        defaults.removeObject(forKey: "iaConsecutive503Count")
+        if hadCooldown {
+            IaCooldownLog.log("cooldown_cleared", reason: "ia_upload_success")
+        }
     }
 
     func reset(on queue: DispatchQueue, reason: String = "manual") {
-        let wasScheduled = cooldownUntil != nil
+        _ = queue
+        let hadCooldown = cooldownUntil != nil || wakeTimer != nil
         cancelWakeTimer()
         cooldownUntil = nil
         cooldownMinutes = UploadQueuePolicy.iaCooldownInitialMinutes
         hadSuccessSinceCooldown = false
         lastBlockingLogDate = nil
-        if wasScheduled {
+        defaults.removeObject(forKey: "iaConsecutive503Count")
+        if hadCooldown {
             IaCooldownLog.log("cooldown_cleared", reason: reason)
         }
     }
@@ -178,9 +211,11 @@ final class IaCooldownManager {
         )
 
         let timer = DispatchSource.makeTimerSource(flags: .strict, queue: queue)
-        timer.schedule(deadline: .now() + interval)
+        // One-shot wake only — never a repeating cooldown timer.
+        timer.schedule(deadline: .now() + interval, repeating: .never)
         timer.setEventHandler { [weak self] in
             guard let self else { return }
+            self.cancelWakeTimer()
             IaCooldownLog.log("cooldown_expired", reason: "timer")
             self.onWake?()
         }

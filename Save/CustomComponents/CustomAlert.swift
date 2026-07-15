@@ -53,15 +53,7 @@ struct CustomAlertView: View {
                 .foregroundColor(.alertSubtitle)
             
             if showCheckbox {
-                Toggle(isOn: Binding<Bool>(
-                    get: { checkboxChecked },
-                    set: { newValue in
-                        checkboxChecked = newValue
-                        if newValue {
-                            Settings.firstUploadDone = true
-                        }
-                    }
-                )) {
+                Toggle(isOn: $checkboxChecked) {
                     Text(NSLocalizedString("Do not show me this again", comment: ""))
                         .font(.montserrat(.medium, for: .subheadline))
                         .foregroundColor(.alertSubtitle)
@@ -75,7 +67,13 @@ struct CustomAlertView: View {
                         title: primaryButtonTitle,
                         backgroundColor: .clear,
                         textColor: .primary,
-                        isOutlined: true, action: primaryButtonAction
+                        isOutlined: true,
+                        action: {
+                            if showCheckbox && checkboxChecked {
+                                Settings.firstUploadDone = true
+                            }
+                            primaryButtonAction()
+                        }
                     )
                 }
                 else{
@@ -83,7 +81,12 @@ struct CustomAlertView: View {
                         title: primaryButtonTitle,
                         backgroundColor: .accent,
                         textColor: .primary,
-                        action: primaryButtonAction
+                        action: {
+                            if showCheckbox && checkboxChecked {
+                                Settings.firstUploadDone = true
+                            }
+                            primaryButtonAction()
+                        }
                     ).padding(.top,15)
                         .padding(.bottom, secondaryButtonTitle != nil ? 0 : 15)
                 }

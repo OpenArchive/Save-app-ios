@@ -94,11 +94,8 @@ enum UploadQueueService {
                     continue
                 }
 
-                if iaCooldownActive,
-                   upload.asset?.space is IaSpace,
-                   upload.id != manualRetryId {
-                    continue
-                }
+                // New .normal IA uploads may still run during cooldown (a fresh batch should try).
+                // Only the parked .ia503Retry batch stays blocked until cooldown ends / 503 again.
 
                 if upload.queueSection == .normal,
                    upload.autoRetryCount == 0,
@@ -176,45 +173,39 @@ enum UploadQueueService {
         }
     }
 
-    /// Ensures every pending IA upload shows server-busy state while cooldown is active.
+    /// Refreshes busy UI on already-parked IA 503 items only.
+    /// Does not touch `.normal` — a newly enqueued batch must still be allowed to try.
     @discardableResult
     static func syncIaUploadsForCooldown(tx: YapDatabaseReadWriteTransaction) -> Bool {
         var changed = false
 
-        for section in selectableSections {
-            for upload in uploads(in: section, tx: tx) {
-                upload.preheat(tx)
+        for upload in uploads(in: .ia503Retry, tx: tx) {
+            upload.preheat(tx)
 
-                guard !upload.paused,
-                      upload.state != .uploaded,
-                      upload.asset?.space is IaSpace
-                else {
-                    continue
-                }
+            guard !upload.paused,
+                  upload.state != .uploaded,
+                  upload.asset?.space is IaSpace
+            else {
+                continue
+            }
 
-                var itemChanged = false
+            var itemChanged = false
 
-                if upload.error != UploadQueuePolicy.iaBusyMessage {
-                    upload.error = UploadQueuePolicy.iaBusyMessage
-                    itemChanged = true
-                }
+            if upload.error != UploadQueuePolicy.iaBusyMessage {
+                upload.error = UploadQueuePolicy.iaBusyMessage
+                itemChanged = true
+            }
 
-                if upload.progress != 0 {
-                    upload.progress = 0
-                    itemChanged = true
-                }
+            if upload.progress != 0 {
+                upload.progress = 0
+                itemChanged = true
+            }
 
-                if upload.queueSection == .normal {
-                    upload.paused = false
-                    upload.lastTry = nil
-                    demote(upload, to: .ia503Retry, tx: tx)
-                    changed = true
-                } else if itemChanged {
-                    upload.paused = false
-                    upload.lastTry = nil
-                    tx.replace(upload)
-                    changed = true
-                }
+            if itemChanged {
+                upload.paused = false
+                upload.lastTry = nil
+                tx.replace(upload)
+                changed = true
             }
         }
 
@@ -227,6 +218,9 @@ enum UploadQueueService {
             upload.error = nil
             upload.paused = false
             upload.lastTry = nil
+            upload.autoRetryCount = 0
+            upload.tries = 0
+            upload.progress = 0
             moveToEnd(of: .normal, upload: upload, tx: tx)
         }
     }
@@ -241,20 +235,15 @@ enum UploadQueueService {
     // MARK: - Enqueue
 
     static func placeNewUpload(_ upload: Upload, tx: YapDatabaseReadWriteTransaction, iaCooldownActive: Bool) {
+        // Always enqueue as a fresh try. A 503 parks the *current* pending batch via
+        // markAllPendingIa503 — new batches must not inherit that error without uploading.
+        _ = iaCooldownActive
         upload.queueSection = .normal
         upload.autoRetryCount = 0
         upload.deferredLargeThisBackground = false
+        upload.error = nil
         tx.setObject(upload)
         moveToEnd(of: .normal, upload: upload, tx: tx)
-
-        upload.preheat(tx)
-        if iaCooldownActive, upload.asset?.space is IaSpace {
-            upload.error = UploadQueuePolicy.iaBusyMessage
-            upload.progress = 0
-            upload.paused = false
-            upload.lastTry = nil
-            demote(upload, to: .ia503Retry, tx: tx)
-        }
     }
 
     // MARK: - Helpers

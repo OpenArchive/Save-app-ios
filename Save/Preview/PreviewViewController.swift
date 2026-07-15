@@ -165,6 +165,8 @@ final class PreviewViewController: UIHostingController<PreviewFlowContainerView>
 
         session.isLoading = true
         navigationItem.rightBarButtonItem?.isEnabled = false
+        navigationItem.leftBarButtonItem?.isEnabled = false
+        navigationItem.hidesBackButton = true
 
         // Enqueue first, then pop — if we pop/background before the DB write finishes,
         // folder prep is skipped and only the first background PUT may ever start.

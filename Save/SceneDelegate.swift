@@ -79,6 +79,14 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     }
 
     func sceneDidBecomeActive(_ scene: UIScene) {
+        // Background URLSession wakes can briefly activate the scene. Keep relaunch
+        // semantics until `urlSessionDidFinishEvents` clears the flag.
+        if UploadManager.isBackgroundSessionRelaunch
+            || WebDavUploadManager.isBackgroundSessionRelaunch
+            || IaUploadManager.isBackgroundSessionRelaunch {
+            return
+        }
+
         UploadManager.noteUserForegrounded()
         UploadManager.shared.setBackgroundState(false)
         UploadManager.shared.becameActive()

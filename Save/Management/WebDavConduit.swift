@@ -13,9 +13,12 @@ class WebDavConduit: Conduit {
     // MARK: WebDavConduit
 
     private static var knownFolders = Set<URL>()
+    private static let knownFoldersLock = NSLock()
 
     static func clearFolderCache() {
+        knownFoldersLock.lock()
         knownFolders.removeAll()
+        knownFoldersLock.unlock()
     }
 
     /// Creates project/collection (and flag) folders while still in the foreground so background
@@ -24,7 +27,8 @@ class WebDavConduit: Conduit {
     static func prepareCollectionFolders(
         for asset: Asset,
         session: URLSession,
-        credential: URLCredential?
+        credential: URLCredential?,
+        timeout: TimeInterval = 10.0
     ) -> Bool {
         guard let projectName = asset.collection?.project.name,
               let collectionName = asset.collection?.name,
@@ -46,7 +50,11 @@ class WebDavConduit: Conduit {
         }
 
         for folder in folders {
-            if knownFolders.contains(folder) {
+            knownFoldersLock.lock()
+            let alreadyKnown = knownFolders.contains(folder)
+            knownFoldersLock.unlock()
+
+            if alreadyKnown {
                 continue
             }
 
@@ -54,6 +62,7 @@ class WebDavConduit: Conduit {
             let group = DispatchGroup()
             group.enter()
 
+            let start = Date()
             _ = session.mkDir(folder, credential: credential) { e in
                 if case SaveError.http(let status)? = e, status == 405 {
                     // Folder already exists.
@@ -63,16 +72,35 @@ class WebDavConduit: Conduit {
                 group.leave()
             }
 
-            group.wait()
+            // Wait with timeout to prevent blocking forever
+            let result = group.wait(timeout: .now() + timeout)
 
-            if let error {
+            if result == .timedOut {
+                #if DEBUG
+                print("[WebDavConduit] mkdir timeout folder=\(folder) — skipping")
+                #endif
+                // Don't fail entire prep, continue to next folder
+                continue
+            }
+
+            let elapsed = Date().timeIntervalSince(start)
+            if elapsed > 2.0 {
+                #if DEBUG
+                print("[WebDavConduit] mkdir slow (\(String(format: "%.1f", elapsed))s) folder=\(folder)")
+                #endif
+            }
+
+            // Check if mkdir failed (excluding 405 which means folder exists)
+            if error != nil {
                 #if DEBUG
                 print("[WebDavConduit] prepareCollectionFolders failed for \(folder): \(error)")
                 #endif
                 return false
             }
 
+            knownFoldersLock.lock()
             knownFolders.insert(folder)
+            knownFoldersLock.unlock()
         }
 
         return true
@@ -107,7 +135,7 @@ class WebDavConduit: Conduit {
         var path = [projectName]
 
         #if DEBUG
-        let inBg = UploadManager.shared.isInBackground || UploadManager.isBackgroundSessionRelaunch
+        let inBg = WebDavUploadManager.shared.isEffectivelyBackgrounded
         print("[WebDavConduit] upload begin id=\(uploadId) file=\(asset.filename) inBackground=\(inBg)")
         #endif
 
@@ -151,7 +179,7 @@ class WebDavConduit: Conduit {
 
         let to = construct(url: url, path)
 
-        let inBackground = UploadManager.shared.isInBackground || UploadManager.isBackgroundSessionRelaunch
+        let inBackground = WebDavUploadManager.shared.isEffectivelyBackgrounded
         if !inBackground && isUploaded(to, filesize) {
             #if DEBUG
             print("[WebDavConduit] skip file already on server file=\(asset.filename)")
@@ -227,25 +255,32 @@ class WebDavConduit: Conduit {
     
     /**
      Creates folder, if it doesn't exist, yet.
-     
+
      - parameter folder: Folder with path relative to WebDav endpoint.
      - parameter progress: The overall progress object.
+     - parameter timeout: Maximum time to wait for mkdir (default 10 seconds).
      - returns: An error or `nil` on success.
      */
-    private func create(folder: URL, _ progress: Progress, label: String = "folder") -> Error? {
-        if Self.knownFolders.contains(folder) {
+    private func create(folder: URL, _ progress: Progress, label: String = "folder", timeout: TimeInterval = 10.0) -> Error? {
+        Self.knownFoldersLock.lock()
+        let alreadyKnown = Self.knownFolders.contains(folder)
+        Self.knownFoldersLock.unlock()
+
+        if alreadyKnown {
             #if DEBUG
             print("[WebDavConduit] mkdir skip cached label=\(label)")
             #endif
             return nil
         }
 
-        let inBackground = UploadManager.shared.isInBackground || UploadManager.isBackgroundSessionRelaunch
+        let inBackground = WebDavUploadManager.shared.isEffectivelyBackgrounded
         if inBackground {
             #if DEBUG
             print("[WebDavConduit] mkdir skip background label=\(label) path=\(folder.lastPathComponent)")
             #endif
+            Self.knownFoldersLock.lock()
             Self.knownFolders.insert(folder)
+            Self.knownFoldersLock.unlock()
             return nil
         }
 
@@ -254,9 +289,10 @@ class WebDavConduit: Conduit {
         #endif
 
         var error: Error? = nil
+        let start = Date()
 
         let group = DispatchGroup.enter()
-        
+
         let task = foregroundSession.mkDir(folder, credential: credential) { e in
             if case SaveError.http(let status)? = e, status == 405 {
                 // That's ok, that just means that the folder already exists.
@@ -264,16 +300,39 @@ class WebDavConduit: Conduit {
             else {
                 error = e
             }
-            
+
             group.leave()
         }
-        
+
         progress.addChild(task.progress, withPendingUnitCount: 1)
-        
-        group.wait(signal: progress)
+
+        // Wait with timeout to prevent blocking forever
+        let result = group.wait(timeout: timeout, signal: progress)
+
+        if result == .timedOut {
+            #if DEBUG
+            print("[WebDavConduit] mkdir timeout (during upload) label=\(label) — will retry upload")
+            #endif
+            // Return timeout error so upload retries with fresh folder prep attempt.
+            // Don't mark as known - next attempt should try mkdir again.
+            return NSError(
+                domain: NSURLErrorDomain,
+                code: URLError.timedOut.rawValue,
+                userInfo: [NSLocalizedDescriptionKey: "Folder creation timed out"]
+            )
+        }
+
+        let elapsed = Date().timeIntervalSince(start)
+        if elapsed > 2.0 {
+            #if DEBUG
+            print("[WebDavConduit] mkdir slow (\(String(format: "%.1f", elapsed))s) label=\(label)")
+            #endif
+        }
 
         if error == nil {
+            Self.knownFoldersLock.lock()
             Self.knownFolders.insert(folder)
+            Self.knownFoldersLock.unlock()
             #if DEBUG
             print("[WebDavConduit] mkdir ok label=\(label)")
             #endif
@@ -310,38 +369,62 @@ class WebDavConduit: Conduit {
     
     /**
      Writes an `Asset`'s metadata to a destination on the WebDAV server.
+     Runs **before** the main media PUT (meta is required). When backgrounded,
+     uses the background session + file upload so meta survives FG↔BG / kill.
      
      - parameter folder: The destination folder on the WebDAV server.
      - returns: An eventual error.
      */
     private func copyMetadata(to folder: URL, _ progress: Progress,hasPhAsset:Bool=true) -> Error? {
+        let metaDest = construct(url: folder, asset.filename)
+            .appendingPathExtension(Asset.Files.meta.rawValue)
+
         do {
             let json = try Conduit.jsonEncoder.encode(asset)
-            
-            let to = construct(url: folder, asset.filename)
-                .appendingPathExtension(Asset.Files.meta.rawValue)
-            
-            _ = foregroundSession.upload(
-                json, to: to, headers: nil, credential: credential
-            ) { error in
-                if let error = error {
-                    #if DEBUG
-                    print("meta.json upload failed: \(error.localizedDescription)")
-                    #endif
-                } else {
-                    #if DEBUG
-                    print("meta.json uploaded successfully.")
-                    #endif
+
+            if WebDavUploadManager.shared.isEffectivelyBackgrounded {
+                // BG session cannot use Data payloads — write a temp file and PUT from disk.
+                // Use Documents/Metadata (not /tmp) so file survives iOS cleanup while suspended.
+                let metaDir = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask)[0]
+                    .appendingPathComponent("Metadata", isDirectory: true)
+                try? FileManager.default.createDirectory(at: metaDir, withIntermediateDirectories: true)
+
+                let temp = metaDir.appendingPathComponent(UUID().uuidString + "_" + asset.filename + ".meta.json")
+                try json.write(to: temp, options: .atomic)
+                let task = backgroundSession.upload(
+                    temp,
+                    to: metaDest,
+                    headers: nil,
+                    credential: credential
+                )
+                task.taskDescription = "webdav-meta:\(temp.path)"
+#if DEBUG
+                print("[WebDavConduit] meta.json enqueued on BG session before main file=\(asset.filename)")
+#endif
+            } else {
+                _ = foregroundSession.upload(
+                    json, to: metaDest, headers: nil, credential: credential
+                ) { error in
+                    if let error = error {
+                        #if DEBUG
+                        print("meta.json upload failed: \(error.localizedDescription)")
+                        #endif
+                    } else {
+                        #if DEBUG
+                        print("meta.json uploaded successfully.")
+                        #endif
+                    }
                 }
             }
-            
         } catch {
             #if DEBUG
             print("Failed to encode meta.json: \(error.localizedDescription)")
             #endif
         }
         
-        if(!hasPhAsset){
+        // Proof files still need an active FG session; skip while suspended
+        // (meta above is the critical sidecar for transitions).
+        if !hasPhAsset, !WebDavUploadManager.shared.isEffectivelyBackgrounded {
             uploadProofMode(to: folder) { source, destination in
                 guard source.exists else {
                     #if DEBUG

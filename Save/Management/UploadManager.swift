@@ -60,19 +60,237 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     private(set) static var isBackgroundSessionRelaunch = false
 
     /// Called from `AppDelegate` when iOS wakes the app for a background URLSession.
+    /// Prefer `prepareForBackgroundURLSession(identifier:completionHandler:)` so WebDAV/IA route correctly.
     static func prepareForBackgroundURLSession(completionHandler: @escaping () -> Void) {
+        prepareForBackgroundURLSession(identifier: nil, completionHandler: completionHandler)
+    }
+
+    static func prepareForBackgroundURLSession(
+        identifier: String?,
+        completionHandler: @escaping () -> Void
+    ) {
+        if let identifier, WebDavUploadManager.handlesSessionIdentifier(identifier) {
+            WebDavUploadManager.prepareForBackgroundURLSession(completionHandler: completionHandler)
+            return
+        }
+        if let identifier, IaUploadManager.handlesSessionIdentifier(identifier) {
+            IaUploadManager.prepareForBackgroundURLSession(completionHandler: completionHandler)
+            return
+        }
+        // Legacy shared session id (`…background`) — migration of in-flight only.
         backgroundCompletionHandler = completionHandler
         isBackgroundSessionRelaunch = true
+        shared.isInBackground = true
     }
 
     /// Called when the user opens the app — clears silent background-session wake state.
     static func noteUserForegrounded() {
         isBackgroundSessionRelaunch = false
+        WebDavUploadManager.noteUserForegrounded()
+        IaUploadManager.noteUserForegrounded()
+    }
+
+    /// Upload id of the in-flight job (for WebDAV/IA bytes-started tracking).
+    var currentUploadId: String? { current?.id }
+
+    func currentWebDavUpload() -> Upload? {
+        guard let current, current.asset?.space is WebDavSpace else { return nil }
+        return current
+    }
+
+    func currentIaUpload() -> Upload? {
+        guard let current, current.asset?.space is IaSpace else { return nil }
+        return current
+    }
+
+    /// WebDAV background session finished events — advance global queue, then call `then`
+    /// only after the next WebDAV main PUT is on the background session (or nothing left).
+    func handleWebDavBackgroundSessionFinishedEvents(then: @escaping () -> Void) {
+        // REVERT TO EXACT OLD PATTERN - simple and synchronous
+        queue.async { [weak self] in
+            guard let self else { return }
+            self.storeCurrent(force: true)
+            self.ensurePollingActive()
+            self.uploadNext()
+        }
+        Self.isBackgroundSessionRelaunch = false
+        DispatchQueue.main.async(execute: then)
+    }
+
+    /// IA background session finished events — same hold pattern as WebDAV (main + meta).
+    func handleIaBackgroundSessionFinishedEvents(then: @escaping () -> Void) {
+        queue.async { [weak self] in
+            guard let self else {
+                DispatchQueue.main.async(execute: then)
+                return
+            }
+            self.storeCurrent(force: true)
+            self.ensurePollingActive()
+            self.uploadNext()
+            self.queue.async {
+                self.uploadNext()
+                self.finishIaBackgroundWakeIfReady(then: then, attempt: 0)
+            }
+        }
+    }
+
+    /// Do not tell iOS the wake is done until the next WebDAV file's BG PUT exists —
+    /// otherwise uploads stop after 3 files. Hold for up to 10 seconds (matches IA pattern).
+    private func finishWebDavBackgroundWakeIfReady(then: @escaping () -> Void, attempt: Int) {
+#if DEBUG
+        let currentFile = current?.filename ?? "nil"
+        let isWebDav = current?.asset?.space is WebDavSpace
+        let bytesStarted: Bool
+        if let id = current?.id {
+            bytesStarted = hasBytesTransferStarted(id)
+        } else {
+            bytesStarted = false
+        }
+        let hasWork = hasRunnableUploadWork()
+        if attempt == 0 || attempt % 10 == 0 {
+            print("[UploadDiag] finishWebDavWake attempt=\(attempt)/100 current=\(currentFile) isWebDav=\(isWebDav) bytesStarted=\(bytesStarted) hasWork=\(hasWork)")
+        }
+#endif
+
+        // If there's a WebDAV upload in progress but bytes haven't started, wait for it
+        if let id = current?.id,
+           current?.asset?.space is WebDavSpace,
+           !hasBytesTransferStarted(id) {
+            beginInFlightBackgroundTaskSynchronously()
+            // iOS needs 3-5 seconds to enqueue next background PUT. Hold for up to 10 seconds.
+            // Poll every 100ms, max 100 attempts = 10 seconds (matches IA pattern)
+            if attempt < 100 {
+                queue.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                    self?.finishWebDavBackgroundWakeIfReady(then: then, attempt: attempt + 1)
+                }
+                return
+            }
+#if DEBUG
+            print("[UploadDiag] webdav 10s timeout - calling handler (id=\(id) still starting)")
+#endif
+        }
+
+        // If there's no current upload but there IS pending WebDAV work, wait briefly
+        else if current == nil && hasRunnableUploadWork() && hasPendingWebDavUploads() {
+            beginInFlightBackgroundTaskSynchronously()
+            // Retry uploadNext every 3 attempts (300ms), but detect repeated failures
+            if attempt % 3 == 0 {
+                let hadCurrent = current != nil
+                uploadNext()
+                // If uploadNext() fails to start work after 5 tries (1.5 seconds), give up
+                if !hadCurrent && current == nil && attempt >= 15 {
+#if DEBUG
+                    print("[UploadDiag] webdav wake - uploadNext failed 5 times, aborting")
+#endif
+                    Self.isBackgroundSessionRelaunch = false
+                    DispatchQueue.main.async(execute: then)
+                    return
+                }
+            }
+            // Max 10 seconds. Poll every 100ms, max 100 attempts (matches IA pattern)
+            if attempt < 100 {
+                queue.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                    self?.finishWebDavBackgroundWakeIfReady(then: then, attempt: attempt + 1)
+                }
+                return
+            }
+#if DEBUG
+            print("[UploadDiag] webdav 10s timeout - calling handler (next file not started)")
+#endif
+        }
+
+#if DEBUG
+        let hasPendingWebdav = hasPendingWebDavUploads()
+        print("[UploadDiag] finishWebDavWake EXIT attempt=\(attempt) current=\(currentFile) hasWork=\(hasWork) hasPendingWebdav=\(hasPendingWebdav) bytesStarted=\(bytesStarted)")
+#endif
+        Self.isBackgroundSessionRelaunch = false
+        DispatchQueue.main.async(execute: then)
+    }
+
+    /// Hold the system completion handler until the current IA main (and meta, if waiting)
+    /// is on the background session — otherwise multi-file BG chains stall.
+    private func finishIaBackgroundWakeIfReady(then: @escaping () -> Void, attempt: Int) {
+        if let id = current?.id, current?.asset?.space is IaSpace {
+            let waitingMeta = IaConduit.isAwaitingMeta(id) && !IaConduit.hasMetaEnqueued(id)
+            let waitingBytes = !hasBytesTransferStarted(id)
+            if waitingMeta || waitingBytes {
+                beginInFlightBackgroundTaskSynchronously()
+                if attempt < 100 { // ~10s
+                    queue.asyncAfter(deadline: .now() + 0.1) { [weak self] in
+                        self?.finishIaBackgroundWakeIfReady(then: then, attempt: attempt + 1)
+                    }
+                    return
+                }
+#if DEBUG
+                print("[UploadDiag] ia wake ending without ready id=\(id) meta=\(waitingMeta) bytes=\(waitingBytes)")
+#endif
+            }
+        }
+        DispatchQueue.main.async(execute: then)
+    }
+
+    /// WebDAV task completed on `WebDavUploadManager`'s session — finish via shared `done`.
+    /// Must run synchronously so `didComplete` finishes starting the next PUT before
+    /// `urlSessionDidFinishEvents` runs.
+    func handleWebDavTaskCompleted(uploadId: String, error: Error?, url: URL?) {
+        let work = { [weak self] in
+            guard let self else { return }
+            if self.current?.id != uploadId,
+               let found = self.resolveUpload(for: uploadId) {
+                self.current = found
+            }
+            WebDavUploadManager.shared.clearBytesStarted(uploadId)
+            self.done(uploadId, error, url)
+        }
+        if isOnUploadQueue {
+            work()
+        } else {
+            queue.sync(execute: work)
+        }
+    }
+
+    /// IA task completed on `IaUploadManager`'s session — sync so meta / next main
+    /// is enqueued before `urlSessionDidFinishEvents`.
+    func handleIaTaskCompleted(task: URLSessionTask, url: URL, error: Error?) {
+        let work = { [weak self] in
+            guard let self else { return }
+            let action = UploadBackendRouter.ia.handleTaskCompleted(
+                task: task,
+                url: url,
+                error: error,
+                current: self.current
+            )
+            switch action {
+            case .ignore, .wait:
+                return
+            case let .done(uploadId, doneError, doneUrl):
+                if self.current?.id != uploadId,
+                   let found = self.resolveUpload(for: uploadId) {
+                    self.current = found
+                }
+                IaUploadManager.shared.clearBytesStarted(uploadId)
+                self.done(uploadId, doneError, doneUrl)
+            }
+        }
+        if isOnUploadQueue {
+            work()
+        } else {
+            queue.sync(execute: work)
+        }
+    }
+
+    /// True when the app is backgrounded *or* silently relaunched for a background URLSession.
+    /// Use this (not bare `isInBackground`) for any path that must not touch the foreground session.
+    var isEffectivelyBackgrounded: Bool {
+        isInBackground
+            || Self.isBackgroundSessionRelaunch
+            || WebDavUploadManager.isBackgroundSessionRelaunch
+            || IaUploadManager.isBackgroundSessionRelaunch
     }
 
     /// Skip main-thread grid refreshes while backgrounded or during a background-session wake.
     var shouldDeferUIRefresh: Bool {
-        isInBackground || Self.isBackgroundSessionRelaunch
+        isEffectivelyBackgrounded
     }
 
     private static let uploadQueueKey = DispatchSpecificKey<Void>()
@@ -173,20 +391,23 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     private var _foregroundSession: URLSession?
     
     /**
-     A session, which is enabled for background uploading.
+     A session, which is enabled for background uploading (legacy identifier only).
      
-     Only use this to upload the main file of an asset. All other usages will break, latest when the app goes into background!
+     WebDAV main-file PUTs use `WebDavUploadManager.backgroundSession`.
+     IA main/meta PUTs use `IaUploadManager.backgroundSession`.
      
      This needs to be tied to an object, otherwise the `URLSession` will get
      destroyed during the request and the request will break with error -999.
      */
     private var backgroundSession: URLSession {
         if _backgroundSession == nil {
+            // Legacy identifier — WebDAV uses `…webdav.background`, IA uses `…ia.background`.
             let conf = URLSessionConfiguration.background(withIdentifier:
                                                             "\(Bundle.main.bundleIdentifier ?? "").background")
             
             conf.isDiscretionary = false
             conf.shouldUseExtendedBackgroundIdleMode = true
+            conf.sessionSendsLaunchEvents = true
             
             _backgroundSession = URLSession(
                 configuration: Self.improvedSessionConf(conf),
@@ -222,19 +443,27 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
         queue.setSpecific(key: Self.uploadQueueKey, value: ())
 
-        IaCooldownManager.shared.configure(onWake: { [weak self] in
-            self?.queue.async {
+        UploadBackendRouter.ia.install(host: .init(
+            queue: queue,
+            sessions: {
+                IaUploadManager.shared.sessions
+            },
+            onWakeContinue: { [weak self] in
                 self?.ensurePollingActive()
                 self?.uploadNext()
+            },
+            onCooldownUiRefresh: { [weak self] in
+                self?.notifyUploadGridRefresh()
             }
-        }, onCooldownStarted: { [weak self] in
-            self?.syncIaUploadsForCooldownIfNeeded()
-        }, queue: queue)
+        ))
 
         // Recreate the background session when iOS relaunches us for finished uploads.
         let wakingForBackgroundSession = Self.backgroundCompletionHandler != nil
+            || IaUploadManager.isBackgroundSessionRelaunch
         if wakingForBackgroundSession {
+            isInBackground = true
             _ = backgroundSession
+            _ = IaUploadManager.shared.backgroundSession
         }
 
         restart(skipInitialUploadNext: wakingForBackgroundSession)
@@ -243,7 +472,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     func reinitSession() {
         _backgroundSession = nil
         _foregroundSession = nil
-        WebDavConduit.clearFolderCache()
+        WebDavUploadManager.shared.reinitSession()
+        IaUploadManager.shared.reinitSession()
     }
     
     /**
@@ -259,8 +489,10 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         scheduler?.invalidate()
         progressTimer?.cancel()
 
-        // Eagerly create the background session so uploads can hand off before suspension.
+        // Eagerly create sessions so uploads can hand off before suspension.
         _ = backgroundSession
+        _ = WebDavUploadManager.shared.backgroundSession
+        _ = IaUploadManager.shared.backgroundSession
         
         let nc = NotificationCenter.default
         
@@ -294,9 +526,9 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             UploadQueueService.resetDeferredLargeFlags(tx: tx)
         }
 
-        syncIaUploadsForCooldownIfNeeded()
+        UploadBackendRouter.ia.syncBusyUiIfNeeded()
 
-        if IaCooldownManager.shared.isActive {
+        if UploadBackendRouter.ia.shouldCancelInFlightForActiveCooldown() {
             current?.cancel()
             current = nil
             lastProgressDate = nil
@@ -314,15 +546,16 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             return
         }
         guard UploadMemoryLog.pendingUploadCount() > 0 else { return }
-        queue.sync {
-            self.prepareWebDavFoldersIfNeeded()
-        }
+        WebDavUploadManager.shared.prepareForPossibleBackground()
+        IaUploadManager.shared.prepareForPossibleBackground()
         beginInFlightBackgroundTaskSynchronously()
     }
 
     /// Called synchronously from `sceneDidEnterBackground` on the main thread.
     func willEnterBackground() {
         isInBackground = true
+        WebDavUploadManager.shared.willEnterBackground()
+        IaUploadManager.shared.willEnterBackground()
         logUploadMemory("app_background")
         if UploadMemoryLog.pendingUploadCount() > 0 {
             beginInFlightBackgroundTaskSynchronously()
@@ -337,10 +570,17 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     func notifyUploadsEnqueued() {
         queue.async {
             // A newly enqueued batch should try cleanly — don't inherit a leftover IA 503 timer.
-            if self.hasNormalPendingIaUploads() {
-                IaCooldownManager.shared.reset(on: self.queue, reason: "new_batch_enqueued")
+            UploadBackendRouter.ia.onNewBatchEnqueued(queue: self.queue)
+
+            // Pre-create WebDAV folders immediately (not waiting for sceneWillResignActive)
+            // so folders are ready before app backgrounds and 30-second UIBackgroundTask starts.
+            // Do this async to avoid blocking the upload queue.
+            if !self.isEffectivelyBackgrounded {
+                DispatchQueue.global(qos: .userInitiated).async {
+                    WebDavUploadManager.shared.preparePendingFolders()
+                }
             }
-            self.prepareWebDavFoldersIfNeeded()
+
             self.logUploadMemory("enqueued")
             self.ensurePollingActive()
             self.uploadNext()
@@ -382,6 +622,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
     func becameActive() {
         isInBackground = false
+        WebDavUploadManager.shared.becameActive()
+        IaUploadManager.shared.becameActive()
         queue.async {
             self.scrubStaleInFlightIds()
             self.reconcileInFlightBackgroundTasks()
@@ -395,8 +637,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             Db.writeConn?.readWrite { tx in
                 UploadQueueService.resetDeferredLargeFlags(tx: tx)
             }
-            self.syncIaUploadsForCooldownIfNeeded()
-            if IaCooldownManager.shared.isActive {
+            UploadBackendRouter.ia.syncBusyUiIfNeeded()
+            if UploadBackendRouter.ia.shouldCancelInFlightForActiveCooldown() {
                 if let id = self.current?.id {
                     self.clearInFlight(id)
                 }
@@ -404,21 +646,14 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 self.current = nil
                 self.lastProgressDate = nil
             }
-            if !Self.isBackgroundSessionRelaunch {
+            if !Self.isBackgroundSessionRelaunch
+                && !WebDavUploadManager.isBackgroundSessionRelaunch
+                && !IaUploadManager.isBackgroundSessionRelaunch {
                 self.cleanup()
             }
             self.storeCurrent(force: true)
 
-            let missedCooldownWake = IaCooldownManager.shared.shouldWakeForExpiredCooldown(
-                pendingIa503: self.hasPendingIa503Retry()
-            )
-            if missedCooldownWake {
-                IaCooldownLog.log(
-                    "cooldown_expired",
-                    pendingIa503: self.pendingIa503Count(),
-                    reason: "foreground"
-                )
-            }
+            let missedCooldownWake = UploadBackendRouter.ia.consumeMissedCooldownWakeOnForeground()
 
             if missedCooldownWake || self.hasActiveCurrentUpload() || self.hasRunnableUploadWork() {
                 self.ensurePollingActive()
@@ -459,6 +694,11 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 Self.isBackgroundSessionRelaunch = false
                 DispatchQueue.main.async {
                     handler?()
+                    // If the user opened the app during the silent wake, finish foreground bookkeeping now.
+                    if UIApplication.shared.applicationState == .active {
+                        UploadManager.shared.setBackgroundState(false)
+                        UploadManager.shared.becameActive()
+                    }
                 }
             }
         }
@@ -475,12 +715,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 #endif
         debug("#task:didCompleteWithError task=\(task), state=\(self.getTaskStateName(task.state)), url=\(task.originalRequest?.url?.absoluteString ?? "nil") error=\(String(describing: error))")
 
-        // Clean up temp file if it exists (plain path, or "kind|id|path" encodings).
-        if let description = task.taskDescription, !description.isEmpty {
-            let parts = description.split(separator: "|", maxSplits: 2, omittingEmptySubsequences: false)
-            let tempFilePath = parts.count == 3 ? String(parts[2]) : description
-            try? FileManager.default.removeItem(at: URL(fileURLWithPath: tempFilePath))
-        }
+        // Backend-specific temp cleanup (IA encoded taskDescription only).
+        UploadBackendRouter.ia.cleanupTempFile(for: task)
 
         queue.async { [weak self] in
             self?.handleBackgroundUploadTaskCompleted(task, error: error)
@@ -488,6 +724,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     }
 
     /// Shared completion handler for URLSession delegate callbacks and lifecycle reconciliation.
+    /// IA session only — WebDAV completions are handled by `WebDavUploadManager`.
     private func handleBackgroundUploadTaskCompleted(_ task: URLSessionTask, error: Error?) {
         guard task.state == .completed,
               let url = task.originalRequest?.url,
@@ -496,9 +733,6 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             return
         }
 
-        let taskUrl = url.absoluteString
-        let filename = url.lastPathComponent
-
         var effectiveError = error
         if effectiveError == nil,
            let httpResponse = task.response as? HTTPURLResponse,
@@ -506,50 +740,32 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             effectiveError = SaveError.http(status: httpResponse.statusCode)
         }
 
-        // Ignore metadata sidecar completions (WebDAV .meta.json / similar).
-        if filename.hasSuffix(".meta.json") {
+        // IA tagged tasks only on this session.
+        if let parsed = IaConduit.parseTaskDescription(task.taskDescription),
+           parsed.kind == "ia-main" || parsed.kind == "ia-meta" {
+            let action = UploadBackendRouter.ia.handleTaskCompleted(
+                task: task,
+                url: url,
+                error: effectiveError,
+                current: current
+            )
+            switch action {
+            case .ignore, .wait:
+                return
+            case let .done(uploadId, error, doneUrl):
+                if current?.id != uploadId,
+                   let found = resolveUpload(for: uploadId) {
+                    current = found
+                }
+                done(uploadId, error, doneUrl)
+            }
             return
         }
 
-        for file in Asset.Files.allCases {
-            if !file.isInternal && filename =~ "\(file.rawValue)$" {
-                return
-            }
-        }
-
-        guard task is URLSessionUploadTask && filename !~ "\\d{15}-\\d{15}" /* ignore chunks */ else {
-            return
-        }
-
-        if let current, current.filename == filename {
-            guard taskUrlMatchesUpload(url, upload: current) else {
-                debug("didComplete ignored URL mismatch for current upload \(filename)")
-                return
-            }
-            done(current.id, effectiveError, url)
-        }
-        else if let found = Db.bgRwConn?.find(group: UploadsView.groups.first, in: UploadsView.name, where: { (tx, upload: inout Upload) in
-
-                guard !upload.paused else {
-                    return false
-                }
-
-                upload.preheat(tx)
-
-                guard upload.filename == filename && upload.isReady else {
-                    return false
-                }
-
-                return true
-            }),
-            taskUrlMatchesUpload(url, upload: found)
-        {
-            current = found
-            done(found.id, effectiveError, url)
-        }
-        else {
-            debug("didComplete ignored orphan task file=\(filename) url=\(taskUrl)")
-        }
+        // Untagged completions on the IA session are ignored (WebDAV uses its own session).
+#if DEBUG
+        debug("didComplete ignored non-IA task on IA session file=\(url.lastPathComponent)")
+#endif
     }
     
     
@@ -738,23 +954,22 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         space?.tries = 0
         space?.lastTry = nil
 
+        // IA-only success side effects (cooldown unpark, derive, pacing). WebDAV stays immediate.
+        let iaAfterSuccess: UploadAfterSuccessAction?
         if space is IaSpace {
-            // One IA success means the server is accepting work again —
-            // clear the cooldown timer and auto-retry every parked 503 item.
-            IaCooldownManager.shared.recordIaSuccess(on: queue)
-            var unparked = 0
-            Db.writeConn?.readWrite { tx in
-                unparked = UploadQueueService.uploads(in: .ia503Retry, tx: tx).count
-                UploadQueueService.demoteAllIa503ToNormal(tx: tx)
+            let sessions = IaUploadManager.shared.sessions
+            iaAfterSuccess = UploadBackendRouter.ia.afterSuccess(
+                upload: upload,
+                asset: asset,
+                url: url,
+                sessions: sessions,
+                uploadQueue: queue
+            )
+            if case .continueAfterDelay = iaAfterSuccess {
+                notifyUploadGridRefresh()
             }
-            if unparked > 0 {
-                IaCooldownLog.log(
-                    "auto_retry_after_success",
-                    pendingIa503: unparked,
-                    reason: upload.filename
-                )
-            }
-            notifyUploadGridRefresh()
+        } else {
+            iaAfterSuccess = nil
         }
 
         upload.queueSection = .normal
@@ -810,11 +1025,29 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         clearInFlight(upload.id)
         ensurePollingActive()
 
-        uploadNext()
-        endBackgroundTaskIfQueueIdle(.newData)
+        if let iaAfterSuccess {
+            switch iaAfterSuccess {
+            case .continueImmediately:
+                uploadNext()
+                endBackgroundTaskIfQueueIdle(.newData)
+            case let .continueAfterDelay(delay):
+                queue.asyncAfter(deadline: .now() + delay) { [weak self] in
+                    self?.uploadNext()
+                    self?.endBackgroundTaskIfQueueIdle(.newData)
+                }
+            }
+        } else {
+            // WebDAV known-good: meta was enqueued before main in copyMetadata;
+            // chain the next BG PUT immediately.
+            uploadNext()
+            endBackgroundTaskIfQueueIdle(.newData)
+        }
     }
 
     private func handleUploadFailure(upload: Upload, asset: Asset, error: Error?) {
+        if asset.space is IaSpace {
+            UploadBackendRouter.ia.afterFailure(upload: upload, asset: asset)
+        }
         cancelBackgroundUploadTasksForAssetSync(asset, keepNewestDuplicate: false)
         cancelForegroundUploadTasksForFilenameSync(asset.filename)
         upload.cancel()
@@ -847,7 +1080,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             handleAutoRetryFailure(upload: upload, message: failureMessage)
 
         case .ia503:
-            handleIa503Failure(upload: upload)
+            UploadBackendRouter.ia.handle503Failure(upload: upload, queue: queue)
 
         case .duplicateExists:
             break
@@ -861,7 +1094,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         }
 
         if failureKind == .ia503 {
-            syncIaUploadsForCooldownIfNeeded()
+            UploadBackendRouter.ia.syncBusyUiIfNeeded()
         }
 
         trackFailureIfNeeded(upload: upload, asset: asset, space: space, error: error)
@@ -905,41 +1138,6 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             UploadQueueService.pushToEndOfQueue(upload, tx: tx)
             tx.replace(upload)
         }
-    }
-
-    /// IA 503: park all pending IA uploads, then cool down before retrying one.
-    private func handleIa503Failure(upload: Upload) {
-        upload.error = UploadQueuePolicy.iaBusyMessage
-        upload.paused = false
-        upload.progress = 0
-        upload.queueSection = .ia503Retry
-        upload.lastTry = nil
-
-        Db.writeConn?.readWrite { tx in
-            UploadQueueService.markAllPendingIa503(tx: tx)
-            tx.replace(upload)
-        }
-
-        // Cooldown already running — park only; do not replace the single wake timer.
-        if IaCooldownManager.shared.isActive {
-            IaCooldownLog.log(
-                "cooldown_already_active",
-                minutes: IaCooldownManager.shared.scheduledMinutes,
-                remainingSec: IaCooldownManager.shared.remainingSeconds,
-                reason: "503_while_waiting"
-            )
-            return
-        }
-
-        // Post-wake retry still 503 — extend once and replace the (expired) timer.
-        if IaCooldownManager.shared.hadExpiredCooldownBefore503() {
-            IaCooldownLog.log("ia503", reason: "retry_still_503")
-            IaCooldownManager.shared.onRetryFailedWith503(on: queue)
-            return
-        }
-
-        IaCooldownLog.log("ia503", reason: "park_all")
-        IaCooldownManager.shared.startCooldown(on: queue, reason: "ia503")
     }
 
     private func trackFailureIfNeeded(upload: Upload, asset: Asset, space: Space?, error: Error?) {
@@ -1000,7 +1198,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
         let runWork = { self.runUploadNextWork() }
 
-        guard isInBackground || Self.isBackgroundSessionRelaunch else {
+        guard isEffectivelyBackgrounded else {
             if isOnUploadQueue {
                 runWork()
             } else {
@@ -1069,7 +1267,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         // begin the task synchronously or iOS suspends us before uploadNext runs.
         if Thread.isMainThread {
             begin()
-        } else if isInBackground || Self.isBackgroundSessionRelaunch {
+        } else if isEffectivelyBackgrounded {
             DispatchQueue.main.sync(execute: begin)
         } else {
             DispatchQueue.main.async(execute: begin)
@@ -1080,7 +1278,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     /// (or there is nothing left to prep). Do **not** hold the task for the whole remaining queue —
     /// iOS expires UIBackgroundTask in ~30s; the next wake comes from the background session.
     private func endBackgroundTaskIfQueueIdle(_ result: UIBackgroundFetchResult) {
-        if isInBackground || Self.isBackgroundSessionRelaunch {
+        if isEffectivelyBackgrounded {
             if let id = current?.id, !hasBytesTransferStarted(id) {
                 // Still in mkdir/meta prep — keep running until the BG PUT is enqueued.
                 return
@@ -1092,7 +1290,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     private func runUploadNextWork() {
         debug("#uploadNext")
 
-        if !isInBackground && !Self.isBackgroundSessionRelaunch {
+        if !isEffectivelyBackgrounded {
             cleanup()
         }
 
@@ -1110,6 +1308,20 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 ? "wifi_required" : "no_network"
             trackEvent(.uploadNetworkError(reason: reason))
 
+            // If there's an upload in progress, fail it with connectivity error so it gets retried
+            if let upload = current, let asset = upload.asset {
+                let connectivityError = NSError(
+                    domain: NSURLErrorDomain,
+                    code: URLError.notConnectedToInternet.rawValue,
+                    userInfo: [NSLocalizedDescriptionKey: connectivityBlockMessage ?? UploadQueuePolicy.noNetworkMessage]
+                )
+                handleUploadFailure(
+                    upload: upload,
+                    asset: asset,
+                    error: connectivityError
+                )
+            }
+
             suspendPollingIfIdle()
             return endBackgroundTask(.noData)
         }
@@ -1126,7 +1338,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         guard let upload = getNext(),
               let asset = upload.asset
         else {
-            IaCooldownManager.shared.logBlockingIfNeeded(pendingIa503: pendingIa503Count())
+            UploadBackendRouter.ia.logBlockingIfNeeded()
 
             debug("#uploadNext nothing to upload")
 
@@ -1171,16 +1383,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         sessionTotalSize += asset.filesize ?? 0
 
         debug("#uploadNext try upload=\(upload)")
-        if upload.queueSection == .ia503Retry {
-            if !IaCooldownManager.shared.isActive {
-                IaCooldownManager.shared.markWokenForCurrentExpiry()
-            }
-            IaCooldownLog.log(
-                "cooldown_resumed_upload",
-                pendingIa503: pendingIa503Count(),
-                reason: upload.filename
-            )
-        }
+        UploadBackendRouter.ia.noteResumingFrom503Queue(upload: upload)
         logUploadMemory("upload_start", upload: upload)
 
         let space = upload.asset?.space
@@ -1211,12 +1414,73 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         lastStoredProgress = 0
         lastProgressStoreDate = nil
 
-        if let webDav = space as? WebDavSpace, !isInBackground {
-            WebDavConduit.prepareCollectionFolders(
-                for: asset,
-                session: foregroundSession,
-                credential: webDav.credential
-            )
+        if asset.space is WebDavSpace {
+            // WebDAV executor owns sessions + folder prep + BG PUT.
+            let uploadId = upload.id
+            let inline = isEffectivelyBackgrounded
+            let start = { [weak self] in
+                WebDavUploadManager.shared.startUpload(
+                    uploadId: uploadId,
+                    asset: asset,
+                    inline: true
+                )
+                self?.queue.async {
+                    guard let self, self.current?.id == uploadId else { return }
+                    self.persistUploadProgressToGrid()
+                }
+            }
+            // Collection close bookkeeping (shared).
+            Db.writeConn?.readWrite { tx in
+                if let collection = asset.collection,
+                   collection.closed == nil
+                {
+                    collection.close()
+                    tx.replace(collection)
+                }
+                tx.replace(upload)
+            }
+
+            if inline {
+                start()
+            } else {
+                DispatchQueue.global(qos: .userInitiated).async(execute: start)
+                endBackgroundTask(.newData)
+            }
+            return
+        }
+
+        if asset.space is IaSpace {
+            // IA executor owns sessions + main→meta BG PUTs.
+            let uploadId = upload.id
+            let inline = isEffectivelyBackgrounded
+            let start = { [weak self] in
+                IaUploadManager.shared.startUpload(
+                    uploadId: uploadId,
+                    asset: asset,
+                    inline: true
+                )
+                self?.queue.async {
+                    guard let self, self.current?.id == uploadId else { return }
+                    self.persistUploadProgressToGrid()
+                }
+            }
+            Db.writeConn?.readWrite { tx in
+                if let collection = asset.collection,
+                   collection.closed == nil
+                {
+                    collection.close()
+                    tx.replace(collection)
+                }
+                tx.replace(upload)
+            }
+
+            if inline {
+                start()
+            } else {
+                DispatchQueue.global(qos: .userInitiated).async(execute: start)
+                endBackgroundTask(.newData)
+            }
+            return
         }
 
         Db.writeConn?.readWrite { tx in
@@ -1231,9 +1495,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             tx.replace(upload)
         }
 
-        // While backgrounded, Conduit MUST run inline on this queue so the background
-        // URLSession PUT exists before we return / before iOS suspends. Fire-and-forget
-        // on a global queue is lost after a few wake cycles — remaining files never start.
+        // Unknown space type — best-effort via Conduit factory on legacy sessions.
         let uploadId = upload.id
         let bgSession = backgroundSession
         let fgSession = foregroundSession
@@ -1245,7 +1507,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             }
         }
 
-        if isInBackground || Self.isBackgroundSessionRelaunch {
+        if isEffectivelyBackgrounded {
             startConduit()
         } else {
             DispatchQueue.global(qos: .userInitiated).async(execute: startConduit)
@@ -1313,42 +1575,31 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         !inFlightUploadIds.isEmpty
     }
 
-    /// Ensures WebDAV folder hierarchy exists before the app backgrounds.
-    /// Ensures WebDAV folder hierarchy exists before the app backgrounds.
-    /// Prepares folders for every pending WebDAV upload so background chaining can skip mkdir.
-    private func prepareWebDavFoldersIfNeeded() {
-        guard !isInBackground, !Self.isBackgroundSessionRelaunch else { return }
-
-        var prepared = Set<String>()
-        Db.bgRwConn?.read { tx in
-            tx.iterateKeysAndObjects(inCollection: Upload.collection) { (_: String, upload: Upload, _: inout Bool) in
-                guard !upload.paused, upload.state != .uploaded else { return }
-                upload.preheat(tx)
-                guard let asset = upload.asset,
-                      let space = asset.space as? WebDavSpace,
-                      !asset.isUploaded else {
-                    return
-                }
-                let key = "\(asset.collection?.project.name ?? "")/\(asset.collection?.name ?? "")"
-                guard prepared.insert(key).inserted else { return }
-
-                WebDavConduit.prepareCollectionFolders(
-                    for: asset,
-                    session: self.foregroundSession,
-                    credential: space.credential
-                )
-            }
-        }
-    }
-
     // MARK: - Background URLSession task lifecycle
 
     /// Cancels background PUT tasks when the user removes an upload from the queue.
     func cancelBackgroundUploadTasksForRemovedUpload(_ upload: Upload) {
+        if let asset = upload.asset, asset.space is IaSpace {
+            UploadBackendRouter.ia.afterFailure(upload: upload, asset: asset)
+            IaUploadManager.shared.cancelBackgroundTasks(
+                forUploadId: upload.id,
+                filename: upload.filename,
+                keepNewestDuplicate: false
+            )
+            return
+        }
+        if let asset = upload.asset, asset.space is WebDavSpace {
+            WebDavUploadManager.shared.cancelBackgroundTasks(
+                forFilename: upload.filename,
+                keepNewestDuplicate: false
+            )
+            return
+        }
         backgroundSession.getAllTasks { tasks in
             self.cancelBackgroundUploadTasks(
                 tasks: tasks,
                 filename: upload.filename,
+                space: upload.asset?.space,
                 keepNewestDuplicate: false
             )
         }
@@ -1375,56 +1626,26 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         }
     }
 
-    private func isMainAssetBackgroundUploadTask(_ task: URLSessionTask) -> Bool {
-        guard task is URLSessionUploadTask,
-              let filename = task.originalRequest?.url?.lastPathComponent
-        else {
-            return false
-        }
-
-        if filename =~ "\\d{15}-\\d{15}" {
-            return false
-        }
-
-        for file in Asset.Files.allCases where !file.isInternal {
-            if filename =~ "\(file.rawValue)$" {
-                return false
-            }
-        }
-
-        return true
-    }
-
-    private func backgroundUploadTaskFilename(_ task: URLSessionUploadTask) -> String? {
-        guard let name = task.originalRequest?.url?.lastPathComponent else { return nil }
-        return name.removingPercentEncoding ?? name
-    }
-
-    private func backgroundUploadTaskMatchesAsset(_ task: URLSessionUploadTask, asset: Asset) -> Bool {
-        guard let url = task.originalRequest?.url else { return false }
-
-        let file = url.lastPathComponent.removingPercentEncoding ?? url.lastPathComponent
-        guard file == asset.filename else { return false }
-
-        if asset.space is IaSpace {
-            return true
-        }
-
-        guard let collectionName = asset.collection?.name else { return false }
-
-        let path = url.path.removingPercentEncoding ?? url.path
-        return path.contains(collectionName)
-    }
-
     private func cancelBackgroundUploadTasksForFilenameSync(
         _ filename: String,
+        space: Space?,
         keepNewestDuplicate: Bool
     ) {
+        if space is IaSpace {
+            let uploadId = current?.filename == filename ? (current?.id ?? "") : ""
+            IaUploadManager.shared.cancelBackgroundTasks(
+                forUploadId: uploadId,
+                filename: filename,
+                keepNewestDuplicate: keepNewestDuplicate
+            )
+            return
+        }
         let sem = DispatchSemaphore(value: 0)
         backgroundSession.getAllTasks { tasks in
             self.cancelBackgroundUploadTasks(
                 tasks: tasks,
                 filename: filename,
+                space: space,
                 keepNewestDuplicate: keepNewestDuplicate
             )
             sem.signal()
@@ -1433,20 +1654,51 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     }
 
     private func cancelBackgroundUploadTasksForAssetSync(_ asset: Asset, keepNewestDuplicate: Bool) {
-        cancelBackgroundUploadTasksForFilenameSync(asset.filename, keepNewestDuplicate: keepNewestDuplicate)
+        if asset.space is WebDavSpace {
+            WebDavUploadManager.shared.cancelBackgroundTasks(
+                forFilename: asset.filename,
+                keepNewestDuplicate: keepNewestDuplicate
+            )
+            return
+        }
+        if asset.space is IaSpace {
+            // Prefer upload id from current if matching filename.
+            let uploadId = current?.filename == asset.filename ? (current?.id ?? "") : ""
+            if !uploadId.isEmpty {
+                IaUploadManager.shared.cancelBackgroundTasks(
+                    forUploadId: uploadId,
+                    filename: asset.filename,
+                    keepNewestDuplicate: keepNewestDuplicate
+                )
+            } else {
+                IaUploadManager.shared.cancelBackgroundTasks(
+                    forUploadId: "",
+                    filename: asset.filename,
+                    keepNewestDuplicate: keepNewestDuplicate
+                )
+            }
+            return
+        }
+        cancelBackgroundUploadTasksForFilenameSync(
+            asset.filename,
+            space: asset.space,
+            keepNewestDuplicate: keepNewestDuplicate
+        )
     }
 
     private func cancelBackgroundUploadTasks(
         tasks: [URLSessionTask],
         filename: String,
+        space: Space?,
         keepNewestDuplicate: Bool
     ) {
+        // IA session cancel path (WebDAV uses WebDavUploadManager.cancelBackgroundTasks).
         let matching = tasks.compactMap { $0 as? URLSessionUploadTask }.filter { task in
-            isMainAssetBackgroundUploadTask(task) && backgroundUploadTaskFilename(task) == filename
+            UploadBackendRouter.ia.shouldCancelBackgroundTask(task, filename: filename)
         }
 
         let keepId = keepNewestDuplicate
-            ? matching.map(\.taskIdentifier).max()
+            ? matching.filter { UploadBackendTaskHelpers.filename(of: $0) == filename }.map(\.taskIdentifier).max()
             : nil
         var cancelled = 0
 
@@ -1460,17 +1712,26 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
 #if DEBUG
         if cancelled > 0 {
-            print("[UploadDiag] cancelled \(cancelled) background task(s) for \(filename) keepNewest=\(keepNewestDuplicate) keepId=\(keepId.map(String.init) ?? "nil")")
+            print("[UploadDiag] cancelled \(cancelled) IA background task(s) for \(filename) keepNewest=\(keepNewestDuplicate) keepId=\(keepId.map(String.init) ?? "nil")")
         }
 #endif
     }
 
-    /// Drops duplicate and orphan background PUTs so only the newest task for `keepingFilename` remains.
-    private func pruneStaleBackgroundUploadTasks(tasks: [URLSessionTask], keepingFilename: String) {
-        pruneOrphanBackgroundUploadTasks(tasks: tasks, keepingFilename: keepingFilename)
+    /// Drops duplicate and orphan background PUTs so only the newest task for the current upload remains.
+    private func pruneStaleBackgroundUploadTasks(tasks: [URLSessionTask], keeping: Upload) {
+        if keeping.asset?.space is WebDavSpace {
+            WebDavUploadManager.shared.pruneStaleTasks(keepingFilename: keeping.filename)
+            return
+        }
+        if keeping.asset?.space is IaSpace {
+            IaUploadManager.shared.pruneStaleTasks(keeping: keeping)
+            return
+        }
+
+        pruneOrphanBackgroundUploadTasksIA(tasks: tasks, keeping: keeping)
 
         let sameFile = tasks.compactMap { $0 as? URLSessionUploadTask }.filter { task in
-            isMainAssetBackgroundUploadTask(task) && backgroundUploadTaskFilename(task) == keepingFilename
+            UploadBackendRouter.ia.taskMatchesInFlight(task, upload: keeping)
         }
 
         let keepId = sameFile.map(\.taskIdentifier).max()
@@ -1484,24 +1745,28 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
 #if DEBUG
         if cancelled > 0 {
-            print("[UploadDiag] pruned \(cancelled) duplicate background task(s) for \(keepingFilename) keepId=\(keepId.map(String.init) ?? "nil")")
+            print("[UploadDiag] pruned \(cancelled) duplicate IA background task(s) for \(keeping.filename) keepId=\(keepId.map(String.init) ?? "nil")")
         }
 #endif
     }
 
-    private func pruneOrphanBackgroundUploadTasks(tasks: [URLSessionTask], keepingFilename: String?) {
+    private func pruneOrphanBackgroundUploadTasksIA(tasks: [URLSessionTask], keeping: Upload) {
         var cancelled = 0
 
         for task in tasks {
             guard let uploadTask = task as? URLSessionUploadTask,
-                  isMainAssetBackgroundUploadTask(task),
-                  task.state != .completed && task.state != .canceling,
-                  let name = backgroundUploadTaskFilename(uploadTask)
+                  task.state != .completed && task.state != .canceling
             else {
                 continue
             }
 
-            if let keepingFilename, name == keepingFilename {
+            if UploadBackendRouter.ia.shouldKeepDuringPrune(uploadTask, keeping: keeping) {
+                continue
+            }
+
+            guard UploadBackendTaskHelpers.isMainAssetBackgroundUploadTask(task)
+                || IaConduit.parseTaskDescription(task.taskDescription)?.kind == "ia-meta"
+            else {
                 continue
             }
 
@@ -1511,32 +1776,38 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
 #if DEBUG
         if cancelled > 0 {
-            let keep = keepingFilename ?? "none"
-            print("[UploadDiag] pruned \(cancelled) orphan background task(s) keeping=\(keep)")
+            print("[UploadDiag] pruned \(cancelled) orphan IA background task(s) keeping=\(keeping.filename)")
         }
 #endif
-    }
-
-    /// Rejects stale background URLSession completions from prior upload batches.
-    private func taskUrlMatchesUpload(_ url: URL, upload: Upload) -> Bool {
-        guard let asset = upload.asset else { return false }
-
-        if asset.space is IaSpace {
-            return true
-        }
-
-        guard let collectionName = asset.collection?.name else { return false }
-
-        let path = url.path.removingPercentEncoding ?? url.path
-        let file = url.lastPathComponent.removingPercentEncoding ?? url.lastPathComponent
-        guard file == asset.filename else { return false }
-
-        return path.contains(collectionName)
     }
 
     /// After foreground↔background transitions, URLSession may not deliver `didComplete` promptly.
     private func reconcileInFlightBackgroundTasks() {
         guard !inFlightUploadIds.isEmpty else { return }
+        guard let upload = current, inFlightUploadIds.contains(upload.id) else { return }
+
+        if upload.asset?.space is WebDavSpace {
+            WebDavUploadManager.shared.reconcileInFlight(upload: upload) { [weak self] task in
+                self?.queue.async {
+                    self?.handleWebDavTaskCompleted(
+                        uploadId: upload.id,
+                        error: nil,
+                        url: task.originalRequest?.url
+                    )
+                }
+            }
+            return
+        }
+
+        if upload.asset?.space is IaSpace {
+            IaUploadManager.shared.reconcileInFlight(upload: upload) { [weak self] task in
+                guard let self, let url = task.originalRequest?.url else { return }
+                self.queue.async {
+                    self.handleIaTaskCompleted(task: task, url: url, error: nil)
+                }
+            }
+            return
+        }
 
         backgroundSession.getAllTasks { [weak self] bgTasks in
             guard let self else { return }
@@ -1554,20 +1825,20 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             return
         }
 
+        // WebDAV reconciles via WebDavUploadManager.
+        guard upload.asset?.space is IaSpace else { return }
+
         let transferStarted = hasBytesTransferStarted(upload.id)
         if !transferStarted {
             reconcilePrepPhaseStall(upload: upload, tasks: tasks)
             return
         }
 
-        pruneStaleBackgroundUploadTasks(tasks: tasks, keepingFilename: upload.filename)
+        pruneStaleBackgroundUploadTasks(tasks: tasks, keeping: upload)
 
         let filename = upload.filename
         let matching = tasks.compactMap { $0 as? URLSessionUploadTask }.filter { task in
-            guard task.state != .canceling else { return false }
-            guard backgroundUploadTaskFilename(task) == filename else { return false }
-            guard let url = task.originalRequest?.url else { return false }
-            return taskUrlMatchesUpload(url, upload: upload)
+            UploadBackendRouter.ia.taskMatchesInFlight(task, upload: upload)
         }.sorted { $0.taskIdentifier > $1.taskIdentifier }
 
 #if DEBUG
@@ -1618,11 +1889,9 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         guard task.state == .running || task.state == .suspended else { return }
 
         let stalled = Date().timeIntervalSince(lastProgress)
-        // Wait for the server response; only probe existence after a meaningful pause.
         let checkAfter: TimeInterval = isInBackground ? 90 : 45
         guard stalled > checkAfter else { return }
 
-        // Throttle PROPFIND — reconcile runs often while blocked.
         let now = Date()
         if let lastCheck = lastHighProgressServerCheckDate,
            now.timeIntervalSince(lastCheck) < 30 {
@@ -1642,7 +1911,11 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             return
         }
 
-        if fileExistsOnServer(url, expectedSize: expectedSize, credential: space.credential) {
+        if WebDavUploadManager.shared.fileExistsOnServer(
+            url,
+            expectedSize: expectedSize,
+            credential: space.credential
+        ) {
 #if DEBUG
             print("[UploadDiag] high-progress — file already on server, completing file=\(upload.filename)")
 #endif
@@ -1650,7 +1923,6 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
             return
         }
 
-        // Still waiting on didComplete. Only give up after a very long hang (not a normal response delay).
         let giveUpAfter: TimeInterval = isInBackground ? 600 : 300
         guard stalled > giveUpAfter else { return }
 
@@ -1659,18 +1931,6 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 #endif
         debug("#reconcile high-progress give-up for \(upload.filename) — resetting for retry")
         resetStalledInFlightUpload(upload)
-    }
-
-    private func fileExistsOnServer(_ url: URL, expectedSize: Int64, credential: URLCredential?) -> Bool {
-        var exists = false
-        let group = DispatchGroup()
-        group.enter()
-        foregroundSession.info(url, credential: credential) { info, _ in
-            exists = info.first.map { $0.size == expectedSize } ?? false
-            group.leave()
-        }
-        _ = group.wait(timeout: .now() + 15)
-        return exists
     }
 
     /// Prep finished but background PUT never enqueued (stuck before `notifyBackgroundTransferEnqueued`).
@@ -1722,7 +1982,12 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 print("[UploadDiag] backgroundTransferStarted file=\(name) id=\(id)")
 #endif
             }
-            self.endInFlightBackgroundTask()
+            // Keep background task alive if there are more uploads pending (WebDAV or IA).
+            // This bridges the gap between uploads so iOS doesn't suspend the app.
+            // NOTE: This may trigger 30-second warning with large queues, but maintains speed.
+            if !self.hasRunnableUploadWork() {
+                self.endInFlightBackgroundTask()
+            }
             self.endBackgroundTaskIfQueueIdle(.newData)
         }
         // When Conduit runs on the upload queue (background path), mark immediately so
@@ -1737,6 +2002,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     /// True once the main file PUT is on the background session.
     private func hasBytesTransferStarted(_ uploadId: String) -> Bool {
         backgroundTransferStartedIds.contains(uploadId)
+            || WebDavUploadManager.shared.hasBytesTransferStarted(uploadId)
+            || IaUploadManager.shared.hasBytesTransferStarted(uploadId)
     }
 
     private func cancelForegroundUploadTasksForFilenameSync(_ filename: String) {
@@ -1751,8 +2018,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     private func cancelForegroundUploadTasks(tasks: [URLSessionTask], filename: String) {
         var cancelled = 0
         for task in tasks.compactMap({ $0 as? URLSessionUploadTask }) {
-            guard isMainAssetBackgroundUploadTask(task),
-                  backgroundUploadTaskFilename(task) == filename,
+            guard UploadBackendTaskHelpers.isMainAssetBackgroundUploadTask(task),
+                  UploadBackendTaskHelpers.filename(of: task) == filename,
                   task.state != .completed && task.state != .canceling
             else {
                 continue
@@ -1777,8 +2044,25 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     private func clearInFlight(_ id: String) {
         inFlightUploadIds.remove(id)
         backgroundTransferStartedIds.remove(id)
+
+        // Only clear bytes-started for the relevant backend to avoid state corruption
+        let isWebDav = WebDavUploadManager.shared.hasBytesTransferStarted(id)
+        let isIa = IaUploadManager.shared.hasBytesTransferStarted(id)
+
+        if isWebDav {
+            WebDavUploadManager.shared.clearBytesStarted(id)
+        }
+        if isIa {
+            IaUploadManager.shared.clearBytesStarted(id)
+        }
+
+        // End background task if no in-flight uploads remain.
+        // Note: We keep task alive if more work is pending to maintain upload speed,
+        // but always end if nothing is in-flight to prevent leaks.
         if inFlightUploadIds.isEmpty {
-            endInFlightBackgroundTask()
+            if !hasRunnableUploadWork() {
+                endInFlightBackgroundTask()
+            }
         }
     }
 
@@ -1790,14 +2074,11 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         }
         guard inFlightBackgroundTask == .invalid else { return }
 
-        var taskId: UIBackgroundTaskIdentifier = .invalid
-        taskId = UIApplication.shared.beginBackgroundTask(withName: "UploadManager.inFlight") { [weak self] in
-            if taskId != .invalid {
-                UIApplication.shared.endBackgroundTask(taskId)
-                taskId = .invalid
-            }
+        let taskId = UIApplication.shared.beginBackgroundTask(withName: "UploadManager.inFlight") { [weak self] in
             guard let self else { return }
-            if self.inFlightBackgroundTask != .invalid {
+            let capturedTaskId = self.inFlightBackgroundTask
+            if capturedTaskId != .invalid {
+                UIApplication.shared.endBackgroundTask(capturedTaskId)
                 self.inFlightBackgroundTask = .invalid
             }
             self.queue.async {
@@ -1854,7 +2135,6 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     }
 
     private func hasRunnableUploadWork() -> Bool {
-        let cooldownActive = IaCooldownManager.shared.isActive
         let retryId = manualRetryId
         var found = false
         Db.bgRwConn?.read { tx in
@@ -1865,9 +2145,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                     return
                 }
 
-                if upload.queueSection == .ia503Retry,
-                   cooldownActive,
-                   upload.id != retryId {
+                if UploadBackendRouter.ia.isParkedByCooldown(upload, manualRetryId: retryId) {
                     return
                 }
 
@@ -1875,6 +2153,21 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
 
                 found = true
                 stop = true
+            }
+        }
+        return found
+    }
+
+    private func hasPendingWebDavUploads() -> Bool {
+        var found = false
+        Db.bgRwConn?.read { tx in
+            tx.iterateKeysAndObjects(inCollection: Upload.collection) { (_: String, upload: Upload, stop: inout Bool) in
+                guard !upload.paused, upload.state != .uploaded else { return }
+                upload.preheat(tx)
+                if upload.asset?.space is WebDavSpace {
+                    found = true
+                    stop = true
+                }
             }
         }
         return found
@@ -1890,14 +2183,14 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 self.debug("#progress tracker changed for \(upload))")
                 self.current?.progress = upload.liveProgress?.fractionCompleted ?? upload.progress
                 self.lastProgressDate = Date()
-                if !self.isInBackground && !Self.isBackgroundSessionRelaunch,
+                if !self.isEffectivelyBackgrounded,
                    self.current?.id == upload.id {
                     self.persistUploadProgressToGrid()
                     self.notifyUploadGridRefresh()
                 }
             }
 
-            if !self.isInBackground,
+            if !self.isEffectivelyBackgrounded,
                let upload = self.current,
                let asset = upload.asset,
                !self.hasBytesTransferStarted(upload.id),
@@ -1910,17 +2203,11 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
                 return
             }
 
-            if !self.hasActiveCurrentUpload(),
-               IaCooldownManager.shared.shouldWakeForExpiredCooldown(
-                pendingIa503: self.hasPendingIa503Retry()
-            ) {
-                IaCooldownLog.log(
-                    "cooldown_expired",
-                    pendingIa503: self.pendingIa503Count(),
-                    reason: "poll"
-                )
-                self.ensurePollingActive()
-                self.uploadNext()
+            if !self.hasActiveCurrentUpload() {
+                UploadBackendRouter.ia.pollExpiredCooldownIfNeeded {
+                    self.ensurePollingActive()
+                    self.uploadNext()
+                }
             }
         }
         progressTimer?.resume()
@@ -1967,15 +2254,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         guard !hasActiveCurrentUpload() else { return }
 
         if !hasRunnableUploadWork() {
-            if IaCooldownManager.shared.isActive, pendingIa503Count() > 0 {
-                IaCooldownLog.log(
-                    "polling_suspended",
-                    minutes: IaCooldownManager.shared.scheduledMinutes,
-                    remainingSec: IaCooldownManager.shared.remainingSeconds,
-                    pendingIa503: pendingIa503Count(),
-                    reason: "waiting_cooldown"
-                )
-            }
+            UploadBackendRouter.ia.logPollingSuspendedIfWaitingOnCooldown()
             logUploadMemory("polling_idle")
             suspendPolling()
             endBackgroundTaskIfQueueIdle(.noData)
@@ -2017,8 +2296,8 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
      */
     private func getNext() -> Upload? {
         let retryId = manualRetryId
-        let background = isInBackground
-        let cooldownActive = IaCooldownManager.shared.isActive
+        let background = isEffectivelyBackgrounded
+        let cooldownActive = UploadBackendRouter.ia.isCooldownActive
 
         Db.bgRwConn?.readWrite { tx in
             current = UploadQueueService.selectNext(
@@ -2086,47 +2365,6 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         }
     }
 
-    private func syncIaUploadsForCooldownIfNeeded() {
-        guard IaCooldownManager.shared.isActive else { return }
-
-        var changed = false
-        Db.writeConn?.readWrite { tx in
-            changed = UploadQueueService.syncIaUploadsForCooldown(tx: tx)
-        }
-
-        if changed {
-            notifyUploadGridRefresh()
-        }
-    }
-
-    private func pendingIa503Count() -> Int {
-        var count = 0
-        Db.bgRwConn?.read { tx in
-            count = UploadQueueService.uploads(in: .ia503Retry, tx: tx).count
-        }
-        return count
-    }
-
-    private func hasPendingIa503Retry() -> Bool {
-        pendingIa503Count() > 0
-    }
-
-    /// True when any IA upload is waiting in `.normal` (a batch that should be allowed to try).
-    private func hasNormalPendingIaUploads() -> Bool {
-        var found = false
-        Db.bgRwConn?.read { tx in
-            for upload in UploadQueueService.uploads(in: .normal, tx: tx) {
-                upload.preheat(tx)
-                guard !upload.paused, upload.state != .uploaded, upload.asset?.space is IaSpace else {
-                    continue
-                }
-                found = true
-                break
-            }
-        }
-        return found
-    }
-    
     /**
      Pause/unpause an upload.
      
@@ -2144,6 +2382,9 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
         if let upload = current, upload.id == id {
             if pause {
                 if let asset = upload.asset {
+                    if asset.space is IaSpace {
+                        UploadBackendRouter.ia.afterFailure(upload: upload, asset: asset)
+                    }
                     cancelBackgroundUploadTasksForAssetSync(asset, keepNewestDuplicate: false)
                 }
                 clearInFlight(id)
@@ -2301,7 +2542,7 @@ class UploadManager: NSObject, URLSessionTaskDelegate {
     }
 
     private func storeCurrent(force: Bool = false) {
-        if !force && (isInBackground || Self.isBackgroundSessionRelaunch) {
+        if !force && isEffectivelyBackgrounded {
             return
         }
         if let upload = current {

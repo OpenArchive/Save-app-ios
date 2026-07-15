@@ -28,4 +28,31 @@ extension DispatchGroup {
 
         return result
     }
+
+    @discardableResult
+    func wait(timeout maxWait: TimeInterval, signal: Progress) -> DispatchTimeoutResult {
+        let start = Date()
+        var result: DispatchTimeoutResult
+
+        repeat {
+            // Poll every 0.2s until cancelled, success, or timeout
+            result = wait(timeout: .now() + 0.2)
+
+            // Exit if cancelled or completed
+            if signal.isCancelled {
+                return .success  // Treat cancellation as completion
+            }
+            if result == .success {
+                return .success
+            }
+
+            // Check if we've exceeded the maximum wait time
+            if Date().timeIntervalSince(start) >= maxWait {
+                return .timedOut
+            }
+        }
+        while result != .success && !signal.isCancelled
+
+        return result
+    }
 }

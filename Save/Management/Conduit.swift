@@ -120,7 +120,11 @@ class Conduit {
 #if DEBUG
         print("[Conduit] background PUT enqueued taskId=\(task.taskIdentifier) file=\(file.lastPathComponent) dest=\(to.lastPathComponent)")
 #endif
-        UploadManager.shared.notifyBackgroundTransferEnqueued()
+        if asset.space is WebDavSpace {
+            WebDavUploadManager.shared.notifyBackgroundTransferEnqueued(uploadId: nil)
+        } else {
+            UploadManager.shared.notifyBackgroundTransferEnqueued()
+        }
     }
 
     func upload(_ data: Data, to: URL, _ progress: Progress, _ share: Int64, credential: URLCredential? = nil,
