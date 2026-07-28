@@ -27,6 +27,7 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
         Db.setup()
         
         uploadManager = UploadManager.shared
+        _ = WebDavUploadManager.shared
         
         cleanCache()
 
@@ -81,10 +82,18 @@ class AppDelegateBase: UIResponder, UIApplicationDelegate, UNUserNotificationCen
                      handleEventsForBackgroundURLSession identifier: String,
                      completionHandler: @escaping () -> Void)
     {
-        UploadManager.backgroundCompletionHandler = completionHandler
-        
-        if uploadManager == nil {
-            uploadManager = UploadManager.shared
+        UploadManager.prepareForBackgroundURLSession(
+            identifier: identifier,
+            completionHandler: completionHandler
+        )
+
+        // Shell must exist so global queue can advance after WebDAV/IA BG events.
+        uploadManager = UploadManager.shared
+        if WebDavUploadManager.handlesSessionIdentifier(identifier) {
+            _ = WebDavUploadManager.shared
+        }
+        if IaUploadManager.handlesSessionIdentifier(identifier) {
+            _ = IaUploadManager.shared
         }
     }
     

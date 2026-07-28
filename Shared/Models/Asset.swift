@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import ImageIO
 import LegacyUTType
 import YapDatabase
 import CommonCrypto
@@ -567,57 +568,64 @@ class Asset: NSObject, Item, YapDatabaseRelationshipNode, Encodable {
     */
 
     func hasThumbnail() -> Bool {
-        // Safely unwrap thumb
-        guard let thumbURL = thumb else {
-            return false
-        }
-        
-        // Check if file exists and can be read
-        guard let _ = try? Data(contentsOf: thumbURL) else {
-            return false
-        }
-        
-        return true
+        guard let thumbURL = thumb else { return false }
+        return thumbURL.exists
     }
     
     func getThumbnail() -> UIImage? {
-        if let thumb = thumb,
-           let data = try? Data(contentsOf: thumb),
-           let image = UIImage(data: data) {
-            return image
+        if let thumb = thumb {
+            return Self.loadDownsampledImage(at: thumb, maxPixelSize: 300)
         }
         return UIImage(named: "NoImage")
     }
     func getThumbnailAsync(completion: @escaping (UIImage?) -> Void) {
-       
-        if let thumb = thumb,
-            let data = try? Data(contentsOf: thumb),
-            let image = UIImage(data: data) {
-            completion(image)
+        if let thumb = thumb {
+            DispatchQueue.global(qos: .utility).async {
+                let image = Self.loadDownsampledImage(at: thumb, maxPixelSize: 300)
+                DispatchQueue.main.async {
+                    completion(image ?? UIImage(named: "NoImage"))
+                }
+            }
             return
         }
-        
+
         guard let phAsset = self.phAsset else {
             completion(UIImage(named: "NoImage"))
             return
         }
-        
+
         let options = PHImageRequestOptions()
         options.deliveryMode = .opportunistic
         options.resizeMode = .fast
         options.isNetworkAccessAllowed = true
         options.isSynchronous = false
-        
+
         PHImageManager.default().requestImage(
             for: phAsset,
             targetSize: CGSize(width: 300, height: 300),
             contentMode: .aspectFill,
             options: options
-        ) { image, info in
+        ) { image, _ in
             DispatchQueue.main.async {
                 completion(image ?? UIImage(named: "NoImage"))
             }
         }
+    }
+
+    private static func loadDownsampledImage(at url: URL, maxPixelSize: CGFloat) -> UIImage? {
+        guard url.exists,
+              let source = CGImageSourceCreateWithURL(url as CFURL, nil) else {
+            return nil
+        }
+        let options: [CFString: Any] = [
+            kCGImageSourceCreateThumbnailFromImageAlways: true,
+            kCGImageSourceThumbnailMaxPixelSize: maxPixelSize,
+            kCGImageSourceCreateThumbnailWithTransform: true,
+        ]
+        guard let cgImage = CGImageSourceCreateThumbnailAtIndex(source, 0, options as CFDictionary) else {
+            return nil
+        }
+        return UIImage(cgImage: cgImage)
     }
     enum FileType {
         case audio

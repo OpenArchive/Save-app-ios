@@ -65,10 +65,6 @@ final class MainScreenCoordinator: SideMenuDelegate {
         self.host = host
     }
 
-    var folderAssetCountText: String {
-        "  \(Formatters.format(mediaGridViewModel.totalItemCount))  "
-    }
-
     private var selectedProjectId: String? {
         homeViewModel.selectedProjectId
     }
@@ -188,7 +184,11 @@ final class MainScreenCoordinator: SideMenuDelegate {
     func handleTapAssetWithUpload(asset: Asset, upload: Upload?) {
         guard let host else { return }
         if let upload, upload.error != nil {
-            UploadErrorAlert.present(host, upload)
+            if UploadQueuePolicy.isConnectivityErrorMessage(upload.error) {
+                presentManagement(from: host)
+            } else {
+                UploadErrorAlert.present(host, upload)
+            }
             return
         }
         presentManagement(from: host)
@@ -307,7 +307,12 @@ final class MainScreenCoordinator: SideMenuDelegate {
     }
 
     func handleYapDatabaseModified() {
-        refreshGrid()
+        guard !UploadManager.shared.shouldDeferUIRefresh else { return }
+        mediaGridViewModel.applyDatabaseChangesIfNeeded()
+    }
+
+    func handleUploadGridRefresh() {
+        mediaGridViewModel.refreshUploadsFromDatabase()
     }
 
     func handleSpaceUpdated() {

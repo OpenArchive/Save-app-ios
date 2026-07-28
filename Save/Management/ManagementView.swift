@@ -69,8 +69,17 @@ struct ManagementView: View {
                 .listRowBackground(Color(UIColor.systemBackground))
             }
             .onMove { source, destination in
+                guard let sourceIndex = source.first else { return }
                 let canMove = source.allSatisfy { viewModel.canMoveUpload(viewModel.uploads[$0]) }
                 guard canMove else { return }
+
+                let sourceSection = viewModel.uploads[sourceIndex].queueSection
+                let destinationIndex = destination > sourceIndex ? destination - 1 : destination
+                if destinationIndex < viewModel.uploads.count,
+                   viewModel.uploads[destinationIndex].queueSection != sourceSection {
+                    return
+                }
+
                 viewModel.moveUpload(from: source, to: destination)
             }
         }

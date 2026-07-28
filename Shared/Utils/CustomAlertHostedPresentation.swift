@@ -63,6 +63,9 @@ public struct CustomAlertFullScreenView: View {
         ZStack {
             Color.black.opacity(0.7)
                 .ignoresSafeArea()
+                .onTapGesture {
+                    dismissOverlay()
+                }
             CustomAlertView(
                 title: model.title,
                 message: model.message,

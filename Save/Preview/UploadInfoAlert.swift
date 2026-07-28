@@ -46,7 +46,7 @@ class UploadInfoAlert {
             message: message,
             primaryButtonTitle: NSLocalizedString("Proceed to upload", comment: ""),
             primaryButtonAction: {
-                wasAlreadyShown = true
+                // Only mark as shown if checkbox is ticked (handled by CustomAlertView checkbox toggle)
                 success?()
             },
             secondaryButtonTitle: NSLocalizedString("Actually, let me edit", comment: ""),

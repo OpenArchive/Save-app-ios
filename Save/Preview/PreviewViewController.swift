@@ -157,31 +157,40 @@ final class PreviewViewController: UIHostingController<PreviewFlowContainerView>
     }
 
     private func performUpload() {
+        guard !session.isLoading else { return }
+
+        let group = sc.group
+        let collectionId = sc.id
+        let iaCooldownActive = IaCooldownManager.shared.isActive
+
+        session.isLoading = true
+        navigationItem.rightBarButtonItem?.isEnabled = false
+        navigationItem.leftBarButtonItem?.isEnabled = false
+        navigationItem.hidesBackButton = true
+
+        // Enqueue first, then pop — if we pop/background before the DB write finishes,
+        // folder prep is skipped and only the first background PUT may ever start.
         Db.writeConn?.asyncReadWrite({ tx in
-            guard let group = self.sc.group else {
-                return
-            }
+            guard let group else { return }
 
-            var order = 0
-
-            tx.iterate { (_, upload: Upload, _) in
-                if upload.order >= order {
-                    order = upload.order + 1
-                }
-            }
-
-            if let collection: Collection = tx.object(for: self.sc.id) {
+            if let collectionId,
+               let collection: Collection = tx.object(for: collectionId) {
                 collection.close()
                 tx.setObject(collection)
             }
 
             tx.iterate(group: group, in: AbcFilteredByCollectionView.name) { (_, _, asset: Asset, _, _) in
-                let upload = Upload(order: order, asset: asset)
-                tx.setObject(upload)
-                order += 1
+                let upload = Upload(order: 0, asset: asset)
+                UploadQueueService.placeNewUpload(
+                    upload,
+                    tx: tx,
+                    iaCooldownActive: iaCooldownActive
+                )
             }
         }, completionBlock: {
+            UploadManager.shared.notifyUploadsEnqueued()
             DispatchQueue.main.async {
+                self.session.isLoading = false
                 self.navigationController?.popViewController(animated: true)
             }
         })

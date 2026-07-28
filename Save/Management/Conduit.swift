@@ -110,9 +110,21 @@ class Conduit {
     func upload(_ file: URL, to: URL, _ progress: Progress, pendingUnitCount: Int64? = nil, credential: URLCredential? = nil,
                 headers: [String: String]? = nil)
     {
+        // Always use the background URLSession for the main file — survives FG/BG without handoff.
         let task = backgroundSession.upload(file, to: to, headers: headers, credential: credential)
 
-        progress.addChild(task.progress, withPendingUnitCount: pendingUnitCount ?? (progress.totalUnitCount - progress.completedUnitCount))
+        progress.addChild(
+            task.progress,
+            withPendingUnitCount: pendingUnitCount ?? (progress.totalUnitCount - progress.completedUnitCount)
+        )
+#if DEBUG
+        print("[Conduit] background PUT enqueued taskId=\(task.taskIdentifier) file=\(file.lastPathComponent) dest=\(to.lastPathComponent)")
+#endif
+        if asset.space is WebDavSpace {
+            WebDavUploadManager.shared.notifyBackgroundTransferEnqueued(uploadId: nil)
+        } else {
+            UploadManager.shared.notifyBackgroundTransferEnqueued()
+        }
     }
 
     func upload(_ data: Data, to: URL, _ progress: Progress, _ share: Int64, credential: URLCredential? = nil,

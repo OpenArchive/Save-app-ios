@@ -170,39 +170,32 @@ class PreviewViewModel: ObservableObject {
     }
     
     func upload(completion: @escaping () -> Void) {
-        // Capture main actor-isolated values before entering the Sendable closure
         let group = sc.group
         let collectionId = sc.id
-        
-        Db.writeConn?.asyncReadWrite { tx in
-            guard let group else {
-                DispatchQueue.main.async { completion() }
-                return
-            }
-            
-            var order = 0
-            
-            tx.iterate { (key, upload: Upload, stop) in
-                if upload.order >= order {
-                    order = upload.order + 1
-                }
-            }
-            
+        let iaCooldownActive = IaCooldownManager.shared.isActive
+
+        Db.writeConn?.asyncReadWrite({ tx in
+            guard let group else { return }
+
             if let collectionId,
                let collection: Collection = tx.object(for: collectionId) {
                 collection.close()
                 tx.setObject(collection)
             }
-            
-            tx.iterate(group: group, in: AbcFilteredByCollectionView.name) { (collection, key, asset: Asset, index, stop) in
-                let upload = Upload(order: order, asset: asset)
-                tx.setObject(upload)
-                order += 1
+
+            tx.iterate(group: group, in: AbcFilteredByCollectionView.name) { (_, _, asset: Asset, _, _) in
+                let upload = Upload(order: 0, asset: asset)
+                UploadQueueService.placeNewUpload(
+                    upload,
+                    tx: tx,
+                    iaCooldownActive: iaCooldownActive
+                )
             }
-            
+        }, completionBlock: {
+            UploadManager.shared.notifyUploadsEnqueued()
             DispatchQueue.main.async {
                 completion()
             }
-        }
+        })
     }
 }

@@ -11,6 +11,9 @@ struct UploadRow: View {
     let upload: Upload
     let onDelete: () -> Void
     let onShowError: () -> Void
+
+    @State private var thumbnail: UIImage?
+    @State private var thumbnailAssetId: String?
     
     private var showProgress: Bool {
         upload.error == nil && upload.state != .uploaded
@@ -30,7 +33,7 @@ struct UploadRow: View {
         }
         
         let total = upload.asset?.filesize ?? 0
-        let done = Double(total) * (upload.progress - 0.1) / 0.9
+        let done = Double(total) * min(max(upload.progress, 0), 1)
         
         if done > 0 {
             return "\(Formatters.formatByteCount(total)) – ↑\(Formatters.formatByteCount(Int64(done)))"
@@ -106,11 +109,35 @@ struct UploadRow: View {
         }
         .frame(minHeight: 75)
         .contentShape(Rectangle())
+        .onAppear {
+            loadThumbnailIfNeeded()
+        }
+        .onChange(of: upload.assetId) { _ in
+            thumbnail = nil
+            thumbnailAssetId = nil
+            loadThumbnailIfNeeded()
+        }
+        .onDisappear {
+            thumbnail = nil
+            thumbnailAssetId = nil
+        }
+    }
+
+    private func loadThumbnailIfNeeded() {
+        guard upload.asset?.hasThumbnail() == true, let asset = upload.asset else { return }
+        let assetId = asset.id
+        thumbnailAssetId = assetId
+        asset.getThumbnailAsync { image in
+            DispatchQueue.main.async {
+                guard thumbnailAssetId == assetId else { return }
+                thumbnail = image
+            }
+        }
     }
     
     @ViewBuilder
     private var thumbnailView: some View {
-        if upload.asset?.hasThumbnail() ?? false, let thumbnail = upload.thumbnail {
+        if upload.asset?.hasThumbnail() ?? false, let thumbnail {
             Image(uiImage: thumbnail)
                 .resizable()
                 .aspectRatio(contentMode: .fill)
@@ -144,14 +171,14 @@ struct UploadRow: View {
 struct ProgressButtonView: View {
     let state: Upload.State
     let progress: Double
-    
+
     @State private var animationProgress: Double = 0
-    
+
     var body: some View {
         ZStack {
             Circle()
                 .stroke(Color.accentColor.opacity(0.3), lineWidth: 2)
-            
+
             switch state {
             case .paused:
                 Circle()
@@ -168,9 +195,10 @@ struct ProgressButtonView: View {
                     }
             case .uploading:
                 Circle()
-                    .trim(from: 0, to: progress)
+                    .trim(from: 0, to: min(progress, 1))
                     .stroke(Color.accentColor, lineWidth: 2)
                     .rotationEffect(.degrees(-90))
+                    .animation(.linear(duration: 0.1), value: progress)
             case .uploaded:
                 Circle()
                     .stroke(Color.green, lineWidth: 2)
